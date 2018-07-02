@@ -20,7 +20,33 @@ class Product extends Model
     ];
 
     protected $fillable = [
-     'title','slug','description','summary','options','status','user_id','category_id','related_ids','parent_id','sku','quantity','stock_status','manufacter_id','shipping','price','points','date_available','weight','lenght','width','height','substract','minimum','reference','rating','freeshipping'
+     'title',
+      'slug',
+      'description',
+      'summary',
+      'options',
+      'status',
+      'user_id',
+      'category_id',
+      'related_ids',
+      'parent_id',
+      'sku',
+      'quantity',
+      'stock_status',
+      'manufacturer_id',
+      'shipping',
+      'price',
+      'points',
+      'date_available',
+      'weight',
+      'length',
+      'width',
+      'height',
+      'subtract',
+      'minimum',
+      'reference',
+      'rating',
+      'free_shipping'
     ];
 
     protected $fakeColumns = ['options'];
@@ -61,7 +87,7 @@ class Product extends Model
 
     public function manufacturer()
     {
-        return $this->belongsTo(Manufacturer::class,'manufacter_id');
+        return $this->belongsTo(Manufacturer::class,'manufacturer_id');
     }
 
     public function product_discounts(){
@@ -186,8 +212,8 @@ class Product extends Model
 
         $query = $this->product_discounts()
                     ->select('price')
-                    ->whereDate('datestart','<=',$date)
-                    ->whereDate('dateend','>=',$date)
+                    ->whereDate('date_start','<=',$date)
+                    ->whereDate('date_end','>=',$date)
                     ->first();
 
         return $query ? $query->price : null;

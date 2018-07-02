@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class Product_Option extends Pivot
 {
     
-    protected $table = 'icommerce__product_option';
+    protected $table = 'icommerce__product_options';
 
     protected $fillable = ['product_id','option_id','value','required'];
 

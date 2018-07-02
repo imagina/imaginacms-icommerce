@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class Order_Product extends Pivot
 {
     
-    protected $table = 'icommerce__order_product';
+    protected $table = 'icommerce__order_products';
 
     protected $fillable = [
     'order_id',

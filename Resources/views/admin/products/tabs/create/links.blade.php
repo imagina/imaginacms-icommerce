@@ -1,6 +1,6 @@
 <div class="form-group">
 	<label for="manufacturer_id">{{trans('icommerce::manufacturers.single')}}</label>
-	<select class="form-control" id="manufacter_id" name="manufacter_id">
+	<select class="form-control" id="manufacturer_id" name="manufacturer_id">
 		<option value=""></option>
 		@if(count($manufacturers)>0)
 			@foreach ($manufacturers as $index => $manufacturer)

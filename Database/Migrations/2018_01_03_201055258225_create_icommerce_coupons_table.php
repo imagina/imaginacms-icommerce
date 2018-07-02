@@ -24,8 +24,8 @@ class CreateIcommerceCouponsTable extends Migration
             $table->tinyInteger('logged')->unsigned();
             $table->tinyInteger('shipping')->unsigned();
             $table->float('total', 8, 2);
-            $table->date('datestart');
-            $table->date('dateend');
+            $table->date('date_start');
+            $table->date('date_end');
             $table->integer('uses_total')->unsigned();
             $table->tinyInteger('status')->default(0)->unsigned();
             

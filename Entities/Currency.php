@@ -15,7 +15,15 @@ class Currency extends Model
     protected $table = 'icommerce__currencies';
     public $translatable = ['title'];
 
-    protected $fillable = ['title','code','symbol_left','symbol_right','decimal_place','value','status'];
+    protected $fillable = [
+      'title',
+      'code',
+      'symbol_left',
+      'symbol_right',
+      'decimal_place',
+      'value',
+      'status'
+    ];
 
 
     public function orders()

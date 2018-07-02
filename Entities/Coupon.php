@@ -16,7 +16,19 @@ class Coupon extends Model
 
     public $translatable = ['name'];
 
-    protected $fillable = ['name','code','type','discount','logged','shipping','total','datestart','dateend','uses_total','status'];
+    protected $fillable = [
+      'name',
+      'code',
+      'type',
+      'discount',
+      'logged',
+      'shipping',
+      'total',
+      'date_start',
+      'date_end',
+      'uses_total',
+      'status'
+    ];
 
 
     public function products(){
