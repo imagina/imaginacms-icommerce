@@ -1,31 +1,30 @@
 <?php
 
 return [
-    'title' => 'Customer Information',
-    'sub_titles' => [
-    	'new_client' => 'New Client',
-    	'register_account' => 'Register Account',
-    	'guest_client' => 'Buy as a Guest',
-    	'im_client' => 'I\'m a Customer',
+    'title'         => 'Customer information',
+    'sub_titles'    => [
+    	'new_client'       => 'New client',
+    	'register_account' => 'Register account',
+    	'guest_client'     => 'Buy as a guest',
+    	'im_client'        => 'I\'m a customer',
     ],
-    'form' => [
-    	'first_name' => 'First Name',
-    	'last_name' => 'Last Name',
-    	'email' => 'Email Address',
-    	'phone' => 'Phone Number',
-    	'paswd' => 'Password',
-    	'paswd_confirm' => 'Password Confirm',
-
+    'form'          => [
+    	'first_name'       => 'First name',
+    	'last_name'        => 'Last name',
+    	'email'            => 'Email address',
+    	'phone'            => 'Phone number',
+    	'paswd'            => 'Password',
+    	'paswd_confirm'    => 'Confirm password',
     ],
-    'logged' => [
-    	'name' => 'Name:',
-    	'email' => 'Email:',
-    	'view_profile' => 'View Profile',
-    	'edit_profile' => 'Edit Profile',
-    	'logout' => 'Logout'
+    'logged'        => [
+    	'name'             => 'Name:',
+    	'email'            => 'Email:',
+    	'view_profile'     => 'View profile',
+    	'edit_profile'     => 'Edit profile',
+    	'logout'           => 'Logout',
     ],
-    'messages' => [
-        'email_used' => 'Error: User email is already in use'
+    'messages'      => [
+        'email_used'       => 'Error: User\'s email is already in use',
     ],
 
 ];
