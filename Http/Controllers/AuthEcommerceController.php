@@ -1,0 +1,136 @@
+<?php
+
+namespace Modules\Icommerce\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\Storage;
+use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\User\Http\Requests\LoginRequest;
+use Modules\User\Http\Requests\RegisterRequest;
+use Modules\User\Http\Requests\ResetCompleteRequest;
+use Modules\User\Http\Requests\ResetRequest;
+use Modules\User\Http\Controllers\AuthController;
+use Modules\User\Repositories\RoleRepository;
+use Modules\User\Repositories\UserRepository;
+use Modules\User\Contracts\Authentication;
+use Modules\User\Entities\Sentinel\User;
+use Modules\Iprofile\Entities\Profile;
+use Socialite;
+use Modules\Iprofile\Repositories\AddressEcommerceRepository;
+use Laravel\Socialite\Contracts\User as ProviderUser;
+
+
+class AuthEcommerceController extends AuthController
+{
+    private $user;
+    /**
+     * @var RoleRepository
+     */
+    private $role;
+    protected $auth;
+    public function __construct(UserRepository $user, RoleRepository $role,
+        AddressEcommerceRepository $addressEcommerce)
+    {
+        parent::__construct();
+        $this->user = $user;
+        $this->role = $role;
+        $this->auth = app(Authentication::class);
+        $this->addressEcommerce = $addressEcommerce;
+    }
+
+
+    public function postLogin(LoginRequest $request)
+    {
+            parent::postLogin($request);
+            $user = $this->auth->user();
+            $addressEcommerce="";
+            if(isset($user) && !empty($user)){
+                $profile = $user->profile()->first();
+                $addressEcommerce=$this->addressEcommerce->findByProfileId($profile->id);
+            }
+            return response()->json([
+                "status" => "ok",
+                "user" => $user,
+                "address" => $addressEcommerce
+            ]);
+    
+    }
+
+    public function userRegister(Request $request){
+
+
+        $roleCustomer = $this->role->findByName('Customers');
+        $roleUser = $this->role->findByName(config('asgard.user.config.default_role', 'User'));
+        $user = User::where("email", $request->email)->first();
+
+        if(isset($user->email) && !empty($user->email)){
+            if($request->guestOrCustomer==2){
+                return response()->json([
+                    "status" => "ok",
+                    "user" => $user,
+                ]);
+            }else
+                if($user->roles()->first()->slug=='user') {
+                    $this->user->update($user, $request->all());
+                    $user->roles()->sync($roleCustomer->id);
+                    $code = $this->auth->createActivation($user);
+                    $this->auth->activate($user->id,$code);
+                    $this->createProfile($request,$user);
+                    return response()->json([
+                        "status" => "ok",
+                        "user" => $user,
+                    ]);
+                }else {
+                    return response()->json([
+                        "status" => "error",
+                        "message" => trans('icommerce::customer.messages.email_used'),
+                        "data" => $request->email,
+                    ]);
+
+                }
+        }else{
+            if($request->guestOrCustomer==2)
+                $user = $this->user->createWithRoles($request->all(), $roleUser, false);
+            else{
+                $user = $this->user->createWithRolesFromCli($request->all(), $roleCustomer, true);
+                $this->createProfile($request,$user);
+                parent::postLogin($request);
+            }
+
+
+
+            return response()->json([
+                "status" => "ok",
+                "user" => $user,
+            ]);
+        }
+    }
+
+    public function createProfile($request,$user)
+    {
+        $profile = new Profile();
+        if (config('asgard.iprofile.config.fields_register.identification')) {
+            if (isset($request->identification) && !empty($request->identification))
+                $profile->identification = $request->identification;
+        }
+        if (config('asgard.iprofile.config.fields_register.business')) {
+            if (isset($request->business) && !empty($request->business))
+                $profile->business = $request->business;
+        }
+        if (isset($request->tel) && !empty($request->tel))
+            $profile->tel = $request->tel;
+        $profile->user_id = $user->id;
+        $profile->save();
+    }
+
+    public function getLogout()
+
+    {
+        parent::getLogout();
+        return \Redirect::to('/checkout');
+    }
+
+}
