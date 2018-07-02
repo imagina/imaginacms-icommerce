@@ -24,8 +24,8 @@ class CreateIcommerceProductDiscountsTable extends Migration
             $table->integer('priority')->default(1)->unsigned();
             $table->float('price', 8, 2)->default(0);
 
-            $table->date('datestart');
-            $table->date('dateend');
+            $table->date('date_start');
+            $table->date('date_end');
 
             $table->timestamps();
         });

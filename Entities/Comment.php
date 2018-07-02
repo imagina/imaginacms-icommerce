@@ -12,7 +12,12 @@ class Comment extends Model
     protected $table = 'icommerce__comments';
     public $translatable = [];
 
-    protected $fillable = ['content','status','user_id','product_id'];
+    protected $fillable = [
+      'content',
+      'status',
+      'user_id',
+      'product_id'
+    ];
 
     public function user()
     {

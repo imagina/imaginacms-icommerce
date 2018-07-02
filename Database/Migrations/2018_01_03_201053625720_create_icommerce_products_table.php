@@ -40,23 +40,23 @@ class CreateIcommerceProductsTable extends Migration
             $table->string('sku')->nullable();
             $table->integer('quantity')->default(0)->unsigned();
             $table->tinyInteger('stock_status')->default(0)->unsigned();
-            $table->integer('manufacter_id')->unsigned()->nullable();
-            $table->foreign('manufacter_id')->references('id')->on('icommerce__manufacturers')->onDelete('restrict');
+            $table->integer('manufacturer_id')->unsigned()->nullable();
+            $table->foreign('manufacturer_id')->references('id')->on('icommerce__manufacturers')->onDelete('restrict');
 
             $table->tinyInteger('shipping')->default(1)->unsigned();
             $table->float('price', 8, 2)->default(0);
             $table->integer('points')->default(0)->unsigned();
             $table->date('date_available')->nullable();
             $table->float('weight', 8, 2)->nullable();
-            $table->float('lenght', 8, 2)->nullable();
+            $table->float('length', 8, 2)->nullable();
             $table->float('width', 8, 2)->nullable();
             $table->float('height', 8, 2)->nullable();
-            $table->tinyInteger('substract')->default(1)->unsigned();
+            $table->tinyInteger('subtract')->default(1)->unsigned();
             $table->integer('minimum')->default(1)->unsigned();
             $table->string('reference')->nullable();
             $table->text('rating')->default('')->nullable();
 
-            $table->tinyInteger('freeshipping')->default(0)->unsigned();
+            $table->tinyInteger('free_shipping')->default(0)->unsigned();
 
             $table->timestamps();
 

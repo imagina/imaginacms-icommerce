@@ -12,7 +12,7 @@ class CreateIcommerceProductTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('icommerce__product_tag', function (Blueprint $table) {
+        Schema::create('icommerce__product_tags', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             // Your fields

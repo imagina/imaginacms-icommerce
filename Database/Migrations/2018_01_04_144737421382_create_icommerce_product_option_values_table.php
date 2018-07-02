@@ -30,7 +30,7 @@ class CreateIcommerceProductOptionValuesTable extends Migration
             $table->foreign('option_value_id')->references('id')->on('icommerce__option_values')->onDelete('restrict');
 
             $table->integer('quantity')->unsigned();
-            $table->tinyInteger('substract')->unsigned();
+            $table->tinyInteger('subtract')->unsigned();
             $table->float('price', 8, 2);
             $table->string('price_prefix');
             $table->integer('points')->unsigned();

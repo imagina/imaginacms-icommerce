@@ -831,7 +831,7 @@ class ProductController extends AdminBaseController
     {
 
         $query = Product::select('icommerce__products.id', 'icommerce__products.title', 'icommerce__products.sku', 'icommerce__products.price','icommerce__products.status', 'icommerce__products.created_at', 'icommerce__products.stock_status', 'icommerce__manufacturers.name')
-            ->leftJoin('icommerce__manufacturers', 'icommerce__products.manufacter_id', '=', 'icommerce__manufacturers.id')
+            ->leftJoin('icommerce__manufacturers', 'icommerce__products.manufacturer_id', '=', 'icommerce__manufacturers.id')
             ->where("parent_id", 0);
 
         return datatables($query)->make(true);

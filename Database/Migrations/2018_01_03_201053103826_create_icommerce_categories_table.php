@@ -21,7 +21,7 @@ class CreateIcommerceCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->text('options')->default('')->nullable();
             $table->integer('parent_id')->default(0);
-            $table->tinyInteger('showmenu')->default(0)->unsigned();
+            $table->tinyInteger('show_menu')->default(0)->unsigned();
 
             $table->timestamps();
         });

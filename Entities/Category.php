@@ -23,7 +23,13 @@ class Category extends Model
 
     //public $translatable = ['title','description','slug'];
     public $translatable = ['title','description'];
-    protected $fillable = ['title','slug','description','parent_id','options'];
+    protected $fillable = [
+      'title',
+      'slug',
+      'description',
+      'parent_id',
+      'options'
+    ];
 
     protected $fakeColumns = ['options'];
 

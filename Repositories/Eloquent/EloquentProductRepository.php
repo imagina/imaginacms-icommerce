@@ -117,7 +117,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                             ->orderBy('icommerce__products.'.$order->by, $order->type);
 
         if($manufacturer){ //si hay que filtrar por manufacturer
-            $query->where('icommerce__products.manufacter_id',$manufacturer);
+            $query->where('icommerce__products.manufacturer_id',$manufacturer);
         }
         if ($price) { //si hay que filtrar por rango de precio
             $query->whereBetween('icommerce__products.price', [$price->min, $price->max]);
@@ -166,7 +166,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                       ->orderBy($order->by, $order->type);
 
         if($manufacturer){ //si hay que filtrar por manufacturer
-            $query->where('manufacter_id',$manufacturer);
+            $query->where('manufacturer_id',$manufacturer);
         }
         if ($price) { //si hay que filtrar por rango de precio
             $query->whereBetween('price', [$price->min, $price->max]);
@@ -232,7 +232,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->orderBy('icommerce__products.'.$order->by, $order->type);
 
         if($manufacturer){ //si hay que filtrar por manufacturer
-            $query->where('icommerce__products.manufacter_id',$manufacturer);
+            $query->where('icommerce__products.manufacturer_id',$manufacturer);
         }
         if ($price) { //si hay que filtrar por rango de precio
             $query->whereBetween('icommerce__products.price', [$price->min, $price->max]);
@@ -255,7 +255,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     	return $this->model->with(['category','categories','tags','manufacturer','product_discounts'])        
             ->select('*','icommerce__products.id as id')
-            ->where('manufacter_id', $id)
+            ->where('manufacturer_id', $id)
             ->whereStatus(Status::ENABLED)
             ->orderBy('icommerce__products.created_at', 'DESC')
             ->paginate(12);
@@ -279,7 +279,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->orderBy('icommerce__products.'.$order->by, $order->type);
 
         if($manufacturer){ //si hay que filtrar por manufacturer
-            $query->where('icommerce__products.manufacter_id',$manufacturer);
+            $query->where('icommerce__products.manufacturer_id',$manufacturer);
         }
         if ($price) { //si hay que filtrar por rango de precio
             $query->whereBetween('icommerce__products.price', [$price->min, $price->max]);

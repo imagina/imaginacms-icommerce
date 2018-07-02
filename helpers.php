@@ -340,17 +340,17 @@ if (! function_exists('icommerce_totalDimensions')) {
 
         $tWidth=0;
         $tHeight=0;
-        $tLenght=0;
+        $tLength=0;
 
         foreach ($items as $key => $item) {
 
             $tWidth+=($item->width>0) ? $item->width : 1;
             $tHeight+=($item->height>0) ? $item->height : 1;
-            $tLenght+=($item->lenght>0) ? $item->lenght : 1;
+            $tLength+=($item->length>0) ? $item->length : 1;
 
         }
 
-        $dimensions = array($tWidth,$tHeight,$tLenght);
+        $dimensions = array($tWidth,$tHeight,$tLength);
 
         return $dimensions;
 
@@ -388,8 +388,8 @@ if(! function_exists('icommerce_checkAllItemsFreeshipping')){
 
         foreach ($items as $key => $item) {
 
-            // The product has freeshipping and Country Destiny is the same that Country Freeshipping
-            if($item->freeshipping==1 && $countryCode==$countryFree)
+            // The product has free_shipping and Country Destiny is the same that Country free_shipping
+            if($item->free_shipping==1 && $countryCode==$countryFree)
                 $cant++;
         }
 
@@ -403,7 +403,7 @@ if(! function_exists('icommerce_checkAllItemsFreeshipping')){
 }
 
 /**
-* Get Total Weight for All items validing Freeshipping
+* Get Total Weight for All items validing free_shipping
 *
 * @param  Collection $items
 * @param  String $countryCode // Destiny
@@ -411,11 +411,11 @@ if(! function_exists('icommerce_checkAllItemsFreeshipping')){
 */
 if(! function_exists('icommerce_getTotalWeight')){
 
-    function icommerce_getTotalWeight($items,$countryCode,$freeshipping=0){
+    function icommerce_getTotalWeight($items,$countryCode,$free_shipping=0){
 
         $countryFree = "";
 
-        // If Country Freeshipping is Null that's no matter
+        // If Country free_shipping is Null that's no matter
         // because in the validation the $countryCode!=$countryFree 
         // the weight would be added 
         if(setting('icommerce::country-freeshipping')){
@@ -427,15 +427,15 @@ if(! function_exists('icommerce_getTotalWeight')){
         foreach ($items as $key => $item) {
             $weightItem = 0;
 
-            // The product don't have freeshipping = 0
-            if($item->freeshipping==$freeshipping){
+            // The product don't have free_shipping = 0
+            if($item->free_shipping==$free_shipping){
                 $weightItem = ($item->weight>0) ? $item->weight : 1;
                 $totalWeight = $totalWeight + ( $weightItem * $item->quantity);
             }else{
 
-                // The product has freeshipping 
-                // and country destiny it's not the freeshipping Country
-                if($item->freeshipping==1 && $countryCode!=$countryFree){
+                // The product has free_shipping
+                // and country destiny it's not the free_shipping Country
+                if($item->free_shipping==1 && $countryCode!=$countryFree){
                     $weightItem = ($item->weight>0) ? $item->weight : 1;
                     $totalWeight = $totalWeight + ( $weightItem * $item->quantity);
                 }
