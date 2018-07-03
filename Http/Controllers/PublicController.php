@@ -22,7 +22,6 @@ use Modules\Icommerce\Entities\Order_Product;
 use Modules\Notification\Services\Notification;
 use Modules\Icommerce\Transformers\ProductTransformer;
 use Modules\Setting\Contracts\Setting;
-use Modules\Iprofile\Repositories\AddressEcommerceRepository;
 use Modules\Iprofile\Repositories\ProfileRepository;
 
 class PublicController extends BasePublicController
@@ -38,7 +37,6 @@ class PublicController extends BasePublicController
     private $notification;
     private $manufacturer;
     private $profile;
-    private $addressEcommerce;
 
     public function __construct(
         ProductRepository $product,
@@ -49,7 +47,6 @@ class PublicController extends BasePublicController
         Notification $notification,
         Setting $setting,
         ManufacturerRepository $manufacturer,
-        AddressEcommerceRepository $addressEcommerce,
         ProfileRepository $profile)
     {
         parent::__construct();
@@ -63,7 +60,6 @@ class PublicController extends BasePublicController
         $this->notification=$notification;
         $this->manufacturer = $manufacturer;
         $this->setting = $setting;
-        $this->addressEcommerce = $addressEcommerce;
         $this->profile = $profile;
     }
 
@@ -189,16 +185,16 @@ class PublicController extends BasePublicController
         $defaultCountry = $this->setting->get('icommerce::country-default');
         $countryFreeshipping = $this->setting->get('icommerce::country-freeshipping');
         $ttpl='icommerce.checkout';
-        $addressEcommerce="";
+
         if(isset($user) && !empty($user)){
             $profile = $this->profile->findByUserId($user->id);
-            $addressEcommerce=$this->addressEcommerce->findByProfileId($profile->id);
+           
 
         }
         $passwordRandom = substr( md5(microtime()), 1, 8);
         if(view()->exists($ttpl)) $tpl = $ttpl;
 
-        return view('icommerce::frontend.checkout.index', compact('defaultCountry','countryFreeshipping','shipping','payments', 'currency','user','items','tax','addressEcommerce','passwordRandom'));
+        return view('icommerce::frontend.checkout.index', compact('defaultCountry','countryFreeshipping','shipping','payments', 'currency','user','items','tax','passwordRandom'));
     }
 
     // Traer items del carrito
