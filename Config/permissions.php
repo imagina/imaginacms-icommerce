@@ -151,7 +151,21 @@ return [
         'edit' => 'icommerce::slug_translations.edit resource',
         'destroy' => 'icommerce::slug_translations.destroy resource',
     ],
+    'icommerce.addresses' => [
+        'index' => 'icommerce::addresses.list resource',
+        'create' => 'icommerce::addresses.create resource',
+        'edit' => 'icommerce::addresses.edit resource',
+        'destroy' => 'icommerce::addresses.destroy resource',
+    ],
+    'icommerce.addresses' => [
+        'index' => 'icommerce::addresses.list resource',
+        'create' => 'icommerce::addresses.create resource',
+        'edit' => 'icommerce::addresses.edit resource',
+        'destroy' => 'icommerce::addresses.destroy resource',
+    ],
 // append
+
+
 
 
 

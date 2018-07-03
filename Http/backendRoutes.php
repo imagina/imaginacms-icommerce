@@ -951,7 +951,75 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
 
     });
     
+    $router->bind('addresses', function ($id) {
+        return app('Modules\Icommerce\Repositories\addressesRepository')->find($id);
+    });
+    $router->get('addresses', [
+        'as' => 'admin.icommerce.addresses.index',
+        'uses' => 'addressesController@index',
+        'middleware' => 'can:icommerce.addresses.index'
+    ]);
+    $router->get('addresses/create', [
+        'as' => 'admin.icommerce.addresses.create',
+        'uses' => 'addressesController@create',
+        'middleware' => 'can:icommerce.addresses.create'
+    ]);
+    $router->post('addresses', [
+        'as' => 'admin.icommerce.addresses.store',
+        'uses' => 'addressesController@store',
+        'middleware' => 'can:icommerce.addresses.create'
+    ]);
+    $router->get('addresses/{addresses}/edit', [
+        'as' => 'admin.icommerce.addresses.edit',
+        'uses' => 'addressesController@edit',
+        'middleware' => 'can:icommerce.addresses.edit'
+    ]);
+    $router->put('addresses/{addresses}', [
+        'as' => 'admin.icommerce.addresses.update',
+        'uses' => 'addressesController@update',
+        'middleware' => 'can:icommerce.addresses.edit'
+    ]);
+    $router->delete('addresses/{addresses}', [
+        'as' => 'admin.icommerce.addresses.destroy',
+        'uses' => 'addressesController@destroy',
+        'middleware' => 'can:icommerce.addresses.destroy'
+    ]);
+    $router->bind('address', function ($id) {
+        return app('Modules\Icommerce\Repositories\AddressRepository')->find($id);
+    });
+    $router->get('addresses', [
+        'as' => 'admin.icommerce.address.index',
+        'uses' => 'AddressController@index',
+        'middleware' => 'can:icommerce.addresses.index'
+    ]);
+    $router->get('addresses/create', [
+        'as' => 'admin.icommerce.address.create',
+        'uses' => 'AddressController@create',
+        'middleware' => 'can:icommerce.addresses.create'
+    ]);
+    $router->post('addresses', [
+        'as' => 'admin.icommerce.address.store',
+        'uses' => 'AddressController@store',
+        'middleware' => 'can:icommerce.addresses.create'
+    ]);
+    $router->get('addresses/{address}/edit', [
+        'as' => 'admin.icommerce.address.edit',
+        'uses' => 'AddressController@edit',
+        'middleware' => 'can:icommerce.addresses.edit'
+    ]);
+    $router->put('addresses/{address}', [
+        'as' => 'admin.icommerce.address.update',
+        'uses' => 'AddressController@update',
+        'middleware' => 'can:icommerce.addresses.edit'
+    ]);
+    $router->delete('addresses/{address}', [
+        'as' => 'admin.icommerce.address.destroy',
+        'uses' => 'AddressController@destroy',
+        'middleware' => 'can:icommerce.addresses.destroy'
+    ]);
 // append
+
+
 
 });
 
