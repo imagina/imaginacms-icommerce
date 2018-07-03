@@ -51,11 +51,11 @@ return [
         
         'ups'=> [
             'name' => 'ups',
-            'title' => trans('iups::configups.single') ,
-            'entity' => '\Modules\Iups\Entities\Configups',
-            'view' => 'iups::admin.configups.index',
-            'msjini' => trans('iups::configups.messages.msjini'),
-            'init' => "iups_Init"
+            'title' => trans('icommerceups::configups.single') ,
+            'entity' => '\Modules\IcommerceUps\Entities\Configups',
+            'view' => 'icommerceups::admin.configups.index',
+            'msjini' => trans('icommerceups::configups.messages.msjini'),
+            'init' => "icommerceups_Init"
         ],
 
         'usps'=> [
