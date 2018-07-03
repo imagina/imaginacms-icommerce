@@ -1,24 +1,24 @@
 <?php
 
 return [
-    'list resource' => 'List product options',
-    'create resource' => 'Create product options',
-    'edit resource' => 'Edit product options',
-    'destroy resource' => 'Destroy product options',
-    'title' => [
-        'product_options' => 'Product option',
+    'list resource'             => 'List product options',
+    'create resource'           => 'Create product options',
+    'edit resource'             => 'Edit product options',
+    'destroy resource'          => 'Destroy product options',
+    'title'         => [
+        'product_options'       => 'Product Option',
         'create product_option' => 'Create a product option',
-        'edit product_option' => 'Edit a product option',
+        'edit product_option'   => 'Edit a product option',
     ],
-    'button' => [
+    'button'        => [
         'create product_option' => 'Create a product option',
     ],
-    'table' => [
+    'table'         => [
     ],
-    'form' => [
+    'form'          => [
     ],
-    'messages' => [
+    'messages'      => [
     ],
-    'validation' => [
+    'validation'    => [
     ],
 ];

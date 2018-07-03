@@ -13,4 +13,8 @@ class CacheOrder_ProductDecorator extends BaseCacheDecorator implements Order_Pr
         $this->entityName = 'icommerce.order_products';
         $this->repository = $order_product;
     }
+    
+    public function whereFeaturedProducts(){
+      return $this->repository->whereFeaturedProducts();
+    }
 }

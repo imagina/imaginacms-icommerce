@@ -78,7 +78,7 @@ class ProductController extends BasePublicController
     public function products_search() {
 
         $criterion = $_GET['search'];
-        $data = $this->product->findByNameShort($criterion);        
+        $data = $this->product->findByNameShort($criterion);
 
         $result = ProductTransformer::collection($data);
 
@@ -190,7 +190,8 @@ class ProductController extends BasePublicController
         ];
     }
 
-    public function products_by_manufacturer() {
+    /* GET PRODUCTS BY MANUFACTURER */
+    public function products_manufacturer(){
         $manufacturer = [];
         $currency = $this->currency->getActive();
 
@@ -199,7 +200,7 @@ class ProductController extends BasePublicController
             'price' => $_GET['price'] ? json_decode($_GET['price']) : false,
             'manufacturer' => $_GET['manufacturer'] ? json_decode($_GET['manufacturer']) : false
         ];
-        $products = $this->product->whereManufacturerFilter($filter); //consulta
+        $products = $this->product->whereFreeshippingProducts($filter); //consulta
 
         /*obtiene los manufactures*/
         foreach ($products['data'] as $product){

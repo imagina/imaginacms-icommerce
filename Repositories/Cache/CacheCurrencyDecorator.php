@@ -13,4 +13,9 @@ class CacheCurrencyDecorator extends BaseCacheDecorator implements CurrencyRepos
         $this->entityName = 'icommerce.currencies';
         $this->repository = $currency;
     }
+    public function getActive(){
+      
+      return $this->repository->getActive();
+      
+    }
 }

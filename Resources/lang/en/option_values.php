@@ -1,27 +1,27 @@
 <?php
 
 return [
-    'list resource' => 'List Option Values',
-    'create resource' => 'Create Option Values',
-    'edit resource' => 'Edit Option Values',
-    'destroy resource' => 'Destroy Option Values',
-    'title' => [
-        'option_values' => 'Option Value',
-        'create option_value' => 'Create an Option Value',
-        'edit option_value' => 'Edit an Option Value',
+    'list resource'             => 'List Option values',
+    'create resource'           => 'Create Option values',
+    'edit resource'             => 'Edit Option values',
+    'destroy resource'          => 'Destroy Option values',
+    'title'         => [
+        'option_values'         => 'Option Value',
+        'create option_value'   => 'Create an Option value',
+        'edit option_value'     => 'Edit an Option value',
     ],
-    'button' => [
-        'create option_value' => 'Create an Option Value',
+    'button'        => [
+        'create option_value'   => 'Create an Option value',
     ],
-    'table' => [
+    'table'         => [
     ],
-    'form' => [
-        'name'          => 'Option Value Name',
-        'image'         => 'Image',
-        'sort_order'    => 'Sort Order',
+    'form'          => [
+        'name'                  => 'Option value Name',
+        'image'                 => 'Image',
+        'sort_order'            => 'Sort Order',
     ],
-    'messages' => [
+    'messages'      => [
     ],
-    'validation' => [
+    'validation'    => [
     ],
 ];

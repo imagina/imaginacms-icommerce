@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title'             => 'Billing details',
+    'title'             => 'Billing Details',
     'Form'              => [
         'expand_form'   => 'Expand billing form',
         'company'       => 'Company name',

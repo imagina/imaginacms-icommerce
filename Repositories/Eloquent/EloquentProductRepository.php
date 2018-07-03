@@ -134,14 +134,14 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 )->first(),
                 //obtiene el rango de precio
             ];
-        else 
+        else
             return $data = [
                 'data' => $query->get(), //retorna todos los productos
                 'range_price' => $query2->selectRaw(
                     'MAX(icommerce__products.price) as max_price, MIN(icommerce__products.price) as min_price'
                 )->first(),
                 //obtiene el rango de precio
-            ];   
+            ];
     }
 
 
@@ -205,7 +205,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     public function whereFreeshippingProducts()
     {
     	return $this->model->with(['category','categories','tags','manufacturer','product_discounts'])
-            ->where('freeshipping', 1)
+            ->where('free_shipping', 1)
             ->select('*','icommerce__products.id as id')
             ->whereStatus(Status::ENABLED)
             ->orderBy('icommerce__products.created_at', 'DESC')->paginate(12);
@@ -223,10 +223,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $price = $filter['price'];
         $manufacturer = $filter['manufacturer'];
 
-        //dd($this->model->where('freeshipping', 1)->get());
+        //dd($this->model->where('free_shipping', 1)->get());
 
         $query = $this->model->with(['category','categories','tags','manufacturer','product_discounts'])
-            ->where('freeshipping', 1)
+            ->where('free_shipping', 1)
             ->select('*','icommerce__products.id as id')
             ->whereStatus(Status::ENABLED)
             ->orderBy('icommerce__products.'.$order->by, $order->type);
@@ -253,7 +253,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     {
         is_array ($id) ? true : $id = [$id]; //verifica en $id sea un array
 
-    	return $this->model->with(['category','categories','tags','manufacturer','product_discounts'])        
+    	return $this->model->with(['category','categories','tags','manufacturer','product_discounts'])
             ->select('*','icommerce__products.id as id')
             ->where('manufacturer_id', $id)
             ->whereStatus(Status::ENABLED)
@@ -273,7 +273,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $price = $filter['price'];
         $manufacturer = $filter['manufacturer'];
 
-        $query = $this->model->with(['category','categories','tags','manufacturer','product_discounts'])        
+        $query = $this->model->with(['category','categories','tags','manufacturer','product_discounts'])
             ->select('*','icommerce__products.id as id')
             ->whereStatus(Status::ENABLED)
             ->orderBy('icommerce__products.'.$order->by, $order->type);

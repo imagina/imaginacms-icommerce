@@ -24,4 +24,7 @@ class CacheManufacturerDecorator extends BaseCacheDecorator implements Manufactu
                 }
             );
     }
+  public function findByid($id){
+      
+  }
 }

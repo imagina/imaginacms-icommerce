@@ -6,7 +6,7 @@ return [
     'edit resource'     => 'Edit product coupons',
     'destroy resource'  => 'Destroy product coupons',
     'title'         => [
-        'coupon_products'       => 'Product coupon',
+        'coupon_products'       => 'Product Coupon',
         'create coupon_product' => 'Create a product coupon',
         'edit coupon_product'   => 'Edit a product coupon',
     ],

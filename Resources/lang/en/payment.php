@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'title' => 'Payment Methods',
+    'title' 	=> 'Payment Methods',
 ];

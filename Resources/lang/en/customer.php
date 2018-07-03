@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title'         => 'Customer information',
+    'title'         => 'Customer Information',
     'sub_titles'    => [
     	'new_client'       => 'New client',
     	'register_account' => 'Register account',

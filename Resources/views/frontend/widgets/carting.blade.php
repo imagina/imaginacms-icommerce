@@ -143,7 +143,8 @@
             data: {
                 articles: false,
                 total: 0,
-                quantity: 0
+                quantity: 0,
+                currency: {!! $currency ? $currency : "''"!!},
             },
             methods: {
                 /*obtiene los producto*/

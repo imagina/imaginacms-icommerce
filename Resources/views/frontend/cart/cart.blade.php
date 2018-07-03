@@ -12,12 +12,12 @@
 
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::cart.breadcrumb_title')}}</li>
                         </ol>
                     </nav>
 
-                    <h2 class="text-center mt-0 mb-5">Shopping Cart</h2>
+                    <h2 class="text-center mt-0 mb-5">{{trans('icommerce::cart.title')}}</h2>
 
                 </div>
             </div>
@@ -38,11 +38,11 @@
                         <tr>
                             <th class="w-5"></th>
                             <th class="w-10"></th>
-                            <th class="w-20 text-center">Item</th>
-                            <th class="w-20 text-center">SKU</th>
-                            <th class="w-20 text-center">Unit Price</th>
-                            <th class="w-15 text-center">Quantity</th>
-                            <th class="w-20 text-md-right">Sub Total</th>
+                            <th class="w-20 text-center">{{trans('icommerce::cart.table.item')}}</th>
+                            <th class="w-20 text-center">{{trans('icommerce::cart.table.sku')}}</th>
+                            <th class="w-20 text-center">{{trans('icommerce::cart.table.unit_price')}}</th>
+                            <th class="w-15 text-center">{{trans('icommerce::cart.table.quantity')}}</th>
+                            <th class="w-20 text-md-right">{{trans('icommerce::cart.table.subtotal')}}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -72,7 +72,7 @@
                                 @{{ item.sku }}
                             </td>
                             <td class="text-center align-middle">
-                                $ @{{ item.format_price }}
+                                @{{ currency.symbol_left }} @{{ item.format_price }}
                             </td>
                             <td>
                                 <div class="input-group" >
@@ -97,7 +97,7 @@
                             </td>
                             <td class="text-md-right">
                                 <span class="font-weight-bold">
-                                    $ @{{ formatPrice(item.quantity * item.price) }}
+                                    @{{ currency.symbol_left }} @{{ formatPrice(item.quantity * item.price) }}
                                 </span>
                             </td>
                         </tr>
@@ -128,20 +128,20 @@
                         <div class="col-md-8 text-right mt-3 mt-md-0">
                             <div class="cart-content-totals">
                                 <h4 class="">
-                                    Total: <span class="text-primary">$ @{{ monto }}</span>
+                                    {{trans('icommerce::cart.table.total')}}<span class="text-primary"> @{{ currency.symbol_left }} @{{ monto }}</span>
                                 </h4>
                                 <hr class="my-3 w-50 mr-0">
                             </div>
                             <!-- Proceed to checkout -->
-                            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">Continue Shopping</a>
-                            <a href="{{ url('checkout') }}" class="btn btn-primary btn-rounded btn-lg my-2">Proceed To Checkout</a>
+                            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">{{trans('icommerce::cart.button.continue_shopping')}}</a>
+                            <a href="{{ url('checkout') }}" class="btn btn-primary btn-rounded btn-lg my-2">{{trans('icommerce::cart.button.proceed_to_checkout')}}</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div  class="alert alert-primary" role="alert" v-show="!items">
-                You have no items in your shopping cart. Click <a href="{{ url('/') }}" class="alert-link">here</a> to continue shopping.
+                {{trans('icommerce::cart.empty_cart_message.part_1')}}<a href="{{ url('/') }}" class="alert-link">{{trans('icommerce::cart.empty_cart_message.part_2')}}</a>{{trans('icommerce::cart.empty_cart_message.part_3')}}
             </div>
 
         </div>
@@ -173,7 +173,8 @@
             },
             data: {
                 items: [],
-                monto: 0.0
+                monto: 0.0,
+                currency: {!! $currency ? $currency : "''"!!},
             },
             methods: {
                 /*obtiene los producto*/

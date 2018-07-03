@@ -2,6 +2,10 @@
 
 return [
     'icommerce' => 'Ecommerce',
+    'home'      => [
+        'title'     => 'Home',
+        'details'   => 'DETAILS', 
+    ], 
     'button'    => [
     ],
     'sidebar'       =>[

@@ -99,7 +99,7 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
             ->tags([$this->entityName, 'global'])
             ->remember("{$this->locale}.{$this->entityName}.findBySlug.{$id}", $this->cacheTime,
                 function () use ($id) {
-                    return $this->repository->findBySlug($id);
+                    return $this->repository->whereFeaturedProducts($id);
                 }
             );
     }
@@ -113,13 +113,16 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
         // TODO: Implement whereParentId() method.
     }
   public function whereCategoryFilter($id,$filter,$type){
-  
+    return $this->repository->whereCategoryFilter($id,$filter,$type);
   }
   
   /**
    * @return mixed
    */
-  public function whereFreeshippingProducts($filter){
-    
+  public function whereFreeshippingProducts(){
+      return $this->repository->whereFreeshippingProducts();
+  }
+  public function whereFreeshippingProductsFilter($filter){
+      return $this->repository->whereFreeshippingProductsFilter($filter);
   }
 }

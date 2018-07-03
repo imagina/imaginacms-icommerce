@@ -108,10 +108,10 @@ class PublicController extends BasePublicController
 
 
         if(!empty($uri)) {
-            $data = $this->product->whereFeaturedProducts(5);
             $products = $this->product->whereFreeshippingProducts(); //consulta
-            $productsFeatured = json_decode(json_encode(ProductTransformer::collection($data)));
+ 
             $currency = $this->currency->getActive();
+    
             $user = $this->auth->user();
             (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;
 
@@ -122,7 +122,7 @@ class PublicController extends BasePublicController
 
 
 
-        return view($tpl, compact('productsFeatured', 'user', 'products', 'currency'));
+        return view($tpl, compact( 'user', 'products', 'currency'));
 
     }
 

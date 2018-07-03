@@ -37,6 +37,7 @@ class ProductTransformer extends Resource
         }
 
         /*datos*/
+    
         return  [
             'id' => $this->id,
             'title' => $this->title,
@@ -60,7 +61,7 @@ class ProductTransformer extends Resource
             'lenght' => $this->lenght,
             'width' => $this->width,
             'height' => $this->height,
-            'freeshipping' => $this->freeshipping
+            'free_shipping' => $this->free_shipping
         ];
     }
 }
