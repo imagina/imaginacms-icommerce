@@ -12,7 +12,7 @@ class CreateIcommerceProductOptionTable extends Migration
      */
     public function up()
     {
-        Schema::create('icommerce__product_options', function (Blueprint $table) {
+        Schema::create('icommerce__product_option', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             // Your fields
