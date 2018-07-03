@@ -11,5 +11,17 @@ class Address extends Model
 
     protected $table = 'icommerce__addresses';
     public $translatedAttributes = [];
-    protected $fillable = [];
+    protected $fillable = [
+      'user_id',
+      'firstname',
+      'lastname',
+      'company',
+      'address_1',
+      'address_2',
+      'city',
+      'postcode',
+      'country',
+      'zone'
+    ];
+    
 }
