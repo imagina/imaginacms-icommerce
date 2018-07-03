@@ -40,13 +40,13 @@ return [
         ],
         */
 
-        'iagree'=> [
-            'name' => 'iagree',
-            'title' => trans('iagree::configagrees.single') ,
-            'entity' => '\Modules\Iagree\Entities\Configagree',
-            'view' => 'iagree::admin.configagrees.index',
-            'msjini' => trans('iagree::configagrees.messages.msjini'),
-            'init' => "iagree_Init"
+        'icommerceagree'=> [
+            'name' => 'icommerceagree',
+            'title' => trans('icommerceagree::configagrees.single') ,
+            'entity' => '\Modules\IcommerceAgree\Entities\Configagree',
+            'view' => 'icommerceagree::admin.configagrees.index',
+            'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
+            'init' => "icommerceagree_Init"
         ],
         
         'ups'=> [
