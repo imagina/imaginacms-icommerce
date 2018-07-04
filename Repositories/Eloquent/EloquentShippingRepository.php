@@ -24,7 +24,9 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                 foreach ($shippingMethods as $key => $method) {
                     if(in_array($method['name'],$initMethods)){
                         try{
-                            $methodConfiguration = $method['entity']::query()->first();
+                            $shippingObjet = new $method['entity'];
+                            $methodConfiguration = $shippingObjet->getData();
+                            
                         } 
                         catch(\Exception $e){
                            $methodConfiguration = null; 
@@ -43,8 +45,9 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                     }else{
 
                         // Dinamic Methods Like UPS / USPS / all the News
-
-                        $methodConfig = $method['entity']::query()->first();
+                      $shippingObjet = new $method['entity'];
+                      $methodConfig = $shippingObjet->getData();
+                       
                         if($methodConfig->status==1){
 
                             if($postalCode!=null && $countryCode!=null){

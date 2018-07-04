@@ -176,6 +176,7 @@ class PublicController extends BasePublicController
     /* ==== check ==== */
 
     public function checkout() {
+
         $payments = $this->payments->getPaymentsMethods();
         $currency = $this->currency->getActive();
         $user = $this->auth->user();
@@ -188,10 +189,10 @@ class PublicController extends BasePublicController
 
         if(isset($user) && !empty($user)){
             $profile = $this->profile->findByUserId($user->id);
-           
-
         }
         $passwordRandom = substr( md5(microtime()), 1, 8);
+        
+        
         if(view()->exists($ttpl)) $tpl = $ttpl;
 
         return view('icommerce::frontend.checkout.index', compact('defaultCountry','countryFreeshipping','shipping','payments', 'currency','user','items','tax','passwordRandom'));

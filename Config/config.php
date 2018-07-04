@@ -57,7 +57,7 @@ return [
             'msjini' => trans('icommerceups::configups.messages.msjini'),
             'init' => "icommerceups_Init"
         ],
-
+        /*
         'usps'=> [
             'name' => 'usps',
             'title' => trans('iusps::configusps.single') ,
@@ -66,7 +66,7 @@ return [
             'msjini' => trans('iusps::configusps.messages.msjini'),
             'init' => "iusps_Init"
         ],
-
+    */
     ],
 
     'paymentmethods' => [
