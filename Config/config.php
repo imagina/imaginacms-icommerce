@@ -38,7 +38,7 @@ return [
             'entity' => '\Modules\Ilocaldelivery\Entities\Configlocaldelivery',
             'view' => 'ilocaldelivery::admin.configlocaldeliveries.index'
         ],
-        */
+        
 
         'icommerceagree'=> [
             'name' => 'icommerceagree',
@@ -48,7 +48,7 @@ return [
             'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
             'init' => "icommerceagree_Init"
         ],
-        
+        */
         'ups'=> [
             'name' => 'ups',
             'title' => trans('icommerceups::configups.single') ,

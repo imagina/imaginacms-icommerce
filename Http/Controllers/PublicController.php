@@ -216,11 +216,11 @@ class PublicController extends BasePublicController
 
     public function cart() {
         $tpl = 'icommerce::frontend.cart.cart';
-
+        $currency = $this->currency->getActive();
         $ttpl='icommerce.cart';
         if(view()->exists($ttpl)) $tpl = $ttpl;
         $items = $this->getItems();
-        return view($tpl, compact('items'));
+        return view($tpl, compact('items','currency'));
     }
 
     public function wishlist() {
