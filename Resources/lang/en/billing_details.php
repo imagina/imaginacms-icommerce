@@ -2,7 +2,7 @@
 
 return [
     'title'             => 'Billing Details',
-    'Form'              => [
+    'form'              => [
         'expand_form'       => 'Expand billing form',
         'company'           => 'Company name',
         'address1'          => 'Address 1',

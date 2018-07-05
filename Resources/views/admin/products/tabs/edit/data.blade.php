@@ -33,7 +33,7 @@
 
 {!! Form::normalInputOfType('number','weight', trans('icommerce::products.table.weight'), $errors,$product,$opFloat) !!}
 
-{!! Form::normalInputOfType('number','lenght', trans('icommerce::products.table.lenght'), $errors,$product,$opFloat) !!}
+{!! Form::normalInputOfType('number','length', trans('icommerce::products.table.length'), $errors,$product,$opFloat) !!}
 
 {!! Form::normalInputOfType('number','width', trans('icommerce::products.table.width'), $errors,$product,$opFloat) !!}
 

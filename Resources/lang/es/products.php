@@ -33,7 +33,7 @@ return [
         'price' => 'Precio',
         'date available' => 'Fecha de Disponibilidad',
         'weight' => 'Peso',
-        'lenght' => 'Largo',
+        'length' => 'Largo',
         'width' => 'Ancho',
         'height' => 'Alto',
         'substract' => 'Substraer del Stock',

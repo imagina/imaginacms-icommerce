@@ -54,8 +54,6 @@ class IcommerceServiceProvider extends ServiceProvider
             $event->load('payments', array_dot(trans('icommerce::payments')));
             $event->load('shippings', array_dot(trans('icommerce::shippings')));
             $event->load('slug_translations', array_dot(trans('icommerce::slug_translations')));
-            $event->load('addresses', array_dot(trans('icommerce::addresses')));
-            $event->load('addresses', array_dot(trans('icommerce::addresses')));
             // append translations
 
 
@@ -383,30 +381,7 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheSlug_TranslationsDecorator($repository);
             }
         );
-        $this->app->bind(
-            'Modules\Icommerce\Repositories\addressesRepository',
-            function () {
-                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentaddressesRepository(new \Modules\Icommerce\Entities\addresses());
-
-                if (! config('app.cache')) {
-                    return $repository;
-                }
-
-                return new \Modules\Icommerce\Repositories\Cache\CacheaddressesDecorator($repository);
-            }
-        );
-        $this->app->bind(
-            'Modules\Icommerce\Repositories\AddressRepository',
-            function () {
-                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentAddressRepository(new \Modules\Icommerce\Entities\Address());
-
-                if (! config('app.cache')) {
-                    return $repository;
-                }
-
-                return new \Modules\Icommerce\Repositories\Cache\CacheAddressDecorator($repository);
-            }
-        );
+    
 // add bindings
 
 
