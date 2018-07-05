@@ -31,7 +31,7 @@ return [
         'price'                     => 'Price',
         'date available'            => 'Date Available',
         'weight'                    => 'Weight',
-        'lenght'                    => 'Lenght',
+        'length'                    => 'Lenght',
         'width'                     => 'Width',
         'height'                    => 'Height',
         'substract'                 => 'Substract Stock',

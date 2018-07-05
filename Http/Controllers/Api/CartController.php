@@ -39,7 +39,7 @@ class CartController extends Controller
                     'url' => $product['url'],
                     'sku' => $product['sku'],
                     'width' => isset($product['width']) ? $product['width'] : 0,
-                    'lenght' => isset($product['lenght']) ? $product['lenght'] : 0,
+                    'length' => isset($product['length']) ? $product['length'] : 0,
                     'height' => isset($product['height']) ? $product['height'] : 0,
                     'freeshipping' => isset($product['freeshipping']) ? $product['freeshipping'] : 0,
                 ]);

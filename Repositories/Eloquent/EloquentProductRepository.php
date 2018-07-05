@@ -205,7 +205,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     public function whereFreeshippingProducts()
     {
     	return $this->model->with(['category','categories','tags','manufacturer','product_discounts'])
-            ->where('free_shipping', 1)
+            ->where('freeshipping', 1)
             ->select('*','icommerce__products.id as id')
             ->whereStatus(Status::ENABLED)
             ->orderBy('icommerce__products.created_at', 'DESC')->paginate(12);
@@ -223,10 +223,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $price = $filter['price'];
         $manufacturer = $filter['manufacturer'];
 
-        //dd($this->model->where('free_shipping', 1)->get());
+        //dd($this->model->where('freeshipping', 1)->get());
 
         $query = $this->model->with(['category','categories','tags','manufacturer','product_discounts'])
-            ->where('free_shipping', 1)
+            ->where('freeshipping', 1)
             ->select('*','icommerce__products.id as id')
             ->whereStatus(Status::ENABLED)
             ->orderBy('icommerce__products.'.$order->by, $order->type);

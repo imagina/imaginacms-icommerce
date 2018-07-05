@@ -345,17 +345,17 @@ class CouponController extends BcrudController
         $contdash = 0;
         $code = "";
 
-        $codeLENGHT = $this->setting->get('icommerce::code-lenght');
+        $codeLENGTH = $this->setting->get('icommerce::code-length');
         $dashEvery = $this->setting->get('icommerce::dash-every');
 
-        while($cont < $codeLENGHT){
+        while($cont < $codeLENGTH){
 
             $code .= $characters[mt_rand(0, count($characters) - 1)];
 
             $contdash++;
             $cont++;
 
-            if($contdash==$dashEvery && $cont<$codeLENGHT){
+            if($contdash==$dashEvery && $cont<$codeLENGTH){
                 $code .= "-";
                 $contdash = 0;
             }
