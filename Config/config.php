@@ -39,7 +39,7 @@ return [
             'view' => 'ilocaldelivery::admin.configlocaldeliveries.index'
         ],
         
-
+        */
         'icommerceagree'=> [
             'name' => 'icommerceagree',
             'title' => trans('icommerceagree::configagrees.single') ,
@@ -48,6 +48,7 @@ return [
             'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
             'init' => "icommerceagree_Init"
         ],
+<<<<<<< HEAD
         */
 
         'agree'=> [
@@ -58,6 +59,8 @@ return [
             'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
             'init' => "icommerceagree_Init"
         ],
+=======
+>>>>>>> 63ab86324fec053c436be71c7616c6deedbd5797
 
         'ups'=> [
             'name' => 'icommerceups',
@@ -67,18 +70,25 @@ return [
             'msjini' => trans('icommerceups::configups.messages.msjini'),
             'init' => "icommerceups_Init"
         ],
+<<<<<<< HEAD
 
+=======
+>>>>>>> 63ab86324fec053c436be71c7616c6deedbd5797
         /*
         'usps'=> [
             'name' => 'usps',
-            'title' => trans('iusps::configusps.single') ,
-            'entity' => '\Modules\Iusps\Entities\Configusps',
-            'view' => 'iusps::admin.configusps.index',
-            'msjini' => trans('iusps::configusps.messages.msjini'),
-            'init' => "iusps_Init"
+            'title' => trans('icommerceusps::configusps.single') ,
+            'entity' => '\Modules\IcommerceUsps\Entities\Configusps',
+            'view' => 'icommerceusps::admin.configusps.index',
+            'msjini' => trans('icommerceusps::configusps.messages.msjini'),
+            'init' => "icommerceusps_Init"
         ],
+<<<<<<< HEAD
         */
 
+=======
+    */
+>>>>>>> 63ab86324fec053c436be71c7616c6deedbd5797
     ],
 
     'paymentmethods' => [
