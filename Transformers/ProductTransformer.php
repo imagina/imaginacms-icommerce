@@ -8,6 +8,7 @@ class ProductTransformer extends Resource
 {
     public function toArray($request)
     {
+ 
         /*evalua segun si el pruducto es nuevo o no (15 días)*/
         $date1 = date_create($this->date_available);
         $date2 = date_create(date("Y/m/d"));
@@ -58,10 +59,10 @@ class ProductTransformer extends Resource
             'sku' => $this->sku,
             'pdf' => $pdf,
             'quantity_cart' => 0,
-            'lenght' => $this->lenght,
+            'length' => $this->length,
             'width' => $this->width,
             'height' => $this->height,
-            'free_shipping' => $this->free_shipping
+            'freeshipping' => $this->freeshipping
         ];
     }
 }

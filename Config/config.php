@@ -50,27 +50,27 @@ return [
         ],
 
         'ups'=> [
-            'name' => 'ups',
+            'name' => 'icommerceups',
             'title' => trans('icommerceups::configups.single') ,
             'entity' => '\Modules\IcommerceUps\Entities\Configups',
             'view' => 'icommerceups::admin.configups.index',
             'msjini' => trans('icommerceups::configups.messages.msjini'),
             'init' => "icommerceups_Init"
         ],
-        /*
+        
         'usps'=> [
-            'name' => 'usps',
+            'name' => 'icommerceusps',
             'title' => trans('icommerceusps::configusps.single') ,
             'entity' => '\Modules\IcommerceUsps\Entities\Configusps',
             'view' => 'icommerceusps::admin.configusps.index',
             'msjini' => trans('icommerceusps::configusps.messages.msjini'),
             'init' => "icommerceusps_Init"
         ],
-    */
+    
     ],
 
     'paymentmethods' => [
-
+  /*
         'paypal'=> [
             'name' => 'paypal',
             'title' => trans('ipaypal::paypalconfigs.single') ,
@@ -84,7 +84,7 @@ return [
             'entity' => '\Modules\Icheckmoney\Entities\Checkmoneyconfig',
             'view' => 'icheckmoney::admin.checkmoneyconfigs.index'
         ],
-
+*/
     ]
 
 ];
