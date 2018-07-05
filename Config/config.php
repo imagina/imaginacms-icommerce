@@ -60,11 +60,11 @@ return [
         /*
         'usps'=> [
             'name' => 'usps',
-            'title' => trans('iusps::configusps.single') ,
-            'entity' => '\Modules\Iusps\Entities\Configusps',
-            'view' => 'iusps::admin.configusps.index',
-            'msjini' => trans('iusps::configusps.messages.msjini'),
-            'init' => "iusps_Init"
+            'title' => trans('icommerceusps::configusps.single') ,
+            'entity' => '\Modules\IcommerceUsps\Entities\Configusps',
+            'view' => 'icommerceusps::admin.configusps.index',
+            'msjini' => trans('icommerceusps::configusps.messages.msjini'),
+            'init' => "icommerceusps_Init"
         ],
     */
     ],

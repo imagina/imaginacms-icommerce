@@ -176,7 +176,9 @@ class PublicController extends BasePublicController
     /* ==== check ==== */
 
     public function checkout() {
-
+  
+        $tpl = 'icommerce::frontend.checkout.index';
+        $ttpl= 'icommerce.checkout.index';
         $payments = $this->payments->getPaymentsMethods();
         $currency = $this->currency->getActive();
         $user = $this->auth->user();
@@ -195,7 +197,7 @@ class PublicController extends BasePublicController
         
         if(view()->exists($ttpl)) $tpl = $ttpl;
 
-        return view('icommerce::frontend.checkout.index', compact('defaultCountry','countryFreeshipping','shipping','payments', 'currency','user','items','tax','passwordRandom'));
+        return view($tpl, compact('defaultCountry','countryFreeshipping','shipping','payments', 'currency','user','items','tax','passwordRandom'));
     }
 
     // Traer items del carrito
