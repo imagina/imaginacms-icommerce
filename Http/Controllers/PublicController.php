@@ -15,14 +15,14 @@ use Modules\Icommerce\Repositories\ShippingRepository;
 use Modules\Icommerce\Repositories\PaymentRepository;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
-use Modules\Icommerce\Repositories\AddressRepository;
+use Modules\Iprofile\Repositories\AddressRepository;
 use Anam\Phpcart\Cart as Carting;
 use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Entities\Order_History;
 use Modules\Icommerce\Entities\Order_Product;
 use Modules\Notification\Services\Notification;
 use Modules\Icommerce\Transformers\ProductTransformer;
-use Modules\Icommerce\Transformers\AddressesTransformer;
+use Modules\Iprofile\Transformers\AddressesTransformer;
 use Modules\Setting\Contracts\Setting;
 use Modules\Iprofile\Repositories\ProfileRepository;
 
@@ -196,7 +196,7 @@ class PublicController extends BasePublicController
     $addressSelect = '';
     if (isset($user) && !empty($user)) {
       $profile = $this->profile->findByUserId($user->id);
-      $addresses = $this->address->findByUserId($user->id);
+      $addresses = $this->address->findByProfileId($profile->id);
  
       $addressSelect = json_encode(AddressesTransformer::collection($addresses));
 
