@@ -15,7 +15,7 @@
            aria-expanded="false">
             <i class="fa fa-shopping-cart"></i>
             <span class="d-none d-sm-inline-block">
-                MY CART
+                {{trans('icommerce::cart.carting.my_cart')}}
             </span>
             (@{{ quantity }})
         </a>
@@ -31,7 +31,7 @@
            id="dropdownCart">
             <i class="fa fa-shopping-cart"></i>
             <span class="d-none d-sm-inline-block">
-                MY CART
+                {{trans('icommerce::cart.carting.my_cart')}}
             </span>
             (@{{ quantity }})
         </a>
@@ -48,14 +48,14 @@
             <!-- titulo -->
             <h4 class="dropdown-header mb-0 font-weight-bold text-center"
                 v-if="articles">
-                shopping cart
+                {{trans('icommerce::cart.articles.cart')}}
                 <i class="fa fa-trash text-muted float-right"
                    title="Vaciar carrito"
                    v-on:click="clear_cart()"></i>
             </h4>
             <h5 class="dropdown-header mb-0 font-weight-bold text-center"
                 v-if="!articles">
-                empty shopping cart
+                {{trans('icommerce::cart.articles.empty_cart')}}
             </h5>
 
             <!-- articulos en el carrito -->
@@ -83,8 +83,8 @@
                         <!-- valor y cantidad -->
                         <p class="mb-0 text-muted pb-2"
                            style="font-size: 14px">
-                            Quantity: @{{ item.quantity }} <br>
-                            Price/Und: $ @{{ item.format_price }}
+                            {{trans('icommerce::cart.table.quantity')}}: @{{ item.quantity }} <br>
+                            {{trans('icommerce::cart.table.price_per_unit')}}: $ @{{ item.format_price }}
                         </p>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 <hr class="mt-3 mb-3">
                 <!-- total -->
                 <h6 class="font-weight-bold">
-                    Total:
+                    {{trans('icommerce::cart.table.total')}}:
                     <span class="text-primary">
                         $ @{{ total }}
                     </span>
@@ -114,12 +114,12 @@
                 <a href="{{ url('checkout/cart') }}"
                    tabindex="-1"
                    class="btn btn-primary text-white">
-                    View Cart
+                    {{trans('icommerce::cart.button.view_cart')}}
                 </a>
                 <a href="{{ url('checkout') }}"
                    tabindex="-1"
                    class="btn btn-warning mx-1 text-white">
-                    Checkout
+                    {{trans('icommerce::cart.button.checkout')}}
                 </a>
             </div>
         </div>

@@ -73,7 +73,7 @@
                     <a href="{{ route('icommerce.categories') }}"
                        class="btn btn-outline-secondary">
                         <i class="fa fa-eye"></i>
-                        See all categories
+                        {{trans('icommerce::categories.messages.see_all')}}
                     </a>
                 </div>
             @endif

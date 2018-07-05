@@ -49,8 +49,18 @@ return [
             'init' => "icommerceagree_Init"
         ],
         */
+
+        'agree'=> [
+            'name' => 'icommerceagree',
+            'title' => trans('icommerceagree::configagrees.single') ,
+            'entity' => '\Modules\IcommerceAgree\Entities\Configagree',
+            'view' => 'icommerceagree::admin.configagrees.index',
+            'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
+            'init' => "icommerceagree_Init"
+        ],
+
         'ups'=> [
-            'name' => 'ups',
+            'name' => 'icommerceups',
             'title' => trans('icommerceups::configups.single') ,
             'entity' => '\Modules\IcommerceUps\Entities\Configups',
             'view' => 'icommerceups::admin.configups.index',
@@ -58,6 +68,7 @@ return [
             'init' => "icommerceups_Init"
         ],
 
+        /*
         'usps'=> [
             'name' => 'usps',
             'title' => trans('iusps::configusps.single') ,
@@ -66,6 +77,7 @@ return [
             'msjini' => trans('iusps::configusps.messages.msjini'),
             'init' => "iusps_Init"
         ],
+        */
 
     ],
 

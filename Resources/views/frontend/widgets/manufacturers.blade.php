@@ -2,7 +2,7 @@
      class="card border-0 card-items mb-3"
      v-if="products_manufacturer.length >= 1">
     <div class="card-header text-uppercase bg-primary  py-2 px-3 text-white">
-        MANUFACTURER
+        {{trans('icommerce::manufacturers.caps_single')}}
     </div>
 
     <ul id="list-manufacturer" class="list-group list-group-flush">
@@ -12,7 +12,7 @@
             <a  v-on:click="filter_manufacturer()"
                 v-bind:class="manufacturer ? '' : 'text-primary'"
                 style="cursor: pointer">
-                All
+                {{trans('icommerce::manufacturers.all')}}
             </a>
         </li>
         <li class="list-group-item border-0 pl-4"

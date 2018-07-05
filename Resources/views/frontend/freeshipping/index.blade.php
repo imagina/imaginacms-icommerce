@@ -21,7 +21,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mt-4 text-uppercase">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ url('/') }}">Home</a>
+                                    <a href="{{ url('/') }}">{{trans('icommerce::common.home.title')}}</a>
                                 </li>
                                 @if(isset($category->parent) && !empty($category->parent))
                                     <li class="breadcrumb-item">
@@ -93,9 +93,9 @@
 
                     <!-- CATEGORY  -->
                         <h1 class="text-info">
-                            Products with free shipping
+                            {{trans('icommerce::products.categories.free_shipping')}}
                         </h1>
-                        All products with free shipping...
+                            {{trans('icommerce::products.categories.all_free_shipping')}}
 
                     <!-- ORDER BY -->
                         <div class="col-12 p-0">

@@ -3,17 +3,22 @@
 return [
     'title'             => 'Billing Details',
     'Form'              => [
-        'expand_form'   => 'Expand billing form',
-        'company'       => 'Company name',
-        'address1'      => 'Address 1',
-        'address2'      => 'Address 2',
-        'city'          => 'City',
-        'post_code'     => 'Zip/Postal code',
-        'country'       => 'Country',
-        'state'         => 'State/Province',
+        'expand_form'       => 'Expand billing form',
+        'company'           => 'Company name',
+        'address1'          => 'Address 1',
+        'address2'          => 'Address 2',
+        'city'              => 'City',
+        'post_code'         => 'Zip/Postal code',
+        'country'           => 'Country',
+        'state'             => 'State/Province',
     	'place_holder'  =>[
-            'company'   => 'Enter company',
+            'company'       => 'Enter company',
     	],
+        'select_option'     => 'Choose option',
+        'select_country'    => 'Select country',
     ],
-
+    'address'  => [
+        'old_address' => 'I want to use an existing address',
+        'new_address' => 'I want to use a new address',
+    ],
 ];

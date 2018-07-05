@@ -1,12 +1,12 @@
 <div id="wishlist">
     <h6 class="pt-4 mb-3 text-secondary">
         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-        MY WISH LIST
+        {{trans('icommerce::wishlists.owl_whishlist.title')}}
     </h6>
 
     <h5 class="dropdown-header mb-0 font-weight-bold text-center"
         v-show="products_wishlist.length == 0" style="max-width: 90%;">
-        You have no items in your wish list.
+        {{trans('icommerce::wishlists.messages.no_item')}}
     </h5>
     <!--Shopping cart items-->
 

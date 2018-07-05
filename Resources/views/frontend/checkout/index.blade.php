@@ -12,8 +12,8 @@
 
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{ trans('icommerce::common.home.title') }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
                         </ol>
                     </nav>
 
@@ -504,16 +504,16 @@
                     axios.post('{{url("/checkout")}}',data).then(function (response) {
                         if (response.data.status != "202"){
                             this.placeOrderButton = false;
-                            checkout.alerta(response.data.message, "warning");
+                            checkout.alerta(response.data.message, "{{ trans('icommerce::checkout.alerts.missing_fields') }}","warning");
                         }
                         else{
-                            checkout.alerta(response.data.message, "success");
+                            checkout.alerta(response.data.message, "{{ trans('icommerce::checkout.alerts.missing_fields') }}","success");
                             window.location.replace(response.data.url);
                         }
 
                     }).catch(error => {
                         this.placeOrderButton = false;
-                        checkout.alerta("{{ trans('icommerce::checkout.alerts.error_order') }}", "warning");
+                        checkout.alerta("{{ trans('icommerce::checkout.alerts.error_order') }}", "{{ trans('icommerce::checkout.alerts.missing_fields') }}","warning");
                     });
                 },
                 calculate: function (val, type, event) {
@@ -530,7 +530,7 @@
                             $("#shipping_value").val(val);
                         } else {
                             this.shipping_method='';
-                            this.alerta("{{ trans('icommerce::checkout.alerts.minimun_shipping') }}", 'warning');
+                            this.alerta("{{ trans('icommerce::checkout.alerts.minimun_shipping') }}", "{{ trans('icommerce::checkout.alerts.missing_fields') }}","warning");
                             $('input[id=shipping_method]:checked').prop("checked", false);
 
                         }
@@ -605,7 +605,7 @@
                         checkout.weight=response.data.weight;
                         checkout.updateTotal(response.data.items);
                         checkout.shippingMethods();
-                        checkout.alerta("{{ trans('icommerce::checkout.alerts.remove_car') }}", "success");
+                        checkout.alerta("{{ trans('icommerce::checkout.alerts.remove_car') }}", "{{ trans('icommerce::checkout.alerts.missing_fields') }}","success");
 
                     }).catch(error => {
                         console.log(error);
@@ -810,7 +810,7 @@
                                         setTimeout(function () {
                                             $("#registerAlert").toggleClass('d-none');
                                         }, 10000);
-                                        checkout.alerta(error.response.data.errors.email[0], "warning");
+                                        checkout.alerta(error.response.data.errors.email[0], "{{ trans('icommerce::checkout.alerts.missing_fields') }}","{{ trans('icommerce::checkout.alerts.warning') }}");
                                 });
 
                                 checkout.registerOrder();
@@ -818,7 +818,7 @@
                         },1000);
                     }else{
                         this.topForm();
-                        checkout.alerta("Missing some fields, check again, fill and send again","warning");
+                        checkout.alerta("{{ trans('icommerce::checkout.alerts.missing_fields') }}","warning");
                     }
                 }
             }

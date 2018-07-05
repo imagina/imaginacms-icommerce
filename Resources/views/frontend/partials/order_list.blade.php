@@ -19,10 +19,10 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Email</th>
-                                <th>Total</th>
-                                <th>Status</th>
+                                <th>{{trans('icommerce::orders.table.id')}}</th>
+                                <th>{{trans('icommerce::orders.table.email')}}</th>
+                                <th>{{trans('icommerce::orders.table.total')}}</th>
+                                <th>{{trans('icommerce::orders.table.status')}}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -55,10 +55,10 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th>ID</th>
-                                <th>Email</th>
-                                <th>Total</th>
-                                <th>Status</th>
+                                <th>{{trans('icommerce::orders.table.id')}}</th>
+                                <th>{{trans('icommerce::orders.table.email')}}</th>
+                                <th>{{trans('icommerce::orders.table.total')}}</th>
+                                <th>{{trans('icommerce::orders.table.status')}}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>

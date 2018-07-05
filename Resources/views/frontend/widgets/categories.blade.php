@@ -1,12 +1,12 @@
 @if(isset($category) && !empty($category))
     <h6 class="mb-3 text-secondary">
         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-        FILTER
+        {{trans('icommerce::categories.filter')}}
     </h6>
 
     <div class="card border-0 card-items mb-3">
         <div class="card-header text-uppercase bg-primary  py-2 px-3 text-white">
-            SUB CATEGORIES
+            {{trans('icommerce::categories.subcategory')}}
         </div>
         <ul id="list-category"
             class="list-group list-group-flush">

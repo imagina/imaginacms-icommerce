@@ -80,7 +80,7 @@
                                         <input type="button" value="-"
                                                class="btn btn-outline-primary border-right-0 quantity-down"
                                                field="quantity"
-                                               v-on:click="item.quantity > 0 ? update_quantity(item, '-') : alerta('the quantity can not be less than 0', 'error')">
+                                               v-on:click="item.quantity > 0 ? update_quantity(item, '-') : alerta('{{trans('icommerce::cart.message.min_exceeded')}}', '{{trans('icommerce::cart.alerts.error')}}')">
                                     </div>
                                     <input type="text"
                                            name="quantity"

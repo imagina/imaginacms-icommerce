@@ -1,26 +1,26 @@
 <?php
 
 return [
-    'single' => 'Comentario',
-    'plural' => 'Comentarios',
-    'list resource' => 'List comments',
-    'create resource' => 'Create comments',
-    'edit resource' => 'Edit comments',
-    'destroy resource' => 'Destroy comments',
-    'title' => [
-        'comments' => 'Comentarios',
-        'create comment' => 'Create a comment',
-        'edit comment' => 'Edit a comment',
+    'single'            => 'Comentario',
+    'plural'            => 'Comentarios',
+    'list resource'     => 'Listar commentarios',
+    'create resource'   => 'Crear commentarios',
+    'edit resource'     => 'Editar commentarios',
+    'destroy resource'  => 'Eliminar commentarios',
+    'title'         => [
+        'comments'          => 'Comentarios',
+        'create comment'    => 'Crear un commentario',
+        'edit comment'      => 'Editar un commentario',
     ],
-    'button' => [
-        'create comment' => 'Create a comment',
+    'button'        => [
+        'create comment' => 'Crear un commentario',
     ],
-    'table' => [
+    'table'         => [
     ],
-    'form' => [
+    'form'          => [
     ],
-    'messages' => [
+    'messages'      => [
     ],
-    'validation' => [
+    'validation'    => [
     ],
 ];

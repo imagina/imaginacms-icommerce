@@ -14,7 +14,7 @@
                     <div class="link">
                         <a v-bind:href="item.url"
                            class="btn btn-outline-light">
-                            QUICK VIEW
+                            {{trans('icommerce::common.featured_recommended.quick_view')}}
                         </a>
                     </div>
                 </div>
@@ -89,11 +89,11 @@
 
                     axios.post('{{ url("api/icommerce/add_cart") }}', data).then(function(response){
                         if(response.data.status){
-                            vue_products_detals.alerta("product added to the car", "success");
+                            vue_products_detals.alerta("{{trans('icommerce::products.alerts.add_cart')}}", "success");
                             vue_carting.get_articles();
                         }else{
                             vue_products_detals.alerta(
-                                "Can not add the product, try again please",
+                                "{{trans('icommerce::products.alerts.no_add_cart')}}",
                                 "error");
                         }
                     });
@@ -123,14 +123,14 @@
 
                             axios.post('{{ route("icommerce.api.wishlist.add") }}', data).then(function(response){
                                 vue_products_detals.get_wishlist();
-                                vue_products_detals.alerta("Product added to your wish list", "success");
+                                vue_products_detals.alerta("{{trans('icommerce::wishlists.alerts.add')}}", "success");
                             })
                         }else{
-                            this.alerta("This product is already on your wish list", "warning");
+                            this.alerta("{{trans('icommerce::wishlists.alerts.product_in_wishlist')}}", "warning");
                         }
                     }
                     else {
-                        this.alerta("Debes estar logeado", "warning");
+                        this.alerta("{{trans('icommerce::wishlists.alerts.must_login')}}", "warning");
                     }
                 },
 

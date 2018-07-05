@@ -17,7 +17,7 @@
                            role="tab"
                            aria-controls="featured"
                            aria-selected="true">
-                            FEATURED
+                            {{trans('icommerce::common.featured_recommended.featured')}}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -28,7 +28,7 @@
                            role="tab"
                            aria-controls="recommended"
                            aria-selected="false">
-                            RECOMMENDED
+                            {{trans('icommerce::common.featured_recommended.recommended')}}
                         </a>
                     </li>
                 </ul>
@@ -56,7 +56,7 @@
                                             <div class="link">
                                                 <a v-bind:href="product.url"
                                                    class="btn btn-outline-light">
-                                                    QUICK VIEW
+                                                    {{trans('icommerce::common.featured_recommended.quick_view')}}
                                                 </a>
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                                             <div class="link">
                                                 <a v-bind:href="product.url"
                                                    class="btn btn-outline-light">
-                                                    QUICK VIEW
+                                                    {{trans('icommerce::common.featured_recommended.quick_view')}}
                                                 </a>
                                             </div>
                                         </div>
@@ -230,11 +230,11 @@
 
                     axios.post('{{ url("api/icommerce/add_cart") }}', data).then(function(response){
                         if(response.data.status){
-                            vue_featured_recommmend.alerta("product added to the car", "success");
+                            vue_featured_recommmend.alerta("{{trans('icommerce::products.alerts.add_cart')}}", "success");
                             vue_carting.get_articles();
                         }else{
                             vue_featured_recommmend.alerta(
-                                "Can not add the product, try again please",
+                                "{{trans('icommerce::products.alerts.no_add_cart')}}",
                                 "error");
                         }
                     });
@@ -264,14 +264,14 @@
 
                             axios.post('{{ route("icommerce.api.wishlist.add") }}', data).then(function(response){
                                 vue_featured_recommmend.get_wishlist();
-                                vue_featured_recommmend.alerta("Product added to your wish list", "success");
+                                vue_featured_recommmend.alerta("{{trans('icommerce::wishlists.alerts.add')}}", "success");
                             })
                         }else{
-                            this.alerta("This product is already on your wish list", "warning");
+                            this.alerta("{{trans('icommerce::wishlists.alerts.product_in_wishlist')}}", "warning");
                         }
                     }
                     else {
-                        this.alerta("Debes estar logeado", "warning");
+                        this.alerta("{{trans('icommerce::wishlists.alerts.must_login')}}", "warning");
                     }
                 },
 

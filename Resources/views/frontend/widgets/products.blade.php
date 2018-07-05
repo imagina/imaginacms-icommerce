@@ -26,7 +26,7 @@
                     <div class="link">
                         <a v-bind:href="item.url"
                            class="btn btn-outline-light">
-                            QUICK VIEW
+                            {{trans('icommerce::common.featured_recommended.quick_view')}}
                         </a>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
 
 <!-- si no hay productos -->
 <div class="col-12" v-else>
-    There are no products in this category
+    {{trans('icommerce::categories.alert.no_products_in_category')}}
     <i class="fa fa-frown-o"></i>
     ...
 </div>

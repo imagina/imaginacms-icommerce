@@ -4,18 +4,18 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-secondary">
-                    Carga Masiva
+                    {{trans('icommerce::common.bulkload.massive_load')}}
                 </h5>
 
                 <h6 class="card-subtitle mb-2 text-muted">
-                    Productos - categorias - marcas
+                    {{trans('icommerce::common.bulkload.pro_cat_bran')}}
                 </h6>
                 <p class="card-text">
                     <input type="file" onchange="read_file.controller(this)">
                 </p>
                 <a class="btn btn-primary text-white">
                     <i class="fa fa-cloud-upload"></i>
-                    Cargar datos
+                    {{trans('icommerce::common.bulkload.load_data')}}
                 </a>
             </div>
         </div>

@@ -25,5 +25,7 @@ return [
     ],
     'validation'    => [
     ],
-    'uri' => "brands",
+    'uri'           => "brands",
+    'caps_single'   => 'MANUFACTURER',
+    'all'           => 'All',
 ];

@@ -17,11 +17,11 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mt-4 text-uppercase">
                                 <li class="breadcrumb-item">
-                                    <a href="/">Home</a>
+                                    <a href="/">{{trans('icommerce::common.home.title')}}</a>
                                 </li>
                                 <li class="breadcrumb-item active"
                                     aria-current="page">
-                                    Categories
+                                    {{trans('icommerce::categories.plural')}}
                                 </li>
                             </ol>
                         </nav>
@@ -34,7 +34,7 @@
 
         <div id="shop-category" class="bg-light pt-4 pb-5">
             <h2 class="text-center text-secondary">
-                SHOP BY CATEGORY
+                {{trans('icommerce::categories.shop_by_category')}}
             </h2>
             <hr class="border-primary border-2 mb-0">
             <hr class="border-secondary w-10 border-2 mb-0">

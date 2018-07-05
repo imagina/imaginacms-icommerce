@@ -20,7 +20,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mt-4 text-uppercase">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ url('/') }}">Home</a>
+                                    <a href="{{ url('/') }}">{{trans('icommerce::common.home.title')}}</a>
                                 </li>
                                 <li class="breadcrumb-item" v-for="category in breadcrumb">
                                     <a v-bind:href="category.url">
@@ -83,7 +83,7 @@
                             <!-- SKU -->
                             <br>
                             <small class="text-danger font-weight-bold" style="font-size: 15px">
-                                SKU#: @{{ product.sku }}
+                                {{trans('icommerce::cart.table.sku')}}#: @{{ product.sku }}
                             </small>
                         </h1>
 
@@ -94,7 +94,7 @@
                                         href="#tabp3"
                                         aria-controls="tabp3"
                                         aria-selected="false">
-                                    BE THE FIRST TO REVIEW THIS PRODUCT
+                                    {{trans('icommerce::products.messages.be_the_fist_review')}}
                                 </a>
                             </small>
                         </h6>
@@ -131,7 +131,7 @@
                                    class="btn btn-outline-light text-dark">
                                     <img class="img-fluid p-2 pr-3"
                                          src="{{ Theme::url('img/pdf.png') }}">
-                                    Product Brochure
+                                    {{trans('icommerce::products.messages.product_brochure')}}
                                 </a>
                             </div>
                         </div>
@@ -176,10 +176,10 @@
                             <button class="btn btn-danger text-white addToCar w-30"
                                     v-on:click="addCart(product)" v-show="!sending_data">
                                 <i class="fa fa-shopping-cart pr-3"></i>
-                                Add to cart
+                                {{trans('icommerce::products.alerts.add')}}
                             </button>
                             <button class="btn btn-danger text-white w-30" v-show="sending_data">
-                                <div class="fa-1x"><i class="fa fa-spinner fa-pulse"></i> Sending</div>
+                                <div class="fa-1x"><i class="fa fa-spinner fa-pulse"></i>{{trans('icommerce::products.messages.sending')}}</div>
                             </button>
                         </div>
 
@@ -190,11 +190,11 @@
                             <thead>
                             <tr>
                                 <th class="text-center w-15"></th>
-                                <th class="text-center w-35">Product</th>
-                                <th class="text-center w-10">Sku</th>
-                                <th class="text-center w-15">Unit Price</th>
-                                <th class="text-center w-10">Quantity</th>
-                                <th class="w-15 text-md-right">Total</th>
+                                <th class="text-center w-35">{{trans('icommerce::products.single')}}</th>
+                                <th class="text-center w-10">{{trans('icommerce::cart.table.sku')}}</th>
+                                <th class="text-center w-15">{{trans('icommerce::cart.table.unit_price')}}</th>
+                                <th class="text-center w-10">{{trans('icommerce::cart.table.quantity')}}</th>
+                                <th class="w-15 text-md-right">{{trans('icommerce::cart.table.secondary_total')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -277,11 +277,11 @@
                             <button class="btn btn-danger text-white w-30"
                                     v-on:click="addCart()" v-show="!sending_data" >
                                 <i class="fa fa-shopping-cart pr-3"></i>
-                                Add to cart
+                                {{trans('icommerce::products.alerts.add')}}
                             </button>
 
                             <button class="btn btn-danger text-white w-30" v-show="sending_data" >
-                                <div class="fa-1x"><i class="fa fa-spinner fa-pulse"></i> Sending</div>
+                                <div class="fa-1x"><i class="fa fa-spinner fa-pulse"></i>{{trans('icommerce::products.messages.sending')}}</div>
                             </button>
                         </div>
 
@@ -289,21 +289,21 @@
                             <a onclick="window.open('http://www.facebook.com/sharer.php?u=' + vue_show_commerce.product.url,'Facebook','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+'')"
                                class="btn btn-outline-dark btn-sm mb-2">
                                 <i class="fa fa-facebook"></i>
-                                SHARE
+                                {{trans('icommerce::products.messages.share')}}
                             </a>
                             <a onclick="window.open('http://twitter.com/share?url=' + vue_show_commerce.product.url,'Twitter share','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+'')"
                                class="btn btn-outline-dark btn-sm mb-2">
                                 <i class="fa fa-twitter"></i>
-                                TWEET
+                                {{trans('icommerce::products.messages.tweet')}}
                             </a>
                             <a onclick="window.open('https://plus.google.com/share?url=' + vue_show_commerce.product.url,'Google plus','width=585,height=666,left='+(screen.availWidth/2-292)+',top='+(screen.availHeight/2-333)+'')"
                                class="btn btn-outline-dark btn-sm mb-2">
                                 <i class="fa fa-google-plus"></i>
-                                SHARE
+                                {{trans('icommerce::products.messages.share')}}
                             </a>
                             <a href="" class="btn btn-outline-dark btn-sm mb-2">
                                 <i class="fa fa-print"></i>
-                                PRINT
+                                {{trans('icommerce::products.messages.print')}}
                             </a>
                         </div>
 
@@ -320,8 +320,8 @@
                                     <img class="align-self-center mr-3"
                                          src="{{ Theme::url('img/car.png') }}">
                                     <div class="media-body text-left">
-                                        <p class="m-0">1-3 BUSINESS DAYS<br>
-                                            AVERAGE DELIVERY</p>
+                                        <p class="m-0">{{trans('icommerce::products.messages.business_days')}}<br>
+                                            {{trans('icommerce::products.messages.average_delivery')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -330,8 +330,8 @@
                                     <img class="align-self-center mr-3"
                                          src="{{ Theme::url('img/save.png') }}">
                                     <div class="media-body text-left">
-                                        <p class="m-0">SAFE & SECURE<br>
-                                            SHOPPING</p>
+                                        <p class="m-0">{{trans('icommerce::products.messages.safe_secure')}}<br>
+                                            {{trans('icommerce::products.messages.shopping')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -340,8 +340,8 @@
                                     <img class="align-self-center mr-3"
                                          src="{{ Theme::url('img/day.png') }}">
                                     <div class="media-body text-left">
-                                        <p class="m-0">SAFE & SECURE<br>
-                                            SHOPPING</p>
+                                        <p class="m-0">{{trans('icommerce::products.messages.safe_secure')}}<br>
+                                            {{trans('icommerce::products.messages.shopping')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -366,7 +366,7 @@
                                    role="tab"
                                    aria-controls="details"
                                    aria-selected="true">
-                                    DETAILS
+                                    {{trans('icommerce::products.messages.details')}}
                                 </a>
                             </li>
                             {{--<li class="nav-item">
@@ -388,7 +388,7 @@
                                    role="tab"
                                    aria-controls="reviews"
                                    aria-selected="false">
-                                    REVIEWS (@{{ count_comments }})
+                                    {{trans('icommerce::products.messages.reviews')}} (@{{ count_comments }})
                                 </a>
                             </li>
                         </ul>

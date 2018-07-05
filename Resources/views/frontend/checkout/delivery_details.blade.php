@@ -33,7 +33,7 @@
    
         <div class="form-group row">
             <div class="col pr-1">
-             <label for="shipping_firstname">{{ trans('icommerce::delivery_details.form.first_name') }} </label>
+             <label for="shipping_firstname">{{ trans('icommerce::delivery_details.form.first_name') }}</label>
              <input type="text" class="form-control" id="shipping_first_name" name="shipping_firstname" v-model="shippingData.first_name">
 
             </div>
@@ -78,7 +78,7 @@
                 name="shipping_country"
                 v-model="shippingData.country"
                 v-on:change="getCountriesJson(shippingData.country, 2)">
-                <option value="null">Choose option</option>
+                <option value="null">{{ trans('icommerce::delivery_details.form.select_option') }}</option>
                 <option  v-for="country in countries" v-bind:value="country.iso_2" >@{{ country.name }}</option>
             </select>
 
@@ -94,7 +94,7 @@
                     @change="taxFlorida(shippingData.zone,1)"
                     v-show="!statesShippingAlternative">
                 <option v-for="state in statesDelivery" v-bind:value="state.name">@{{ state.name }}</option>
-                <option value="null">Select country</option>
+                <option value="null">{{ trans('icommerce::delivery_details.form.select_country') }}</option>
             </select>
              <input  type="text" 
                 class="form-control" 

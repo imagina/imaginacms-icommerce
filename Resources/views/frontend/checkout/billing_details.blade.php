@@ -47,7 +47,7 @@
                 name="payment_country"  
                 v-model="billingData.country"
                 v-on:change="getCountriesJson(billingData.country, 1)">
-                <option value="null">Choose option</option>
+                <option value="null">{{ trans('icommerce::billing_details.form.select_option') }}</option>
                 <option  v-for="country in countries" v-bind:value="country.iso_2" >@{{ country.name }}</option>
             </select>
 
@@ -63,7 +63,7 @@
                     @change="taxFlorida(billingData.zone,1)"
                     v-show="!statesBillingAlternative">
                 <option v-for="state in statesBilling" v-bind:value="state.name">@{{ state.name }}</option>
-                <option value="null">Select country</option>
+                <option value="null">{{ trans('icommerce::billing_details.form.select_country') }}</option>
             </select>
             <input  type="text" 
                     class="form-control" 

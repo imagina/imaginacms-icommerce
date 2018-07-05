@@ -9,12 +9,12 @@
 
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Order List</li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.breadcrumb.title')}}</li>
                         </ol>
                     </nav>
 
-                    <h2 class="text-center mt-0 mb-5">My Order List</h2>
+                    <h2 class="text-center mt-0 mb-5">{{trans('icommerce::orders.title.single_order_title')}}</h2>
 
                 </div>
             </div>
@@ -29,10 +29,10 @@
                         <table class="table table-hover">
                             <thead class=" bg-secondary text-white">
                             <tr>
-                                <th>ID</th>
-                                <th>Email</th>
-                                <th>Total</th>
-                                <th>Status</th>
+                                <th>{{trans('icommerce::orders.table.id')}}</th>
+                                <th>{{trans('icommerce::orders.table.email')}}</th>
+                                <th>{{trans('icommerce::orders.table.total')}}</th>
+                                <th>{{trans('icommerce::orders.table.status')}}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                             </tr>
                             </thead>
@@ -65,7 +65,7 @@
                                 
                             </div>
                             <!-- Proceed to checkout -->
-                            <a href="{{ url('/account') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">Back to my profile</a>
+                            <a href="{{ url('/account') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">{{trans('icommerce::orders.button.Back_to_profile')}}</a>
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
 
             <div class="row" v-show="items.length == 0">
                 <div class="col p-6">
-                    No orders found
+                    {{trans('icommerce::orders.messages.not_found')}}
                 </div>
             </div>
         </div>

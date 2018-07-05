@@ -10,7 +10,7 @@
                    v-on:click="change_page_limit(1,'first')"
                    title="first page">
                     <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
+                    <span class="sr-only">{{trans('icommerce::common.pagination.previous')}}</span>
                 </a>
             </li>
 
@@ -49,7 +49,7 @@
                    v-on:click="change_page_limit(pages,'last')"
                    title="last page">
                     <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
+                    <span class="sr-only">{{trans('icommerce::common.pagination.next')}}</span>
                 </a>
             </li>
         </ul>
