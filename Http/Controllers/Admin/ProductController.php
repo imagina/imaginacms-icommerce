@@ -501,7 +501,7 @@ class ProductController extends AdminBaseController
 
                     $subProduct->width = $product->width;
                     $subProduct->height = $product->height;
-                    $subProduct->lenght = $product->lenght;
+                    $subProduct->length = $product->length;
                     $subProduct->freeshipping = $product->freeshipping;
 
                     $subProduct->update();
@@ -738,7 +738,7 @@ class ProductController extends AdminBaseController
 
         $subProduct->width = $product->width;
         $subProduct->height = $product->height;
-        $subProduct->lenght = $product->lenght;
+        $subProduct->length = $product->length;
         $subProduct->freeshipping = $product->freeshipping;
 
         $subProduct->save();
