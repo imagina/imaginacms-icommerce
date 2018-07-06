@@ -38,9 +38,11 @@
       <div id="collapseExistingPayment" class="collapse show" aria-labelledby="useExistingPayment" role="tabpanel">
         <select class="form-control"
                 id=""
-                name="selectPaymentAddress"
+                name="selectBillingAddress"
+                @change="changeAddress(selectedBillingAddress,1)"
+                v-model="selectedBillingAddress"
         >
-          <option v-for="(address, index) in selectAddresses" v-bind:value="index" :selected="addresses[index].type=='billing' ? true : false">@{{ address }}</option>
+          <option v-for="(address, index) in selectAddresses" v-bind:value="index">@{{ address }}</option>
         
         </select>
       </div>
@@ -107,7 +109,7 @@
           <div class="col pl-1">
             <label for="payment_code">{{ trans('icommerce::billing_details.form.post_code') }}</label>
             <input type="number" class="form-control" name="payment_postcode" id="payment_postcode"
-                   v-model="billingData.postcode" @change="shippingMethods()" @keyup="shippingMethods()">
+                   v-model="billingData.postcode" @change="getShippingMethods()" @keyup="getShippingMethods()">
           </div>
         
         </div>

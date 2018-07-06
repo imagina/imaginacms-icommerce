@@ -66,8 +66,11 @@
         </div>
         <div v-else class="row">
           <div class="alert alert-primary" role="alert">
-            {{ trans('icommerce::checkout.no_products_1') }}<a href="{{ url('/') }}"
-                                                               class="alert-link">{{ trans('icommerce::checkout.no_products_here') }}</a> {{ trans('icommerce::checkout.no_products_2') }}
+            {{ trans('icommerce::checkout.no_products_1') }}
+            <a href="{{ url('/') }}" class="alert-link">
+              {{ trans('icommerce::checkout.no_products_here') }}
+            </a>
+            {{ trans('icommerce::checkout.no_products_2') }}
           </div>
         
         
@@ -391,7 +394,9 @@
         },
         updatingData: false,
         useExistingPaymentAddress: true,
-        shippingMethodSelected:false,
+        shippingMethodSelected: false,
+        selectedBillingAddress: 0,
+        selectedShippingAddress: 0,
       },
       filters: {
         capitalize: function (value) {
@@ -447,10 +452,11 @@
           /*** IF THERE ARE ADDRESSES, CHECK IF ANY IS DEFAULT BILLING OR DEFAULT SHIPPING AND TURN ON FLAG ***/
           if (this.addresses) {
             var billing = false, shipping = false;
-            this.addresses.forEach(function(address) {
+            this.addresses.forEach(function (address, index) {
               
               if (address.type == 'billing') {
                 billing = true;
+                checkout.selectedBillingAddress = index;
                 for (var key in address) {
                   var val = address[key];
                   checkout.billingData[key] = val;
@@ -458,6 +464,7 @@
               }
               if (address.type == 'shipping') {
                 shipping = true;
+                checkout.selectedShippingAddress = index;
                 for (var key in address) {
                   var val = address[key];
                   checkout.shippingData[key] = val;
@@ -475,6 +482,7 @@
               if (!shipping)
                 checkout.shippingData[key] = val;
             }
+            
             /*** IF THERE ARE NO ADDRESSES, ADD PROVINCES OF THE COUNTRY SELECTED BEFORE ***/
           }
           
@@ -493,7 +501,7 @@
           axios.post('{{ route("icommerce.api.update.item.cart") }}', item).then(function (response) {
             vue_carting.get_articles();
             checkout.updateTotal(checkout.items);
-            checkout.shippingMethods();
+            checkout.getShippingMethods();
           });
         },
         isFreeshippingCountry: function () {
@@ -560,7 +568,7 @@
             checkout.alert("{{ trans('icommerce::checkout.alerts.error_order') }}", "warning");
           });
         },
-        calculate: function (index,val, type, event) {
+        calculate: function (index, val, type, event) {
           this.shippingMethodSelected = this.shippingMethods[index];
           if (type == "freeshipping") {
             if (parseFloat(this.realSubTotal) >= val) {
@@ -691,7 +699,7 @@
           this.shipping_method = null;
           this.shipping_amount = 0;
           this.shipping = 0;
-          shippingMethodSelected=false;
+          shippingMethodSelected = false;
           if (($('#sameDeliveryBilling').prop("checked"))) {
             var postCode = $('#payment_postcode').val();
             var countryISO = $('#payment_country option:selected').val();
@@ -797,6 +805,17 @@
             this.shippingData = this.billingData;
           
         },
+        changeAddress: function (addressIndex, comp) {
+          var address = this.addresses[addressIndex];
+          for (var key in address) {
+            var val = address[key];
+            if (comp == 1)
+              checkout.billingData[key] = val;
+            else
+              checkout.shippingData[key] = val;
+          }
+          this.getShippingMethods();
+        },
         submitOrder: function (event) {
           if ($('#checkoutForm').valid()) {
             event.preventDefault();
@@ -808,6 +827,7 @@
               if (login == 2) {
                 checkout.placeOrderButton = false;
                 checkout.topForm();
+                
                 $("#loginAlert").html("{{ trans('icommerce::checkout.alerts.login_order') }}");
                 $("#loginAlert").toggleClass('d-none');
                 setTimeout(function () {
@@ -820,44 +840,45 @@
                   data = data + "&password=" + checkout.passwordGuest;
                   data = data + "&password_confirmation=" + checkout.passwordGuest;
                   
-                }
-                
-                // Si se va a registrar el usuario primero enviamos los data para crear el registro
-                axios.post      // si genera un error el registro de usuario se invalida el bandRegister para que no
-                (               // se envien los data de la orden, bandRegister siempre sera 1 para que en otros casos
-                  '{{url("/checkout/register")}}',  // se envie la orden sin problemas
-                  data,
-                ).then(response => {
-                  var status = response.data.status;
-                  if (status == "error") {
+                  
+                  // Si se va a registrar el usuario primero enviamos los data para crear el registro
+                  axios.post      // si genera un error el registro de usuario se invalida el bandRegister para que no
+                  (               // se envien los data de la orden, bandRegister siempre sera 1 para que en otros casos
+                    '{{url("/checkout/register")}}',  // se envie la orden sin problemas
+                    data,
+                  ).then(response => {
+                    var status = response.data.status;
+                    if (status == "error") {
+                      checkout.placeOrderButton = false;
+                      checkout.topForm();
+                      
+                      $("#registerAlert").html(response.data.message);
+                      $("#registerAlert").toggleClass('d-none');
+                      setTimeout(function () {
+                        $("#registerAlert").toggleClass('d-none');
+                      }, 10000);
+                    } else {
+                      var user = response.data.user;
+                      checkout.appendUser("#registerAlert", user);
+                      setTimeout(function () {
+                        checkout.registerOrder();
+                      }, 1000);
+                    }
+                  }).catch(error => {
+                    
                     checkout.placeOrderButton = false;
                     checkout.topForm();
                     
-                    $("#registerAlert").html(response.data.message);
+                    $("#registerAlert").html(error.response.data.errors.email[0]);
                     $("#registerAlert").toggleClass('d-none');
                     setTimeout(function () {
                       $("#registerAlert").toggleClass('d-none');
                     }, 10000);
-                  } else {
-                    var user = response.data.user;
-                    checkout.appendUser("#registerAlert", user);
-                    setTimeout(function () {
-                      checkout.registerOrder();
-                    }, 1000);
-                  }
-                }).catch(error => {
-                  
-                  checkout.placeOrderButton = false;
-                  checkout.topForm();
-                  $("#registerAlert").html(error.response.data.errors.email[0]);
-                  $("#registerAlert").toggleClass('d-none');
-                  setTimeout(function () {
-                    $("#registerAlert").toggleClass('d-none');
-                  }, 10000);
-                  checkout.alert(error.response.data.errors.email[0], "warning");
-                });
-                
-                checkout.registerOrder();
+                    checkout.alert(error.response.data.errors.email[0], "warning");
+                  });
+                } else {
+                  checkout.registerOrder();
+                }
               }
             }, 1000);
           } else {

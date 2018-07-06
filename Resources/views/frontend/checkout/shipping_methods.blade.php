@@ -32,7 +32,7 @@
               
               <label class="mb-0">
                 <a class="card-title">
-                  @{{ship.configName | capitalize}}
+                  @{{ship.configTitle | capitalize}}
                 </a>
               </label>
             </div>
@@ -115,7 +115,7 @@
           
           </td>
           <td
-            v-if="ship.configName!=='icommerceups' && ship.configName!=='icommerceups' && ship.configName!=='notmethods' && ship.configName!=='icommerceagree'">
+            v-if="ship.configName!=='icommerceups' && ship.configName!=='icommerceusps' && ship.configName!=='notmethods' && ship.configName!=='icommerceagree'">
             <div v-if="ship.minimum">{{ trans('icommerce::shipping.form.minimum') }}</div>
             <div v-else-if="ship.cost">{{ trans('icommerce::shipping.form.fixed') }}</div>
             <div
@@ -126,8 +126,14 @@
               v-else-if="ship.feetype && ship.feetype=='fixed_amount_product'">{{ trans('icommerce::shipping.form.fixed_amount_prod') }}</div>
           </td>
           <td
-            v-if="ship.configName!=='icommerceups' && ship.configName!=='icommerceups' && ship.configName!=='notmethods'">
-            @{{ ship.configTitle | capitalize }}
+            v-if="ship.configName!=='icommerceups' && ship.configName!=='icommerceusps' && ship.configName!=='notmethods'">
+
+              <label class="mb-0">
+                <a class="card-title">
+                  @{{ship.configTitle | capitalize}}
+                </a>
+              </label>
+  
           </td>
         
         </tr>

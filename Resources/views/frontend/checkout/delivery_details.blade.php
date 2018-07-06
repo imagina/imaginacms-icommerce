@@ -57,8 +57,10 @@
           <select class="form-control"
                   id=""
                   name="selectShippingAddress"
+                  @change="changeAddress(selectedShippingAddress,2)"
+                  v-model="selectedShippingAddress"
           >
-            <option v-for="(address, index) in selectAddresses" v-bind:value="index" :selected="addresses[index].type=='shipping' ? true : false">@{{ address }}</option>
+            <option v-for="(address, index) in selectAddresses" v-bind:value="index" >@{{ address }}</option>
           
           </select>
         </div>
@@ -128,7 +130,7 @@
             <div class="col pl-1">
               <label for="shipping_code">{{ trans('icommerce::delivery_details.form.post_code') }}</label>
               <input type="number" class="form-control" name="shipping_postcode" id="shipping_postcode"
-                     v-on:keyup="shippingMethods()" @change="shippingMethods()" v-model="shippingData.postcode">
+                     v-on:keyup="getShippingMethods()" @change="getShippingMethods()" v-model="shippingData.postcode">
             </div>
           
           </div>
