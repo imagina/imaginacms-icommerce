@@ -77,14 +77,14 @@ return [
             'entity' => '\Modules\IcommercePaypal\Entities\Paypalconfig',
             'view' => 'icommercepaypal::admin.paypalconfigs.index'
         ],
-        /*
-               'checkormoney'=> [
-                   'name' => 'checkormoney',
-                   'title' => trans('icheckmoney::checkmoneyconfigs.single') ,
-                   'entity' => '\Modules\Icheckmoney\Entities\Checkmoneyconfig',
-                   'view' => 'icheckmoney::admin.checkmoneyconfigs.index'
+
+               'icommercecheckmoney'=> [
+                   'name' => 'icommercecheckmoney',
+                   'title' => trans('icommercecheckmoney::checkmoneyconfigs.single') ,
+                   'entity' => '\Modules\IcommerceCheckmoney\Entities\Checkmoneyconfig',
+                   'view' => 'icommercecheckmoney::admin.checkmoneyconfigs.index'
                ],
-       */
+
     ]
 
 ];
