@@ -56,7 +56,7 @@ class CreateIcommerceProductsTable extends Migration
             $table->string('reference')->nullable();
             $table->text('rating')->default('')->nullable();
 
-            $table->tinyInteger('free_shipping')->default(0)->unsigned();
+            $table->tinyInteger('freeshipping')->default(0)->unsigned();
 
             $table->timestamps();
 

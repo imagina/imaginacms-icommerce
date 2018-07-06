@@ -390,9 +390,9 @@ if (!function_exists('icommerce_checkAllItemsFreeshipping')) {
 
         foreach ($items as $key => $item) {
 
-            // The product has free_shipping and Country Destiny is the same that Country free_shipping
-            if (isset($item->free_shipping) && !empty($item->free_shipping)) {
-                if ($item->free_shipping == 1 && $countryCode == $countryFree)
+            // The product has freeshipping and Country Destiny is the same that Country freeshipping
+            if (isset($item->freeshipping) && !empty($item->freeshipping)) {
+                if ($item->freeshipping == 1 && $countryCode == $countryFree)
                     $cant++;
             }
         }
@@ -407,7 +407,7 @@ if (!function_exists('icommerce_checkAllItemsFreeshipping')) {
 }
 
 /**
- * Get Total Weight for All items validing free_shipping
+ * Get Total Weight for All items validing freeshipping
  *
  * @param  Collection $items
  * @param  String $countryCode // Destiny
@@ -415,12 +415,12 @@ if (!function_exists('icommerce_checkAllItemsFreeshipping')) {
  */
 if (!function_exists('icommerce_getTotalWeight')) {
 
-    function icommerce_getTotalWeight($items, $countryCode, $free_shipping = 0)
+    function icommerce_getTotalWeight($items, $countryCode, $freeshipping = 0)
     {
 
         $countryFree = "";
 
-        // If Country free_shipping is Null that's no matter
+        // If Country freeshipping is Null that's no matter
         // because in the validation the $countryCode!=$countryFree 
         // the weight would be added 
         if (setting('icommerce::country-freeshipping')) {
@@ -432,15 +432,15 @@ if (!function_exists('icommerce_getTotalWeight')) {
         foreach ($items as $key => $item) {
             $weightItem = 0;
 
-            // The product don't have free_shipping = 0
-            if ($item->free_shipping == $free_shipping) {
+            // The product don't have freeshipping = 0
+            if ($item->freeshipping == $freeshipping) {
                 $weightItem = ($item->weight > 0) ? $item->weight : 1;
                 $totalWeight = $totalWeight + ($weightItem * $item->quantity);
             } else {
 
-                // The product has free_shipping
-                // and country destiny it's not the free_shipping Country
-                if ($item->free_shipping == 1 && $countryCode != $countryFree) {
+                // The product has freeshipping
+                // and country destiny it's not the freeshipping Country
+                if ($item->freeshipping == 1 && $countryCode != $countryFree) {
                     $weightItem = ($item->weight > 0) ? $item->weight : 1;
                     $totalWeight = $totalWeight + ($weightItem * $item->quantity);
                 }

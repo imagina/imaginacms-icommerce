@@ -46,7 +46,7 @@ class Product extends Model
       'minimum',
       'reference',
       'rating',
-      'free_shipping'
+      'freeshipping'
     ];
 
     protected $fakeColumns = ['options'];

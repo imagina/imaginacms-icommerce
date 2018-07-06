@@ -48,19 +48,6 @@ return [
             'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
             'init' => "icommerceagree_Init"
         ],
-<<<<<<< HEAD
-        */
-
-        'agree'=> [
-            'name' => 'icommerceagree',
-            'title' => trans('icommerceagree::configagrees.single') ,
-            'entity' => '\Modules\IcommerceAgree\Entities\Configagree',
-            'view' => 'icommerceagree::admin.configagrees.index',
-            'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
-            'init' => "icommerceagree_Init"
-        ],
-=======
->>>>>>> 63ab86324fec053c436be71c7616c6deedbd5797
 
         'ups'=> [
             'name' => 'icommerceups',
@@ -70,29 +57,20 @@ return [
             'msjini' => trans('icommerceups::configups.messages.msjini'),
             'init' => "icommerceups_Init"
         ],
-<<<<<<< HEAD
-
-=======
->>>>>>> 63ab86324fec053c436be71c7616c6deedbd5797
-        /*
+        
         'usps'=> [
-            'name' => 'usps',
+            'name' => 'icommerceusps',
             'title' => trans('icommerceusps::configusps.single') ,
             'entity' => '\Modules\IcommerceUsps\Entities\Configusps',
             'view' => 'icommerceusps::admin.configusps.index',
             'msjini' => trans('icommerceusps::configusps.messages.msjini'),
             'init' => "icommerceusps_Init"
         ],
-<<<<<<< HEAD
-        */
-
-=======
-    */
->>>>>>> 63ab86324fec053c436be71c7616c6deedbd5797
+    
     ],
 
     'paymentmethods' => [
-
+  /*
         'paypal'=> [
             'name' => 'paypal',
             'title' => trans('ipaypal::paypalconfigs.single') ,
@@ -106,7 +84,7 @@ return [
             'entity' => '\Modules\Icheckmoney\Entities\Checkmoneyconfig',
             'view' => 'icheckmoney::admin.checkmoneyconfigs.index'
         ],
-
+*/
     ]
 
 ];

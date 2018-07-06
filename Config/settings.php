@@ -35,7 +35,7 @@ return [
         'default' => 'NO',
         'translatable' => false
     ],
-    'code-lenght' => [
+    'code-length' => [
         'description'  => 'icommerce::common.settings.codeLenght',
         'view'         => 'number',
         'default'      => 8,
