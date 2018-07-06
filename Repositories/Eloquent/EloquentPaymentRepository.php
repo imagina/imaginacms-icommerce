@@ -20,8 +20,10 @@ class EloquentPaymentRepository extends EloquentBaseRepository implements Paymen
 
     			$methodConfiguration = null;
                 try{
-                    $methodConfiguration = $method['entity']::query()->select("description","options","status")->first();
-                } 
+                    //$methodConfiguration = $method['entity']::query()->select("description","options","status")->first();
+                    $methodConfiguration = new $method['entity'];
+                    $methodConfiguration = $methodConfiguration->getData();
+                }
                 catch(\Exception $e){
                    $methodConfiguration = null; 
                 }
