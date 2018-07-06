@@ -74,7 +74,7 @@ return [
         'paypal'=> [
             'name' => 'paypal',
             'title' => trans('ipaypal::paypalconfigs.single') ,
-            'entity' => '\Modules\Ipaypal\Entities\Paypalconfig',
+            'entity' => '\Modules\IcommercePaypal\Entities\Paypalconfig',
             'view' => 'ipaypal::admin.paypalconfigs.index'
         ],
 
