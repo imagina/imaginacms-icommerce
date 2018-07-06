@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'outstock' 	=> 'out of stock',
-    'instock' 	=> 'in stock',
+    'outstock' 	=> 'Out of stock',
+    'instock' 	=> 'In stock',
 ];

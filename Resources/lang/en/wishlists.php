@@ -13,7 +13,7 @@ return [
     ],
     'button'        => [
         'create wishlist'   => 'Create a wishlist',
-        'continue_shopping'   => 'Continue Shopping',
+        'continue_shopping' => 'Continue Shopping',
     ],
     'table'         => [
     ],
@@ -32,8 +32,6 @@ return [
         "add"                   => "Product added to your wishlist",
         "must_login"            => "You must be logged in",
         "delete"                => "Product deleted from your wishlist",
-        'success'               => 'success',
-        'warning'               => 'warning',
     ],
     "owl_whishlist" => [
         "title"   => "MY WISH LIST",

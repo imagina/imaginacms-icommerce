@@ -1,31 +1,31 @@
 <?php
 
 return [
-    'list resource' => 'List product_option_values',
-    'create resource' => 'Create product_option_values',
-    'edit resource' => 'Edit product_option_values',
-    'destroy resource' => 'Destroy product_option_values',
-    'title' => [
-        'product_option_values' => 'Product_Option_Value',
-        'create product_option_value' => 'Create a product_option_value',
-        'edit product_option_value' => 'Edit a product_option_value',
+    'list resource'                     => 'Listar valores de las opciones de productos',
+    'create resource'                   => 'Crear valores de las opciones de productos',
+    'edit resource'                     => 'Editar valores de las opciones de productos',
+    'destroy resource'                  => 'Eliminar valores de las opciones de productos',
+    'title'         => [
+        'product_option_values'         => 'Valor de opción de producto',
+        'create product_option_value'   => 'Crear un valor de la opción de producto',
+        'edit product_option_value'     => 'Editar un valor de la opción de producto',
     ],
-    'button' => [
-        'create product_option_value' => 'Create a product_option_value',
+    'button'        => [
+        'create product_option_value' => 'Crear un valor de la opción de producto',
     ],
-    'table' => [
-        'option' => 'Valor Opcion',
-        'quantity' => 'Cantidad',
-        'substract' => 'Substraer',
-        'price' => 'Precio',
-        'points' => 'Puntos',
-        'weight' => 'Peso'
+    'table'         => [
+        'option'        => 'Valor de la Opción',
+        'quantity'      => 'Cantidad',
+        'substract'     => 'Substraer',
+        'price'         => 'Precio',
+        'points'        => 'Puntos',
+        'weight'        => 'Peso'
     ],
-    'form' => [
+    'form'          => [
     ],
-    'messages' => [
+    'messages'      => [
         'alert multiples' => 'Las opciones multiples no pueden estar vacias',
     ],
-    'validation' => [
+    'validation'    => [
     ],
 ];

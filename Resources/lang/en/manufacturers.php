@@ -19,7 +19,6 @@ return [
         'name'                  => 'Name'
     ],
     'form'          => [
-        
     ],
     'messages'      => [
     ],

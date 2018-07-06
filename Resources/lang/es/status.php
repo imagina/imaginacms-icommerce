@@ -1,8 +1,6 @@
 <?php
 
 return [
-
-    'disabled' => 'desactivado',
-    'enabled' => 'activado',
-
+    'disabled' 	=> 'desactivado',
+    'enabled' 	=> 'activado',
 ];

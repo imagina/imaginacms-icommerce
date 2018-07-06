@@ -31,7 +31,6 @@ return [
         'total'             => 'Total',
         'status'            => 'Status',
         'created_at'        => 'Created at',
-
         'details'           => 'Order Details',
         'customer details'  => 'Customer Details',
         'others details'    => 'Other Details',

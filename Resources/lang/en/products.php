@@ -96,8 +96,6 @@ return [
         'no_add_cart'   => 'Can\'t add the product, try again please',
         'no_more'       => 'The product doesn\'t have any more inventory',
         'no_zero'       => 'The product can\'t be less than 0',
-        'success'       => 'success',
-        'error'         => 'error',
     ],
 ];
 

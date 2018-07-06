@@ -70,14 +70,14 @@ return [
     ],
 
     'paymentmethods' => [
-  /*
+
         'paypal'=> [
             'name' => 'paypal',
             'title' => trans('ipaypal::paypalconfigs.single') ,
             'entity' => '\Modules\Ipaypal\Entities\Paypalconfig',
             'view' => 'ipaypal::admin.paypalconfigs.index'
         ],
-
+  /*
         'checkormoney'=> [
             'name' => 'checkormoney',
             'title' => trans('icheckmoney::checkmoneyconfigs.single') ,

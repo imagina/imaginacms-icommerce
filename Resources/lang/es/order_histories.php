@@ -1,25 +1,25 @@
 <?php
 
 return [
-    'list resource' => 'List order_histories',
-    'create resource' => 'Create order_histories',
-    'edit resource' => 'Edit order_histories',
-    'destroy resource' => 'Destroy order_histories',
-    'title' => [
-        'order_histories' => 'Order_History',
-        'create order_history' => 'Create a order_history',
-        'edit order_history' => 'Edit a order_history',
+    'list resource'             => 'Listar Historial de ordenes',
+    'create resource'           => 'Crear Historial de ordenes',
+    'edit resource'             => 'Editar Historial de ordenes',
+    'destroy resource'          => 'Eliminar Historial de ordenes',
+    'title'             => [
+        'order_histories'       => 'Historial de Ordenes',
+        'create order_history'  => 'Crear historial de ordenes',
+        'edit order_history'    => 'Editar historial de ordenes',
     ],
-    'button' => [
-        'create order_history' => 'Create a order_history',
+    'button'            => [
+        'create order_history'  => 'Crear historial de ordenes',
     ],
-    'table' => [
+    'table'             => [
     ],
-    'form' => [
+    'form'              => [
     ],
-    'messages' => [
-        'error add history' => 'Error en el proceso',
+    'messages'          => [
+        'error add history'     => 'Error en el proceso',
     ],
-    'validation' => [
+    'validation'        => [
     ],
 ];

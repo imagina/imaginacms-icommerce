@@ -191,7 +191,8 @@ class ProductController extends BasePublicController
     }
 
     /* GET PRODUCTS BY MANUFACTURER */
-    public function products_manufacturer(){
+
+    public function products_by_manufacturer(){
         $manufacturer = [];
         $currency = $this->currency->getActive();
 
