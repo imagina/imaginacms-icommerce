@@ -40,7 +40,7 @@ return [
         ],
         
         */
-        'icommerceagree'=> [
+        'agree'=> [
             'name' => 'icommerceagree',
             'title' => trans('icommerceagree::configagrees.single') ,
             'entity' => '\Modules\IcommerceAgree\Entities\Configagree',

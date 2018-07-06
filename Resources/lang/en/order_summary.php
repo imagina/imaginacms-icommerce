@@ -11,5 +11,5 @@ return [
     'sending'       => 'Sending',
     'freeshipping'  => 'Free Shipping',
     'tax'           => 'TAX',
-    'shipping_cero' => 'Not Selected',
+    'shipping_not_selected' => 'Not Selected',
 ];

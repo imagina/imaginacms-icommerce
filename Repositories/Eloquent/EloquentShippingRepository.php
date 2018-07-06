@@ -13,7 +13,8 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
     	$shippingMethods = config('asgard.icommerce.config.shippingmethods');
     	$fixCollect = collect([]);
     	$resultMethods = collect([]);
-        $initMethods = array("freeshipping","flatrate","localdelivery","iagree");
+  
+        $initMethods = array("freeshipping","flatrate","localdelivery","icommerceagree");
         $methodConfiguration = null;
 
         if(isset($shippingMethods) && count($shippingMethods)>0){
@@ -26,7 +27,7 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                         try{
                             $shippingObjet = new $method['entity'];
                             $methodConfiguration = $shippingObjet->getData();
-                            
+
                         } 
                         catch(\Exception $e){
                            $methodConfiguration = null; 
@@ -35,9 +36,7 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                         if($methodConfiguration != null && $methodConfiguration->status==1){
                             $methodConfiguration->configName = $method['name'];
                             $methodConfiguration->configTitle = $method['title'];
-
-                            if($method['name']=="iagree")
-                                $methodConfiguration->price = 0;
+                            
 
                             $resultMethods->push($methodConfiguration);
                         }

@@ -5,7 +5,7 @@
   <div id="content_preloader">
     <div id="preloader"></div>
   </div>
-
+  
   <div id="checkout" class="checkout">
     
     <div class="container">
@@ -219,15 +219,9 @@
       el: '#content',
       created: function () {
         this.$nextTick(function () {
-          var sub = 0;
-          var realsub = 0;
           
-          /*** CALCULATION THE REAL SUB TOTAL, IF SOME PRODUCTS HAVE FREESHIPPING ***/
-          $.each(this.items, function (i, val) {
-            sub += val.price * val.quantity;
-            if (val.freeshipping == "0")
-              realsub += val.price * val.quantity;
-          });
+          /*** UPDATE sub, realsub and total ***/
+          this.updateTotal(this.items);
           
           /*** SET DEFAULT COUNTRY VALUE FROM SETTING ICOMMERCE MODULE ***/
           checkout.shippingData.country = checkout.defaultCountry;
@@ -265,25 +259,27 @@
           /*** IF USER NOT LOGGUED CHECK LOCALSTORAGE, ELSE, CHECK ADDRESS ***/
           if (this.user == "") {
             if ('localStorage' in window && window['localStorage'] !== null) {
-              if (localStorage.getItem("payment_country")) {
+              if (localStorage.getItem("payment_country"))
                 checkout.billingData.country = localStorage.getItem("payment_country");
-                checkout.getProvincesByCountry(checkout.billingData.country, 1);
-              } else
-                checkout.getProvincesByCountry(checkout.defaultCountry, 1);
+              else
+                checkout.billingData.country = checkout.defaultCountry;
               
-              if (localStorage.getItem("shipping_country")) {
+              if (localStorage.getItem("shipping_country"))
                 checkout.shippingData.country = localStorage.getItem("shipping_country");
-                checkout.getProvincesByCountry(checkout.shippingData.country, 2);
-              } else
-                checkout.getProvincesByCountry(checkout.defaultCountry, 2);
+              else
+                checkout.shippingData.country = checkout.defaultCountry;
+              
               
             }
           } else {
             checkout.checkAddressesIprofile();
           }
           
+          checkout.getProvincesByCountry(checkout.billingData.country, 1);
+          checkout.getProvincesByCountry(checkout.shippingData.country, 2);
+          
           /*** IF ALL THE PRODUCTS HAVE FREESHIPPING, DOESNT SHOW SHIPPING METHODS ***/
-          $.each(checkout.shipping_methods, function (i, val) {
+          $.each(checkout.shippingMethods, function (i, val) {
             if (val.configName == 'notmethods')
               checkout.shipping_method = 'notmethods';
           })
@@ -337,7 +333,7 @@
       data: {
         items: {!!$items['items']!!},
         payments: {!! $payments ? $payments : "''" !!},
-        shipping_methods: {!! $shipping ? $shipping : "''" !!},
+        shippingMethods: {!! $shipping ? $shipping : "''" !!},
         paymentSelected: "",
         defaultCountry: {!! "'".$defaultCountry."'" !!},
         countryFreeshipping: {!! "'".$countryFreeshipping."'" !!},
@@ -381,8 +377,8 @@
         weight: {!! $items['weight'] !!},
         countries: [],
         tax: false,
-        tax_value:{{ $tax ? $tax : 0}},
-        tax_total: 0,
+        taxValue:{{ $tax ? $tax : 0}},
+        taxTotal: 0,
         statesBilling: [],
         statesDelivery: [],
         statesShippingAlternative: false,
@@ -394,7 +390,8 @@
           country: ''
         },
         updatingData: false,
-        useExistingPaymentAddress:true,
+        useExistingPaymentAddress: true,
+        shippingMethodSelected:false,
       },
       filters: {
         capitalize: function (value) {
@@ -445,27 +442,42 @@
             }
           }
         },
+        
         checkAddressesIprofile: function () {
-          if(this.addresses.length){
-  
-            for (var key in this.addresses[0]) {
-              var val = this.addresses[key];
-    
-              if (key == "country" && val != "") {
+          /*** IF THERE ARE ADDRESSES, CHECK IF ANY IS DEFAULT BILLING OR DEFAULT SHIPPING AND TURN ON FLAG ***/
+          if (this.addresses) {
+            var billing = false, shipping = false;
+            this.addresses.forEach(function(address) {
+              
+              if (address.type == 'billing') {
+                billing = true;
+                for (var key in address) {
+                  var val = address[key];
+                  checkout.billingData[key] = val;
+                }
+              }
+              if (address.type == 'shipping') {
+                shipping = true;
+                for (var key in address) {
+                  var val = address[key];
+                  checkout.shippingData[key] = val;
+                }
+              }
+            });
+            /*** IF THERE IS NO DEFAULT DELIVERY ADDRESS OR DEFAULT BILLING ADDRESS,
+             *   ADD THE FIRST DEFAULT ADDRESS FOR TWO CASES ***/
+            
+            var address = this.addresses[0];
+            for (var key in address) {
+              var val = address[key];
+              if (!billing)
                 checkout.billingData[key] = val;
-                checkout.getProvincesByCountry(checkout.billingData.country, 1);
-                checkout.getProvincesByCountry(checkout.shippingData.country, 2);
-              }else
-              if(key == "country") {
-                checkout.getProvincesByCountry(checkout.billingData.country, 1);
-                checkout.getProvincesByCountry(checkout.shippingData.country, 2);
-              }else
-                checkout.billingData[key] = val;
+              if (!shipping)
+                checkout.shippingData[key] = val;
             }
-          }else{
-            checkout.getProvincesByCountry(checkout.billingData.country, 1);
-            checkout.getProvincesByCountry(checkout.shippingData.country, 2);
+            /*** IF THERE ARE NO ADDRESSES, ADD PROVINCES OF THE COUNTRY SELECTED BEFORE ***/
           }
+          
         },
         /* actualiza la cantidad del producto antes de enviarlo */
         update_quantity: function (item, sign) {
@@ -548,11 +560,12 @@
             checkout.alert("{{ trans('icommerce::checkout.alerts.error_order') }}", "warning");
           });
         },
-        calculate: function (val, type, event) {
+        calculate: function (index,val, type, event) {
+          this.shippingMethodSelected = this.shippingMethods[index];
           if (type == "freeshipping") {
             if (parseFloat(this.realSubTotal) >= val) {
               if (this.tax)
-                this.orderTotal = parseFloat(this.subTotal) + parseFloat(this.tax_total);
+                this.orderTotal = parseFloat(this.subTotal) + parseFloat(this.taxTotal);
               else
                 this.orderTotal = this.subTotal;
               
@@ -590,11 +603,7 @@
             }
             
             if (this.tax)
-              this.orderTotal = parseFloat(this.orderTotal) + parseFloat(this.tax_total);
-            
-            this.orderTotal = parseFloat(this.orderTotal).toFixed(2);
-            this.subTotal = parseFloat(this.subTotal).toFixed(2);
-            this.shipping = parseFloat(this.shipping).toFixed(2);
+              this.orderTotal = parseFloat(this.orderTotal) + parseFloat(this.taxTotal);
             this.shipping_amount = this.shipping;
             
             $("#shipping_value").val(val);
@@ -636,7 +645,7 @@
               checkout.quantity = response.data.quantity;
               checkout.weight = response.data.weight;
               checkout.updateTotal(response.data.items);
-              checkout.shippingMethods();
+              checkout.getShippingMethods();
               checkout.alert("{{ trans('icommerce::checkout.alerts.remove_car') }}", "success");
               
             }).catch(error => {
@@ -677,11 +686,12 @@
             checkout.last_name = this.user.last_name;
           }
         },
-        shippingMethods: function () {
+        getShippingMethods: function () {
           this.updatingData = true;
           this.shipping_method = null;
           this.shipping_amount = 0;
           this.shipping = 0;
+          shippingMethodSelected=false;
           if (($('#sameDeliveryBilling').prop("checked"))) {
             var postCode = $('#payment_postcode').val();
             var countryISO = $('#payment_country option:selected').val();
@@ -690,10 +700,10 @@
             axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
               .then(response => {
                 checkout.updatingData = false;
-                checkout.shipping_methods = response.data;
+                checkout.shippingMethods = response.data;
                 
                 
-                $.each(checkout.shipping_methods, function (i, val) {
+                $.each(checkout.shippingMethods, function (i, val) {
                   
                   if (val.configName == 'notmethods') {
                     
@@ -709,10 +719,10 @@
             axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
               .then(response => {
                 checkout.updatingData = false;
-                checkout.shipping_methods = response.data;
+                checkout.shippingMethods = response.data;
                 
                 
-                $.each(checkout.shipping_methods, function (i, val) {
+                $.each(checkout.shippingMethods, function (i, val) {
                   
                   if (val.configName == 'notmethods') {
                     
@@ -726,23 +736,23 @@
           if (($('#sameDeliveryBilling').prop("checked"))) {
             if (state == 'Florida') {
               this.tax = true;
-              this.tax_total = parseFloat(this.tax_value / 100 * this.subTotal).toFixed(2);
-              this.orderTotal = (parseFloat(this.orderTotal) + parseFloat(this.tax_total)).toFixed(2);
+              this.taxTotal = parseFloat(this.taxValue / 100 * this.subTotal).toFixed(2);
+              this.orderTotal = (parseFloat(this.orderTotal) + parseFloat(this.taxTotal)).toFixed(2);
             } else {
               this.tax = false;
-              this.orderTotal -= this.tax_total;
-              this.tax_total = '';
+              this.orderTotal -= this.taxTotal;
+              this.taxTotal = '';
             }
           } else {
             if (component == 2) {
               if (state == 'Florida') {
                 this.tax = true;
-                this.tax_total = parseFloat(this.tax_value / 100 * this.subTotal).toFixed(2);
-                this.orderTotal = (parseFloat(this.orderTotal) + parseFloat(this.tax_total)).toFixed(2);
+                this.taxTotal = parseFloat(this.taxValue / 100 * this.subTotal).toFixed(2);
+                this.orderTotal = (parseFloat(this.orderTotal) + parseFloat(this.taxTotal)).toFixed(2);
               } else {
                 this.tax = false;
-                this.orderTotal -= this.tax_total;
-                this.tax_total = '';
+                this.orderTotal -= this.taxTotal;
+                this.taxTotal = '';
               }
             }
           }
@@ -759,14 +769,14 @@
                   checkout.statesBillingAlternative = !checkout.statesBilling.length;
                   if (iso == 'US' && checkout.billingData.zone == 'Florida')
                     this.taxFlorida('Florida', component);
-                  this.shippingMethods();
+                  this.getShippingMethods();
                 }
                 else if (component == 2) {
                   checkout.statesDelivery = response.data;
                   checkout.statesShippingAlternative = !checkout.statesDelivery.length;
                   if (iso == 'US' && checkout.deliveryData.zone == 'Florida')
                     this.taxFlorida('Florida', component);
-                  this.shippingMethods();
+                  this.getShippingMethods();
                 }
               }).catch(error => {
               console.log(error);
