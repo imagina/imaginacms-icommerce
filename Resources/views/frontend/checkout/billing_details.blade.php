@@ -29,8 +29,8 @@
             aria-expanded="true"
             aria-controls="collapseExistingPayment"
             checked>
-          
-          I want to use an existing address
+  
+          {{trans('icommerce::billing_details.address.old_address')}}
         
         </label>
       </div>
@@ -38,7 +38,9 @@
       <div id="collapseExistingPayment" class="collapse show" aria-labelledby="useExistingPayment" role="tabpanel">
         <select class="form-control"
                 id=""
-                name="selectPaymentAddress"
+                name="selectBillingAddress"
+                @change="changeAddress(selectedBillingAddress,1)"
+                v-model="selectedBillingAddress"
         >
           <option v-for="(address, index) in selectAddresses" v-bind:value="index">@{{ address }}</option>
         
@@ -59,8 +61,8 @@
             data-target="#collapseNewPayment"
             aria-expanded="true"
             aria-controls="collapseNewPayment">
-          
-          I want to use a new address
+  
+          {{trans('icommerce::billing_details.address.new_address')}}
         
         </label>
       </div>
@@ -107,7 +109,7 @@
           <div class="col pl-1">
             <label for="payment_code">{{ trans('icommerce::billing_details.form.post_code') }}</label>
             <input type="number" class="form-control" name="payment_postcode" id="payment_postcode"
-                   v-model="billingData.postcode" @change="shippingMethods()" @keyup="shippingMethods()">
+                   v-model="billingData.postcode" @change="getShippingMethods()" @keyup="getShippingMethods()">
           </div>
         
         </div>

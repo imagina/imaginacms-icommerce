@@ -21,7 +21,7 @@
                   <input type="radio" class="form-check-input" name="payment_method" id="" :value="payment.configName" data-parent="#PaymentList" data-toggle="collapse" :data-target="'#payment'+index" aria-expanded="true" :aria-controls="'payment'+index" v-model="paymentSelected">
                    @{{payment.configTitle}}
                 </label>
-                <img :src="payment.options.mainimage" class="w-75 img-responsive float-right">
+                <img :src="payment.image" class="w-75 img-responsive float-right">
               </div>
 
               <div :id="'payment'+index" class="collapse" role="tabpanel" :aria-labelledby="'heading'+index">

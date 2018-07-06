@@ -40,7 +40,7 @@ return [
         ],
         
         */
-        'icommerceagree'=> [
+        'agree'=> [
             'name' => 'icommerceagree',
             'title' => trans('icommerceagree::configagrees.single') ,
             'entity' => '\Modules\IcommerceAgree\Entities\Configagree',
@@ -71,20 +71,20 @@ return [
 
     'paymentmethods' => [
 
-        'paypal'=> [
-            'name' => 'paypal',
-            'title' => trans('ipaypal::paypalconfigs.single') ,
-            'entity' => '\Modules\Ipaypal\Entities\Paypalconfig',
-            'view' => 'ipaypal::admin.paypalconfigs.index'
+        'icommercepaypal'=> [
+            'name' => 'icommercepaypal',
+            'title' => trans('icommercepaypal::paypalconfigs.single') ,
+            'entity' => '\Modules\IcommercePaypal\Entities\Paypalconfig',
+            'view' => 'icommercepaypal::admin.paypalconfigs.index'
         ],
-  /*
-        'checkormoney'=> [
-            'name' => 'checkormoney',
-            'title' => trans('icheckmoney::checkmoneyconfigs.single') ,
-            'entity' => '\Modules\Icheckmoney\Entities\Checkmoneyconfig',
-            'view' => 'icheckmoney::admin.checkmoneyconfigs.index'
-        ],
-*/
+
+               'icommercecheckmoney'=> [
+                   'name' => 'icommercecheckmoney',
+                   'title' => trans('icommercecheckmoney::checkmoneyconfigs.single') ,
+                   'entity' => '\Modules\IcommerceCheckmoney\Entities\Checkmoneyconfig',
+                   'view' => 'icommercecheckmoney::admin.checkmoneyconfigs.index'
+               ],
+
     ]
 
 ];

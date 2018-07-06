@@ -48,7 +48,7 @@
               aria-controls="collapseExistingShipping"
               checked>
             
-            I want to use an existing address
+            {{trans('icommerce::delivery_details.address.old_address')}}
           
           </label>
         </div>
@@ -57,8 +57,10 @@
           <select class="form-control"
                   id=""
                   name="selectShippingAddress"
+                  @change="changeAddress(selectedShippingAddress,2)"
+                  v-model="selectedShippingAddress"
           >
-            <option v-for="(address, index) in selectAddresses" v-bind:value="index">@{{ address }}</option>
+            <option v-for="(address, index) in selectAddresses" v-bind:value="index" >@{{ address }}</option>
           
           </select>
         </div>
@@ -78,8 +80,8 @@
               data-target="#collapseNewShipping"
               aria-expanded="true"
               aria-controls="collapseNewShipping">
-            
-            I want to use a new address
+  
+            {{trans('icommerce::delivery_details.address.new_address')}}
           
           </label>
         </div>
@@ -90,13 +92,13 @@
             <div class="col pr-1">
               <label for="shipping_firstname">{{ trans('icommerce::delivery_details.form.first_name') }} </label>
               <input type="text" class="form-control" id="shipping_first_name" name="shipping_firstname"
-                     v-model="shippingData.first_name">
+                     v-model="shippingData.firstname">
             
             </div>
             <div class="col pl-1">
               <label for="shipping_lastname">{{ trans('icommerce::delivery_details.form.last_name') }}</label>
               <input type="text" class="form-control" id="shipping_last_name" name="shipping_lastname"
-                     v-model="shippingData.last_name">
+                     v-model="shippingData.lastname">
             </div>
           
           </div>
@@ -128,7 +130,7 @@
             <div class="col pl-1">
               <label for="shipping_code">{{ trans('icommerce::delivery_details.form.post_code') }}</label>
               <input type="number" class="form-control" name="shipping_postcode" id="shipping_postcode"
-                     v-on:keyup="shippingMethods()" @change="shippingMethods()" v-model="shippingData.postcode">
+                     v-on:keyup="getShippingMethods()" @change="getShippingMethods()" v-model="shippingData.postcode">
             </div>
           
           </div>
