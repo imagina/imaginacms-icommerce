@@ -21,7 +21,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mt-4 text-uppercase">
                                     <li class="breadcrumb-item">
-                                        <a href="{{ url('/') }}" >Home</a>
+                                        <a href="{{ url('/') }}" >{{trans('icommerce::common.home.title')}}</a>
                                     </li>
                                     @if(isset($category->parent) && !empty($category->parent))
                                         <li class="breadcrumb-item">
@@ -45,7 +45,7 @@
             <div class="container pt-5">
                 <h4 class="text-center">
                     <span class="text-muted">
-                     Search result of
+                     {{trans('icommerce::common.search.search_result')}}
                     </span>
                     <span class="text-primary font-weight-bold">
                         "{{ isset($criterion) ? $criterion : ''}}"
@@ -341,8 +341,7 @@
                         this.alerta("{{trans('icommerce::products.alerts.add_cart')}}", "success");
                         vue_carting.get_articles();
                     }else{
-                        this.alerta("{{trans('icommerce::products.alerts.no_add_cart')}}",
-                            "error");
+                        this.alerta("{{trans('icommerce::products.alerts.no_add_cart')}}", "error");
                     }
                 }).catch(error => {
                         console.log(error);

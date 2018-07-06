@@ -57,22 +57,22 @@
                           <div class="alert alert-danger d-none" id="registerAlert"></div>
                       <div class="form-group row">
                               <div class="col pr-1">
-                               <label for="first_name">{{ trans('icommerce::customer.form.first_name') }} </label>
+                               <label for="first_name">{{ trans('icommerce::customer.form.first_name') }}</label>
                                <input type="text" class="form-control" id="first_name_guest" name="first_name" v-model="billingData.first_name">
 
                               </div>
                               <div class="col pl-1">
-                               <label for="last_name">{{ trans('icommerce::customer.form.last_name') }} </label>
+                               <label for="last_name">{{ trans('icommerce::customer.form.last_name') }}</label>
                                <input type="text" class="form-control" id="last_name_guest" name="last_name" v-model="billingData.last_name">
                               </div>
 
                           </div>
                           <div class="form-group">
-                              <label for="email">{{ trans('icommerce::customer.form.email') }} </label>
+                              <label for="email">{{ trans('icommerce::customer.form.email') }}</label>
                               <input type="email" class="form-control" id="email_guest" name="email" aria-describedby="emailHelp">
                           </div>
                           <div class="form-group">
-                              <label for="telephone">{{ trans('icommerce::customer.form.phone') }} </label>
+                              <label for="telephone">{{ trans('icommerce::customer.form.phone') }}</label>
                               <input type="text" class="form-control" id="telephone_guest" name="telephone">
                           </div>
 

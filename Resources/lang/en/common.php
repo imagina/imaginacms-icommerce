@@ -47,7 +47,6 @@ return [
     'admin_notes'       => 'Admin\'s notes',
     'created_at'        => 'Creation date',
     'parent'            => 'Parent',
-
     'settings'      => [
         'couponsQuantity'       => 'Coupons quantity',
         'couponAvailable'       => 'Activate coupon',
@@ -92,5 +91,40 @@ return [
     ],
     'payuIntro'     => [
         'signError' => 'Payment System Report: Signature Error',
+    ],
+    'sort'          => [
+        'title'             => 'Sort By',
+        'all'               => 'All',
+        'name_a_z'          => 'Name (A - Z)',
+        'name_z_a'          => 'Name (Z - A)',
+        'price_low_high'    => 'Price: Low to Hig',
+        'price_high_low'    => 'Price High to Low',
+    ],
+    'range'          => [
+        'title'             => 'PRICE RANGE',
+    ],
+    'pagination'    => [
+        'previous'          => 'Previous',
+        'next'              => 'Next',
+    ],
+    'featured_recommended'  => [
+        'quick_view'        => 'QUICK VIEW',
+        'featured'          => 'FEATURED',
+        'recommended'       => 'RECOMMENDED',
+    ],
+    'search'    => [
+        'go'                => 'GO',
+        'no_results'        => 'there are no results',
+        'see_all'           => 'See all results...',
+        'search_result'     => 'Search result of',
+    ],
+    'related'    => [
+        'page'              => 'RELATED PAGE',
+        'unknown'           => 'Lorem ipsum dolor sit amet1',
+    ],
+    'bulkload'    => [
+        'massive_load'      => 'Massive load',
+        'pro_cat_bran'      => 'Products - Categories - Brands',
+        'load_data'         => 'Load data',
     ],
 ];

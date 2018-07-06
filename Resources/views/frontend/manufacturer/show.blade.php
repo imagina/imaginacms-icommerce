@@ -21,7 +21,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mt-4 text-uppercase">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ url('/') }}">Home</a>
+                                    <a href="{{ url('/') }}">{{trans('icommerce::common.home.title')}}</a>
                                 </li>
                                 @if(isset($category->parent) && !empty($category->parent))
                                     <li class="breadcrumb-item">
@@ -90,9 +90,9 @@
 
                     <!-- CATEGORY  -->
                         <h1 class="text-info">
-                            Products by manufacturer
+                            {{trans('icommerce::products.manufacturers.products_by_manufacturer')}}
                         </h1>
-                        All products by manufacturer...
+                            {{trans('icommerce::products.manufacturers.all_products_by_manufacturer')}}
 
                     <!-- ORDER BY -->
                         <div class="col-12 p-0">
@@ -390,7 +390,7 @@
                                 vue_index_commerce.alerta("{{trans('icommerce::wishlists.alerts.add')}}", "success");
                             })
                         }else{
-                            this.alerta("{{trans('icommerce::wishlists.alerts.product_in_wishlist') }}", "warning");
+                            this.alerta("{{trans('icommerce::wishlists.alerts.product_in_wishlist')}}", "warning");
                         }
                     }
                     else {

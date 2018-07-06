@@ -15,7 +15,7 @@
              v-on:click="view_result()">
             <button type="button"
                     class="btn btn-primary text-white rounded">
-                GO
+                {{ trans('icommerce::common.search.go') }}
             </button>
         </div>
     </div>
@@ -28,7 +28,7 @@
 
         <h6 class="text-primary text-center"
             v-if="result.length <= 0">
-            there are no results
+            {{ trans('icommerce::common.search.no_results') }}
         </h6>
 
         <div v-if="result.length >= 1">
@@ -70,7 +70,7 @@
              class="px-3 text-right">
             <a v-bind:href="[route_view+'?search='+criterion]"
                class="text-secondary font-weight-bold">
-                See all results...
+                {{ trans('icommerce::common.search.see_all') }}
             </a>
         </div>
     </div>

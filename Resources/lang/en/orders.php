@@ -7,16 +7,31 @@ return [
     'create resource'       => 'Create orders',
     'edit resource'         => 'Edit orders',
     'destroy resource'      => 'Destroy orders',
+    'breadcrumb'    => [
+        'title'             => 'Order List',
+        'single_order'      => 'Order Details',
+    ],
     'title'         => [
         'orders'            => 'Orders',
         'create order'      => 'Create an order',
         'edit order'        => 'Edit an order',
+        'single_order_title'=> 'My Order Details',
     ],
     'button'        => [
         'create order'      => 'Create an order',
         'add history'       => 'Add History',
+        'Back_to_profile'   => 'Back to my profile',
+        'Back_to_order_list'=> 'Back to My Order List',
     ],
     'table'         => [
+        'id'                => 'ID',
+        'email'             => 'Email',
+        'sku'               => 'Sku',
+        'subtotal'          => 'Subtotal',
+        'total'             => 'Total',
+        'status'            => 'Status',
+        'created_at'        => 'Created at',
+
         'details'           => 'Order Details',
         'customer details'  => 'Customer Details',
         'others details'    => 'Other Details',
@@ -42,6 +57,7 @@ return [
     'form'          => [
     ],
     'messages'      => [
+        'not_found'         => 'No orders found',
     ],
     'validation'    => [
     ],

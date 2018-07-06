@@ -10,13 +10,13 @@
 
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/orders') }}">Order List</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to('/orders') }}">{{trans('icommerce::orders.breadcrumb.title')}}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.breadcrumb.single_order')}}</li>
                         </ol>
                     </nav>
 
-                    <h2 class="text-center mt-0 mb-5">My Order Details</h2>
+                    <h2 class="text-center mt-0 mb-5">{{trans('icommerce::orders.title.single_order_title')}}</h2>
 
                 </div>
             </div>
@@ -132,10 +132,10 @@
 	  				<table class="table ">
 	  					<th>{{trans('icommerce::orders.table.product')}}</th>
 	    				{{-- <th>{{trans('icommerce::orders.table.reference')}}</th> --}}
-	    				<th>Sku</th>
+	    				<th>{{trans('icommerce::orders.table.sku')}}</th>
 	    				<th>{{trans('icommerce::orders.table.quantity')}}</th>
 	    				<th>{{trans('icommerce::orders.table.unit price')}}</th>
-	    				<th>Total</th>
+	    				<th>{{trans('icommerce::orders.table.total')}}</th>
 	    				
 	 
 	    					<tr class="product-order" v-for="product in products">
@@ -150,7 +150,7 @@
 
 	    				
 		    			<tr class="subtotal">
-		    				<td colspan="4" class="text-right">Subtotal</td>
+		    				<td colspan="4" class="text-right">{{trans('icommerce::orders.table.subtotal')}}</td>
 
 		    				<td class="text-right">@{{subtotal |numberFormat}}</td>
 		    			</tr>
@@ -174,7 +174,7 @@
 		    			--}}
 
 		    			<tr class="total">
-		    				<td colspan="4" class="text-right">Total</td>
+		    				<td colspan="4" class="text-right">{{trans('icommerce::orders.table.total')}}</td>
 		    				<td class="text-right">@{{order.total | numberFormat}}</td>
 		    			</tr>
 
@@ -188,7 +188,7 @@
 	    <hr class="my-4 hr-lg">
 
 	        <div class="col-12 text-right mt-3 mt-md-0">
-	            <a href="{{ url('/orders') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">Back to My Order List</a>
+	            <a href="{{ url('/orders') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">{{trans('icommerce::orders.button.Back_to_order_list')}}</a>
 	        </div>
 
           
@@ -198,10 +198,10 @@
     <div class="container" v-else>
     	<div class="row" >
             <div class="col-12 p-6">
-                No order found
+                {{trans('icommerce::orders.messages.not_found')}}
             </div>
              <div class="col-12 text-right mt-3 mt-md-0">
-	            <a href="{{ url('/orders') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">Back to My Order List</a>
+	            <a href="{{ url('/orders') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">{{trans('icommerce::orders.button.Back_to_order_list')}}</a>
 	        </div>
         </div>
     </div>

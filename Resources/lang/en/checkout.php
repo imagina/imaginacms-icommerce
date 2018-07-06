@@ -13,6 +13,7 @@ return [
         'telephone'         => 'You must enter a valid phone.',
         'shipping_method'   => 'Yout must enter a shipping method.',
         'payment_method'    => 'You must enter a payment method.',
+        'free_shipping'     => 'Free shipping allowed',
     ],
     'alerts'    =>[
         'login_order'       => 'You must login to create your Order.',
@@ -21,6 +22,9 @@ return [
         'remove_car'        => 'The product was removed from the cart',
         'invalid_data'      => 'Invalid Data',
         'order_created'     => 'Order Confirmation',
+        'missing_fields'    => 'Missing some fields, check again, fill and send again',
+        'warning'           => 'warning',
+        'success'           => 'success',
     ],
     'logged'    => [
         'name'              => 'Name:',
@@ -29,5 +33,4 @@ return [
         'edit_profile'      => 'Edit Profile',
         'logout'            => 'Logout'
     ]
-
 ];

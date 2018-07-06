@@ -25,6 +25,7 @@ return [
     ],
     'messages'      => [
         'email_used'       => 'Error: User\'s email is already in use',
+        'enter'            => 'Enter', 
     ],
 
 ];

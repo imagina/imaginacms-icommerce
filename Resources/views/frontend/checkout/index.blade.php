@@ -279,7 +279,7 @@
               
             }
           } else {
-            checkout.checkAddressIcommerce();
+            checkout.checkAddressesIprofile();
           }
           
           /*** IF ALL THE PRODUCTS HAVE FREESHIPPING, DOESNT SHOW SHIPPING METHODS ***/
@@ -342,13 +342,13 @@
         defaultCountry: {!! "'".$defaultCountry."'" !!},
         countryFreeshipping: {!! "'".$countryFreeshipping."'" !!},
         user: {!! $user ? $user : "''" !!},
-        address: {!! $user ? $addresses ? : $addresses : "''" !!},
+        addresses: {!! $user ? $addresses ? : $addresses : "''" !!},
         selectAddresses: {!! $user ? $addressSelect ? : $addressSelect : "''" !!},
         first_name:{!! $user ? "'".$user->first_name."'" : "''" !!},
         last_name: {!! $user ? "'".$user->last_name."'" : "''" !!},
         billingData: {
-          first_name: '',
-          last_name: '',
+          firstname: '',
+          lastname: '',
           company: '',
           address_1: '',
           address_2: '',
@@ -358,8 +358,8 @@
           zone: '',
         },
         shippingData: {
-          first_name: '',
-          last_name: '',
+          firstname: '',
+          lastname: '',
           company: '',
           address_1: '',
           address_2: '',
@@ -422,9 +422,9 @@
               var id = localStorage.key(i);
               var val = localStorage.getItem(id);
               if (id == "first_name_register" || id == "first_name_guest")
-                checkout.billingData.first_name = checkout.shippingData.first_name = checkout.first_name = val;
+                checkout.billingData.firstname = checkout.shippingData.first_name = checkout.first_name = val;
               if (id == "last_name_register" || id == "last_name_guest")
-                checkout.billingData.last_name = checkout.shippingData.last_name = checkout.last_name = val;
+                checkout.billingData.lastname = checkout.shippingData.last_name = checkout.last_name = val;
               
               element.val(val);
               var split = id.split("_", 2);
@@ -445,11 +445,11 @@
             }
           }
         },
-        checkAddressIcommerce: function () {
-          if(this.address.length){
+        checkAddressesIprofile: function () {
+          if(this.addresses.length){
   
-            for (var key in this.address[0]) {
-              var val = this.address[key];
+            for (var key in this.addresses[0]) {
+              var val = this.addresses[key];
     
               if (key == "country" && val != "") {
                 checkout.billingData[key] = val;
@@ -649,11 +649,13 @@
           axios.post('{{url("checkout/login")}}', data)
             .then(response => {
               var user = response.data.user;
-              var address = response.data.address;
+              var addresses = response.data.addresses;
+              var addressSelect = response.data.addressSelect;
               checkout.user = user;
-              checkout.address = address;
+              checkout.addresses = addresses;
+              checkout.selectAddresses = addressSelect;
               checkout.appendUser('#loginAlert');
-              checkout.checkAddressIcommerce();
+              checkout.checkAddressesIprofile();
             });
         },
         appendUser: function (alert) { // este metodo funciona tanto para login como para register
@@ -774,11 +776,11 @@
         deliveryBilling: function () {
           var login = $("input[name=newOldCustomer]:checked").val();
           if (login == 1) {
-            this.billingData.first_name = $("input[name=first_name]").val();
-            this.billingData.last_name = $("input[name=last_name]").val();
+            this.billingData.firstname = $("input[name=first_name]").val();
+            this.billingData.lastname = $("input[name=last_name]").val();
           } else {
-            this.billingData.first_name = this.user.first_name;
-            this.billingData.last_name = this.user.last_name;
+            this.billingData.firstname = this.user.first_name;
+            this.billingData.lastname = this.user.last_name;
           }
           
           if ($('#sameDeliveryBilling').prop("checked"))

@@ -8,7 +8,7 @@
                     <div class="title-1 mb-4 mt-4">
                         <div class="d-inline-block">
                             <h3 class="font-weight-bold d-inline-block px-4 pt-2">
-                                RELATED PRODUCTS
+                                {{trans('icommerce::products.related')}}
                             </h3>
                             <hr class="border-primary border-2 mb-0">
                             <hr class="border-secondary w-10 border-2 mb-0">
@@ -36,7 +36,7 @@
                                         <div class="link">
                                             <a v-bind:href="item.url"
                                                class="btn btn-outline-light">
-                                                QUICK VIEW
+                                                {{trans('icommerce::common.featured_recommended.quick_view')}}
                                             </a>
                                         </div>
                                     </div>

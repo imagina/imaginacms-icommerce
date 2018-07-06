@@ -15,7 +15,7 @@
 
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mt-4 text-uppercase">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">{{trans('icommerce::common.home.title')}}</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">{{$category->title}}</li>
                             </ol>
                         </nav>
@@ -48,10 +48,10 @@
 
                         <h6 class="pt-4 mb-3 text-secondary">
                             <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                            RELATED PAGE
+                            {{trans('icommerce::common.related.page')}}
                         </h6>
-                        <p class="m-0 pl-2 text-justify">Lorem ipsum dolor sit amet1</p>
-                        <p class="m-0 pl-2 text-justify">Lorem ipsum dolor sit amet1</p>
+                        <p class="m-0 pl-2 text-justify">{{trans('icommerce::common.related.unknown')}}</p>
+                        <p class="m-0 pl-2 text-justify">{{trans('icommerce::common.related.unknown')}}</p>
                     </div>
 
                     <!-- ===== CONTENT ===== -->
@@ -266,11 +266,10 @@
 
                     axios.post('{{ url("api/icommerce/add_cart") }}', item).then(response => {
                         if(response.data.status){
-                            this.alerta("Producto agregado al carrito", "success");
+                            this.alerta("{{trans('icommerce::products.alerts.add_cart')}}", "success");
                             vue_carting.get_articles();
                         }else{
-                            this.alerta("No se puedo agregar el producto, intentelo de nuevo por favor",
-                                        "danger");
+                            this.alerta("{{trans('icommerce::products.alerts.no_add_cart')}}", "error");
                         }
                     }).catch(error => {
                         console.log(error);

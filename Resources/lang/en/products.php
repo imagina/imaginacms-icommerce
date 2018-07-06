@@ -3,19 +3,20 @@
 return [
     'single'                => 'Product',
     'plural'                => 'Products',
+    'related'               => 'RELATED PRODUCTS',
     'list resource'         => 'List products',
     'create resource'       => 'Create products',
     'edit resource'         => 'Edit products',
     'destroy resource'      => 'Destroy products',
-    'title'         => [
+    'title'             => [
         'products'          => 'Products',
         'create product'    => 'Create a product',
         'edit product'      => 'Edit a product',
     ],
-    'button'        => [
+    'button'            => [
         'create product'    => 'Create a product',
     ],
-    'table'         => [
+    'table'             => [
         'title'                     => 'Title',
         'description'               => 'Description',
         'summary'                   => 'Summary',
@@ -54,15 +55,35 @@ return [
         'purchasable'               => 'Product Purchasable',
         'freeshipping'              => 'Product with Freeshipping'
     ],
-    'form'          => [
+    'categories'        => [
+        'free_shipping'             => 'Products with free shipping',
+        'all_free_shipping'         => 'All products with free shipping...',
     ],
-    'messages'      => [
+    'manufacturers'     => [
+        'products_by_manufacturer'      => 'Products by manufacturer',
+        'all_products_by_manufacturer'  => 'All products by manufacturer...',
+    ],
+    'form'              => [
+    ],
+    'messages'          => [
         'error delete product'  => 'The product could not be deleted',
+        'be_the_fist_review'    => 'BE THE FIRST TO REVIEW THIS PRODUCT',
+        'product_brochure'      => 'Product Brochure',
+        'sending'               => 'Sending',
+        'share'                 => 'SHARE',
+        'tweet'                 => 'TWEET',
+        'print'                 => 'PRINT',
+        'business_days'         => '1-3 BUSINESS DAYS',
+        'average_delivery'      => 'AVERAGE DELIVERY',
+        'safe_secure'           => 'SAFE & SECURE',
+        'shopping'              => 'SHOPPING',
+        'details'               => 'DETAILS',
+        'reviews'               => 'REVIEWS',
     ],
-    'validation'    => [
+    'validation'        => [
         'error delete'          => 'Error: You can\'t delete this product because it has associated elements',
     ],
-    'gallery'       => [
+    'gallery'           => [
         'title'         => 'Product Gallery',
         'add gallery'   => 'Add Images',
         'close'         => 'Close',
@@ -70,10 +91,13 @@ return [
         'edit gallery'  => 'Add / Edit / Delete Images',
     ],
     'alerts'        => [
+        'add'           => 'Add to cart',
         'add_cart'      => 'Product added to the cart',
         'no_add_cart'   => 'Can\'t add the product, try again please',
         'no_more'       => 'The product doesn\'t have any more inventory',
         'no_zero'       => 'The product can\'t be less than 0',
+        'success'       => 'success',
+        'error'         => 'error',
     ],
 ];
 

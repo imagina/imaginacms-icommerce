@@ -18,7 +18,7 @@
                 -->
                 <div class="overlay">
                     <div class="link">
-                        <a v-bind:href="item.slug" class="btn btn-outline-light">QUICK VIEW</a>
+                        <a v-bind:href="item.slug" class="btn btn-outline-light">{{trans('icommerce::common.featured_recommended.quick_view')}}</a>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                         carting.cantidad = response.data.cantidad;
                         carting.updatePrecio(response.data.items);
 
-                        this.alerta("Producto agregado al carrito con exito", "success");
+                        this.alerta("{{trans('icommerce::cart.message.add')}}", "success");
                     }).
                         catch(error => {
                             console.log(error);

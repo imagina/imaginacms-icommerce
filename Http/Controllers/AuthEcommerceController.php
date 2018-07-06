@@ -18,8 +18,10 @@ use Modules\User\Repositories\UserRepository;
 use Modules\User\Contracts\Authentication;
 use Modules\User\Entities\Sentinel\User;
 use Modules\Iprofile\Entities\Profile;
+use Modules\Iprofile\Repositories\AddressRepository;
+use Modules\Iprofile\Transformers\AddressesTransformer;
 use Socialite;
-use Modules\Iprofile\Repositories\AddressEcommerceRepository;
+
 use Laravel\Socialite\Contracts\User as ProviderUser;
 
 
@@ -31,14 +33,14 @@ class AuthEcommerceController extends AuthController
      */
     private $role;
     protected $auth;
-    public function __construct(UserRepository $user, RoleRepository $role,
-        AddressEcommerceRepository $addressEcommerce)
+    private $address;
+    public function __construct(UserRepository $user, RoleRepository $role,AddressRepository $address)
     {
         parent::__construct();
         $this->user = $user;
         $this->role = $role;
         $this->auth = app(Authentication::class);
-        $this->addressEcommerce = $addressEcommerce;
+        $this->address = $address;
     }
 
 
@@ -49,12 +51,14 @@ class AuthEcommerceController extends AuthController
             $addressEcommerce="";
             if(isset($user) && !empty($user)){
                 $profile = $user->profile()->first();
-                $addressEcommerce=$this->addressEcommerce->findByProfileId($profile->id);
+              $addresses = $this->address->findByProfileId($profile->id);
+
             }
             return response()->json([
                 "status" => "ok",
                 "user" => $user,
-                "address" => $addressEcommerce
+                "addresses" => $addresses,
+                "addressSelect" => AddressesTransformer::collection($addresses)
             ]);
     
     }

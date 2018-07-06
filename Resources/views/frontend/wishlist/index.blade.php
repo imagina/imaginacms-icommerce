@@ -11,12 +11,12 @@
 
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::wishlists.title.wishlists')}}</li>
                         </ol>
                     </nav>
 
-                    <h2 class="text-center mt-0 mb-5">My Wishlist</h2>
+                    <h2 class="text-center mt-0 mb-5">{{trans('icommerce::wishlists.title.my_wishlists')}}</h2>
 
                 </div>
             </div>
@@ -35,9 +35,9 @@
                         <thead>
                         <tr>
                             <th class="w-10 text-center"></th>
-                            <th class="w-15 text-center">Picture</th>
-                            <th class="w-35 text-center">Item</th>
-                            <th class="w-25 text-center">Unit Price</th>
+                            <th class="w-15 text-center">{{trans('icommerce::cart.table.picture')}}</th>
+                            <th class="w-35 text-center">{{trans('icommerce::cart.table.item')}}</th>
+                            <th class="w-25 text-center">{{trans('icommerce::cart.table.unit_price')}}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -77,7 +77,7 @@
 
                             </div>
                             <!-- Proceed to checkout -->
-                            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">Continue Shopping</a>
+                            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-rounded btn-lg my-2">{{trans('icommerce::wishlists.button.continue_shopping')}}</a>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
 
             <div class="row" v-show="items.length == 0">
                 <div class="col p-6">
-                    No products in your Wishlist
+                    {{trans('icommerce::wishlists.messages.no_item')}}
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@
                         //this.items = response.data.items;
                         vue_my_wishlist.items.splice(index, 1);
 
-                    this.alerta("The item was removed from the wishlist", "success");
+                    this.alerta("{{trans('icommerce::wishlists.alerts.delete')}}", "success");
                 }).catch(error => {
                         console.log(error);
                 });

@@ -3,12 +3,12 @@
 @endphp
 <h6 class="mb-3 text-secondary">
     <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-    FILTER
+    {{trans('icommerce::categories.filter')}}
 </h6>
 
 <div class="card border-0 card-items mb-3">
     <div class="card-header text-uppercase bg-primary  py-2 px-3 text-white">
-        SUB CATEGORIES
+        {{trans('icommerce::categories.subcategory')}}
     </div>
     <ul class="list-group list-group-flush">
 
@@ -66,10 +66,10 @@
 @include('icommerce::frontend.widgets.wishlist')
 <h6 class="pt-4 mb-3 text-secondary">
     <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-    RELATED PAGE
+    {{trans('icommerce::common.related.page')}}
 </h6>
-<p class="m-0 pl-2 text-justify">Lorem ipsum dolor sit amet1</p>
-<p class="m-0 pl-2 text-justify">Lorem ipsum dolor sit amet1</p>
+<p class="m-0 pl-2 text-justify">{{trans('icommerce::common.related.unknown')}}</p>
+<p class="m-0 pl-2 text-justify">{{trans('icommerce::common.related.unknown')}}</p>
 
 @section('scripts')
     @parent
