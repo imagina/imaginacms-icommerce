@@ -70,21 +70,21 @@ return [
     ],
 
     'paymentmethods' => [
-  /*
-        'paypal'=> [
-            'name' => 'paypal',
-            'title' => trans('ipaypal::paypalconfigs.single') ,
-            'entity' => '\Modules\IcommercePaypal\Entities\Paypalconfig',
-            'view' => 'ipaypal::admin.paypalconfigs.index'
-        ],
 
-        'checkormoney'=> [
-            'name' => 'checkormoney',
-            'title' => trans('icheckmoney::checkmoneyconfigs.single') ,
-            'entity' => '\Modules\Icheckmoney\Entities\Checkmoneyconfig',
-            'view' => 'icheckmoney::admin.checkmoneyconfigs.index'
+        'icommercepaypal'=> [
+            'name' => 'icommercepaypal',
+            'title' => trans('icommercepaypal::paypalconfigs.single') ,
+            'entity' => '\Modules\IcommercePaypal\Entities\Paypalconfig',
+            'view' => 'icommercepaypal::admin.paypalconfigs.index'
         ],
-*/
+        /*
+               'checkormoney'=> [
+                   'name' => 'checkormoney',
+                   'title' => trans('icheckmoney::checkmoneyconfigs.single') ,
+                   'entity' => '\Modules\Icheckmoney\Entities\Checkmoneyconfig',
+                   'view' => 'icheckmoney::admin.checkmoneyconfigs.index'
+               ],
+       */
     ]
 
 ];
