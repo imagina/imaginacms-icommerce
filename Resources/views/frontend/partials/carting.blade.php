@@ -13,15 +13,15 @@
             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow cart-dropdown-menu" role="menu" >
-            <h5 class="dropdown-header mb-0">
+            <p class="dropdown-header mb-0">
                 {{trans('icommerce::cart.carting.your_cart')}}
-            </h5>
+            </p>
             <hr class="mt-0 mb-3" />
             <!--Shopping cart dropdown -->
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow cart-dropdown-menu" role="menu">
-                <h5 class="dropdown-header mb-0">
+                <p class="dropdown-header mb-0">
                     {{trans('icommerce::cart.carting.your_cart')}}
-                </h5>
+                </p>
                 <hr class="mt-0 mb-3" />
                 <!--Shopping cart items-->
                 <div class="cart-items" v-for="item in articulos">
@@ -32,9 +32,9 @@
                             <img class="img-fluid" src="http://local.imagina.com.co:82/labs/appstrap3.0.11/theme/assets/img/shop/gloves-1-thumb.jpg" v-bind:alt="item.name">
                         </a>
                         <div class="float-left">
-                            <h5 class="mb-0">
+                            <p class="mb-0">
                                 @{{ item.name }}
-                            </h5>
+                            </p>
                             <p class="mb-0">$ @{{ item.price }} / x @{{ item.quantity }}</p>
                             <a href="#" class="close cart-remove text-primary" v-on:click="deleteItem(item)"> <i class="fa fa-times"></i> </a>
                         </div>
@@ -44,9 +44,9 @@
                 <!--End of Shopping cart items-->
                 <hr class="mt-3 mb-0" />
                 <div class="dropdown-footer text-center">
-                    <h5 class="font-weight-bold">
+                    <p class="font-weight-bold">
                         {{trans('icommerce::cart.table.total')}}<span class="text-primary">$ @{{ subTotal }}</span>
-                    </h5>
+                    </p>
                     <a href="{{ url('checkout/cart') }}" tabindex="-1" class="btn btn-outline-primary btn-sm btn-rounded mx-2">{{trans('icommerce::cart.carting.view_cart')}}</a>
                     <a href="{{ url('checkout') }}" tabindex="-1" class="btn btn-primary btn-sm btn-rounded mx-2">{{trans('icommerce::checkout.title')}}</a>
                 </div>
