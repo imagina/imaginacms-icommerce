@@ -28,8 +28,9 @@
             data-target="#collapseExistingPayment"
             aria-expanded="true"
             aria-controls="collapseExistingPayment"
+            v-model="useExistingOrNewPaymentAddress"
             checked>
-  
+          
           {{trans('icommerce::billing_details.address.old_address')}}
         
         </label>
@@ -60,13 +61,16 @@
             data-toggle="collapse"
             data-target="#collapseNewPayment"
             aria-expanded="true"
-            aria-controls="collapseNewPayment">
-  
+            aria-controls="collapseNewPayment"
+            v-model="useExistingOrNewPaymentAddress"
+          >
+          
           {{trans('icommerce::billing_details.address.new_address')}}
         
         </label>
       </div>
-      <div id="collapseNewPayment" :class="addresses ? 'collapse' : 'collapse show'" aria-labelledby="useNewPayment" role="tabpanel">
+      <div id="collapseNewPayment" :class="addresses ? 'collapse' : 'collapse show'" aria-labelledby="useNewPayment"
+           role="tabpanel">
         
         <div class="form-group row">
           <div class="col pr-1">
@@ -108,8 +112,12 @@
           </div>
           <div class="col pl-1">
             <label for="payment_code">{{ trans('icommerce::billing_details.form.post_code') }}</label>
-            <input type="number" class="form-control" name="payment_postcode" id="payment_postcode"
-                   v-model="billingData.postcode" @change="getShippingMethods()" @keyup="getShippingMethods()">
+            <input type="number"
+                   class="form-control"
+                   name="payment_postcode"
+                   id="payment_postcode"
+                   v-model="billingData.postcode"
+                   @change="getShippingMethods()">
           </div>
         
         </div>
@@ -120,7 +128,7 @@
             id="payment_country"
             name="payment_country"
             v-model="billingData.country"
-            v-on:change="getProvincesByCountry(billingData.country, 1)">
+            v-on:blur="getProvincesByCountry(billingData.country, 1)">
             <option value="null">Choose option</option>
             <option v-for="country in countries" v-bind:value="country.iso_2">@{{ country.name }}</option>
           </select>

@@ -92,9 +92,9 @@ if (!function_exists('icommerce_formatDate')) {
  * @param orderID,status,request
  * @return
  */
-if (!function_exists('icommerce_executtePostOrder')) {
+if (!function_exists('icommerce_executePostOrder')) {
 
-    function icommerce_executtePostOrder($orderID, $status, $request)
+    function icommerce_executePostOrder($orderID, $status, $request)
     {
 
 

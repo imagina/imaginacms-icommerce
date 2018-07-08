@@ -29,6 +29,7 @@ class OrderController extends BasePublicController
   protected $auth;
   private $notification;
   private $order;
+  private $address;
   
   /**
    * Display a listing of the resource.
@@ -56,7 +57,7 @@ class OrderController extends BasePublicController
     $tpl = 'icommerce::frontend.orders.index';
     $ttpl = 'icommerce.orders.index';
     
-    if (view()->exists($ttpl)) $tpl = $ttpl;
+    //if (view()->exists($ttpl)) $tpl = $ttpl;
     $user = $this->auth->user();
     $orders = $this->order->whereUser($user->id);
     
@@ -67,17 +68,29 @@ class OrderController extends BasePublicController
    * Show the specified resource.
    * @return Response
    */
-  public function show($id)
+  public function show(Request $request)
   {
     $tpl = 'icommerce::frontend.orders.show';
     $ttpl = 'icommerce.orders.show';
     
-    if (view()->exists($ttpl)) $tpl = $ttpl;
-    $user = $this->auth->user();
-    $order = $this->order->findByUser($id, $user->id);
+    //if (view()->exists($ttpl)) $tpl = $ttpl;
+    if (!isset($request->key)) {
+      $user = $this->auth->user();
+      $order = $this->order->findByUser($request->id, $user->id);
+    }else
+      $order = $this->order->findByKey($request->id, $request->key);
+
     $products = [];
-    if (!empty($order)) {
-      foreach ($order->products as $product) {
+
+    if (isset($order) && !empty($order)) {
+      if ($order->shipping_amount>0)
+        $subtotal = $order->total - $order->shipping_amount;
+      else
+        $subtotal = $order->total;
+      if ($order->tax_amount)
+        $subtotal = $subtotal - $order->tax_amount;
+  
+      foreach ($order->products as $product)
         array_push($products, [
           "title" => $product->title,
           "sku" => $product->sku,
@@ -85,12 +98,14 @@ class OrderController extends BasePublicController
           "price" => $product->pivot->price,
           "total" => $product->pivot->total,
         ]);
-        
-      }
-    }
+
+      return view($tpl, compact('order', 'user', 'products','subtotal'));
+      
+    } else
+      return redirect()->route('home')->withError(trans('icommerce::orders.order_not_found'));
     
-    $products = json_encode($products);
-    return view($tpl, compact('order', 'user', "products"));
+    
+    
   }
   
   /**
@@ -109,16 +124,18 @@ class OrderController extends BasePublicController
    */
   public function store(Request $request)
   {
-    
     $cart = $this->getItems();
     $currency = $this->currency->getActive();
     
     $request["ip"] = $request->ip();
     $request["user_agent"] = $request->header('User-Agent');
     $request['order_status'] = 0;
+    $request['key'] = substr(md5 (date("Y-m-d H:i:s").$request->ip()),0,20);
     $profile = $this->profile->findByUserId($request->user_id);
-    if (!$request->existingOrNewPaymentAddress){
-      try{
+  
+    $paymentMethods = config('asgard.icommerce.config.paymentmethods');
+    if ($request->existingOrNewPaymentAddress == 2) {
+      try {
         $this->address->create([
           'profile_id' => $profile->id,
           'firstname' => $request->payment_firstname,
@@ -131,13 +148,13 @@ class OrderController extends BasePublicController
           'country' => $request->payment_country,
           'zone' => $request->payment_zone,
         ]);
-      }catch (Exception $e){
+      } catch (Exception $e) {
         \Log::info($e->getMessage());
         return redirect()->back()->withError($e->getMessage());
       }
     }
-    if (!$request->existingOrNewShippingAddress){
-      try{
+    if ($request->existingOrNewShippingAddress == 2 && !$request->sameDeliveryBilling) {
+      try {
         $this->address->create([
           'profile_id' => $profile->id,
           'firstname' => $request->shipping_firstname,
@@ -150,12 +167,12 @@ class OrderController extends BasePublicController
           'country' => $request->shipping_country,
           'zone' => $request->shipping_zone,
         ]);
-      }catch (Exception $e){
+      } catch (Exception $e) {
         \Log::info($e->getMessage());
         return redirect()->back()->withError($e->getMessage());
       }
     }
-  
+    
     try {
       $order = Order::create($request->all());
     } catch (Exception $e) {
@@ -217,10 +234,13 @@ class OrderController extends BasePublicController
     //$this->notification->push('New Order', 'New generated order!', 'fa fa-check-square-o text-green', route('admin.icommerce.order.index'));
     Session::put('orderID', $order->id);
     $this->cart->clear();
+    foreach ($paymentMethods as $paymentMethod)
+      if($paymentMethod['title']==$request->payment_method)
+        $urlPayment = route($paymentMethod['name']);
     return response()->json([
       "status" => "202",
       "message" => trans('icommerce::checkout.alerts.order_created'),
-      "url" => route($request->payment_method),
+      "url" => $urlPayment,
       "session" => session('orderID')
     ]);
   }
@@ -270,7 +290,7 @@ class OrderController extends BasePublicController
   
   public function email()
   {
-    $order = $this->order->find(44);
+    $order = $this->order->find(119);
     $products = [];
     foreach ($order->products as $product) {
       array_push($products, [
@@ -299,5 +319,48 @@ class OrderController extends BasePublicController
     
     );
     return view("icommerce::email.success_order", compact('data'));
+  }
+  
+  public function showorder(Request $request)
+  {
+    
+    $tpl = 'icommerce::frontend.orders.show';
+    
+    $orderId = $request->input('id');
+    $key = $request->input('key');
+    $order = $this->order->find($orderId);
+    if (isset($order)) {
+      if ($key == $order->key) {
+        $shippingMethods = config('asgard.icommerce.config.shippingmethods');
+        $paymentMethods = config('asgard.icommerce.config.paymentmethods');
+        foreach ($shippingMethods as $key => $method)
+          if ($method["name"] == $order->shipping_method)
+            $shippingMethodTitle = $method["title"];
+        foreach ($paymentMethods as $key => $method)
+          if ($method["name"] == $order->payment_method)
+            $paymentMethodTitle = $method["title"];
+        
+        $products = [];
+        if (!empty($order)) {
+          foreach ($order->products as $product) {
+            array_push($products, [
+              "title" => $product->title,
+              "sku" => $product->sku,
+              "quantity" => $product->pivot->quantity,
+              "price" => $product->pivot->price,
+              "total" => $product->pivot->total,
+            ]);
+            
+          }
+        }
+        $products = json_encode($products);
+        return view($tpl, compact('order', 'products', 'shippingMethodTitle', 'paymentMethodTitle'));
+      } else {
+        return redirect()->route('home')->withError(trans('icommerce::order.Order no fount'));
+      }
+    } else {
+      return redirect()->route('home')->withError(trans('icommerce::order.Order no fount'));
+    }
+    
   }
 }

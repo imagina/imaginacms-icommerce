@@ -1,34 +1,34 @@
 @extends('layouts.master')
-@include('icommerce::frontend.partials.carting')
-@section('content')
 
+@section('content')
+    
     <!-- preloader -->
     <div id="content_preloader"><div id="preloader"></div></div>
-
+    
     <div>
         <div class="container">
             <div class="row">
                 <div class="col">
-
+                    
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
                             <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::cart.breadcrumb_title')}}</li>
                         </ol>
                     </nav>
-
+                    
                     <h2 class="text-center mt-0 mb-5">{{trans('icommerce::cart.title')}}</h2>
-
+                
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- ======== @Region: #content ======== -->
     <div id="content" class="pb-5">
-
+        
         <div class="container">
-
+            
             <!-- Shopping cart -->
             <div class="cart-content" v-show="items">
                 <div class="wrapper-cart-table">
@@ -72,7 +72,7 @@
                                 @{{ item.sku }}
                             </td>
                             <td class="text-center align-middle">
-                                @{{ currency.symbol_left }} @{{ item.format_price }}
+                                @{{  item.format_price }}
                             </td>
                             <td>
                                 <div class="input-group" >
@@ -80,7 +80,7 @@
                                         <input type="button" value="-"
                                                class="btn btn-outline-primary border-right-0 quantity-down"
                                                field="quantity"
-                                               v-on:click="item.quantity > 0 ? update_quantity(item, '-') : alerta('{{trans('icommerce::cart.message.min_exceeded')}}', '{{trans('icommerce::cart.alerts.error')}}')">
+                                               v-on:click="item.quantity > 1 ? update_quantity(item, '-') : minimumExceded()">
                                     </div>
                                     <input type="text"
                                            name="quantity"
@@ -97,7 +97,7 @@
                             </td>
                             <td class="text-md-right">
                                 <span class="font-weight-bold">
-                                    @{{ currency.symbol_left }} @{{ formatPrice(item.quantity * item.price) }}
+                                    @{{  formatPrice(item.quantity * item.price) }}
                                 </span>
                             </td>
                         </tr>
@@ -139,13 +139,13 @@
                     </div>
                 </div>
             </div>
-
+            
             <div  class="alert alert-primary" role="alert" v-show="!items">
                 {{trans('icommerce::cart.empty_cart_message.part_1')}}<a href="{{ url('/') }}" class="alert-link">{{trans('icommerce::cart.empty_cart_message.part_2')}}</a>{{trans('icommerce::cart.empty_cart_message.part_3')}}
             </div>
-
+        
         </div>
-
+    
     </div>
 
 
@@ -154,117 +154,121 @@
 @section('scripts')
     @parent
     {!!Theme::script('js/app.js?v='.config('app.version'))!!}
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
-
+    
     <script type="text/javascript">
-        const vue_cart_primary = new Vue({
-            el: '#content',
-            created: function () {
-                this.$nextTick(function () {
-                    this.get_articles();
-                    setTimeout(function () {
-                        $('#content_preloader').fadeOut(1000, function () {
-                            $('#content').animate({'opacity': 1}, 500);
-                        });
-                    }, 1800);
-                });
-            },
-            data: {
-                items: [],
-                monto: 0.0,
-                currency: {!! $currency ? $currency : "''"!!},
-            },
-            methods: {
-                /*obtiene los producto*/
-                get_articles: function () {
-                    var path = '{{ route('icommerce.api.get.cart') }}';
-                    axios.get(path).then(function(response){
-                        vue_cart_primary.update_dates(response.data);
-                    });
-                },
-
-                /* actualiza la cantidad del producto antes de enviarlo */
-                update_quantity: function (item, sign) {
-                    sign === '+' ?
-                        item.quantity++ :
-                        item.quantity--;
-                    vue_cart_primary.update_cart(item);
-                },
-
-                /* actualiza el item del carrito */
-                update_cart: function (item) {
-                    axios.post('{{ route("icommerce.api.update.item.cart") }}', item).then(function(response){
-                        vue_carting.get_articles();
-                        vue_cart_primary.update_dates(response.data);
-                    });
-                },
-
-                /*elimina todos los productos*/
-                clear_cart: function () {
-                    var path = '{{ route('icommerce.api.clear.cart') }}';
-                    axios({
-                        method: 'post',
-                        responseType: 'json',
-                        url: path
-                    }).then(function(response){
-                        vue_cart_primary.update_dates(response.data);
-                    });
-                },
-
-                /*actualiza los datos para el carrito*/
-                update_dates: function (data) {
-                    this.items = data.quantity >= 1 ? data.items : false;
-                    this.monto = data.total;
-                },
-
-                /*elimina un item del carrito*/
-                delete_item: function (item_id) {
-                    var path = '{{ route('icommerce.api.delete.item.cart') }}?id='+item_id;
-                    axios({
-                        method: 'post',
-                        responseType: 'json',
-                        url: path
-                    }).then(function(response ){
-                        vue_cart_primary.update_dates(response.data);
-                        vue_carting.update_dates(response.data);
-                    });
-                },
-
-                /*onclick para la imagen del producto*/
-                location: function(url){
-                    window.location = url;
-                },
-
-                /* format price */
-                formatPrice: function (value) {
-                    let val = (value/1).toFixed(2);
-                    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-
-                alerta: function (menssage, type) {
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": 300,
-                        "hideDuration": 1000,
-                        "timeOut": 5000,
-                        "extendedTimeOut": 1000,
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    };
-
-                    toastr[type](menssage);
-                }
-            }
-        });
+      const vue_cart_primary = new Vue({
+        el: '#content',
+        created: function () {
+          this.$nextTick(function () {
+            
+            this.get_articles();
+            setTimeout(function () {
+              $('#content_preloader').fadeOut(1000, function () {
+                $('#content').animate({'opacity': 1}, 500);
+              });
+            }, 1800);
+          });
+        },
+        data: {
+          items: [],
+          monto: 0.0,
+          currency: {!! $currency ? $currency : "''"!!},
+        },
+        methods: {
+          /*obtiene los producto*/
+          get_articles: function () {
+            var path = '{{ route('icommerce.api.get.cart') }}';
+            axios.get(path).then(function(response){
+              vue_cart_primary.update_dates(response.data);
+            });
+          },
+          
+          /* actualiza la cantidad del producto antes de enviarlo */
+          update_quantity: function (item, sign) {
+            sign === '+' ?
+              item.quantity++ :
+              item.quantity--;
+            vue_cart_primary.update_cart(item);
+          },
+          
+          /* actualiza el item del carrito */
+          update_cart: function (item) {
+            axios.post('{{ route("icommerce.api.update.item.cart") }}', item).then(function(response){
+              vue_carting.get_articles();
+              vue_cart_primary.update_dates(response.data);
+            });
+          },
+          
+          /*elimina todos los productos*/
+          clear_cart: function () {
+            var path = '{{ route('icommerce.api.clear.cart') }}';
+            axios({
+              method: 'post',
+              responseType: 'json',
+              url: path
+            }).then(function(response){
+              vue_cart_primary.update_dates(response.data);
+            });
+          },
+          
+          /*actualiza los datos para el carrito*/
+          update_dates: function (data) {
+            this.items = data.quantity >= 1 ? data.items : false;
+            this.monto = data.total;
+          },
+          
+          /*elimina un item del carrito*/
+          delete_item: function (item_id) {
+            var path = '{{ route('icommerce.api.delete.item.cart') }}?id='+item_id;
+            axios({
+              method: 'post',
+              responseType: 'json',
+              url: path
+            }).then(function(response ){
+              vue_cart_primary.update_dates(response.data);
+              vue_carting.update_dates(response.data);
+            });
+          },
+          
+          /*onclick para la imagen del producto*/
+          location: function(url){
+            window.location = url;
+          },
+          
+          /* format price */
+          formatPrice: function (value) {
+            let val = (value/1).toFixed(2);
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          },
+          
+          alert: function (menssage, type) {
+            toastr.options = {
+              "closeButton": false,
+              "debug": false,
+              "newestOnTop": false,
+              "progressBar": false,
+              "positionClass": "toast-top-right",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": 300,
+              "hideDuration": 1000,
+              "timeOut": 5000,
+              "extendedTimeOut": 1000,
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+            };
+            
+            toastr[type](menssage);
+          },
+          minimumExceded:function () {
+            this.alert('{{trans('icommerce::cart.message.min_exceeded')}}', 'warning');
+          }
+        }
+      });
     </script>
 @stop

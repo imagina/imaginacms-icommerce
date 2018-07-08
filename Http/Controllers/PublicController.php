@@ -187,7 +187,7 @@ class PublicController extends BasePublicController
     $currency = $this->currency->getActive();
     $user = $this->auth->user();
     $items = $this->getItems();
-    $shipping = $this->shipping->getShippingsMethods($items);
+    $shipping = $this->shipping->getShippingsMethods($items,'US');
     $tax = $this->setting->get('icommerce::tax');
     $defaultCountry = $this->setting->get('icommerce::country-default');
     $countryFreeshipping = $this->setting->get('icommerce::country-freeshipping');
@@ -232,7 +232,7 @@ class PublicController extends BasePublicController
   {
     $tpl = 'icommerce::frontend.cart.cart';
     $currency = $this->currency->getActive();
-    $ttpl = 'icommerce.cart';
+    $ttpl = 'icommerce.cart.cart';
     if (view()->exists($ttpl)) $tpl = $ttpl;
     $items = $this->getItems();
     return view($tpl, compact('items', 'currency'));

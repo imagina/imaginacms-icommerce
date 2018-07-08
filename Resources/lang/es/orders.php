@@ -52,6 +52,7 @@ return [
         'add order history' => 'Agregar Historia a la Orden',
         'yes'               => 'Si',
         'customer notify'   => 'Notificar a Cliente',
+        'shipping_method'   => 'Metodo de Envío',
     ],
     'form' => [
     ],

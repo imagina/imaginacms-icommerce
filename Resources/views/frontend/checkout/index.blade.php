@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@include('icommerce::frontend.partials.carting')
+
 @section('content')
   <!-- preloader -->
   <div id="content_preloader">
@@ -14,8 +14,8 @@
           
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mt-4 text-uppercase">
-              <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+              <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{ trans('icommerce::common.home.title') }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
             </ol>
           </nav>
           
@@ -222,7 +222,7 @@
       el: '#content',
       created: function () {
         this.$nextTick(function () {
-          
+
           /*** UPDATE sub, realsub and total ***/
           this.updateTotal(this.items);
           
@@ -235,7 +235,7 @@
             if (localStorage.getItem("countries")) {
               
               checkout.countries = JSON.parse(localStorage.getItem("countries"));
-              console.log("get countries of localstorage");
+
             } else {
               
               axios.get('https://ecommerce.imagina.com.co/api/ilocations/allmincountries')
@@ -243,7 +243,7 @@
                   if (response.status == 200) {
                     checkout.countries = response.data;
                     localStorage.setItem("countries", JSON.stringify(response.data));
-                    console.log("created countries localstorage");
+
                   }
                 });
             }
@@ -256,11 +256,11 @@
                   checkout.countries = response.data;
                 }
               });
-            
           }
-          
+
           /*** IF USER NOT LOGGUED CHECK LOCALSTORAGE, ELSE, CHECK ADDRESS ***/
           if (this.user == "") {
+
             if ('localStorage' in window && window['localStorage'] !== null) {
               if (localStorage.getItem("payment_country"))
                 checkout.billingData.country = localStorage.getItem("payment_country");
@@ -271,8 +271,8 @@
                 checkout.shippingData.country = localStorage.getItem("shipping_country");
               else
                 checkout.shippingData.country = checkout.defaultCountry;
-              
-              
+  
+              checkout.checkLocalStore();
             }
           } else {
             checkout.checkAddressesIprofile();
@@ -393,10 +393,12 @@
           country: ''
         },
         updatingData: false,
-        useExistingPaymentAddress: true,
+        useExistingOrNewPaymentAddress: '1',
+        useExistingOrNewShippingAddress: '1',
         shippingMethodSelected: false,
         selectedBillingAddress: 0,
         selectedShippingAddress: 0,
+
       },
       filters: {
         capitalize: function (value) {
@@ -417,30 +419,31 @@
       },
       methods: {
         checkLocalStore: function () {
+   
           if ('localStorage' in window && window['localStorage'] !== null) {
-            for (var i = 0; i < localStorage.length; i++) {
-              var element = $("#" + localStorage.key(i));
-              var type = element.attr("type");
-              var id = localStorage.key(i);
-              var val = localStorage.getItem(id);
-              if (id == "first_name_register" || id == "first_name_guest")
-                checkout.billingData.firstname = checkout.shippingData.first_name = checkout.first_name = val;
-              if (id == "last_name_register" || id == "last_name_guest")
-                checkout.billingData.lastname = checkout.shippingData.last_name = checkout.last_name = val;
-              
-              element.val(val);
-              var split = id.split("_", 2);
-              var rest = id.substring(split[0].length + 1, id.length);
-              if (split[0] == "payment") {
-                if (split[1] != "country") {
-                  checkout.billingData[rest] = val;
-                  checkout.getProvincesByCountry(checkout.billingData.country, 1);
-                }
-              } else {
-                if (split[0] == "shipping") {
+            for (var key in localStorage){
+              if(key!=""){
+
+                var element = $("#" + key);
+                var type = element.attr("type");
+                var val = localStorage.getItem(key);
+                if (key == "first_name_register" || key == "first_name_guest")
+                  checkout.billingData.firstname = checkout.shippingData.first_name = checkout.first_name = val;
+                if (key == "last_name_register" || key == "last_name_guest")
+                  checkout.billingData.lastname = checkout.shippingData.last_name = checkout.last_name = val;
+  
+                element.val(val);
+                var split = key.split("_", 2);
+                var rest = key.substring(split[0].length + 1, key.length);
+                if (split[0] == "payment") {
                   if (split[1] != "country") {
-                    checkout.shippingData[rest] = val;
-                    checkout.getProvincesByCountry(checkout.shippingData.country, 2);
+                    checkout.billingData[rest] = val;
+                  }
+                } else {
+                  if (split[0] == "shipping") {
+                    if (split[1] != "country") {
+                      checkout.shippingData[rest] = val;
+                    }
                   }
                 }
               }
@@ -450,7 +453,7 @@
         
         checkAddressesIprofile: function () {
           /*** IF THERE ARE ADDRESSES, CHECK IF ANY IS DEFAULT BILLING OR DEFAULT SHIPPING AND TURN ON FLAG ***/
-          if (this.addresses) {
+          if (this.addresses.length) {
             var billing = false, shipping = false;
             this.addresses.forEach(function (address, index) {
               
@@ -484,6 +487,10 @@
             }
             
             /*** IF THERE ARE NO ADDRESSES, ADD PROVINCES OF THE COUNTRY SELECTED BEFORE ***/
+          }else{
+            this.addresses = '';
+            this.useExistingOrNewPaymentAddress = '2';
+            this.useExistingOrNewShippingAddress = '2';
           }
           
         },
@@ -553,6 +560,7 @@
         },
         registerOrder: function () {
           var data = $('#checkoutForm').serialize();
+          
           axios.post('{{url("/checkout")}}', data).then(function (response) {
             if (response.data.status != "202") {
               this.placeOrderButton = false;
@@ -560,6 +568,9 @@
             }
             else {
               checkout.alert(response.data.message, "success");
+              if ('localStorage' in window && window['localStorage'] !== null) {
+                localStorage.clear();
+              }
               window.location.replace(response.data.url);
             }
             
@@ -657,7 +668,7 @@
               checkout.alert("{{ trans('icommerce::checkout.alerts.remove_car') }}", "success");
               
             }).catch(error => {
-            console.log(error);
+            
           });
         },
         login: function (e) {
@@ -701,10 +712,10 @@
           this.shipping = 0;
           shippingMethodSelected = false;
           if (($('#sameDeliveryBilling').prop("checked"))) {
-            var postCode = $('#payment_postcode').val();
-            var countryISO = $('#payment_country option:selected').val();
+            var postCode = this.billingData.postcode;
+            var countryISO = this.billingData.country;
             var country = $('#payment_country option:selected').text();
-            
+            console.log(postCode,countryISO,country);
             axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
               .then(response => {
                 checkout.updatingData = false;
@@ -720,8 +731,8 @@
                 })
               });
           } else {
-            var postCode = $('#shipping_postcode').val();
-            var countryISO = $('#shipping_country option:selected').val();
+            var postCode = this.shippingData.postcode;
+            var countryISO = this.shippingData.country;
             var country = $('#shipping_country option:selected').text();
             
             axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
@@ -787,7 +798,7 @@
                   this.getShippingMethods();
                 }
               }).catch(error => {
-              console.log(error);
+             
             });
           }
         },
@@ -814,7 +825,11 @@
             else
               checkout.shippingData[key] = val;
           }
-          this.getShippingMethods();
+          
+          setTimeout(function () {
+            checkout.getShippingMethods();
+          }, 1000);
+          
         },
         submitOrder: function (event) {
           if ($('#checkoutForm').valid()) {
@@ -836,11 +851,12 @@
               } else {
                 var data = $('#checkoutForm').serialize();
                 var band = 0;
-                if (login == 1 && register == 2) {
-                  data = data + "&password=" + checkout.passwordGuest;
-                  data = data + "&password_confirmation=" + checkout.passwordGuest;
-                  
-                  
+                if (login == 1 ) {
+                  if(register == 2) {
+                    data = data + "&password=" + checkout.passwordGuest;
+                    data = data + "&password_confirmation=" + checkout.passwordGuest;
+                    
+                  }
                   // Si se va a registrar el usuario primero enviamos los data para crear el registro
                   axios.post      // si genera un error el registro de usuario se invalida el bandRegister para que no
                   (               // se envien los data de la orden, bandRegister siempre sera 1 para que en otros casos
@@ -851,15 +867,16 @@
                     if (status == "error") {
                       checkout.placeOrderButton = false;
                       checkout.topForm();
-                      
+
                       $("#registerAlert").html(response.data.message);
                       $("#registerAlert").toggleClass('d-none');
                       setTimeout(function () {
                         $("#registerAlert").toggleClass('d-none');
                       }, 10000);
                     } else {
-                      var user = response.data.user;
-                      checkout.appendUser("#registerAlert", user);
+
+                      checkout.user = response.data.user;
+                      checkout.appendUser("#registerAlert");
                       setTimeout(function () {
                         checkout.registerOrder();
                       }, 1000);
@@ -868,13 +885,19 @@
                     
                     checkout.placeOrderButton = false;
                     checkout.topForm();
+
+                    var error;
+                    if(error.response.data.errors.email)
+                      error = error.response.data.errors.email[0];
+                    else
+                      error = error.response.data.errors.password[0];
                     
-                    $("#registerAlert").html(error.response.data.errors.email[0]);
+                    $("#registerAlert").html(error);
                     $("#registerAlert").toggleClass('d-none');
                     setTimeout(function () {
                       $("#registerAlert").toggleClass('d-none');
                     }, 10000);
-                    checkout.alert(error.response.data.errors.email[0], "warning");
+                    checkout.alert(error, "warning");
                   });
                 } else {
                   checkout.registerOrder();
@@ -883,7 +906,7 @@
             }, 1000);
           } else {
             this.topForm();
-            checkout.alert("Missing some fields, check again, fill and send again", "warning");
+            checkout.alert('{{ trans('icommerce::checkout.alerts.missing_fields') }}', "warning");
           }
         }
       }

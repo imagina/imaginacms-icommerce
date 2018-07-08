@@ -57,6 +57,9 @@
                 <hr class="my-4 hr-lg">
                 <div class="cart-content-footer">
                     <div class="row">
+                        {{ $orders->links() }}
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
 
                         </div>
@@ -70,12 +73,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row" v-show="items.length == 0">
-                <div class="col p-6">
-                    {{trans('icommerce::orders.messages.not_found')}}
-                </div>
-            </div>
+        
         </div>
 
     </div>
@@ -90,55 +88,12 @@
     @parent
     {!!Theme::script('js/app.js?v='.config('app.version'))!!}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
-
     <script type="text/javascript">
-        const vue_order_list = new Vue({
-            el: '#orderList',
-            created: function () {
-                
-            },
-            data: {
-                items: {!! $orders ? $orders : '[]' !!},
-                user: {!! $user !!},
-            },
-            methods: {
-                alerta: function (menssage, type) {
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": 300,
-                        "hideDuration": 1000,
-                        "timeOut": 5000,
-                        "extendedTimeOut": 1000,
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    };
-
-                    toastr[type](menssage);
-                }
-            },
-            mounted: function () {
-                this.$nextTick(function () {
-                    $("table .clickable-row").click(function() {
-                        console.log($(this).data("href"));
-                        window.location = $(this).data("href");
-                    });
-                    setTimeout(function(){
-                        $('#content_preloader').fadeOut(1000,function(){
-                            $('#content_index_commerce').animate({'opacity':1},500);
-                        });
-                    },1800);
-                })
-            }
+        $(document).ready(function () {
+          $("table .clickable-row").click(function() {
+            console.log($(this).data("href"));
+            window.location = $(this).data("href");
+          });
         });
     </script>
 @stop

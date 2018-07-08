@@ -45,7 +45,7 @@
                     <td width="90">
                       <label>
                         <input type="radio" @click="calculate(index,item.price,ship.configName,$event)" class=""
-                               v-model="shipping_method" :value="item.configName" id="shipping_method">
+                               v-model="shipping_method" :value="item.configTitle">
                         @{{item.price | twoDecimals}}
                       </label>
                     </td>
@@ -76,24 +76,21 @@
                 v-if="ship.deliveryfee"
                 @click="calculate(index,ship.deliveryfee,ship.feetype,$event)"
                 v-model="shipping_method"
-                :value="ship.feetype"
-                id="shipping_method">
+                :value="ship.configTitle">
               <input
                 class="w-25 float-left"
                 type="radio"
                 v-else-if="ship.minimum"
                 @click="calculate(index,ship.minimum,ship.configName,$event)"
                 v-model="shipping_method"
-                :value="ship.configName"
-                id="shipping_method">
+                :value="ship.configTitle">
               <input
                 class="w-25 float-left"
                 type="radio"
                 v-else-if="ship.cost"
                 @click="calculate(index,ship.cost,ship.configName,$event)"
                 v-model="shipping_method"
-                :value="ship.configName"
-                id="shipping_method">
+                :value="ship.configTitle">
               
               <input
                 class="w-25 float-left"
@@ -101,8 +98,7 @@
                 v-else-if="ship.configName=='icommerceagree'"
                 @click="calculate(index,0,ship.configName,$event)"
                 v-model="shipping_method"
-                :value="ship.configName"
-                id="shipping_method">
+                :value="ship.configTitle">
               
               
               <div class="w-75 float-left delivery" v-if="ship.deliveryfee">@{{ship.deliveryfee | twoDecimals}}</div>
