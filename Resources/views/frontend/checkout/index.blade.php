@@ -14,7 +14,8 @@
           
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mt-4 text-uppercase">
-              <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{ trans('icommerce::common.home.title') }}</a></li>
+              <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{ trans('icommerce::common.home.title') }}</a>
+              </li>
               <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
             </ol>
           </nav>
@@ -222,7 +223,7 @@
       el: '#content',
       created: function () {
         this.$nextTick(function () {
-
+          
           /*** UPDATE sub, realsub and total ***/
           this.updateTotal(this.items);
           
@@ -235,7 +236,7 @@
             if (localStorage.getItem("countries")) {
               
               checkout.countries = JSON.parse(localStorage.getItem("countries"));
-
+              
             } else {
               
               axios.get('https://ecommerce.imagina.com.co/api/ilocations/allmincountries')
@@ -243,7 +244,7 @@
                   if (response.status == 200) {
                     checkout.countries = response.data;
                     localStorage.setItem("countries", JSON.stringify(response.data));
-
+                    
                   }
                 });
             }
@@ -257,10 +258,10 @@
                 }
               });
           }
-
+          
           /*** IF USER NOT LOGGUED CHECK LOCALSTORAGE, ELSE, CHECK ADDRESS ***/
           if (this.user == "") {
-
+            
             if ('localStorage' in window && window['localStorage'] !== null) {
               if (localStorage.getItem("payment_country"))
                 checkout.billingData.country = localStorage.getItem("payment_country");
@@ -271,7 +272,7 @@
                 checkout.shippingData.country = localStorage.getItem("shipping_country");
               else
                 checkout.shippingData.country = checkout.defaultCountry;
-  
+              
               checkout.checkLocalStore();
             }
           } else {
@@ -398,7 +399,7 @@
         shippingMethodSelected: false,
         selectedBillingAddress: 0,
         selectedShippingAddress: 0,
-
+        
       },
       filters: {
         capitalize: function (value) {
@@ -419,11 +420,11 @@
       },
       methods: {
         checkLocalStore: function () {
-   
+          
           if ('localStorage' in window && window['localStorage'] !== null) {
-            for (var key in localStorage){
-              if(key!=""){
-
+            for (var key in localStorage) {
+              if (key != "") {
+                
                 var element = $("#" + key);
                 var type = element.attr("type");
                 var val = localStorage.getItem(key);
@@ -431,7 +432,7 @@
                   checkout.billingData.firstname = checkout.shippingData.first_name = checkout.first_name = val;
                 if (key == "last_name_register" || key == "last_name_guest")
                   checkout.billingData.lastname = checkout.shippingData.last_name = checkout.last_name = val;
-  
+                
                 element.val(val);
                 var split = key.split("_", 2);
                 var rest = key.substring(split[0].length + 1, key.length);
@@ -487,7 +488,7 @@
             }
             
             /*** IF THERE ARE NO ADDRESSES, ADD PROVINCES OF THE COUNTRY SELECTED BEFORE ***/
-          }else{
+          } else {
             this.addresses = '';
             this.useExistingOrNewPaymentAddress = '2';
             this.useExistingOrNewShippingAddress = '2';
@@ -716,41 +717,23 @@
             var postCode = this.billingData.postcode;
             var countryISO = this.billingData.country;
             var country = $('#payment_country option:selected').text();
-            console.log(postCode,countryISO,country);
-            axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
-              .then(response => {
-                checkout.updatingData = false;
-                checkout.shippingMethods = response.data;
-                
-                
-                $.each(checkout.shippingMethods, function (i, val) {
-                  
-                  if (val.configName == 'notmethods') {
-                    
-                    checkout.shipping_method = 'notmethods';
-                  }
-                })
-              });
+            
           } else {
             var postCode = this.shippingData.postcode;
             var countryISO = this.shippingData.country;
             var country = $('#shipping_country option:selected').text();
-            
+          }
+          if (postCode != '' && countryISO != '' && country != '')
             axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
               .then(response => {
                 checkout.updatingData = false;
                 checkout.shippingMethods = response.data;
-                
-                
                 $.each(checkout.shippingMethods, function (i, val) {
-                  
                   if (val.configName == 'notmethods') {
-                    
                     checkout.shipping_method = 'notmethods';
                   }
                 })
               });
-          }
         },
         taxFlorida: function (state, component) {
           if (($('#sameDeliveryBilling').prop("checked"))) {
@@ -799,7 +782,7 @@
                   this.getShippingMethods();
                 }
               }).catch(error => {
-             
+              
             });
           }
         },
@@ -852,8 +835,8 @@
               } else {
                 var data = $('#checkoutForm').serialize();
                 var band = 0;
-                if (login == 1 ) {
-                  if(register == 2) {
+                if (login == 1) {
+                  if (register == 2) {
                     data = data + "&password=" + checkout.passwordGuest;
                     data = data + "&password_confirmation=" + checkout.passwordGuest;
                     
@@ -868,14 +851,14 @@
                     if (status == "error") {
                       checkout.placeOrderButton = false;
                       checkout.topForm();
-
+                      
                       $("#registerAlert").html(response.data.message);
                       $("#registerAlert").toggleClass('d-none');
                       setTimeout(function () {
                         $("#registerAlert").toggleClass('d-none');
                       }, 10000);
                     } else {
-
+                      
                       checkout.user = response.data.user;
                       checkout.appendUser("#registerAlert");
                       setTimeout(function () {
@@ -886,9 +869,9 @@
                     
                     checkout.placeOrderButton = false;
                     checkout.topForm();
-
+                    
                     var error;
-                    if(error.response.data.errors.email)
+                    if (error.response.data.errors.email)
                       error = error.response.data.errors.email[0];
                     else
                       error = error.response.data.errors.password[0];

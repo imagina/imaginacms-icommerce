@@ -187,7 +187,7 @@ class PublicController extends BasePublicController
     $currency = $this->currency->getActive();
     $user = $this->auth->user();
     $items = $this->getItems();
-    $shipping = $this->shipping->getShippingsMethods($items,'US');
+    $shipping = $this->shipping->getShippingsMethods($items);
     $tax = $this->setting->get('icommerce::tax');
     $defaultCountry = $this->setting->get('icommerce::country-default');
     $countryFreeshipping = $this->setting->get('icommerce::country-freeshipping');
