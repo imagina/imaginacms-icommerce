@@ -22,6 +22,8 @@ return [
     'title min 2' => 'The title must contain at least two characters',
     'description is required' => 'The description is required',
     'description min 2' => 'The description must contain at least two characters',
+    'order_success' => 'Your order was processed successfully, check your mail to see the detail',
+    'order_error' => 'an error occurred processing your order, check your mail to see the detail'
   ],
   'validation' => [
   ],
