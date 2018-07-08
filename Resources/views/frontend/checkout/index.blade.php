@@ -734,6 +734,8 @@
                   }
                 })
               });
+          else
+            this.updatingData = false;
         },
         taxFlorida: function (state, component) {
           if (($('#sameDeliveryBilling').prop("checked"))) {
