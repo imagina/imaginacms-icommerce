@@ -42,7 +42,6 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item">{{ $order->created_at}}</li>
               <li class="list-group-item">{{ $order->payment_method }} </li>
-              <li class="list-group-item">{{ $order->payment_method }} </li>
             </ul>
           
           </div>
@@ -61,7 +60,9 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item">{{$order->first_name.' '.$order->last_name}}</li>
               <li class="list-group-item">{{$order->email}}</li>
+              @if($order->telephone)
               <li class="list-group-item">{{$order->telephone}}</li>
+              @endif
             </ul>
           
           </div>
@@ -78,11 +79,11 @@
             </div>
             
             <ul class="list-group list-group-flush">
+              @if($order->invoice_nro)
               <li class="list-group-item" v-show="order.invoice_nro">{{$order->invoice_nro}}</li>
-              @if($order)
-                <li class="list-group-item"
-                    v-show="order.order_status">{{icommerce_get_Orderstatus()->get($order->order_status)}}</li>
               @endif
+              <li class="list-group-item"
+                    v-show="order.order_status">{{icommerce_get_Orderstatus()->get($order->order_status)}}</li>
             </ul>
           
           </div>
@@ -103,7 +104,7 @@
             
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table ">
+                <table class="table">
                   
                   <th>{{trans('icommerce::orders.table.payment address')}}</th>
                   <th>{{trans('icommerce::orders.table.shipping address')}}</th>
@@ -138,7 +139,7 @@
                   <th>{{trans('icommerce::orders.table.sku')}}</th>
                   <th>{{trans('icommerce::orders.table.quantity')}}</th>
                   <th>{{trans('icommerce::orders.table.unit price')}}</th>
-                  <th>{{trans('icommerce::orders.table.total')}}</th>
+                  <th class="text-right">{{trans('icommerce::orders.table.total')}}</th>
                   
                   @foreach($products as $product)
                   <tr class="product-order" >
@@ -148,7 +149,7 @@
                     <td>{{$product['sku']}}</td>
                     <td>{{$product['quantity']}}</td>
                     <td>{{$product['price']}}</td>
-                    <td>{{$product['total']}}</td>
+                    <td class="text-right">{{$product['total']}}</td>
                   </tr>
                   @endforeach
                   

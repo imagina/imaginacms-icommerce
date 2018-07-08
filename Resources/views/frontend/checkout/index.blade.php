@@ -576,6 +576,7 @@
             
           }).catch(error => {
             this.placeOrderButton = false;
+            
             checkout.alert("{{ trans('icommerce::checkout.alerts.error_order') }}", "warning");
           });
         },

@@ -124,6 +124,8 @@ class OrderController extends BasePublicController
    */
   public function store(Request $request)
   {
+    
+
     $cart = $this->getItems();
     $currency = $this->currency->getActive();
     
@@ -131,10 +133,11 @@ class OrderController extends BasePublicController
     $request["user_agent"] = $request->header('User-Agent');
     $request['order_status'] = 0;
     $request['key'] = substr(md5 (date("Y-m-d H:i:s").$request->ip()),0,20);
+    
     $profile = $this->profile->findByUserId($request->user_id);
-  
-    $paymentMethods = config('asgard.icommerce.config.paymentmethods');
-    if ($request->existingOrNewPaymentAddress == 2) {
+    
+    if ($request->existingOrNewPaymentAddress == '2') {
+      
       try {
         $this->address->create([
           'profile_id' => $profile->id,
@@ -148,12 +151,13 @@ class OrderController extends BasePublicController
           'country' => $request->payment_country,
           'zone' => $request->payment_zone,
         ]);
+
       } catch (Exception $e) {
         \Log::info($e->getMessage());
         return redirect()->back()->withError($e->getMessage());
       }
     }
-    if ($request->existingOrNewShippingAddress == 2 && !$request->sameDeliveryBilling) {
+    if ($request->existingOrNewShippingAddress == '2' && $request->sameDeliveryBilling!='on') {
       try {
         $this->address->create([
           'profile_id' => $profile->id,
@@ -234,6 +238,7 @@ class OrderController extends BasePublicController
     //$this->notification->push('New Order', 'New generated order!', 'fa fa-check-square-o text-green', route('admin.icommerce.order.index'));
     Session::put('orderID', $order->id);
     $this->cart->clear();
+    $paymentMethods = config('asgard.icommerce.config.paymentmethods');
     foreach ($paymentMethods as $paymentMethod)
       if($paymentMethod['title']==$request->payment_method)
         $urlPayment = route($paymentMethod['name']);
