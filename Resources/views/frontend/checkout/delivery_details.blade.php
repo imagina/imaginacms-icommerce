@@ -46,6 +46,7 @@
               data-target="#collapseExistingShipping"
               aria-expanded="true"
               aria-controls="collapseExistingShipping"
+              v-model="useExistingOrNewShippingAddress"
               checked>
             
             {{trans('icommerce::delivery_details.address.old_address')}}
@@ -58,8 +59,7 @@
                   id=""
                   name="selectShippingAddress"
                   @change="changeAddress(selectedShippingAddress,2)"
-                  v-model="selectedShippingAddress"
-          >
+                  v-model="selectedShippingAddress">
             <option v-for="(address, index) in selectAddresses" v-bind:value="index" >@{{ address }}</option>
           
           </select>
@@ -79,7 +79,8 @@
               data-toggle="collapse"
               data-target="#collapseNewShipping"
               aria-expanded="true"
-              aria-controls="collapseNewShipping">
+              aria-controls="collapseNewShipping"
+              v-model="useExistingOrNewShippingAddress">
   
             {{trans('icommerce::delivery_details.address.new_address')}}
           
@@ -129,8 +130,12 @@
             </div>
             <div class="col pl-1">
               <label for="shipping_code">{{ trans('icommerce::delivery_details.form.post_code') }}</label>
-              <input type="number" class="form-control" name="shipping_postcode" id="shipping_postcode"
-                     v-on:keyup="getShippingMethods()" @change="getShippingMethods()" v-model="shippingData.postcode">
+              <input type="number"
+                     class="form-control"
+                     name="shipping_postcode"
+                     id="shipping_postcode"
+                     @blur="getShippingMethods()"
+                     v-model="shippingData.postcode">
             </div>
           
           </div>
@@ -141,7 +146,7 @@
               id="shipping_country"
               name="shipping_country"
               v-model="shippingData.country"
-              v-on:change="getProvincesByCountry(shippingData.country, 2)">
+              v-on:blur="getProvincesByCountry(shippingData.country, 2)">
               <option value="null">{{ trans('icommerce::delivery_details.form.select_option') }}</option>
               <option v-for="country in countries" v-bind:value="country.iso_2">@{{ country.name }}</option>
             </select>

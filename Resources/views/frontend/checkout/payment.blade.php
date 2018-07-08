@@ -18,10 +18,10 @@
             <div class="card mb-0 border-0" v-for="(payment,index) in payments" >
               <div class="card-header bg-white" role="tab" id="headingOne">
                 <label class="mb-0">
-                  <input type="radio" class="form-check-input" name="payment_method" id="" :value="payment.configName" data-parent="#PaymentList" data-toggle="collapse" :data-target="'#payment'+index" aria-expanded="true" :aria-controls="'payment'+index" v-model="paymentSelected">
+                  <input type="radio" class="form-check-input" name="payment_method" id="" :value="payment.configTitle" data-parent="#PaymentList" data-toggle="collapse" :data-target="'#payment'+index" aria-expanded="true" :aria-controls="'payment'+index" v-model="paymentSelected">
                    @{{payment.configTitle}}
                 </label>
-                <img :src="payment.image" class="w-75 img-responsive float-right">
+                <img :src="payment.image" class="img-responsive float-right" style="max-height: 100px; width: auto; max-width: 60%;">
               </div>
 
               <div :id="'payment'+index" class="collapse" role="tabpanel" :aria-labelledby="'heading'+index">

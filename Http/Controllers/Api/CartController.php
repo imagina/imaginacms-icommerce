@@ -87,7 +87,7 @@ class CartController extends Controller
     }
 
     // Eliminar los items del carrito
-    public function delelet_all() {
+    public function delete_all() {
         $this->cart->clear();
         return $this->get_cart();
     }

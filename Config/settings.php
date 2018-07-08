@@ -72,6 +72,7 @@ return [
      'from-email' => [
         'description'  => 'icommerce::common.settings.fromemail',
         'view'         => 'text',
+        'default'      => 'noreply@domain.com',
         'translatable' => false,
     ],
 

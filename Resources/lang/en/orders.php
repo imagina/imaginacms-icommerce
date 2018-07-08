@@ -52,11 +52,13 @@ return [
         'add order history' => 'Add an order history',
         'yes'               => 'Yes',
         'customer notify'   => 'Notify customer',
+        'shipping_method'   => 'Shipping Method',
     ],
     'form'          => [
     ],
     'messages'      => [
         'not_found'         => 'No orders found',
+        'order_not_found'   => 'Order not found',
     ],
     'validation'    => [
     ],
