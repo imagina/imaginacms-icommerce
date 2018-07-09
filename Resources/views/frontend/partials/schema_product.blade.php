@@ -21,7 +21,6 @@
     "@type": "Offer",
     "priceCurrency": "{{$currency->code ?? 'USD'}}",
     "price": "{{$product->price}}",
-    "itemCondition": "http://schema.org/UsedCondition",
     "availability": "{{$product->stock_status==0 ? 'http://schema.org/OutOfStock':'http://schema.org/InStock'}}",
     "seller": {
       "@type": "Organization",

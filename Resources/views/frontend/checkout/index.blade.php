@@ -81,7 +81,7 @@
     <style type="text/css">
       
       label.error {
-        color: #a94442;
+        color: red;
         background: transparent;
         border-color: #ebccd1;
         padding: 1px 12px;

@@ -69,8 +69,8 @@ return [
   ],
   'uri' => 'icommerce',
   'emailSubject' => [
-    'failed' => 'Failed transaction',
-    'complete' => 'Transaction completed',
+    'failed' => 'Failed Order #',
+    'complete' => 'Information about your order #',
     'refunded' => 'Transaction declined',
     'pending' => 'Pending transaction',
     'history' => 'Order status',
