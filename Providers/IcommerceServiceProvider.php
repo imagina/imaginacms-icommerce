@@ -44,8 +44,8 @@ class IcommerceServiceProvider extends ServiceProvider
             $event->load('product_options', array_dot(trans('icommerce::product_options')));
             $event->load('product_option_values', array_dot(trans('icommerce::product_option_values')));
             $event->load('order_products', array_dot(trans('icommerce::order_products')));
-            $event->load('order_options', array_dot(trans('icommerce::order_options')));
-            $event->load('order_histories', array_dot(trans('icommerce::order_histories')));
+            $event->load('order_option', array_dot(trans('icommerce::order_option')));
+            $event->load('order_history', array_dot(trans('icommerce::order_history')));
             $event->load('order_shipments', array_dot(trans('icommerce::order_shipments')));
             $event->load('coupon_categories', array_dot(trans('icommerce::coupon_categories')));
             $event->load('coupon_products', array_dot(trans('icommerce::coupon_products')));

@@ -22,7 +22,7 @@
 				    		
 				    		
 
-				    		@foreach ($order->order_histories as $history)
+				    		@foreach ($order->order_history as $history)
 				    			
 				    			<tr>
 					    			<td>{{-- {{icommerce_formatDate($history->created_at,"d/m/y H:m:s")}}</td> --}}
@@ -173,7 +173,7 @@ $(function(){
                 {	
                 	$("#addhistory").button('reset');
                     console.log('Error:', data);
-                    alert("{{trans('icommerce::order_histories.messages.error add history')}}")
+                    alert("{{trans('icommerce::order_history.messages.error add history')}}")
                    
                 }
             })

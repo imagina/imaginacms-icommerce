@@ -41,9 +41,9 @@ class Order_HistoryController extends AdminBaseController
      */
     public function index()
     {
-        //$order_histories = $this->order_history->all();
+        //$order_history = $this->order_history->all();
 
-        return view('icommerce::admin.order_histories.index', compact(''));
+        return view('icommerce::admin.order_history.index', compact(''));
     }
 
     /**
@@ -53,7 +53,7 @@ class Order_HistoryController extends AdminBaseController
      */
     public function create()
     {
-        return view('icommerce::admin.order_histories.create');
+        return view('icommerce::admin.order_history.create');
     }
 
     /**
@@ -67,7 +67,7 @@ class Order_HistoryController extends AdminBaseController
         $this->order_history->create($request->all());
 
         return redirect()->route('admin.icommerce.order_history.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('icommerce::order_histories.title.order_histories')]));
+            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('icommerce::order_history.title.order_history')]));
     }
 
     /**
@@ -78,7 +78,7 @@ class Order_HistoryController extends AdminBaseController
      */
     public function edit(Order_History $order_history)
     {
-        return view('icommerce::admin.order_histories.edit', compact('order_history'));
+        return view('icommerce::admin.order_history.edit', compact('order_history'));
     }
 
     /**
@@ -93,7 +93,7 @@ class Order_HistoryController extends AdminBaseController
         $this->order_history->update($order_history, $request->all());
 
         return redirect()->route('admin.icommerce.order_history.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::order_histories.title.order_histories')]));
+            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::order_history.title.order_history')]));
     }
 
     /**
@@ -107,7 +107,7 @@ class Order_HistoryController extends AdminBaseController
         $this->order_history->destroy($order_history);
 
         return redirect()->route('admin.icommerce.order_history.index')
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::order_histories.title.order_histories')]));
+            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::order_history.title.order_history')]));
     }
 
 

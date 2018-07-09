@@ -2,12 +2,12 @@
 
 @section('content-header')
     <h1>
-        {{ trans('icommerce::order_histories.title.create order_history') }}
+        {{ trans('icommerce::order_history.title.create order_history') }}
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.icommerce.order_history.index') }}">{{ trans('icommerce::order_histories.title.order_histories') }}</a></li>
-        <li class="active">{{ trans('icommerce::order_histories.title.create order_history') }}</li>
+        <li><a href="{{ route('admin.icommerce.order_history.index') }}">{{ trans('icommerce::order_history.title.order_history') }}</a></li>
+        <li class="active">{{ trans('icommerce::order_history.title.create order_history') }}</li>
     </ol>
 @stop
 
@@ -22,7 +22,7 @@
                     @foreach (LaravelLocalization::getSupportedLocales() as $locale => $language)
                         <?php $i++; ?>
                         <div class="tab-pane {{ locale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                            @include('icommerce::admin.order_histories.partials.create-fields', ['lang' => $locale])
+                            @include('icommerce::admin.order_history.partials.create-fields', ['lang' => $locale])
                         </div>
                     @endforeach
 

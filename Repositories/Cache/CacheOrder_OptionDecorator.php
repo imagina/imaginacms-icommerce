@@ -10,7 +10,7 @@ class CacheOrder_OptionDecorator extends BaseCacheDecorator implements Order_Opt
     public function __construct(Order_OptionRepository $order_option)
     {
         parent::__construct();
-        $this->entityName = 'icommerce.order_options';
+        $this->entityName = 'icommerce.order_option';
         $this->repository = $order_option;
     }
 }

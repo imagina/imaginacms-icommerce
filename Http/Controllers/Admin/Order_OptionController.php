@@ -31,9 +31,9 @@ class Order_OptionController extends AdminBaseController
      */
     public function index()
     {
-        //$order_options = $this->order_option->all();
+        //$order_option = $this->order_option->all();
 
-        return view('icommerce::admin.order_options.index', compact(''));
+        return view('icommerce::admin.order_option.index', compact(''));
     }
 
     /**
@@ -43,7 +43,7 @@ class Order_OptionController extends AdminBaseController
      */
     public function create()
     {
-        return view('icommerce::admin.order_options.create');
+        return view('icommerce::admin.order_option.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class Order_OptionController extends AdminBaseController
         $this->order_option->create($request->all());
 
         return redirect()->route('admin.icommerce.order_option.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('icommerce::order_options.title.order_options')]));
+            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('icommerce::order_option.title.order_option')]));
     }
 
     /**
@@ -68,7 +68,7 @@ class Order_OptionController extends AdminBaseController
      */
     public function edit(Order_Option $order_option)
     {
-        return view('icommerce::admin.order_options.edit', compact('order_option'));
+        return view('icommerce::admin.order_option.edit', compact('order_option'));
     }
 
     /**
@@ -83,7 +83,7 @@ class Order_OptionController extends AdminBaseController
         $this->order_option->update($order_option, $request->all());
 
         return redirect()->route('admin.icommerce.order_option.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::order_options.title.order_options')]));
+            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::order_option.title.order_option')]));
     }
 
     /**
@@ -97,6 +97,6 @@ class Order_OptionController extends AdminBaseController
         $this->order_option->destroy($order_option);
 
         return redirect()->route('admin.icommerce.order_option.index')
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::order_options.title.order_options')]));
+            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::order_option.title.order_option')]));
     }
 }

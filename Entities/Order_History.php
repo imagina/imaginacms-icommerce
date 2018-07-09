@@ -9,7 +9,7 @@ class Order_History extends Model
 {
     
 	use HasTranslations;
-    protected $table = 'icommerce__order_histories';
+    protected $table = 'icommerce__order_history';
    	
     public $translatable = [];
 

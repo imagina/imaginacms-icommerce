@@ -6,7 +6,7 @@ return [
     'edit resource'             => 'Edit order histories',
     'destroy resource'          => 'Destroy order histories',
     'title'         => [
-        'order_histories'       => 'Order History',
+        'order_history'       => 'Order History',
         'create order_history'  => 'Create an order history',
         'edit order_history'    => 'Edit an order history',
     ],
