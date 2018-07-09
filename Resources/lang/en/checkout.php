@@ -11,7 +11,7 @@ return [
         'last_name'         => 'The last name is required.',
         'email'             => 'You must enter a valid email.',
         'telephone'         => 'You must enter a valid phone.',
-        'shipping_method'   => 'Yout must enter a shipping method.',
+        'shipping_method'   => 'You must enter a shipping method.',
         'payment_method'    => 'You must enter a payment method.',
         'free_shipping'     => 'Free shipping allowed',
     ],

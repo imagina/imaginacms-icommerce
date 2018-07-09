@@ -46,19 +46,22 @@ class AuthEcommerceController extends AuthController
     {
             parent::postLogin($request);
             $user = $this->auth->user();
-            $addressEcommerce="";
+            $addresses='';
             if(isset($user) && !empty($user)){
                 $profile = $user->profile()->first();
               $addresses = $this->address->findByProfileId($profile->id);
-
-            }
-            return response()->json([
+  
+              return response()->json([
                 "status" => "ok",
                 "user" => $user,
                 "addresses" => $addresses,
                 "addressSelect" => AddressesTransformer::collection($addresses)
-            ]);
-    
+              ]);
+            }else
+              return response()->json([
+                "status" => "error",
+                "user" => $user
+              ]);
     }
 
     public function userRegister(RegisterRequest $request){
