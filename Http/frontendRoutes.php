@@ -88,19 +88,19 @@ if (!App::runningInConsole()) {
     
   }
   //This is for sitemap
-  foreach (Product::all() as $product) {
-    $router->group(['prefix' => $product->slug], function (Router $router) use ($product) {
-      
-      $locale = LaravelLocalization::setLocale() ?: App::getLocale();
-      
-      $router->get('/', [
-        'as' => $locale . '.icommerceslug.' . $product->slug,
-        'uses' => 'PublicController@show',
-      ]);//{product}/
-      
-      
-    });//prefix $product->slug
-  }
+    foreach (Product::all() as $product) {
+      $router->group(['prefix' => $product->slug], function (Router $router) use ($product) {
+
+        $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+
+       $router->get('/', [
+          'as' => $locale . '.icommerceslug.' . $product->slug,
+         'uses' => 'PublicController@show',
+       ]);//{product}/
+
+
+     });//prefix $product->slug
+    }
   //This is for sitemap
   
   /* Products freeshipping */

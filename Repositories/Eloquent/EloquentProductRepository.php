@@ -6,6 +6,7 @@ use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 use Modules\Icommerce\Entities\Status;
+use Modules\Icommerce\Jobs\BulkloadProducts;
 
 //use Modules\Icommerce\Events\ProductWasCreated;
 
@@ -295,5 +296,22 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             )->first(), //obtiene el rango de precio
         ];
     }
-}
 
+    public function jobs_bulkload($data, $quantity, $info)
+    {
+        $pos = 0;
+        $jobs_bulkload = [];
+        $cant = (int)ceil(count($data) / $quantity);
+        \Log::error($cant);
+        for ($i = 1; $i <= $cant; $i++) {
+
+            array_push($jobs_bulkload, array_slice($data, $pos, $quantity));
+            $pos += $quantity;
+        }
+        foreach ($jobs_bulkload as $data) {
+            BulkloadProducts::dispatch($data, $info);
+        }
+
+
+    }
+}
