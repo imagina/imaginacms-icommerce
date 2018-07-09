@@ -9,7 +9,7 @@ class Order_Option extends Model
 {
     use HasTranslations;
 
-    protected $table = 'icommerce__order_options';
+    protected $table = 'icommerce__order_option';
     public $translatable = [];
 
     protected $fillable = ['order_id','order_product_id','product_option_id','product_option_value_id','name','value','type'];

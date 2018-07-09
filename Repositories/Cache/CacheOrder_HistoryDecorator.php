@@ -10,7 +10,7 @@ class CacheOrder_HistoryDecorator extends BaseCacheDecorator implements Order_Hi
     public function __construct(Order_HistoryRepository $order_history)
     {
         parent::__construct();
-        $this->entityName = 'icommerce.order_histories';
+        $this->entityName = 'icommerce.order_history';
         $this->repository = $order_history;
     }
 }

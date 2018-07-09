@@ -12,7 +12,7 @@ class CreateIcommerceOrderOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('icommerce__order_options', function (Blueprint $table) {
+        Schema::create('icommerce__order_option', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
 
@@ -46,6 +46,6 @@ class CreateIcommerceOrderOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('icommerce__order_options');
+        Schema::dropIfExists('icommerce__order_option');
     }
 }

@@ -16,7 +16,7 @@ class Product_Option extends Pivot
         return $this->hasMany(Product_Option_Value::class);
     }
 
-    public function order_options(){
+    public function order_option(){
         return $this->hasMany(Order_Option::class);
     }
 

@@ -2,11 +2,11 @@
 
 @section('content-header')
     <h1>
-        {{ trans('icommerce::order_histories.title.order_histories') }}
+        {{ trans('icommerce::order_history.title.order_history') }}
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li class="active">{{ trans('icommerce::order_histories.title.order_histories') }}</li>
+        <li class="active">{{ trans('icommerce::order_history.title.order_history') }}</li>
     </ol>
 @stop
 
@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
                     <a href="{{ route('admin.icommerce.order_history.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('icommerce::order_histories.button.create order_history') }}
+                        <i class="fa fa-pencil"></i> {{ trans('icommerce::order_history.button.create order_history') }}
                     </a>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($order_histories)): ?>
-                            <?php foreach ($order_histories as $order_history): ?>
+                            <?php if (isset($order_history)): ?>
+                            <?php foreach ($order_history as $order_history): ?>
                             <tr>
                                 <td>
                                     <a href="{{ route('admin.icommerce.order_history.edit', [$order_history->id]) }}">
@@ -75,7 +75,7 @@
 @section('shortcuts')
     <dl class="dl-horizontal">
         <dt><code>c</code></dt>
-        <dd>{{ trans('icommerce::order_histories.title.create order_history') }}</dd>
+        <dd>{{ trans('icommerce::order_history.title.create order_history') }}</dd>
     </dl>
 @stop
 

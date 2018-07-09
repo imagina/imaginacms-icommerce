@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIcommerceOrderHistoriesTable extends Migration
+class CreateIcommerceOrderHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateIcommerceOrderHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('icommerce__order_histories', function (Blueprint $table) {
+        Schema::create('icommerce__order_history', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             // Your fields
@@ -37,6 +37,6 @@ class CreateIcommerceOrderHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('icommerce__order_histories');
+        Schema::dropIfExists('icommerce__order_history');
     }
 }

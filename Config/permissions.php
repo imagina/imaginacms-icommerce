@@ -91,17 +91,17 @@ return [
         'edit' => 'icommerce::order_products.edit resource',
         'destroy' => 'icommerce::order_products.destroy resource',
     ],
-    'icommerce.order_options' => [
-        'index' => 'icommerce::order_options.list resource',
-        'create' => 'icommerce::order_options.create resource',
-        'edit' => 'icommerce::order_options.edit resource',
-        'destroy' => 'icommerce::order_options.destroy resource',
+    'icommerce.order_option' => [
+        'index' => 'icommerce::order_option.list resource',
+        'create' => 'icommerce::order_option.create resource',
+        'edit' => 'icommerce::order_option.edit resource',
+        'destroy' => 'icommerce::order_option.destroy resource',
     ],
-    'icommerce.order_histories' => [
-        'index' => 'icommerce::order_histories.list resource',
-        'create' => 'icommerce::order_histories.create resource',
-        'edit' => 'icommerce::order_histories.edit resource',
-        'destroy' => 'icommerce::order_histories.destroy resource',
+    'icommerce.order_history' => [
+        'index' => 'icommerce::order_history.list resource',
+        'create' => 'icommerce::order_history.create resource',
+        'edit' => 'icommerce::order_history.edit resource',
+        'destroy' => 'icommerce::order_history.destroy resource',
     ],
     'icommerce.order_shipments' => [
         'index' => 'icommerce::order_shipments.list resource',

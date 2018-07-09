@@ -2,11 +2,11 @@
 
 @section('content-header')
     <h1>
-        {{ trans('icommerce::order_options.title.order_options') }}
+        {{ trans('icommerce::order_option.title.order_option') }}
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li class="active">{{ trans('icommerce::order_options.title.order_options') }}</li>
+        <li class="active">{{ trans('icommerce::order_option.title.order_option') }}</li>
     </ol>
 @stop
 
@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
                     <a href="{{ route('admin.icommerce.order_option.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('icommerce::order_options.button.create order_option') }}
+                        <i class="fa fa-pencil"></i> {{ trans('icommerce::order_option.button.create order_option') }}
                     </a>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (isset($order_options)): ?>
-                            <?php foreach ($order_options as $order_option): ?>
+                            <?php if (isset($order_option)): ?>
+                            <?php foreach ($order_option as $order_option): ?>
                             <tr>
                                 <td>
                                     <a href="{{ route('admin.icommerce.order_option.edit', [$order_option->id]) }}">
@@ -75,7 +75,7 @@
 @section('shortcuts')
     <dl class="dl-horizontal">
         <dt><code>c</code></dt>
-        <dd>{{ trans('icommerce::order_options.title.create order_option') }}</dd>
+        <dd>{{ trans('icommerce::order_option.title.create order_option') }}</dd>
     </dl>
 @stop
 

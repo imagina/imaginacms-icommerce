@@ -6,7 +6,7 @@ return [
     'edit resource'             => 'Editar opciones de ordenes',
     'destroy resource'          => 'Eliminar opciones de ordenes',
     'title'         => [
-        'order_options'         => 'Opción de Orden',
+        'order_option'         => 'Opción de Orden',
         'create order_option'   => 'Crear una opción de orden',
         'edit order_option'     => 'Editar una opción de orden',
     ],

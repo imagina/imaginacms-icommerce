@@ -52,7 +52,7 @@ class Product_Option_Value extends Model
     }
     
    
-    public function order_options(){
+    public function order_option(){
     	return $this->hasMany(Order_Option::class);
     }
 

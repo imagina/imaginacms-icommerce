@@ -576,74 +576,74 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     $router->bind('order_option', function ($id) {
         return app('Modules\Icommerce\Repositories\Order_OptionRepository')->find($id);
     });
-    $router->get('order_options', [
+    $router->get('order_option', [
         'as' => 'admin.icommerce.order_option.index',
         'uses' => 'Order_OptionController@index',
-        'middleware' => 'can:icommerce.order_options.index'
+        'middleware' => 'can:icommerce.order_option.index'
     ]);
-    $router->get('order_options/create', [
+    $router->get('order_option/create', [
         'as' => 'admin.icommerce.order_option.create',
         'uses' => 'Order_OptionController@create',
-        'middleware' => 'can:icommerce.order_options.create'
+        'middleware' => 'can:icommerce.order_option.create'
     ]);
-    $router->post('order_options', [
+    $router->post('order_option', [
         'as' => 'admin.icommerce.order_option.store',
         'uses' => 'Order_OptionController@store',
-        'middleware' => 'can:icommerce.order_options.create'
+        'middleware' => 'can:icommerce.order_option.create'
     ]);
-    $router->get('order_options/{order_option}/edit', [
+    $router->get('order_option/{order_option}/edit', [
         'as' => 'admin.icommerce.order_option.edit',
         'uses' => 'Order_OptionController@edit',
-        'middleware' => 'can:icommerce.order_options.edit'
+        'middleware' => 'can:icommerce.order_option.edit'
     ]);
-    $router->put('order_options/{order_option}', [
+    $router->put('order_option/{order_option}', [
         'as' => 'admin.icommerce.order_option.update',
         'uses' => 'Order_OptionController@update',
-        'middleware' => 'can:icommerce.order_options.edit'
+        'middleware' => 'can:icommerce.order_option.edit'
     ]);
-    $router->delete('order_options/{order_option}', [
+    $router->delete('order_option/{order_option}', [
         'as' => 'admin.icommerce.order_option.destroy',
         'uses' => 'Order_OptionController@destroy',
-        'middleware' => 'can:icommerce.order_options.destroy'
+        'middleware' => 'can:icommerce.order_option.destroy'
     ]);
 
 
     $router->bind('order_history', function ($id) {
         return app('Modules\Icommerce\Repositories\Order_HistoryRepository')->find($id);
     });
-    $router->get('order_histories', [
+    $router->get('order_history', [
         'as' => 'admin.icommerce.order_history.index',
         'uses' => 'Order_HistoryController@index',
-        'middleware' => 'can:icommerce.order_histories.index'
+        'middleware' => 'can:icommerce.order_history.index'
     ]);
-    $router->get('order_histories/create', [
+    $router->get('order_history/create', [
         'as' => 'admin.icommerce.order_history.create',
         'uses' => 'Order_HistoryController@create',
-        'middleware' => 'can:icommerce.order_histories.create'
+        'middleware' => 'can:icommerce.order_history.create'
     ]);
-    $router->post('order_histories', [
+    $router->post('order_history', [
         'as' => 'admin.icommerce.order_history.store',
         'uses' => 'Order_HistoryController@store',
-        'middleware' => 'can:icommerce.order_histories.create'
+        'middleware' => 'can:icommerce.order_history.create'
     ]);
-    $router->get('order_histories/{order_history}/edit', [
+    $router->get('order_history/{order_history}/edit', [
         'as' => 'admin.icommerce.order_history.edit',
         'uses' => 'Order_HistoryController@edit',
-        'middleware' => 'can:icommerce.order_histories.edit'
+        'middleware' => 'can:icommerce.order_history.edit'
     ]);
-    $router->put('order_histories/{order_history}', [
+    $router->put('order_history/{order_history}', [
         'as' => 'admin.icommerce.order_history.update',
         'uses' => 'Order_HistoryController@update',
-        'middleware' => 'can:icommerce.order_histories.edit'
+        'middleware' => 'can:icommerce.order_history.edit'
     ]);
-    $router->delete('order_histories/{order_history}', [
+    $router->delete('order_history/{order_history}', [
         'as' => 'admin.icommerce.order_history.destroy',
         'uses' => 'Order_HistoryController@destroy',
-        'middleware' => 'can:icommerce.order_histories.destroy'
+        'middleware' => 'can:icommerce.order_history.destroy'
     ]);
 
     // OJO AJAX
-    $router->post('order_histories/addHistory', [
+    $router->post('order_history/addHistory', [
         'as'    => 'admin.icommerce.order_history.addHistory',
         'uses'  => 'Order_HistoryController@addHistory'
     ]); 
