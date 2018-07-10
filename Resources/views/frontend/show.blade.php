@@ -113,15 +113,15 @@
                                     <del class="text-muted pr-2"
                                          v-if="product.price_discount"
                                          style="font-size: 14px">
-                                        @{{ currency.symbol_left }} @{{ product.price }} @{{ currency.symbol_right }}
+                                        @{{ currency.symbol_left }} @{{ product.price | numberFormat  }} @{{ currency.symbol_right }}
                                     </del>
                                     <span class="text-danger font-weight-bold"
                                           v-if="!product.price_discount">
-                                        @{{ currency.symbol_left }} @{{ product.price }} @{{ currency.symbol_right }}
+                                        @{{ currency.symbol_left }} @{{ product.price | numberFormat  }} @{{ currency.symbol_right }}
                                     </span>
                                     <span class="text-danger font-weight-bold"
                                           v-if="product.price_discount">
-                                        @{{ currency.symbol_left }} @{{ product.price_discount }} @{{ currency.symbol_right }}
+                                        @{{ currency.symbol_left }} @{{ product.price_discount | numberFormat  }} @{{ currency.symbol_right }}
                                     </span>
                                 </h4>
                             </div>
