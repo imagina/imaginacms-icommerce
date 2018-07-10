@@ -148,7 +148,7 @@
             },
             mounted: function () {
                 this.$nextTick(function () {
-                    this.event_searcher();
+                  vue_searcher.event_searcher();
                 });
             }
         });

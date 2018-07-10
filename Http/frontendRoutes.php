@@ -194,13 +194,13 @@ $router->group(['prefix' => '/wishlist'], function (Router $router) {
   ]);
 });
 
-$router->group(['prefix' => '/orders'], function (Router $router) {
+$router->group(['prefix' => '/orders','middleware' => 'logged.in'], function (Router $router) {
   $locale = LaravelLocalization::setLocale() ?: App::getLocale();
   
   $router->get('/', [
     'as' => 'icommerce.orders.index',
     'uses' => 'OrderController@index',
-    'middleware' => 'can:icommerce.orders.index'
+   
   ]);
   $router->get('/email', [
     'as' => 'icommerce.orders.email',
@@ -210,7 +210,7 @@ $router->group(['prefix' => '/orders'], function (Router $router) {
   $router->get('/{id}', [
     'as' => 'icommerce.orders.show',
     'uses' => 'OrderController@show',
-    'middleware' => 'can:icommerce.orders.index',
+   
   ]);
   $router->get('/{id}/{key}', [
     'as'=>'icommerce.order.showorder',
