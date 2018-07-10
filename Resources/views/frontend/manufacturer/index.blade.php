@@ -37,13 +37,13 @@
         </div>
 
         <section class="content container mt-3 mb-4">
-            <div class="row"> 
+            <div class="row">
 
                 {{--
                 <div class="col-12 col-lg-3 d-none d-lg-block">
 
                     <div class="aboutus">
-                        sidebar 
+                        sidebar
                        
                     </div>
 
@@ -72,15 +72,15 @@
                             @endif
                             <div class="col-12 col-sm-6 col-md-3 contend post post{{$manufacturer->id}} mb-3">
                                 <a href="{{url('brands/'.$manufacturer->id)}}">
-                                    <div class="bg-imagen brand-image border p-1 d-flex align-items-center" 
-                                    @if(isset($manufacturer->options->mainimage)&&!empty($manufacturer->options->mainimage)) 
+                                    <div class="bg-imagen brand-image border p-1 d-flex align-items-center"
+                                    @if(isset($manufacturer->options->mainimage)&&!empty($manufacturer->options->mainimage))
                                         style="background-image: url('{{url($manufacturer->options->mainimage)}}')"
-                                        alt="{{$manufacturer->title}}" 
+                                        alt="{{$manufacturer->title}}"
                                     @else
                                         style="background-image: url('{{url('modules/iblog/img/post/default.jpg')}}')"
-                                        alt="{{$manufacturer->name}}"                 
+                                        alt="{{$manufacturer->name}}"
                                     @endif>
-                                    {{--  
+                                    {{--
                                     @if(isset($manufacturer->options->mainimage)&&!empty($manufacturer->options->mainimage))
                                         <img class="image img-responsive"
                                              src="{{url($manufacturer->options->mainimage)}}"
@@ -112,7 +112,7 @@
 
                         <div class="w-100 mb-3">
                             <div class="col-12">
-                                <hr>   
+                                <hr>
                             </div>
                         </div>
                         
@@ -140,7 +140,7 @@
 
 
             </div>
-        </section>  
+        </section>
 
     </div>
 @stop
