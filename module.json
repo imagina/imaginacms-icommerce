@@ -1,9 +1,9 @@
 {
     "name": "Icommerce",
     "alias": "icommerce",
-    "description": "Ecommerce Module",
+    "description": "E-commerce Module for AsgardCMS",
     "keywords": [],
-    "version": "1.0.0",
+    "version": "0.1.0",
     "active": 1,
     "order": 1,
     "providers": [
