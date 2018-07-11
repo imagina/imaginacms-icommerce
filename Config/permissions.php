@@ -157,11 +157,11 @@ return [
         'edit' => 'icommerce::addresses.edit resource',
         'destroy' => 'icommerce::addresses.destroy resource',
     ],
-    'icommerce.addresses' => [
-        'index' => 'icommerce::addresses.list resource',
-        'create' => 'icommerce::addresses.create resource',
-        'edit' => 'icommerce::addresses.edit resource',
-        'destroy' => 'icommerce::addresses.destroy resource',
+
+    'icommerce.bulkload' => [
+        'import' => 'icommerce::products.bulkload.import',
+        'export' => 'icommerce::products.bulkload.export',
+
     ],
 // append
 

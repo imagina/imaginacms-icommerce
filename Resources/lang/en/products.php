@@ -97,5 +97,19 @@ return [
         'no_more'       => 'The product doesn\'t have any more inventory',
         'no_zero'       => 'The product can\'t be less than 0',
     ],
+    'bulkload'=>[
+        'success migrate from product' => 'success migrate from product',
+        'error in migrate from manufacturer'=>'error in migrate from manufacturer',
+        'error in migrate from category'=>'error in migrate from category',
+        'error in migrate from page'=>'error in migrate from page',
+        'import'=>'Import Products',
+        'export'=>'Export Products',
+        'title'=> 'Bulkload',
+        'Select File'=>'Select File',
+        'Select Filecompatible files CSV, XLSX'=>'Select File Compatible files CSV, XLSX',
+        'Image folder path'=>'Image folder path',
+        'Submit'=>'Import'
+
+    ]
 ];
 

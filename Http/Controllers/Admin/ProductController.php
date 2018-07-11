@@ -459,3 +459,542 @@ class ProductController extends AdminBaseController
             }
         }
 
+        // File Add / Update
+        if ($request->hasFile('pfile') && $request->file('pfile')->isValid()) {
+
+            $filePath = $this->saveFile($request->file('pfile'), $product->id);
+            if ($filePath != null) {
+                $options = (array)$product->options;
+                $options["mainfile"] = $filePath;
+                $product->options = json_encode($options);
+                $product->save();
+            }
+
+        }
+
+        // Sub Products
+        if (!empty($product->id) && isset($request->subpTitle)) {
+            $vsubPIds = $request->subpId;
+            $vsubPTitles = $request->subpTitle;
+            $vsubPSkus = $request->subpSku;
+            $vsubPrices = $request->subpPrice;
+            $vsubPQuantities = $request->subpQuantity;
+            $vsubPImages = $request->hiddenSubImg;
+            $vsubPWeights = $request->subpWeight;
+
+            foreach ($vsubPTitles as $index => $val) {
+
+                // Update
+                if (!empty($vsubPIds[$index])) {
+
+                    $subProduct = $this->product->find($vsubPIds[$index]);
+
+                    $subProduct->title = $vsubPTitles[$index]; //Propio
+                    $subProduct->slug = ""; //Propio
+                    $subProduct->sku = $vsubPSkus[$index]; //Propio
+                    $subProduct->price = $vsubPrices[$index]; //Propio
+                    $subProduct->quantity = $vsubPQuantities[$index]; //Propio
+                    $subProduct->weight = $vsubPWeights[$index]; //Propio
+                    $subProduct->description = $product->description;
+                    $subProduct->status = $product->status;
+                    $subProduct->category_id = $product->category_id;
+                    $subProduct->stock_status = $product->stock_status;
+                    $subProduct->date_available = $product->date_available;
+
+                    $subProduct->width = $product->width;
+                    $subProduct->height = $product->height;
+                    $subProduct->length = $product->length;
+                    $subProduct->freeshipping = $product->freeshipping;
+
+                    $subProduct->update();
+
+                    if (!empty($vsubPImages[$index]) && !empty($subProduct->id)) {
+
+                        $mainimage = $this->saveImage($vsubPImages[$index], "assets/icommerce/product/" . $subProduct->id . ".jpg");
+
+                        $options = (array)$subProduct->options;
+                        $options["mainimage"] = $mainimage;
+                        $subProduct->options = json_encode($options);
+                        $subProduct->save();
+                    }
+
+
+                } else {
+                    //Create
+                    $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index]);
+
+                }
+
+            }
+
+
+        }
+
+        // Metas
+        if (!empty($product->id)) {
+            $this->saveMetas($request, $product);
+        }
+
+        return redirect()->route('admin.icommerce.product.index')
+            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::products.title.products')]));
+
+    }
+
+    /**
+     * save Image
+     *
+     * @param  Img $value
+     * @param  String $destination_path
+     * @return path
+     */
+    public function saveImage($value, $destination_path)
+    {
+
+        $disk = "publicmedia";
+
+        if (starts_with($value, 'http')) {
+            $url = url('modules/bcrud/img/default.jpg');
+            if ($value == $url) {
+                return 'modules/icommerce/img/product/default.jpg';
+            } else {
+                if (empty(str_replace(url(''), "", $value))) {
+
+                    return 'modules/icommerce/img/product/default.jpg';
+                }
+                str_replace(url(''), "", $value);
+                return str_replace(url(''), "", $value);
+            }
+
+        };
+
+        // if a base64 was sent, store it in the db
+        if (starts_with($value, 'data:image')) {
+
+            // 0. Make the image
+            $image = \Image::make($value);
+            // resize and prevent possible upsizing
+
+            $image->resize(config('asgard.iblog.config.imagesize.width'), config('asgard.iblog.config.imagesize.height'), function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+
+            });
+
+            if (config('asgard.iblog.config.watermark.activated')) {
+                $image->insert(config('asgard.iblog.config.watermark.url'), config('asgard.iblog.config.watermark.position'), config('asgard.iblog.config.watermark.x'), config('asgard.iblog.config.watermark.y'));
+
+            }
+
+            // 2. Store the image on disk.
+            \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '80'));
+
+            // Save Thumbs
+            \Storage::disk($disk)->put(
+                str_replace('.jpg', '_mediumThumb.jpg', $destination_path),
+                $image->fit(config('asgard.iblog.config.mediumthumbsize.width'), config('asgard.iblog.config.mediumthumbsize.height'))->stream('jpg', '80')
+
+            );
+
+            \Storage::disk($disk)->put(
+                str_replace('.jpg', '_smallThumb.jpg', $destination_path),
+                $image->fit(config('asgard.iblog.config.smallthumbsize.width'), config('asgard.iblog.config.smallthumbsize.height'))->stream('jpg', '80')
+            );
+
+            // 3. Return the path
+            return $destination_path;
+
+        }
+
+        // if the image was erased
+
+        if ($value == null) {
+            // delete the image from disk
+            \Storage::disk($disk)->delete($destination_path);
+
+            // set null in the database column
+            return null;
+
+        }
+
+    }
+
+    /**
+     * Add tags Product
+     *
+     * @param  Array tags ids
+     * @return Array
+     */
+    public function addTags($tags)
+    {
+
+        $tags = $tags;
+        $newtags = Array();
+        $lasttagsid = Array();
+        $newtagsid = Array();
+
+        if (!empty($tags)) {
+
+            //se recorren todos lostags en busca de alguno nuevo
+            foreach ($tags as $tag) {
+                //si el tag no existe se agrega al array de de nuevos tags
+                if (count(Tag::find($tag)) <= 0) {
+                    array_push($newtags, $tag);
+                } else {
+                    //si el tag existe se agrega en un array de viejos tags
+                    array_push($lasttagsid, $tag);
+                }
+
+            }
+
+        }
+
+        //se crean todos los tags que no existian
+
+        foreach ($newtags as $newtag) {
+
+            $modeltag = new Tag;
+
+            $modeltag->title = $newtag;
+
+            $modeltag->slug = str_slug($newtag, '-');
+
+            $modeltag->save();
+
+            array_push($newtagsid, $modeltag->id);
+
+        }
+
+        //se modifica el valor tags enviado desde el form uniendolos visjos tags y los tags nuevos
+
+        return array_merge($lasttagsid, $newtagsid);
+
+    }
+
+    /**
+     * Save a File
+     *
+     * @param  File $pfile
+     * @param  Int $idProduct
+     * @return
+     */
+    public function saveFile($pfile, $idProduct)
+    {
+
+        $disk = 'publicmedia';
+
+        $original_filename = $pfile->getClientOriginalName();
+        $extension = $pfile->getClientOriginalExtension();
+        $allowedextensions = array('PDF');
+
+        if (!in_array(strtoupper($extension), $allowedextensions)) {
+            return null;
+        }
+
+        $name = str_slug(str_replace('.' . $extension, '', $original_filename), '-');
+        $namefile = $name . '.' . $extension;
+
+        $destination_path = 'assets/icommerce/product/files/' . $idProduct . '/' . $namefile;
+
+        \Storage::disk($disk)->put($destination_path, \File::get($pfile));
+        return $destination_path;
+    }
+
+    /**
+     * Delete a File
+     *
+     * @param  Strong $destination_path
+     * @return $result
+     */
+    public function deleteFile($destination_path)
+    {
+        $disk = "publicmedia";
+        $result = \Storage::disk($disk)->delete($destination_path);
+
+        return $result;
+    }
+
+    /**
+     * Create Sub Product.
+     *
+     * @param  Int $id
+     * @return
+     */
+    public function createSubProduct($product, $title, $sku, $quantity, $price, $image, $weight)
+    {
+
+        $subProduct = new Product();
+        $subProduct->title = $title; //Propio
+        $subProduct->description = $product->description;
+        $subProduct->status = $product->status;
+        $subProduct->slug = "";//Propio
+        $subProduct->summary = "";//Propio
+        $subProduct->user_id = $product->user_id;
+        $subProduct->category_id = $product->category_id;
+        $subProduct->parent_id = $product->id;
+        $subProduct->sku = $sku;//Propio
+        $subProduct->quantity = $quantity;//Propio
+        $subProduct->stock_status = $product->stock_status;
+        $subProduct->price = $price;//Propio
+        $subProduct->date_available = $product->date_available;
+        $subProduct->weight = $weight;//Propio
+
+        $subProduct->width = $product->width;
+        $subProduct->height = $product->height;
+        $subProduct->length = $product->length;
+        $subProduct->freeshipping = $product->freeshipping;
+
+        $subProduct->save();
+
+        if (!empty($image) && !empty($subProduct->id)) {
+
+            $mainimage = $this->saveImage($image, "assets/icommerce/product/" . $subProduct->id . ".jpg");
+
+            $options = $subProduct->options;
+            $options["mainimage"] = $mainimage;
+            $subProduct->options = json_encode($options);
+            $subProduct->save();
+        }
+    }
+
+    /**
+     * Delete Sub Product via Ajax.
+     *
+     * @param  Product $id
+     * @return Response Json
+     */
+    public function deleteSubproduct($id)
+    {
+
+
+        $response = array();
+        $response['status'] = 'error'; //default
+
+        try {
+            $subProduct = $this->product->find($id);
+            $subProduct->delete();
+            $response['status'] = 'success';
+            return response()->json($response);
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
+            return response()->json($response);
+        }
+
+    }
+
+
+    public function uploadGalleryimage(Request $request)
+    {
+
+        $original_filename = $request->file('file')->getClientOriginalName();
+
+        $idpost = $request->input('idedit');
+        $extension = $request->file('file')->getClientOriginalExtension();
+        $allowedextensions = array('JPG', 'JPEG', 'PNG', 'GIF');
+
+        if (!in_array(strtoupper($extension), $allowedextensions)) {
+            return 0;
+        }
+        $disk = 'publicmedia';
+        $image = \Image::make($request->file('file'));
+        $name = str_slug(str_replace('.' . $extension, '', $original_filename), '-');
+
+
+        $image->fit(config('asgard.iblog.config.imagesize.width'), config('asgard.iblog.config.imagesize.height'), function ($constraint) {
+            $constraint->upsize();
+        });
+
+        if (config('asgard.iblog.config.watermark.activated')) {
+            $image->insert(config('asgard.iblog.config.watermark.url'), config('asgard.iblog.config.watermark.position'), config('asgard.iblog.config.watermark.x'), config('asgard.iblog.config.watermark.y'));
+        }
+        $nameimag = $name . '.' . $extension;
+        $destination_path = 'assets/icommerce/product/gallery/' . $idpost . '/' . $nameimag;
+
+        \Storage::disk($disk)->put($destination_path, $image->stream($extension, '100'));
+
+        return array('direccion' => $destination_path);
+    }
+
+    public function deleteGalleryimage(Request $request)
+    {
+        $disk = "publicmedia";
+        $dirdata = $request->input('dirdata');
+        \Storage::disk($disk)->delete($dirdata);
+        return array('success' => true);
+    }
+
+    /**
+     * Search Products Via Ajax DataTable.
+     *
+     * @param  none
+     * @return DataTable Format
+     */
+
+    public function searchProducts(Request $request)
+    {
+
+        $query = Product::select('icommerce__products.id', 'icommerce__products.title', 'icommerce__products.sku', 'icommerce__products.price','icommerce__products.status', 'icommerce__products.created_at', 'icommerce__products.stock_status', 'icommerce__manufacturers.name')
+            ->leftJoin('icommerce__manufacturers', 'icommerce__products.manufacturer_id', '=', 'icommerce__manufacturers.id')
+            ->where("parent_id", 0);
+
+        return datatables($query)->make(true);
+
+    }
+
+    /**
+     * Search Products Via Ajax Select 2.
+     *
+     * @param  q
+     * @return Products
+     */
+    public function searchProductsRelated()
+    {
+
+        $data = array();
+        $q = Input::get('q');
+
+        $products = Product::select('id', 'title')
+            ->where([
+                ["parent_id", "=", 0],
+                ["title", "like", "%{$q}%"],
+            ])->get();
+
+        $data["data"] = $products;
+
+        return response()->json($data);
+
+    }
+
+
+    /**
+     * Save Metas.
+     *
+     * @param  Request $request
+     * @param  Object $product
+     * @return nothing
+     */
+
+    public function saveMetas(Request $request, $product)
+    {
+
+        if (empty($request->meta_title)) {
+            $request->meta_title = $product->title;
+        }
+        $this->saveFake($product, "meta_title", $request->meta_title);
+
+        if (empty($request->meta_description)) {
+            $request->meta_description = substr(strip_tags($product->description), 0, 150);;
+        }
+        $this->saveFake($product, "meta_description", $request->meta_description);
+
+        $this->saveFake($product, "meta_keyword", $request->meta_keyword);
+    }
+
+    /**
+     * Save Fakes.
+     *
+     * @param  Object $product
+     * @param  String $metaname
+     * @param  String $metavalue
+     * @return
+     */
+
+    public function saveFake($product, $metaname, $metavalue)
+    {
+        $options = (array)$product->options;
+        $options["{$metaname}"] = $metavalue;
+        $product->options = json_encode($options);
+        $product->save();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Product $product
+     * @return Response
+     */
+
+    public function destroy(Product $product)
+    {
+        try {
+            $result = $this->product->destroy($product);
+            return redirect()->route('admin.icommerce.product.index')
+                ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::products.title.products')]));
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            //$error = $e->errorInfo[2];
+            return redirect()->route('admin.icommerce.product.index')
+                ->withError(trans('icommerce::products.validation.error delete'));
+        }
+    }
+
+    /**
+     * view import and export from products.
+     * @return View
+     */
+
+    public function indeximport()
+    {
+
+        return view('icommerce::admin.products.bulkload.index');
+    }
+
+    public function importProducts(Request $request)
+    {
+        $msg="";
+        $data = ['folderpaht' => $request->folderpaht, 'user_id' => $this->auth->user()->id, 'Locale'=>$request->Locale];
+
+        $data_excel = Excel::Load($request->importfile, function ($reader) {
+            $excel = $reader->all();
+            return $excel;
+        });
+
+
+        foreach ($data_excel->parsed as $i => $page) {
+
+
+            switch ($page->getTitle()) {
+
+                case 'Categories':
+                    try {
+                        BulkloadCategory::dispatch(json_decode(json_encode($page)), $data);
+                    } catch (Exception $e) {
+                        $msg =  trans('icommerce::products.bulkload.error in migrate from category');
+                        return redirect()->route('admin.icommerce.product.index')
+                            ->withError($msg);
+                    }
+                    break;
+                case 'manufactures':
+
+                    try {
+                        BulkloadManufacturer::dispatch(json_decode(json_encode($page)), $data);
+                    } catch (Exception $e) {
+                        $msg  =  trans('icommerce::products.bulkload.error in migrate from manufacturer');
+                        return redirect()->route('admin.icommerce.product.index')
+                            ->withError($msg);
+                    }
+                    break;
+                case 'Products':
+                    try {
+                        $this->product->jobs_bulkload(json_decode(json_encode($page)),50,$data);
+
+                    } catch (Exception $e) {
+                        $msg = trans('icommerce::products.bulkload.error in migrate from page');
+                        return redirect()->route('admin.icommerce.product.index')
+                            ->withError($msg);
+
+                    }
+                    break;
+                default:
+
+
+            };
+            $msg=trans('icommerce::products.bulkload.success migrate from product');
+
+        }
+
+        return redirect()->route('admin.icommerce.product.index')
+            ->withSuccess($msg);
+
+    }
+
+}

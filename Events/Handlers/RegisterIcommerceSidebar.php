@@ -81,6 +81,14 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.options.index')
                     );
                 });
+                $item->item(trans('icommerce::products.bulkload.import'), function (Item $item) {
+                    $item->icon('fa fa-upload');
+                    $item->weight(0);
+                    $item->route('admin.icommerce.bulkload.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.bulkload.import')
+                    );
+                });
 
                 $item->authorize(
                     $this->auth->hasAccess('icommerce.products.index') or $this->auth->hasAccess('icommerce.categories.index') or $this->auth->hasAccess('icommerce.tags.index') or $this->auth->hasAccess('icommerce.options.index')

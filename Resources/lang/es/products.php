@@ -96,6 +96,20 @@ return [
         'no_add_cart'   => 'Producto no agregado al carro, por favor intente de nuevo',
         'no_more'       => 'No hay mas productos en inventario',
         'no_zero'       => 'El producto no puede ser menor a 0'
+    ],
+    'bulkload'=>[
+        'success migrate from product' => 'productos migrados con éxito, la actualización se realiza en unos instantes',
+        'error in migrate from manufacturer'=>'error al migrar los fabricantes',
+        'error in migrate from category'=>'error al migrar las Categorias',
+        'error in migrate from page'=>'Error al realizar la migración de productos',
+        'import'=>'Importar Prodcutos',
+        'export'=>'Exportar Productos',
+        'title'=> 'Carga de Productos',
+        'Select File'=>'Seleccionar Archivo de Migración',
+        'Select Filecompatible files CSV, XLSX'=>'Seleccionar archivos compatibles con archivos CSV, XLSX',
+        'Image folder path'=>'Ruta de la carpeta de imágenes',
+        'Submit'=>'Importar'
+
     ]
 ];
 
