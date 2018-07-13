@@ -92,6 +92,7 @@ return [
         'edit gallery'  => 'Agregar / Editar / Eliminar Imagenes',
     ],
     'alerts'            => [
+        'add'           => 'Añadir al Carrito',
         'add_cart'      => 'Producto agregado al carro',
         'no_add_cart'   => 'Producto no agregado al carro, por favor intente de nuevo',
         'no_more'       => 'No hay mas productos en inventario',
@@ -102,7 +103,7 @@ return [
         'error in migrate from manufacturer'=>'error al migrar los fabricantes',
         'error in migrate from category'=>'error al migrar las Categorias',
         'error in migrate from page'=>'Error al realizar la migración de productos',
-        'import'=>'Importar Prodcutos',
+        'import'=>'Importar Productos',
         'export'=>'Exportar Productos',
         'title'=> 'Carga de Productos',
         'Select File'=>'Seleccionar Archivo de Migración',

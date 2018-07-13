@@ -100,7 +100,7 @@ return [
     'all' => 'All',
     'name_a_z' => 'Name (A - Z)',
     'name_z_a' => 'Name (Z - A)',
-    'price_low_high' => 'Price: Low to Hig',
+    'price_low_high' => 'Price: Low to High',
     'price_high_low' => 'Price High to Low',
   ],
   'range' => [

@@ -41,10 +41,10 @@
 <div class="form-group">
 	<label for="substract" style="margin-right: 5px">{{trans('icommerce::products.table.substract')}}:</label>
 
-	<label class="radio-inline"><input type="radio" name="substract" value="1" checked="checked">
+	<label class="radio-inline"><input type="radio" name="subtract" value="1" checked="checked">
 		{{trans('icommerce::products.table.yes')}}
 	</label>
-	<label class="radio-inline"><input type="radio" name="substract" value="0">NO</label>	
+	<label class="radio-inline"><input type="radio" name="subtract" value="0">NO</label>
 
 </div>
 

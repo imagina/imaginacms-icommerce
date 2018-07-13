@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIcommerceOrderOptionsTable extends Migration
+class CreateIcommerceOrderOptionTable extends Migration
 {
     /**
      * Run the migrations.

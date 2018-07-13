@@ -41,28 +41,28 @@ return [
     */
     'agree' => [
       'name' => 'icommerceagree',
-      'title' => trans('icommerceagree::configagrees.single'),
+      'title' => 'icommerceagree::configagrees.single',
       'entity' => '\Modules\IcommerceAgree\Entities\Configagree',
       'view' => 'icommerceagree::admin.configagrees.index',
-      'msjini' => trans('icommerceagree::configagrees.messages.msjini'),
+      'msjini' => 'icommerceagree::configagrees.messages.msjini',
       'init' => "icommerceagree_Init"
     ],
     
     'ups' => [
       'name' => 'icommerceups',
-      'title' => trans('icommerceups::configups.single'),
+      'title' => 'icommerceups::configups.single',
       'entity' => '\Modules\IcommerceUps\Entities\Configups',
       'view' => 'icommerceups::admin.configups.index',
-      'msjini' => trans('icommerceups::configups.messages.msjini'),
+      'msjini' => 'icommerceups::configups.messages.msjini',
       'init' => "icommerceups_Init"
     ],
     
     'usps' => [
       'name' => 'icommerceusps',
-      'title' => trans('icommerceusps::configusps.single'),
+      'title' => 'icommerceusps::configusps.single',
       'entity' => '\Modules\IcommerceUsps\Entities\Configusps',
       'view' => 'icommerceusps::admin.configusps.index',
-      'msjini' => trans('icommerceusps::configusps.messages.msjini'),
+      'msjini' => 'icommerceusps::configusps.messages.msjini',
       'init' => "icommerceusps_Init"
     ],
   
@@ -72,14 +72,14 @@ return [
     
     'icommercepaypal' => [
       'name' => 'icommercepaypal',
-      'title' => trans('icommercepaypal::paypalconfigs.single'),
+      'title' => 'icommercepaypal::paypalconfigs.single',
       'entity' => '\Modules\IcommercePaypal\Entities\Paypalconfig',
       'view' => 'icommercepaypal::admin.paypalconfigs.index'
     ],
     
     'icommercecheckmo' => [
       'name' => 'icommercecheckmo',
-      'title' => trans('icommercecheckmo::checkmoconfigs.single'),
+      'title' => 'icommercecheckmo::checkmoconfigs.single',
       'entity' => '\Modules\IcommerceCheckmo\Entities\Checkmoconfig',
       'view' => 'icommercecheckmo::admin.checkmoconfigs.index'
     ],

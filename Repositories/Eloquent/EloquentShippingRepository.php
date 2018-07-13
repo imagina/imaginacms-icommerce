@@ -63,10 +63,10 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                 $priceShow = null;
               
               $methodConfiguration=[
-                "msj" => $Results["msj"],
+                "msj" => trans($Results["msj"]),
                 "configName" => $method['name'],
                 "items" => $Results["data"],
-                "configTitle" => $method['title'],
+                "configTitle" => trans($method['title']),
                 "price" => $price,
                 "priceShow" => $priceShow
               ];

@@ -198,6 +198,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     ->whereStatus(Status::ENABLED)
                     ->where('title', 'like', "%$criterion%")
                     ->orWhere('sku', 'like', "%$criterion%")
+                    ->whereStatus(Status::ENABLED)
                     ->take(5)
                     ->get();
     }

@@ -46,7 +46,7 @@ class BulkloadCategory implements ShouldQueue
                     //order file
                     if (isset($this->info['folderpaht'])) {
                         if (isset($category->image) && !empty($category->image)) {
-                            $picture = $this->info['folderpaht'] . 'media/' . $category->image;
+                            $picture = $this->info['folderpaht'] . 'categories/' . $category->image;
                             $destination_path = 'assets/icommerce/category/' . $category->id . '.jpg';
                             $img = $this->saveimage($destination_path, $picture);
                             $category->options = ["mainimage" => $img];
@@ -62,7 +62,7 @@ class BulkloadCategory implements ShouldQueue
                         $parent = $model->find($category->parent_id);
                         $slug = $parent->slug . '/' . str_slug($category->title, '-');
                     }
-                    $category->options = json_encode(json_encode($category->options));
+                    $category->options = json_encode($category->options);
 
                     if ($exist) {
                         $model = $exist;
@@ -75,7 +75,7 @@ class BulkloadCategory implements ShouldQueue
 
                     $model->title = $category->title??$exist->title;
                     $model->slug = $slug;
-                    $model->description = $category->description ?? $exist->decription;
+                    $model->description = $category->description ?? $exist->decription??'';
                     $model->parent_id = $category->parent_id ?? 0;
                     $model->options = $category->options;
                     $model->save();

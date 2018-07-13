@@ -31,7 +31,7 @@ class EloquentPaymentRepository extends EloquentBaseRepository implements Paymen
                 if($methodConfiguration != null && $methodConfiguration->status==1){
                     
                     $methodConfiguration->configName = $method['name'];
-                    $methodConfiguration->configTitle = $method['title'];
+                    $methodConfiguration->configTitle =trans($method['title']);
 
                     $resultMethods->push($methodConfiguration);
                 }

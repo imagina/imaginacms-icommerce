@@ -117,7 +117,7 @@
             </div>
             
             <div class="pb-5 no-print">
-              {!!ibanner(3,'ibanners::frontend.base')!!}
+
             </div>
           </div>
           

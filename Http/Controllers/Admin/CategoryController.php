@@ -4,16 +4,13 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
+use Modules\Bcrud\Http\Controllers\BcrudController;
+use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Icommerce\Entities\Category;
-
 use Modules\Icommerce\Http\Requests\IcommerceRequest;
 use Modules\Icommerce\Repositories\CategoryRepository;
-use Modules\Core\Http\Controllers\Admin\AdminBaseController;
-
-use Modules\Bcrud\Http\Controllers\BcrudController;
 use Modules\User\Contracts\Authentication;
-
-use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends BcrudController
 {
@@ -23,37 +20,19 @@ class CategoryController extends BcrudController
     private $category;
     private $auth;
 
-    public function setup()
+    public function __construct(Authentication $auth)
     {
-        //parent::setup();
-        /*
-        $permissions = ['index', 'create', 'edit', 'destroy'];
-        $allowpermissions = ['show'];
-        foreach($permissions as $permission) {
+        parent::__construct();
 
-            if($this->auth->hasAccess("icommerce.categories.$permission")) {
-                if($permission=='index') $permission = 'list';
-                if($permission=='edit') $permission = 'update';
-                if($permission=='destroy') $permission = 'delete';
-                $allowpermissions[] = $permission;
-            }
-
-            $allowpermissions[] = 'reorder';
-
-        }
-
-        $this->crud->access = $allowpermissions;
         $this->auth = $auth;
 
         $driver = config('asgard.user.config.driver');
-        */
-        
 
         /*
-        |--------------------------------------------------------------------------
-        | BASIC CRUD INFORMATION
-        |--------------------------------------------------------------------------
-        */
+         |--------------------------------------------------------------------------
+         | BASIC CRUD INFORMATION
+         |--------------------------------------------------------------------------
+         */
         $this->crud->setModel('Modules\Icommerce\Entities\Category');
         $this->crud->setRoute('backend/icommerce/category');
         $this->crud->setEntityNameStrings(trans('icommerce::categories.single'), trans('icommerce::categories.plural'));
@@ -63,69 +42,39 @@ class CategoryController extends BcrudController
         $this->crud->allowAccess('reorder');
         $this->crud->enableReorder('title', 2);
 
-         /*
-        |--------------------------------------------------------------------------
-        | FILTERS
-        |--------------------------------------------------------------------------
-        */
+        /*
+      |--------------------------------------------------------------------------
+      | FILTERS
+      |--------------------------------------------------------------------------
+
 
         // Title Filter
-        $this->crud->addFilter([ 
-          'type' => 'text',
-          'name' => 'title',
-          'label'=> trans('icommerce::common.title')
-        ], 
-        false, 
-        function($value) { 
-            $this->crud->addClause('where', 'title', 'LIKE', "%$value%");
-        });
+        $this->crud->addFilter([
+            'type' => 'text',
+            'name' => 'title',
+            'label' => trans('icommerce::common.title')
+        ],
+            false,
+            function ($value) {
+                $this->crud->addClause('where', 'title', 'LIKE', "%$value%");
+            });
 
         // Date Filter
         $this->crud->addFilter([
-          'type' => 'date',
-          'name' => 'date',
-          'label'=> trans('icommerce::common.created_at')
+            'type' => 'date',
+            'name' => 'date',
+            'label' => trans('icommerce::common.created_at')
         ],
-        false,
-        function($value) { 
-          $this->crud->addClause('whereDate', 'created_at', '=', $value);
-        });
-       
-
-        // Date Range
-        /*
-        $this->crud->addFilter([ 
-           'type' => 'date_range',
-           'name' => 'daterange',
-           'label'=> 'Date range'
-        ],
-         false,
-         function($value) {
-            $dates = json_decode($value);
-            $this->crud->addClause('whereDate', 'created_at', '>=', $dates->from);
-            $this->crud->addClause('whereDate', 'created_at', '<=', $dates->to);
-        });
+            false,
+            function ($value) {
+                $this->crud->addClause('whereDate', 'created_at', '=', $value);
+            });
         */
-       
-        // Select2_ajax Filter
         /*
-        $this->crud->addFilter([ 
-          'name' => 'parent_id',
-          'type' => 'select2_ajax',
-          'label'=> 'Parent',
-          'placeholder' => 'Pick a parent'
-        ],
-        url('backend/icommerce/category/ajaxparent'), // the ajax route
-        function($value) {
-            $this->crud->addClause('where', 'parent_id', $value);
-        });
-        */
-        
-        /*
-        |--------------------------------------------------------------------------
-        | COLUMNS AND FIELDS
-        |--------------------------------------------------------------------------
-        */
+         |--------------------------------------------------------------------------
+         | COLUMNS AND FIELDS
+         |--------------------------------------------------------------------------
+         */
         // ------ CRUD COLUMNS
         $this->crud->addColumn([
             'name' => 'id',
@@ -190,7 +139,7 @@ class CategoryController extends BcrudController
             'attribute' => 'title',
             'model' => 'Modules\Icommerce\Entities\Category',
             'viewposition' => 'right',
-            'emptyvalue'=>0
+            'emptyvalue' => 0
         ]);
 
         $this->crud->addField([ // image
@@ -212,22 +161,35 @@ class CategoryController extends BcrudController
             'viewposition' => 'right',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-11 pull-right'
-            ]
+            ],
+            'fake' => true,
+            'store_in' => 'options',
+            'viewposition' => 'right',
 
         ]);
 
-
-
     }
 
-    /*
-    public function __construct(Authentication $auth)
+    public function setup()
     {
-        parent::__construct();
-       
-    }
-    */
+        parent::setup();
 
+        $permissions = ['index', 'create', 'edit', 'destroy'];
+        $allowpermissions = ['show'];
+        foreach ($permissions as $permission) {
+
+            if ($this->auth->hasAccess("icommerce.categories.$permission")) {
+                if ($permission == 'index') $permission = 'list';
+                if ($permission == 'edit') $permission = 'update';
+                if ($permission == 'destroy') $permission = 'delete';
+                $allowpermissions[] = $permission;
+            }
+
+            $allowpermissions[] = 'reorder';
+
+        }
+        $this->crud->access = $allowpermissions;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -275,8 +237,8 @@ class CategoryController extends BcrudController
 
 
         //Let's save the image for the post.
-        if(!empty($requestimage && !empty($item->id))) {
-            $mainimage = $this->saveImage($requestimage,"assets/icommerce/category/".$item->id.".jpg");
+        if (!empty($requestimage && !empty($item->id))) {
+            $mainimage = $this->saveImage($requestimage, "assets/icommerce/category/" . $item->id . ".jpg");
 
             $options = (array)$item->options;
             $options["mainimage"] = $mainimage;
@@ -303,19 +265,18 @@ class CategoryController extends BcrudController
      * @param  Destination
      * @return Response
      */
-    public function saveImage($value,$destination_path)
+    public function saveImage($value, $destination_path)
     {
 
         $disk = "publicmedia";
 
         //Defined return.
-        if(ends_with($value,'.jpg')) {
+        if (ends_with($value, '.jpg')) {
             return $value;
         }
 
         // if a base64 was sent, store it in the db
-        if (starts_with($value, 'data:image'))
-        {
+        if (starts_with($value, 'data:image')) {
             // 0. Make the image
             $image = \Image::make($value);
             // resize and prevent possible upsizing
@@ -324,22 +285,22 @@ class CategoryController extends BcrudController
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
-            if(config('asgard.iblog.config.watermark.activated')){
+            if (config('asgard.iblog.config.watermark.activated')) {
                 $image->insert(config('asgard.iblog.config.watermark.url'), config('asgard.iblog.config.watermark.position'), config('asgard.iblog.config.watermark.x'), config('asgard.iblog.config.watermark.y'));
             }
             // 2. Store the image on disk.
-            \Storage::disk($disk)->put($destination_path, $image->stream('jpg','80'));
+            \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '80'));
 
 
             // Save Thumbs
             \Storage::disk($disk)->put(
-                str_replace('.jpg','_mediumThumb.jpg',$destination_path),
-                $image->fit(config('asgard.iblog.config.mediumthumbsize.width'),config('asgard.iblog.config.mediumthumbsize.height'))->stream('jpg','80')
+                str_replace('.jpg', '_mediumThumb.jpg', $destination_path),
+                $image->fit(config('asgard.iblog.config.mediumthumbsize.width'), config('asgard.iblog.config.mediumthumbsize.height'))->stream('jpg', '80')
             );
 
             \Storage::disk($disk)->put(
-                str_replace('.jpg','_smallThumb.jpg',$destination_path),
-                $image->fit(config('asgard.iblog.config.smallthumbsize.width'),config('asgard.iblog.config.smallthumbsize.height'))->stream('jpg','80')
+                str_replace('.jpg', '_smallThumb.jpg', $destination_path),
+                $image->fit(config('asgard.iblog.config.smallthumbsize.width'), config('asgard.iblog.config.smallthumbsize.height'))->stream('jpg', '80')
             );
 
             // 3. Return the path
@@ -347,7 +308,7 @@ class CategoryController extends BcrudController
         }
 
         // if the image was erased
-        if ($value==null) {
+        if ($value == null) {
             // delete the image from disk
             \Storage::disk($disk)->delete($destination_path);
 
@@ -358,7 +319,7 @@ class CategoryController extends BcrudController
 
     }
 
-   
+
     /**
      * Update the specified resource in storage.
      *
@@ -373,20 +334,21 @@ class CategoryController extends BcrudController
             $request['mainimage'] = $this->saveImage($request['mainimage'], "assets/icommerce/category/" . $request['id'] . ".jpg");
         }
         return parent::updateCrud($request);
-        
+
     }
 
 
-     /**
-     * Filter Options - Ajax Select 2 
+    /**
+     * Filter Options - Ajax Select 2
      *
      * @param  Category $title
      * @return Response
      */
-    public function parentOptions() {
+    public function parentOptions()
+    {
 
         $term = $this->request->input('term');
-        $options = Category::where('title', 'like', '%'.$term.'%')->get();
+        $options = Category::where('title', 'like', '%' . $term . '%')->get();
         return $options->pluck('title', 'id');
 
     }
