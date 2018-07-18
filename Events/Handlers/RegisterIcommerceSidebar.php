@@ -122,7 +122,6 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->item(trans('icommerce::shippings.title.shippings'), function (Item $item) {
                     $item->icon('fa fa-paper-plane-o');
                     $item->weight(0);
-                    $item->append('admin.icommerce.shipping.create');
                     $item->route('admin.icommerce.shipping.index');
                     $item->authorize(
                         $this->auth->hasAccess('icommerce.shippings.index')
@@ -138,7 +137,6 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->item(trans('icommerce::payments.title.payments'), function (Item $item) {
                     $item->icon('fa fa-credit-card');
                     $item->weight(0);
-                    $item->append('admin.icommerce.payment.create');
                     $item->route('admin.icommerce.payment.index');
                     $item->authorize(
                         $this->auth->hasAccess('icommerce.payments.index')

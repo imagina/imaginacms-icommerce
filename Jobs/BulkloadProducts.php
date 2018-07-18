@@ -49,8 +49,13 @@ class BulkloadProducts implements ShouldQueue
                     if (isset($this->info['folderpaht'])) {
                         if (isset($product->image) && !empty($product->image)) {
                             $picture = $this->info['folderpaht'] . 'products/' . $product->image;
-                            $destination_path = 'assets/icommerce/product/' . $product->id . '.jpg';
-                            $img = $this->saveimage($destination_path, $picture);
+                            if (\Storage::disk('publicmedia')->exists($picture)){
+                                $destination_path = 'assets/icommerce/product/' . $product->id . '.jpg';
+                                $img = $this->saveimage($destination_path, $picture);
+                            }else{
+                                $img='modules/icommerce/img/product/default.jpg';
+                            }
+
                             $product->options["mainimage"] = $img;
                         }
                         if (isset($product->certificate) && !empty($product->certificate)) {
@@ -106,11 +111,11 @@ class BulkloadProducts implements ShouldQueue
                     $model->status =  $product->status ?? $exist->status ?? 1;
                     $model->rating =  $product->rating ?? $exist->rating ?? '3';
                     $model->stock_status =  $product->stock_status ??  $exist->stock_status ?? 1;
-                    $model->manufacter_id =  $product->manufacter_id ?? $exist->manufacter_id ?? null;
+                    $model->manufacturer_id =  $product->manufacter_id ?? $exist->manufacter_id ?? null;
                     $model->price =  $product->price ?? $exist->price;
                     $model->date_available = $product->date_available ??  $exist->date_available ?? date('Y-m-d');
                     $model->weight =  $product->weight ??  $exist->weight ?? 0;
-                    $model->lenght =  $product->lenght ??  $exist->lenght ?? 0;
+                    $model->length =  $product->lenght ??  $exist->length ?? 0;
                     $model->width =  $product->width ?? $exist->width ?? 0;
                     $model->height =  $product->height ?? $exist->height ?? 0;
                     $model->minimum = $product->minimum ??  $exist->minimum ?? 1;

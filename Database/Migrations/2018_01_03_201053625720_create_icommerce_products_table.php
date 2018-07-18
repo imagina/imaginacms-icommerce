@@ -44,7 +44,7 @@ class CreateIcommerceProductsTable extends Migration
             $table->foreign('manufacturer_id')->references('id')->on('icommerce__manufacturers')->onDelete('restrict');
 
             $table->tinyInteger('shipping')->default(1)->unsigned();
-            $table->float('price', 8, 2)->default(0);
+            $table->double('price', 30, 2)->default(0);
             $table->integer('points')->default(0)->unsigned();
             $table->date('date_available')->nullable();
             $table->float('weight', 8, 2)->nullable();
@@ -54,7 +54,7 @@ class CreateIcommerceProductsTable extends Migration
             $table->tinyInteger('subtract')->default(1)->unsigned();
             $table->integer('minimum')->default(1)->unsigned();
             $table->string('reference')->nullable();
-            $table->text('rating')->default('')->nullable();
+            $table->double('rating',2,1)->default(3)->nullable();
 
             $table->tinyInteger('freeshipping')->default(0)->unsigned();
 

@@ -113,7 +113,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
   <script type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
-  {!!Theme::script('js/app.js?v='.config('app.version'))!!}
   <!--<script src="https://lifemedical.imaginacolombia.com/modules/icommerce/js/json/index.js"></script>-->
   <script type="text/javascript">
     
@@ -611,7 +610,7 @@
               var percentage_cart = (parseFloat(this.subTotal) * parseFloat(val) / 100);
               this.orderTotal = parseFloat(this.subTotal) + percentage_cart;
               this.shipping = percentage_cart;
-            } else if (type == "ups" || type == "usps") {
+            } else if (type == "icommerceups" || type == "icommerceusps") {
               this.orderTotal = parseFloat(this.subTotal) + parseFloat(val);
               this.shipping = val;
             } else {

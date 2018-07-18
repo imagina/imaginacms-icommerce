@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title'             => 'Checkout',
+    'title'             => 'Finalizar Pedido',
     'no_products_1'     => 'No tienes artículos en tú carrito de compras. haz Click',
     'no_products_here'  => 'aquí',
     'no_products_2'     => ' para continuar comprando.',

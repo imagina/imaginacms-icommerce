@@ -26,9 +26,9 @@ return [
     ],
     'button'    => [
         'continue_shopping'   	=> 'Continuar comprando',
-        'proceed_to_checkout'   => 'Proceder al checkout',
+        'proceed_to_checkout'   => 'Proceder a pagar',
         'view_cart'             => 'Ver Carrito',
-        'checkout'              => 'Checkout',
+        'checkout'              => 'Finalizar Pedido',
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'No tienes artículos en tú carrito de compras. haz Click ',
