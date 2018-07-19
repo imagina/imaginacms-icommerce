@@ -110,6 +110,65 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
         'uses' => 'ProductController@comments_product',
     ]);
 
+    $router->group(['prefix'=>'v2/'],function(Router $router){
+
+        $router->group(['prefix'=>'categories'],function(Router $router){
+
+            $router->get('/',[
+                'as' => 'icommerce.api.categories',
+                'uses' => 'CategoryControllerV2@products',
+            ]);
+
+            $router->get('{id}/products',[
+                'as' => 'icommerce.api.categories.products',
+                'uses' => 'CategoryControllerV2@products',
+            ]);
+
+            $router->post('/',[
+                'as'=>'icommerce.api.catedories.store',
+                'uses' => 'CategoryControllerV2@store',
+            ]);
+
+            $router->put('{id}',[
+                'as'=>'icommerce.api.catedories.update',
+                'uses' => 'CategoryControllerV2@update',
+            ]);
+            $router->delete('{id}',[
+                'as'=>'icommerce.api.catedories.delete',
+                'uses' => 'CategoryControllerV2@delete',
+            ]);
+
+        });
+
+
+        //products
+        $router->group(['prefix'=>'products'],function(Router $router){
+
+            $router->get('/',[
+                'as' => 'icommerce.api.products',
+                'uses' => 'ProductControllerV2@products',
+            ]);
+            $router->post('/',[
+                'as'=>'icommerce.api.products.store',
+                'uses' => 'ProductControllerV2@store',
+            ]);
+
+            $router->put('{id}',[
+                'as'=>'icommerce.api.products.update',
+                'uses' => 'ProductControllerV2@store',
+            ]);
+            $router->delete('{id}',[
+                'as'=>'icommerce.api.products.update',
+                'uses' => 'ProductControllerV2@store',
+            ]);
+        });
+    });
+
+
+
+
+
+
 });
 
 

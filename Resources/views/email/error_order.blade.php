@@ -134,21 +134,5 @@
     
     
     </div>
-    <div class="contacto">
-        <div class="text-center">
-            Life Medical
-            <a href="info@lifemedicalsupplier.com">
-                info@lifemedicalsupplier.com
-            </a> -
-            Skype
-            <a href="skype:lifemedicalsupplier?chat">
-                lifemedicalsupplier
-            </a>
-        </div>
-        <div class="text-center">
-            10204 NW 47 Street Sunrise, FL 33351 /
-            954 302 25 08 - 954 543 42 24 /
-            info@lifemedicalsupplier.com /
-        </div>
-    </div>
+
 @endsection

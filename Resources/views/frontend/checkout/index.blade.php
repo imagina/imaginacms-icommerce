@@ -238,7 +238,7 @@
               
             } else {
               
-              axios.get('https://ecommerce.imagina.com.co/api/ilocations/allmincountries')
+              axios.get('{{url('/api/ilocations/allmincountries')}}')
                 .then(function (response) {
                   if (response.status == 200) {
                     checkout.countries = response.data;
@@ -250,7 +250,7 @@
             
           } else {
             
-            axios.get('https://ecommerce.imagina.com.co/api/ilocations/allmincountries')
+            axios.get('{{url('/api/ilocations/allmincountries')}}')
               .then(function (response) {
                 if (response.status == 200) {
                   checkout.countries = response.data;
@@ -687,7 +687,7 @@
               checkout.checkAddressesIprofile();
             });
         },
-        appendUser: function (alert) { // este metodo funciona tanto para login como para register
+        appendUser: function (alert, type) { // este metodo funciona tanto para login como para register
           if (!this.user) {
             $(alert).html("{{ trans('icommerce::checkout.alerts.invalid_data') }}");
             $(alert).toggleClass('d-none');
@@ -695,13 +695,14 @@
               $(alert).toggleClass('d-none');
             }, 3000);
           } else {
-            $("#customerData").html("<div class='card mb-0 border-0'><div class='d-block'><strong>{{ trans('icommerce::checkout.logged.name') }} </strong>" + this.user.first_name + ", " + this.user.last_name + "</div><div class='d-block'><strong>{{ trans('icommerce::checkout.logged.email') }} </strong>" + this.user.email + "</div><hr><div class='d-block text-right'><i class='fa fa-id-card-o mr-2'></i><a href='{{url('/account')}}'>{{ trans('icommerce::checkout.logged.view_profile') }}</a></div><div class='d-block text-right'><i class='fa fa-pencil-square-o mr-2'></i><a href='{{url('/account/profile')}}'>{{ trans('icommerce::checkout.logged.edit_profile') }}</a></div></div><div class='d-block text-right'><a href='{{url('/checkout/logout')}}''>{{ trans('icommerce::checkout.logged.logout') }}</a></div>");
             var inputs = '<input type="hidden" id="first_name" name="first_name" value="' + this.user.first_name + '">';
             inputs += '<input type="hidden" id="last_name" name="last_name" value="' + this.user.last_name + '">';
             inputs += '<input type="hidden" id="user_id" name="user_id" value="' + this.user.id + '">';
             inputs += '<input type="hidden" id="email" name="email" value="' + this.user.email + '">';
+            if (type != "guest") {
+              $("#customerData").html("<div class='card mb-0 border-0'><div class='d-block'><strong>{{ trans('icommerce::checkout.logged.name') }} </strong>" + this.user.first_name + ", " + this.user.last_name + "</div><div class='d-block'><strong>{{ trans('icommerce::checkout.logged.email') }} </strong>" + this.user.email + "</div><hr><div class='d-block text-right'><i class='fa fa-id-card-o mr-2'></i><a href='{{url('/account')}}'>{{ trans('icommerce::checkout.logged.view_profile') }}</a></div><div class='d-block text-right'><i class='fa fa-pencil-square-o mr-2'></i><a href='{{url('/account/profile')}}'>{{ trans('icommerce::checkout.logged.edit_profile') }}</a></div></div><div class='d-block text-right'><a href='{{url('/checkout/logout')}}''>{{ trans('icommerce::checkout.logged.logout') }}</a></div>");
+            }
             $("#customerData").append(inputs);
-            
             checkout.first_name = this.user.first_name;
             checkout.last_name = this.user.last_name;
           }
@@ -765,7 +766,7 @@
           if (iso != null) {
             if (iso != 'US')
               this.taxFlorida('null', component);
-            axios.get('https://ecommerce.imagina.com.co/api/ilocations/allprovincesbycountry/iso2/' + iso)
+            axios.get('{{url('/api/ilocations/allprovincesbycountry/iso2')}}'+'/' + iso)
               .then(response => {
                 //data is the JSON string
                 if (component == 1) {
@@ -861,13 +862,17 @@
                     } else {
                       
                       checkout.user = response.data.user;
-                      checkout.appendUser("#registerAlert");
+
+                      if (login != 1 && register != 2)
+                        checkout.appendUser("#registerAlert");
+                      else
+                        checkout.appendUser("#registerAlert", "guest");
+
                       setTimeout(function () {
                         checkout.registerOrder();
                       }, 1000);
                     }
                   }).catch(error => {
-                    
                     checkout.placeOrderButton = false;
                     checkout.topForm();
                     

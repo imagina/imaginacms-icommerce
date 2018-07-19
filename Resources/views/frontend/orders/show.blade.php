@@ -156,18 +156,18 @@
                   <tr class="subtotal">
                     <td colspan="4" class="text-right">{{trans('icommerce::orders.table.subtotal')}}</td>
                     
-                    <td class="text-right">{{number_format($subtotal, 2, ',', ' ') }}</td>
+                    <td class="text-right">{{number_format($subtotal, 2,'.',',') }}</td>
                   </tr>
                   
                   
                   <tr class="shippingTotal">
                     <td colspan="4" class="text-right">{{trans('icommerce::orders.table.shipping_method')}}</td>
-                    <td class="text-right">{{ $order->shipping_method }} {{ $order->shipping_amount != 0 ? number_format( $order->shipping_amount , 2, ',', ' ') : '' }}</td>
+                    <td class="text-right">{{ $order->shipping_method }} {{ $order->shipping_amount != 0 ? number_format( $order->shipping_amount , 2,'.',',') : '' }}</td>
                   </tr>
                   @if($order->tax_amount>0)
                   <tr class="taxAmount">
                     <td colspan="4" class="text-right">{{trans('icommerce::order_summary.tax')}}</td>
-                    <td class="text-right">{{ number_format($order->tax_amount , 2, ',', ' ') }}</td>
+                    <td class="text-right">{{ number_format($order->tax_amount , 2,'.',',') }}</td>
                   </tr>
                   @endif
                   {{--
@@ -180,7 +180,7 @@
                   
                   <tr class="total">
                     <td colspan="4" class="text-right">{{trans('icommerce::orders.table.total')}}</td>
-                    <td class="text-right">{{number_format($order->total , 2, ',', ' ') }}</td>
+                    <td class="text-right">{{number_format($order->total , 2, '.',',') }}</td>
                   </tr>
                 
                 </table>
@@ -209,9 +209,3 @@
   </style>
 @stop
 
-@section('scripts')
-  @parent
-  {!!Theme::script('js/app.js?v='.config('app.version'))!!}
-  
-
-@stop

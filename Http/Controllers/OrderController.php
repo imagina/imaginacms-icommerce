@@ -236,18 +236,27 @@ class OrderController extends BasePublicController
     }
     
     //$this->notification->push('New Order', 'New generated order!', 'fa fa-check-square-o text-green', route('admin.icommerce.order.index'));
-    Session::put('orderID', $order->id);
-    $this->cart->clear();
-    $paymentMethods = config('asgard.icommerce.config.paymentmethods');
-    foreach ($paymentMethods as $paymentMethod)
-      if($paymentMethod['title']==$request->payment_method)
-        $urlPayment = route($paymentMethod['name']);
-    return response()->json([
-      "status" => "202",
-      "message" => trans('icommerce::checkout.alerts.order_created'),
-      "url" => $urlPayment,
-      "session" => session('orderID')
-    ]);
+    try{
+        Session::put('orderID', $order->id);
+        $this->cart->clear();
+        $paymentMethods = config('asgard.icommerce.config.paymentmethods');
+        foreach ($paymentMethods as $paymentMethod)
+            if($paymentMethod['name']==$request->payment_method)
+                $urlPayment = route($paymentMethod['name']);
+        return response()->json([
+            "status" => "202",
+            "message" => trans('icommerce::checkout.alerts.order_created'),
+            "url" => $urlPayment,
+            "session" => session('orderID')
+        ]);
+    }catch (\Exception $e){
+        \Log::info($e->getMessage());
+        return response()->json([
+            "status" => "500",
+            "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
+        ]);
+    }
+
   }
   
   /**

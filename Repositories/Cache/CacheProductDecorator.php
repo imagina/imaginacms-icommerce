@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\ProductRepository;
 
 class CacheProductDecorator extends BaseCacheDecorator implements ProductRepository
 {
@@ -22,11 +22,12 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
     /**
      * @return mixed
      */
-    public function all() {
+    public function all()
+    {
         return $this->cache
             ->tags([$this->entityName, 'global'])
             ->remember("{$this->locale}.{$this->entityName}.all", $this->cacheTime,
-                function (){
+                function () {
                     return $this->repository->all();
                 }
             );
@@ -36,7 +37,8 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
      * @param  number $id
      * @return mixed
      */
-    public function find($id) {
+    public function find($id)
+    {
         return $this->cache
             ->tags([$this->entityName, 'global'])
             ->remember("{$this->locale}.{$this->entityName}.find.{$id}", $this->cacheTime,
@@ -50,7 +52,8 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
      * @param string $name
      * @return mixed
      */
-    public function findByName($name,$filter,$type) {
+    public function findByName($name, $filter, $type)
+    {
         return $this->cache
             ->tags([$this->entityName, 'global'])
             ->remember("{$this->locale}.{$this->entityName}.findByName.{$name}", $this->cacheTime,
@@ -110,19 +113,44 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
      */
     public function whereParentId($id)
     {
-        // TODO: Implement whereParentId() method.
+        return $this->cache
+            ->tags([$this->entityName, 'global'])
+            ->remember("{$this->locale}.{$this->entityName}.whereParentId.{$id}", $this->cacheTime,
+                function () use ($id) {
+                    return $this->repository->whereParentId($id);
+                }
+            );
     }
-  public function whereCategoryFilter($id,$filter,$type){
-    return $this->repository->whereCategoryFilter($id,$filter,$type);
-  }
-  
-  /**
-   * @return mixed
-   */
-  public function whereFreeshippingProducts(){
-      return $this->repository->whereFreeshippingProducts();
-  }
-  public function whereFreeshippingProductsFilter($filter){
-      return $this->repository->whereFreeshippingProductsFilter($filter);
-  }
+
+    public function whereCategoryFilter($id, $filter, $type)
+    {
+        return $this->repository->whereCategoryFilter($id, $filter, $type);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function whereFreeshippingProducts()
+    {
+        return $this->repository->whereFreeshippingProducts();
+    }
+
+    public function whereFreeshippingProductsFilter($filter)
+    {
+        return $this->repository->whereFreeshippingProductsFilter($filter);
+    }
+
+    /**
+     * @param object $filter
+     * @return mixed
+     */
+    public function whereFilters($filter)
+    {
+        return $this->cache->tags([$this->entityName, 'global'])
+            ->remember("{$this->locale}.{$this->entityName}.whereFilters", $this->cacheTime,
+                function () use ($filter) {
+                    return $this->repository->whereFilters($filter);
+                }
+            );
+    }
 }

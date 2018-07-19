@@ -26,9 +26,9 @@ class CreateIcommerceOrderProductTable extends Migration
             $table->text('title');
             $table->string('reference')->nullable();
             $table->integer('quantity')->unsigned();
-            $table->float('price', 8, 2);
-            $table->float('total', 8, 2);
-            $table->float('tax', 8, 2);
+            $table->float('price', 30, 2);
+            $table->float('total', 30, 2);
+            $table->float('tax', 30, 2);
             $table->integer('reward')->unsigned();
 
             $table->timestamps();

@@ -30,7 +30,7 @@ class CreateIcommerceOrdersTable extends Migration
 
             $table->integer('invoice_nro')->unsigned()->nullable();
             $table->string('invoice_prefix')->nullable();
-            $table->float('total', 8, 2);
+            $table->float('total', 50, 2);
             $table->tinyInteger('order_status')->default(10)->unsigned();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');

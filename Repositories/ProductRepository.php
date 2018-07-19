@@ -59,4 +59,9 @@ interface ProductRepository extends BaseRepository
     public function whereFreeshippingProducts();
 
     public function whereFreeshippingProductsFilter($filter);
+    /**
+     * @param object $filter
+     * @return mixed
+     */
+    public function whereFilters($filter);
 }
