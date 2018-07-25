@@ -375,8 +375,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             if (isset($filter->order)) { //si hay que filtrar por rango de precio
-                $orderby = $filter->order['by'] ?? 'created_at';
-                $ordertype = $filter->order['type'] ?? 'desc';
+
+                $orderby = $filter->order->by ?? 'created_at';
+                $ordertype = $filter->order->type ?? 'desc';
             } else {
                 $orderby = 'created_at';
                 $ordertype = 'desc';
@@ -392,7 +393,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $query->take($filter->take ?? 5);
                 return $query->get();
             }
-            return $query->paginate(12);
+            if(isset($filter->paginate)&& is_integer($filter->paginate))
+            return $query->paginate($filter->paginate);
         } catch (\Exception $e) {
 
 

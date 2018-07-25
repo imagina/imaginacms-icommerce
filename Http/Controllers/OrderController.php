@@ -102,7 +102,7 @@ class OrderController extends BasePublicController
       return view($tpl, compact('order', 'user', 'products','subtotal'));
       
     } else
-      return redirect()->route('home')->withError(trans('icommerce::orders.order_not_found'));
+      return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));
     
     
     
@@ -370,10 +370,10 @@ class OrderController extends BasePublicController
         $products = json_encode($products);
         return view($tpl, compact('order', 'products', 'shippingMethodTitle', 'paymentMethodTitle'));
       } else {
-        return redirect()->route('home')->withError(trans('icommerce::order.Order no fount'));
+        return redirect()->route('homepage')->withError(trans('icommerce::order.Order no fount'));
       }
     } else {
-      return redirect()->route('home')->withError(trans('icommerce::order.Order no fount'));
+      return redirect()->route('homepage')->withError(trans('icommerce::order.Order no fount'));
     }
     
   }

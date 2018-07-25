@@ -1,4 +1,4 @@
-# asgardcms-icommerce
+# AsgardCMS E-Commerce Module
 
 
 ### Email Configurations Backend
@@ -17,3 +17,9 @@
 		2. Copy the folder "email" in assets/img/email
 
 
+##Api
+1- filters for products :
+
+```php
+api/icommerce/v2/products?filters={"categories":1,"recient":true,"take":5,"order":{"by":"slug","type":"asc"}}
+```

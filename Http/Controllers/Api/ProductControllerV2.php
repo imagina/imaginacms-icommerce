@@ -72,10 +72,13 @@ class ProductControllerV2 extends BasePublicController
 
     public function products(Request $request){
 
+//$filters=['categories'=>139,'take'=>5, 'paginate'=>12,];
+  //dd(json_encode($filters));
+//dd(json_decode($request->filters));
         try{
             if(!isset($request->filters) && empty($request->filters)){
 
-                $response =  ProductTransformer::collection($this->product->all());
+                $response =  ProductTransformer::collection($this->product->paginate($request->paginate??12));
 
 
             }else{
@@ -84,7 +87,6 @@ class ProductControllerV2 extends BasePublicController
 
             }
 
-            $response = '';
         }catch (\ErrorException $e){
             $status = 500;
             $response = ['errors' => [

@@ -9,27 +9,23 @@ return [
   
   'shippingmethods' => [
     
-    /*
-  'freeshipping'=> [
-    'name' => 'freeshipping',
-    'title' => trans('ifreeshipping::configurations.single') ,
-    'entity' => '\Modules\Ifreeshipping\Entities\Configuration',
-    'view' => 'ifreeshipping::admin.configurations.index'
-  ],
-    */
-    
-    /*
-    'flatrate'=> [
-        'name' => 'flatrate',
-        'title' => trans('iflatrate::configflatrates.single') ,
-        'entity' => '\Modules\Iflatrate\Entities\Configflatrate',
-        'view' => 'iflatrate::admin.configflatrates.index',
-        'msjini' => trans('iflatrate::configflatrates.messages.msjini'),
-        'init' => "iflatrate_Init"
+
+    'freeshipping'=> [
+      'name' => 'icommercefreeshipping',
+      'title' => 'icommercefreeshipping::configurations.single',
+      'entity' => '\Modules\IcommerceFreeshipping\Entities\Configfreeshipping',
+      'view' => 'icommercefreeshipping::admin.configurations.index',
+      'init' => "icommercefreeshipping_Init"
     ],
-    */
-    
-    
+
+    'flatrate'=> [
+        'name' => 'icommerceflatrate',
+        'title' => 'icommerceflatrate::configflatrates.single',
+        'entity' => '\Modules\Icommerceflatrate\Entities\Configflatrate',
+        'view' => 'icommerceflatrate::admin.configflatrates.index',
+        'init' => "icommerceflatrate_Init"
+    ],
+
     /*
     'localdelivery'=> [
         'name' => 'localdelivery',
@@ -44,7 +40,6 @@ return [
       'title' => 'icommerceagree::configagrees.single',
       'entity' => '\Modules\IcommerceAgree\Entities\Configagree',
       'view' => 'icommerceagree::admin.configagrees.index',
-      'msjini' => 'icommerceagree::configagrees.messages.msjini',
       'init' => "icommerceagree_Init"
     ],
     
@@ -53,7 +48,6 @@ return [
       'title' => 'icommerceups::configups.single',
       'entity' => '\Modules\IcommerceUps\Entities\Configups',
       'view' => 'icommerceups::admin.configups.index',
-      'msjini' => 'icommerceups::configups.messages.msjini',
       'init' => "icommerceups_Init"
     ],
     
@@ -62,7 +56,6 @@ return [
       'title' => 'icommerceusps::configusps.single',
       'entity' => '\Modules\IcommerceUsps\Entities\Configusps',
       'view' => 'icommerceusps::admin.configusps.index',
-      'msjini' => 'icommerceusps::configusps.messages.msjini',
       'init' => "icommerceusps_Init"
     ],
   

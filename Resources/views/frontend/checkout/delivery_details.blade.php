@@ -160,7 +160,7 @@
                     id="shipping_zone"
                     name="shipping_zone"
                     v-model="shippingData.zone"
-                    @change="taxFlorida(shippingData.zone,1)"
+                    @change="taxFlorida(shippingData.zone,2)"
                     v-show="!statesShippingAlternative">
                 <option v-for="state in statesDelivery" v-bind:value="state.name">@{{ state.name }}</option>
                 <option value="null">{{ trans('icommerce::delivery_details.form.select_country') }}</option>

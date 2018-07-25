@@ -39,13 +39,9 @@
                   @{{ item.name }}
                 </h5>
                 <p class="mb-0">
-                  @if($currency->symbol_left != null)
-                    {{ $currency->symbol_left }}
-                  @endif
-                  @{{ item.price }}
-                  @if($currency->symbol_right != null)
-                    {{ $currency->symbol_right }}
-                  @endif
+
+                  @{{ item.price | numberFormat }}
+
                   @{{ '/ x '+item.quantity }}
                 </p>
                 <div class="col-7 p-0 mb-2">
@@ -78,15 +74,17 @@
           <hr class="mt-1 mb-2"/>
           <div class="dropdown-footer">
             <div class="row">
-              <div class="col-6">
+              <div class="col-4">
                 <p>
                 <div>{{ trans('icommerce::order_summary.car_sub') }}</div>
                 </p>
               </div>
-              <div class="col-6 text-right">
+              <div class="col-8 text-right">
                 <p>
                 <div v-if="!updatingData">
-                  $ @{{ subTotal | numberFormat }}
+
+                  @{{ subTotal | numberFormat }}
+
                 </div>
                 <div v-else>
                   <i class="fa fa-spinner fa-pulse"></i>
@@ -95,23 +93,23 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-6">
+              <div class="col-4">
                 <p>
                 <div>{{ trans('icommerce::order_summary.shipping') }}</div>
                 </p>
               </div>
-              <div class="col-6 text-right">
+              <div class="col-8 text-right">
                 <p>
                 <div v-if="!updatingData">
-                  <div v-if="! shippingMethodSelected">
+                  <div v-if="! shipping_method">
                     {{ trans('icommerce::order_summary.shipping_not_selected')}}
                   
                   </div>
-                  <div v-else-if="shippingMethodSelected.configName=='icommerceagree'">
-                  @{{shippingMethodSelected.configTitle }}
-                  </div>
                   <div v-else>
-                    $ @{{ shipping | numberFormat }}
+                    @{{shipping_method }}
+                    <br>
+                    @{{ shipping!=0 ? shipping : '' | numberFormat }}
+   
                   </div>
                 </div>
                 <div v-else>
@@ -121,15 +119,17 @@
               </div>
             </div>
             <div v-show="tax" class="row">
-              <div class="col-6">
+              <div class="col-4">
                 <p>
                 <div>{{ trans('icommerce::order_summary.tax') }}</div>
                 </p>
               </div>
-              <div class="col-6 text-right">
+              <div class="col-8 text-right">
                 <p>
                 <div v-if="!updatingData">
-                  $ @{{ taxTotal | numberFormat }}
+
+                  @{{ taxTotal | numberFormat }}
+   
                 </div>
                 <div v-else>
                   <i class="fa fa-spinner fa-pulse"></i>
@@ -144,14 +144,16 @@
           <hr class="mt-0 mb-1"/>
           <div class="dropdown-footer">
             <div class="row">
-              <div class="col-6">
+              <div class="col-4">
                 <h5 class="font-weight-bold">
                   <div>{{ trans('icommerce::order_summary.total') }}</div>
                 </h5>
               </div>
-              <div class="col-6">
+              <div class="col-8">
                 <h5 class="font-weight-bold text-right" v-if="!updatingData">
-                  $ @{{ orderTotal | numberFormat }}
+
+                  @{{ orderTotal | numberFormat }}
+       
                 </h5>
                 <h5 v-else>
                   <i class="fa fa-spinner fa-pulse"></i>

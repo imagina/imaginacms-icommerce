@@ -155,11 +155,11 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
 
             $router->put('{id}',[
                 'as'=>'icommerce.api.products.update',
-                'uses' => 'ProductControllerV2@store',
+                'uses' => 'ProductControllerV2@update',
             ]);
             $router->delete('{id}',[
-                'as'=>'icommerce.api.products.update',
-                'uses' => 'ProductControllerV2@store',
+                'as'=>'icommerce.api.products.delete',
+                'uses' => 'ProductControllerV2@delete',
             ]);
         });
     });

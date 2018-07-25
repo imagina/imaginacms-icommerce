@@ -68,9 +68,7 @@
                 this.getArticulos();
             },
             data: {
-                articulos: [
-
-                ],
+                articulos: [],
                 subTotal: 0.0,
                 descuento: 0.0,
                 monto: 0.0,

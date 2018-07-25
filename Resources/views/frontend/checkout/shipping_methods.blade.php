@@ -7,17 +7,18 @@
         </div>
         <h3 class="d-flex align-items-center">
           {{ trans('icommerce::shipping.title') }}
+          <div v-if="updatingData">
+            &nbsp;
+            <i class="fa fa-spinner fa-pulse"></i>
+          </div>
         </h3>
       
       </div>
       
-      
       <table class="table my-2">
         <tbody>
         <tr class="shipping-item" v-for="(ship, index) in shippingMethods">
-          <td
-            v-if="ship.configName!=='freeshipping' && ship.configName!=='flatrate' && ship.configName!=='localdelivery' && ship.configName!=='icommerceagree' "
-            colspan="3">
+          <td >
             
             <div
               class="card-header collapsed bg-white border-0"
@@ -29,8 +30,16 @@
               :data-target="'#shipping'+index"
               aria-expanded="true"
               :aria-controls="'shipping'+index">
+  
+            
               
               <label class="mb-0">
+  
+                <input type="radio" v-if="ship.price!==null && ship.price>=0" @click="calculate(index,ship.price,ship.configName,$event)" class=""
+                       v-model="shipping_method" :value="ship.configTitle">
+                <div  v-if="ship.priceShow">
+                  @{{ship.price | twoDecimals}}
+                </div>
                 <a class="card-title">
                   @{{ship.configTitle | capitalize}}
                 </a>
@@ -68,69 +77,7 @@
               </div>
             </div>
           </td>
-          <td v-else width="90">
-            <label class="w-100">
-              <input
-                class="w-25 float-left"
-                type="radio"
-                v-if="ship.deliveryfee"
-                @click="calculate(index,ship.deliveryfee,ship.feetype,$event)"
-                v-model="shipping_method"
-                :value="ship.configTitle">
-              <input
-                class="w-25 float-left"
-                type="radio"
-                v-else-if="ship.minimum"
-                @click="calculate(index,ship.minimum,ship.configName,$event)"
-                v-model="shipping_method"
-                :value="ship.configTitle">
-              <input
-                class="w-25 float-left"
-                type="radio"
-                v-else-if="ship.cost"
-                @click="calculate(index,ship.cost,ship.configName,$event)"
-                v-model="shipping_method"
-                :value="ship.configTitle">
-              
-              <input
-                class="w-25 float-left"
-                type="radio"
-                v-else-if="ship.configName=='icommerceagree'"
-                @click="calculate(index,0,ship.configName,$event)"
-                v-model="shipping_method"
-                :value="ship.configTitle">
-              
-              
-              <div class="w-75 float-left delivery" v-if="ship.deliveryfee">@{{ship.deliveryfee | twoDecimals}}</div>
-              
-              <div class="w-75 float-left minimun" v-else-if="ship.minimum">@{{ship.minimum | twoDecimals}}</div>
-              
-              <div class="w-75 float-left cost" v-else-if="ship.cost">@{{ship.cost | twoDecimals}}</div>
-            
-            </label>
           
-          </td>
-          <td
-            v-if="ship.configName!=='icommerceups' && ship.configName!=='icommerceusps' && ship.configName!=='notmethods' && ship.configName!=='icommerceagree'">
-            <div v-if="ship.minimum">{{ trans('icommerce::shipping.form.minimum') }}</div>
-            <div v-else-if="ship.cost">{{ trans('icommerce::shipping.form.fixed') }}</div>
-            <div
-              v-else-if="ship.feetype && ship.feetype=='fixed_amount'">{{ trans('icommerce::shipping.form.fixed_amount') }}</div>
-            <div
-              v-else-if="ship.feetype && ship.feetype=='percentage_cart'">{{ trans('icommerce::shipping.form.percentage_cart') }}</div>
-            <div
-              v-else-if="ship.feetype && ship.feetype=='fixed_amount_product'">{{ trans('icommerce::shipping.form.fixed_amount_prod') }}</div>
-          </td>
-          <td
-            v-if="ship.configName!=='icommerceups' && ship.configName!=='icommerceusps' && ship.configName!=='notmethods'">
-
-              <label class="mb-0">
-                <a class="card-title">
-                  @{{ship.configTitle | capitalize}}
-                </a>
-              </label>
-  
-          </td>
         
         </tr>
         </tbody>

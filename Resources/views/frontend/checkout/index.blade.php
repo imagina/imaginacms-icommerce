@@ -143,6 +143,7 @@
           $(".showBilling").show();
           $("#expandBillingDetails").hide();
         }
+        checkout.getShippingMethods();
       })
       $("#expandBillingDetails").click(function (e) {
         e.preventDefault();
@@ -165,6 +166,8 @@
           //password_confirmation: {required: "#guestOrCustomer1:checked", minlength: 6, equalTo: "#password"},
           
           /*Billing Details*/
+          payment_firstname:{required: true},
+          payment_lastname:{required: true},
           payment_address_1: {required: true},
           payment_city: {required: true},
           payment_country: {required: true},
@@ -224,7 +227,7 @@
         this.$nextTick(function () {
           
           /*** UPDATE sub, realsub and total ***/
-          this.updateTotal(this.items);
+          this.updateTotalAndTax(this.items);
           
           /*** SET DEFAULT COUNTRY VALUE FROM SETTING ICOMMERCE MODULE ***/
           checkout.shippingData.country = checkout.defaultCountry;
@@ -272,7 +275,7 @@
               else
                 checkout.shippingData.country = checkout.defaultCountry;
               
-              checkout.checkLocalStore();
+              checkout.checkLocalStorage();
             }
           } else {
             checkout.checkAddressesIprofile();
@@ -299,7 +302,7 @@
               $(".formUser").html(formUser);
               $(".guestUser").html("");
             }
-            checkout.checkLocalStore();
+            checkout.checkLocalStorage();
             
           })
           
@@ -336,6 +339,7 @@
       data: {
         items: {!!$items['items']!!},
         payments: {!! $payments ? $payments : "''" !!},
+        currency: {!! $currency ? $currency : "''" !!},
         shippingMethods: {!! $shipping ? $shipping : "''" !!},
         paymentSelected: "",
         defaultCountry: {!! "'".$defaultCountry."'" !!},
@@ -369,7 +373,6 @@
         },
         quantity: {!!$items['quantity']!!},
         subTotal: 0,
-        realSubTotal: 0,
         shipping: 0,
         discount: 0.0,
         orderTotal: 0,
@@ -400,6 +403,16 @@
         selectedShippingAddress: 0,
         
       },
+      watch: {
+        useExistingOrNewPaymentAddress(value) {
+          if (value == 1)
+            this.changeAddress(this.selectedBillingAddress, 1);
+        },
+        useExistingOrNewShippingAddress(value) {
+          if (value == 1)
+            this.changeAddress(this.selectedShippingAddress, 2);
+        }
+      },
       filters: {
         capitalize: function (value) {
           if (!value) return ''
@@ -408,17 +421,16 @@
           value = value.toString()
           return value.charAt(0).toUpperCase() + value.slice(1)
         },
-        twoDecimals: function (value) {
-          return Number(Math.round(parseFloat(value) + 'e' + 2) + 'e-' + 2).toFixed(2);
-        },
         numberFormat: function (value) {
-          
-          return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-          
+          if (value != '')
+            return '{{$currency->symbol_left}}' + " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')) + " " + '{{$currency->symbol_right}}';
+          else
+            return value;
         }
       },
       methods: {
-        checkLocalStore: function () {
+        /** chequea los datos cacheados en localStorage */
+        checkLocalStorage: function () {
           
           if ('localStorage' in window && window['localStorage'] !== null) {
             for (var key in localStorage) {
@@ -451,6 +463,7 @@
           }
         },
         
+        /** chequea si hay direcciones guardadadas en el perfil del usuario */
         checkAddressesIprofile: function () {
           /*** IF THERE ARE ADDRESSES, CHECK IF ANY IS DEFAULT BILLING OR DEFAULT SHIPPING AND TURN ON FLAG ***/
           if (this.addresses.length) {
@@ -494,49 +507,26 @@
           }
           
         },
-        /* actualiza la cantidad del producto antes de enviarlo */
+        
+        /** actualiza la cantidad del producto antes de enviarlo */
         update_quantity: function (item, sign) {
           sign === '+' ?
             item.quantity++ :
             item.quantity--;
-          checkout.update_cart(item);
+          checkout.updateCart(item);
         },
         
-        /* actualiza el item del carrito */
-        update_cart: function (item) {
+        /** actualiza el item del carrito */
+        updateCart: function (item) {
           this.updatingData = true;
           axios.post('{{ route("icommerce.api.update.item.cart") }}', item).then(function (response) {
             vue_carting.get_articles();
-            checkout.updateTotal(checkout.items);
+            checkout.updateTotalAndTax(checkout.items);
             checkout.getShippingMethods();
           });
         },
-        isFreeshippingCountry: function () {
-          if (($('#sameDeliveryBilling').prop("checked")))
-            if (this.billingData.country == this.countryFreeshipping)
-              return true;
-            else
-              return false;
-          else if (this.shippingData.country == this.countryFreeshipping)
-            return true;
-          else
-            return false;
-        },
-        getArticulos: function () {
-          
-          axios.get('{{ url("api/icommerce/items_cart") }}').then(response => {
-            this.items = response.data.items;
-            this.quantity = response.data.quantity;
-            var sub = 0;
-            $.each(this.items, function (i, val) {
-              sub += val.price * val.quantity;
-              
-            })
-            this.orderTotal = this.subTotal = sub.toFixed(2);
-            
-          })
-          ;
-        },
+        
+        /** genera los msjs de alerta success, warning y error*/
         alert: function (menssage, type) {
           toastr.options = {
             "closeButton": false,
@@ -558,6 +548,8 @@
           
           toastr[type](menssage);
         },
+        
+        /** envia la data al controller OrderController */
         registerOrder: function () {
           var data = $('#checkoutForm').serialize();
           
@@ -580,80 +572,54 @@
             checkout.alert("{{ trans('icommerce::checkout.alerts.error_order') }}", "warning");
           });
         },
+        
+        /** recalcula order Total y shipping segun el metodo de envio seleccionado */
         calculate: function (index, val, type, event) {
           this.shippingMethodSelected = this.shippingMethods[index];
-          if (type == "freeshipping") {
-            if (parseFloat(this.realSubTotal) >= val) {
-              if (this.tax)
-                this.orderTotal = parseFloat(this.subTotal) + parseFloat(this.taxTotal);
-              else
-                this.orderTotal = this.subTotal;
-              
-              this.shipping = 0;
-              this.shipping_method = type;
-              this.shipping_amount = 0;
-              $("#shipping_value").val(val);
-            } else {
-              this.shipping_method = '';
-              this.alert("{{ trans('icommerce::checkout.alerts.minimun_shipping') }}", 'warning');
-              $('input[id=shipping_method]:checked').prop("checked", false);
-              
-            }
-          } else {
-            if (type == "flatrate") {
-              this.orderTotal = parseFloat(this.subTotal) + parseFloat(val);
-              this.shipping = val;
-            } else if (type == "fixed_amount") {
-              this.orderTotal = parseFloat(this.subTotal) + parseFloat(val);
-              this.shipping = val;
-            } else if (type == "percentage_cart") {
-              var percentage_cart = (parseFloat(this.subTotal) * parseFloat(val) / 100);
-              this.orderTotal = parseFloat(this.subTotal) + percentage_cart;
-              this.shipping = percentage_cart;
-            } else if (type == "icommerceups" || type == "icommerceusps") {
-              this.orderTotal = parseFloat(this.subTotal) + parseFloat(val);
-              this.shipping = val;
-            } else {
-              var cant = 0;
-              $.each(this.items, function (i, val) {
-                cant += val.quantity;
-              })
-              this.shipping = cant * val;
-              this.orderTotal = parseFloat(this.subTotal) + this.shipping;
-            }
-            
-            if (this.tax)
-              this.orderTotal = parseFloat(this.orderTotal) + parseFloat(this.taxTotal);
-            this.shipping_amount = this.shipping;
-            
-            $("#shipping_value").val(val);
-          }
+          this.orderTotal = parseFloat(this.subTotal) + parseFloat(val);
+          this.shipping = val;
+          
+          if (this.tax)
+            this.orderTotal = parseFloat(this.orderTotal) + parseFloat(this.taxTotal);
+          
+          this.shipping_amount = this.shipping;
+          
+          $("#shipping_value").val(val);
           
         },
-        guestOrCustomer: function (val) {
-          return true;
-        },
+        
+        /** reposiciona el scroll al top del formulario en caso de errores */
         topForm: function () {
           var posicion = $("#checkoutForm").offset().top;
           $("html, body").animate({
             scrollTop: posicion
           }, 1000);
         },
-        updateTotal: function (items) {
+        
+        /** actualiza subTotal, Total y Tax */
+        updateTotalAndTax: function (items) {
+          this.updatingData = true;
           this.subTotal = 0;
           this.orderTotal = 0;
-          this.realSubTotal = 0;
-          for (var index in items) {
+          
+          for (var index in items)
             this.subTotal += (items[index].price * items[index].quantity);
-            if (items[index].freeshipping == "0")
-              this.realSubTotal += (items[index].price * items[index].quantity);
-          }
+          
           
           this.subTotal = Math.round(this.subTotal * 100) / 100;
-          this.realSubTotal = Math.round(this.realSubTotal * 100) / 100;
-          this.calculate("", "");
+          if (($('#sameDeliveryBilling').prop("checked"))) {
+            var state = this.billingData.zone;
+            var compoment = 1;
+          } else {
+            var state = this.shippingData.zone;
+            var compoment = 2;
+          }
+          this.taxFlorida(state, compoment);
+          this.calculate("", 0);
           this.updatingData = false;
         },
+        
+        /** elimina un producto del carrito */
         deleteItem: function (item) {
           this.updatingData = true;
           axios.post('{{ route('icommerce.api.delete.item.cart') }}?id=' + item.id, item)
@@ -664,7 +630,7 @@
               checkout.items = response.data.items;
               checkout.quantity = response.data.quantity;
               checkout.weight = response.data.weight;
-              checkout.updateTotal(response.data.items);
+              checkout.updateTotalAndTax(response.data.items);
               checkout.getShippingMethods();
               checkout.alert("{{ trans('icommerce::checkout.alerts.remove_car') }}", "success");
               
@@ -672,6 +638,8 @@
             
           });
         },
+        
+        /** envia los datos del logueo al controller AuthEcommerceController */
         login: function (e) {
           e.preventDefault();
           var data = $('#checkoutForm').serialize();
@@ -687,6 +655,8 @@
               checkout.checkAddressesIprofile();
             });
         },
+        
+        /** inyecta el html cuando un usuario inicia session / esto aun esta para actualizar a VUE reactive */
         appendUser: function (alert, type) { // este metodo funciona tanto para login como para register
           if (!this.user) {
             $(alert).html("{{ trans('icommerce::checkout.alerts.invalid_data') }}");
@@ -707,11 +677,15 @@
             checkout.last_name = this.user.last_name;
           }
         },
+        
+        /** llama al api CartController y solicita los metodos de envio */
         getShippingMethods: function () {
           this.updatingData = true;
           this.shipping_method = null;
           this.shipping_amount = 0;
           this.shipping = 0;
+          
+          
           shippingMethodSelected = false;
           if (($('#sameDeliveryBilling').prop("checked"))) {
             var postCode = this.billingData.postcode;
@@ -723,11 +697,17 @@
             var countryISO = this.shippingData.country;
             var country = $('#shipping_country option:selected').text();
           }
+          var options = {
+            postCode: postCode,
+            countryCode: countryISO,
+            country: country
+          };
           if (postCode != '' && countryISO != '' && country != '')
-            axios.post('{{ url("api/icommerce/shipping_methods") }}', {postCode, countryISO, country})
+            axios.post('{{ url("api/icommerce/shipping_methods") }}', options)
               .then(response => {
                 checkout.updatingData = false;
                 checkout.shippingMethods = response.data;
+                checkout.updateTotalAndTax(checkout.items);
                 $.each(checkout.shippingMethods, function (i, val) {
                   if (val.configName == 'notmethods') {
                     checkout.shipping_method = 'notmethods';
@@ -737,8 +717,10 @@
           else
             this.updatingData = false;
         },
+        
+        /** activa/desactiva y calcula el tax en caso de seleccionarse Florida */
         taxFlorida: function (state, component) {
-          if (($('#sameDeliveryBilling').prop("checked"))) {
+          if (($('#sameDeliveryBilling').prop("checked")) || component == 2) {
             if (state == 'Florida') {
               this.tax = true;
               this.taxTotal = parseFloat(this.taxValue / 100 * this.subTotal).toFixed(2);
@@ -748,25 +730,15 @@
               this.orderTotal -= this.taxTotal;
               this.taxTotal = '';
             }
-          } else {
-            if (component == 2) {
-              if (state == 'Florida') {
-                this.tax = true;
-                this.taxTotal = parseFloat(this.taxValue / 100 * this.subTotal).toFixed(2);
-                this.orderTotal = (parseFloat(this.orderTotal) + parseFloat(this.taxTotal)).toFixed(2);
-              } else {
-                this.tax = false;
-                this.orderTotal -= this.taxTotal;
-                this.taxTotal = '';
-              }
-            }
           }
         },
+        
+        /** consulta las provincias por pais seleccionado al api en Ilocations */
         getProvincesByCountry: function (iso, component) {
           if (iso != null) {
             if (iso != 'US')
               this.taxFlorida('null', component);
-            axios.get('{{url('/api/ilocations/allprovincesbycountry/iso2')}}'+'/' + iso)
+            axios.get('{{url('/api/ilocations/allprovincesbycountry/iso2')}}' + '/' + iso)
               .then(response => {
                 //data is the JSON string
                 if (component == 1) {
@@ -788,6 +760,8 @@
             });
           }
         },
+        
+        /** se encarga de igualar las direcciones shipping y billing en caso de estar marcado en checkbox */
         deliveryBilling: function () {
           var login = $("input[name=newOldCustomer]:checked").val();
           if (login == 1) {
@@ -802,6 +776,8 @@
             this.shippingData = this.billingData;
           
         },
+        
+        /** actualiza shippingData o billingData cuando se cambia de direccion en los selects de direcciones del iprofile */
         changeAddress: function (addressIndex, comp) {
           var address = this.addresses[addressIndex];
           for (var key in address) {
@@ -811,12 +787,14 @@
             else
               checkout.shippingData[key] = val;
           }
-          
-          setTimeout(function () {
-            checkout.getShippingMethods();
-          }, 1000);
+          if (comp == 2 || (comp == 1 && $('#sameDeliveryBilling').prop("checked")))
+            setTimeout(function () {
+              checkout.getShippingMethods();
+            }, 1000);
           
         },
+        
+        /** valida los errores del formulario y valida/registra el usuario para poder enviar la orden a registerOrder() */
         submitOrder: function (event) {
           if ($('#checkoutForm').valid()) {
             event.preventDefault();
@@ -862,12 +840,12 @@
                     } else {
                       
                       checkout.user = response.data.user;
-
+                      
                       if (login != 1 && register != 2)
                         checkout.appendUser("#registerAlert");
                       else
                         checkout.appendUser("#registerAlert", "guest");
-
+                      
                       setTimeout(function () {
                         checkout.registerOrder();
                       }, 1000);
@@ -898,7 +876,20 @@
             this.topForm();
             checkout.alert('{{ trans('icommerce::checkout.alerts.missing_fields') }}', "warning");
           }
-        }
+        },
+        
+        /** se llama desde la vista Order_Summary y le indica si el producto lleva freeshipping segun el pais destino */
+        isFreeshippingCountry: function () {
+          if (($('#sameDeliveryBilling').prop("checked")))
+            if (this.billingData.country == this.countryFreeshipping)
+              return true;
+            else
+              return false;
+          else if (this.shippingData.country == this.countryFreeshipping)
+            return true;
+          else
+            return false;
+        },
       }
     });
   </script>

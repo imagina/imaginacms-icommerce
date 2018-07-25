@@ -12,6 +12,7 @@ use Modules\Icommerce\Entities\Payment;
 use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Entities\Product_Discount;
 use Modules\Icommerce\Entities\Status;
+use Modules\Icommerce\Entities\Currency;
 
 /**
  * Get Status Enabled / Disabled
@@ -369,10 +370,12 @@ if (!function_exists('icommerce_totalDimensions')) {
 
 if (!function_exists('icommerce_checkAllItemsFreeshipping')) {
 
-    function icommerce_checkAllItemsFreeshipping($items, $countryCode)
+    function icommerce_checkAllItemsFreeshipping($items, $options = array())
     {
 
         $cant = 0;
+
+        $countryCode = isset($options["countryCode"]) ? $options["countryCode"] : null;
 
         if (setting('icommerce::country-freeshipping')) {
             $countryFree = setting('icommerce::country-freeshipping');
@@ -421,8 +424,8 @@ if (!function_exists('icommerce_getTotalWeight')) {
         $countryFree = "";
 
         // If Country freeshipping is Null that's no matter
-        // because in the validation the $countryCode!=$countryFree 
-        // the weight would be added 
+        // because in the validation the $countryCode!=$countryFree
+        // the weight would be added
         if (setting('icommerce::country-freeshipping')) {
             $countryFree = setting('icommerce::country-freeshipping');
         }
@@ -449,6 +452,19 @@ if (!function_exists('icommerce_getTotalWeight')) {
         }
 
         return $totalWeight;
+    }
+
+}
+if (!function_exists('localesymbol()')) {
+
+    function localesymbol($code='USD')
+    {
+        $currency=Currency::where('code',$code)->whereStatus(Status::ENABLED)->first();
+        if(!isset($currency)){
+            $currency->symbol_left='$';
+            $currency->symbol_right='';
+        }
+        return $currency;
     }
 
 }

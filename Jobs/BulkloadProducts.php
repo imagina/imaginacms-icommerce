@@ -48,7 +48,7 @@ class BulkloadProducts implements ShouldQueue
                     $product->options = null;
                     if (isset($this->info['folderpaht'])) {
                         if (isset($product->image) && !empty($product->image)) {
-                            $picture = $this->info['folderpaht'] . 'products/' . $product->image;
+                            $picture = $this->info['folderpaht'] . 'products/' . str_replace(' ', '', $product->image);
                             if (\Storage::disk('publicmedia')->exists($picture)){
                                 $destination_path = 'assets/icommerce/product/' . $product->id . '.jpg';
                                 $img = $this->saveimage($destination_path, $picture);
@@ -59,7 +59,7 @@ class BulkloadProducts implements ShouldQueue
                             $product->options["mainimage"] = $img;
                         }
                         if (isset($product->certificate) && !empty($product->certificate)) {
-                            $certificatefile = $this->info['folderpaht'] . 'products/certificate/' . $product->certificate;
+                            $certificatefile = $this->info['folderpaht'] . 'products/certificate/' . str_replace(' ', '',$product->certificate);
 
                             if (\Storage::disk('publicmedia')->exists($certificatefile)) {
                                 $destination_path = 'assets/icommerce/product/certificate/' . $product->id . '.pdf';
@@ -69,7 +69,7 @@ class BulkloadProducts implements ShouldQueue
 
                         }
                         if (isset($product->datasheet) && !empty($product->datasheet)) {
-                            $datasheetfile = $this->info['folderpaht'] . 'products/datasheet/' . $product->datasheet;
+                            $datasheetfile = $this->info['folderpaht'] . 'products/datasheet/' . str_replace(' ', '', $product->datasheet);
                             if (\Storage::disk('publicmedia')->exists($datasheetfile)) {
                                 $destination_path = 'assets/icommerce/product/datasheet/' . $product->id . '.pdf';
                                 $datasheet = $this->saveFile($datasheetfile, $destination_path);
@@ -109,7 +109,7 @@ class BulkloadProducts implements ShouldQueue
                     $model->category_id = $product->category_id ?? $exist->category_id;
                     $model->quantity = $product->quantity ?? $exist->quantity ?? 0;
                     $model->status =  $product->status ?? $exist->status ?? 1;
-                    $model->rating =  $product->rating ?? $exist->rating ?? '3';
+                    $model->rating =  $product->rating ?? $exist->rating ?? 3;
                     $model->stock_status =  $product->stock_status ??  $exist->stock_status ?? 1;
                     $model->manufacturer_id =  $product->manufacter_id ?? $exist->manufacter_id ?? null;
                     $model->price =  $product->price ?? $exist->price;
