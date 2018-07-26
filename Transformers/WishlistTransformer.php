@@ -8,9 +8,6 @@ class WishlistTransformer extends Resource
 {
     public function toArray($request)
     {
-
-        dd($this->title);
-
         /*valida la imagen del producto*/
         if (isset($this->product()->options->mainimage) && !empty($this->product()->options->mainimage)){
             $image = url($this->product()->options->mainimage);
@@ -26,7 +23,7 @@ class WishlistTransformer extends Resource
             'url' => $this->product()->url,
             'description' => $this->product()->description,
             'summary' => $this->product()->summary,
-            'price' => $this->product()->price,
+            'price' => formatMoney($this->product()->price),
             'mainimage' => $image,
             'gallery' => $this->product()->gallery
         ];

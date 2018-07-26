@@ -1,0 +1,9 @@
+url: https://github.com/imagina/asgardcms-iblog
+versions:
+    "0.1.7":
+        added:
+            - Format Monery helper and config
+            - multi-language url
+        changed:
+            - Views orders
+            - PHP Function number_format by helprer formatmoney() in view and transformers

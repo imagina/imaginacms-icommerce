@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('content')
-
+  @php
+    $currency=localesymbol($code??'USD')
+  @endphp
   
   <div>
     <div class="container">
@@ -148,26 +150,26 @@
                     </td>
                     <td>{{$product['sku']}}</td>
                     <td>{{$product['quantity']}}</td>
-                    <td>{{$product['price']}}</td>
-                    <td class="text-right">{{$product['total']}}</td>
+                    <td>{{$currency->symbol_left}} {{formatMoney($product['price'])}} {{$currency->symbol_right}}</td>
+                    <td class="text-right">{{$currency->symbol_left}} {{formatMoney($product['total'])}} {{$currency->symbol_right}}</td>
                   </tr>
                   @endforeach
                   
                   <tr class="subtotal">
-                    <td colspan="4" class="text-right">{{trans('icommerce::orders.table.subtotal')}}</td>
+                    <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.subtotal')}}</td>
                     
-                    <td class="text-right">{{number_format($subtotal, 2,'.',',') }}</td>
+                    <td class="text-right">{{$currency->symbol_left}}  {{formatMoney($subtotal) }} {{$currency->symbol_right}}</td>
                   </tr>
                   
                   
                   <tr class="shippingTotal">
-                    <td colspan="4" class="text-right">{{trans('icommerce::orders.table.shipping_method')}}</td>
-                    <td class="text-right">{{ $order->shipping_method }} {{ $order->shipping_amount != 0 ? number_format( $order->shipping_amount , 2,'.',',') : '' }}</td>
+                    <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.shipping_method')}}</td>
+                    <td class="text-right">{{ $order->shipping_method }} {{$currency->symbol_left}} {{ $order->shipping_amount != 0 ? formatMoney($order->shipping_amount) : '' }} {{$currency->symbol_right}}</td>
                   </tr>
                   @if($order->tax_amount>0)
                   <tr class="taxAmount">
-                    <td colspan="4" class="text-right">{{trans('icommerce::order_summary.tax')}}</td>
-                    <td class="text-right">{{ number_format($order->tax_amount , 2,'.',',') }}</td>
+                    <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::order_summary.tax')}}</td>
+                    <td class="text-right">{{$currency->symbol_left}} {{ formatMoney($order->tax_amount) }} {{$currency->symbol_right}}</td>
                   </tr>
                   @endif
                   {{--
@@ -179,8 +181,8 @@
                   --}}
                   
                   <tr class="total">
-                    <td colspan="4" class="text-right">{{trans('icommerce::orders.table.total')}}</td>
-                    <td class="text-right">{{number_format($order->total , 2, '.',',') }}</td>
+                    <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.total')}}</td>
+                    <td class="text-right">{{$currency->symbol_left}} {{formatMoney($order->total) }} {{$currency->symbol_right}}</td>
                   </tr>
                 
                 </table>

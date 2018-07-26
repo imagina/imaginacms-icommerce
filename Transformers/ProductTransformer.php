@@ -32,7 +32,7 @@ class ProductTransformer extends Resource
         $price_discount = $this->discount;
         if ($price_discount) {
             $discount = '-' . intVal((($this->price - $price_discount) / $this->price) * 100) . '%';
-            $price_discount = number_format($price_discount, 2);
+            $price_discount = formatMoney($price_discount);
         } else {
             $discount = false;
         }
@@ -46,7 +46,7 @@ class ProductTransformer extends Resource
             'url' => $this->url,
             'description' => $this->description,
             'summary' => $this->summary,
-            'price' => number_format($this->price, 2),
+            'price' => formatMoney($this->price),
             'price_discount' => $price_discount,
             'discount' => $discount,
             'new' => $diff->days > 15 ? false : true,

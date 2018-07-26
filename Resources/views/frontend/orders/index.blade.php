@@ -1,7 +1,9 @@
 @extends('layouts.master')
 @include('icommerce::frontend.partials.carting')
 @section('content')
-
+    @php
+        $currency=localesymbol($code??'USD')
+    @endphp
     <div>
         <div class="container">
             <div class="row">
@@ -43,7 +45,7 @@
                             <tr class='clickable-row' data-href="{{ url('/orders').'/'.$order->id }}">
                                     <td>{{ $order->id }}</td>
                                     <td>{{ $order->email }}</td>
-                                    <td>{{ $order->total }}</td>
+                                 <td>{{$currency->symbol_left}} {{formatMoney($order->total) }}{{$currency->symbol_right}} </td>
                                     <td>{{icommerce_get_Orderstatus()->get($order->order_status)}}</td>
                                     <td>{{ $order->created_at }}</td>
                             </tr>

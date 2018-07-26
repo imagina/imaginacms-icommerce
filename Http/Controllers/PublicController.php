@@ -72,7 +72,15 @@ class PublicController extends BasePublicController
   // view products by category
   public function index()
   {
-    $uri = Route::current()->uri();
+      $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
+      $uri=explode('/',Route::current()->uri());
+      if($uri[0]===$locale){
+          unset($uri[0]);
+          $uri= implode('/', $uri);
+      }else {
+          $uri =implode('/',$uri);
+      };
+
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
     
@@ -148,12 +156,20 @@ class PublicController extends BasePublicController
   // Informacion de Producto
   public function show()
   {
-    $slug = Route::current()->uri();
-    $tpl = 'icommerce::frontend.show';
+      $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
+      $uri=explode('/',Route::current()->uri());
+      if($uri[0]===$locale){
+          unset($uri[0]);
+          $uri= implode('/', $uri);
+      }else {
+          $uri =implode('/',$uri);
+      };
+
+      $tpl = 'icommerce::frontend.show';
     
     $ttpl = 'icommerce.show';
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    $product = $this->product->findBySlug($slug);
+    $product = $this->product->findBySlug($uri);
     
     $user = $this->auth->user();
     (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;

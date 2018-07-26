@@ -163,11 +163,11 @@
                   </del>
                   <span class="text-danger font-weight-bold"
                         v-if="!product.price_discount">
-                                        @{{ currency.symbol_left }} {{ number_format($product->price,2,'.',',') }} @{{ currency.symbol_right }}
+                                        @{{ currency.symbol_left }} {{ formatMoney($product->price) }} @{{ currency.symbol_right }}
                                     </span>
                   <span class="text-danger font-weight-bold"
                         v-if="product.price_discount">
-                                        @{{ currency.symbol_left }} {{  number_format($product->price_discount,2,'.',',')  }}
+                                        @{{ currency.symbol_left }} {{  formatMoney($product->price_discount)  }}
                     @{{ currency.symbol_right }}
                                     </span>
                 </p>

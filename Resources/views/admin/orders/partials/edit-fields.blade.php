@@ -123,8 +123,8 @@
 		    				</td>
 		    				<td>{{$product->sku}}</td>
 		    				<td>{{$product->pivot->quantity}}</td>
-		    				<td>{{$product->pivot->price}}</td>
-		    				<td>{{$product->pivot->total}}</td>
+		    				<td>{{formatMoney($product->pivot->price)}}</td>
+		    				<td>{{formatMoney($product->pivot->total)}}</td>
     					</tr>
     				@endforeach
     				
@@ -143,26 +143,26 @@
 	    					$subtotal = $order->total - $rest;
 
 	    				@endphp
-	    				<td>{{number_format((float)$subtotal, 2, '.', '')}}</td>
+	    				<td>{{formatMoney((float)$subtotal)}}</td>
 	    			</tr>
 
 	    			@if(!empty($order->shipping_amount))
 	    			<tr class="shippingTotal">
 	    				<td colspan="4" class="text-right">{{$order->shipping_method}}</td>
-	    				<td>{{number_format((float)$order->shipping_amount, 2, '.', '')}}</td>
+	    				<td>{{formatMoney((float)$order->shipping_amount)}}</td>
 	    			</tr>
 	    			@endif
 	    			
 	    			@if(($order->tax_amount)>0))
 	    			<tr class="taxTotal">
 	    				<td colspan="4" class="text-right">Tax</td>
-	    				<td>{{number_format((float)$order->tax_amount, 2, '.', '')}}</td>
+	    				<td>{{formatMoney((float)$order->tax_amount)}}</td>
 	    			</tr>
 	    			@endif
 	    			
 	    			<tr class="total">
 	    				<td colspan="4" class="text-right">Total</td>
-	    				<td>{{$order->total}}</td>
+	    				<td>{{formatMoney($order->total)}}</td>
 	    			</tr>
 
   				</table>

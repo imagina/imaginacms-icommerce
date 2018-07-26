@@ -7,13 +7,21 @@ use Modules\Icommerce\Entities\Product;
 
 /** @var Router $router */
 if (!App::runningInConsole()) {
-    //dd(Category::all());
-    $category = Category::where('slug', Request::path())->first();
+    $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+    $uri=explode('/',Request::path());
+if($uri[0]===$locale){
+    unset($uri[0]);
+    $uri= implode('/', $uri);
+}else {
+    $uri =implode('/',$uri);
+};
+    $category = Category::where('slug', $uri)->first();
+
     if (isset($category->slug) && !empty($category->slug)) {
 
         /** @var Router $router */
-        $router->group(['prefix' => $category->slug], function (Router $router) use ($category) {
-            $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+        $router->group(['prefix' => $category->slug], function (Router $router) use ($category, $locale) {
+
 
             $router->get('/', [
                 'as' => $locale . '.icommerce.' . $category->slug,
@@ -69,12 +77,10 @@ if (!App::runningInConsole()) {
         ]);
     });
 
-    $product = Product::where('slug', Request::path())->first();
+    $product = Product::where('slug', $uri)->first();
     if (isset($product->slug) && !empty($product->slug)) {
 
-        $router->group(['prefix' => $product->slug], function (Router $router) use ($product) {
-
-            $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+        $router->group(['prefix' => $product->slug], function (Router $router) use ($product , $locale) {
 
             $router->get('/', [
                 'as' => $locale . '.icommerceslug.' . $product->slug,
@@ -87,9 +93,8 @@ if (!App::runningInConsole()) {
     }
     //This is for sitemap
     foreach (Product::all() as $product) {
-        $router->group(['prefix' => $product->slug], function (Router $router) use ($product) {
+        $router->group(['prefix' => $product->slug], function (Router $router) use ($product, $locale) {
 
-            $locale = LaravelLocalization::setLocale() ?: App::getLocale();
 
             $router->get('/', [
                 'as' => $locale . '.icommerceslug.' . $product->slug,

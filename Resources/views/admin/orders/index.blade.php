@@ -45,7 +45,7 @@
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->email }}</td>
-                                <td>{{ $order->total }}</td>
+                                <td>{{ formatMoney($order->total)}}</td>
                                 <td>{{icommerce_get_Orderstatus()->get($order->order_status)}}</td>
                                 <td>
                                     <a href="{{ route('admin.icommerce.order.edit', [$order->id]) }}">

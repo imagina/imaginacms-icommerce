@@ -3,7 +3,7 @@
     "alias": "icommerce",
     "description": "E-commerce Module for AsgardCMS",
     "keywords": [],
-    "version": "0.1.6",
+    "version": "0.1.7",
     "active": 1,
     "order": 1,
     "providers": [

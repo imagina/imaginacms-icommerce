@@ -455,16 +455,30 @@ if (!function_exists('icommerce_getTotalWeight')) {
     }
 
 }
-if (!function_exists('localesymbol()')) {
+if (!function_exists('localesymbol')) {
 
-    function localesymbol($code='USD')
+    function localesymbol($code = 'USD')
     {
-        $currency=Currency::where('code',$code)->whereStatus(Status::ENABLED)->first();
-        if(!isset($currency)){
-            $currency->symbol_left='$';
-            $currency->symbol_right='';
+        $currency = Currency::where('code', $code)->whereStatus(Status::ENABLED)->first();
+        if (!isset($currency)) {
+            $currency = (object)[
+                'symbol_left' => '$',
+                'symbol_right' => ''
+            ];
         }
         return $currency;
+    }
+
+}
+
+if (!function_exists('formatMoney')) {
+
+    function formatMoney($value)
+    {
+        $format =(object) Config::get('asgard.icommerce.config.formatmoney');
+
+        return number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
+
     }
 
 }
