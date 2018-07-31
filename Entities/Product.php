@@ -132,7 +132,7 @@ class Product extends Model
     protected function setSlugAttribute($value){
        
         if(!empty($value)){
-            $this->attributes['slug'] = str_slug($value,'-');
+            $this->attributes['slug'] = istr_slug($value,'-');
         }else{
         	$this->attributes['slug'] = str_slug($this->title,'-');
         }

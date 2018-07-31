@@ -707,6 +707,7 @@
                         countryCode: countryISO,
                         country: country
                     };
+                    console.log(options);
                     if (postCode != '' && countryISO != '' && country != '')
                         axios.post('{{ url("api/icommerce/shipping_methods") }}', options)
                             .then(response => {

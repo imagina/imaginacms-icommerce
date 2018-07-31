@@ -33,8 +33,8 @@ class CouponRequest extends \Modules\Bcrud\Http\Requests\CrudRequest
             'shipping' => 'required',
             'total' => 'required',
             'uses_total' => 'required',
-            'datestart' => 'required',
-            'dateend' => 'required',
+            'date_start' => 'required',
+            'date_end' => 'required',
         ];
     }
 
@@ -67,8 +67,8 @@ class CouponRequest extends \Modules\Bcrud\Http\Requests\CrudRequest
             'shipping.required' => trans('icommerce::coupons.messages.shipping is required'),
             'total.required' => trans('icommerce::coupons.messages.total is required'),
             'uses_total.required' => trans('icommerce::coupons.messages.uses_total is required'),
-            'datestart.required' => trans('icommerce::coupons.messages.datestart is required'),
-            'dateend.required' => trans('icommerce::coupons.messages.dateend is required'),
+            'date_start.required' => trans('icommerce::coupons.messages.date_start is required'),
+            'date_end.required' => trans('icommerce::coupons.messages.date_end is required'),
         ];
     }
 }

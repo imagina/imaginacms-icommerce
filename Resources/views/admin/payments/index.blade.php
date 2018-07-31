@@ -26,7 +26,7 @@
                     <ul class="nav nav-tabs">
                         @foreach ($paymentMethods  as $index => $method)
                         <li @if($c==0) class='active' @endif>
-                            <a data-toggle="tab" href="#{{$method['name']}}">{{$method['title']}}</a>
+                            <a data-toggle="tab" href="#{{$method['name']}}">{{trans($method['title'])}}</a>
                         </li>
                         @php $c++; @endphp
                         @endforeach
@@ -37,7 +37,7 @@
                         @foreach ($paymentMethods  as $ind => $method)
                           <div id="{{$method['name']}}" class="tab-pane fade @if($c==0) in active @endif ">
 
-                            <h3>{{$method['title']}}</h3>
+                            <h3>{{trans($method['title'])}}</h3>
                             @include($method['view'])
                            
                           </div>

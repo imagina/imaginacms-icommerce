@@ -12,28 +12,6 @@
                 </a>
                 <div class="discount font-weight-bold px-2 py-1" v-if="item.discount"></div>
                 <div class="new font-weight-bold px-2 py-1" v-if="item.new">NUEVO</div>
-
-                <div class="capa">
-
-                    <div class="quickview text-uppercase font-weight-bold text-center py-3">
-                        <a v-bind:href="item.url">
-                            vista rapida
-                        </a>
-                    </div>
-
-                    <a class="btn-add-cart btn btn-outline-secondary px-2 py-1"
-                       v-on:click="$emit('add-cart',item)" v-if="item.price > 0">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    </a>
-
-                    <a class="btn-add-wishlist btn btn-outline-secondary px-2 py-1"
-                       v-on:click="$emit('add-wishlist',item)"
-                       v-if="item.price > 0">
-                        <i class="fa fa-heart" aria-hidden="true"></i>
-                    </a>
-
-                </div>
-
             </div>
 
             <div class="content text-center mt-2">
@@ -53,22 +31,29 @@
                     </a>
                 </h4>
 
-                <div class="prices mb-3">
-                    <div class="price-old font-weight-bold float-left ml-2" v-if="item.unformatted_price_discount">
-                        <del>{{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}</del>
+                <div class="prices font-weight-bold mb-3">
+                    <div class="price font-weight-bold" v-if="item.unformatted_price > 0">
+                        <div class="price-old font-weight-bold float-left ml-2" v-if="item.unformatted_price_discount">
+                            <del>{{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}</del>
+                        </div>
+                        <div class="price-old font-weight-bold float-left ml-2" v-else>
+                            <del>{{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}</del>
+                        </div>
                     </div>
-                    <div class="price-old font-weight-bold float-left ml-2" v-else>
-                        <del>{{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}</del>
-                    </div>
+                    <button type="button" class="btn-add-1 btn btn-outline-secondary mb-4 font-weight-bold" v-on:click="$emit('add-cart',item)" v-show="item.unformatted_price > 0">
+                        <i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>
+                        AÑADIR AL CARRITO
+                    </button>
                 </div>
             </div>
-            </div>
+        </div>
         </slide>
     </carousel>
 </template>
 <script>
     export default {
         props:[
+            'categories',
             'take'
         ],
         data() {
@@ -90,17 +75,16 @@
         },
         methods: {
             getData: function () {
-                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"recent":true,"take":'+take+'}';
-                axios
-                    .get(uri)
+                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"categories":'+this.categories+',"take":'+take+'}';
+                axios.get(uri)
                     .then(response => {
-                        this.articles = response.data;
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                    .finally(() => this.loading = false
-                    )
+                    this.articles = response.data;
+            })
+            .catch(error => {
+                    console.log(error)
+            })
+            .finally(() => this.loading = false
+            )
             }
         },
     }

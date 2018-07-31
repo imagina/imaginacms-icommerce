@@ -332,7 +332,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 ->select('*', 'icommerce__products.id as id');;
             if (isset($filter->categories)) {
                 is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-
                 $query->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id',
                     '=', 'icommerce__products.id')
                     ->whereIn('icommerce__product_category.category_id', $filter->categories);
@@ -364,7 +363,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
                 $query->leftJoin('icommerce__product_discounts', 'icommerce__product_discounts.product_id', '=', 'icommerce__products.id');
             }
-            if (isset($filter->moresold)) { //si hay que filtrar por rango de precio
+            if (isset($filter->bestsellers)) { //si hay que filtrar por rango de precio
 
                 $query->leftJoin('icommerce__order_product', 'icommerce__order_product.product_id', '=', 'icommerce__products.id')
                     ->leftJoin('icommerce__orders', 'icommerce__order_product.order_id', '=', 'icommerce__orders.id')
@@ -392,9 +391,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if (isset($filter->take)) {
                 $query->take($filter->take ?? 5);
                 return $query->get();
+            }elseif(isset($filter->paginate)&& is_integer($filter->paginate))
+            {
+                return $query->paginate($filter->paginate);
+            }else{
+                return $query->paginate(12);
             }
-            if(isset($filter->paginate)&& is_integer($filter->paginate))
-            return $query->paginate($filter->paginate);
+
         } catch (\Exception $e) {
 
 

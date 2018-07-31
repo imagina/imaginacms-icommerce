@@ -116,17 +116,25 @@
                       {{$order->payment_firstname}}<br>
                       {{$order->payment_lastname}}<br>
                       {{$order->payment_address_1}}<br>
-                      {{$order->payment_address_2}}<br>
+                      @if(!empty ($order->payment_address_2))
+                        {{$order->payment_address_2}}<br>
+                      @endif
+                      {{$order->payment_postcode ?? ''}}<br>
                       {{$order->payment_city}}<br>
+                      {{$order->payment_zone ?? ''}}<br>
                       {{$order->payment_country}}
                     </td>
-                    
+
                     <td>
                       {{$order->shipping_firstname}}<br>
                       {{$order->shipping_lastname}}<br>
                       {{$order->shipping_address_1}}<br>
-                      {{$order->shipping_address_2}}<br>
+                      @if(!empty ($order->shipping_address_2))
+                        {{$order->shipping_address_2}}<br>
+                      @endif
+                      {{$order->shipping_postcode ?? ''}}<br>
                       {{$order->shipping_city}}<br>
+                      {{$order->shipping_zone ?? ''}}<br>
                       {{$order->shipping_country}}
                     </td>
                   

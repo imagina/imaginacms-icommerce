@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
         </slide>
     </carousel>
 </template>
@@ -90,7 +90,7 @@
         },
         methods: {
             getData: function () {
-                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"recent":true,"take":'+take+'}';
+                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"bestsellers":true,"take":'+take+'}';
                 axios
                     .get(uri)
                     .then(response => {

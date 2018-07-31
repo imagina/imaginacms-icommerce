@@ -30,8 +30,8 @@ return [
         'yes'           => 'Si',
         'shipping'      => 'Se puede cambiar con envío gratuito',
         'total'         => "Monto minimo de la compra para poder cambiar el cupón",
-        'datestart'     => "Fecha de Inicio",
-        'dateend'       => "Fecha de Fin",
+        'date_start'     => "Fecha de Inicio",
+        'date_end'       => "Fecha de Fin",
     ],
     'form' => [
     ],
@@ -44,8 +44,8 @@ return [
         'shipping is required'      => 'Seleccione el campo de free shipping',
         'total is required'         => 'El Monto Minimo por Compra es requerido',
         'uses_total is required'    => 'Usos Maximos es requerido',
-        'datestart is required'     => 'La fecha de inicio es requerida',
-        'dateend is required'       => 'La fecha de fin es requerida',
+        'date_start is required'     => 'La fecha de inicio es requerida',
+        'date_end is required'       => 'La fecha de fin es requerida',
     ],
     'validation' => [
     ],

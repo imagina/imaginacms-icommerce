@@ -30,8 +30,8 @@ return [
         'yes'           => 'Yes',
         'shipping'      => 'Can be exchanged with free shipping',
         'total'         => 'Minimum amount of the purchase to be able to change the coupon',
-        'datestart'     => 'Date start',
-        'dateend'       => 'Date End',
+        'date_start'     => 'Date start',
+        'date_end'       => 'Date End',
     ],
     'form'      => [
     ],
@@ -44,8 +44,8 @@ return [
         'shipping is required'      => 'the shipping is is required',
         'total is required'         => 'a minimum total is required for the transaction to proceed',
         'uses_total is required'    => 'The maximum amount of uses is required',
-        'datestart is required'     => 'The start date is required',
-        'dateend is required'       => 'The end date is required',
+        'date_start is required'     => 'The start date is required',
+        'date_end is required'       => 'The end date is required',
     ],
     'validation' => [
     ],

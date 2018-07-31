@@ -160,15 +160,15 @@ class CouponController extends BcrudController
         ]);
 
         $this->crud->addField([
-            'name' => 'datestart',
-            'label' => trans('icommerce::coupons.table.datestart'),
+            'name' => 'date_start',
+            'label' => trans('icommerce::coupons.table.date_start'),
             'type' => 'date',
             'viewposition' => 'right',
         ]);
 
          $this->crud->addField([
-            'name' => 'dateend',
-            'label' => trans('icommerce::coupons.table.dateend'),
+            'name' => 'date_end',
+            'label' => trans('icommerce::coupons.table.date_end'),
             'type' => 'date',
             'viewposition' => 'right',
         ]);

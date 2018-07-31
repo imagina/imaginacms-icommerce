@@ -5,8 +5,8 @@
                <th>{{ trans('icommerce::product_discounts.table.quantity') }}</th>
                {{-- <th>{{ trans('icommerce::product_discounts.table.priority') }}</th> --}}
                <th>{{ trans('icommerce::product_discounts.table.price') }}</th>
-               <th>{{ trans('icommerce::product_discounts.table.datestart') }}</th>
-               <th>{{ trans('icommerce::product_discounts.table.dateend') }}</th>
+               <th>{{ trans('icommerce::product_discounts.table.date_start') }}</th>
+               <th>{{ trans('icommerce::product_discounts.table.date_end') }}</th>
             </tr>
         </thead>
         <tbody class="items-discounts">
@@ -27,10 +27,10 @@
           			<input id="dprice" name="dprice" placeholder="{{trans('icommerce::product_discounts.table.price')}}" min="1"  type="number"  class="form-control" step="0.01" value="{{$discount->price}}">
           		</td>
           		<td>
-          			<input id="ddatestart" name="ddatestart" placeholder="{{trans('icommerce::product_discounts.table.ddatestart')}}" type="date"  class="form-control" value="{{$discount->datestart}}">
+          			<input id="ddate_start" name="ddate_start" placeholder="{{trans('icommerce::product_discounts.table.ddate_start')}}" type="date"  class="form-control" value="{{$discount->date_start}}">
           		</td>
           		<td>
-          			<input id="ddateend" name="ddateend" placeholder="{{trans('icommerce::product_discounts.table.ddateend')}}" type="date"  class="form-control" value="{{$discount->dateend}}">
+          			<input id="ddate_end" name="ddate_end" placeholder="{{trans('icommerce::product_discounts.table.ddate_end')}}" type="date"  class="form-control" value="{{$discount->date_end}}">
           		</td>
           	</tr>
             @endforeach
@@ -48,10 +48,10 @@
                 <input id="dprice" name="dprice" placeholder="{{trans('icommerce::product_discounts.table.price')}}" min="1"  type="number"  class="form-control" step="0.01">
               </td>
               <td>
-                <input id="ddatestart" name="ddatestart" placeholder="{{trans('icommerce::product_discounts.table.ddatestart')}}" type="date"  class="form-control">
+                <input id="ddate_start" name="ddate_start" placeholder="{{trans('icommerce::product_discounts.table.ddate_start')}}" type="date"  class="form-control">
               </td>
               <td>
-                <input id="ddateend" name="ddateend" placeholder="{{trans('icommerce::product_discounts.table.ddateend')}}" type="date"  class="form-control">
+                <input id="ddate_end" name="ddate_end" placeholder="{{trans('icommerce::product_discounts.table.ddate_end')}}" type="date"  class="form-control">
               </td>
             </tr>
           @endif

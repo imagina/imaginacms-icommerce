@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Collection;
 class EloquentShippingRepository extends EloquentBaseRepository implements ShippingRepository
 {
   
-  public function getShippingsMethods($products,$postalCode=null,$countryCode=null,$country=null){
+  public function getShippingsMethods($products,$options = array()){
     
     $shippingMethods = config('asgard.icommerce.config.shippingmethods');
     $resultMethods = collect([]);
     
     $methodConfiguration = null;
-    
+
     if(isset($shippingMethods) && count($shippingMethods)>0){
       
       // Items mixtos with Freeshipping and not freeshipping
-      if(!icommerce_checkAllItemsFreeshipping($products["items"],$countryCode)){
+      if(!icommerce_checkAllItemsFreeshipping($products["items"],$options)){
         
         
         foreach ($shippingMethods as $key => $method) {
@@ -27,8 +27,7 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
           $status = setting($method["name"].'::status');
           
           if($status==1){
-            
-            // Informacion que retorna para el Frontend
+
             /*
                 if msj is "success" and 'items' is not null
                     - Items has a list (array)
@@ -43,14 +42,10 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                 if msj is "freeshipping":
                     - 'items' has a msj (string)
             */
-            
-            // OJO ESTE IF DEBE IR EN EL MODULO QUE CORRESPONDA (UPS / USPS)
-            //if($postalCode!=null && $countryCode!=null){
-            
-            
+
             try {
               
-              $Results = $method['init']($products,$postalCode,$countryCode,$country);
+              $Results = $method['init']($products,$options);
               
               if(isset($Results["price"]))
                 $price = $Results["price"];
@@ -79,28 +74,11 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
                 "configTitle" => $method['title']
               ];
             }
-            
-          }// status
-          
-          
-          /*
-             Si hubo un error en la validacion dentro del Modulo (UPS / USPS o el q sea)
 
-             Debe retornar dentro de ese modulo:
-                 - $response["msj"] = "error";
-                 - $response["items"] = "Debe ingresar el codigo postal etc etc";
- 
-              Nota: Pueden ver el Helper de Iagree, como retorna los valores con price etc.
-
- El msj $method['msjini'] (Que es el msj del config icommerce) pudiera desaparecer
- Y el msj estaria en el retorno de cada Modulo:
-
-   $response["items"] =  trans('icommerceups::configups.messages.msjini')
-         */
-          
-          
           $resultMethods->push($methodConfiguration);
-          
+
+          }// status
+
         }// foreach
         
       }else{
@@ -118,15 +96,12 @@ class EloquentShippingRepository extends EloquentBaseRepository implements Shipp
       }
     }
     
-    
-    
+
     if(count($shippingMethods)==0 || ($resultMethods->count())==0)
       $resultMethods = null;
-    
-    
-    //dd($resultMethods);
-    
+
     return $resultMethods;
+
   }
   
 }

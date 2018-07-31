@@ -46,6 +46,11 @@
 @stop
 
 @push('js-stack')
+    <style>
+        .font-weight-bold {
+            font-weight: 600 !important;
+        }
+    </style>
     <script type="text/javascript">
         $( document ).ready(function() {
             $(document).keypressAction({

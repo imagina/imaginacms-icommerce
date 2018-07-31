@@ -123,7 +123,7 @@ class ProductController extends AdminBaseController
             $request["related_ids"] = json_encode($request->related_ids);
         }
 
-        $product = $this->product->create($request->except(['_token', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddatestart', 'ddateend', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'MAX_FILE_SIZE', 'gallery', 'meta_title', 'meta_description', 'meta_keyword']));
+        $product = $this->product->create($request->except(['_token', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'MAX_FILE_SIZE', 'gallery', 'meta_title', 'meta_description', 'meta_keyword']));
 
         if ($product) {
             if (isset($request->categories)) {
@@ -152,8 +152,8 @@ class ProductController extends AdminBaseController
                 'quantity' => $request->dquantity,
                 'priority' => 1,
                 'price' => $request->dprice,
-                'datestart' => $request->ddatestart,
-                'dateend' => $request->ddateend
+                'date_start' => $request->ddate_start,
+                'date_end' => $request->ddate_end
             );
             $product->product_discounts()->create($param);
         }
@@ -295,7 +295,7 @@ class ProductController extends AdminBaseController
             $request["related_ids"] = null;
         }
 
-        $product = $this->product->update($product, $request->except(['_token', '_method', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddatestart', 'ddateend', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'povDelete', 'poDelete', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'subpId', 'hiddenFileDel', 'MAX_FILE_SIZE', 'meta_title', 'meta_description', 'meta_keyword']));
+        $product = $this->product->update($product, $request->except(['_token', '_method', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'povDelete', 'poDelete', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'subpId', 'hiddenFileDel', 'MAX_FILE_SIZE', 'meta_title', 'meta_description', 'meta_keyword']));
 
         if ($product) {
             if (isset($request->categories)) {
@@ -329,8 +329,8 @@ class ProductController extends AdminBaseController
                 'quantity' => $request->dquantity,
                 'priority' => 1,
                 'price' => $request->dprice,
-                'datestart' => $request->ddatestart,
-                'dateend' => $request->ddateend
+                'date_start' => $request->ddate_start,
+                'date_end' => $request->ddate_end
             );
             $update = $product->product_discounts()->update($param);
 
@@ -825,7 +825,7 @@ class ProductController extends AdminBaseController
     /**
      * Search Products Via Ajax DataTable.
      *
-     * @param  none
+     * @param  req
      * @return DataTable Format
      */
 

@@ -28,7 +28,7 @@ use Modules\Icommerce\Transformers\PriceTransformer;
 
 
 
-class ProductControllerV2 extends BasePublicController
+class CategoryControllerV2 extends BasePublicController
 {
     /**
      * @var ProductRepository

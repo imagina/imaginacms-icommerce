@@ -1,3 +1,5 @@
+@include('icommerce::frontend.partials.variables')
+
 <div id="content_carting" class="bg-primary">
     <!-- BUTTOM -->
     <a class="dropdown-toggle text-primary"
@@ -84,7 +86,7 @@
                         <p class="mb-0 text-muted pb-2"
                            style="font-size: 14px">
                             {{trans('icommerce::cart.table.quantity')}}: @{{ item.quantity }} <br>
-                            {{trans('icommerce::cart.table.price_per_unit')}}: $ @{{ item.format_price }}
+                            {{trans('icommerce::cart.table.price_per_unit')}}: @{{ currencySymbolLeft + ' ' + item.format_price + ' ' +currencySymbolRight  }}
                         </p>
                     </div>
                 </div>
@@ -107,7 +109,7 @@
                 <h6 class="font-weight-bold">
                     {{trans('icommerce::cart.table.total')}}:
                     <span class="text-primary">
-                        $ @{{ total }}
+                         @{{ currencySymbolLeft + ' ' +  total + ' ' +currencySymbolRight }}
                     </span>
                 </h6>
                 <!-- botones-->
@@ -129,7 +131,6 @@
 
 @section('scripts')
     @parent
-    {!!Theme::script('js/app.js?v='.config('app.version'))!!}
 
     <script type="text/javascript">
 
@@ -144,7 +145,9 @@
                 articles: false,
                 total: 0,
                 quantity: 0,
-                currency: {!! $currency ? $currency : "''"!!},
+                currencySymbolLeft: icommerce.currencySymbolLeft,
+                currencySymbolRight: icommerce.currencySymbolRight,
+
             },
             methods: {
                 /*obtiene los producto*/

@@ -38,7 +38,7 @@
                 <input type="radio" v-if="ship.price!==null && ship.price>=0" @click="calculate(index,ship.price,ship.configName,$event)" class=""
                        v-model="shipping_method" :value="ship.configTitle">
                 <div  v-if="ship.priceShow">
-                  @{{ship.price | twoDecimals}}
+                  @{{ship.price | numberFormat}}
                 </div>
                 <a class="card-title">
                   @{{ship.configTitle | capitalize}}
@@ -55,7 +55,7 @@
                       <label>
                         <input type="radio" @click="calculate(index,item.price,ship.configName,$event)" class=""
                                v-model="shipping_method" :value="item.configTitle">
-                        @{{item.price | twoDecimals}}
+                        @{{item.price | numberFormat}}
                       </label>
                     </td>
                     <td>

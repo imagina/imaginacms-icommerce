@@ -19,8 +19,8 @@ return [
         'quantity'      => 'Quantity',
         'priority'      => 'Priority',
         'price'         => 'Price',
-        'datestart'     => 'Date Start',
-        'dateend'       => 'Date End',
+        'date_start'     => 'Date Start',
+        'date_end'       => 'Date End',
     ],
     'form'          => [
     ],

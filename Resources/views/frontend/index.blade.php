@@ -15,8 +15,6 @@
 @stop
 
 
-@include('icommerce::frontend.partials.carting')
-
 @section('content')
     <!-- preloader -->
     <div id="content_preloader">

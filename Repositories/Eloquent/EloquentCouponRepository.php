@@ -12,8 +12,8 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
 	public function findByCode($code)
     {
     	return $this->model->where('code', $code)
-    	->whereDate('datestart','<=',date("Y-m-d"))
-    	->whereDate('dateend','>=',date("Y-m-d"))
+    	->whereDate('date_start','<=',date("Y-m-d"))
+    	->whereDate('date_end','>=',date("Y-m-d"))
     	->whereStatus(Status::ENABLED)
     	->where("uses_total",">",0)
     	->first();

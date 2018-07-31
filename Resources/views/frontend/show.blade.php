@@ -39,8 +39,6 @@
   {{ $product->title }} | @parent
 @stop
 
-
-@include('icommerce::frontend.partials.carting')
 @section('content')
   
   <!-- preloader -->

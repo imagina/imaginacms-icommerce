@@ -76,7 +76,7 @@
                                 @{{ item.sku }}
                             </td>
                             <td class="text-center align-middle">
-                                @{{ currencySymbolLeft + ' ' +item.format_price  + ' ' + currencySymbolRight}}
+                                @{{ currencySymbolLeft + ' ' + item.format_price  + ' ' + currencySymbolRight}}
                             </td>
                             <td>
                                 <div class="input-group">

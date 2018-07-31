@@ -80,7 +80,6 @@ class ProductControllerV2 extends BasePublicController
 
                 $response =  ProductTransformer::collection($this->product->paginate($request->paginate??12));
 
-
             }else{
 
                 $response =  ProductTransformer::collection($this->product->whereFilters(json_decode($request->filters)));

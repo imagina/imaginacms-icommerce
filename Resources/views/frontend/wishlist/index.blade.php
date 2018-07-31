@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@include('icommerce::frontend.partials.carting')
+
 @section('content')
     <!-- preloader -->
     <div id="content_preloader"><div id="preloader"></div></div>

@@ -19,8 +19,8 @@ return [
         'quantity'      => 'Cantidad',
         'priority'      => 'Prioridad',
         'price'         => 'Precio',
-        'datestart'     => 'Fecha Inicio',
-        'dateend'       => 'Fecha Fin',
+        'date_start'     => 'Fecha Inicio',
+        'date_end'       => 'Fecha Fin',
     ],
     'form'          => [
     ],

@@ -1,5 +1,4 @@
 @extends('layouts.master')
-@include('icommerce::frontend.partials.carting')
 @section('content')
     @php
         $currency=localesymbol($code??'USD')
