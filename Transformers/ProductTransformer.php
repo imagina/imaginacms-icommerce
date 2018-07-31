@@ -10,9 +10,9 @@ class ProductTransformer extends Resource
     {
 
         /*evalua segun si el pruducto es nuevo o no (15 días)*/
-        $date_available = date_create($this->date_available);
-        $now = date_create(date("Y/m/d"));
-        $new_product = date_diff($date_available, $now )>15 ? true:false ; //diferencia de dias
+        $date1 = date_create($this->date_available);
+        $date2 = date_create(date("Y/m/d"));
+        $diff = date_diff($date1, $date2); //diferencia de dias
 
         /*valida la imagen del producto*/
         if (isset($this->options->mainimage) && !empty($this->options->mainimage)) {
@@ -51,7 +51,7 @@ class ProductTransformer extends Resource
             'unformatted_price_discount' => $price_discount,
             'price_discount' => formatMoney($price_discount),
             'discount' => $discount,
-            'new' => $new_product,
+            'new' => $diff->days > 15 ? false : true,
             'rating' => $this->rating,
             'mainimage' => $image,
             'product_discounts' => empty($this->product_discounts) ? 0 : $this->product_discounts,
