@@ -1,5 +1,13 @@
 url: https://github.com/imagina/asgardcms-iblog
 versions:
+    "0.1.8":
+        added:
+           - Components widget products
+
+        changed:
+           - Transformer Product
+           - ApiController Cart
+           - Product Repository
     "0.1.7":
         added:
             - Format Monery helper and config
