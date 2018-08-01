@@ -28,7 +28,7 @@
                   <img v-if="item.mainimage != null" class="img-fluid" v-bind:src="item.mainimage"
                        v-bind:alt="item.name">
                   <img v-else class="img-fluid"
-                       src="http://local.imagina.com.co:82/labs/appstrap3.0.11/theme/assets/img/shop/gloves-1-thumb.jpg"
+                       src="{{url('modules/icommerce/img/product/default.jpg')}}"
                        v-bind:alt="item.name">
                 </a>
               </div>

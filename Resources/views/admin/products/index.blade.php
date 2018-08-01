@@ -38,11 +38,13 @@
                                   <th></th>
                                   <th></th>
                                   <th></th>
+                                  <th></th>
                             </tr>
                             <tr class="titles">
                                 <th>ID</th>
                                 <th>{{trans('icommerce::products.table.title')}}</th>
                                 <th>SKU</th>
+                                <th>{{trans('icommerce::categories.single')}}</th>
                                 <th>{{trans('icommerce::manufacturers.single')}}</th>
                                 <th>Status</th>
                                 <th>Stock Status</th>
@@ -60,6 +62,7 @@
                                 <th>ID</th>
                                 <th>{{trans('icommerce::products.table.title')}}</th>
                                 <th>SKU</th>
+                                <th>{{trans('icommerce::categories.single')}}</th>
                                 <th>{{trans('icommerce::manufacturers.single')}}</th>
                                 <th>Status</th>
                                 <th>Stock Status</th>
@@ -107,10 +110,15 @@
 
         $(function () {
 
+            function escapeSpecialChars(jsonString) {
+                 return jsonString.replace(/&quot;/g, '"')
+                 .replace(/&amp;/g, "&");
+            }
+
             var locale = "<?php echo $locale ?>";
 
             $('.data-table thead .filts th').each( function (i) {
-                if(i!=6 && i!=7 && i!=8){
+                if(i!=7 && i!=8 && i!=9){
                     var title = $('.data-table thead .titles th').eq($(this).index()).text();
                     var serach = '<input style="width:100%;"type="text" placeholder="Search ' + title + '" />';
                     $(this).html('');
@@ -148,13 +156,25 @@
                     {"data":"id","name":"icommerce__products.id"},
                     {"data":"title","name":"icommerce__products.title",
                     "render":function ( data, type, row, meta ) {
-                        if (typeof data === "object"){
+
+                        if (typeof data === "object")
                             return data[locale];
-                        }else{
+                        else
                             return data;
-                        }
+
                     }},
                     {"data":"sku","name":"icommerce__products.sku"},
+                    {"data":"cattitle","name":"icommerce__categories.title",
+                    "render":function ( data, type, row, meta ) {
+
+                        var data = JSON.parse(escapeSpecialChars(data));
+
+                        if (typeof data === "object")
+                            return data[locale];
+                        else
+                            return data;
+
+                    }},
                     {"data":"name","name":"icommerce__manufacturers.name"},
                     {"data":"status","name":"icommerce__products.status",
                     "render":function ( data, type, row, meta ) {
@@ -181,7 +201,7 @@
                    
                 ],
                  "columnDefs": [ {
-                    "targets": 8,
+                    "targets": 9,
                     "data": "",
                     "render": function ( data, type, row, meta ) {
 
@@ -226,7 +246,7 @@
 
                     }
                   } ],
-                "order": [[ 7, "desc" ]],
+                "order": [[ 8, "desc" ]],
                 "language": {
                     "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
                 }

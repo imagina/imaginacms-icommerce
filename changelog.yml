@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-iblog
 versions:
+    "0.1.9":
+        added:
+           - filter Category in view Admin Products
     "0.1.8":
         added:
            - Components widget products
