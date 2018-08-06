@@ -82,47 +82,47 @@
                     <div id="sidebar_right"
                          class="col-md-4 col-lg-3 order-sm-1 order-md-0 pb-4">
                         <!-- categorias -->
-                    @include('icommerce.widgets.categories')
-                    
+                    @include('icommerce::frontend.widgets.categories')
+
                     <!-- manufacturer -->
-                    @include('icommerce.widgets.manufacturers')
-                    
+                    @include('icommerce::frontend.widgets.manufacturers')
+
                     <!-- rango de precio -->
-                    @include('icommerce.widgets.range_price')
-                    
+                    @include('icommerce::frontend.widgets.range_price')
+
                     <!-- wishlist -->
-                        @include('icommerce.widgets.owlwisthlist')
-                        
+                        @include('icommerce::frontend.widgets.owlwishlist')
+
                         {{--<h6 class="pt-4 mb-3 text-secondary">
                             <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                             RELATED PAGE
                         </h6>
                         @menu('related-page')--}}
                     </div>
-                    
+
                     <!-- ===== CONTENT ===== -->
                     <div id="content"
                          class="col-md-8 col-lg-9 order-sm-0 order-md-1 pb-3">
-                    
+
                     @if(isset($category) && !empty($category))
                         <!-- CATEGORY  -->
                             <h1 class="text-info">
                                 {{$category->title}}
                             </h1>
                         {!!$category->description!!}
-                        
+
                         <!-- BANNER CATEGORY -->
                         {{--@include('partials.widgets.banner-category')--}}
                     @endif
-                    
+
                     <!-- ORDER BY -->
                         <div class="col-12 p-0">
-                            @include('icommerce.widgets.order_by')
+                            @include('icommerce::frontend.widgets.order_by')
                         </div>
-                        
+
                         <!-- PRODUCTS -->
                         <div id="cont_products" class="col-12 p-0 mt-4">
-                            @include('icommerce.widgets.products')
+                            @include('icommerce::frontend.widgets.products')
                         </div>
                     </div>
                 </div>
@@ -134,16 +134,6 @@
 
 @section('scripts')
     @parent
-    {!!Theme::script('js/app.js?v='.config('app.version'))!!}
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
-    
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    
     <script>
       /* =========== VUE ========== */
       const vue_index_commerce = new Vue({
@@ -153,6 +143,8 @@
           pages: 0,
           preloaded: true,
           p_currence: 1,
+            currencysymbolleft: icommerce.currencySymbolLeft,
+            currencysymbolright: icommerce.currencySymbolRight,
           v_pages: 5,
           r_pages: {
             first: 1,

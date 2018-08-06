@@ -57,7 +57,7 @@
                     <div class="price-old font-weight-bold float-left ml-2" v-if="item.unformatted_price_discount">
                         <del>{{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}</del>
                     </div>
-                    <div class="price-old font-weight-bold float-left ml-2" v-else>
+                    <div class="price-old font-weight-bold float-left ml-2" v-if="!item.unformatted_price_discount">
                         <del>{{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}</del>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
         },
         methods: {
             getData: function () {
-                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"recent":true,"take":'+take+'}';
+                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"recent":true,"take":'+this.take+'}';
                 axios
                     .get(uri)
                     .then(response => {

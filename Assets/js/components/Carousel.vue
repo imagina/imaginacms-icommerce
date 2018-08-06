@@ -74,7 +74,8 @@
 <script>
     export default {
         props:[
-            'categories'
+            'categories',
+            'take'
         ],
         data() {
             return {
@@ -95,7 +96,7 @@
         },
         methods: {
             getData: function () {
-                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"categories":'+this.categories+'}';
+                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"categories":'+this.categories+',"take":'+this.take+'}';
                 axios.get(uri)
                     .then(response => {
                         this.articles = response.data;

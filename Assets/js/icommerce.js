@@ -49,7 +49,7 @@ const app = new Vue({
                 .then(function (response) {
 
 
-                if (response.data.status) {
+                if (response.data.status==200) {
                     app.alert("{{trans('icommerce::products.alerts.add_cart')}}", "success");
                     app.quantity = 1;
                     app.get_articles();

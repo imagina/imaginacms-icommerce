@@ -1,4 +1,4 @@
-@if(isset($category) && !empty($category))
+@if(isset($category) && !empty($category) && $category->children()->count() > 0)
     <h6 class="mb-3 text-secondary">
         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
         {{trans('icommerce::categories.filter')}}

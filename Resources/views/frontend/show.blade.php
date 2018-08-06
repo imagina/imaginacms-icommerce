@@ -92,24 +92,20 @@
               <div class="carousel-product">
                 <div class="zoom-product">
                   <div class="big-img" style="height: 480px">
-                    
-                    <div class="background_image no-print"
-                         :style="'background-image: url('+product.mainimage+')'">
-                    </div>
-                    
-                    <img class="img-fluid w-100 print-img" v-bind:src="product.mainimage" alt="" style="display: none">
+
+                    <v-zoom :img="product.mainimage" :width="800"></v-zoom>
                   </div>
                 </div>
                 
                 <div id="owl-carousel-product" class="owl-carousel">
-                  <div class="owl-item">
-                    <img v-bind:src="product.mainimage" alt="">
-                  </div>
-                  <!--
-                  <div class="owl-item" v-for="(img,index) in product_gallery">
-                      <img v-bind:src="product_gallery[index]" alt="">
-                  </div>
-                  -->
+                  <!--    <div class="owl-item">
+                      <img v-bind:src="product.mainimage" alt="">
+                    </div>
+              <!--
+                    <div class="owl-item" v-for="(img,index) in product_gallery">
+                        <img v-bind:src="product_gallery[index]" alt="">
+                    </div>
+                    -->
                 </div>
               </div>
             </div>
@@ -149,24 +145,23 @@
                                v-bind:class="[product.rating >= star ? 'text-warning' : 'text-muted']"
                                v-for="(star,key) in 5"></i>
                         </span>
-            
-            <div class="row align-items-center pt-2">
-              <!-- price -->
-              <div class="col-md-4 price mr-5" v-if="products_children === false">
-                <p class="h4 font-weight-bold mb-1">
-                  <del class="text-muted pr-2"
-                       v-if="product.price_discount"
-                       style="font-size: 14px">
-                    @{{ currency.symbol_left }} @{{ product.price }} @{{ currency.symbol_right }}
-                  </del>
-                  <span class="text-danger font-weight-bold"
-                        v-if="!product.price_discount">
-                                        @{{ currency.symbol_left }} {{ formatMoney($product->price) }} @{{ currency.symbol_right }}
+
+                        <div class="row align-items-center pt-2">
+                            <!-- price -->
+                            <div class="col-md-4 price mr-5" v-if="products_children === false">
+                                <p class="h4 font-weight-bold mb-1">
+                                    <del class="text-muted pr-2"
+                                         v-if="product.unformatted_price_discount"
+                                         style="font-size: 14px">
+                                        @{{ currencysymbolleft }} {{formatMoney($product->price)}} @{{currencysymbolright  }}
+                                    </del>
+                                    <span class="text-danger font-weight-bold"
+                                          v-if="!product.unformatted_price_discount">
+                                        @{{ currencysymbolleftt }} {{ formatMoney($product->price) }} @{{ currencysymbolright  }}
                                     </span>
-                  <span class="text-danger font-weight-bold"
-                        v-if="product.price_discount">
-                                        @{{ currency.symbol_left }} {{  formatMoney($product->price_discount)  }}
-                    @{{ currency.symbol_right }}
+                                    <span class="text-danger font-weight-bold"
+                                          v-if="product.unformatted_price_discount">
+                                        @{{ currencysymbolleft }} @{{ product.price_discount }} @{{ currencysymbolright  }}
                                     </span>
                 </p>
               </div>
@@ -485,7 +480,7 @@
     </div>
     
     <hr>
-    @include('icommerce.widgets.related_products')
+    @include('icommerce::frontend.widgets.related_products')
   
   </div>
   
@@ -507,8 +502,7 @@
 
 @section('scripts')
   @parent
-  {!!Theme::script('js/app.js?v='.config('app.version'))!!}
-  
+
   <style>
     @media print {
       body * {
@@ -553,9 +547,6 @@
     }
   </style>
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
-  
   <script type="text/javascript">
     var vue_show_commerce = new Vue({
       el: '#content_show_commerce',
@@ -580,6 +571,8 @@
         related_products: false,
         quantity: 1,
         currency: '',
+          currencysymbolleft: icommerce.currencySymbolLeft,
+          currencysymbolright: icommerce.currencySymbolRight,
         /*wishlist*/
         products_wishlist: [],
         user: {!! $user !!},
@@ -591,6 +584,9 @@
         breadcrumb: [],
         sending_data: false
       },
+        components:{
+            'v-zoom': vZoom
+        },
       filters: {
         numberFormat: function (value) {
           return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
@@ -765,46 +761,23 @@
       }
     });
   </script>
-  
+
   <script type="text/javascript">
-    $('.zoom-product').zoom({
-      magnify: 1
-    });
-    
-    var owla = $("#owl-carousel-product");
-    owla.owlCarousel({
-      items: 4,
-      slideSpeed: 250,
-      rewindSpeed: 350,
-      margin: 1,
-      responsiveClass: true,
-      dots: true,
-      nav: false
-    });
-    
-    function main_imgbig() {
+
+          function main_imgbig() {
       var img = $('#owl-carousel-product .owl-item').find('img');
       var e = img.attr('src');
       var carousel = img.closest(".carousel-product");
-      
+
       carousel.children('.zoom-product').trigger('zoom-product.destroy');
       carousel.children('.zoom-product').zoom({url: e});
       carousel.find(".zoom-product .big-img img").attr("src", e);
     }
-    
+
     main_imgbig();
-    
-    
-    $("#owl-carousel-product .owl-item img").bind("click touchstart", function () {
-      var e = $(this).attr("src");
-      var carousel = $(this).closest(".carousel-product");
-      
-      carousel.children('.zoom-product').trigger('zoom-product.destroy');
-      carousel.children('.zoom-product').zoom({url: e});
-      carousel.find(".zoom-product .big-img img").attr("src", e);
-    });
+
   </script>
-  
+
   <script>(function (d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;

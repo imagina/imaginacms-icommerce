@@ -329,7 +329,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     {
         try {
             $query = $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])
-                ->select('*', 'icommerce__products.id as id');;
+                ->select('*', 'icommerce__products.id as id');
             if (isset($filter->categories)) {
                 is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
                 $query->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id',
@@ -337,7 +337,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     ->whereIn('icommerce__product_category.category_id', $filter->categories);
             }
             if (isset($filter->manufacturer)) {
-                $query->where('icommerce__products.manufacturer_id', $filter->manufacturer);
+                is_array($filter->manufacturer) ? true : $filter->manufacturer = [$filter->manufacturer];
+                $query->whereIn('icommerce__products.manufacturer_id', $filter->manufacturer);
             }
             if (isset($filter->price)) { //si hay que filtrar por rango de precio
                 $price = $filter->price;

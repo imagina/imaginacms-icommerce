@@ -20,6 +20,7 @@ use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Transformers\ProductTransformer;
 use Modules\Iprofile\Repositories\AddressRepository;
 use Modules\Iprofile\Repositories\ProfileRepository;
+use Modules\Icommerce\Repositories\PaymentRepository;
 use Session;
 
 class OrderController extends BasePublicController
@@ -30,7 +31,8 @@ class OrderController extends BasePublicController
   private $notification;
   private $order;
   private $address;
-  
+  private $payments;
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -40,7 +42,8 @@ class OrderController extends BasePublicController
     Notification $notification,
     OrderRepository $order,
     ProfileRepository $profile,
-    AddressRepository $address)
+    AddressRepository $address,
+    PaymentRepository $payments)
   {
     parent::__construct();
     $this->cart = new Carting();
@@ -50,6 +53,7 @@ class OrderController extends BasePublicController
     $this->order = $order;
     $this->address = $address;
     $this->profile = $profile;
+    $this->payments = $payments;
   }
   
   public function index()
@@ -99,10 +103,14 @@ class OrderController extends BasePublicController
           "total" => $product->pivot->total,
         ]);
 
+      foreach ($this->payments->getPaymentsMethods() as $payment)
+        if($order->payment_method == $payment->configName)
+          $order->payment_method = $payment->configTitle;
+
       return view($tpl, compact('order', 'user', 'products','subtotal'));
       
     } else
-      return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));
+      return redirect()->route('home')->withError(trans('icommerce::orders.order_not_found'));
     
     
     

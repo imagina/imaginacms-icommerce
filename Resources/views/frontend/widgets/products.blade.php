@@ -3,8 +3,67 @@
 
     <div class="col-12 col-lg-6 col-xl-4"
          v-for="item in articles">
+        @if(isset($products) && empty($products))
+            <div v-show="preloaded">
+                @foreach($products as $product)
+                    <div class="card card-product rounded-0 mb-4">
+                        <!-- image -->
+                        <div class="img-overlay">
 
-        <!-- PRODUCT -->
+                            <a href="{{$product->url}}">
+                                <div class="card-img-top d-flex">
+                                    <img class="rounded-0 background_image align-self-center d-block mx-auto"
+                                         style="max-height: 100%">
+                                </div>
+                            </a>
+
+                            <a href="{{$product->url}}">
+                                <div class="overlay">
+                                    <div class="link">
+                                        <button class="btn btn-outline-light">
+                                            {{ trans('icommerce::common.home.details') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- dates product -->
+                        <div class="card-body">
+                            <!-- title -->
+                            <h6 class="card-title text-center font-weight-bold">
+                                <a href="{{$product->url}}">
+                                    {{$product->title}}
+                                </a>
+                            </h6>
+
+                            <!-- precio del producto -->
+                            <div class="row justify-content-md-center mb-2">
+                                <div class="col-md-auto">
+                                    <p class="text-center font-weight-bold mb-1">
+                                        @if( $product->price_discount)
+                                            <del class="text-muted pr-2"
+                                                 style="font-size: 14px">
+                                                {{$currency->symbol_left}} {{ $product->price }} {{ $currency->symbol_right }}
+                                            </del>
+                                            <span class="text-danger font-weight-bold">
+                                {{$currency->symbol_left}} {{ $product->price }} {{ $currency->symbol_right }}
+                            </span>
+                                        @else
+                                            <span class="text-danger font-weight-bold">
+                               {{$currency->symbol_left}} {{ $product->price_discount }} {{ $currency->symbol_right }}
+                            </span>
+                                    @endif
+                                    <hr class=" border-primary mt-0 mx-auto mb-4 w-75 border-2">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+    @endif
+    <!-- PRODUCT -->
         <div class="card card-product rounded-0 mb-4">
             <!-- image -->
             <div class="img-overlay">
@@ -15,7 +74,8 @@
                 -->
 
                 <div class="card-img-top d-flex">
-                    <img class="rounded-0 background_image align-self-center d-block mx-auto" v-bind:src="item.mainimage" style="max-height: 100%">
+                    <img class="rounded-0 background_image align-self-center d-block mx-auto"
+                         v-bind:src="item.mainimage">
                 </div>
 
 
@@ -46,16 +106,16 @@
                     <div class="col-md-auto">
                         <p class="text-center font-weight-bold mb-1">
                             <del class="text-muted pr-2"
-                                 v-if="item.price_discount"
+                                 v-if="item.unformatted_price_discount"
                                  style="font-size: 14px">
                                 @{{ currency.symbol_left }} @{{ item.price }} @{{ currency.symbol_right }}
                             </del>
                             <span class="text-danger font-weight-bold"
-                                  v-if="!item.price_discount">
-                                @{{ currency.symbol_left }} @{{ item.price }} @{{ currency.symbol_right }}
+                                  v-if="!item.unformatted_price_discount">
+                                @{{ currencySymbolLeft }} @{{ item.price }} @{{ currencySymbolRight }}
                             </span>
                             <span class="text-danger font-weight-bold"
-                                  v-if="item.price_discount">
+                                  v-if="item.unformatted_price_discount">
                                 @{{ currency.symbol_left }} @{{ item.price_discount }} @{{ currency.symbol_right }}
                             </span>
                         <hr class=" border-primary mt-0 mx-auto mb-4 w-75 border-2">
@@ -91,4 +151,4 @@
     ...
 </div>
 
-@include('icommerce.widgets.paginate')
+@include('icommerce::frontend.widgets.paginate')

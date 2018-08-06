@@ -172,7 +172,7 @@
                   
                   <tr class="shippingTotal">
                     <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.shipping_method')}}</td>
-                    <td class="text-right">{{ $order->shipping_method }} {{$currency->symbol_left}} {{ $order->shipping_amount != 0 ? formatMoney($order->shipping_amount) : '' }} {{$currency->symbol_right}}</td>
+                    <td class="text-right">{{ $order->shipping_method }} {{$order->shipping_amount != 0 ? $currency->symbol_left : '' }} {{ $order->shipping_amount != 0 ? formatMoney($order->shipping_amount) : '' }} {{$order->shipping_amount != 0 ? $currency->symbol_right : '' }} </td>
                   </tr>
                   @if($order->tax_amount>0)
                   <tr class="taxAmount">

@@ -1,5 +1,19 @@
 url: https://github.com/imagina/asgardcms-iblog
 versions:
+    "0.1.10":
+        Change:
+          - Components Widget
+          - Method search Admin Product Controller
+          - View forntend index, show.
+          - Order Controller
+        Added:
+          - Routes Category Api
+
+    "0.1.9":
+        added:
+           - Payment Repsoitory in Public OrderController
+        changed:
+           - View index Order
     "0.1.9":
         added:
            - filter Category in view Admin Products

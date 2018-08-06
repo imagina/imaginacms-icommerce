@@ -22,13 +22,13 @@
                     </div>
 
                     <a class="btn-add-cart btn btn-outline-secondary px-2 py-1"
-                       v-on:click="$emit('add-cart',item)" v-if="item.price > 0">
+                       v-on:click="$emit('add-cart',item)" v-if="item.unformatted_price > 0">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     </a>
 
                     <a class="btn-add-wishlist btn btn-outline-secondary px-2 py-1"
                        v-on:click="$emit('add-wishlist',item)"
-                       v-if="item.price > 0">
+                       v-if="item.unformatted_price > 0">
                         <i class="fa fa-heart" aria-hidden="true"></i>
                     </a>
 
@@ -57,7 +57,7 @@
                     <div class="price-old font-weight-bold float-left ml-2" v-if="item.unformatted_price_discount">
                         <del>{{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}</del>
                     </div>
-                    <div class="price-old font-weight-bold float-left ml-2" v-else>
+                    <div class="price-old font-weight-bold float-left ml-2" v-if="!item.unformatted_price_discount">
                         <del>{{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}</del>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
         },
         methods: {
             getData: function () {
-                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"bestsellers":true,"take":'+take+'}';
+                let uri = icommerce.url + '/api/icommerce/v2/products?filters={"bestsellers":true,"take":'+this.take+'}';
                 axios
                     .get(uri)
                     .then(response => {
