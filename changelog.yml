@@ -1,5 +1,9 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+    "0.1.12":
+        Added:
+          - lang Tax
+          - lang TaxClass
     "0.1.11":
         Change:
           - view components
