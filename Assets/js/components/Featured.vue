@@ -33,11 +33,11 @@
 
                 <div class="prices font-weight-bold mb-3">
                     <div class="price font-weight-bold" v-if="item.unformatted_price > 0">
-                        <div class="price-old font-weight-bold float-left ml-2" v-if="item.unformatted_price_discount">
-                            <del>{{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}</del>
+                        <div class="price font-weight-bold  ml-2" v-if="item.unformatted_price_discount">
+                            {{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}
                         </div>
-                        <div class="price-old font-weight-bold float-left ml-2" v-if="!item.unformatted_price_discount">
-                            <del>{{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}</del>
+                        <div class="price font-weight-bold ml-2" v-if="!item.unformatted_price_discount">
+                            {{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}
                         </div>
                     </div>
                     <button type="button" class="btn-add-1 btn btn-outline-secondary mb-4 font-weight-bold" v-on:click="$emit('add-cart',item)" v-show="item.unformatted_price > 0">

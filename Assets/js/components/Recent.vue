@@ -54,11 +54,11 @@
                 </h4>
 
                 <div class="prices mb-3">
-                    <div class="price-old font-weight-bold float-left ml-2" v-if="item.unformatted_price_discount">
-                        <del>{{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}</del>
+                    <div class="price font-weight-bold  ml-2" v-if="item.unformatted_price_discount">
+                        {{currencysymbolleft +' '+ item.price_discount +' '+ currencysymbolright }}
                     </div>
-                    <div class="price-old font-weight-bold float-left ml-2" v-if="!item.unformatted_price_discount">
-                        <del>{{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}</del>
+                    <div class="price font-weight-bold  ml-2" v-if="!item.unformatted_price_discount">
+                       {{currencysymbolleft +' '+ item.price +' '+ currencysymbolright }}
                     </div>
                 </div>
             </div>

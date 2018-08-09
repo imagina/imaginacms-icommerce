@@ -1022,6 +1022,105 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'AddressController@destroy',
         'middleware' => 'can:icommerce.addresses.destroy'
     ]);
+    $router->bind('taxrates', function ($id) {
+        return app('Modules\Icommerce\Repositories\TaxRatesRepository')->find($id);
+    });
+    $router->get('taxrates', [
+        'as' => 'admin.icommerce.taxrates.index',
+        'uses' => 'TaxRatesController@index',
+        'middleware' => 'can:icommerce.taxrates.index'
+    ]);
+    $router->get('taxrates/create', [
+        'as' => 'admin.icommerce.taxrates.create',
+        'uses' => 'TaxRatesController@create',
+        'middleware' => 'can:icommerce.taxrates.create'
+    ]);
+    $router->post('taxrates', [
+        'as' => 'admin.icommerce.taxrates.store',
+        'uses' => 'TaxRatesController@store',
+        'middleware' => 'can:icommerce.taxrates.create'
+    ]);
+    $router->get('taxrates/{taxrates}/edit', [
+        'as' => 'admin.icommerce.taxrates.edit',
+        'uses' => 'TaxRatesController@edit',
+        'middleware' => 'can:icommerce.taxrates.edit'
+    ]);
+    $router->put('taxrates/{taxrates}', [
+        'as' => 'admin.icommerce.taxrates.update',
+        'uses' => 'TaxRatesController@update',
+        'middleware' => 'can:icommerce.taxrates.edit'
+    ]);
+    $router->delete('taxrates/{taxrates}', [
+        'as' => 'admin.icommerce.taxrates.destroy',
+        'uses' => 'TaxRatesController@destroy',
+        'middleware' => 'can:icommerce.taxrates.destroy'
+    ]);
+    $router->bind('taxclass', function ($id) {
+        return app('Modules\Icommerce\Repositories\TaxClassRepository')->find($id);
+    });
+    $router->get('taxclasses', [
+        'as' => 'admin.icommerce.taxclass.index',
+        'uses' => 'TaxClassController@index',
+        'middleware' => 'can:icommerce.taxclasses.index'
+    ]);
+    $router->get('taxclasses/create', [
+        'as' => 'admin.icommerce.taxclass.create',
+        'uses' => 'TaxClassController@create',
+        'middleware' => 'can:icommerce.taxclasses.create'
+    ]);
+    $router->post('taxclasses', [
+        'as' => 'admin.icommerce.taxclass.store',
+        'uses' => 'TaxClassController@store',
+        'middleware' => 'can:icommerce.taxclasses.create'
+    ]);
+    $router->get('taxclasses/{taxclass}/edit', [
+        'as' => 'admin.icommerce.taxclass.edit',
+        'uses' => 'TaxClassController@edit',
+        'middleware' => 'can:icommerce.taxclasses.edit'
+    ]);
+    $router->put('taxclasses/{taxclass}', [
+        'as' => 'admin.icommerce.taxclass.update',
+        'uses' => 'TaxClassController@update',
+        'middleware' => 'can:icommerce.taxclasses.edit'
+    ]);
+    $router->delete('taxclasses/{taxclass}', [
+        'as' => 'admin.icommerce.taxclass.destroy',
+        'uses' => 'TaxClassController@destroy',
+        'middleware' => 'can:icommerce.taxclasses.destroy'
+    ]);
+    $router->bind('taxclassrates', function ($id) {
+        return app('Modules\Icommerce\Repositories\TaxClassRatesRepository')->find($id);
+    });
+    $router->get('taxclassrates', [
+        'as' => 'admin.icommerce.taxclassrates.index',
+        'uses' => 'TaxClassRatesController@index',
+        'middleware' => 'can:icommerce.taxclassrates.index'
+    ]);
+    $router->get('taxclassrates/create', [
+        'as' => 'admin.icommerce.taxclassrates.create',
+        'uses' => 'TaxClassRatesController@create',
+        'middleware' => 'can:icommerce.taxclassrates.create'
+    ]);
+    $router->post('taxclassrates', [
+        'as' => 'admin.icommerce.taxclassrates.store',
+        'uses' => 'TaxClassRatesController@store',
+        'middleware' => 'can:icommerce.taxclassrates.create'
+    ]);
+    $router->get('taxclassrates/{taxclassrates}/edit', [
+        'as' => 'admin.icommerce.taxclassrates.edit',
+        'uses' => 'TaxClassRatesController@edit',
+        'middleware' => 'can:icommerce.taxclassrates.edit'
+    ]);
+    $router->put('taxclassrates/{taxclassrates}', [
+        'as' => 'admin.icommerce.taxclassrates.update',
+        'uses' => 'TaxClassRatesController@update',
+        'middleware' => 'can:icommerce.taxclassrates.edit'
+    ]);
+    $router->delete('taxclassrates/{taxclassrates}', [
+        'as' => 'admin.icommerce.taxclassrates.destroy',
+        'uses' => 'TaxClassRatesController@destroy',
+        'middleware' => 'can:icommerce.taxclassrates.destroy'
+    ]);
 // append
 
 

@@ -1,5 +1,17 @@
-url: https://github.com/imagina/asgardcms-iblog
+url: https://github.com/imagina/asgardcms-icommerce
 versions:
+    "0.1.11":
+        Change:
+          - view components
+        Added:
+          - Repositories Tax
+          - Repositories TaxClass
+          - View admin Tax
+          - View admin TaxClass
+          - Migrations Tax
+          - Migrations TaxClass
+          - Entities Tax
+          - Entities TaxClass
     "0.1.10":
         Change:
           - Components Widget

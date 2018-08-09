@@ -54,6 +54,9 @@ class IcommerceServiceProvider extends ServiceProvider
             $event->load('payments', array_dot(trans('icommerce::payments')));
             $event->load('shippings', array_dot(trans('icommerce::shippings')));
             $event->load('slug_translations', array_dot(trans('icommerce::slug_translations')));
+            $event->load('taxrates', array_dot(trans('icommerce::taxrates')));
+            $event->load('taxclasses', array_dot(trans('icommerce::taxclasses')));
+            $event->load('taxclassrates', array_dot(trans('icommerce::taxclassrates')));
             // append translations
 
 
@@ -381,7 +384,43 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheSlug_TranslationsDecorator($repository);
             }
         );
-    
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\TaxRatesRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTaxRatesRepository(new \Modules\Icommerce\Entities\TaxRates());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheTaxRatesDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\TaxClassRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTaxClassRepository(new \Modules\Icommerce\Entities\TaxClass());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheTaxClassDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\TaxClassRatesRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTaxClassRatesRepository(new \Modules\Icommerce\Entities\TaxClassRates());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheTaxClassRatesDecorator($repository);
+            }
+        );
+
 // add bindings
 
 

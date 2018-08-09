@@ -160,6 +160,24 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.coupons.index')
                     );
                 });
+                $item->item(trans('icommerce::taxrates.title.taxrates'), function (Item $item) {
+                    $item->icon('fa fa-balance-scale');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.taxrates.create');
+                    $item->route('admin.icommerce.taxrates.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.taxrates.index')
+                    );
+                });
+                $item->item(trans('icommerce::taxclasses.title.taxclasses'), function (Item $item) {
+                    $item->icon('fa fa-balance-scale');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.taxclass.create');
+                    $item->route('admin.icommerce.taxclass.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.taxclasses.index')
+                    );
+                });
                 $item->authorize(
                     $this->auth->hasAccess('icommerce.currencies.index') or $this->auth->hasAccess('icommerce.payments.index') or $this->auth->hasAccess('icommerce.coupons.index')
                 );
@@ -194,7 +212,7 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                 });
 
             }
-           
+
 
         });
 

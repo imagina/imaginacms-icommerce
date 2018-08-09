@@ -163,6 +163,24 @@ return [
         'export' => 'icommerce::products.bulkload.export',
 
     ],
+    'icommerce.taxrates' => [
+        'index' => 'icommerce::taxrates.list resource',
+        'create' => 'icommerce::taxrates.create resource',
+        'edit' => 'icommerce::taxrates.edit resource',
+        'destroy' => 'icommerce::taxrates.destroy resource',
+    ],
+    'icommerce.taxclasses' => [
+        'index' => 'icommerce::taxclasses.list resource',
+        'create' => 'icommerce::taxclasses.create resource',
+        'edit' => 'icommerce::taxclasses.edit resource',
+        'destroy' => 'icommerce::taxclasses.destroy resource',
+    ],
+    'icommerce.taxclassrates' => [
+        'index' => 'icommerce::taxclassrates.list resource',
+        'create' => 'icommerce::taxclassrates.create resource',
+        'edit' => 'icommerce::taxclassrates.edit resource',
+        'destroy' => 'icommerce::taxclassrates.destroy resource',
+    ],
 // append
 
 
