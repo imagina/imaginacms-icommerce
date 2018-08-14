@@ -1,5 +1,11 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+    "0.1.13":
+        Added:
+          - Migration orderweight form products
+        Changed:
+          - Entity product
+          - ApiProductController Method products_category
     "0.1.12":
         Added:
           - lang Tax

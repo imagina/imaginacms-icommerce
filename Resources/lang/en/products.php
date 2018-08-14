@@ -53,7 +53,8 @@ return [
         'search'                    => 'Search',
         'additional'                => 'Additional',
         'purchasable'               => 'Product Purchasable',
-        'freeshipping'              => 'Product with Freeshipping'
+        'freeshipping'              => 'Product with Freeshipping',
+        'order_weight'              => 'Order Products',
     ],
     'categories'        => [
         'free_shipping'             => 'Products with free shipping',

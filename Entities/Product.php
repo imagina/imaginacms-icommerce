@@ -46,7 +46,8 @@ class Product extends Model
       'minimum',
       'reference',
       'rating',
-      'freeshipping'
+      'freeshipping',
+      'order_weight'
     ];
 
     protected $fakeColumns = ['options'];
@@ -121,7 +122,7 @@ class Product extends Model
 
     public function children()
     {
-        return $this->hasMany('Modules\Icommerce\Entities\Product', 'parent_id');
+        return $this->hasMany('Modules\Icommerce\Entities\Product', 'parent_id')->orderBy('order_weight','desc')->orderBy('created_at','desc');
     }
 
     public function comments()

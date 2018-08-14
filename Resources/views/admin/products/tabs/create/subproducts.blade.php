@@ -8,6 +8,7 @@
 			<th>{{trans('icommerce::products.table.price')}}</th>
 			<th>{{trans('icommerce::products.table.quantity')}}</th>
 			<th>{{trans('icommerce::products.table.weight')}}</th>
+			<th>{{trans('icommerce::products.table.order_weight')}}</th>
 			<th>{{trans('icommerce::products.table.image')}}</th>
 		</tr> 
 	</thead> 
@@ -78,6 +79,7 @@ $(function(){
         cols2 += '<td>'+createInputFloatS('subpPrice[]','required')+'</td>';
         cols2 += '<td>'+createInputNumberS('subpQuantity[]')+'</td>';
         cols2 += '<td>'+createInputFloatS('subpWeight[]')+'</td>';
+        cols2 += '<td>'+createInputNumberS('subpOrderWeight[]')+'</td>';
         cols2 += '<td>'+createInputImageS('subpImage[]','',counter2)+'</td>';
         cols2 += '<td><button type="button" class="btn-delete-dinamic btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 

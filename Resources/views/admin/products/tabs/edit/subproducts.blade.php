@@ -8,6 +8,7 @@
 			<th>{{trans('icommerce::products.table.price')}}</th>
 			<th>{{trans('icommerce::products.table.quantity')}}</th>
 			<th>{{trans('icommerce::products.table.weight')}}</th>
+			<th>{{trans('icommerce::products.table.order_weight')}}</th>
 			<th>{{trans('icommerce::products.table.image')}}</th>
 		</tr> 
 	</thead> 
@@ -16,8 +17,8 @@
 	@php
 		$counter2 = 0;
 	@endphp
-	
 	@foreach ($product->children as $children)
+
 		<tr>
 			<td hidden="true">
 				<input type='text' name='subpId[]' class="subpId" value="{{$children->id}}"/>
@@ -37,6 +38,9 @@
 			</td>
 			<td>
 				<input type='number' name='subpWeight[]' class='form-control' value="{{$children->weight}}" min='0' step='0.01' required/>
+			</td>
+			<td>
+				<input type='number' name='subpOrderWeight[]' class='form-control' value="{{$children->order_weight}}" />
 			</td>
 			<td>
 				@if(isset($children->options) && isset($children->options->mainimage))
@@ -65,7 +69,7 @@
 
 	<tfoot>
 		<tr>
-			<td colspan='5'></td>
+			<td colspan='6'></td>
 			<td class='text-left'>
 				<button type='button' data-id-op='' class='btn btn-primary btn-add-dinamic2'>
 					<i class='fa fa-plus-circle'></i>
@@ -149,6 +153,7 @@ $(function(){
         cols2 += '<td>'+createInputFloatS('subpPrice[]','required')+'</td>';
         cols2 += '<td>'+createInputNumberS('subpQuantity[]')+'</td>';
         cols2 += '<td>'+createInputFloatS('subpWeight[]')+'</td>';
+        cols2 += '<td>'+createInputNumberS('subpOrderWeight[]')+'</td>';
         cols2 += '<td>'+createInputImageS('subpImage[]','',counter2)+'</td>';
         cols2 += '<td><button type="button" class="btn-delete-dinamic2 btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 

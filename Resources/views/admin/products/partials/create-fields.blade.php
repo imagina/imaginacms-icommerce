@@ -43,7 +43,10 @@
 				@endforeach
 			</select>
 		</div>
-
+		<div class="form-group">
+			<label for="status">{{trans('icommerce::products.table.order_weight')}}</label>
+			<input type="number" class="form-control" id="order_weight" name="order_weight">
+		</div>
 		<div class="form-group">
 
 			<label for="status">{{trans('icommerce::products.table.principal category')}}</label>

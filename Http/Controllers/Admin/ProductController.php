@@ -123,7 +123,7 @@ class ProductController extends AdminBaseController
             $request["related_ids"] = json_encode($request->related_ids);
         }
 
-        $product = $this->product->create($request->except(['_token', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'MAX_FILE_SIZE', 'gallery', 'meta_title', 'meta_description', 'meta_keyword']));
+        $product = $this->product->create($request->except(['_token', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'MAX_FILE_SIZE', 'gallery', 'meta_title', 'meta_description', 'meta_keyword','subpOrderWeight']));
 
         if ($product) {
             if (isset($request->categories)) {
@@ -222,10 +222,11 @@ class ProductController extends AdminBaseController
             $vsubPQuantities = $request->subpQuantity;
             $vsubPImages = $request->hiddenSubImg;
             $vsubPWeights = $request->subpWeight;
+            $vsubPOrderWeight=$request->subpOrderWeight;
 
             foreach ($vsubPTitles as $index => $val) {
 
-                $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index]);
+                $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index],$vsubPOrderWeight[$index]);
 
             }
 
@@ -295,7 +296,7 @@ class ProductController extends AdminBaseController
             $request["related_ids"] = null;
         }
 
-        $product = $this->product->update($product, $request->except(['_token', '_method', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'povDelete', 'poDelete', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'subpId', 'hiddenFileDel', 'MAX_FILE_SIZE', 'meta_title', 'meta_description', 'meta_keyword']));
+        $product = $this->product->update($product, $request->except(['_token', '_method', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'povDelete', 'poDelete', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'subpId', 'hiddenFileDel', 'MAX_FILE_SIZE', 'meta_title', 'meta_description', 'meta_keyword','subpOrderWeight']));
 
         if ($product) {
             if (isset($request->categories)) {
@@ -481,6 +482,7 @@ class ProductController extends AdminBaseController
             $vsubPQuantities = $request->subpQuantity;
             $vsubPImages = $request->hiddenSubImg;
             $vsubPWeights = $request->subpWeight;
+            $vsubPOrderWeight=$request->subpOrderWeight;
 
             foreach ($vsubPTitles as $index => $val) {
 
@@ -500,11 +502,11 @@ class ProductController extends AdminBaseController
                     $subProduct->category_id = $product->category_id;
                     $subProduct->stock_status = $product->stock_status;
                     $subProduct->date_available = $product->date_available;
-
                     $subProduct->width = $product->width;
                     $subProduct->height = $product->height;
                     $subProduct->length = $product->length;
                     $subProduct->freeshipping = $product->freeshipping;
+                    $subProduct->order_weight=$vsubPOrderWeight[$index] ?? null;//Propio
 
                     $subProduct->update();
 
@@ -719,9 +721,8 @@ class ProductController extends AdminBaseController
      * @param  Int $id
      * @return
      */
-    public function createSubProduct($product, $title, $sku, $quantity, $price, $image, $weight)
+    public function createSubProduct($product, $title, $sku, $quantity, $price, $image, $weight, $order_weight)
     {
-
         $subProduct = new Product();
         $subProduct->title = $title; //Propio
         $subProduct->description = $product->description;
@@ -737,12 +738,11 @@ class ProductController extends AdminBaseController
         $subProduct->price = $price;//Propio
         $subProduct->date_available = $product->date_available;
         $subProduct->weight = $weight;//Propio
-
+        $subProduct->order_weight=$order_weight ?? null;//Propio
         $subProduct->width = $product->width;
         $subProduct->height = $product->height;
         $subProduct->length = $product->length;
         $subProduct->freeshipping = $product->freeshipping;
-
         $subProduct->save();
 
         if (!empty($image) && !empty($subProduct->id)) {
@@ -834,8 +834,8 @@ class ProductController extends AdminBaseController
 
         $query = Product::select('icommerce__products.id', 'icommerce__products.title', 'icommerce__products.sku', 'icommerce__categories.title as cattitle', 'icommerce__products.price','icommerce__products.status', 'icommerce__products.created_at', 'icommerce__products.stock_status', 'icommerce__manufacturers.name')
             ->leftJoin('icommerce__manufacturers', 'icommerce__products.manufacturer_id', '=', 'icommerce__manufacturers.id')
-            ->leftJoin('icommerce__categories','icommerce__products.category_id', '=','icommerce__categories.id')
-                ->where("icommerce__products.parent_id", 0);
+            ->leftJoin('icommerce__categories','icommerce__products.category_id', '=','icommerce__categories.id');
+              //  ->where("icommerce__products.parent_id", 0)
 
         return datatables($query)->make(true);
 

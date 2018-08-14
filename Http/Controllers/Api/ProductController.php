@@ -79,67 +79,73 @@ class ProductController extends BasePublicController
     /* GET PRODUCTS FOR CATEGORY FOR SHOW ICOMMERCE*/
     public function products_category($category)
     {
-        $manufacturer = [];
-        $currency = $this->currency->getActive();
+        try{
+            $manufacturer = [];
+            $currency = $this->currency->getActive();
 
-        $filter = [
-            'order' => json_decode($_GET['order']),
-            'price' => $_GET['price'] ? json_decode($_GET['price']) : false,
-            'manufacturer' => $_GET['manufacturer'] ? json_decode($_GET['manufacturer']) : false
-        ];
+            $filter = [
+                'order' => json_decode($_GET['order']),
+                'price' => $_GET['price'] ? json_decode($_GET['price']) : false,
+                'manufacturer' => $_GET['manufacturer'] ? json_decode($_GET['manufacturer']) : false
+            ];
 
-        if ($category !== '0') {// si consulta productos por categoria
-            $products = $this->product->whereCategoryFilter($category, $filter, 'paginate'); //consulta
-            $productsManufacturer = $this->product->whereCategoryFilter($category, $filter, 'get'); //consulta
-        } else {// si consulta productos por busqueda
-            $criterion = $_GET['criterion'];
-            $products = $this->product->findByName($criterion, $filter, 'paginate'); //consulta
-            $productsManufacturer = $this->product->findByName($criterion, $filter, 'get'); //consulta
-        }
+            if ($category !== '0') {// si consulta productos por categoria
+                $products = $this->product->whereCategoryFilter($category, $filter, 'paginate'); //consulta
+                $productsManufacturer = $this->product->whereCategoryFilter($category, $filter, 'get'); //consulta
+            } else {// si consulta productos por busqueda
+                $criterion = $_GET['criterion'];
+                $products = $this->product->findByName($criterion, $filter, 'paginate'); //consulta
+                $productsManufacturer = $this->product->findByName($criterion, $filter, 'get'); //consulta
+            }
 
-        /*obtiene los manufactures*/
-        foreach ($productsManufacturer['data'] as $product) {
-            $data = $product->manufacturer;
-            $exist = false;
-            if ($data) {
-                foreach ($manufacturer as $key => $item) {
-                    $item['id'] == $data->id ? $exist = true : false;
-                    if ($key > 0) {
-                        if ($manufacturer[$key - 1]->name > $item->name) {
-                            $aux = $manufacturer[$key - 1];
-                            $manufacturer[$key - 1] = $item;
-                            $manufacturer[$key] = $aux;
+            /*obtiene los manufactures*/
+            foreach ($productsManufacturer['data'] as $product) {
+                $data = $product->manufacturer;
+                $exist = false;
+                if ($data) {
+                    foreach ($manufacturer as $key => $item) {
+                        $item['id'] == $data->id ? $exist = true : false;
+                        if ($key > 0) {
+                            if ($manufacturer[$key - 1]->name > $item->name) {
+                                $aux = $manufacturer[$key - 1];
+                                $manufacturer[$key - 1] = $item;
+                                $manufacturer[$key] = $aux;
+                            }
                         }
                     }
-                }
-                $exist ? false : array_push($manufacturer, $data);
-            }
-        }
-
-        for ($i = count($manufacturer) - 1; $i >= 0; $i--) {
-            if ($i - 1 >= 0) {
-                if ($manufacturer[$i]->name < $manufacturer[$i - 1]->name) {
-                    $aux = $manufacturer[$i - 1];
-                    $manufacturer[$i - 1] = $manufacturer[$i];
-                    $manufacturer[$i] = $aux;
+                    $exist ? false : array_push($manufacturer, $data);
                 }
             }
+
+            for ($i = count($manufacturer) - 1; $i >= 0; $i--) {
+                if ($i - 1 >= 0) {
+                    if ($manufacturer[$i]->name < $manufacturer[$i - 1]->name) {
+                        $aux = $manufacturer[$i - 1];
+                        $manufacturer[$i - 1] = $manufacturer[$i];
+                        $manufacturer[$i] = $aux;
+                    }
+                }
+            }
+
+            /*obtiene el precio mayor y menor de los productos selecionados*/
+            $min_price = $products['range_price']['min_price'];
+            $max_price = $products['range_price']['max_price'];
+
+            return [
+                'products' => ProductTransformer::collection($products['data']),
+                'paginate' => $products['data'],
+                'manufacturer' => $manufacturer,
+                'range_price' => [
+                    'min_price' =>$min_price??0,
+                    'max_price' => $max_price?? 99999,
+                ],
+                'currency' => $currency,
+            ];
         }
-
-        /*obtiene el precio mayor y menor de los productos selecionados*/
-        $min_price = $products['range_price']['min_price'];
-        $max_price = $products['range_price']['max_price'];
-
-        return [
-            'products' => ProductTransformer::collection($products['data']),
-            'paginate' => $products['data'],
-            'manufacturer' => $manufacturer,
-            'range_price' => [
-                'min_price' =>$min_price??0,
-                'max_price' => $max_price?? 99999,
-            ],
-            'currency' => $currency,
-        ];
+        catch (\Exception $e){
+            \Log::error($e);
+            return response()->json(['error' => 'Not authorized.'],403);
+        }
     }
 
     /* GET PRODUCTS FOR CATEGORY FOR SHOW ICOMMERCE*/

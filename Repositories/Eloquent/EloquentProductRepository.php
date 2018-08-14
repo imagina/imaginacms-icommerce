@@ -24,7 +24,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     public function all()
     {
-       return $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])->whereStatus(Status::ENABLED)->where('date_available', '<=', date('Y-m-d'))->orderBy('created_at', 'DESC')->paginate(12);
+       return $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])->whereStatus(Status::ENABLED)->where('date_available', '<=', date('Y-m-d'))->orderBy('order_weight','desc')->orderBy('created_at', 'DESC')->paginate(12);
     }
 
     public function find($id)
@@ -52,7 +52,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id', '=', 'icommerce__products.id')
             ->select('*', 'icommerce__products.id as id')
             ->whereIn('icommerce__product_category.category_id', $id)
-            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.created_at', 'DESC')->paginate(12);
+            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.order_weight','desc')->orderBy('icommerce__products.created_at', 'DESC')->paginate(12);
     }
 
     public function whereParentId($id)
@@ -61,6 +61,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->whereStatus(Status::ENABLED)
             ->where('date_available', '<=', date('Y-m-d'))
             ->where('parent_id', $id)
+            ->orderBy('order_weight','desc')
             ->orderBy('created_at', 'DESC')->paginate(12);
 
     }
@@ -88,7 +89,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])
             ->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id', '=', 'icommerce__products.id')
             ->whereIn('icommerce__product_category.category_id', $id)
-            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.created_at', 'DESC')->get();
+            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.order_weight','desc')->orderBy('icommerce__products.created_at', 'DESC')->get();
 
     }
 
