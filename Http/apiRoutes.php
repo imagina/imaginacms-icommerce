@@ -113,14 +113,16 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
 
        //Categories
         $router->group(['prefix' => 'categories'], function (Router $router) {
-
+            $router->bind('category', function ($id) {
+                return app(\Modules\Icommerce\Repositories\CategoryRepository::class)->find($id);
+            });
             $router->get('/', [
                 'as' => 'icommerce.api.categories',
                 'uses' => 'CategoryControllerV2@categories',
 
             ]);
 
-            $router->get('{id}/products', [
+            $router->get('{category}/products', [
                 'as' => 'icommerce.api.categories.products',
                 'uses' => 'CategoryControllerV2@products',
             ]);
@@ -166,7 +168,6 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'uses' => 'ProductControllerV2@store',
                 'middleware' => ['api.token','token-can:icommerce.products.create']
             ]);
-
             $router->put('{product}', [
                 'as' => 'icommerce.api.products.update',
                 'uses' => 'ProductControllerV2@update',

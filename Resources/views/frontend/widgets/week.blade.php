@@ -117,38 +117,3 @@
 
 @stop
 
-@section('scripts-owl')
-    <script>
-        $(document).ready(function(){
-            setTimeout(function(){
-                var owl = $('.carruselweek');
-
-                owl.owlCarousel({
-                    margin: 20,
-                    nav: true,
-                    loop: true,
-                    dots: false,
-                    lazyContent: true,
-                    autoplay: true,
-                    autoplayHoverPause: true,
-                    autoplayTimeout: 10000,
-                    navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
-                    responsive: {
-                        0: {
-                            items: 1
-                        },
-                        640: {
-                            items: 1
-                        },
-                        992: {
-                            items: 2
-                        }
-                    }
-                });
-            },2000);
-        });
-    </script>
-
-    @parent
-
-@stop

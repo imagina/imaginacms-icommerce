@@ -352,9 +352,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
             if (isset($filter->search)) { //si hay que filtrar por rango de precio
                 $criterion = $filter->search;
-                $query->where(function ($query) use ($criterion) {
-                    $query->where('title', 'like', "%$criterion%")
-                        ->orWhere('sku', 'like', "%$criterion%");
+                $param = explode(' ', $criterion);
+                $query->where(function ($query) use ($param) {
+                    foreach ($param as $index => $word) {
+                        if ($index == 0) {
+                            $query->where('title', 'like', "%".$word."%");
+                            $query->orWhere('sku', 'like', "%".$word."%");
+                        } else {
+                            $query->orWhere('title', 'like', "%".$word."%");
+                            $query->orWhere('sku', 'like', "%".$word."%");
+                        }
+                    }
+
                 });
             }
             if (isset($filter->recent)) { //si hay que filtrar por rango de precio
@@ -401,12 +410,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
         } catch (\Exception $e) {
-
-
             \Log::Error($e);
-
             return $e->getMessage();
-
         }
 
     }

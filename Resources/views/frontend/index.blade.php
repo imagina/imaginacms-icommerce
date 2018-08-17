@@ -2,12 +2,12 @@
 
 @section('meta')
     @if(isset($category) && !empty($category))
-        <meta name="description" content="@if(!empty($category->description)){!!$category->description!!}@endif">
+        <meta name="description" content="{{$category->description??''}}">
         <!-- Schema.org para Google+ -->
-        <meta itemprop="name" content="{{$category->title}}">
-        <meta itemprop="description" content="@if(! empty($category->description)){!!$category->description!!} @endif">
+        <meta itemprop="name" content="{{$category->title??''}}">
+        <meta itemprop="description" content="{{$category->description??''}}">
         <meta itemprop="image"
-              content=" @if(! empty($category->options->mainimage)){{url($category->options->mainimage)}} @endif">
+              content=" {{url($category->options->mainimage??'modules/icommerce/img/category/default.jpg')}}">
     @endif
 @stop
 @section('title')
@@ -143,8 +143,8 @@
           pages: 0,
           preloaded: true,
           p_currence: 1,
-            currencysymbolleft: icommerce.currencySymbolLeft,
-            currencysymbolright: icommerce.currencySymbolRight,
+            currencySymbolLeft: icommerce.currencySymbolLeft,
+            currencySymbolRight: icommerce.currencySymbolRight,
           v_pages: 5,
           r_pages: {
             first: 1,

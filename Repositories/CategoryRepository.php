@@ -6,8 +6,25 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface CategoryRepository extends BaseRepository
 {
-  public function findBySlug($slug);
-  public function findParentCategories();
-  public function allcat();
-  public function all();
+    /**
+     * @param $slug
+     * @return mixed
+     */
+    public function findBySlug($slug);
+
+    /**
+     * @return mixed
+     */
+    public function findParentCategories();
+
+    /**
+     * @return mixed
+     */
+    public function allcat();
+
+    /**
+     * @param object $filter
+     * @return mixed
+     */
+    public function whereFilters($filter);
 }

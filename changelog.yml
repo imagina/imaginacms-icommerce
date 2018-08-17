@@ -1,5 +1,14 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+    "0.1.14":
+        added:
+          - CategoryControllerV2
+          - EloquentCategoryRepository filters method
+        Chnaged:
+          - Metadata View Category
+          - Metadata View show
+          - EloquentproductRepository filters method
+
     "0.1.13":
         Added:
           - Migration orderweight form products

@@ -93,9 +93,8 @@
 
 @section('scripts')
     @parent
-    {!!Theme::script('js/app.js?v='.config('app.version'))!!}
+
     @php $locale = \LaravelLocalization::setLocale() ?: \App::getLocale(); @endphp
-    }
     <script>
         const vue_searcher = new Vue({
             el: '#content_searcher',

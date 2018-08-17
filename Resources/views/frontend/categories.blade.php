@@ -1,5 +1,17 @@
 @extends('layouts.master')
 
+@section('meta')
+    <meta name="description" content="Categories">
+    <!-- Schema.org para Google+ -->
+    <meta itemprop="name" content="Categories">
+    <meta itemprop="description" content="Categories">
+
+@stop
+@section('title')
+    {{trans('icommerce::categories.plural')}} | @parent
+@stop
+
+
 @section('content')
     <!-- preloader -->
     <div id="content_preloader"><div id="preloader"></div></div>

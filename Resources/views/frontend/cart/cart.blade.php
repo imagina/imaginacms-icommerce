@@ -15,7 +15,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mt-4 text-uppercase">
                             <li class="breadcrumb-item"><a
-                                        href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
+                                        href="{{ url('/') }}">{{trans('icommerce::common.home.title')}}</a></li>
                             <li class="breadcrumb-item active"
                                 aria-current="page">{{trans('icommerce::cart.breadcrumb_title')}}</li>
                         </ol>
@@ -160,10 +160,7 @@
 
 @section('scripts')
     @parent
-    {!!Theme::script('js/app.js?v='.config('app.version'))!!}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
 
     <script type="text/javascript">
         const vue_cart_primary = new Vue({
