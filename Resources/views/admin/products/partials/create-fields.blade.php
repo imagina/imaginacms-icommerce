@@ -60,53 +60,7 @@
 			</select>
 		</div>
 
-		<div class="row checkbox">
-
-			<div class="col-xs-12">
-			<div class="content-cat" style="max-height:490px;overflow-y: auto;">
-
-			<label for="categories"><strong>{{trans('icommerce::products.table.categories')}}</strong></label>
-
-			@if(count($categories)>0)
-
-	        <ul class="checkbox" style="list-style: none;padding-left: 5px;">
-	        @foreach ($categories as $category)
-
-	                  @if($category->parent_id==0)
-
-	                  <li>
-		                  <label>
-		                    <input type="checkbox" class="flat-blue jsInherit" name="categories[]"
-		                      value="{{$category->id}}"> {{$category->title}}
-		                  </label>
-
-		                  	@if(count($category->children)>0)
-		                  	<ul style="list-style: none;">
-		                   	@foreach ($category->children as $x => $child) 
-                    			<li>
-
-                    				 <label><input type="checkbox" class="flat-blue jsInherit" name="categories[]"
-
-		                      value="{{$child->id}}"> {{$child->title}}</label>
-
-                    			</li>
-                			@endforeach
-                			</ul>
-                			@endif
-
-	                   </li>
-	                  @endif
-	               
-	        @endforeach
-
-	        @endif
-
-	        </ul>
-
-	        </div>
-	        </div>
-
-	    </div>
+		@include('icommerce::admin.products.fields.categories')
 
 	</div>
 

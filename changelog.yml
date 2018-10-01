@@ -1,28 +1,35 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+    "0.1.15":
+        added:
+          -
+          -
+        changed:
+          -
+          -
     "0.1.14":
         added:
           - CategoryControllerV2
           - EloquentCategoryRepository filters method
-        Chnaged:
+         changed:
           - Metadata View Category
           - Metadata View show
           - EloquentproductRepository filters method
 
     "0.1.13":
-        Added:
+        added:
           - Migration orderweight form products
-        Changed:
+        changed:
           - Entity product
           - ApiProductController Method products_category
     "0.1.12":
-        Added:
+        added:
           - lang Tax
           - lang TaxClass
     "0.1.11":
-        Change:
+        change:
           - view components
-        Added:
+        added:
           - Repositories Tax
           - Repositories TaxClass
           - View admin Tax
@@ -32,12 +39,12 @@ versions:
           - Entities Tax
           - Entities TaxClass
     "0.1.10":
-        Change:
+        change:
           - Components Widget
           - Method search Admin Product Controller
           - View forntend index, show.
           - Order Controller
-        Added:
+        added:
           - Routes Category Api
 
     "0.1.9":

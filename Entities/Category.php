@@ -22,7 +22,7 @@ class Category extends Model
     protected $table = 'icommerce__categories';
 
     //public $translatable = ['title','description','slug'];
-    public $translatable = ['title','description'];
+    public $translatable = ['title','description','metatitle','metadescription'];
     protected $fillable = [
       'title',
       'slug',

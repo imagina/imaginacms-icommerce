@@ -6,10 +6,12 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface CategoryRepository extends BaseRepository
 {
+    public function all();
     /**
      * @param $slug
      * @return mixed
      */
+
     public function findBySlug($slug);
 
     /**

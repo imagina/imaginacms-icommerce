@@ -196,16 +196,20 @@ class Product extends Model
         }
         return json_decode(json_decode($value));
     }
-    
+
 
     public function getUrlAttribute() {
-        return url($this->slug);
 
+        return  \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerceslug.' . $this->slug);
     }
 
     protected function setRatingAttribute($value){
 
-        empty($value) ? dd('vacio',$value)/*$this->attribute['rating'] = 3*/ : dd('vacio',$value) /*$this->attribute['rating'] = $value*/;
+        if(!empty($value)){
+            $this->attributes['rating'] = $value;
+        } else {
+            $this->attributes['rating'] =3;
+        }
 
     }
 

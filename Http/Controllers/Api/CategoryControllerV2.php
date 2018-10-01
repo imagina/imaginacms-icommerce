@@ -43,6 +43,10 @@ class CategoryControllerV2 extends BasePublicController
         $this->notification = $notification;
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function categories(Request $request)
     {
         try {
@@ -68,6 +72,11 @@ class CategoryControllerV2 extends BasePublicController
         return response()->json($response, $status ?? 200);
     }
 
+    /**
+     * @param Category $category
+     * @param Request $request
+     * @return mixed
+     */
     public function products(Category $category, Request $request)
     {
 
@@ -79,7 +88,7 @@ class CategoryControllerV2 extends BasePublicController
             } else {
                 $filter = json_decode($request->filters);
                 $filter->categories = $category->id;
-                $response = ProductTransformer::collection($this->product->whereFilters(json_decode($request->filters)));
+                $response = ProductTransformer::collection($this->product->whereFilters($filter));
 
             }
         } catch (\ErrorException $e) {
@@ -87,14 +96,37 @@ class CategoryControllerV2 extends BasePublicController
             $response = ['errors' => [
                 "code" => "501",
                 "source" => [
-                    "pointer" => "api/icommerce/categories/" . $category->id . "products",
+                    "pointer" => "api/v2/icommerce/categories/" . $category->id . "/products",
                 ],
-                "title" => "Error Products query",
+                "title" => "Error Products Query",
                 "detail" => $e->getMessage()
             ]
             ];
         }
 
+        return response()->json($response, $status ?? 200);
+    }
+
+    /**
+     * @param Category $category
+     * @return mixed
+     */
+    public function category(Category $category){
+        try {
+            $response = new CategoryTransformer($category);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = 500;
+            $response = ['errors' => [
+                "code" => "501",
+                "source" => [
+                    "pointer" => "api/v2/icommerce/category",
+                ],
+                "title" => "Error Query Category",
+                "detail" => $e->getMessage()
+            ]
+            ];
+        }
         return response()->json($response, $status ?? 200);
     }
 

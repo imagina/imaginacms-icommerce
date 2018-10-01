@@ -2,10 +2,10 @@
 
 @section('meta')
     @if(isset($category) && !empty($category))
-        <meta name="description" content="{{$category->description??''}}">
+        <meta name="description" content="{{$category->options->metadescription ?? $category->description ?? ''}}">
         <!-- Schema.org para Google+ -->
-        <meta itemprop="name" content="{{$category->title??''}}">
-        <meta itemprop="description" content="{{$category->description??''}}">
+        <meta itemprop="name" content="{{$category->options->metatitle ?? $category->title ?? ''}}">
+        <meta itemprop="description" content="{{$category->options->metadescription ?? $category->description ?? ''}}">
         <meta itemprop="image"
               content=" {{url($category->options->mainimage??'modules/icommerce/img/category/default.jpg')}}">
     @endif

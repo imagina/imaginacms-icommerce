@@ -13,14 +13,13 @@ use Modules\Icommerce\Repositories\ProductRepository;
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository
 {
 
-    /*
+
     public function create($data)
     {
         $product = $this->model->create($data);
         event(new ProductWasCreated($product, $data));
         return $product;
     }
-    */
 
     public function all()
     {
@@ -42,7 +41,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ])
             ->firstOrFail();
     }
-
 
     public function whereCategory($id)
     {
@@ -337,9 +335,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     '=', 'icommerce__products.id')
                     ->whereIn('icommerce__product_category.category_id', $filter->categories);
             }
-            if (isset($filter->manufacturer)) {
-                is_array($filter->manufacturer) ? true : $filter->manufacturer = [$filter->manufacturer];
-                $query->whereIn('icommerce__products.manufacturer_id', $filter->manufacturer);
+            if (isset($filter->manufacturers)) {
+                is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturer];
+                $query->whereIn('icommerce__products.manufacturer_id', $filter->manufacturers);
             }
             if (isset($filter->price)) { //si hay que filtrar por rango de precio
                 $price = $filter->price;
@@ -380,8 +378,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     ->leftJoin('icommerce__orders', 'icommerce__order_product.order_id', '=', 'icommerce__orders.id')
                     ->where('icommerce__orders.order_status', Order_Status::PROCESSING);
             }
-            if (isset($filter->parents)) { //si hay que filtrar por rango de precio
-                $query->where('parent_id', $filter->parents);
+            if (isset($filter->parent)) { //si hay que filtrar por rango de precio
+                $query->where('parent_id', $filter->parent);
             }
 
             if (isset($filter->order)) { //si hay que filtrar por rango de precio
@@ -410,8 +408,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
         } catch (\Exception $e) {
+
+
             \Log::Error($e);
+
             return $e->getMessage();
+
         }
 
     }

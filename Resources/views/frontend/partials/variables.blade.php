@@ -9,6 +9,8 @@
             currentLocale: '{{locale()}}',
             currencySymbolLeft:"{{$currency->symbol_left}}",
             currencySymbolRight:"{{$currency->symbol_right}}",
+            curremcyCode:"{{$currency->code}}",
+            curremcyValue:"{{$currency->value}}",
             url:"{{url('/')}}"
         };
     </script>

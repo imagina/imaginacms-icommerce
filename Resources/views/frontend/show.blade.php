@@ -2,37 +2,37 @@
 
 @section('meta')
     <meta name="title"
-          content="{{$product->options->meta_title ?? $product->title}}">
-    <meta name="keywords" content="{{$product->options->meta_keyword ?? ''}}">
-    <meta name="description"
-          content="{{$product->options->meta_description ?? $product->summary??''}}">
-    <meta name="robots"
-          content="{{$product->options->meta_robots ??'INDEX,FOLLOW'}}">
-    <!-- Schema.org para Google+ -->
-    <meta itemprop="name"
-          content="{{$product->options->meta_title ??$product->title}}">
-    <meta itemprop="description"
-          content="{{$product->options->meta_description ?? $product->summary??''}}">
-    <meta itemprop="image" content=" {{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}">
-    <!-- Open Graph para Facebook-->
-    <meta property="og:title"
-          content="{{$product->options->meta_title ??$product->title}}"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:url" content="{{$product->url}}"/>
-    <meta property="og:image" content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}"/>
-    <meta property="og:description"
-          content="{{$product->options->meta_description ?? $product->summary??''}}"/>
-    <meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
-    <meta property="og:locale" content="{{config('asgard.iblog.config.oglocal')}}">
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="{{ Setting::get('core::site-name') }}">
-    <meta name="twitter:title"
-          content="{{$product->options->meta_title ??$product->title}}">
-    <meta name="twitter:description"
-          content="{{$product->options->meta_description ?? $product->summary??''}}">
-    <meta name="twitter:creator" content="">
-    <meta name="twitter:image:src" content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}}">
+            content="{{$product->options->meta_title ?? $product->title}}">
+<meta name="keywords" content="{{$product->options->meta_keyword ?? ''}}">
+<meta name="description"
+      content="{{$product->options->meta_description ?? $product->summary??''}}">
+<meta name="robots"
+      content="{{$product->options->meta_robots ??'INDEX,FOLLOW'}}">
+<!-- Schema.org para Google+ -->
+<meta itemprop="name"
+      content="{{$product->options->meta_title ??$product->title}}">
+<meta itemprop="description"
+      content="{{$product->options->meta_description ?? $product->summary??''}}">
+<meta itemprop="image" content=" {{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}">
+<!-- Open Graph para Facebook-->
+<meta property="og:title"
+      content="{{$product->options->meta_title ??$product->title}}"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="{{$product->url}}"/>
+<meta property="og:image" content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}"/>
+<meta property="og:description"
+      content="{{$product->options->meta_description ?? $product->summary??''}}"/>
+<meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
+<meta property="og:locale" content="{{config('asgard.iblog.config.oglocal')}}">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="{{ Setting::get('core::site-name') }}">
+<meta name="twitter:title"
+      content="{{$product->options->meta_title ??$product->title}}">
+<meta name="twitter:description"
+      content="{{$product->options->meta_description ?? $product->summary??''}}">
+<meta name="twitter:creator" content="">
+<meta name="twitter:image:src" content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}}">
 
 @stop
 
@@ -60,7 +60,7 @@
                     <div class="col">
 
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mt-4 text-uppercase">
+                            <ol class="breadcrumb mt-4  text-uppercase">
                                 <li class="breadcrumb-item">
                                     <a href="{{ url('/') }}">{{trans('icommerce::common.home.title')}}</a>
                                 </li>

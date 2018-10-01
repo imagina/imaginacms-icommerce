@@ -7,7 +7,6 @@ use Illuminate\Routing\Controller;
 use Log;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Product;
-use Modules\Icommerce\Http\Requests\ProductRequest;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\CommentRepository;
 use Modules\Icommerce\Repositories\CurrencyRepository;
@@ -66,18 +65,64 @@ class ProductControllerV2 extends BasePublicController
     }
 
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function products(Request $request)
     {
 
         try {
             if (!isset($request->filters) && empty($request->filters)) {
 
-                $response = ProductTransformer::collection($this->product->paginate($request->paginate ?? 12));
+                $results = $this->product->paginate($request->paginate ?? 12);
+                $response = [
+                    'meta' => [
+                        "total-pages" => $results->lastPage(),
+                        "per_page" => $results->perPage(),
+                        "total-item" => $results->total()
+                    ],
+                    'data' => ProductTransformer::collection($results),
+                    'links' => [
+                        "self" => $results->currentPage(),
+                        "first" => $results->hasMorePages(),
+                        "prev" => $results->previousPageUrl(),
+                        "next" => $results->nextPageUrl(),
+                        "last" => $results->lastPage()
+                    ]
+
+                ];
 
             } else {
+                $filters = json_decode($request->filters);
+                $results = ProductTransformer::collection($this->product->whereFilters($filters));
 
-                $response = ProductTransformer::collection($this->product->whereFilters(json_decode($request->filters)));
+                if (isset($filters->paginate)) {
+                    $response = [
+                        'meta' => [
+                            "total-pages" => $results->lastPage(),
+                            "per_page" => $results->perPage(),
+                            "total-item" => $results->total()
+                        ],
+                        'data' => ProductTransformer::collection($results),
+                        'links' => [
+                            "self" => $results->currentPage(),
+                            "first" => $results->hasMorePages(),
+                            "prev" => $results->previousPageUrl(),
+                            "next" => $results->nextPageUrl(),
+                            "last" => $results->lastPage()
+                        ]
 
+                    ];
+                } else {
+                    $response = [
+                        'meta' => [
+                            "take" => $filters->take ?? 5,
+                            "skip" => $filters->skip ?? 0,
+                        ],
+                        'data' => ProductTransformer::collection($results),
+                    ];
+                }
             }
 
 
@@ -86,10 +131,10 @@ class ProductControllerV2 extends BasePublicController
             $response = ['errors' => [
                 "code" => "501",
                 "source" => [
-                    "pointer" => "api/icommerce/products",
+                    "pointer" => url($request->path()),
                 ],
-                "title" => "Value is too short",
-                "detail" => "First name must contain at least three characters."
+                "title" => "Error Query Producs",
+                "detail" => $e->getMessage()
             ]
             ];
         }
@@ -97,18 +142,31 @@ class ProductControllerV2 extends BasePublicController
         return response()->json($response, $status ?? 200);
     }
 
-    public function product(Product $product)
+    /**
+     * @param Product $product
+     * @return mixed
+     */
+    public function product(Product $product, Request $request)
     {
 
         try {
-            $response = new ProductTransformer($product);
+            if (isset($product)) {
+                if (isset($filters->take)) {
+                    $response = [
+                        'type'=>'article',
+                        'id'=>$product->id,
+                        'data' => new ProductTransformer($product),
+                    ];
+                }
+                $response = new ProductTransformer($product);
+            }
         } catch (\Exception $e) {
             \Log::error($e);
             $status = 500;
             $response = ['errors' => [
                 "code" => "501",
                 "source" => [
-                    "pointer" => "api/icommerce/product",
+                    "pointer" => url($request->path()),
                 ],
                 "title" => "Value is too short",
                 "detail" => "First name must contain at least three characters."
@@ -118,10 +176,46 @@ class ProductControllerV2 extends BasePublicController
         return response()->json($response, $status ?? 200);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
+        try {
+            $options = (array)$request->options ?? array();
+            isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
+            isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
+            $request['options'] = $options;
+            $product = $this->product->create($request->all());
+            $response = [
+                'success' => [
+                    'code' => '200',
+                    'source' => [
+                        'pointer' => url($request->path())
+                    ],
+                    "title" => trans('core::core.messages.resource created', ['name' => trans('icommerce::products.title.products')]),
+                    "detail" => [
+                        'id' => $product->id
+                    ]
+                ]
+            ];
 
-        $response = $request;
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = 500;
+            $response = ['errors' => [
+                "code" => "501",
+                "source" => [
+                    "pointer" => url($request->path()),
+                ],
+                "title" => "Value is too short",
+                "detail" => "First name must contain at least three characters."
+            ]
+            ];
+        }
+
+
         return response()->json($response, $status ?? 200);
 
     }

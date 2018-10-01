@@ -216,6 +216,7 @@ class ProductController extends AdminBaseController
         // Sub Products
         if (!empty($product->id) && isset($request->subpTitle)) {
 
+            $vsubPIds = $request->subpId;
             $vsubPTitles = $request->subpTitle;
             $vsubPSkus = $request->subpSku;
             $vsubPrices = $request->subpPrice;
@@ -226,8 +227,15 @@ class ProductController extends AdminBaseController
 
             foreach ($vsubPTitles as $index => $val) {
 
-                $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index],$vsubPOrderWeight[$index]);
+                if ($vsubPIds[$index]==0) {
 
+                    $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index],$vsubPOrderWeight[$index]);
+
+                }else{
+
+                    $this->updateSubProduct($product,$vsubPIds[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index],$vsubPOrderWeight[$index]);
+
+                }
             }
 
         }
@@ -523,7 +531,7 @@ class ProductController extends AdminBaseController
 
                 } else {
                     //Create
-                    $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index]);
+                    $this->createSubProduct($product, $vsubPTitles[$index], $vsubPSkus[$index], $vsubPQuantities[$index], $vsubPrices[$index], $vsubPImages[$index], $vsubPWeights[$index],$vsubPOrderWeight[$index]);
 
                 }
 

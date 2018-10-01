@@ -38,7 +38,7 @@ class CategoryController extends BcrudController
         $this->crud->setEntityNameStrings(trans('icommerce::categories.single'), trans('icommerce::categories.plural'));
         $this->access = [];
         $this->crud->enableAjaxTable();
-        $this->crud->orderBy('title', 'ASC');
+        $this->crud->orderBy('slug', 'ASC');
         $this->crud->allowAccess('reorder');
         $this->crud->enableReorder('title', 2);
 
@@ -47,29 +47,6 @@ class CategoryController extends BcrudController
       | FILTERS
       |--------------------------------------------------------------------------
 
-
-        // Title Filter
-        $this->crud->addFilter([
-            'type' => 'text',
-            'name' => 'title',
-            'label' => trans('icommerce::common.title')
-        ],
-            false,
-            function ($value) {
-                $this->crud->addClause('where', 'title', 'LIKE', "%$value%");
-            });
-
-        // Date Filter
-        $this->crud->addFilter([
-            'type' => 'date',
-            'name' => 'date',
-            'label' => trans('icommerce::common.created_at')
-        ],
-            false,
-            function ($value) {
-                $this->crud->addClause('whereDate', 'created_at', '=', $value);
-            });
-        */
         /*
          |--------------------------------------------------------------------------
          | COLUMNS AND FIELDS
@@ -100,7 +77,6 @@ class CategoryController extends BcrudController
             'model' => 'Modules\Icommerce\Entities\Category',
             'defaultvalue' => '0'
         ]);
-
 
         $this->crud->addColumn([
             'name' => 'created_at',
@@ -166,6 +142,24 @@ class CategoryController extends BcrudController
             'store_in' => 'options',
             'viewposition' => 'right',
 
+        ]);
+        $this->crud->addField([
+            'name' => 'metatitle',
+            'label' => trans('iblog::common.metatitle'),
+            'type' => 'text',
+            'fake' => true,
+            'store_in' => 'options',
+            'viewposition' => 'additional',
+        ]);
+
+        $this->crud->addField([
+            'name' => 'metadescription',
+            'label' => trans('iblog::common.metadescription'),
+            'type' => 'textarea',
+            'attributes' => ['rows' => '6'],
+            'fake' => true,
+            'store_in' => 'options',
+            'viewposition' => 'additional',
         ]);
 
     }
@@ -289,7 +283,7 @@ class CategoryController extends BcrudController
                 $image->insert(config('asgard.iblog.config.watermark.url'), config('asgard.iblog.config.watermark.position'), config('asgard.iblog.config.watermark.x'), config('asgard.iblog.config.watermark.y'));
             }
             // 2. Store the image on disk.
-            \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '80'));
+            \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '100'));
 
 
             // Save Thumbs

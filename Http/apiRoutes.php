@@ -121,7 +121,10 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'uses' => 'CategoryControllerV2@categories',
 
             ]);
-
+            $router->get('{category}', [
+                'as' => 'icommerce.api.category',
+                'uses' => 'CategoryControllerV2@category',
+            ]);
             $router->get('{category}/products', [
                 'as' => 'icommerce.api.categories.products',
                 'uses' => 'CategoryControllerV2@products',
