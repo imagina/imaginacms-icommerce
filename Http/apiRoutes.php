@@ -113,7 +113,7 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
 
        //Categories
         $router->group(['prefix' => 'categories'], function (Router $router) {
-            $router->bind('category', function ($id) {
+            $router->bind('aicommercecat', function ($id) {
                 return app(\Modules\Icommerce\Repositories\CategoryRepository::class)->find($id);
             });
             $router->get('/', [
@@ -121,11 +121,11 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'uses' => 'CategoryControllerV2@categories',
 
             ]);
-            $router->get('{category}', [
+            $router->get('{aicommercecat}', [
                 'as' => 'icommerce.api.category',
                 'uses' => 'CategoryControllerV2@category',
             ]);
-            $router->get('{category}/products', [
+            $router->get('{aicommercecat}/products', [
                 'as' => 'icommerce.api.categories.products',
                 'uses' => 'CategoryControllerV2@products',
             ]);
@@ -136,13 +136,13 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'middleware' => ['api.token','token-can:icommerce.catedories.create']
             ]);
 
-            $router->put('{id}', [
+            $router->put('{aicommercecat}', [
                 'as' => 'icommerce.api.catedories.update',
                 'uses' => 'CategoryControllerV2@update',
                 'middleware' => ['api.token','token-can:icommerce.catedories.update']
 
             ]);
-            $router->delete('{id}', [
+            $router->delete('{aicommercecat}', [
                 'as' => 'icommerce.api.catedories.delete',
                 'uses' => 'CategoryControllerV2@delete',
                 'middleware' => ['api.token','token-can:icommerce.catedories.delete']
@@ -155,14 +155,14 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
         //products
         $router->group(['prefix' => 'products'], function (Router $router) {
 
-            $router->bind('product', function ($id) {
+            $router->bind('aproduct', function ($id) {
                 return app(\Modules\Icommerce\Repositories\ProductRepository::class)->find($id);
             });
             $router->get('/', [
                 'as' => 'icommerce.api.products',
                 'uses' => 'ProductControllerV2@products',
             ]);
-            $router->get('{product}', [
+            $router->get('{aproduct}', [
                 'as' => 'icommerce.api.productv2',
                 'uses' => 'ProductControllerV2@product',
             ]);
@@ -171,12 +171,12 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'uses' => 'ProductControllerV2@store',
                 'middleware' => ['api.token','token-can:icommerce.products.create']
             ]);
-            $router->put('{product}', [
+            $router->put('{aproduct}', [
                 'as' => 'icommerce.api.products.update',
                 'uses' => 'ProductControllerV2@update',
                 'middleware' =>['api.token','token-can:icommerce.products.edit']
             ]);
-            $router->delete('{product}', [
+            $router->delete('{aproduct}', [
                 'as' => 'icommerce.api.products.delete',
                 'uses' => 'ProductControllerV2@destroy',
                 'middleware' => ['api.token','token-can:icommerce.products.destroy']
@@ -188,25 +188,25 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
         $router->group(['prefix' => 'cart'], function (Router $router) {
 
             $router->get('/', [
-                'as' => 'icommerce.api.cart',
+                'as' => 'icommerce.api.cart2',
                 'uses' => 'CartControllerV2@items',
             ]);
             $router->post('/', [
-                'as' => 'icommerce.api.cart.store',
+                'as' => 'icommerce.api.cart2.store',
                 'uses' => 'CartControllerV2@store',
             ]);
 
             $router->put('{id}', [
-                'as' => 'icommerce.api.cart.update',
+                'as' => 'icommerce.api.cart2.update',
                 'uses' => 'CartControllerV2@update',
             ]);
             $router->delete('{id}', [
-                'as' => 'icommerce.api.cart.delete',
+                'as' => 'icommerce.api.cart2.delete',
                 'uses' => 'CartControllerV2@delete',
             ]);
 
             $router->post('clear', [
-                'as' => 'icommerce.api.cart.clear',
+                'as' => 'icommerce.api.cart2.clear',
                 'uses' => 'CartControllerV2@clear',
             ]);
 

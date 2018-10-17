@@ -32,7 +32,8 @@ class ProductTransformer extends Resource
         $price_discount = $this->product_discounts()->where('date_start' ,'<=', date('Y-m-d'))->where('date_end' ,'>=', date('Y-m-d'))->first()->price ?? null;
 
         if ($price_discount) {
-            $discount = '-' . intVal((($this->price - $price_discount) / $this->price) * 100) . '%';
+            $price=$this->price!=='0.00'?$this->price:1;
+            $discount = '-' . intVal((($this->price - $price_discount) / $price) * 100) . '%';
         } else {
             $discount = false;
         }

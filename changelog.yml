@@ -1,12 +1,8 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
     "0.1.15":
-        added:
-          -
-          -
         changed:
-          -
-          -
+          - Url ApiRoutes Category
     "0.1.14":
         added:
           - CategoryControllerV2
