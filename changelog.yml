@@ -3,6 +3,7 @@ versions:
     "0.1.15":
         changed:
           - Url ApiRoutes Category
+          - Categories checklist in admin view
     "0.1.14":
         added:
           - CategoryControllerV2
