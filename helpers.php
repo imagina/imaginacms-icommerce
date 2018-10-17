@@ -463,7 +463,9 @@ if (!function_exists('localesymbol')) {
         if (!isset($currency)) {
             $currency = (object)[
                 'symbol_left' => '$',
-                'symbol_right' => ''
+                'symbol_right' => '',
+                'code'=>'USD',
+                'value'=>1
             ];
         }
         return $currency;
