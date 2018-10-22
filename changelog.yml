@@ -1,5 +1,9 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+    "0.1.17":
+        changed:
+          - Entity Product Option
+          - ProductController use ProductWasCreated
     "0.1.15":
         changed:
           - Url ApiRoutes Category
