@@ -436,16 +436,21 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     $router->bind('option_value', function ($id) {
         return app('Modules\Icommerce\Repositories\Option_ValueRepository')->find($id);
     });
-    $router->get('option_values', [
+    $router->get('option_values/{option}/index', [
         'as' => 'admin.icommerce.option_value.index',
         'uses' => 'Option_ValueController@index',
         'middleware' => 'can:icommerce.option_values.index'
     ]);
-    $router->get('option_values/create', [
+    $router->get('option_values/create/{option}', [
         'as' => 'admin.icommerce.option_value.create',
         'uses' => 'Option_ValueController@create',
         'middleware' => 'can:icommerce.option_values.create'
     ]);
+    // $router->post('option_values/create/', [
+    //     'as' => 'admin.icommerce.option_value.create',
+    //     'uses' => 'Option_ValueController@create',
+    //     'middleware' => 'can:icommerce.option_values.create'
+    // ]);
     $router->post('option_values', [
         'as' => 'admin.icommerce.option_value.store',
         'uses' => 'Option_ValueController@store',

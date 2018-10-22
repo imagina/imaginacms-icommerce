@@ -151,7 +151,6 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
 
         });
 
-
         //products
         $router->group(['prefix' => 'products'], function (Router $router) {
 
@@ -182,7 +181,6 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'middleware' => ['api.token','token-can:icommerce.products.destroy']
             ]);
         });
-
 
         //cart
         $router->group(['prefix' => 'cart'], function (Router $router) {

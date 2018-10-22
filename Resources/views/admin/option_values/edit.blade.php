@@ -6,7 +6,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
-        <li><a href="{{ route('admin.icommerce.option_value.index') }}">{{ trans('icommerce::option_values.title.option_values') }}</a></li>
+        <li><a href="{{ url('backend/icommerce/option_values/'.$option_value->option_id.'/index') }}">{{ trans('icommerce::option_values.title.option_values') }}</a></li>
         <li class="active">{{ trans('icommerce::option_values.title.edit option_value') }}</li>
     </ol>
 @stop
@@ -28,7 +28,7 @@
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-                        <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.icommerce.option_value.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+                        <a class="btn btn-danger pull-right btn-flat" href="{{ url('backend/icommerce/option_values/'.$option_value->option_id.'/index') }}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
                     </div>
                 </div>
             </div> {{-- end nav-tabs-custom --}}
@@ -52,7 +52,6 @@
         $( document ).ready(function() {
             $(document).keypressAction({
                 actions: [
-                    { key: 'b', route: "<?= route('admin.icommerce.option_value.index') ?>" }
                 ]
             });
         });

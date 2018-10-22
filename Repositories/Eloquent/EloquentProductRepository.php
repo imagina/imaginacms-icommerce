@@ -7,8 +7,8 @@ use Modules\Icommerce\Entities\Order_Status;
 use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Jobs\BulkloadProducts;
 use Modules\Icommerce\Repositories\ProductRepository;
+use Modules\Icommerce\Events\ProductWasCreated;
 
-//use Modules\Icommerce\Events\ProductWasCreated;
 
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository
 {

@@ -26,4 +26,8 @@ class EloquentOption_ValueRepository extends EloquentBaseRepository implements O
     {
     	return $this->model->where('option_id', '=' , $id)->get();
     }
+
+    public function getValues($option_id){
+      return $this->model->where('option_id',$option_id)->get();
+    }//getValues
 }

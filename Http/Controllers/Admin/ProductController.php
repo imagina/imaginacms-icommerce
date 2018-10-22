@@ -181,7 +181,7 @@ class ProductController extends AdminBaseController
                             'option_id' => $value->option_id,
                             'option_value_id' => $value->option_value_id,
                             'quantity' => $value->quantity,
-                            'substract' => $value->substract,
+                            'subtract' => $value->substract,
                             'price' => $value->price,
                             'price_prefix' => $value->price_prefix,
                             'points' => $value->points,
