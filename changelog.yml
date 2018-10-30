@@ -1,6 +1,6 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
-    "0.1.17":
+    "0.1.18":
         changed:
           - Entity Product Option
           - ProductController use ProductWasCreated

@@ -327,7 +327,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     public function whereFilters($filter)
     {
         try {
-            $query = $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])
+            $query = $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts','product_option_values','product_option_values.option','product_option_values.option_value'])
                 ->select('*', 'icommerce__products.id as id');
             if (isset($filter->categories)) {
                 is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
@@ -336,10 +336,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     ->whereIn('icommerce__product_category.category_id', $filter->categories);
             }
             if (isset($filter->options_values)) {
-              is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
-              $query->leftJoin('icommerce__product_option_values', 'icommerce__product_option_values.product_id',
-              '=', 'icommerce__products.id')
-              ->whereIn('icommerce__product_option_values.option_value_id', $filter->options_values);
+                is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
+                $query->leftJoin('icommerce__product_option_values', 'icommerce__product_option_values.product_id',
+                    '=', 'icommerce__products.id')
+                    ->whereIn('icommerce__product_option_values.option_value_id', $filter->options_values);
             }
             if (isset($filter->manufacturers)) {
                 is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturer];
