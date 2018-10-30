@@ -67,6 +67,8 @@ class ProductTransformer extends Resource
             'height' => $this->height,
             'freeshipping' => $this->freeshipping,
             'category' => new CategoryTransformer($this->category),
+            'options'=>ProductOptionsTransformer::collection($this->product_option_values)
+
         ];
     }
 }

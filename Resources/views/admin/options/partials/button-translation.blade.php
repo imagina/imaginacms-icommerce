@@ -8,6 +8,7 @@
 
 	<!-- Edit button group -->
 	<div class="btn-group">
+		<a href="{{ route('admin.icommerce.option_value.index', [$option->id]) }}" class="btn btn-xs btn-default"><i class="fa fa-plus"></i> Valores</a>
 	  <a href="{{ route('admin.icommerce.option.edit', [$option->id]) }}" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> {{ trans('bcrud::crud.edit') }}</a>
 	  <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	    <span class="caret"></span>

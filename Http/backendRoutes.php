@@ -16,7 +16,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     \CRUD::resource('icommerce','comment', 'CommentController');
 
 
-    
+
     /*
     $router->bind('tag', function ($id) {
         return app('Modules\Icommerce\Repositories\TagRepository')->find($id);
@@ -159,7 +159,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     $router->post('products/deleteSubproduct/{id}', [
         'as'    => 'admin.icommerce.product.deleteSubproduct',
         'uses'  => 'ProductController@deleteSubproduct'
-    ]); 
+    ]);
 
     $router->post('product/upload/image', [
         'as' => 'icommerce.gallery.upload',
@@ -174,7 +174,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     $router->get('products/searchProducts', [
         'as'    => 'admin.icommerce.product.searchProducts',
         'uses'  => 'ProductController@searchProducts'
-    ]); 
+    ]);
 
     $router->get('products/searchProductsRelated', [
         'as'    => 'admin.icommerce.product.searchProductsRelated',
@@ -254,7 +254,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     $router->post('options/deleteOptionValue/{id}', [
         'as'    => 'admin.icommerce.option.deleteOptionValue',
         'uses'  => 'OptionController@deleteOptionValue'
-    ]); 
+    ]);
 
     /*
     $router->bind('coupon', function ($id) {
@@ -434,43 +434,38 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
 
 
     $router->bind('option_value', function ($id) {
-        return app('Modules\Icommerce\Repositories\Option_ValueRepository')->find($id);
-    });
-    $router->get('option_values/{option}/index', [
-        'as' => 'admin.icommerce.option_value.index',
-        'uses' => 'Option_ValueController@index',
-        'middleware' => 'can:icommerce.option_values.index'
-    ]);
-    $router->get('option_values/create/{option}', [
-        'as' => 'admin.icommerce.option_value.create',
-        'uses' => 'Option_ValueController@create',
-        'middleware' => 'can:icommerce.option_values.create'
-    ]);
-    // $router->post('option_values/create/', [
-    //     'as' => 'admin.icommerce.option_value.create',
-    //     'uses' => 'Option_ValueController@create',
-    //     'middleware' => 'can:icommerce.option_values.create'
-    // ]);
-    $router->post('option_values', [
-        'as' => 'admin.icommerce.option_value.store',
-        'uses' => 'Option_ValueController@store',
-        'middleware' => 'can:icommerce.option_values.create'
-    ]);
-    $router->get('option_values/{option_value}/edit', [
-        'as' => 'admin.icommerce.option_value.edit',
-        'uses' => 'Option_ValueController@edit',
-        'middleware' => 'can:icommerce.option_values.edit'
-    ]);
-    $router->put('option_values/{option_value}', [
-        'as' => 'admin.icommerce.option_value.update',
-        'uses' => 'Option_ValueController@update',
-        'middleware' => 'can:icommerce.option_values.edit'
-    ]);
-    $router->delete('option_values/{option_value}', [
-        'as' => 'admin.icommerce.option_value.destroy',
-        'uses' => 'Option_ValueController@destroy',
-        'middleware' => 'can:icommerce.option_values.destroy'
-    ]);
+          return app('Modules\Icommerce\Repositories\Option_ValueRepository')->find($id);
+      });
+      $router->get('option_values/{option}', [
+          'as' => 'admin.icommerce.option_value.index',
+          'uses' => 'Option_ValueController@index',
+          'middleware' => 'can:icommerce.option_values.index'
+      ]);
+      $router->get('option_values/create/{option}', [
+          'as' => 'admin.icommerce.option_value.create',
+          'uses' => 'Option_ValueController@create',
+          'middleware' => 'can:icommerce.option_values.create'
+      ]);
+      $router->post('option_values', [
+          'as' => 'admin.icommerce.option_value.store',
+          'uses' => 'Option_ValueController@store',
+          'middleware' => 'can:icommerce.option_values.create'
+      ]);
+      $router->get('option_values/{option_value}/edit', [
+          'as' => 'admin.icommerce.option_value.edit',
+          'uses' => 'Option_ValueController@edit',
+          'middleware' => 'can:icommerce.option_values.edit'
+      ]);
+      $router->put('option_values/{option_value}', [
+          'as' => 'admin.icommerce.option_value.update',
+          'uses' => 'Option_ValueController@update',
+          'middleware' => 'can:icommerce.option_values.edit'
+      ]);
+      $router->delete('option_values/{option_value}', [
+          'as' => 'admin.icommerce.option_value.destroy',
+          'uses' => 'Option_ValueController@destroy',
+          'middleware' => 'can:icommerce.option_values.destroy'
+      ]);
 
 
     $router->bind('product_option', function ($id) {
@@ -651,7 +646,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     $router->post('order_history/addHistory', [
         'as'    => 'admin.icommerce.order_history.addHistory',
         'uses'  => 'Order_HistoryController@addHistory'
-    ]); 
+    ]);
 
 
     $router->bind('order_shipment', function ($id) {
@@ -901,7 +896,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
     ]);
 
 
-    
+
     $router->bind('slug_translations', function ($id) {
         return app('Modules\Icommerce\Repositories\Slug_TranslationsRepository')->find($id);
     });
@@ -960,7 +955,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         ]);
 
     });
-    
+
     $router->bind('addresses', function ($id) {
         return app('Modules\Icommerce\Repositories\addressesRepository')->find($id);
     });

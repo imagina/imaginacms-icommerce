@@ -335,6 +335,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     '=', 'icommerce__products.id')
                     ->whereIn('icommerce__product_category.category_id', $filter->categories);
             }
+            if (isset($filter->options_values)) {
+              is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
+              $query->leftJoin('icommerce__product_option_values', 'icommerce__product_option_values.product_id',
+              '=', 'icommerce__products.id')
+              ->whereIn('icommerce__product_option_values.option_value_id', $filter->options_values);
+            }
             if (isset($filter->manufacturers)) {
                 is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturer];
                 $query->whereIn('icommerce__products.manufacturer_id', $filter->manufacturers);

@@ -15,7 +15,7 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.icommerce.option_value.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
+                    <a href="{{url('backend/icommerce/option_values/create').'/'.$option->id}}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
                         <i class="fa fa-pencil"></i> {{ trans('icommerce::option_values.button.create option_value') }}
                     </a>
                 </div>
@@ -29,6 +29,7 @@
                         <table class="data-table table table-bordered table-hover">
                             <thead>
                             <tr>
+                              <th>{{ trans('icommerce::options.table.description') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -37,6 +38,9 @@
                             <?php if (isset($option_values)): ?>
                             <?php foreach ($option_values as $option_value): ?>
                             <tr>
+                                <td>
+                                  {{$option_value->description}}
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.icommerce.option_value.edit', [$option_value->id]) }}">
                                         {{ $option_value->created_at }}
@@ -54,6 +58,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
+                              <th>{{ trans('icommerce::options.table.description') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -84,7 +89,6 @@
         $( document ).ready(function() {
             $(document).keypressAction({
                 actions: [
-                    { key: 'c', route: "<?= route('admin.icommerce.option_value.create') ?>" }
                 ]
             });
         });
