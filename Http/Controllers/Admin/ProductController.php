@@ -387,7 +387,7 @@ class ProductController extends AdminBaseController
                         $param3 = [
                             'option_value_id' => $value->option_value_id,
                             'quantity' => $value->quantity,
-                            'substract' => $value->substract,
+                            'subtract' => $value->substract,
                             'price' => $value->price,
                             'price_prefix' => $value->price_prefix,
                             'points' => $value->points,
@@ -408,7 +408,7 @@ class ProductController extends AdminBaseController
                                 'option_id' => $value->option_id,
                                 'option_value_id' => $value->option_value_id,
                                 'quantity' => $value->quantity,
-                                'substract' => $value->substract,
+                                'subtract' => $value->substract,
                                 'price' => $value->price,
                                 'price_prefix' => $value->price_prefix,
                                 'points' => $value->points,
@@ -423,7 +423,7 @@ class ProductController extends AdminBaseController
 
             } else {
 
-                // Delete All 
+                // Delete All
                 $product->product_option_values()->delete();
                 $product->optionsv()->detach();
                 $alldelete = 1;
