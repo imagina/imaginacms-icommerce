@@ -76,11 +76,11 @@ class OptionController extends AdminBaseController
 
         if($option){
             if(isset($request->description_value) && ($request->type != "text" || $request->type != "textarea") ){
-                $vdv = $request->description_value; 
+                $vdv = $request->description_value;
                 $vso = $request->sort_order_value;
                 $vmi = $request->mainimage;
                 foreach ($vdv as $index => $val) {
-                    
+
                     if($vso[$index]==null)
                         $vso[$index]=0;
 
@@ -92,7 +92,7 @@ class OptionController extends AdminBaseController
                     $param = array(
                         'option_id'     => $option->id,
                         'image'         => $mainimage,
-                        'description'   => $val, 
+                        'description'   => $val,
                         'sort_order'    => $vso[$index],
                     );
                     $this->optionValue->create($param);
@@ -111,9 +111,9 @@ class OptionController extends AdminBaseController
      * @return Response
      */
     public function edit(Option $option, Request $request)
-    {   
+    {
         $entity = $this->entity;
-        
+
         $optionValues = $this->optionValue->findByParentId($option->id);
 
         return view('icommerce::admin.options.edit', compact('option','optionValues','entity','request'));
@@ -134,12 +134,12 @@ class OptionController extends AdminBaseController
             $optionValues = $this->optionValue->findById($id);
 
             $product_option_value = $this->product_option_value->findByOptionValueId($optionValues->id);
-        
+
             if ( $product_option_value->isEmpty() ){
                 $optionValues->delete();
                 $response['status'] = 'success'; //default
             }
-            
+
             return response()->json($response);
         } catch (Exception $e) {
             $response['status'] = 'error';
@@ -161,51 +161,9 @@ class OptionController extends AdminBaseController
         if(empty($request->sort_order)){
             $request["sort_order"] = 0;
         }
-        
-        $option = $this->option->update($option,$request->except(['_token','_method','id','description_value','sort_order_value','mainimage']));
 
-        if($option){
-            if(isset($request->description_value) && ($request->type != "text" || $request->type != "textarea") ){
-                $vid = $request->id;
-                $vdv = $request->description_value; 
-                $vso = $request->sort_order_value;
-                $vmi = $request->mainimage;
+        $option = $this->option->update($option,$request->except(['_token','_method']));
 
-                foreach ($vdv as $index => $val) {
-                    
-                    if($vso[$index]==null)
-                        $vso[$index]=0;
-
-                    // Imagen
-                    if(!empty($vmi[$index] && !empty($option->id))) {
-                        $mainimage = $this->saveImage($vmi[$index],"assets/icommerce/option/".$option->id."/".$index.".jpg");
-                    }
-
-                    if (!empty($vid[$index]) && !empty($val)){
-
-                        $optionValues = $this->optionValue->findById($vid[$index]);
-
-                        $optionValues->option_id    = $option->id;
-                        $optionValues->image        = $mainimage;
-                        $optionValues->description  = $val;
-                        $optionValues->sort_order   = $vso[$index];
-
-                        $optionValues->update();
-                    }else if(empty($vid[$index]) && !empty($val)){
-                        $param = new Option_Value(['option_id' => $option->id,'image' => $mainimage,'description' => $val,'sort_order' => $vso[$index] ]);
-
-                        $option->option_values()->save($param);
-                    }else if(!empty($vid[$index]) && empty($val)){
-                        $optionValues = $this->optionValue->findById($vid[$index]);
-
-                        $product_option_value = $this->product_option_value->findByOptionValueId($optionValues->id);
-                    
-                        if ( $product_option_value->isEmpty() )
-                            $optionValues->delete();
-                    }
-                }
-            }       
-        }
 
         return redirect()->route('admin.icommerce.option.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::options.title.options')]));
