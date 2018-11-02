@@ -1,5 +1,15 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+   "0.1.19":
+           added:
+            - functions in controller of options values
+            - decoder of JSON of options options options when sending options when creating/editing a product
+               master
+           changed:
+             - transformer of products to decode the options of the option_values ​​associated with a product
+             - routes of module of options values
+           removed:
+             - crud option values in edit options
     "0.1.18":
         changed:
           - Entity Product Option
