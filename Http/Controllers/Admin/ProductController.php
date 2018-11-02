@@ -98,7 +98,9 @@ class ProductController extends AdminBaseController
         $tags = $this->tag->all();
         $options = $this->option->all();
         $optionValues = $this->optionValues->all();
-
+        foreach($optionValues as $optionVal){
+            $optionVal->options=json_decode($optionVal->options);
+        }//optionValues
         return view('icommerce::admin.products.create', compact('entity', 'status', 'categories', 'stockstatus', 'manufacturers', 'tags', 'options', 'optionValues'));
     }
 
@@ -277,7 +279,9 @@ class ProductController extends AdminBaseController
         $tags = $this->tag->all();
         $options = $this->option->all();
         $optionValues = $this->optionValues->all();
-
+        foreach($optionValues as $optionVal){
+            $optionVal->options=json_decode($optionVal->options);
+        }//optionValues
         return view('icommerce::admin.products.edit', compact('product', 'entity', 'request', 'status', 'categories', 'stockstatus', 'manufacturers', 'tags', 'options', 'optionValues'));
     }
 
