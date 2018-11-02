@@ -9,11 +9,13 @@ class ProductOptionsTransformer extends Resource
     public function toArray($request)
     {
       /*valida la imagen del producto*/
-      if (isset($this->option_value->image) && !empty($this->option_value->image)) {
-          $image = url($this->option_value->image);
-      } else {
-          $image = url('modules/icommerce/img/product/default.jpg');
+      $options_value_options=json_decode($this->option_value->options);
+      if (isset($options_value_options->image) && !empty($options_value_options->image)) {
+          $options_value_options->image = url($options_value_options->image);
       }
+      // else {
+      //     $image = url('modules/icommerce/img/product/default.jpg');
+      // }
         return  [
             'product_option_values_id' => $this->id,
             'points' => $this->points,
@@ -25,9 +27,9 @@ class ProductOptionsTransformer extends Resource
             'weigth'=>$this->weight,
             'weight_prefix'=>$this->weight_prefix,
             'option'=>$this->option->description,
-            // 'image'=>$image,
             'option_description'=>$this->option_value->description,
-            'option_value_id'=>$this->option_value->id
+            'option_value_id'=>$this->option_value->id,
+            'option_value_options'=>$options_value_options
         ];
     }
 }
