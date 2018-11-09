@@ -161,9 +161,13 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'as' => 'icommerce.api.products',
                 'uses' => 'ProductControllerV2@products',
             ]);
-            $router->get('{aproduct}', [
+            $router->get('{id}', [
                 'as' => 'icommerce.api.productv2',
                 'uses' => 'ProductControllerV2@product',
+            ]);
+            $router->get('slug/{slug}', [
+                'as' => 'icommerce.api.product.show',
+                'uses' => 'ProductControllerV2@show',
             ]);
             $router->post('/', [
                 'as' => 'icommerce.api.products.store',

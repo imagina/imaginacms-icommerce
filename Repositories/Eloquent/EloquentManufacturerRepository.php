@@ -18,7 +18,10 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     {
         return $this->model->whereStatus(Status::ENABLED)->orderBy('created_at', 'DESC')->paginate(12);
     }
-    
+    public function all()
+    {
+        return $this->model->whereStatus(Status::ENABLED)->orderBy('name', 'asc')->get();
+    }
     public function findByid($id){
         return $this->model->find($id);
     }

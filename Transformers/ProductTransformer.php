@@ -3,12 +3,14 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Icommerce\Entities\Manufacturer;
 
 class ProductTransformer extends Resource
 {
     public function toArray($request)
     {
 
+        $includes = explode(",", $request->include);
         /*evalua segun si el pruducto es nuevo o no (15 días)*/
         $date1 = date_create($this->date_available);
         $date2 = date_create(date("Y/m/d"));
@@ -40,7 +42,7 @@ class ProductTransformer extends Resource
 
         /*datos*/
 
-        return [
+        $data= [
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
@@ -66,9 +68,32 @@ class ProductTransformer extends Resource
             'width' => $this->width,
             'height' => $this->height,
             'freeshipping' => $this->freeshipping,
-            'category' => new CategoryTransformer($this->category),
-            'options'=>ProductOptionsTransformer::collection($this->product_option_values)
-
+            'options'=>ProductOptionsTransformer::collection($this->optionsv),
         ];
+
+        /*Transform Relation Ships*/
+        if (in_array('category', $includes)) {
+            $data['category'] = new CategoryTransformer($this->category);
+        }
+
+        if (in_array('categories', $includes)) {
+            $data['categories'] =  CategoryTransformer::collection($this->categories);
+        }
+
+        if (in_array('tags', $includes)) {
+            $data['tags'] = TagTransformer::collection($this->tags);
+        }
+        if (in_array('manufacturer', $includes)) {
+            $data['manufacturer'] = new ManufacturerTransformer($this->manufacturer);
+        }
+        if (in_array('children', $includes)) {
+            $data['children'] = ProductTransformer::collection($this->children);
+        }
+        if (in_array('parent', $includes)) {
+            $data['parent'] = new ProductTransformer($this->parent);
+        }
+
+        /*Return Data*/
+        return $data;
     }
 }

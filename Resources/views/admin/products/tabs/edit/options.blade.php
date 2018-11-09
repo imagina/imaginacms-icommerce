@@ -43,11 +43,11 @@
 
 	<div class="col-sm-10">
 		<div class="tab-content">
-			
+
 			@foreach ($product->optionsv as $optionder)
-				
+
 				<div id='{{$iditem}}' class='tab-pane fade in @if($cont==0) active @endif'>
-					
+
 					<div class='form-group'>
 						<label for='req{{$iditem}}'>{{trans('icommerce::products.table.required')}}</label>
 						<select name='vrequired' class='form-control'>
@@ -69,7 +69,7 @@
 							<textarea rows='5' name='vtextarea' id='intext{{$iditem}}' class='form-control' required>{{$optionder->pivot->value}}</textarea>
 						</div>
 					@endif
-					
+
 					@if($optionder->type=="select" || $optionder->type=="checkbox" || $optionder->type=="radio")
 
 						<table class='table table-dinamic' id='tb{{$iditem}}' data-option-id='{{$optionder->pivot->option_id}}'>
@@ -77,9 +77,12 @@
 						<thead>
 							<tr>
 							<th>{{trans('icommerce::product_option_values.table.option')}}</th>
-							<th>{{trans('icommerce::product_option_values.table.quantity')}}</th><th>{{trans('icommerce::product_option_values.table.substract')}}</th><th>{{trans('icommerce::product_option_values.table.price')}}</th><th>{{trans('icommerce::product_option_values.table.weight')}}</th><th></th>
-							</tr> 
-						</thead> 
+							<th>{{trans('icommerce::product_option_values.table.quantity')}}</th>
+							<th>{{trans('icommerce::product_option_values.table.substract')}}</th>
+							<th>{{trans('icommerce::product_option_values.table.price')}}</th>
+							<th>{{trans('icommerce::product_option_values.table.weight')}}</th><th></th>
+							</tr>
+						</thead>
 
 						<tbody>
 						@foreach ($productOptionValues as $pov)
@@ -97,7 +100,7 @@
 								</td>
 
 								<td>
-									<input type='number' name='tableQuantity' class='form-control' min='0' value="{{$pov->quantity}}" required/>
+									<input type='number' name='tableQuantity' class='form-control' min='0' value="{{$pov->quantity}}" />
 								</td>
 
 								<td>
@@ -106,13 +109,13 @@
 										<option value='1' @if($pov->substract==1) selected @endif>{{trans('icommerce::products.table.yes')}}</option>
 									</select>
 								</td>
-								
+
 								<td>
 									<select name='tablePricePrefix' class='form-control'>
 										<option value='+' @if($pov->price_prefix=="+") selected @endif>+</option>
 										<option value='-'  @if($pov->price_prefix=="-") selected @endif>-</option>
 									</select>
-									<input type='number' name='tablePrice' class='form-control' min='0' step='0.01' value="{{$pov->price}}" required/>
+									<input type='number' name='tablePrice' class='form-control' min='0' step='0.01' value="{{$pov->price}}" />
 								</td>
 
 								<td>
@@ -127,19 +130,19 @@
 
 							</tr>
 							@endif
-						@endforeach	
+						@endforeach
 
 						</tbody>
 
 						<tfoot><tr><td colspan='5'></td><td class='text-left'><button type='button' data-id-op='{{$iditem}}' class='btn btn-primary btn-add-dinamic'><i class='fa fa-plus-circle'></i></button></td></tr></tfoot>
 
 
-						</table>						
+						</table>
 
 					@endif
 
 				</div>
-				
+
 
 				@php
 					$cont++;
@@ -147,7 +150,7 @@
 				@endphp
 
 			@endforeach
-			
+
 		</div>
 	</div>
 </div>

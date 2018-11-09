@@ -47,9 +47,10 @@ interface ProductRepository extends BaseRepository
 
     /**
      * @param string $slug
+     * @param null $include
      * @return mixed
      */
-    public function findBySlug($slug);
+    public function findBySlug($slug, $include=null);
 
     public function whereCategoryFilter($id,$filter,$type);
 
@@ -59,9 +60,13 @@ interface ProductRepository extends BaseRepository
     public function whereFreeshippingProducts();
 
     public function whereFreeshippingProductsFilter($filter);
+
     /**
+     * @param $page
+     * @param $take
      * @param object $filter
+     * @param $include
      * @return mixed
      */
-    public function whereFilters($filter);
+    public function whereFilters($page, $take, $filter, $include);
 }

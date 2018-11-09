@@ -5,7 +5,6 @@ namespace Modules\Icommerce\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
-use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\CommentRepository;
@@ -17,12 +16,13 @@ use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Icommerce\Repositories\ShippingRepository;
 use Modules\Icommerce\Transformers\PriceTransformer;
 use Modules\Icommerce\Transformers\ProductTransformer;
+use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 use Modules\Notification\Services\Notification;
 use Modules\User\Contracts\Authentication;
 use Route;
 
 
-class ProductControllerV2 extends BasePublicController
+class ProductControllerV2 extends BaseApiController
 {
     /**
      * @var ProductRepository
@@ -73,60 +73,17 @@ class ProductControllerV2 extends BasePublicController
     {
 
         try {
-            if (!isset($request->filters) && empty($request->filters)) {
+            $p = $this->parametersUrl(1, 12, false, []);
 
-                $results = $this->product->paginate($request->paginate ?? 12);
-                $response = [
-                    'meta' => [
-                        "total-pages" => $results->lastPage(),
-                        "per_page" => $results->perPage(),
-                        "total-item" => $results->total()
-                    ],
-                    'data' => ProductTransformer::collection($results),
-                    'links' => [
-                        "self" => $results->currentPage(),
-                        "first" => $results->hasMorePages(),
-                        "prev" => $results->previousPageUrl(),
-                        "next" => $results->nextPageUrl(),
-                        "last" => $results->lastPage()
-                    ]
+            //Request to Repository
+            $results = $this->product->whereFilters($p->page, $p->take, $p->filter, $p->include);
 
-                ];
+            //Response
+            $response = ["meta" => [], "data" => ProductTransformer::collection($results)];
 
-            } else {
-                $filters = json_decode($request->filters);
-                $results = ProductTransformer::collection($this->product->whereFilters($filters));
-
-                if (isset($filters->paginate)) {
-                    $response = [
-                        'meta' => [
-                            "total-pages" => $results->lastPage(),
-                            "per_page" => $results->perPage(),
-                            "total-item" => $results->total()
-                        ],
-                        'data' => ProductTransformer::collection($results),
-                        'links' => [
-                            "self" => $results->currentPage(),
-                            "first" => $results->hasMorePages(),
-                            "prev" => $results->previousPageUrl(),
-                            "next" => $results->nextPageUrl(),
-                            "last" => $results->lastPage()
-                        ]
-
-                    ];
-                } else {
-                    $response = [
-                        'meta' => [
-                            "take" => $filters->take ?? 5,
-                            "skip" => $filters->skip ?? 0,
-                        ],
-                        'data' => ProductTransformer::collection($results),
-                    ];
-                }
-            }
-
-
-        } catch (\ErrorException $e) {
+            //If request pagination add meta-page
+            $p->page ? $response["meta"] = ["page" => $this->pageTransformer($results)] : false;
+        } catch (\Exception $e) {
             $status = 500;
             $response = ['errors' => [
                 "code" => "501",
@@ -140,25 +97,90 @@ class ProductControllerV2 extends BasePublicController
         }
 
         return response()->json($response, $status ?? 200);
+
     }
 
     /**
-     * @param Product $product
+     * @param slug
      * @return mixed
      */
-    public function product(Product $product, Request $request)
+    public function show($slug, Request $request)
     {
 
         try {
+            $p = $this->parametersUrl(false, false, false, []);
+
+            //Request to Repository
+            $product = $this->product->findBySlug($slug, $p->include);
+            if (!isset($product) && empty($product)) {
+                $status = 404;
+                $response = [
+                    'errors' =>
+                        [
+                            "code" => "404",
+                            "source" => [
+                                "pointer" => url($request->path()),
+                            ],
+                            "title" => "Not Fount",
+                            "detail" => "The product not fount"
+                        ]
+                ];
+            } else {
+                $response = [
+                    'type' => 'product',
+                    'id' => $product->id,
+                    "data" => new ProductTransformer($product)
+                ];
+            }
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = 500;
+            $response = [
+                'errors' =>
+                    [
+                        "code" => "501",
+                        "source" => [
+                            "pointer" => url($request->path()),
+                        ],
+                        "title" => "Value is too short",
+                        "detail" => $e->getMessage()
+                    ]
+            ];
+        }
+        return response()->json($response, $status ?? 200);
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+
+    public function product($id, Request $request)
+    {
+
+        try {
+            $request['include']="category,categories,manufacturer";
+            $product=$this->product->find($id);
             if (isset($product)) {
-                if (isset($filters->take)) {
-                    $response = [
-                        'type'=>'article',
-                        'id'=>$product->id,
-                        'data' => new ProductTransformer($product),
-                    ];
-                }
-                $response = new ProductTransformer($product);
+
+                $response = [
+                    'type' => 'product',
+                    'id' => $product->id,
+                    'data' => new ProductTransformer($product),
+                ];
+
+            } else {
+                $status = 404;
+                $response = ['errors' => [
+                    "code" => "404",
+                    "source" => [
+                        "pointer" => url($request->path()),
+                    ],
+                    "title" => "Not Fount",
+                    "detail" => "The product not fount"
+                ]
+                ];
             }
         } catch (\Exception $e) {
             \Log::error($e);
@@ -175,6 +197,7 @@ class ProductControllerV2 extends BasePublicController
         }
         return response()->json($response, $status ?? 200);
     }
+
 
     /**
      * @param Request $request

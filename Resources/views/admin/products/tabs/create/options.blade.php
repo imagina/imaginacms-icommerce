@@ -18,7 +18,7 @@
 
 	<div class="col-sm-10">
 		<div class="tab-content">
-			
+
 		</div>
 	</div>
 </div>
@@ -44,23 +44,23 @@
 
 @stop
 
-@push('js-stack')	
-    
+@push('js-stack')
+
 
 
 <script type="text/javascript">
 
 
 
-$(function(){ 
+$(function(){
 
 	var act="active",cont=0;
-	var miz = $("#optionsProduct .nav"), mder = $("#optionsProduct .tab-content"); 
+	var miz = $("#optionsProduct .nav"), mder = $("#optionsProduct .tab-content");
 
 	var vOptionValues = '{!!$optionValues!!}';
 	var objOptionValues = jQuery.parseJSON(vOptionValues);
 
-	var trans = 0; 
+	var trans = 0;
 
 	@if ($entity->translationEnabled())
 		trans = 1;
@@ -78,7 +78,7 @@ $(function(){
 		var iditem = "op"+cont;
 
 		html = "<li class='active' id=t"+iditem+" data-id-right='"+iditem+"' data-id-option='"+optionid+"' data-type-option='"+type+"'><i data-ge='"+iditem+"'class='fa fa-minus-circle closed'></i> <a data-toggle='tab' href='#"+iditem+"'>"+desc+"</a></li>";
-		
+
 
 		miz.append(html);
 
@@ -90,6 +90,8 @@ $(function(){
 			htmlRequired = createRequired(iditem,'vrequired');
 			htmlText = createText(iditem,'vtext');
 			html = htmlini+htmlRequired+htmlText+htmlend;
+			// htmlMultiple = createMultiple(iditem,optionid);
+			// html = htmlini+htmlRequired+htmlMultiple+htmlend;
 			mder.append(html);
 		}
 
@@ -112,8 +114,8 @@ $(function(){
 	}
 	});
 
-	
-	
+
+
 	$("#opul").on('click',".closed", function(){
 		var idgral = $(this).data('ge');
 		var delTabiz = "t"+$(this).data('ge');
@@ -126,7 +128,7 @@ $(function(){
 	var counter = 0;
 
 	$(".tab-pane").on('click',".btn-add-dinamic", function(){
-		
+
 		var idtable = "#tb"+$(this).data('id-op');
 		var newRow = $("<tr>");
         var cols = "";
@@ -136,10 +138,10 @@ $(function(){
         cols += createSelectOptions("tableSOption",optionid);
         cols += createInputNumber("tableQuantity");
         cols += createSelecSustract("tableSustract");
-        cols += '<td>'+createSelectPrefix("tablePricePrefix")+createInputFloat("tablePrice","required")+'</td>';
+        cols += '<td>'+createSelectPrefix("tablePricePrefix")+createInputFloat("tablePrice","")+'</td>';
         cols += '<td>'+createSelectPrefix("tableWeightPrefix")+createInputFloat("tableWeight","")+'</td>';
         cols += '<td><button type="button" class="btn-delete-dinamic btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
-       
+
         newRow.append(cols);
         $(idtable).append(newRow);
 
@@ -150,7 +152,7 @@ $(function(){
 	$(".tab-pane").on('click',".btn-delete-dinamic", function(){
 		$(this).closest("tr").remove();
 	});
-	
+
 	function valideActive(){
 		if($("#optionsProduct .nav li").hasClass("active")){
 			$( "#optionsProduct .nav li.active" ).removeClass("active");
@@ -172,14 +174,14 @@ $(function(){
 		htmlselectend = "</select>";
 
 		htmloptions = "<option value='0'>NO</option><option value='1'>{{trans('icommerce::products.table.yes')}}</option>";
-	
+
 		html = htmliniR+hmtllabel+htmlselectini+htmloptions+htmlselectend+htmlendR;
 
 		return html;
 	}
 
 	function createText(iditem,name){
-		
+
 		htmliniT = "<div class='form-group'>";
 		htmlendT ="</div>";
 
@@ -247,7 +249,7 @@ $(function(){
 
 	function createInputNumber(name){
 
-		htmlInputNumber = "<td><input type='number' name='"+name+"' class='form-control' min='0' required/></td>";
+		htmlInputNumber = "<td><input type='number' name='"+name+"' class='form-control' min='0' /></td>";
 		return htmlInputNumber;
 
 	}
@@ -255,7 +257,7 @@ $(function(){
 	function createSelecSustract(name){
 		htmlSSIni = "<td><select name='"+name+"' class='form-control'>";
 		htmlSSEnd = "</select></td>";
-		htmlSSoptions = "<option value='0'>NO</option><option value='1' selected>{{trans('icommerce::products.table.yes')}}</option>";	
+		htmlSSoptions = "<option value='0'>NO</option><option value='1' selected>{{trans('icommerce::products.table.yes')}}</option>";
 
 		htmlSelectSustract = htmlSSIni+htmlSSoptions+htmlSSEnd;
 
@@ -265,7 +267,7 @@ $(function(){
 	function createSelectPrefix(name){
 		htmlSPIni = "<select name='"+name+"' class='form-control'>";
 		htmlSPEnd = "</select>";
-		htmlSPoptions = "<option value='+' selected>+</option><option value='-'>-</option>";	
+		htmlSPoptions = "<option value='+' selected>+</option><option value='-'>-</option>";
 
 		htmlSelectPrefix = htmlSPIni+htmlSPoptions+htmlSPEnd;
 
@@ -316,7 +318,7 @@ $(function(){
 					var tPrice = $(this).find("input[name='tablePrice']").val();
 					var tWeightPrefix = $(this).find("select[name='tableWeightPrefix']").val();
 					var tWeight = $(this).find("input[name='tableWeight']").val();
-					
+
 					if(tWeight==""){
 						tWeight = 0;
 					}
@@ -333,7 +335,7 @@ $(function(){
 			    	optionItems['points_prefix'] = "+";
 			    	optionItems['weight'] = parseFloat(tWeight);
 			    	optionItems['weight_prefix'] = tWeightPrefix;
-			    	
+
 			    	valuesObj.push(optionItems);
 
 			    	checkRows++;
@@ -349,9 +351,9 @@ $(function(){
 			}
 
 			item ["optionValues"] = valuesObj;
-      
+
         	jsonObj.push(item);
-			
+
 		});
 
 		$("#optionsPSave").val(JSON.stringify(jsonObj));

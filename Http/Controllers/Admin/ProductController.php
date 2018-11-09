@@ -176,7 +176,12 @@ class ProductController extends AdminBaseController
 
                     $product_option = $this->productOption->create($param);
                     foreach ($op->optionValues as $key => $value) {
-
+                        if($value->price==null || $value->price=="")
+                          $value->price=0;
+                        if($value->quantity==null || $value->quantity=="")
+                          $value->quantity=0;
+                        if($value->weight==null || $value->weight=="")
+                          $value->weight=0;
                         $param2 = array(
                             'product_option_id' => $product_option->id,
                             'product_id' => $product->id,
@@ -387,7 +392,12 @@ class ProductController extends AdminBaseController
 
                     // Product Option Values
                     foreach ($op->optionValues as $key => $value) {
-
+                      if($value->price==null || $value->price=="")
+                        $value->price=0;
+                      if($value->quantity==null || $value->quantity=="")
+                        $value->quantity=0;
+                      if($value->weight==null || $value->weight=="")
+                        $value->weight=0;
                         $param3 = [
                             'option_value_id' => $value->option_value_id,
                             'quantity' => $value->quantity,
@@ -404,7 +414,12 @@ class ProductController extends AdminBaseController
                         if (!empty($value->pov_id)) {
                             Product_Option_Value::where("id", $value->pov_id)->update($param3);
                         } else {
-
+                          if($value->price==null || $value->price=="")
+                            $value->price=0;
+                          if($value->quantity==null || $value->quantity=="")
+                            $value->quantity=0;
+                          if($value->weight==null || $value->weight=="")
+                            $value->weight=0;
                             // Create
                             $param2 = array(
                                 'product_option_id' => $product_option_id,
@@ -811,7 +826,8 @@ class ProductController extends AdminBaseController
         $name = str_slug(str_replace('.' . $extension, '', $original_filename), '-');
 
 
-        $image->fit(config('asgard.iblog.config.imagesize.width'), config('asgard.iblog.config.imagesize.height'), function ($constraint) {
+        $image->resize(config('asgard.iblog.config.imagesize.width'), config('asgard.iblog.config.imagesize.height'), function ($constraint) {
+            $constraint->aspectRatio();
             $constraint->upsize();
         });
 

@@ -5,9 +5,9 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Entities\Order_Status;
 use Modules\Icommerce\Entities\Status;
+use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Jobs\BulkloadProducts;
 use Modules\Icommerce\Repositories\ProductRepository;
-use Modules\Icommerce\Events\ProductWasCreated;
 
 
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository
@@ -23,23 +23,38 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     public function all()
     {
-       return $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])->whereStatus(Status::ENABLED)->where('date_available', '<=', date('Y-m-d'))->orderBy('order_weight','desc')->orderBy('created_at', 'DESC')->paginate(12);
+        return $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])->whereStatus(Status::ENABLED)->where('date_available', '<=', date('Y-m-d'))->orderBy('order_weight', 'asc')->orderBy('created_at', 'DESC')->paginate(12);
     }
 
     public function find($id)
     {
-        return $this->model->find($id);
+        $query = $this->model->query();
+
+        $query = $this->model->where('id', $id);
+
+        $query->with(['category', 'categories', 'tags', 'manufacturer','product_discounts', 'product_option_values', 'product_option_values.option', 'product_option_values.option_value', 'optionsv']);
+
+        return $query->first();
     }
 
-    public function findBySlug($slug)
+    public function findBySlug($slug, $include = null)
     {
-        return $this->model
-            ->whereStatus(Status::ENABLED)
-            ->where([
-                ['date_available', '<=', date('Y-m-d')],
-                ['slug', '=', $slug]
-            ])
-            ->firstOrFail();
+        $query = $this->model->query();
+
+
+        $query = $this->model->where('slug', $slug);
+
+        /*== RELATIONSHIPS ==*/
+        if (count($include)) {
+            //Include relationships for default
+            $includeDefault = ['product_discounts', 'product_option_values', 'product_option_values.option', 'product_option_values.option_value', 'optionsv'];
+            $query->with(array_merge($includeDefault, $include));
+        }
+        $query->where('date_available', '<=', date('Y-m-d'));
+        $query->whereStatus(Status::ENABLED);
+        /*=== REQUEST ===*/
+        return $query->first();
+
     }
 
     public function whereCategory($id)
@@ -50,7 +65,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id', '=', 'icommerce__products.id')
             ->select('*', 'icommerce__products.id as id')
             ->whereIn('icommerce__product_category.category_id', $id)
-            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.order_weight','desc')->orderBy('icommerce__products.created_at', 'DESC')->paginate(12);
+            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.order_weight', 'asc')->orderBy('icommerce__products.created_at', 'DESC')->paginate(12);
     }
 
     public function whereParentId($id)
@@ -59,7 +74,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->whereStatus(Status::ENABLED)
             ->where('date_available', '<=', date('Y-m-d'))
             ->where('parent_id', $id)
-            ->orderBy('order_weight','desc')
+            ->orderBy('order_weight', 'asc')
             ->orderBy('created_at', 'DESC')->paginate(12);
 
     }
@@ -87,7 +102,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts'])
             ->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id', '=', 'icommerce__products.id')
             ->whereIn('icommerce__product_category.category_id', $id)
-            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.order_weight','desc')->orderBy('icommerce__products.created_at', 'DESC')->get();
+            ->whereStatus(Status::ENABLED)->orderBy('icommerce__products.order_weight', 'asc')->orderBy('icommerce__products.created_at', 'DESC')->get();
 
     }
 
@@ -234,8 +249,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->where('freeshipping', 1)
             ->select('*', 'icommerce__products.id as id')
             ->whereStatus(Status::ENABLED)
-            ->orderBy('icommerce__products.' . $order->by, $order->type);
-
+            ->orderBy('icommerce__products.' . $order->by, $order->type)
+            ->orderBy('icommerce__products.order_weight', 'asc');
         if ($manufacturer) { //si hay que filtrar por manufacturer
             $query->where('icommerce__products.manufacturer_id', $manufacturer);
         }
@@ -324,93 +339,99 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
      * @param object $filter
      * @return mixed
      */
-    public function whereFilters($filter)
+    public function whereFilters($page, $take, $filter, $include)
     {
         try {
-            $query = $this->model->with(['category', 'categories', 'tags', 'manufacturer', 'product_discounts','product_option_values','product_option_values.option','product_option_values.option_value'])
-                ->select('*', 'icommerce__products.id as id');
-            if (isset($filter->categories)) {
-                is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-                $query->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id',
-                    '=', 'icommerce__products.id')
-                    ->whereIn('icommerce__product_category.category_id', $filter->categories);
-            }
-            if (isset($filter->options_values)) {
-                is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
-                $query->leftJoin('icommerce__product_option_values', 'icommerce__product_option_values.product_id',
-                    '=', 'icommerce__products.id')
-                    ->whereIn('icommerce__product_option_values.option_value_id', $filter->options_values);
-            }
-            if (isset($filter->manufacturers)) {
-                is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturer];
-                $query->whereIn('icommerce__products.manufacturer_id', $filter->manufacturers);
-            }
-            if (isset($filter->price)) { //si hay que filtrar por rango de precio
-                $price = $filter->price;
-                $query->whereBetween('icommerce__products.price', [$price->min ?? 0, $price->max ?? 9999999999999999]);
+            $query = $this->model->query();
+
+            /*== RELATIONSHIPS ==*/
+            if (count($include)) {
+                //Include relationships for default
+                $includeDefault = ['product_discounts', 'product_option_values', 'product_option_values.option', 'product_option_values.option_value', 'optionsv'];
+                $query->with(array_merge($includeDefault, $include));
             }
 
-            if (isset($filter->freeshipping)) { //si hay que filtrar por rango de precio
+            $query->select('*', 'icommerce__products.id as id');
 
-                $query->where('freeshipping', 1);
-            }
-            if (isset($filter->search)) { //si hay que filtrar por rango de precio
-                $criterion = $filter->search;
-                $param = explode(' ', $criterion);
-                $query->where(function ($query) use ($param) {
-                    foreach ($param as $index => $word) {
-                        if ($index == 0) {
-                            $query->where('title', 'like', "%".$word."%");
-                            $query->orWhere('sku', 'like', "%".$word."%");
-                        } else {
-                            $query->orWhere('title', 'like', "%".$word."%");
-                            $query->orWhere('sku', 'like', "%".$word."%");
+            if ($filter) {
+
+                if (isset($filter->categories)) {
+                    is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+                    $query->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id',
+                        '=', 'icommerce__products.id')
+                        ->whereIn('icommerce__product_category.category_id', $filter->categories);
+                }
+                if (isset($filter->options_values)) {
+                    is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
+                    $query->leftJoin('icommerce__product_option_values', 'icommerce__product_option_values.product_id',
+                        '=', 'icommerce__products.id')
+                        ->whereIn('icommerce__product_option_values.option_value_id', $filter->options_values);
+                }
+                if (isset($filter->manufacturers)) {
+                    is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturer];
+                    $query->whereIn('icommerce__products.manufacturer_id', $filter->manufacturers);
+                }
+                if (isset($filter->price)) { //si hay que filtrar por rango de precio
+                    $price = $filter->price;
+                    $query->whereBetween('icommerce__products.price', [$price->min ?? 0, $price->max ?? 9999999999999999]);
+                }
+
+                if (isset($filter->freeshipping)) { //si hay que filtrar por rango de precio
+
+                    $query->where('freeshipping', 1);
+                }
+                if (isset($filter->search)) { //si hay que filtrar por rango de precio
+                    $criterion = $filter->search;
+                    $param = explode(' ', $criterion);
+                    $query->where(function ($query) use ($param) {
+                        foreach ($param as $index => $word) {
+                            if ($index == 0) {
+                                $query->where('title', 'like', "%" . $word . "%");
+                                $query->orWhere('sku', 'like', "%" . $word . "%");
+                            } else {
+                                $query->orWhere('title', 'like', "%" . $word . "%");
+                                $query->orWhere('sku', 'like', "%" . $word . "%");
+                            }
                         }
-                    }
 
-                });
-            }
-            if (isset($filter->recent)) { //si hay que filtrar por rango de precio
+                    });
+                }
+                if (isset($filter->recent)) { //si hay que filtrar por rango de precio
 
+                    $query->where('date_available', '<=', date('Y-m-d'));
+                }
+                if (isset($filter->discounts)) { //si hay que filtrar por rango de precio
+
+                    $query->leftJoin('icommerce__product_discounts', 'icommerce__product_discounts.product_id', '=', 'icommerce__products.id');
+                }
+                if (isset($filter->bestsellers)) { //si hay que filtrar por rango de precio
+
+                    $query->leftJoin('icommerce__order_product', 'icommerce__order_product.product_id', '=', 'icommerce__products.id')
+                        ->leftJoin('icommerce__orders', 'icommerce__order_product.order_id', '=', 'icommerce__orders.id')
+                        ->where('icommerce__orders.order_status', Order_Status::PROCESSING);
+                }
+                if (isset($filter->parent)) { //si hay que filtrar por rango de precio
+                    $query->where('parent_id', $filter->parent);
+                }
+
+
+                if (isset($filter->skip)) { //si hay que filtrar por rango de precio
+                    $query->skip($filter->skip ?? 0);
+                }
+                $query->whereStatus(Status::ENABLED);
                 $query->where('date_available', '<=', date('Y-m-d'));
-            }
-            if (isset($filter->discounts)) { //si hay que filtrar por rango de precio
 
-                $query->leftJoin('icommerce__product_discounts', 'icommerce__product_discounts.product_id', '=', 'icommerce__products.id');
+                $orderBy = isset($filter->orderBy) ? $filter->orderBy : 'created_at';
+                $orderType = isset($filter->orderType) ? $filter->orderType : 'desc';
+                $query->orderBy('icommerce__products.' . $orderBy, $orderType);
             }
-            if (isset($filter->bestsellers)) { //si hay que filtrar por rango de precio
-
-                $query->leftJoin('icommerce__order_product', 'icommerce__order_product.product_id', '=', 'icommerce__products.id')
-                    ->leftJoin('icommerce__orders', 'icommerce__order_product.order_id', '=', 'icommerce__orders.id')
-                    ->where('icommerce__orders.order_status', Order_Status::PROCESSING);
-            }
-            if (isset($filter->parent)) { //si hay que filtrar por rango de precio
-                $query->where('parent_id', $filter->parent);
-            }
-
-            if (isset($filter->order)) { //si hay que filtrar por rango de precio
-
-                $orderby = $filter->order->by ?? 'created_at';
-                $ordertype = $filter->order->type ?? 'desc';
-            } else {
-                $orderby = 'created_at';
-                $ordertype = 'desc';
-            }
-            if (isset($filter->skip)) { //si hay que filtrar por rango de precio
-                $query->skip($filter->skip ?? 0);
-            }
-            $query->orderBy('icommerce__products.' . $orderby, $ordertype);
-            $query->whereStatus(Status::ENABLED);
-            $query->where('date_available', '<=', date('Y-m-d'));
-
-            if (isset($filter->take)) {
-                $query->take($filter->take ?? 5);
+            /*=== REQUEST ===*/
+            if ($page) {//Return request with pagination
+                $take ? true : $take = 12; //If no specific take, query default take is 12
+                return $query->paginate($take);
+            } else {//Return request without pagination
+                $take ? $query->take($take) : false; //Set parameter take(limit) if is requesting
                 return $query->get();
-            }elseif(isset($filter->paginate)&& is_integer($filter->paginate))
-            {
-                return $query->paginate($filter->paginate);
-            }else{
-                return $query->paginate(12);
             }
 
         } catch (\Exception $e) {
@@ -422,5 +443,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         }
 
+    }
+    public function category($id){
+        return $this->model->whereStatus(Status::ENABLED)->where('category_id',$id)->get();
     }
 }
