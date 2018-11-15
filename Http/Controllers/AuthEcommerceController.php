@@ -21,6 +21,7 @@ use Modules\Iprofile\Entities\Profile;
 use Modules\Iprofile\Repositories\AddressRepository;
 use Modules\Iprofile\Transformers\AddressesTransformer;
 use Socialite;
+use Modules\Iprofile\Repositories\ProfileRepository;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
 
@@ -33,8 +34,9 @@ class AuthEcommerceController extends AuthController
    */
   private $role;
   private $address;
+  private $profile;
 
-  public function __construct(UserRepository $user, RoleRepository $role, AddressRepository $address)
+  public function __construct(UserRepository $user, RoleRepository $role, AddressRepository $address,ProfileRepository $profile)
   {
     parent::__construct();
     $this->user = $user;
@@ -107,7 +109,15 @@ class AuthEcommerceController extends AuthController
           $user = $this->user->createWithRoles($request->all(), $roleUser, false);
         else {
           $user = $this->user->createWithRolesFromCli($request->all(), $roleCustomer, true);
-
+          $profile = $this->profile->findByUserId($user->id);
+          if($request->type_person!=null && $request->type_person=="legal"){
+            $profile->type_person='legal';
+            $profile->business=$request->business;
+            $profile->nit=$request->nit;
+          }else{
+            $profile->type_person='natural';
+          }
+          $profile->update();
           $credentials = [
             'email' => $request->email,
             'password' => $request->password,
@@ -125,6 +135,7 @@ class AuthEcommerceController extends AuthController
         return response()->json([
           "status" => "ok",
           "user" => $user,
+          "profile"=>$profile
         ]);
       }
     } catch (\Exception $e) {

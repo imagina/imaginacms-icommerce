@@ -4,7 +4,7 @@
             1
     </div>
     <h3 class="d-flex align-items-center">
-        {{ trans('icommerce::customer.title') }} 
+        {{ trans('icommerce::customer.title') }}
     </h3>
 </div>
 
@@ -14,19 +14,19 @@
       <div class="card mb-0 border-0">
         <div class="card-header bg-white" role="tab" id="headingOne">
             <label class="form-check-label">
-                <input 
-                    type="radio" 
-                    class="form-check-input" 
-                    name="newOldCustomer" 
-                    id="newOldCustomer1" 
-                    value="1" 
-                    data-parent="#customerData" 
-                    data-toggle="collapse" 
-                    data-target="#collapseOne" 
-                    aria-expanded="true" 
-                    aria-controls="collapseOne" 
+                <input
+                    type="radio"
+                    class="form-check-input"
+                    name="newOldCustomer"
+                    id="newOldCustomer1"
+                    value="1"
+                    data-parent="#customerData"
+                    data-toggle="collapse"
+                    data-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
                     checked>
-             {{ trans('icommerce::customer.sub_titles.new_client') }} 
+             {{ trans('icommerce::customer.sub_titles.new_client') }}
           </label>
         </div>
 
@@ -37,19 +37,19 @@
                   <div class="card mb-0 border-0">
                     <div class="card-header bg-white" role="tab" id="headingTwo_Two">
                           <label class="form-check-label">
-                            <input 
-                              type="radio" 
-                              class="my-2" 
-                              name="guestOrCustomer" 
-                              id="guestOrCustomer2" 
-                              value="2" 
-                              data-parent="#Register" 
-                              data-toggle="collapse" 
-                              data-target="#collapseTwo_Two" 
-                              aria-expanded="true" 
+                            <input
+                              type="radio"
+                              class="my-2"
+                              name="guestOrCustomer"
+                              id="guestOrCustomer2"
+                              value="2"
+                              data-parent="#Register"
+                              data-toggle="collapse"
+                              data-target="#collapseTwo_Two"
+                              aria-expanded="true"
                               aria-controls="collapseTwo_Two"
                               checked>
-                            {{ trans('icommerce::customer.sub_titles.guest_client') }} 
+                            {{ trans('icommerce::customer.sub_titles.guest_client') }}
                         </label>
                     </div>
                     <div id="collapseTwo_Two" class="collapse show" role="tabpanel" aria-labelledby="headingTwo_Two">
@@ -82,18 +82,18 @@
                   <div class="card mb-0 border-0">
                     <div class="card-header bg-white" role="tab" id="headingOne_One">
                         <label class="form-check-label">
-                          <input 
-                            type="radio" 
-                            class="my-2" 
-                            name="guestOrCustomer" 
-                            id="guestOrCustomer1" 
-                            value="1" 
-                            data-parent="#Register" 
-                            data-toggle="collapse" 
-                            data-target="#collapseOne_One" 
-                            aria-expanded="true" 
+                          <input
+                            type="radio"
+                            class="my-2"
+                            name="guestOrCustomer"
+                            id="guestOrCustomer1"
+                            value="1"
+                            data-parent="#Register"
+                            data-toggle="collapse"
+                            data-target="#collapseOne_One"
+                            aria-expanded="true"
                             aria-controls="collapseOne_One" >
-                            {{ trans('icommerce::customer.sub_titles.register_account') }} 
+                            {{ trans('icommerce::customer.sub_titles.register_account') }}
                         </label>
                     </div>
                     <div id="collapseOne_One" class="collapse" role="tabpanel" aria-labelledby="headingOne_One">
@@ -120,6 +120,44 @@
                               <label for="telephone">{{ trans('icommerce::customer.form.phone') }}</label>
                               <input type="text" class="form-control ignore" id="telephone_register" name="telephone">
                           </div>
+                          <div class='form-group' >
+                            <strong>¿Eres personal jurídico?:</strong>
+                            <!-- <button data-toggle="collapse" data-target="#legalPerson">Si</button> -->
+                            <label class="form-check-label">
+                              <input
+                              type="radio"
+                              class="my-2"
+                              name="type_person"
+                              id="guestOrCustomer1"
+                              value="legal"
+                              data-parent="#Register"
+                              data-toggle="collapse"
+                              data-target="#legalPerson"
+                              aria-expanded="true"
+                              aria-controls="legalPerson" checked>
+                              No
+                            </label>
+                            <label class="form-check-label">
+                              <input
+                              type="radio"
+                              class="my-2"
+                              name="type_person"
+                              id="guestOrCustomer1"
+                              value="natural"
+                              data-parent="#Register"
+                              data-toggle="collapse"
+                              data-target="#legalPerson"
+                              aria-expanded="true"
+                              aria-controls="legalPerson" >
+                              Si
+                            </label>
+                            <div id="legalPerson" class="collapse">
+                            {{trans('icommerce::billing_details.form.company')}}
+                            <input type="text" class="form-control" name="business" v-model="businessName" >
+                            {{trans('icommerce::customer.logged.nit')}}
+                            <input type="text" class="form-control" name="nit" v-model="businessNIT">
+                            </div>
+                          </div>
                           <div class="passwordUser">
                             <div class="form-group">
                               <label for="password">{{ trans('icommerce::customer.form.paswd') }}</label>
@@ -131,29 +169,29 @@
                             </div>
                           </div>
                         </div>
-                        
+
                       </div>
                     </div>
                   </div>
-                </div>       
+                </div>
           </div>
         </div>
       </div>
       <div class="card mb-0 border-0">
         <div class="card-header bg-white" role="tab" id="headingTwo">
           <label class="form-check-label">
-            <input 
-                type="radio" 
-                class="form-check-input" 
-                name="newOldCustomer" 
-                id="newOldCustomer2" 
-                value="2" 
-                data-parent="#customerData" 
-                data-toggle="collapse" 
-                data-target="#collapseTwo" 
-                aria-expanded="true" 
+            <input
+                type="radio"
+                class="form-check-input"
+                name="newOldCustomer"
+                id="newOldCustomer2"
+                value="2"
+                data-parent="#customerData"
+                data-toggle="collapse"
+                data-target="#collapseTwo"
+                aria-expanded="true"
                 aria-controls="collapseTwo">
-             {{ trans('icommerce::customer.sub_titles.im_client') }} 
+             {{ trans('icommerce::customer.sub_titles.im_client') }}
           </label>
         </div>
         <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
@@ -241,6 +279,24 @@
             <strong>{{ trans('icommerce::customer.logged.email') }}  </strong>{{$user->email}}
             <input type='hidden' id="email" name="email" value="{{$user->email}}">
           </div>
+          @if($profile->type_person!=null || $profile->type_person!="" && $profile->business!=null || $profile->business!="")
+          <div class='d-block'>
+            <strong>{{ trans('icommerce::billing_details.form.company') }}  </strong>{{$profile->business}}
+          </div>
+          @else
+          <div class='d-block'>
+            <strong>{{trans('icommerce::customer.logged.kind_person')}}</strong>
+            <br>
+            <input type="radio" name="profile_type_person" v-model="type_person" value="natural"> {{trans('icommerce::customer.logged.person_natural')}}<br>
+            <input type="radio" name="profile_type_person" v-model="type_person" value="legal"> {{trans('icommerce::customer.logged.person_legal')}}<br>
+            <div v-if="type_person=='legal'">
+              <strong>{{trans('icommerce::billing_details.form.company')}}</strong>
+              <input type="text" class="form-control" name="profile_business_name" v-model="profile.business" >
+              <strong>{{trans('icommerce::customer.logged.nit')}}</strong>
+              <input type="text" class="form-control" name="profile_business_nit" v-mask="'###.###.###-N'" v-model="profile.nit">
+            </div>
+          </div>
+          @endif
           <hr>
           <div class="d-block text-right">
             <i class="fa fa-id-card-o mr-2"></i>

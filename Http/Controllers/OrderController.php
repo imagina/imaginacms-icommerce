@@ -55,19 +55,19 @@ class OrderController extends BasePublicController
     $this->profile = $profile;
     $this->payments = $payments;
   }
-  
+
   public function index()
   {
     $tpl = 'icommerce::frontend.orders.index';
     $ttpl = 'icommerce.orders.index';
-    
+
     //if (view()->exists($ttpl)) $tpl = $ttpl;
     $user = $this->auth->user();
     $orders = $this->order->whereUser($user->id);
-    
+
     return view($tpl, compact('orders', 'user'));
   }
-  
+
   /**
    * Show the specified resource.
    * @return Response
@@ -76,7 +76,7 @@ class OrderController extends BasePublicController
   {
     $tpl = 'icommerce::frontend.orders.show';
     $ttpl = 'icommerce.orders.show';
-    
+
     //if (view()->exists($ttpl)) $tpl = $ttpl;
     if (!isset($request->key)) {
       $user = $this->auth->user();
@@ -93,7 +93,7 @@ class OrderController extends BasePublicController
         $subtotal = $order->total;
       if ($order->tax_amount)
         $subtotal = $subtotal - $order->tax_amount;
-  
+
       foreach ($order->products as $product)
         array_push($products, [
           "title" => $product->title,
@@ -108,14 +108,14 @@ class OrderController extends BasePublicController
           $order->payment_method = $payment->configTitle;
 
       return view($tpl, compact('order', 'user', 'products','subtotal'));
-      
+
     } else
       return redirect()->route('home')->withError(trans('icommerce::orders.order_not_found'));
-    
-    
-    
+
+
+
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -124,7 +124,7 @@ class OrderController extends BasePublicController
   {
     return view('icommerce::create');
   }
-  
+
   /**
    * Store a newly created resource in storage.
    * @param  Request $request
@@ -132,20 +132,25 @@ class OrderController extends BasePublicController
    */
   public function store(Request $request)
   {
-    
+
 
     $cart = $this->getItems();
     $currency = $this->currency->getActive();
-    
+
     $request["ip"] = $request->ip();
     $request["user_agent"] = $request->header('User-Agent');
     $request['order_status'] = 0;
     $request['key'] = substr(md5 (date("Y-m-d H:i:s").$request->ip()),0,20);
-    
+
     $profile = $this->profile->findByUserId($request->user_id);
-    
+    if($request->type_person=='legal'){
+      $profile->business=$request->profile_business_name;
+      $profile->nit=$request->profile_business_nit;
+      $profile->type_person="legal";
+      $profile->update();
+    }
     if ($request->existingOrNewPaymentAddress == '2') {
-      
+
       try {
         $this->address->create([
           'profile_id' => $profile->id,
@@ -158,6 +163,8 @@ class OrderController extends BasePublicController
           'postcode' => $request->payment_postcode,
           'country' => $request->payment_country,
           'zone' => $request->payment_zone,
+          'email'=>$request->payment_email,
+          'nit'=>$request->payment_nit
         ]);
 
       } catch (Exception $e) {
@@ -184,7 +191,7 @@ class OrderController extends BasePublicController
         return redirect()->back()->withError($e->getMessage());
       }
     }
-    
+
     try {
       $order = Order::create($request->all());
     } catch (Exception $e) {
@@ -204,7 +211,7 @@ class OrderController extends BasePublicController
         "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
       ]);
     }
-    
+
     try {
       foreach ($cart["items"] as $item) {
         Order_Product::create([
@@ -225,7 +232,7 @@ class OrderController extends BasePublicController
         "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
       ]);
     }
-    
+
     try {
       foreach ($cart["items"] as $item) {
         Payment::create([
@@ -242,7 +249,7 @@ class OrderController extends BasePublicController
         "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
       ]);
     }
-    
+
     //$this->notification->push('New Order', 'New generated order!', 'fa fa-check-square-o text-green', route('admin.icommerce.order.index'));
     try{
         Session::put('orderID', $order->id);
@@ -266,7 +273,7 @@ class OrderController extends BasePublicController
     }
 
   }
-  
+
   /**
    * Show the form for editing the specified resource.
    * @return Response
@@ -275,7 +282,7 @@ class OrderController extends BasePublicController
   {
     return view('icommerce::edit');
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -284,7 +291,7 @@ class OrderController extends BasePublicController
   public function update(Request $request)
   {
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -292,16 +299,16 @@ class OrderController extends BasePublicController
   public function destroy()
   {
   }
-  
+
   public function getItems()
   {
     $items = $this->cart->getItems();
     $weight = 0;
-    
+
     foreach ($items as $index => $item) {
       $item->weight ? $weight += $item->weight : false;
     }
-    
+
     return [
       'items' => $items,
       'quantity' => $this->cart->totalQuantity(),
@@ -309,7 +316,7 @@ class OrderController extends BasePublicController
       'weight' => $weight
     ];
   }
-  
+
   public function email()
   {
     $order = $this->order->find(119);
@@ -323,31 +330,31 @@ class OrderController extends BasePublicController
         "total" => $product->pivot->total,
       ]);
     }
-    
+
     $userEmail = $order->email;
     $userFirstname = "{$order->first_name} {$order->last_name}";
-    
-    
+
+
     $content = [
       'order' => $order,
       'products' => $products,
       'user' => $userFirstname
     ];
-    
+
     $data = array(
       'title' => null,
       'intro' => null,
       'content' => $content,
-    
+
     );
     return view("icommerce::email.success_order", compact('data'));
   }
-  
+
   public function showorder(Request $request)
   {
-    
+
     $tpl = 'icommerce::frontend.orders.show';
-    
+
     $orderId = $request->input('id');
     $key = $request->input('key');
     $order = $this->order->find($orderId);
@@ -361,7 +368,7 @@ class OrderController extends BasePublicController
         foreach ($paymentMethods as $key => $method)
           if ($method["name"] == $order->payment_method)
             $paymentMethodTitle = $method["title"];
-        
+
         $products = [];
         if (!empty($order)) {
           foreach ($order->products as $product) {
@@ -372,7 +379,7 @@ class OrderController extends BasePublicController
               "price" => $product->pivot->price,
               "total" => $product->pivot->total,
             ]);
-            
+
           }
         }
         $products = json_encode($products);
@@ -383,6 +390,6 @@ class OrderController extends BasePublicController
     } else {
       return redirect()->route('homepage')->withError(trans('icommerce::order.Order no fount'));
     }
-    
+
   }
 }
