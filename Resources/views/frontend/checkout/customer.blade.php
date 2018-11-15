@@ -121,7 +121,7 @@
                               <input type="text" class="form-control ignore" id="telephone_register" name="telephone">
                           </div>
                           <div class='form-group' >
-                            <strong>¿Eres personal jurídico?:</strong>
+                            <strong>{{ trans('icommerce::customer.form.person_legal') }}</strong>
                             <!-- <button data-toggle="collapse" data-target="#legalPerson">Si</button> -->
                             <label class="form-check-label">
                               <input
@@ -135,7 +135,7 @@
                               data-target="#legalPerson"
                               aria-expanded="true"
                               aria-controls="legalPerson" checked>
-                              No
+                              {{ trans('icommerce::customer.form.no') }}
                             </label>
                             <label class="form-check-label">
                               <input
@@ -149,7 +149,7 @@
                               data-target="#legalPerson"
                               aria-expanded="true"
                               aria-controls="legalPerson" >
-                              Si
+                              {{ trans('icommerce::customer.form.yes') }}
                             </label>
                             <div id="legalPerson" class="collapse">
                             {{trans('icommerce::billing_details.form.company')}}
