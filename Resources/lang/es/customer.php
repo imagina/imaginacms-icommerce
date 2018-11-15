@@ -16,7 +16,7 @@ return [
     	'paswd'                => 'Clave',
     	'paswd_confirm'        => 'Confirmación Clave',
       'person_legal'         => '¿Eres personal jurídico?',
-      'not'              => 'No',
+      'no'              => 'No',
       'yes'              => 'Si'
     ],
     'logged'            => [

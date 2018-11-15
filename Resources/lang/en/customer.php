@@ -16,7 +16,7 @@ return [
     	'paswd'            => 'Password',
     	'paswd_confirm'    => 'Confirm password',
       'person_legal'         => 'Are you a legal person?',
-      'not'              => 'No',
+      'no'              => 'No',
       'yes'              => 'Yes'
 
     ],
