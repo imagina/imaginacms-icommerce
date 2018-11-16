@@ -7,12 +7,12 @@ use Spatie\Translatable\HasTranslations;
 
 class Order extends Model
 {
-  
+
   use HasTranslations;
   protected $table = 'icommerce__orders';
-  
+
   public $translatable = [];
-  
+
   protected $fillable = [
     'invoice_nro',
     'invoice_prefix',
@@ -26,6 +26,8 @@ class Order extends Model
     'payment_firstname',
     'payment_lastname',
     'payment_company',
+    'payment_nit',
+    'payment_email',
     'payment_address_1',
     'payment_address_2',
     'payment_city',
@@ -60,57 +62,57 @@ class Order extends Model
     'user_agent',
     'key'
   ];
-  
+
   public function user()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
   }
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__order_product')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(Order_Product::class);
   }
-  
+
   public function order_products()
   {
     return $this->hasMany(Order_Product::class, 'order_id');
   }
-  
+
   public function coupons()
   {
     return $this->belongsToMany(Coupon::class, 'icommerce__coupon_history')->withPivot('amount')->withTimestamps();
   }
-  
+
   public function order_history()
   {
     return $this->hasMany(Order_History::class);
   }
-  
+
   public function couriers()
   {
     return $this->belongsToMany(Shipping_Courier::class, 'icommerce__order_shipment')->withPivot('traking_number')->withTimestamps();
   }
-  
+
   public function order_option()
   {
     return $this->hasMany(Order_Option::class);
   }
-  
+
   public function currency()
   {
     return $this->belongsTo(Currency::class);
   }
-  
+
   public function payments()
   {
     return $this->hasMany(Payment::class);
   }
-  
+
   public function shippings()
   {
     return $this->hasMany(Shipping::class);
   }
-  
-  
+
+
 }

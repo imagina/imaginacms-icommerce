@@ -114,7 +114,9 @@
   <script type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
   <!--<script src="https://lifemedical.imaginacolombia.com/modules/icommerce/js/json/index.js"></script>-->
+  <script src="https://cdn.jsdelivr.net/npm/v-mask/dist/v-mask.min.js"></script>
   <script type="text/javascript">
+  Vue.use(VueMask.VueMaskPlugin);
 
     $(document).ready(function () {
       $('#checkoutForm').change(function (e) {
@@ -172,6 +174,7 @@
           payment_city: {required: true},
           payment_country: {required: true},
           payment_postcode: {required: true},
+          payment_email: {required: true},
 
 
           /*Delivery Details*/
@@ -347,7 +350,12 @@
         defaultCountry: {!! "'".$defaultCountry."'" !!},
         countryFreeshipping: {!! "'".$countryFreeshipping."'" !!},
         user: {!! $user ? $user : "''" !!},
+        profile: {!! $profile ? $profile : "''" !!},
         addresses: {!! $user ? $addresses ? : $addresses : "''" !!},
+        type_person:'natural',
+        type_person_new:'natural',
+        businessName:'',
+        businessNIT:'',
         selectAddresses: {!! $user ? $addressSelect ? : $addressSelect : "''" !!},
         first_name:{!! $user ? "'".$user->first_name."'" : "''" !!},
         last_name: {!! $user ? "'".$user->last_name."'" : "''" !!},
@@ -361,6 +369,9 @@
           postcode: '',
           country: '',
           zone: '',
+          email:'',
+          company:'',
+          nit:''
         },
         shippingData: {
           firstname: '',
@@ -898,4 +909,3 @@
   </script>
 
 @stop
-

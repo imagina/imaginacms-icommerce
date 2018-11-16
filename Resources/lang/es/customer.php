@@ -15,16 +15,23 @@ return [
     	'phone'                => 'Teléfono',
     	'paswd'                => 'Clave',
     	'paswd_confirm'        => 'Confirmación Clave',
+      'person_legal'         => '¿Eres personal jurídico?',
+      'no'              => 'No',
+      'yes'              => 'Si'
     ],
     'logged'            => [
     	'name'                 => 'Nombre:',
     	'email'                => 'Correo:',
     	'view_profile'         => 'Ver Perfil',
     	'edit_profile'         => 'Editar Perfil',
-    	'logout'               => 'Salir'
+    	'logout'               => 'Salir',
+      'kind_person'          => 'Que tipo de persona eres?',
+      'person_natural'   => 'Persona natural',
+      'person_legal'   => 'Persona jurídica',
+      'nit'              => 'NIT'
     ],
     'messages'      => [
         'email_used'       => 'Error: El correo electronico del usuario ya esta siendo usado',
-        'enter'            => 'Entre', 
+        'enter'            => 'Entre',
     ],
 ];

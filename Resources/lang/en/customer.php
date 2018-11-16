@@ -15,6 +15,10 @@ return [
     	'phone'            => 'Phone number',
     	'paswd'            => 'Password',
     	'paswd_confirm'    => 'Confirm password',
+      'person_legal'         => 'Are you a legal person?',
+      'no'              => 'No',
+      'yes'              => 'Yes'
+
     ],
     'logged'        => [
     	'name'             => 'Name:',
@@ -22,9 +26,13 @@ return [
     	'view_profile'     => 'View profile',
     	'edit_profile'     => 'Edit profile',
     	'logout'           => 'Logout',
+      'kind_person'      => 'What kind of person you are?',
+      'person_natural'   => 'Natural person',
+      'person_legal'   => 'Legal person',
+      'nit'              => 'NIT'
     ],
     'messages'      => [
         'email_used'       => 'Error: User\'s email is already in use',
-        'enter'            => 'Enter', 
+        'enter'            => 'Enter',
     ],
 ];

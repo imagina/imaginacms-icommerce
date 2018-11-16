@@ -7,12 +7,12 @@
       {{ trans('icommerce::billing_details.title') }}
     </h3>
   </div>
-  
+
   <hr class="my-2"/>
-  
-  
+
+
   <a href="#" id="expandBillingDetails">{{ trans('icommerce::billing_details.form.expand_form') }}</a>
-  
+
   <div class="showBilling" id="PaymentAddress" role="tablist" aria-multiselectable="true">
     <div class="card mb-0 border-0" v-if="addresses">
       <div class="card-header bg-white" role="tab" id="useExistingPayment">
@@ -30,12 +30,12 @@
             aria-controls="collapseExistingPayment"
             v-model="useExistingOrNewPaymentAddress"
             checked>
-          
+
           {{trans('icommerce::billing_details.address.old_address')}}
-        
+
         </label>
       </div>
-      
+
       <div id="collapseExistingPayment" class="collapse show" aria-labelledby="useExistingPayment" role="tabpanel">
         <select class="form-control"
                 id=""
@@ -44,7 +44,7 @@
                 v-model="selectedBillingAddress"
         >
           <option v-for="(address, index) in selectAddresses" v-bind:value="index">@{{ address }}</option>
-        
+
         </select>
       </div>
     </div>
@@ -64,35 +64,44 @@
             aria-controls="collapseNewPayment"
             v-model="useExistingOrNewPaymentAddress"
           >
-          
+
           {{trans('icommerce::billing_details.address.new_address')}}
-        
+
         </label>
       </div>
       <div id="collapseNewPayment" :class="addresses ? 'collapse' : 'collapse show'" aria-labelledby="useNewPayment"
            role="tabpanel">
-        
+
         <div class="form-group row">
           <div class="col pr-1">
             <label for="payment_firstname">{{ trans('icommerce::billing_details.form.first_name') }} </label>
             <input type="text" class="form-control" id="payment_firstname" name="payment_firstname"
                    v-model="billingData.firstname">
-          
+
           </div>
           <div class="col pl-1">
             <label for="payment_lastname">{{ trans('icommerce::billing_details.form.last_name') }}</label>
             <input type="text" class="form-control" id="payment_lastname" name="payment_lastname"
                    v-model="billingData.lastname">
           </div>
-        
+
         </div>
-        
+
         <div class="form-group">
           <label for="payment_company">{{ trans('icommerce::billing_details.form.company') }}</label>
           <input type="text" class="form-control" id="payment_company" name="payment_company" aria-describedby="company"
                  v-model="billingData.company">
         </div>
-        
+        <div class="form-group">
+          <label for="company">{{ trans('icommerce::billing_details.form.company_nit') }}</label>
+          <input type="text"
+                 class="form-control"
+                 name="payment_nit"
+                 v-mask="'###.###.###-N'"
+                 v-model="billingData.nit"
+                 >
+        </div>
+
         <div class="form-group">
           <label for="payment_address_1">{{ trans('icommerce::billing_details.form.address1') }}</label>
           <input type="text" class="form-control mb-2" id="payment_address_1" name="payment_address_1"
@@ -103,12 +112,12 @@
           <input type="text" class="form-control" id="payment_address_2" name="payment_address_2"
                  v-model="billingData.address_2">
         </div>
-        
+
         <div class="form-group row">
           <div class="col pr-1">
             <label for="payment_city">{{ trans('icommerce::billing_details.form.city') }}</label>
             <input type="text" class="form-control" name="payment_city" id="payment_city" v-model="billingData.city">
-          
+
           </div>
           <div class="col pl-1">
             <label for="payment_code">{{ trans('icommerce::billing_details.form.post_code') }}</label>
@@ -119,7 +128,7 @@
                    v-model="billingData.postcode"
                    @change="getShippingMethods()">
           </div>
-        
+
         </div>
         <div class="form-group">
           <label for="payment_country">{{ trans('icommerce::billing_details.form.country') }}</label>
@@ -132,10 +141,10 @@
             <option value="null">Choose option</option>
             <option v-for="country in countries" v-bind:value="country.iso_2">@{{ country.name }}</option>
           </select>
-        
+
         </div>
-        
-        
+
+
         <div class="form-group">
           <label for="payment_zone">{{ trans('icommerce::billing_details.form.state') }}</label>
           <select class="form-control"
@@ -155,10 +164,18 @@
                  v-model="billingData.zone"
           >
         </div>
-      
+
+        <div class="form-group">
+          <label for="email">{{trans('icommerce::billing_details.form.email')}}</label>
+          <input type="email"
+                 class="form-control"
+                 name="payment_email"
+                 v-model="billingData.email"
+                 >
+        </div>
       </div>
     </div>
-  
+
   </div>
 
 </div>
