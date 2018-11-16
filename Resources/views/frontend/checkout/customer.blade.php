@@ -122,7 +122,6 @@
                           </div>
                           <div class='form-group' >
                             <strong>{{ trans('icommerce::customer.form.person_legal') }}</strong>
-                            <!-- <button data-toggle="collapse" data-target="#legalPerson">Si</button> -->
                             <label class="form-check-label">
                               <input
                               type="radio"
@@ -279,7 +278,7 @@
             <strong>{{ trans('icommerce::customer.logged.email') }}  </strong>{{$user->email}}
             <input type='hidden' id="email" name="email" value="{{$user->email}}">
           </div>
-          @if($profile->type_person!=null || $profile->type_person!="" && $profile->business!=null || $profile->business!="")
+          @if($profile->type_person!=null && $profile->type_person=="legal")
           <div class='d-block'>
             <strong>{{ trans('icommerce::billing_details.form.company') }}  </strong>{{$profile->business}}
           </div>
