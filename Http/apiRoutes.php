@@ -185,7 +185,39 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                 'middleware' => ['api.token','token-can:icommerce.products.destroy']
             ]);
         });
+        $router->group(['prefix' => 'manufacturers'], function (Router $router) {
 
+            $router->bind('amanufacturer', function ($id) {
+                return app(\Modules\Icommerce\Repositories\ManufacturerRepository::class)->find($id);
+            });
+            $router->get('/', [
+                'as' => 'icommerce.api.manufacturers',
+                'uses' => 'ProductControllerV2@manufacturers',
+            ]);
+            $router->get('{id}', [
+                'as' => 'icommerce.api.manufacturerv2',
+                'uses' => 'ProductControllerV2@manufacturer',
+            ]);
+            $router->get('slug/{slug}', [
+                'as' => 'icommerce.api.manufacturer.show',
+                'uses' => 'ProductControllerV2@show',
+            ]);
+            $router->post('/', [
+                'as' => 'icommerce.api.manufacturers.store',
+                'uses' => 'ProductControllerV2@store',
+                'middleware' => ['api.token','token-can:icommerce.manufacturers.create']
+            ]);
+            $router->put('{amanufacturer}', [
+                'as' => 'icommerce.api.manufacturers.update',
+                'uses' => 'ProductControllerV2@update',
+                'middleware' =>['api.token','token-can:icommerce.manufacturers.edit']
+            ]);
+            $router->delete('{amanufacturer}', [
+                'as' => 'icommerce.api.manufacturers.delete',
+                'uses' => 'ProductControllerV2@destroy',
+                'middleware' => ['api.token','token-can:icommerce.manufacturers.destroy']
+            ]);
+        });
         //cart
         $router->group(['prefix' => 'cart'], function (Router $router) {
 

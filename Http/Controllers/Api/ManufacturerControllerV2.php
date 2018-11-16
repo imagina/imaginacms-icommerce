@@ -5,110 +5,36 @@ namespace Modules\Icommerce\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Log;
-use Modules\Icommerce\Entities\Product;
-use Modules\Icommerce\Http\Requests\ProductRequest;
-use Modules\Icommerce\Repositories\CategoryRepository;
-use Modules\Icommerce\Repositories\CommentRepository;
-use Modules\Icommerce\Repositories\CurrencyRepository;
+use Modules\Icommerce\Entities\Manufacturer;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
-use Modules\Icommerce\Repositories\Order_ProductRepository;
-use Modules\Icommerce\Repositories\PaymentRepository;
-use Modules\Icommerce\Repositories\ProductRepository;
-use Modules\Icommerce\Repositories\ShippingRepository;
-use Modules\Icommerce\Transformers\PriceTransformer;
-use Modules\Icommerce\Transformers\ProductTransformer;
+use Modules\Icommerce\Transformers\ManufacturerTransformer;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 use Modules\Notification\Services\Notification;
 use Modules\User\Contracts\Authentication;
 use Route;
 
 
-/**
- * Class ProductControllerV2
- * @package Modules\Icommerce\Http\Controllers\Api
- */
-class ProductControllerV2 extends BaseApiController
+class ManufacturerControllerV2 extends BaseApiController
 {
-    /**
-     * @var ProductRepository
-     */
-    private $cart;
-    /**
-     * @var ProductRepository
-     */
-    private $product;
-    /**
-     * @var CurrencyRepository
-     */
-    private $currency;
-    /**
-     * @var ShippingRepository
-     */
-    private $shipping;
-    /**
-     * @var PaymentRepository
-     */
-    private $payments;
-    /**
-     * @var CategoryRepository
-     */
-    private $category;
-    /**
-     * @var
-     */
-    protected $auth;
-    /**
-     * @var Notification
-     */
-    private $notification;
     /**
      * @var ManufacturerRepository
      */
+    protected $auth;
+    private $notification;
     private $manufacturer;
-    /**
-     * @var Order_ProductRepository
-     */
-    private $orderProducts;
-    /**
-     * @var CommentRepository
-     */
-    private $comments;
+    
 
-    /**
-     * ProductControllerV2 constructor.
-     * @param ProductRepository $product
-     * @param CurrencyRepository $currency
-     * @param ShippingRepository $shipping
-     * @param PaymentRepository $payments
-     * @param CategoryRepository $category
-     * @param Notification $notification
-     * @param ManufacturerRepository $manufacturer
-     * @param Order_ProductRepository $orderProduct
-     * @param CommentRepository $comments
-     */
     public function __construct(
-        ProductRepository $product,
-        CurrencyRepository $currency,
-        ShippingRepository $shipping,
-        PaymentRepository $payments,
-        CategoryRepository $category,
+      
         Notification $notification,
-        ManufacturerRepository $manufacturer,
-        Order_ProductRepository $orderProduct,
-        CommentRepository $comments
+        ManufacturerRepository $manufacturer
     )
     {
         parent::__construct();
-        $this->product = $product;
-        $this->currency = $currency;
-        $this->shipping = $shipping;
-        $this->payments = $payments;
-        $this->category = $category;
+       
         $this->auth = app(Authentication::class);
         $this->notification = $notification;
         $this->manufacturer = $manufacturer;
-        $this->orderProducts = $orderProduct;
-        $this->comments = $comments;
     }
 
 
@@ -116,17 +42,17 @@ class ProductControllerV2 extends BaseApiController
      * @param Request $request
      * @return mixed
      */
-    public function products(Request $request)
+    public function manufacturers(Request $request)
     {
 
         try {
             $p = $this->parametersUrl(1, 12, false, []);
 
             //Request to Repository
-            $results = $this->product->whereFilters($p->page, $p->take, $p->filter, $p->include);
+            $results = $this->manufacturer->whereFilters($p->page, $p->take, $p->filter, $p->include);
 
             //Response
-            $response = ["meta" => [], "data" => ProductTransformer::collection($results)];
+            $response = ["meta" => [], "data" => ManufacturerTransformer::collection($results)];
 
             //If request pagination add meta-page
             $p->page ? $response["meta"] = ["page" => $this->pageTransformer($results)] : false;
@@ -158,8 +84,8 @@ class ProductControllerV2 extends BaseApiController
             $p = $this->parametersUrl(false, false, false, []);
 
             //Request to Repository
-            $product = $this->product->findBySlug($slug, $p->include);
-            if (!isset($product) && empty($product)) {
+            $manufacturer = $this->manufacturer->findBySlug($slug, $p->include);
+            if (!isset($manufacturer) && empty($manufacturer)) {
                 $status = 404;
                 $response = [
                     'errors' =>
@@ -169,14 +95,14 @@ class ProductControllerV2 extends BaseApiController
                                 "pointer" => url($request->path()),
                             ],
                             "title" => "Not Fount",
-                            "detail" => "The product not fount"
+                            "detail" => "The manufacturer not fount"
                         ]
                 ];
             } else {
                 $response = [
-                    'type' => 'product',
-                    'id' => $product->id,
-                    "data" => new ProductTransformer($product)
+                    'type' => 'manufacturer',
+                    'id' => $manufacturer->id,
+                    "data" => new ManufacturerTransformer($manufacturer)
                 ];
             }
         } catch (\Exception $e) {
@@ -203,18 +129,18 @@ class ProductControllerV2 extends BaseApiController
      * @return mixed
      */
 
-    public function product($id, Request $request)
+    public function manufacturer($id, Request $request)
     {
 
         try {
             $request['include']="category,categories,manufacturer";
-            $product=$this->product->find($id);
-            if (isset($product)) {
+            $manufacturer=$this->manufacturer->find($id);
+            if (isset($manufacturer)) {
 
                 $response = [
-                    'type' => 'product',
-                    'id' => $product->id,
-                    'data' => new ProductTransformer($product),
+                    'type' => 'manufacturer',
+                    'id' => $manufacturer->id,
+                    'data' => new ManufacturerTransformer($manufacturer),
                 ];
 
             } else {
@@ -225,7 +151,7 @@ class ProductControllerV2 extends BaseApiController
                         "pointer" => url($request->path()),
                     ],
                     "title" => "Not Fount",
-                    "detail" => "The product not fount"
+                    "detail" => "The manufacturer not fount"
                 ]
                 ];
             }
@@ -257,16 +183,16 @@ class ProductControllerV2 extends BaseApiController
             isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
             isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
             $request['options'] = $options;
-            $product = $this->product->create($request->all());
+            $manufacturer = $this->manufacturer->create($request->all());
             $response = [
                 'success' => [
                     'code' => '200',
                     'source' => [
                         'pointer' => url($request->path())
                     ],
-                    "title" => trans('core::core.messages.resource created', ['name' => trans('icommerce::products.title.products')]),
+                    "title" => trans('core::core.messages.resource created', ['name' => trans('icommerce::manufacturers.title.manufacturers')]),
                     "detail" => [
-                        'id' => $product->id
+                        'id' => $manufacturer->id
                     ]
                 ]
             ];
@@ -291,22 +217,22 @@ class ProductControllerV2 extends BaseApiController
     }
 
     /**
-     * @param Product $product
+     * @param Manufacturer $manufacturer
      * @param IblogRequest $request
      * @return mixed
      */
-    public function update(Product $product, ProductRequest $request)
+    public function update(Manufacturer $manufacturer, Request $request)
     {
 
         try {
 
-            if (isset($product->id) && !empty($product->id)) {
+            if (isset($manufacturer->id) && !empty($manufacturer->id)) {
                 $options = (array)$request->options ?? array();
                 isset($request->metatitle) ? $options['metatitle'] = $request->metatitle : false;
                 isset($request->metadescription) ? $options['metadescription'] = $request->metatitle : false;
-                isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/icommerce/product/" . $product->id . ".jpg") : false;
+                isset($request->mainimage) ? $options["mainimage"] = saveImage($request['mainimage'], "assets/icommerce/manufacturer/" . $manufacturer->id . ".jpg") : false;
                 $request['options'] = json_encode($options);
-                $product = $this->product->update($product, $request->all());
+                $manufacturer = $this->manufacturer->update($manufacturer, $request->all());
 
                 $status = 200;
                 $response = [
@@ -315,9 +241,9 @@ class ProductControllerV2 extends BaseApiController
                         "source" => [
                             "pointer" => url($request->path())
                         ],
-                        "title" => trans('core::core.messages.resource updated', ['name' => trans('icommerce::products.singular')]),
+                        "title" => trans('core::core.messages.resource updated', ['name' => trans('icommerce::manufacturers.singular')]),
                         "detail" => [
-                            'id' => $product->id
+                            'id' => $manufacturer->id
                         ]
                     ]
                 ];
@@ -343,7 +269,7 @@ class ProductControllerV2 extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Product",
+                "title" => "Error Query Manufacturer",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -353,21 +279,21 @@ class ProductControllerV2 extends BaseApiController
     }
 
     /**
-     * @param Product $product
+     * @param Manufacturer $manufacturer
      * @param Request $request
      * @return mixed
      */
-    public function delete(Product $product, Request $request)
+    public function delete(Manufacturer $manufacturer, Request $request)
     {
         try {
-            $this->product->destroy($product);
+            $this->manufacturer->destroy($manufacturer);
             $status = 200;
             $response = [
                 'susses' => [
                     'code' => '201',
-                    "title" => trans('core::core.messages.resource deleted', ['name' => trans('icommerce::products.singular')]),
+                    "title" => trans('core::core.messages.resource deleted', ['name' => trans('icommerce::manufacturers.singular')]),
                     "detail" => [
-                        'id' => $product->id
+                        'id' => $manufacturer->id
                     ]
                 ]
             ];
@@ -380,7 +306,7 @@ class ProductControllerV2 extends BaseApiController
                 "source" => [
                     "pointer" => url($request->path()),
                 ],
-                "title" => "Error Query Product",
+                "title" => "Error Query Manufacturer",
                 "detail" => $e->getMessage()
             ]
             ];
@@ -388,6 +314,5 @@ class ProductControllerV2 extends BaseApiController
 
         return response()->json($response, $status ?? 200);
     }
-
 
 }
