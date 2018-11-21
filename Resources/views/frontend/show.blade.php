@@ -2,37 +2,40 @@
 
 @section('meta')
     <meta name="title"
-            content="{{$product->options->meta_title ?? $product->title}}">
-<meta name="keywords" content="{{$product->options->meta_keyword ?? ''}}">
-<meta name="description"
-      content="{{$product->options->meta_description ?? $product->summary??''}}">
-<meta name="robots"
-      content="{{$product->options->meta_robots ??'INDEX,FOLLOW'}}">
-<!-- Schema.org para Google+ -->
-<meta itemprop="name"
-      content="{{$product->options->meta_title ??$product->title}}">
-<meta itemprop="description"
-      content="{{$product->options->meta_description ?? $product->summary??''}}">
-<meta itemprop="image" content=" {{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}">
-<!-- Open Graph para Facebook-->
-<meta property="og:title"
-      content="{{$product->options->meta_title ??$product->title}}"/>
-<meta property="og:type" content="article"/>
-<meta property="og:url" content="{{$product->url}}"/>
-<meta property="og:image" content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}"/>
-<meta property="og:description"
-      content="{{$product->options->meta_description ?? $product->summary??''}}"/>
-<meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
-<meta property="og:locale" content="{{config('asgard.iblog.config.oglocal')}}">
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="{{ Setting::get('core::site-name') }}">
-<meta name="twitter:title"
-      content="{{$product->options->meta_title ??$product->title}}">
-<meta name="twitter:description"
-      content="{{$product->options->meta_description ?? $product->summary??''}}">
-<meta name="twitter:creator" content="">
-<meta name="twitter:image:src" content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}}">
+          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}">
+    <meta name="keywords" content="{!!isset($product->options->meta_keyword) ? $product->options->meta_keyword : ''!!}">
+    <meta name="description"
+          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary!!}">
+    <meta name="robots"
+          content="{{isset($product->options->meta_robots)?$product->options->meta_robots : 'INDEX,FOLLOW'}}">
+    <!-- Schema.org para Google+ -->
+    <meta itemprop="name"
+          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}">
+    <meta itemprop="description"
+          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary !!}">
+    <meta itemprop="image"
+          content=" {{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}">
+    <!-- Open Graph para Facebook-->
+    <meta property="og:title"
+          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="{{url($product->slug)}}"/>
+    <meta property="og:image"
+          content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg')}}"/>
+    <meta property="og:description"
+          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary !!}"/>
+    <meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
+    <meta property="og:locale" content="{{config('asgard.iblog.config.oglocal')}}">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ Setting::get('core::site-name') }}">
+    <meta name="twitter:title"
+          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}">
+    <meta name="twitter:description"
+          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary !!}">
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:image:src"
+          content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg')}}">
 
 @stop
 
@@ -42,27 +45,26 @@
 
 @section('content')
 
-    <!-- preloader -->
-    <div id="content_preloader">
+    <div id="content_preloader" class="mt-4">
         <div id="preloader"></div>
     </div>
 
     <div id="content_show_commerce"
-         class="page"
+         class="page bg-white"
          data-icontenttype="page"
-         style="opacity: 0"
          data-icontentid="3">
 
-        <!-- ===== PAGINATE ====== -->
-        <div class="iblock general-block31 no-print" data-blocksrc="general.block31">
+        <!-- MIGA DE PAN  -->
+        <div class="iblock general-block21" data-blocksrc="general.block21">
             <div class="container">
                 <div class="row">
                     <div class="col">
-
                         <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mt-4  text-uppercase">
+                            <ol class="breadcrumb mt-4 mb-0 text-uppercase bg-white">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ url('/') }}">{{trans('icommerce::common.home.title')}}</a>
+                                    <a href="{{ url('/') }}">
+                                        Inicio
+                                    </a>
                                 </li>
                                 <li class="breadcrumb-item" v-for="category in breadcrumb">
                                     <a v-bind:href="category.url">
@@ -71,494 +73,236 @@
                                 </li>
                                 <li class="breadcrumb-item active"
                                     aria-current="page">
-                                    @{{ product.title }}
+                                    {{$product->title}}
                                 </li>
-                            </ol>
-                        </nav>
 
+                            </ol>
+                            <hr class="mt-0">
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==== CONTENT ==== -->
-        <div class="iblock general-block32" data-blocksrc="general.block32">
-
+        <!-- CONTENT -->
+        <div id="content">
             <div class="container">
                 <div class="row">
 
-                    <!-- photo and gallery -->
-                    <div class="col-sm-12 col-md-5 pb-4 print-40">
-                        <div class="pb-5">
-                            <div class="carousel-product">
-                                <div class="zoom-product">
-                                    <div class="big-img" style="height: 480px">
-
-                                        <v-zoom :img="product.mainimage" :width="800"></v-zoom>
-                                    </div>
-                                </div>
-
-                                <div id="owl-carousel-product" class="owl-carousel">
-                                    <!--    <div class="owl-item">
-                                        <img v-bind:src="product.mainimage" alt="">
-                                      </div>
-                                <!--
-                                      <div class="owl-item" v-for="(img,index) in product_gallery">
-                                          <img v-bind:src="product_gallery[index]" alt="">
-                                      </div>
-                                      -->
+                    <!-- IMAGE PRODUCTO-->
+                    <div class="col-md-5 pb-4">
+                        <div class="carousel-product">
+                            <div class="zoom-product">
+                                <div class="big-img">
+                                    <img class="img-fluid w-100"
+                                         v-bind:src="product.mainimage"
+                                         style="max-height: 480px">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="pb-5 no-print">
 
                         </div>
                     </div>
 
-                    <!-- dates -->
-                    <div class="col-sm-12 col-md-7 print-60">
-                        <!-- title -->
-                        <h1>
-                        {{ $product->title }}
-                        <!-- SKU -->
+                    <!-- DESCRIPTION PRODUCT -->
+                    <div class="col-sm-12 col-md-7">
+                        <!-- STARTS -->
+                        <div>
+                            <span class="rating">
+                                <i class="fa fa-star pr-1"
+                                   v-bind:class="[product.rating >= star ? 'text-secondary' : 'text-muted']"
+                                   v-for="(star,key) in 5"></i>
+                            </span>
+                        </div>
+
+                        <!-- TITLE -->
+                        <h1 class="text-capitalize text-primary title-product">
+                            {{$product->title}}
                             <br>
                             <small class="text-danger font-weight-bold" style="font-size: 15px">
-                                {{trans('icommerce::cart.table.sku')}}#: {{ $product->sku }}
+                                Referencia: {{$product->reference??$product->sku }}
                             </small>
                         </h1>
+                        <hr>
 
-                        <!-- word -->
-                        <h6>
-                            <small>
-                                <a
-                                        href="#tabp3"
-                                        aria-controls="tabp3"
-                                        aria-selected="false">
-                                    {{trans('icommerce::products.messages.be_the_fist_review')}}
-                                </a>
-                            </small>
-                        </h6>
-
-                        <!-- STARTS -->
-                        <span style="font-size: 12px">
-                            <i class="fa fa-star pr-1"
-                               v-bind:class="[product.rating >= star ? 'text-warning' : 'text-muted']"
-                               v-for="(star,key) in 5"></i>
-                        </span>
-
-                        <div class="row align-items-center pt-2">
-                            <!-- price -->
-                            <div class="col-md-4 price mr-5" v-if="products_children === false">
-                                <p class="h4 font-weight-bold mb-1">
-                                    <del class="text-muted pr-2"
-                                         v-if="product.unformatted_price_discount"
-                                         style="font-size: 14px">
-                                        @{{ currencySymbolLeft }} {{formatMoney($product->price)}}
-                                        @{{currencySymbolRight }}
-                                    </del>
-                                    <span class="text-danger font-weight-bold"
-                                          v-if="!product.unformatted_price_discount">
-                                        @{{ currencySymbolLeft}} {{ formatMoney($product->price) }} @{{ currencySymbolRight  }}
-                                    </span>
-                                    <span class="text-danger font-weight-bold"
-                                          v-if="product.unformatted_price_discount">
-                                        @{{ currencySymbolLeft }} @{{ product.price_discount }} @{{ currencySymbolRight  }}
-                                    </span>
-                                </p>
+                        <!-- SUMMARY -->
+                        <div class="text-muted text-justify"
+                             v-html="product.summary"
+                             style="font-size: 18px">
+                            {{ $product->summary }}
+                        </div>
+                        <hr>
+                        <!-- MANUFACTURER -->
+                        @if($product->manufacturer_id!=null)
+                        <div class="text-muted text-justify"
+                             style="font-size: 18px">
+                            @php
+                                $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+                            @endphp
+                            <strong>{{trans('icommerce::products.table.manufacturer')}}:</strong> <a
+                                    href="{{route($locale . 'icommerce.manufacturers.details',[$product->manufacturer->id])}}"> {{$product->manufacturer->name?? '' }}</a>
+                        </div>
+                        <hr>
+                        @endif
+                        <div class="row">
+                            <div class="col pdf">
+                                @if(isset($product->options->certificate) && !empty($product->options->certificate))
+                                    <a href="{{url($product->options->certificate)}}" target="_blank"
+                                       class="btn btn-outline-light text-dark">
+                                        <img class="img-fluid p-2 pr-3"
+                                             src="{{ Theme::url('img/pdf.png') }}">
+                                        {{trans('icommerce::products.table.certificate')}}
+                                    </a>
+                                @endif
+                                @if(isset($product->options->datasheet) && !empty($product->options->datasheet))
+                                    <a href="{{url($product->options->datasheet)}}" target="_blank"
+                                       class="btn btn-outline-light text-dark">
+                                        <img class="img-fluid p-2 pr-3"
+                                             src="{{ Theme::url('img/pdf.png') }}">
+                                        {{trans('icommerce::products.table.data_sheet')}}
+                                    </a>
+                                @endif
                             </div>
-
-                            <div v-if="product.pdf" class="col pdf">
-                                <a v-bind:href="product.pdf"
-                                   class="btn btn-outline-light text-dark">
-                                    <img class="img-fluid p-2 pr-3"
-                                         src="{{ Theme::url('img/pdf.png') }}">
-                                    {{trans('icommerce::products.messages.product_brochure')}}
-                                </a>
+                        </div>
+                        <hr>
+                        <!-- PRICE -->
+                        <div class="row align-items-center pt-2 border-bottom" v-if="product.unformatted_price > 0">
+                            <div class="col-12 col-md-3 price mr-5">
+                                <h4 class="text-primary font-weight-bold">
+                                    @{{currencysymbolleft}} @{{ product.price_updated }}
+                                </h4>
                             </div>
                         </div>
 
-                        <div class="w-100"></div>
 
-                        <div class="py-3 no-print" v-if="!products_children">
-
-                            <div class="input-group mb-3 w-25 float-left pr-2">
+                        <!-- BUTTON QUANTITY -->
+                        <div class="row py-3 px-0 col-12" style="height: 97px">
+                          <div class="col-md-6">
+                            <h6 class="text-primary font-weight-bold">
+                                {{trans('icommerce::products.table.quantity')}}:
+                            </h6>
+                            <div class="input-group mb-3  float-left pr-2">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-outline-primary"
+                                    <button class="btn btn-primary rounded-0"
                                             type="button"
                                             field="quantity"
-                                            v-on:click="quantity >= 2 ? quantity-- : false">
-                                        -
+                                            v-on:click="quantity >= 2 ? quantity-- : false">-
                                     </button>
                                 </div>
                                 <input type="text"
                                        class="form-control border-primary text-center"
                                        name="quantity"
                                        v-model="quantity"
-                                       aria-label=""
                                        aria-describedby="basic-addon1">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-primary"
+                                    <button class="btn btn-primary rounded-0"
                                             type="button"
                                             field="quantity"
-                                            v-on:click="quantity < product.quantity ? quantity++ : false">
-                                        +
+                                            v-on:click="quantity < product.quantity ? quantity++ : false">+
                                     </button>
                                 </div>
                             </div>
-
-                            <a class="btn btn-outline-primary text-primary"
-                               v-on:click="addWishList(product)">
-                                <i class="fa fa-heart">
-                                </i>
-                            </a>
-                        </div>
-
-                        <div class="py-3 no-print" v-if="!products_children">
-                            <button class="btn btn-danger text-white addToCar w-30"
-                                    v-on:click="addCart(product)" v-show="!sending_data">
-                                <i class="fa fa-shopping-cart pr-3"></i>
-                                {{trans('icommerce::products.alerts.add')}}
-                            </button>
-                            <button class="btn btn-danger text-white w-30" v-show="sending_data">
-                                <div class="fa-1x"><i
-                                            class="fa fa-spinner fa-pulse"></i>{{trans('icommerce::products.messages.sending')}}
+                          </div>
+                          <div v-if="product.options.length>0 && option.option_values.length>0" class="col-md-6" v-for="(option,index) in product.options">
+                            <h6 class="text-primary font-weight-bold text-uppercase">
+                                @{{option.description}}:
+                            </h6>
+                            <div class="input-group mb-3 float-left pr-2">
+                            <!-- <div class="input-group mb-3 input-w float-left pr-2"> -->
+                              <select  class="form-control" @change="update_product(index)" v-model="index_product_option_value_selected">
+                                <option :value="'select'">{{trans('icommerce::products.table.select option')}}</option>
+                                <option v-for="(value,indexOptValue) in option.option_values" :value="indexOptValue" >@{{value.description}} (@{{value.price_prefix}} @{{currencysymbolleft}}@{{value.price}})</option>
+                              </select>
+                              <div v-if="option_type=='background'" class="ml-2" style="height: 40px; width: 40px;box-sizing: border-box;border-radius: 100%;border: 1px solid #dadada;box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14);background:#000000" :style="'background:'+option_value">
+                              </div>
+                              <div v-if="option_type=='text'" class="text-center">
+                              <strong>Descripción:</strong> @{{option_value}}
+                              </div>
+                              <div class="row pt-5">
+                                <div v-if="option_type=='image'" class="pt-4 img-fluid img-responsive">
+                                  <img :src="option_value">
                                 </div>
-                            </button>
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
 
-                        <!-- Sub products -->
-                        <table id="table_children"
-                               class="table table-responsive mb-0 cart-table w-100"
-                               v-if="products_children != false">
-                            <thead>
-                            <tr>
-                                <th class="text-center w-15"></th>
-                                <th class="text-center w-35">{{trans('icommerce::products.single')}}</th>
-                                <th class="text-center w-10">{{trans('icommerce::cart.table.sku')}}</th>
-                                <th class="text-center w-15">{{trans('icommerce::cart.table.unit_price')}}</th>
-                                <th class="text-center w-10">{{trans('icommerce::cart.table.quantity')}}</th>
-                                <th class="w-15 text-md-right">{{trans('icommerce::cart.table.secondary_total')}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <!-- Children Product -->
-                            <tr v-for="(sub,index) in products_children"
-                                v-bind:class="[sub.id == product.id ? 'subproduct-active' : '']">
-                                <!-- image -->
-                                <td class="text-center">
-                                    <a v-bind:href="sub.url">
-                                        <img class="cart-img img-fluid"
-                                             v-bind:src="sub.mainimage"
-                                             style="height: 70px"
-                                             v-bind:alt="sub.title">
-                                    </a>
-                                </td>
-                                <!-- title -->
-                                <td style="font-size: 12px">
-                                    <span class="font-weight-bold">
-                                        <a :class="[sub.id != product.id ? 'text-dark' : '']" v-bind:href="sub.url">
-                                            @{{ sub.title }}
-                                        </a>
-                                    </span>
-                                </td>
-                                <!-- sku -->
-                                <td class="text-center" style="font-size: 12px">
-                                    <span class="font-weight-bold">
-                                        <a>@{{ sub.sku }}</a>
-                                    </span>
-                                </td>
-                                <!-- price -->
-                                <td class="text-center align-middle" style="font-size: 12px">
-                                    $ @{{ sub.price }}
-                                </td>
-                                <!-- quantity -->
-                                <td style="font-size: 12px">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-primary"
-                                                    type="button"
-                                                    field="quantity"
-                                                    v-on:click="check_children(index,'-',sub)"
-                                                    style="padding: 4px">
-                                                -
-                                            </button>
-                                        </div>
-                                        <input type="text"
-                                               class="form-control border-primary text-center"
-                                               name="quantity"
-                                               v-model="sub.quantity_cart"
-                                               value="0"
-                                               aria-describedby="basic-addon1"
-                                               style="font-size: 12px; padding: 6px">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-primary"
-                                                    type="button"
-                                                    field="quantity"
-                                                    v-on:click="check_children(index,'+',sub)"
-                                                    style="padding: 4px">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-md-right"
-                                    style="font-size: 12px">
-                                    <span class="font-weight-bold">
-                                        @{{ currency.symbol_left }}
-                                        <span class="price_children">
-                                            @{{ parseFloat(sub.price.replace(',', '')) * sub.quantity_cart | numberFormat }}
-                                        </span>
-                                        @{{ currency.symbol_right }}
-                                    </span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="py-3 mb-3 no-print" v-if="products_children != false">
-                            <button class="btn btn-danger text-white w-30"
-                                    v-on:click="addCart()" v-show="!sending_data">
-                                <i class="fa fa-shopping-cart pr-3"></i>
+                        <!-- BUTTONS -->
+                        <div class="pt-3 px-0 col-12 font-weight-bold">
+                            <!-- ADD TO CART -->
+                            <button class="btn border-primary
+                                           text-primary p-2
+                                           bg-white rounded-0
+                                           font-weight-bold"
+                                    v-on:click="addCart(product)">
+                                <i class="fa fa-shopping-cart pr-2"></i>
                                 {{trans('icommerce::products.alerts.add')}}
                             </button>
 
-                            <button class="btn btn-danger text-white w-30" v-show="sending_data">
-                                <div class="fa-1x"><i
-                                            class="fa fa-spinner fa-pulse"></i>{{trans('icommerce::products.messages.sending')}}
-                                </div>
+
+                            <!-- ADD TO FAVORITE -->
+                            <button class="btn btn-secondary
+                                           text-primary rounded-0
+                                           font-weight-bold p-2 ml-2"
+                                    v-on:click="addWishList(product)" title="Añadir a la lista de deseo">
+                                <i class="fa fa-heart"></i>
+                                <span class=" pl-2 d-none d-lg-inline-block">{{trans('icommerce::products.alerts.add_to_wish_list')}}</span>
                             </button>
                         </div>
 
-                        <div class="py-2 mt-3 no-print">
-                            <a
-                                    href="javascript:window.open('http://www.facebook.com/sharer.php?u=' + vue_show_commerce.product.url,'Facebook','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+'')"
-                                    class="btn btn-outline-dark btn-sm mb-2 buton-social">
-                                <i class="fa fa-facebook"></i>
-                                {{trans('icommerce::products.messages.share')}}
-                            </a>
-                            <a
-                                    href="javascript:window.open('http://twitter.com/share?url=' + vue_show_commerce.product.url,'Twitter share','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+'')"
-                                    class="btn btn-outline-dark btn-sm mb-2 buton-social">
-                                <i class="fa fa-twitter"></i>
-                                {{trans('icommerce::products.messages.tweet')}}
-                            </a>
-                            <a
-                                    href="javascript:window.open('https://plus.google.com/share?url=' + vue_show_commerce.product.url,'Google plus','width=585,height=666,left='+(screen.availWidth/2-292)+',top='+(screen.availHeight/2-333)+'')"
-                                    class="btn btn-outline-dark btn-sm mb-2 buton-social">
-                                <i class="fa fa-google-plus"></i>
-                                {{trans('icommerce::products.messages.share')}}
-                            </a>
-                            <a href="javascript:window.print()"
-                               class="btn btn-outline-dark btn-sm mb-2 buton-social">
-                                <i class="fa fa-print"></i>
-                                {{trans('icommerce::products.messages.print')}}
-                            </a>
+                        <!-- SOCIAL NETWORK -->
+                        <div class="btns-share">
+                            @include('icommerce.partials.share-page')
                         </div>
-
-                        <div class="py-3 no-print">
-                            <img class="img-fluid pr-4 mb-3"
-                                 src="{{ Theme::url('img/paypal.png') }}">
-                            <img class="img-fluid mb-3"
-                                 src="{{ Theme::url('img/paypal-credit.png') }}">
-                        </div>
-
-                        <div class="row border border-right-0 border-left-0 my-4 mx-1 no-print">
-                            <div class="col-auto">
-                                <div class="media  py-4">
-                                    <img class="align-self-center mr-3"
-                                         src="{{ Theme::url('img/car.png') }}">
-                                    <div class="media-body text-left">
-                                        <p class="m-0">{{trans('icommerce::products.messages.business_days')}}<br>
-                                            {{trans('icommerce::products.messages.average_delivery')}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="media py-4">
-                                    <img class="align-self-center mr-3"
-                                         src="{{ Theme::url('img/save.png') }}">
-                                    <div class="media-body text-left">
-                                        <p class="m-0">{{trans('icommerce::products.messages.safe_secure')}}<br>
-                                            {{trans('icommerce::products.messages.shopping')}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="media py-4">
-                                    <img class="align-self-center mr-3"
-                                         src="{{ Theme::url('img/day.png') }}">
-                                    <div class="media-body text-left">
-                                        <p class="m-0">{{trans('icommerce::products.messages.safe_secure')}}<br>
-                                            {{trans('icommerce::products.messages.shopping')}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-100"></div>
-
                     </div>
 
-                    <div class="w-100"></div>
-
-                    <div class="pt-5 pb-3 w-100">
-
-                        <ul class="nav nav-tabs bg-light w-100"
-                            id="myTab"
-                            role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link border-0 rounded-0 active buton-social"
-                                   id="tabp1"
-                                   data-toggle="tab"
-                                   href="#details"
-                                   role="tab"
-                                   aria-controls="details"
-                                   aria-selected="true">
-                                    {{trans('icommerce::products.messages.details')}}
-                                </a>
-                            </li>
-                            {{--<li class="nav-item">
-                                <a class="nav-link border-0 rounded-0"
-                                   id="tabp2"
-                                   data-toggle="tab"
-                                   href="#shipping"
-                                   role="tab"
-                                   aria-controls="shipping"
-                                   aria-selected="false">
-                                    SHIPPING INFO
-                                </a>
-                            </li>--}}
-                            <li class="nav-item">
-                                <a class="nav-link border-0 rounded-0 buton-social"
-                                   id="tabp3"
-                                   data-toggle="tab"
-                                   href="#reviews"
-                                   role="tab"
-                                   aria-controls="reviews"
-                                   aria-selected="false">
-                                    {{trans('icommerce::products.messages.reviews')}} (@{{ count_comments }})
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="tab-content w-100" id="myTabContent">
-                            <div class="tab-pane py-4 px-2 fade show active"
-                                 id="details"
-                                 role="tabpanel"
-                                 aria-labelledby="tabp1">
-                                <div v-html="product.description">
-                                    {{ $product->description}}
+                    <!-- DESCRIPTION PRODUCT -->
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="parallelogram bg-secondary" style="width:200px ">
+                                    <h3 class="text-primary text-uppercase">
+                                        {{trans('icommerce::products.table.description')}}
+                                    </h3>
                                 </div>
                             </div>
-                            {{--<div class="tab-pane py-4 px-2 fade"
-                                 id="shipping"
-                                 role="tabpanel"
-                                 aria-labelledby="tabp2">
-                                <p class="text-justify">
-                                    This strong tether, made from 1-inch tubular web with a built-in
-                                    bungee, works as a “live bait” water rescue attachment to your PFD.
-                                    As a connection between a PFD and a line, the tether enhances
-                                    attachment options in rescue situations. Comes with brite
-                                    double-locking connector. Rated strength: 11 kN (2,473 lbf)
-                                </p>
-                            </div>--}}
-                            <div class="tab-pane py-4 px-2 fade"
-                                 id="reviews"
-                                 role="tabpanel"
-                                 aria-labelledby="tabp3">
 
-                                <div class="fb-comments"
-                                     v-bind:data-href="product.url"
-                                     data-numposts="5"
-                                     data-width="100%">
 
-                                </div>
-
-                                <div id="fb-root"></div>
-
+                            <div v-html="product.description"
+                                 class="py-3 text-muted ml-6 col-12"
+                                 style="font-size: 18px">
+                                {!! $product->description!!}
                             </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
 
-        <hr>
-        @include('icommerce::frontend.widgets.related_products')
+        <!-- RELATED PRODUCTS-->
+    @include('icommerce::frontend.widgets.products_feature')
 
+    <!-- CATEGORIES -->
+    @include('icommerce.widgets.categoryProducts')
+
+    <!-- BANNER FERIAS -->
+        @include('icommerce.partials.feria')
     </div>
-
-    <style>
-        .subproduct-active {
-            background-color: #0F4A5B;
-            color: white;
-        }
-
-        .subproduct-active td span a {
-            color: white;
-        }
-
-        .subproduct-active td span a:hover {
-            color: #25858a;
-        }
-    </style>
 @stop
 
 @section('scripts')
     @parent
 
-    <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .no-print {
-                display: none;
-            }
-
-            .print-40 {
-                margin-top: 60px;
-                width: 40%;
-            }
-
-            .print-60 {
-                margin-top: 60px;
-                width: 60%;
-            }
-
-            .print-img {
-                display: block;
-            }
-
-            #content_show_commerce * {
-                visibility: visible;
-            }
-
-            #content_show_commerce {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-        }
-
-        buton-social:hover {
-            color: #ffffff !important;
-        }
-
-        nav-item a:hover {
-            color: #ffffff !important;
-        }
-    </style>
-
     <script type="text/javascript">
+        /********* VUE ***********/
         var vue_show_commerce = new Vue({
             el: '#content_show_commerce',
             created: function () {
                 this.$nextTick(function () {
                     this.get_product();
                     this.get_wishlist();
-
                     setTimeout(function () {
                         $('#content_preloader').fadeOut(1000, function () {
                             $('#content_show_commerce').animate({'opacity': 1}, 500);
@@ -575,8 +319,6 @@
                 related_products: false,
                 quantity: 1,
                 currency: '',
-                currencySymbolLeft: icommerce.currencySymbolLeft,
-                currencySymbolRight: icommerce.currencySymbolRight,
                 /*wishlist*/
                 products_wishlist: [],
                 user: {!! $user !!},
@@ -585,11 +327,13 @@
                 product_parent: false,
                 products_brother: false,
                 /*breadcrumb*/
+                index_product_option_value_selected:"select",
+                option_type:null,
+                option_value:'',
                 breadcrumb: [],
-                sending_data: false
-            },
-            components: {
-                'v-zoom': vZoom
+                sending_data: false,
+                currencysymbolleft: icommerce.currencySymbolLeft,
+                currencysymbolright: icommerce.currencySymbolRight,
             },
             filters: {
                 numberFormat: function (value) {
@@ -597,6 +341,45 @@
                 }
             },
             methods: {
+              /* actualizar precio de producto */
+                update_product(indexOption){
+                  if(this.index_product_option_value_selected!="select"){
+                    this.option_type=this.product.options[indexOption].option_values[this.index_product_option_value_selected].type;
+                    if(this.option_type=="image")
+                    this.option_value=this.product.options[indexOption].option_values[this.index_product_option_value_selected].option.image;
+                    else if(this.option_type=="text")
+                    this.option_value=this.product.options[indexOption].option_values[this.index_product_option_value_selected].option.text;
+                    else if(this.option_type=="background")
+                    this.option_value=this.product.options[indexOption].option_values[this.index_product_option_value_selected].option.background;
+                    var option=this.product.options[indexOption].option_values[this.index_product_option_value_selected];
+                    if(parseFloat(option.price)!=0.00){
+                      if(option.price_prefix=="+")
+                        this.product.price_updated=parseFloat(this.product.unformatted_price)+parseFloat(this.product.options[indexOption].option_values[this.index_product_option_value_selected].price);
+                      else{
+                        // console.log(parseFloat(this.product.price));
+                        // console.log(parseFloat(this.product.options[indexOption].option_values[this.index_product_option_value_selected].price));
+                        this.product.price_updated=parseFloat(this.product.unformatted_price)-parseFloat(this.product.options[indexOption].option_values[this.index_product_option_value_selected].price);
+                      }
+                      this.product.option_selected=this.product.options[indexOption].option_id;
+                      this.product.product_option_selected=this.product.options[indexOption].product_option_id;
+                      this.product.option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].id;
+                    }else{
+                      this.product.price_updated=this.product.unformatted_price;
+                      this.product.option_selected=this.product.options[indexOption].option_id;
+                      this.product.product_option_selected=this.product.options[indexOption].product_option_id;
+                      this.product.option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].id;
+                    }
+                  }else{
+                    this.option_type=null;
+                    this.option_value='';
+                    if('price_updated' in this.product){
+                      this.product.price_updated=this.product.price;
+                    }
+                    this.product.option_selected=0;
+                    this.product.product_option_selected=0;
+                    this.product.option_value_selected=0;
+                  }
+                },
                 /* obtiene los productos */
                 get_product: function () {
                     axios({
@@ -606,6 +389,7 @@
                     }).then(function (response) {
 
                         vue_show_commerce.product = response.data.product[0];
+                        vue_show_commerce.product.price_updated = response.data.product[0].unformatted_price;
                         vue_show_commerce.product_gallery = response.data.product[0].gallery;
                         vue_show_commerce.related_products = response.data.related_products;
                         vue_show_commerce.currency = response.data.currency;
@@ -613,6 +397,7 @@
                         vue_show_commerce.count_comments = response.data.count_comments;
                         vue_show_commerce.products_children = response.data.products_children;
                         vue_show_commerce.breadcrumb = response.data.breadcrumb;
+                        vue_show_commerce.categories = response.data.categories;
                     });
                 },
 
@@ -661,6 +446,7 @@
                 /*agrega el producto al carro de compras*/
                 addCart: function (data) {
                     if (data) {
+                        data.unformatted_price=data.price_updated;
                         data['quantity_cart'] = this.quantity;
                         data = [data];
                     } else {
@@ -767,6 +553,20 @@
     </script>
 
     <script type="text/javascript">
+        $('.zoom-product').zoom({
+            magnify: 1
+        });
+
+        var owla = $("#owl-carousel-product");
+        owla.owlCarousel({
+            items: 4,
+            slideSpeed: 250,
+            rewindSpeed: 350,
+            margin: 1,
+            responsiveClass: true,
+            dots: true,
+            nav: false
+        });
 
         function main_imgbig() {
             var img = $('#owl-carousel-product .owl-item').find('img');
@@ -780,6 +580,15 @@
 
         main_imgbig();
 
+
+        $("#owl-carousel-product .owl-item img").bind("click touchstart", function () {
+            var e = $(this).attr("src");
+            var carousel = $(this).closest(".carousel-product");
+
+            carousel.children('.zoom-product').trigger('zoom-product.destroy');
+            carousel.children('.zoom-product').zoom({url: e});
+            carousel.find(".zoom-product .big-img img").attr("src", e);
+        });
     </script>
 
     <script>(function (d, s, id) {
@@ -794,4 +603,3 @@
 
     @include('icommerce::frontend.partials.schema_product')
 @stop
-
