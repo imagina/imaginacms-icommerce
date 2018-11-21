@@ -151,6 +151,27 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
 
         });
 
+        //Options
+         $router->group(['prefix' => 'options'], function (Router $router) {
+             $router->bind('aicommerceopt', function ($id) {
+                 return app(\Modules\Icommerce\Repositories\OptionRepository::class)->find($id);
+             });
+             $router->get('/', [
+                 'as' => 'icommerce.api.categories',
+                 'uses' => 'OptionControllerV2@options',
+
+             ]);
+             $router->get('{aicommerceopt}', [
+                 'as' => 'icommerce.api.category',
+                 'uses' => 'OptionControllerV2@option',
+             ]);
+             $router->get('{aicommerceopt}/products', [
+                 'as' => 'icommerce.api.categories.products',
+                 'uses' => 'OptionControllerV2@products',
+             ]);
+
+         });
+
         //products
         $router->group(['prefix' => 'products'], function (Router $router) {
 
@@ -279,9 +300,7 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
 
         });
 
-        
+
     });
 
 });
-
-
