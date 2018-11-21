@@ -53,7 +53,12 @@ return [
         'search'                    => 'Buscar',
         'additional'                => 'Adicional',
         'purchasable'               => 'Producto Comprable',
-        'freeshipping'              => 'Producto con Freeshipping'
+        'freeshipping'              => 'Producto con Freeshipping',
+        'select option'             => 'Selecciona una opción',
+        'manufacturer'              => 'Fabricante',
+        'certificate'               => 'Certificado',
+        'data_sheet'                => 'Ficha técnica'
+
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',
@@ -93,6 +98,7 @@ return [
     ],
     'alerts'            => [
         'add'           => 'Añadir al Carrito',
+        'add_to_wish_list' => 'Añadir a la Lista de Deseo',
         'add_cart'      => 'Producto agregado al carro',
         'no_add_cart'   => 'Producto no agregado al carro, por favor intente de nuevo',
         'no_more'       => 'No hay mas productos en inventario',
@@ -113,4 +119,3 @@ return [
 
     ]
 ];
-

@@ -55,6 +55,12 @@ return [
         'purchasable'               => 'Product Purchasable',
         'freeshipping'              => 'Product with Freeshipping',
         'order_weight'              => 'Order Products',
+        'select option'             => 'Select an option',
+        'manufacturer'              => 'Manufacturer',
+        'certificate'               => 'Certificado',
+        'data_sheet'                => 'Data sheet'
+
+
     ],
     'categories'        => [
         'free_shipping'             => 'Products with free shipping',
@@ -93,6 +99,7 @@ return [
     ],
     'alerts'        => [
         'add'           => 'Add to cart',
+        'add_to_wish_list' => 'Add to Wish List',
         'add_cart'      => 'Product added to the cart',
         'no_add_cart'   => 'Can\'t add the product, try again please',
         'no_more'       => 'The product doesn\'t have any more inventory',
@@ -113,4 +120,3 @@ return [
 
     ]
 ];
-

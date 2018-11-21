@@ -31,9 +31,41 @@ class CartController extends Controller
     try {
       if (isset($cart) && !empty($cart)) {
         foreach ($cart as $data) {
-
           $product = new ProductTransformer($this->product->find($data['id']));
           $product = json_decode(json_encode($product));
+          // dd(isset($data['option_selected']));
+          $newPrice=0;
+          $option="";
+          $option_type='';
+          $option_value_description="";
+          $option_value_type="";
+          $option_value="";
+          if((isset($data['option_selected']) && $data['option_selected']!=0) && (isset($data['option_value_selected']) && $data['option_value_selected']!=0)){
+            foreach($product->options as &$optionN){
+              if($optionN->option_id==$data['option_selected']){
+                foreach($optionN->option_values as $optValue){
+                  if($optValue->id==$data['option_value_selected']){
+                    if($optValue->price_prefix=="+"){
+                      //add
+                      $newPrice=(float)$product->unformatted_price+(float)$optValue->price;
+                    }else{
+                      $newPrice=(float)$product->unformatted_price-(float)$optValue->price;
+                    }//else price_prefix is -
+                    $option=$optionN->description;
+                    $option_type=$optionN->type;
+                    $option_value_description=$optValue->description;
+                    $option_value_type=$optValue->type;
+                    $option_value=$optValue->option;
+                    break;
+                  }//if option value == option value selected
+                }//foreach option values
+              }//if option == option selected
+            }//foreach options product
+          }//if option selected
+          if($newPrice!=0){
+            $product->unformatted_price=$newPrice;
+            $product->price=formatMoney($newPrice);
+          }//if new price.
           $this->cart->add([
             'id' => $product->id,
             'name' => $product->title,
@@ -48,6 +80,15 @@ class CartController extends Controller
             'length' => $product->length ?? 0,
             'height' => $product->height ?? 0,
             'freeshipping' => $product->freeshipping ?? 0,
+            'option_selected_id'=>$data['option_selected'] ?? 0,
+            'product_option_selected_id'=>$data['product_option_selected'] ?? 0,
+            'product_option_value_selected_id'=>$data['option_value_selected'] ?? 0,
+            'option_selected'=>$option,
+            'option_type_selected'=>$option_type,
+            'option_value_description_selected'=>$option_value_description,
+            'option_value_type_selected'=>$option_value_type,
+            'option_value_selected'=>$option_value,
+            'options'=>$product->options
           ]);
         }
         $status = true;
@@ -60,6 +101,9 @@ class CartController extends Controller
 
     } catch (\Exception $e) {
       \Log::error($e);
+      return [
+        "message"=>$e->getMessage()
+      ];
     }
 
   }

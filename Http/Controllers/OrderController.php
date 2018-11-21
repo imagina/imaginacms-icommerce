@@ -10,6 +10,7 @@ use Anam\Phpcart\Cart as Carting;
 use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Entities\Order_History;
 use Modules\Icommerce\Entities\Order_Product;
+use Modules\Icommerce\Entities\Order_Option;
 use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Entities\Product_Discount;
 use Modules\Icommerce\Entities\Payment;
@@ -214,7 +215,7 @@ class OrderController extends BasePublicController
 
     try {
       foreach ($cart["items"] as $item) {
-        Order_Product::create([
+        $p=Order_Product::create([
           "order_id" => $order->id,
           "product_id" => $item->id,
           "title" => $item->name,
@@ -224,6 +225,17 @@ class OrderController extends BasePublicController
           "tax" => 0,
           "reward" => 0,
         ]);
+
+        $o=Order_Option::create([
+          "order_id" => $order->id,
+          "order_product_id"=>$p->id,
+          "product_option_id"=>$item->product_option_selected_id,
+          "product_option_value_id"=>$item->product_option_value_selected_id,
+          'name'=>$item->option_selected,
+          'value'=>$item->option_value_description_selected,
+          'type'=>$item->option_type_selected
+        ]);
+
       }
     } catch (Exception $e) {
       \Log::info($e->getMessage());
