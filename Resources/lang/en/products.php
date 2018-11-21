@@ -57,7 +57,7 @@ return [
         'order_weight'              => 'Order Products',
         'select option'             => 'Select an option',
         'manufacturer'              => 'Manufacturer',
-        'certificate'               => 'Certificado',
+        'certificate'               => 'Certificate',
         'data_sheet'                => 'Data sheet'
 
 
