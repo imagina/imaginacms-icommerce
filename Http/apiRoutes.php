@@ -157,17 +157,13 @@ $router->group(['prefix' => 'icommerce'], function (Router $router) {
                  return app(\Modules\Icommerce\Repositories\OptionRepository::class)->find($id);
              });
              $router->get('/', [
-                 'as' => 'icommerce.api.categories',
+                 'as' => 'icommerce.api.options',
                  'uses' => 'OptionControllerV2@options',
 
              ]);
              $router->get('{aicommerceopt}', [
-                 'as' => 'icommerce.api.category',
+                 'as' => 'icommerce.api.option',
                  'uses' => 'OptionControllerV2@option',
-             ]);
-             $router->get('{aicommerceopt}/products', [
-                 'as' => 'icommerce.api.categories.products',
-                 'uses' => 'OptionControllerV2@products',
              ]);
 
          });
