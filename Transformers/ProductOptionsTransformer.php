@@ -17,7 +17,10 @@ class ProductOptionsTransformer extends Resource
                 $options_value_options->image = url($options_value_options->image);
               }
               $option_values[]=[
-                'id'=>$option_value->id,
+                'id'=>$option_value->option_value_id,
+                'product_option_value_id'=>$option_value->id,
+                'option_id'=>$option_value->option_id,
+                'product_option_id'=>$option_value->product_option_id,
                 'description'=>$option_value->option_value->description,
                 'type'=>$option_value->option_value->type,
                 'option'=>$options_value_options,
@@ -27,15 +30,13 @@ class ProductOptionsTransformer extends Resource
                 'subtract'=>$option_value->subtract,
                 'weigth'=>$option_value->weight,
                 'weight_prefix'=>$option_value->weight_prefix,
-                'option_id'=>$option_value->option_id,
-                'option_value_id'=>$option_value->option_value_id,
-                'product_option_id'=>$option_value->product_option_id,
               ];
             }//if product option value == product option pivot
           }//foreach
         }
         return  [
             'option_id' => $this->id,
+            'required' => $this->pivot->required,
             'type' => $this->type,
             'description' => $this->description,
             'option_product_id'=>$this->pivot->product_id,

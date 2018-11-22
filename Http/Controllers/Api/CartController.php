@@ -82,7 +82,7 @@ class CartController extends Controller
             'freeshipping' => $product->freeshipping ?? 0,
             'option_selected_id'=>$data['option_selected'] ?? 0,
             'product_option_selected_id'=>$data['product_option_selected'] ?? 0,
-            'product_option_value_selected_id'=>$data['option_value_selected'] ?? 0,
+            'product_option_value_selected_id'=>$data['product_option_value_selected'] ?? 0,
             'option_selected'=>$option,
             'option_type_selected'=>$option_type,
             'option_value_description_selected'=>$option_value_description,
@@ -154,7 +154,6 @@ class CartController extends Controller
   public function update(Request $request)
   {
     $data = $request->all();
-
     $this->cart->update([
       'id' => $data['id'],
       'quantity' => $data['quantity']

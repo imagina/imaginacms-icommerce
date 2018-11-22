@@ -363,11 +363,13 @@
                       this.product.option_selected=this.product.options[indexOption].option_id;
                       this.product.product_option_selected=this.product.options[indexOption].product_option_id;
                       this.product.option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].id;
+                      this.product.product_option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].product_option_value_id;
                     }else{
                       this.product.price_updated=this.product.unformatted_price;
                       this.product.option_selected=this.product.options[indexOption].option_id;
                       this.product.product_option_selected=this.product.options[indexOption].product_option_id;
                       this.product.option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].id;
+                      this.product.product_option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].product_option_value_id;
                     }
                   }else{
                     this.option_type=null;
@@ -378,6 +380,8 @@
                     this.product.option_selected=0;
                     this.product.product_option_selected=0;
                     this.product.option_value_selected=0;
+                    this.product.product_option_value_selected=0;
+
                   }
                 },
                 /* obtiene los productos */
