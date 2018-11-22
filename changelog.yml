@@ -1,5 +1,15 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+   "0.1.21":
+      added:
+        - selector of product options in show view, added option of selected product to the cart, visualization of the option selected by product in the checkout
+        - corrected word in spanish in languages ​​english word arrangement
+        - api query to get all options
+        - to the api option, obtain data of a specific option
+        - new field in productOptionTransformer
+        - new field (product_option_value) in productoptionstransformer and fixed problem in cart to save order
+      changed:
+        - Solved problem by not selecting any option in show view
    "0.1.20":
       added:
         - trans in form customer
