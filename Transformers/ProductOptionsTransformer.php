@@ -39,6 +39,7 @@ class ProductOptionsTransformer extends Resource
             'type' => $this->type,
             'description' => $this->description,
             'option_product_id'=>$this->pivot->product_id,
+            'product_option_id'=>$this->pivot->id,
             'option_values'=>$option_values
         ];
     }
