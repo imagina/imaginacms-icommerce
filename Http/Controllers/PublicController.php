@@ -40,7 +40,7 @@ class PublicController extends BasePublicController
   private $manufacturer;
   private $profile;
   private $address;
-  
+
   public function __construct(
     ProductRepository $product,
     CurrencyRepository $currency,
@@ -67,8 +67,8 @@ class PublicController extends BasePublicController
     $this->profile = $profile;
     $this->address = $address;
   }
-  
-  
+
+
   // view products by category
   public function index()
   {
@@ -83,76 +83,76 @@ class PublicController extends BasePublicController
 
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
-    
+
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    
+
     if (!empty($uri)) {
       $category = $this->category->findBySlug($uri);
       $products = $this->product->whereCategory($category->id);
       //$productsFeatured = json_decode(json_encode(ProductTransformer::collection($products)));
       $currency = $this->currency->getActive();
       $user = $this->auth->user();
-      
-      
+
+
       (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;
-      
+
       //Get Custom Template.
       $ctpl = "icommerce.category.{$category->id}.index";
       if (view()->exists($ctpl)) $tpl = $ctpl;
     }
-    
+
     return view($tpl, compact('category', 'user', 'products', 'currency'));
-    
+
   }
-  
+
   // view products by freeshipping
   public function freeshipping()
   {
-    
+
     $uri = Route::current()->uri();
     $tpl = 'icommerce::frontend.freeshipping.index';
     $ttpl = 'icommerce.freeshipping.index';
-    
+
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    
-    
+
+
     if (!empty($uri)) {
       $products = $this->product->whereFreeshippingProducts(); //consulta
-      
+
       $currency = $this->currency->getActive();
-      
+
       $user = $this->auth->user();
       (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;
-      
+
       //Get Custom Template.
       //$ctpl = "icommerce.category.{$category->id}.index";
       //if(view()->exists($ctpl)) $tpl = $ctpl;
     }
-    
-    
+
+
     return view($tpl, compact('user', 'products', 'currency'));
-    
+
   }
-  
+
   // view result search
   public function search()
   {
     $criterion = isset($_GET['search']) ? $_GET['search'] : false;
-    
+
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
-    
+
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    
+
     $data = $this->product->whereFeaturedProducts(5);
     $productsFeatured = json_decode(json_encode(ProductTransformer::collection($data)));
     $category = false;
     $user = $this->auth->user();
     (isset($user) && !empty($user)) ? $user = $user->id : $user = false;
-    
+
     return view($tpl, compact('productsFeatured', 'category', 'criterion', 'locale', 'user'));
   }
-  
+
   // Informacion de Producto
   public function show()
   {
@@ -166,37 +166,37 @@ class PublicController extends BasePublicController
       };
 
       $tpl = 'icommerce::frontend.show';
-    
+
     $ttpl = 'icommerce.show';
     if (view()->exists($ttpl)) $tpl = $ttpl;
     $product = $this->product->findBySlug($uri);
-    
+
     $user = $this->auth->user();
     (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;
-    
+
     return view($tpl, compact('product', 'user'));
   }
-  
-  
+
+
   // categories
   public function categories()
   {
     $tpl = 'icommerce::frontend.categories';
     $ttpl = 'icommerce.categories';
-    
+
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    
+
     $categories = $this->category->all();
-    
+
     return view($tpl, compact('categories'));
   }
-  
-  
+
+
   /* ==== check ==== */
-  
+
   public function checkout()
   {
-    
+
     $tpl = 'icommerce::frontend.checkout.index';
     $ttpl = 'icommerce.checkout.index';
     $payments = $this->payments->getPaymentsMethods();
@@ -210,32 +210,33 @@ class PublicController extends BasePublicController
     $ttpl = 'icommerce.checkout';
     $addresses = '';
     $addressSelect = '';
+    $profile='';
     if (isset($user) && !empty($user)) {
       $profile = $this->profile->findByUserId($user->id);
       $addresses = $this->address->findByProfileId($profile->id);
- 
+
       $addressSelect = json_encode(AddressesTransformer::collection($addresses));
 
     }
-    
+
     $passwordRandom = substr(md5(microtime()), 1, 8);
-    
-    
+
+
     //if(view()->exists($ttpl)) $tpl = $ttpl;
-    
-    return view($tpl, compact('defaultCountry', 'countryFreeshipping', 'addresses', 'addressSelect', 'shipping', 'payments', 'currency', 'user', 'items', 'tax', 'passwordRandom'));
+
+    return view($tpl, compact('defaultCountry', 'countryFreeshipping', 'addresses', 'addressSelect', 'shipping', 'payments', 'profile','currency', 'user', 'items', 'tax', 'passwordRandom'));
   }
-  
+
   // Traer items del carrito
   public function getItems()
   {
     $items = $this->cart->getItems();
     $weight = 0;
-    
+
     foreach ($items as $index => $item) {
       $item->weight ? $weight += $item->weight : false;
     }
-    
+
     return [
       'items' => $items,
       'quantity' => $this->cart->totalQuantity(),
@@ -243,7 +244,7 @@ class PublicController extends BasePublicController
       'weight' => $weight
     ];
   }
-  
+
   public function cart()
   {
     $tpl = 'icommerce::frontend.cart.cart';
@@ -253,26 +254,26 @@ class PublicController extends BasePublicController
     $items = $this->getItems();
     return view($tpl, compact('items', 'currency'));
   }
-  
+
   public function wishlist()
   {
     $tpl = 'icommerce::frontend.wishlist.index';
-    
+
     $ttpl = 'icommerce.wishlist.index';
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    
+
     $user = $this->auth->user();
     (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;
-    
+
     return view($tpl, compact('user'));
   }
-  
+
   public function bulk_load()
   {
     $tpl = 'icommerce::frontend.bulk_load';
     $user = $this->auth->user();
-    
-    
+
+
     return view($tpl, compact('user'));
   }
 }

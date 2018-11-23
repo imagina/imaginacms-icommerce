@@ -226,15 +226,17 @@ class OrderController extends BasePublicController
           "reward" => 0,
         ]);
 
-        $o=Order_Option::create([
-          "order_id" => $order->id,
-          "order_product_id"=>$p->id,
-          "product_option_id"=>$item->product_option_selected_id,
-          "product_option_value_id"=>$item->product_option_value_selected_id,
-          'name'=>$item->option_selected,
-          'value'=>$item->option_value_description_selected,
-          'type'=>$item->option_type_selected
-        ]);
+        if($item->product_option_selected_id!=0 && $item->product_option_value_selected_id!=0){
+          $o=Order_Option::create([
+            "order_id" => $order->id,
+            "order_product_id"=>$p->id,
+            "product_option_id"=>$item->product_option_selected_id,
+            "product_option_value_id"=>$item->product_option_value_selected_id,
+            'name'=>$item->option_selected,
+            'value'=>$item->option_value_description_selected,
+            'type'=>$item->option_type_selected
+          ]);
+        }
 
       }
     } catch (Exception $e) {
