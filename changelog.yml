@@ -1,5 +1,10 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+   "0.1.22":
+      added:
+        - trans to billing_details in checkout
+        - send profile data to checkout
+        - validate to save order option
    "0.1.21":
       added:
         - selector of product options in show view, added option of selected product to the cart, visualization of the option selected by product in the checkout
