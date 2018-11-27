@@ -252,7 +252,7 @@
 
                         <!-- SOCIAL NETWORK -->
                         <div class="btns-share">
-                            @include('icommerce.partials.share-page')
+                            {{--@include('icommerce.partials.share-page')--}}
                         </div>
                     </div>
 
@@ -288,7 +288,7 @@
     @include('icommerce.widgets.categoryProducts')
 
     <!-- BANNER FERIAS -->
-        @include('icommerce.partials.feria')
+        {{--@include('icommerce.partials.feria')--}}
     </div>
 @stop
 

@@ -30,6 +30,7 @@
                             <thead>
                             <tr>
                               <th>{{ trans('icommerce::options.table.description') }}</th>
+                              <th>{{ trans('icommerce::options.table.type') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                             </tr>
@@ -41,6 +42,7 @@
                                 <td>
                                   {{$option_value->description}}
                                 </td>
+                                <td>{{$option_value->type}}</td>
                                 <td>
                                     <a href="{{ route('admin.icommerce.option_value.edit', [$option_value->id]) }}">
                                         {{ $option_value->created_at }}
@@ -59,6 +61,7 @@
                             <tfoot>
                             <tr>
                               <th>{{ trans('icommerce::options.table.description') }}</th>
+                              <th>{{ trans('icommerce::options.table.type') }}</th>
                                 <th>{{ trans('core::core.table.created at') }}</th>
                                 <th>{{ trans('core::core.table.actions') }}</th>
                             </tr>
