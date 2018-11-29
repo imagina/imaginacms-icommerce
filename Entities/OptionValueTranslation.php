@@ -10,5 +10,5 @@ class OptionValueTranslation extends Model
     protected $fillable = [
       'description'
     ];
-    protected $table = 'icommerce__option_value_translations';
+    protected $table = 'icommerce__option_value_trans';
 }

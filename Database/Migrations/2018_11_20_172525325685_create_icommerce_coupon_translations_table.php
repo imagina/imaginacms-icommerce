@@ -17,7 +17,7 @@ class CreateIcommerceCouponTranslationsTable extends Migration
             $table->increments('id');
             
             // Your translatable fields
-            $table->strong('name');
+            $table->string('name');
             
             $table->integer('coupon_id')->unsigned();
             $table->string('locale')->index();

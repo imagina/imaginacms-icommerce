@@ -10,5 +10,5 @@ class OrderStatusTranslation extends Model
     protected $fillable = [
       'title'
     ];
-    protected $table = 'icommerce__order_status_translations';
+    protected $table = 'icommerce__order_status_trans';
 }

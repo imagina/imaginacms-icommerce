@@ -12,7 +12,9 @@ class CreateIcommerceOptionValueTranslationsTable extends Migration
    */
   public function up()
   {
-    Schema::create('icommerce__option_value_translations', function (Blueprint $table) {
+    // OJO : toco esta tabla reducirle el nombre a trans porque excedia
+    // el max de caracteres de mysql al momento de generar la llave unique
+    Schema::create('icommerce__option_value_trans', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
       
@@ -35,9 +37,9 @@ class CreateIcommerceOptionValueTranslationsTable extends Migration
    */
   public function down()
   {
-    Schema::table('icommerce__option_value_translations', function (Blueprint $table) {
+    Schema::table('icommerce__option_value_trans', function (Blueprint $table) {
       $table->dropForeign(['option_value_id']);
     });
-    Schema::dropIfExists('icommerce__option_value_translations');
+    Schema::dropIfExists('icommerce__option_value_trans');
   }
 }
