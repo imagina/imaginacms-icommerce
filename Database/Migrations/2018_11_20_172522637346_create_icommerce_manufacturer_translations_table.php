@@ -15,9 +15,10 @@ class CreateIcommerceManufacturerTranslationsTable extends Migration
     Schema::create('icommerce__manufacturer_translations', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
-      // Your translatable fields
       
+      // Your translatable fields
       $table->string('name');
+      
       $table->integer('manufacturer_id')->unsigned();
       $table->string('locale')->index();
       $table->unique(['manufacturer_id', 'locale']);

@@ -15,8 +15,10 @@ class CreateIcommerceOptionTranslationsTable extends Migration
     Schema::create('icommerce__option_translations', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
+      
       // Your translatable fields
       $table->text('description');
+      
       $table->integer('option_id')->unsigned();
       $table->string('locale')->index();
       $table->unique(['option_id', 'locale']);

@@ -15,11 +15,13 @@ class CreateIcommerceProductTranslationsTable extends Migration
     Schema::create('icommerce__product_translations', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
+      
       // Your translatable fields
       $table->text('name');
       $table->string('slug');
       $table->text('description');
       $table->text('summary');
+      
       $table->integer('product_id')->unsigned();
       $table->string('locale')->index();
       $table->unique(['product_id', 'locale']);

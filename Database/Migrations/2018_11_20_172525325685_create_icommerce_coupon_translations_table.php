@@ -15,8 +15,10 @@ class CreateIcommerceCouponTranslationsTable extends Migration
         Schema::create('icommerce__coupon_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            
             // Your translatable fields
             $table->strong('name');
+            
             $table->integer('coupon_id')->unsigned();
             $table->string('locale')->index();
             $table->unique(['coupon_id', 'locale']);

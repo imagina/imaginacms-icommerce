@@ -15,6 +15,7 @@ class CreateIcommerceCategoryTranslationsTable extends Migration
     Schema::create('icommerce__category_translations', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
+      
       // Your translatable fields
       $table->text('title');
       $table->string('slug');

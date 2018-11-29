@@ -15,9 +15,11 @@ class CreateIcommerceTaxClassTranslationsTable extends Migration
     Schema::create('icommerce__tax_class_translations', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
+      
       // Your translatable fields
       $table->string('name');
       $table->string('description');
+      
       $table->integer('tax_class_id')->unsigned();
       $table->string('locale')->index();
       $table->unique(['tax_class_id', 'locale']);
