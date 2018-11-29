@@ -12,7 +12,9 @@ class CreateIcommerceManufacturerTranslationsTable extends Migration
    */
   public function up()
   {
-    Schema::create('icommerce__manufacturer_translations', function (Blueprint $table) {
+    // OJO : toco esta tabla reducirle el nombre a trans porque excedia
+    // el max de caracteres de mysql al momento de generar la llave unique
+    Schema::create('icommerce__manufacturer_trans', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
       
@@ -33,9 +35,9 @@ class CreateIcommerceManufacturerTranslationsTable extends Migration
    */
   public function down()
   {
-    Schema::table('icommerce__manufacturer_translations', function (Blueprint $table) {
+    Schema::table('icommerce__manufacturer_trans', function (Blueprint $table) {
       $table->dropForeign(['manufacturer_id']);
     });
-    Schema::dropIfExists('icommerce__manufacturer_translations');
+    Schema::dropIfExists('icommerce__manufacturer_trans');
   }
 }

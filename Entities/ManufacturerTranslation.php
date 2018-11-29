@@ -10,5 +10,5 @@ class ManufacturerTranslation extends Model
     protected $fillable = [
       'name'
     ];
-    protected $table = 'icommerce__manufacturer_translations';
+    protected $table = 'icommerce__manufacturer_trans';
 }
