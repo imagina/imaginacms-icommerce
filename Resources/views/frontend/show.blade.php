@@ -251,9 +251,10 @@
                         </div>
 
                         <!-- SOCIAL NETWORK -->
-                        <div class="btns-share">
-                            {{--@include('icommerce.partials.share-page')--}}
-                        </div>
+
+                        {{--<div class="btns-share">
+                            @include('icommerce.partials.share-page')
+                        </div>--}}
                     </div>
 
                     <!-- DESCRIPTION PRODUCT -->
@@ -285,7 +286,7 @@
     @include('icommerce::frontend.widgets.products_feature')
 
     <!-- CATEGORIES -->
-    @include('icommerce.widgets.categoryProducts')
+    {{--@include('icommerce.widgets.categoryProducts')--}}
 
     <!-- BANNER FERIAS -->
         {{--@include('icommerce.partials.feria')--}}

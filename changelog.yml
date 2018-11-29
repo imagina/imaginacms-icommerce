@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+   "0.1.23":
+      changed:
+        - Filter product options adjusted to receive several options.
    "0.1.22":
       added:
         - trans to billing_details in checkout

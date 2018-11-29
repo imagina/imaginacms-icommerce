@@ -356,22 +356,28 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if ($filter) {
 
                 if (isset($filter->categories)) {
-                    is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-                    $query->leftJoin('icommerce__product_category', 'icommerce__product_category.product_id',
-                        '=', 'icommerce__products.id')
-                        ->whereIn('icommerce__product_category.category_id', $filter->categories);
+                  is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+                  $query->whereIn('icommerce__products.id', function($query) use($filter){
+                    $query->select('product_id')
+                    ->from('icommerce__product_category')
+                    ->whereIn('category_id',$filter->categories);
+                  });
                 }
                 if (isset($filter->options)) {
                   is_array($filter->options) ? true : $filter->options = [$filter->options];
-                    $query->leftJoin('icommerce__product_option', 'icommerce__product_option.product_id',
-                        '=', 'icommerce__products.id')
-                        ->whereIn('icommerce__product_option.option_id', $filter->options);
+                  $query->whereIn('icommerce__products.id', function($query) use($filter){
+                    $query->select('product_id')
+                    ->from('icommerce__product_option')
+                    ->whereIn('option_id',$filter->options);
+                  });
                 }
                 if (isset($filter->options_values)) {
-                    is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
-                    $query->leftJoin('icommerce__product_option_values', 'icommerce__product_option_values.product_id',
-                        '=', 'icommerce__products.id')
-                        ->whereIn('icommerce__product_option_values.option_value_id', $filter->options_values);
+                  is_array($filter->options_values) ? true : $filter->options_values = [$filter->options_values];
+                  $query->whereIn('icommerce__products.id', function($query) use($filter){
+                    $query->select('product_id')
+                    ->from('icommerce__product_option_values')
+                    ->whereIn('option_value_id',$filter->options_values);
+                  });
                 }
                 if (isset($filter->manufacturers)) {
                     is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturer];
