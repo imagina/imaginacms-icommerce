@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateIcommerceOptionValueTranslationsTable extends Migration
+{
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('icommerce__option_value_translations', function (Blueprint $table) {
+      $table->engine = 'InnoDB';
+      $table->increments('id');
+      // Your translatable fields
+      $table->text('description');
+      $table->integer('option_value_id')->unsigned();
+      $table->string('locale')->index();
+      $table->unique(['option_value_id', 'locale']);
+      $table->foreign('option_value_id')->references('id')->on('icommerce__option_values')->onDelete('cascade');
+      
+      
+    });
+  }
+  
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::table('icommerce__option_value_translations', function (Blueprint $table) {
+      $table->dropForeign(['option_value_id']);
+    });
+    Schema::dropIfExists('icommerce__option_value_translations');
+  }
+}
