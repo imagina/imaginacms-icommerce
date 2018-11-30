@@ -19,10 +19,10 @@
 
 	<div class="col-sm-2">
 		<ul id="opul" class="nav nav-pills nav-stacked">
-		
+
 			@foreach ($product->optionsv as $option)
 				<li @if($cont==0) class='active' @endif id='t{{$iditem}}' data-id-right='{{$iditem}}' data-id-option='{{$option->id}}' data-type-option='{{$option->type}}' data-pivot-id='{{$option->pivot->id}}'>
-					<i data-ge='{{$iditem}}'class='fa fa-minus-circle closed'></i> 
+					<i data-ge='{{$iditem}}'class='fa fa-minus-circle closed'></i>
 						<a data-toggle='tab' href='#{{$iditem}}'>{{$option->description}}</a>
 				</li>
 
@@ -31,7 +31,7 @@
 					$iditem = "op".$cont;
 				@endphp
 			@endforeach
-		
+
 		</ul>
 	</div>
 
@@ -80,7 +80,9 @@
 							<th>{{trans('icommerce::product_option_values.table.quantity')}}</th>
 							<th>{{trans('icommerce::product_option_values.table.substract')}}</th>
 							<th>{{trans('icommerce::product_option_values.table.price')}}</th>
-							<th>{{trans('icommerce::product_option_values.table.weight')}}</th><th></th>
+							<th>{{trans('icommerce::product_option_values.table.weight')}}</th>
+							<th>{{trans('icommerce::products.table.options')}}</th>
+							<th></th>
 							</tr>
 						</thead>
 
@@ -126,6 +128,21 @@
 									<input type='number' name='tableWeight' class='form-control' min='0' step='0.01' value="{{$pov->weight}}"/>
 								</td>
 
+								<td>
+									<select name='tableSOptionChild' class='form-control'>
+										<option value="0" @if($pov->children_option_value_id==0) selected @endif>{{trans('icommerce::products.table.select option')}}</option>
+									@foreach ($optionsChildren as $oc)
+										@if($oc->parent_id==$optionder->pivot->option_id)
+										@foreach ($optionValues as $ov)
+											@if($ov->option_id==$oc->id)
+												<option value="{{$ov->id}}" @if($pov->children_option_value_id==$ov->id) selected @endif>{{$ov->description}}</option>
+											@endif
+										@endforeach
+										@endif
+									@endforeach
+									</select>
+								</td>
+
 								<td><button type="button" class="btn-delete-dinamic btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
 
 							</tr>
@@ -134,7 +151,7 @@
 
 						</tbody>
 
-						<tfoot><tr><td colspan='5'></td><td class='text-left'><button type='button' data-id-op='{{$iditem}}' class='btn btn-primary btn-add-dinamic'><i class='fa fa-plus-circle'></i></button></td></tr></tfoot>
+						<tfoot><tr><td colspan='6'></td><td class='text-left'><button type='button' data-id-op='{{$iditem}}' class='btn btn-primary btn-add-dinamic'><i class='fa fa-plus-circle'></i></button></td></tr></tfoot>
 
 
 						</table>
@@ -176,23 +193,24 @@
 
 @stop
 
-@push('js-stack')	
-    
+@push('js-stack')
+
 
 
 <script type="text/javascript">
 
 
 
-$(function(){ 
+$(function(){
 
 	var act="active",cont={{$cont}};
-	var miz = $("#optionsProduct .nav"), mder = $("#optionsProduct .tab-content"); 
+	var miz = $("#optionsProduct .nav"), mder = $("#optionsProduct .tab-content");
 
 	var vOptionValues = '{!!$optionValues!!}';
 	var objOptionValues = jQuery.parseJSON(vOptionValues);
-
-	var trans = 0; 
+	var vOptionsChild = '{!!json_encode($optionsChildren)!!}';
+	var objOptionChild = jQuery.parseJSON(vOptionsChild);
+	var trans = 0;
 
 	@if ($entity->translationEnabled())
 		trans = 1;
@@ -210,7 +228,7 @@ $(function(){
 		var iditem = "op"+cont;
 
 		html = "<li class='active' id=t"+iditem+" data-id-right='"+iditem+"' data-id-option='"+optionid+"' data-type-option='"+type+"' data-pivot-id=''><i data-ge='"+iditem+"'class='fa fa-minus-circle closed'></i> <a data-toggle='tab' href='#"+iditem+"'>"+desc+"</a></li>";
-		
+
 
 		miz.append(html);
 
@@ -244,8 +262,8 @@ $(function(){
 	}
 	});
 
-	
-	
+
+
 	$("#opul").on('click',".closed", function(){
 		var idgral = $(this).data('ge');
 		var delTabiz = "t"+$(this).data('ge');
@@ -267,7 +285,7 @@ $(function(){
 			var dataIds2 = {};
 			dataIds2 = jQuery.parseJSON($('#poDelete').val());
 
-			
+
 			if(dataIds2.length>0){
 				$.each(dataIds2 , function() {
 					var dataOld2 = {};
@@ -286,7 +304,7 @@ $(function(){
 	var counter = 0;
 
 	$(".tab-pane").on('click',".btn-add-dinamic", function(evt){
-		
+
 		var idtable = "#tb"+$(this).data('id-op');
 		var newRow = $("<tr data-pov-id=''>");
         var cols = "";
@@ -298,8 +316,9 @@ $(function(){
         cols += createSelecSustract("tableSustract");
         cols += '<td>'+createSelectPrefix("tablePricePrefix")+createInputFloat("tablePrice","required")+'</td>';
         cols += '<td>'+createSelectPrefix("tableWeightPrefix")+createInputFloat("tableWeight","")+'</td>';
+				cols += '<td>'+createSelectChildOptions("tableSOptionChild",optionid)+'</td>';
         cols += '<td><button type="button" class="btn-delete-dinamic btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
-       
+
         newRow.append(cols);
         $(idtable).append(newRow);
 
@@ -310,7 +329,7 @@ $(function(){
 	});
 
 	$(".tab-pane").on('click',".btn-delete-dinamic", function(evt2){
-		
+
 		var idToDelete = $(this).closest("tr").data('pov-id');
 
 		// La fila ya existe en BD
@@ -320,11 +339,11 @@ $(function(){
 
 			var dataIdNew = {};
 			dataIdNew["id"] = idToDelete;
-			
+
 			var dataIds = {};
 			dataIds = jQuery.parseJSON($('#povDelete').val());
 
-			
+
 			if(dataIds.length>0){
 				$.each(dataIds , function() {
 					var dataOld = {};
@@ -333,7 +352,7 @@ $(function(){
 				});
 			}
 			jsonObjHidden.push(dataIdNew);
-			
+
 			$("#povDelete").val(JSON.stringify(jsonObjHidden));
 
 		}
@@ -342,9 +361,9 @@ $(function(){
 
 		evt2.stopPropagation();
 		evt2.preventDefault();
-		
+
 	});
-	
+
 	function valideActive(){
 		if($("#optionsProduct .nav li").hasClass("active")){
 			$( "#optionsProduct .nav li.active" ).removeClass("active");
@@ -366,14 +385,14 @@ $(function(){
 		htmlselectend = "</select>";
 
 		htmloptions = "<option value='0'>NO</option><option value='1'>{{trans('icommerce::products.table.yes')}}</option>";
-	
+
 		html = htmliniR+hmtllabel+htmlselectini+htmloptions+htmlselectend+htmlendR;
 
 		return html;
 	}
 
 	function createText(iditem,name){
-		
+
 		htmliniT = "<div class='form-group'>";
 		htmlendT ="</div>";
 
@@ -439,6 +458,40 @@ $(function(){
 		return htmlSelectOptions;
 	}
 
+	function createSelectChildOptions(name,optionid){
+
+		htmlSOIni = "<select name='"+name+"' class='form-control'>";
+		htmlSOEnd = "</select>";
+		htmlSOoptions = "<option value='0'>{{trans('icommerce::products.table.select option')}}</option>";
+		var option_child_id=0;
+		for(var i=0;i<objOptionChild.length;i++){
+			// console.log(objOptionChild[i]);
+			if(objOptionChild[i].parent_id==optionid){
+				option_child_id=objOptionChild[i].id;
+				// console.log(objOptionChild[i].id);
+				break;
+			}
+		}//for get option child
+
+		$.each(objOptionValues , function() {
+			htmlOpInd = "";
+			opValueDes = "";
+			if(option_child_id!=0 && option_child_id==this['option_id']){
+				if(trans==1){
+					opValueDes = this['description'][languaj];
+				}else{
+					opValueDes = this['description'];
+				}
+				htmlOpInd="<option value='"+this['id']+"'>"+opValueDes+"</option>";
+			}
+				htmlSOoptions+=htmlOpInd;
+			});
+
+		htmlSelectOptions = htmlSOIni+htmlSOoptions+htmlSOEnd;
+		// htmlSelectOptions="<label>dasda</label>";
+		return htmlSelectOptions;
+	}
+
 	function createInputNumber(name){
 
 		htmlInputNumber = "<td><input type='number' name='"+name+"' class='form-control' min='0' required/></td>";
@@ -449,7 +502,7 @@ $(function(){
 	function createSelecSustract(name){
 		htmlSSIni = "<td><select name='"+name+"' class='form-control'>";
 		htmlSSEnd = "</select></td>";
-		htmlSSoptions = "<option value='0'>NO</option><option value='1' selected>{{trans('icommerce::products.table.yes')}}</option>";	
+		htmlSSoptions = "<option value='0'>NO</option><option value='1' selected>{{trans('icommerce::products.table.yes')}}</option>";
 
 		htmlSelectSustract = htmlSSIni+htmlSSoptions+htmlSSEnd;
 
@@ -459,7 +512,7 @@ $(function(){
 	function createSelectPrefix(name){
 		htmlSPIni = "<select name='"+name+"' class='form-control'>";
 		htmlSPEnd = "</select>";
-		htmlSPoptions = "<option value='+' selected>+</option><option value='-'>-</option>";	
+		htmlSPoptions = "<option value='+' selected>+</option><option value='-'>-</option>";
 
 		htmlSelectPrefix = htmlSPIni+htmlSPoptions+htmlSPEnd;
 
@@ -506,6 +559,7 @@ $(function(){
 				$(tableDi).each(function(g)
 				{
 					var tSOption = $(this).find("select[name='tableSOption']").val();
+					var tSOptionChild = $(this).find("select[name='tableSOptionChild']").val();
 					var tQuantity = $(this).find("input[name='tableQuantity']").val();
 					var tSustract = $(this).find("select[name='tableSustract']").val();
 					var tPricePrefix = $(this).find("select[name='tablePricePrefix']").val();
@@ -513,7 +567,7 @@ $(function(){
 					var tWeightPrefix = $(this).find("select[name='tableWeightPrefix']").val();
 					var tWeight = $(this).find("input[name='tableWeight']").val();
 					var tpovID = $(this).data('pov-id');
-					
+
 					if(tWeight==""){
 						tWeight = 0;
 					}
@@ -523,6 +577,7 @@ $(function(){
     				optionItems["pov_id"] = tpovID;
     				optionItems["option_id"] = dOptionId;
 			    	optionItems["option_value_id"] = parseInt(tSOption,10);
+						optionItems["children_option_value_id"] = parseInt(tSOptionChild,10);
 			    	optionItems['quantity'] = parseInt(tQuantity,10);
 			    	optionItems['substract'] = parseInt(tSustract,10);
 			    	optionItems['price'] = parseFloat(tPrice);
@@ -531,7 +586,7 @@ $(function(){
 			    	optionItems['points_prefix'] = "+";
 			    	optionItems['weight'] = parseFloat(tWeight);
 			    	optionItems['weight_prefix'] = tWeightPrefix;
-			    	
+
 			    	valuesObj.push(optionItems);
 
 			    	checkRows++;
@@ -547,9 +602,9 @@ $(function(){
 			}
 
 			item ["optionValues"] = valuesObj;
-      
+
         	jsonObj.push(item);
-			
+
 		});
 
 		$("#optionsPSave").val(JSON.stringify(jsonObj));

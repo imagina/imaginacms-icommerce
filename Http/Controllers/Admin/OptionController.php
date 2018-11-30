@@ -57,7 +57,8 @@ class OptionController extends AdminBaseController
     public function create()
     {
         $entity = $this->entity;
-        return view('icommerce::admin.options.create',compact('entity'));
+        $parentOptions=$this->option->findParentOptions();
+        return view('icommerce::admin.options.create',compact('entity','parentOptions'));
     }
 
     /**
@@ -74,31 +75,31 @@ class OptionController extends AdminBaseController
 
         $option = $this->option->create($request->except(['_token','description_value','sort_order_value','mainimage']));
 
-        if($option){
-            if(isset($request->description_value) && ($request->type != "text" || $request->type != "textarea") ){
-                $vdv = $request->description_value;
-                $vso = $request->sort_order_value;
-                $vmi = $request->mainimage;
-                foreach ($vdv as $index => $val) {
-
-                    if($vso[$index]==null)
-                        $vso[$index]=0;
-
-                    // Imagen
-                    if(!empty($vmi[$index] && !empty($option->id))) {
-                        $mainimage = $this->saveImage($vmi[$index],"assets/icommerce/option/".$option->id."/".$index.".jpg");
-                    }
-
-                    $param = array(
-                        'option_id'     => $option->id,
-                        'image'         => $mainimage,
-                        'description'   => $val,
-                        'sort_order'    => $vso[$index],
-                    );
-                    $this->optionValue->create($param);
-                }
-            }
-        }
+        // if($option){
+        //     if(isset($request->description_value) && ($request->type != "text" || $request->type != "textarea") ){
+        //         $vdv = $request->description_value;
+        //         $vso = $request->sort_order_value;
+        //         $vmi = $request->mainimage;
+        //         foreach ($vdv as $index => $val) {
+        //
+        //             if($vso[$index]==null)
+        //                 $vso[$index]=0;
+        //
+        //             // Imagen
+        //             if(!empty($vmi[$index] && !empty($option->id))) {
+        //                 $mainimage = $this->saveImage($vmi[$index],"assets/icommerce/option/".$option->id."/".$index.".jpg");
+        //             }
+        //
+        //             $param = array(
+        //                 'option_id'     => $option->id,
+        //                 'image'         => $mainimage,
+        //                 'description'   => $val,
+        //                 'sort_order'    => $vso[$index],
+        //             );
+        //             $this->optionValue->create($param);
+        //         }
+        //     }
+        // }
 
         return redirect()->route('admin.icommerce.option.index')
             ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('icommerce::options.title.options')]));
@@ -113,10 +114,10 @@ class OptionController extends AdminBaseController
     public function edit(Option $option, Request $request)
     {
         $entity = $this->entity;
+        $parentOptions=$this->option->findParentOptions();
+        // $optionValues = $this->optionValue->findByParentId($option->id);
 
-        $optionValues = $this->optionValue->findByParentId($option->id);
-
-        return view('icommerce::admin.options.edit', compact('option','optionValues','entity','request'));
+        return view('icommerce::admin.options.edit', compact('option','parentOptions','entity','request'));
     }
 
     /**

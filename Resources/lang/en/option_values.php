@@ -12,13 +12,17 @@ return [
     ],
     'button'        => [
         'create option_value'   => 'Create an Option value',
+        'values'                => 'Values'
     ],
     'table'         => [
+      'text'=>'Text',
+      'hexcolor'=>"Hexadecimal Color"
     ],
     'form'          => [
         'name'                  => 'Option value Name',
         'image'                 => 'Image',
         'sort_order'            => 'Sort Order',
+        'select_image'          => 'Select a image'
     ],
     'messages'      => [
     ],

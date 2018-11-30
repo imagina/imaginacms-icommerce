@@ -12,13 +12,17 @@ return [
     ],
     'button'        => [
         'create option_value'   => 'Crear un Valor de Opción',
+        'values'                => 'Valores'
     ],
     'table'         => [
+      'text'=>'Texto',
+      'hexcolor'=>"Color hexadecimal"
     ],
     'form'          => [
         'name'                  => 'Nombre del Valor de Opción',
         'image'                 => 'Imagen',
-        'sort_order'            => 'Valor de Ordenamiento',        
+        'sort_order'            => 'Valor de Ordenamiento',
+        'select_image'          => 'Seleccionar imagen'
     ],
     'messages'      => [
     ],

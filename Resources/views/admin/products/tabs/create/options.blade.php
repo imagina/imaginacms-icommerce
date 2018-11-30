@@ -59,6 +59,8 @@ $(function(){
 
 	var vOptionValues = '{!!$optionValues!!}';
 	var objOptionValues = jQuery.parseJSON(vOptionValues);
+	var vOptionsChild = '{!!$optionsChildren!!}';
+	var objOptionChild = jQuery.parseJSON(vOptionsChild);
 
 	var trans = 0;
 
@@ -140,6 +142,7 @@ $(function(){
         cols += createSelecSustract("tableSustract");
         cols += '<td>'+createSelectPrefix("tablePricePrefix")+createInputFloat("tablePrice","")+'</td>';
         cols += '<td>'+createSelectPrefix("tableWeightPrefix")+createInputFloat("tableWeight","")+'</td>';
+        cols += '<td>'+createSelectChildOptions("tableSOptionChild",optionid)+'</td>';
         cols += '<td><button type="button" class="btn-delete-dinamic btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 
         newRow.append(cols);
@@ -213,9 +216,9 @@ $(function(){
 		htmliniMu = "<table class='table table-dinamic' id='tb"+iditem+"' data-option-id='"+optionid+"'>";
 		htmlendMu="</table>";
 
-		htmlHeaderMu = "<thead><tr><th>{{trans('icommerce::product_option_values.table.option')}}</th><th>{{trans('icommerce::product_option_values.table.quantity')}}</th><th>{{trans('icommerce::product_option_values.table.substract')}}</th><th>{{trans('icommerce::product_option_values.table.price')}}</th><th>{{trans('icommerce::product_option_values.table.weight')}}</th><th></th></tr> </thead> <tbody></tbody>";
+		htmlHeaderMu = "<thead><tr><th>{{trans('icommerce::product_option_values.table.option')}}</th><th>{{trans('icommerce::product_option_values.table.quantity')}}</th><th>{{trans('icommerce::product_option_values.table.substract')}}</th><th>{{trans('icommerce::product_option_values.table.price')}}</th><th>{{trans('icommerce::product_option_values.table.weight')}}</th><th>{{trans('icommerce::products.table.options')}}</th><th></th></tr> </thead> <tbody></tbody>";
 
-		htmlFooterMu = "<tfoot><tr><td colspan='5'></td><td class='text-left'><button type='button' data-id-op='"+iditem+"' class='btn btn-primary btn-add-dinamic'><i class='fa fa-plus-circle'></i></button></td></tr></tfoot>";
+		htmlFooterMu = "<tfoot><tr><td colspan='6'></td><td class='text-left'><button type='button' data-id-op='"+iditem+"' class='btn btn-primary btn-add-dinamic'><i class='fa fa-plus-circle'></i></button></td></tr></tfoot>";
 
 		htmlMul = htmliniMu+htmlHeaderMu+htmlFooterMu+htmlendMu;
 
@@ -244,6 +247,39 @@ $(function(){
 
 		htmlSelectOptions = htmlSOIni+htmlSOoptions+htmlSOEnd;
 
+		return htmlSelectOptions;
+	}
+	function createSelectChildOptions(name,optionid){
+
+		htmlSOIni = "<select name='"+name+"' class='form-control'>";
+		htmlSOEnd = "</select>";
+		htmlSOoptions = "<option value='0'>{{trans('icommerce::products.table.select option')}}</option>";
+		var option_child_id=0;
+		for(var i=0;i<objOptionChild.length;i++){
+			// console.log(objOptionChild[i]);
+			if(objOptionChild[i].parent_id==optionid){
+				option_child_id=objOptionChild[i].id;
+				// console.log(objOptionChild[i].id);
+				break;
+			}
+		}//for get option child
+
+		$.each(objOptionValues , function() {
+			htmlOpInd = "";
+			opValueDes = "";
+			if(option_child_id!=0 && option_child_id==this['option_id']){
+				if(trans==1){
+					opValueDes = this['description'][languaj];
+				}else{
+					opValueDes = this['description'];
+				}
+				htmlOpInd="<option value='"+this['id']+"'>"+opValueDes+"</option>";
+			}
+    		htmlSOoptions+=htmlOpInd;
+  		});
+
+		htmlSelectOptions = htmlSOIni+htmlSOoptions+htmlSOEnd;
+		// htmlSelectOptions="<label>dasda</label>";
 		return htmlSelectOptions;
 	}
 
@@ -312,13 +348,14 @@ $(function(){
 				$(tableDi).each(function(g)
 				{
 					var tSOption = $(this).find("select[name='tableSOption']").val();
+					var tSOptionChild = $(this).find("select[name='tableSOptionChild']").val();
 					var tQuantity = $(this).find("input[name='tableQuantity']").val();
 					var tSustract = $(this).find("select[name='tableSustract']").val();
 					var tPricePrefix = $(this).find("select[name='tablePricePrefix']").val();
 					var tPrice = $(this).find("input[name='tablePrice']").val();
 					var tWeightPrefix = $(this).find("select[name='tableWeightPrefix']").val();
 					var tWeight = $(this).find("input[name='tableWeight']").val();
-
+					/////Acá agregar option adicional
 					if(tWeight==""){
 						tWeight = 0;
 					}
@@ -327,6 +364,7 @@ $(function(){
 
     				optionItems["option_id"] = dOptionId;
 			    	optionItems["option_value_id"] = parseInt(tSOption,10);
+			    	optionItems["children_option_value_id"] = parseInt(tSOptionChild,10);
 			    	optionItems['quantity'] = parseInt(tQuantity,10);
 			    	optionItems['substract'] = parseInt(tSustract,10);
 			    	optionItems['price'] = parseFloat(tPrice);

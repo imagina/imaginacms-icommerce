@@ -90,18 +90,34 @@ class ProductController extends AdminBaseController
 
     public function create()
     {
-        $entity = $this->entity;
-        $status = $this->status;
-        $categories = $this->category->allcat();
-        $stockstatus = $this->stockstatus;
-        $manufacturers = $this->manufacturer->all();
-        $tags = $this->tag->all();
-        $options = $this->option->all();
-        $optionValues = $this->optionValues->all();
-        foreach($optionValues as $optionVal){
+        try {
+          $entity = $this->entity;
+          $status = $this->status;
+          $categories = $this->category->allcat();
+          $stockstatus = $this->stockstatus;
+          $manufacturers = $this->manufacturer->all();
+          $tags = $this->tag->all();
+          // $options = $this->option->all();
+          $options = $this->option->findParentOptions();
+          $optionsChildren=$this->option->getChildrenOptions();
+          // dd($options);
+          $optionValues = $this->optionValues->all();
+          foreach($optionValues as $optionVal){
             $optionVal->options=json_decode($optionVal->options);
-        }//optionValues
-        return view('icommerce::admin.products.create', compact('entity', 'status', 'categories', 'stockstatus', 'manufacturers', 'tags', 'options', 'optionValues'));
+          }//optionValues
+          $optionsChildrenArray=[];
+          foreach($optionsChildren as $optchild){
+            $optionsChildrenArray[]=[
+              'id'=>$optchild->id,
+              'parent_id'=>$optchild->parent_id
+            ];
+          }//optchild
+          $optionsChildren=json_encode($optionsChildrenArray);
+          return view('icommerce::admin.products.create', compact('entity', 'status', 'categories', 'stockstatus', 'manufacturers', 'tags', 'options', 'optionValues','optionsChildren'));
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+
     }
 
     /**
@@ -112,7 +128,6 @@ class ProductController extends AdminBaseController
      */
     public function store(ProductRequest $request)
     {
-
         $user = $this->auth->user();
         $request->merge(['user_id' => $user->id]);
         $requestimage = $request["mainimage"];
@@ -125,7 +140,7 @@ class ProductController extends AdminBaseController
             $request["related_ids"] = json_encode($request->related_ids);
         }
 
-        $product = $this->product->create($request->except(['_token', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'MAX_FILE_SIZE', 'gallery', 'meta_title', 'meta_description', 'meta_keyword','subpOrderWeight']));
+        $product = $this->product->create($request->except(['_token', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'MAX_FILE_SIZE', 'gallery', 'meta_title', 'meta_description', 'meta_keyword','subpOrderWeight','tableSOptionChild']));
 
         if ($product) {
             if (isset($request->categories)) {
@@ -187,6 +202,7 @@ class ProductController extends AdminBaseController
                             'product_id' => $product->id,
                             'option_id' => $value->option_id,
                             'option_value_id' => $value->option_value_id,
+                            'children_option_value_id'=>$value->children_option_value_id,
                             'quantity' => $value->quantity,
                             'subtract' => $value->substract,
                             'price' => $value->price,
@@ -275,19 +291,27 @@ class ProductController extends AdminBaseController
 
     public function edit(Product $product, Request $request)
     {
-
         $entity = $this->entity;
         $status = $this->status;
         $categories = $this->category->allcat();
         $stockstatus = $this->stockstatus;
         $manufacturers = $this->manufacturer->all();
         $tags = $this->tag->all();
-        $options = $this->option->all();
+        $options = $this->option->findParentOptions();
+        $optionsChildren=$this->option->getChildrenOptions();
         $optionValues = $this->optionValues->all();
         foreach($optionValues as $optionVal){
             $optionVal->options=json_decode($optionVal->options);
         }//optionValues
-        return view('icommerce::admin.products.edit', compact('product', 'entity', 'request', 'status', 'categories', 'stockstatus', 'manufacturers', 'tags', 'options', 'optionValues'));
+        $optionsChildrenArray=[];
+        foreach($optionsChildren as $optchild){
+          $optionsChildrenArray[]=[
+            'id'=>$optchild->id,
+            'parent_id'=>$optchild->parent_id
+          ];
+        }//optchild
+        $optionsChildren=json_decode(json_encode($optionsChildrenArray));
+        return view('icommerce::admin.products.edit', compact('product', 'entity', 'request', 'status', 'categories', 'stockstatus', 'manufacturers', 'tags', 'options', 'optionValues','optionsChildren'));
     }
 
     /**
@@ -313,7 +337,7 @@ class ProductController extends AdminBaseController
             $request["related_ids"] = null;
         }
 
-        $product = $this->product->update($product, $request->except(['_token', '_method', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'povDelete', 'poDelete', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'subpId', 'hiddenFileDel', 'MAX_FILE_SIZE', 'meta_title', 'meta_description', 'meta_keyword','subpOrderWeight']));
+        $product = $this->product->update($product, $request->except(['_token', '_method', 'categories', 'mainimage', 'tags', 'dquantity', 'dprice', 'ddate_start', 'ddate_end', 'optionsPSave', 'selOptions', 'vrequired', 'vtext', 'vtextarea', 'tableSOption', 'tableQuantity', 'tableSustract', 'tablePricePrefix', 'tablePrice', 'tableWeightPrefix', 'tableWeight', 'povDelete', 'poDelete', 'pfile', 'subpTitle', 'subpSku', 'subpPrice', 'subpQuantity', 'subpImage', 'subpWeight', 'hiddenSubImg', 'subpId', 'hiddenFileDel', 'MAX_FILE_SIZE', 'meta_title', 'meta_description', 'meta_keyword','subpOrderWeight','tableSOptionChild']));
 
         if ($product) {
             if (isset($request->categories)) {
@@ -400,6 +424,7 @@ class ProductController extends AdminBaseController
                         $value->weight=0;
                         $param3 = [
                             'option_value_id' => $value->option_value_id,
+                            'children_option_value_id'=>$value->children_option_value_id,
                             'quantity' => $value->quantity,
                             'subtract' => $value->substract,
                             'price' => $value->price,
@@ -426,6 +451,7 @@ class ProductController extends AdminBaseController
                                 'product_id' => $product->id,
                                 'option_id' => $value->option_id,
                                 'option_value_id' => $value->option_value_id,
+                                'children_option_value_id'=>$value->children_option_value_id,
                                 'quantity' => $value->quantity,
                                 'subtract' => $value->substract,
                                 'price' => $value->price,

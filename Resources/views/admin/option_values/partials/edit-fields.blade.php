@@ -4,8 +4,6 @@ $opSelect = array('id' => 'selType');
 $normalSelectArray = ['text'=>'Text','background'=>'Background','image'=>'Image'];
 @endphp
 <div class="box-body row">
-
-
   <div class="col-xs-12">
 
     @include('icommerce::admin.products.partials.flag-icon',['entity' => $entity,'att' => 'description'])
@@ -25,69 +23,37 @@ $normalSelectArray = ['text'=>'Text','background'=>'Background','image'=>'Image'
   <div id="image">
     <div class="bgimg-profile">
 
-        @if(isset($option_value->options->image)&&!empty($option_value->options->image))
-        <!-- <img id="mainImage" class="img-fluid" src="{{ url($option_value->options->image) }}"> -->
-            <img id="mainImage"
-                 class="image profile-user-img  img-responsive"
-                 width="100%"
-                 src="{{url($option_value->options->image)}}?v={{str_random(4)}}"/>
-        @else
-            <img id="mainImage"
-                 class="image profile-user-img img-responsive"
-                 width="100%"
-                 src="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg"/>
-        @endif
+      @if(isset($option_value->options->image)&&!empty($option_value->options->image))
+      <!-- <img id="mainImage" class="img-fluid" src="{{ url($option_value->options->image) }}"> -->
+      <img id="mainImage"
+      class="image profile-user-img  img-responsive"
+      width="100%"
+      src="{{url($option_value->options->image)}}?v={{str_random(4)}}"/>
+      @else
+      <img id="mainImage"
+      class="image profile-user-img img-responsive"
+      width="100%"
+      src="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg"/>
+      @endif
     </div>
     <div class="btn-group bt-upload">
       <br>
-        <label class="btn btn-primary btn-file">
-            <i class="fa fa-picture-o"></i> Seleccionar imagen
-            <input
-                    type="file" accept="image/*" id="mainimage"
-                    name="mainimage"
-                    value="mainimage"
-                    class="form-control" style="display:none;">
-            <input
-                    type="hidden"
-                    id="hiddenImage"
-                    name="mainimage"
-                    value="{{$option_value->options->image??''}}"
-                    required>
-        </label>
-    </div>
-</div>
-  <!-- <div data-preview="#mainimage" data-aspectRatio="0" data-crop="0" class="form-group col-md-12 image">
-    <div>
-      <label>Imágen</label>
-    </div>
-    <div class="col-sm-6" style="margin-bottom: 20px;">
-      @if(isset($option_value->options->image))
-      <img id="mainImage" class="img-fluid" src="{{ url($option_value->options->image) }}">
-      @else
-      <img id="mainImage" src="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg">
-      @endif
-    </div>
-    <div class="col-sm-3">
-      <div class="docs-preview clearfix">
-        <div id="mainimage" class="img-preview preview-lg">
-          <img src="" style="display: block; min-width: 0px !important; min-height: 0px !important; max-width: none !important; max-height: none !important; margin-left: -62.875px; margin-top: -18.4922px; transform: none;">
-        </div>
-      </div>
+      <label class="btn btn-primary btn-file">
+        <i class="fa fa-picture-o"></i> trans('icommerce::option_values.form.select_image')
+        <input
+        type="file" accept="image/*" id="mainimage"
+        name="mainimage"
+        value="mainimage"
+        class="form-control" style="display:none;">
+        <input
+        type="hidden"
+        id="hiddenImage"
+        name="mainimage"
+        value="{{$option_value->options->image??''}}"
+        required>
+      </label>
     </div>
   </div>
-  <div class="btn-group">
-    <label class="btn btn-primary btn-file" onclick="image_caller()">
-      Seleccionar imagen
-      <input type="file" accept="image/*" id="uploadImage" class="hide">
-      <input type="hidden" id="hiddenImage" name="mainimage[]" value="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg">
-    </label>
-    <button class="btn btn-default" id="rotateLeft" type="button" style="display: none;"><i class="fa fa-rotate-left"></i></button>
-    <button class="btn btn-default" id="rotateRight" type="button" style="display: none;"><i class="fa fa-rotate-right"></i></button>
-    <button class="btn btn-default" id="zoomIn" type="button" style="display: none;"><i class="fa fa-search-plus"></i></button>
-    <button class="btn btn-default" id="zoomOut" type="button" style="display: none;"><i class="fa fa-search-minus"></i></button>
-    <button class="btn btn-warning" id="reset" type="button" style="display: none;"><i class="fa fa-times"></i></button>
-    <button class="btn btn-danger" id="remove" type="button"><i class="fa fa-trash"></i></button>
-  </div> -->
 </div>
 </div>
 @push('js-stack')
@@ -125,61 +91,61 @@ $(function(){
 });
 </script>
 <script type="text/javascript">
-     $(document).ready(function () {
+$(document).ready(function () {
 
-         $('#image').each(function (index) {
-             // Find DOM elements under this form-group element
-             var $mainImage = $(this).find('#mainImage');
-             var $uploadImage = $(this).find("#mainimage");
-             var $hiddenImage = $(this).find("#hiddenImage");
-             //var $remove = $(this).find("#remove")
-             // Options either global for all image type fields, or use 'data-*' elements for options passed in via the CRUD controller
-             var options = {
-                 viewMode: 2,
-                 checkOrientation: false,
-                 autoCropArea: 1,
-                 responsive: true,
-                 preview: $(this).attr('data-preview'),
-                 aspectRatio: $(this).attr('data-aspectRatio')
-             };
+  $('#image').each(function (index) {
+    // Find DOM elements under this form-group element
+    var $mainImage = $(this).find('#mainImage');
+    var $uploadImage = $(this).find("#mainimage");
+    var $hiddenImage = $(this).find("#hiddenImage");
+    //var $remove = $(this).find("#remove")
+    // Options either global for all image type fields, or use 'data-*' elements for options passed in via the CRUD controller
+    var options = {
+      viewMode: 2,
+      checkOrientation: false,
+      autoCropArea: 1,
+      responsive: true,
+      preview: $(this).attr('data-preview'),
+      aspectRatio: $(this).attr('data-aspectRatio')
+    };
 
 
-             // Hide 'Remove' button if there is no image saved
-             if (!$mainImage.attr('src')) {
-                 //$remove.hide();
-             }
-             // Initialise hidden form input in case we submit with no change
-             //$.val($mainImage.attr('src'));
+    // Hide 'Remove' button if there is no image saved
+    if (!$mainImage.attr('src')) {
+      //$remove.hide();
+    }
+    // Initialise hidden form input in case we submit with no change
+    //$.val($mainImage.attr('src'));
 
-             // Only initialize cropper plugin if crop is set to true
+    // Only initialize cropper plugin if crop is set to true
 
-             $uploadImage.change(function () {
-                 var fileReader = new FileReader(),
-                     files = this.files,
-                     file;
+    $uploadImage.change(function () {
+      var fileReader = new FileReader(),
+      files = this.files,
+      file;
 
-                 if (!files.length) {
-                     return;
-                 }
-                 file = files[0];
+      if (!files.length) {
+        return;
+      }
+      file = files[0];
 
-                 if (/^image\/\w+$/.test(file.type)) {
-                     fileReader.readAsDataURL(file);
-                     fileReader.onload = function () {
-                         $uploadImage.val("");
-                         $mainImage.attr('src', this.result);
-                         $hiddenImage.val(this.result);
-                         $('#hiddenImage').val(this.result);
+      if (/^image\/\w+$/.test(file.type)) {
+        fileReader.readAsDataURL(file);
+        fileReader.onload = function () {
+          $uploadImage.val("");
+          $mainImage.attr('src', this.result);
+          $hiddenImage.val(this.result);
+          $('#hiddenImage').val(this.result);
 
-                     };
-                 } else {
-                     alert("Por favor seleccione una imagen.");
-                 }
-             });
+        };
+      } else {
+        alert("Por favor seleccione una imagen.");
+      }
+    });
 
-         });
-     });
- </script>
+  });
+});
+</script>
 
 <script src="{{ asset('modules/bcrud/vendor/cropper/dist/cropper.min.js') }}"></script>
 <script>

@@ -11,4 +11,10 @@ interface OptionRepository extends BaseRepository
   * @return mixed
   */
   public function whereFilters($filter);
+
+  /**
+   * @return mixed
+   */
+  public function findParentOptions();
+  public function getChildrenOptions();
 }

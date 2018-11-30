@@ -60,4 +60,14 @@ class EloquentOptionRepository extends EloquentBaseRepository implements OptionR
 		}
 	}//whereFilters($filter)
 
+	public function findParentOptions()
+	{
+			return $this->model->with(['children'])->where('parent_id', 0)->orderBy('id', 'ASC')->paginate(15);
+	}
+
+	public function getChildrenOptions(){
+		return $this->model->where('parent_id','!=', 0)->orderBy('id', 'ASC')->paginate(15);
+
+	}
+
 }

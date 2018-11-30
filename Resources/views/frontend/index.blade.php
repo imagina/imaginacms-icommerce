@@ -84,6 +84,9 @@
                         <!-- categorias -->
                     @include('icommerce::frontend.widgets.categories')
 
+                    <!-- filter option: example: size,color -->
+                    @include('icommerce::frontend.widgets.filter_general')
+
                     <!-- manufacturer -->
                     @include('icommerce::frontend.widgets.manufacturers')
 
@@ -180,6 +183,24 @@
                     min: null,
                     max: null
                 },
+                /*order*/
+                order_check: 'all',
+                /*manufacturer*/
+                products_manufacturer: [],
+                /*rango de precio*/
+                min_price: 0,
+                max_price: 0,
+                v_max: false,
+                v_min: false,
+                /*wishlist*/
+                products_wishlist: [],
+                user: {!! !empty($user)? $user :0 !!},
+                /*currency*/
+                currency: '$',
+                preloader: true,
+                options:[],
+                options_selected:[],
+                category:{!! $category ? $category : "''"  !!},
                 options_values: {
                     ancho: {{ isset($_GET["ancho"])? $_GET["ancho"] : 'null' }},
                     rin: {{ isset($_GET["rin"])? $_GET["rin"] : 'null' }},
@@ -229,6 +250,60 @@
                     }).then(response => {
                         this.order_response(response);
                     });
+                },
+
+                /*obtiene las opciones de producto */
+                get_options: function () {
+                  axios({
+                    method: 'Get',
+                    responseType: 'json',
+                    url: "{{ route('icommerce.api.options') }}",
+                    params: {
+                    }
+                  }).then(function (response) {
+                    vue_index_commerce.options=response.data;
+                    // console.log(response.data);
+                    // vue_index_commerce.order_response(response);
+                  });
+                },
+
+                /* Buscar productos por filtro */
+                searchProducts(){
+                  // console.log(this.options_selected);
+                  var filter={
+                    order: this.order,
+                    price: this.price,
+                    manufacturer: this.manufacturer,
+                    criterion: this.criterion,
+                    categories:this.category.id
+                  };
+                  if(this.options_selected.length>0){
+                    //If some option selected,add to filter
+                    filter.options_values=this.options_selected;
+                  }
+                  axios({
+                    method: 'Get',
+                    responseType: 'json',
+                    url: "{{ route('icommerce.api.products') }}",
+                    params: {
+                      filter:filter
+                    }
+                  }).then(function (response) {
+                    vue_index_commerce.articles=response.data.data;
+                  });
+                },
+
+                /*Limpiar los filtros y traer todos los productos de la categoria*/
+                clearAll(){
+                  this.options_selected=[];
+                  this.criterion= '{{ isset($criterion) ? $criterion : ''}}';
+                  this.price= false;
+                  this.manufacturer= false;
+                  this.order= {
+                    by: 'created_at',
+                    type: 'DESC'
+                  };
+                  this.searchProducts();
                 },
 
                 /*ordena los datos luego de consultar los productos*/

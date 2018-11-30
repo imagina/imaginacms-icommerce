@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product_Option_Value extends Model
 {
-   
+
 
     protected $table = 'icommerce__product_option_values';
-    
+
     protected $fillable = [
       'product_option_id',
       'product_id',
@@ -23,7 +23,8 @@ class Product_Option_Value extends Model
       'points',
       'points_prefix',
       'weight',
-      'weight_prefix'
+      'weight_prefix',
+      'children_option_value_id'
     ];
 
 
@@ -50,8 +51,12 @@ class Product_Option_Value extends Model
     {
         return $this->belongsTo(Option_Value::class);
     }
-    
-   
+    public function child_option_value()
+    {
+        return $this->belongsTo('Modules\Icommerce\Entities\Option_Value','children_option_value_id');
+    }
+
+
     public function order_option(){
     	return $this->hasMany(Order_Option::class);
     }

@@ -32,7 +32,7 @@
 		    <div class="btn-group bt-upload">
 		      <br>
 		        <label class="btn btn-primary btn-file">
-		            <i class="fa fa-picture-o"></i> Seleccionar imagen
+		            <i class="fa fa-picture-o"></i> trans('icommerce::option_values.form.select_image')
 		            <input
 		                    type="file" accept="image/*" id="mainimage"
 		                    name="mainimage"
@@ -46,38 +46,7 @@
 		                    required>
 		        </label>
 		    </div>
-		</div>
-
-			<!-- <div data-preview="#mainimage" data-aspectRatio="0" data-crop="0" class="form-group col-md-12 image">
-					<div>
-							<label>Imágen</label>
-					</div>
-					<div class="row">
-							<div class="col-sm-6" class"image profile-user-img  img-responsive" style="margin-bottom: 20px;">
-									<img id="mainImage" src="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg">
-							</div>
-							<div class="col-sm-3">
-									<div class="docs-preview clearfix">
-											<div id="mainimage" class="img-preview preview-lg image profile-user-img  img-responsive">
-													<img src="" style="display: block; min-width: 0px !important; min-height: 0px !important; max-width: none !important; max-height: none !important; margin-left: -62.875px; margin-top: -18.4922px; transform: none;">
-											</div>
-									</div>
-							</div>
-					</div>
-					<div class="btn-group">
-							<label class="btn btn-primary btn-file" onclick="image_caller()">
-									Seleccionar imagen
-									<input type="file" accept="image/*" id="uploadImage" class="hide">
-									<input type="hidden" id="hiddenImage" name="mainimage" value="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg">
-							</label>
-							<button class="btn btn-default" id="rotateLeft" type="button" style="display: none;"><i class="fa fa-rotate-left"></i></button>
-							<button class="btn btn-default" id="rotateRight" type="button" style="display: none;"><i class="fa fa-rotate-right"></i></button>
-							<button class="btn btn-default" id="zoomIn" type="button" style="display: none;"><i class="fa fa-search-plus"></i></button>
-							<button class="btn btn-default" id="zoomOut" type="button" style="display: none;"><i class="fa fa-search-minus"></i></button>
-							<button class="btn btn-warning" id="reset" type="button" style="display: none;"><i class="fa fa-times"></i></button>
-							<button class="btn btn-danger" id="remove" type="button"><i class="fa fa-trash"></i></button>
-					</div>
-			</div> -->
+			</div>
 		</div>
 @push('js-stack')
 
