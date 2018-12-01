@@ -1,5 +1,17 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+
+   "0.1.24":
+        added:
+          - news fields in optionValues to save hexcolor,image or text
+          - new migrations of options and product option values, added new methods of options to obtain options father and children,
+          - new translations of option values, changes in view of edit / create option values,
+          - nested options in creating/editing product in ProductController
+        changed:
+          - filters of categories,product options and product options values, from left join to sub-queries. Reviewed partials and optional widgets in the show view
+          - ProductController to store the nested option.
+          - product transformer, modifications in cartcontroller, extras in show / index view
+
    "0.1.23":
       changed:
         - Filter product options adjusted to receive several options.
