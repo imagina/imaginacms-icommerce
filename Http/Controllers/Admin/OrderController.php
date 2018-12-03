@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Entities\Order_Status;
+use Modules\Icommerce\Entities\Order_Option;
+use Modules\Icommerce\Entities\Order_Product;
 use Modules\Icommerce\Http\Requests\CreateOrderRequest;
 use Modules\Icommerce\Http\Requests\UpdateOrderRequest;
 use Modules\Icommerce\Repositories\OrderRepository;
@@ -17,7 +19,7 @@ class OrderController extends AdminBaseController
      * @var OrderRepository
      */
     private $order;
-    
+
     public function __construct(OrderRepository $order)
     {
         parent::__construct();
@@ -32,7 +34,7 @@ class OrderController extends AdminBaseController
      */
     public function index()
     {
-      
+
         $orders = $this->order->all();
         return view('icommerce::admin.orders.index', compact('orders'));
     }
@@ -69,6 +71,15 @@ class OrderController extends AdminBaseController
      */
     public function edit(Order $order)
     {
+        foreach($order->products as &$product){
+          if($product->pivot->order_option){
+            $product->pivot->option_name=$product->pivot->order_option->name;
+            $product->pivot->option_value=$product->pivot->order_option->value;
+            $product->pivot->option_type=$product->pivot->order_option->type;
+            $product->pivot->child_option_name=$product->pivot->order_option->child_option_name;
+            $product->pivot->child_option_value=$product->pivot->order_option->child_option_value;
+          }//count option>0
+        }//foreach
         $order_status = new Order_Status();
         return view('icommerce::admin.orders.edit', compact('order','order_status'));
     }

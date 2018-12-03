@@ -71,7 +71,7 @@ class Order extends Model
 
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'icommerce__order_product')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(Order_Product::class);
+    return $this->belongsToMany(Product::class, 'icommerce__order_product')->withPivot('id','title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(Order_Product::class);
   }
 
   public function order_products()

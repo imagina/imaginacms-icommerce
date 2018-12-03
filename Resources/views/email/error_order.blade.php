@@ -8,7 +8,7 @@
         @endphp
         <h3 class="text-center text-uppercase">
             {{trans('icommerce::common.emailMsg.order')}} # {{$order->id }}
-            
+
             {{icommerce_get_Orderstatus()->get($order->order_status)}}
         </h3>
 
@@ -28,12 +28,12 @@
             @endif
 
         </p>
-        
+
         <br>
         <br>
 
         <div style="margin-bottom: 5px">
-            
+
             <table width="100%" style="margin-bottom: 15px">
                 <th bgcolor="f5f5f5">{{trans('icommerce::orders.table.details')}}</th>
                 <th bgcolor="f5f5f5">{{trans('icommerce::orders.table.customer details')}}</th>
@@ -70,6 +70,10 @@
                     <tr class="product-order">
                         <td>
                             {{$product["title"]}}<br>
+                            @if(isset($product['option_name']))
+                            <strong>{{$product['option_name']}}: </strong>{{$product['option_value']}}
+                            @if($product['child_option_name']!=null && $product['child_option_name']!="")<br><strong>{{$product['child_option_name']}}: </strong>{{$product['child_option_value']}}@endif
+                            @endif
                             {{-- Options Product Value --}}
                         </td>
                         <td>{{$product["sku"]}}</td>
@@ -85,9 +89,9 @@
                 </tr>
                 <tr class="subtotal">
                     <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.subtotal')}}</td>
-                    
+
                     @php
-                        
+
                         $rest = 0;
 
                         if(!empty($order->shipping_amount))
@@ -97,19 +101,19 @@
                             $rest = $rest + $order->tax_amount;
 
                         $subtotal = $order->total - $rest;
-                    
+
                     @endphp
-                    
+
                     <td colspan="2" style="text-align: right">{{number_format($subtotal,2,".",",")}}</td>
                 </tr>
-                
+
                 @if(!empty($order->shipping_amount))
                     <tr class="shippingTotal">
                         <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.shipping_method')}}</td>
                         <td colspan="2" style="text-align: right">{{$order->shipping_method}} {{ $order->shipping_amount>0 ? ' - '.number_format($order->shipping_amount,2,".",",") : ''}}</td>
                     </tr>
                 @endif
-                
+
                 @if(!empty($order->tax_amount) && $order->tax_amount!=0)
                     <tr class="taxAmount">
                         <td colspan="3" style="text-align: right">{{trans('icommerce::order_summary.tax')}}</td>
@@ -123,16 +127,16 @@
                     <td colspan="2" style="text-align: right">coupon Value</td>
                 </tr>
                 --}}
-                
+
                 <tr class="total">
                     <td colspan="3" style="text-align: right">Total</td>
                     <td colspan="2" style="text-align: right">{{number_format($order->total,2,".",",")}}</td>
                 </tr>
-            
+
             </table>
         </div>
-    
-    
+
+
     </div>
 
 @endsection

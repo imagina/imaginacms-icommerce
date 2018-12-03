@@ -119,6 +119,10 @@
                         <tr class="product-order">
                             <td>
                                 {{$product->title}}<br>
+                                @if(isset($product->pivot->option_name))
+                                <strong>{{$product->pivot->option_name}}: </strong>{{$product->pivot->option_value}}
+                                @if($product->pivot->child_option_name!=null && $product->pivot->child_option_name!="")<br><strong>{{$product->pivot->child_option_name}}: </strong>{{$product->pivot->child_option_value}}@endif
+                                @endif
                                 {{-- Options Product Order Value --}}
                             </td>
                             <td>{{$product->sku}}</td>

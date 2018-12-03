@@ -95,15 +95,31 @@ class OrderController extends BasePublicController
       if ($order->tax_amount)
         $subtotal = $subtotal - $order->tax_amount;
 
-      foreach ($order->products as $product)
-        array_push($products, [
-          "title" => $product->title,
-          "sku" => $product->sku,
-          "quantity" => $product->pivot->quantity,
-          "price" => $product->pivot->price,
-          "total" => $product->pivot->total,
-        ]);
-
+      foreach ($order->products as $product){
+        if($product->pivot->order_option){
+          array_push($products, [
+            "title" => $product->title,
+            "sku" => $product->sku,
+            "quantity" => $product->pivot->quantity,
+            "price" => $product->pivot->price,
+            "total" => $product->pivot->total,
+            "option_name" => $product->pivot->order_option->name,
+            "option_value" => $product->pivot->order_option->value,
+            "option_type" => $product->pivot->order_option->type,
+            'child_option_name'=>$product->pivot->order_option->child_option_name,
+            'child_option_value'=>$product->pivot->order_option->child_option_value
+          ]);
+        }//
+        else{
+          array_push($products, [
+            "title" => $product->title,
+            "sku" => $product->sku,
+            "quantity" => $product->pivot->quantity,
+            "price" => $product->pivot->price,
+            "total" => $product->pivot->total,
+          ]);
+        }//else
+      }//foreach order products
       foreach ($this->payments->getPaymentsMethods() as $payment)
         if($order->payment_method == $payment->configName)
           $order->payment_method = $payment->configTitle;
@@ -234,7 +250,9 @@ class OrderController extends BasePublicController
             "product_option_value_id"=>$item->product_option_value_selected_id,
             'name'=>$item->option_selected,
             'value'=>$item->option_value_description_selected,
-            'type'=>$item->option_type_selected
+            'type'=>$item->option_type_selected,
+            'child_option_name'=>$item->child_option_description_selected,
+            'child_option_value'=>$item->child_option_value_description_selected
           ]);
         }
 
@@ -333,18 +351,33 @@ class OrderController extends BasePublicController
 
   public function email()
   {
-    $order = $this->order->find(119);
+    $order = $this->order->find(10);
     $products = [];
     foreach ($order->products as $product) {
-      array_push($products, [
-        "title" => $product->title,
-        "sku" => $product->sku,
-        "quantity" => $product->pivot->quantity,
-        "price" => $product->pivot->price,
-        "total" => $product->pivot->total,
-      ]);
+      if($product->pivot->order_option){
+        array_push($products, [
+          "title" => $product->title,
+          "sku" => $product->sku,
+          "quantity" => $product->pivot->quantity,
+          "price" => $product->pivot->price,
+          "total" => $product->pivot->total,
+          "option_name" => $product->pivot->order_option->name,
+          "option_value" => $product->pivot->order_option->value,
+          "option_type" => $product->pivot->order_option->type,
+          'child_option_name'=>$product->pivot->order_option->child_option_name,
+          'child_option_value'=>$product->pivot->order_option->child_option_value
+        ]);
+      }//
+      else{
+        array_push($products, [
+          "title" => $product->title,
+          "sku" => $product->sku,
+          "quantity" => $product->pivot->quantity,
+          "price" => $product->pivot->price,
+          "total" => $product->pivot->total,
+        ]);
+      }
     }
-
     $userEmail = $order->email;
     $userFirstname = "{$order->first_name} {$order->last_name}";
 
@@ -386,15 +419,30 @@ class OrderController extends BasePublicController
         $products = [];
         if (!empty($order)) {
           foreach ($order->products as $product) {
-            array_push($products, [
-              "title" => $product->title,
-              "sku" => $product->sku,
-              "quantity" => $product->pivot->quantity,
-              "price" => $product->pivot->price,
-              "total" => $product->pivot->total,
-            ]);
-
-          }
+            if($product->pivot->order_option){
+              array_push($products, [
+                "title" => $product->title,
+                "sku" => $product->sku,
+                "quantity" => $product->pivot->quantity,
+                "price" => $product->pivot->price,
+                "total" => $product->pivot->total,
+                "option_name" => $product->pivot->order_option->name,
+                "option_value" => $product->pivot->order_option->value,
+                "option_type" => $product->pivot->order_option->type,
+                'child_option_name'=>$product->pivot->order_option->child_option_name,
+                'child_option_value'=>$product->pivot->order_option->child_option_value
+              ]);
+            }//
+            else{
+              array_push($products, [
+                "title" => $product->title,
+                "sku" => $product->sku,
+                "quantity" => $product->pivot->quantity,
+                "price" => $product->pivot->price,
+                "total" => $product->pivot->total,
+              ]);
+            }//else
+          }//foreach order products
         }
         $products = json_encode($products);
         return view($tpl, compact('order', 'products', 'shippingMethodTitle', 'paymentMethodTitle'));

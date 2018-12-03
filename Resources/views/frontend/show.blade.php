@@ -202,7 +202,7 @@
                                 </div>
                             </div>
                           </div>--}}
-                          <div v-if="product.options.length>0 && option.option_values.length>0" class="col-md-6" v-for="(option,index) in product.options">
+                          <div v-if="product.options.length>0 && option.option_values.length>0" class="col-md-6 mb-3" v-for="(option,index) in product.options">
 
                               <h6 class="text-primary font-weight-bold text-uppercase mb-1">
                                   @{{option.description}}
@@ -211,10 +211,10 @@
                                   <div class="custom-control custom-radio mb-2">
                                       <input type="radio" :name="option.description" :value="indexOptValue" v-model="index_product_option_value_selected" @change="update_product(index)" :id="value.id" class="custom-control-input">
                                       <label class="custom-control-label" :for="value.id">
-                                          <span v-if="option.description!='Color'">
+                                          <span v-if="value.type!='background' && value.type!='image'">
                                             @{{value.description}}
                                           </span>
-                                          <span v-else="option.description!='Color'" v-bind:style="{ backgroundColor: value.description, backgroundImage: 'url(' + value.description + ')' }">
+                                          <span v-else v-bind:style="{ backgroundColor: value.option.background, backgroundImage: 'url(' + value.option.background + ')' }">
                                               &nbsp;
                                           </span>
                                       </label>
@@ -242,27 +242,6 @@
                                       </div>
                                   </div>
                               </div>
-
-
-                                {{--
-                              <select class="custom-select form-control w-auto mr-3 mb-3" @change="update_product(index)" v-model="index_product_option_value_selected">
-                                <option :value="'select'">{{trans('icommerce::products.table.select option')}}</option>
-                                <option v-for="(value,indexOptValue) in option.option_values" :value="indexOptValue" >@{{value.description}} (@{{value.price_prefix}} @{{currencysymbolleft}}@{{value.price}})</option>
-                              </select> --}}
-
-{{--                            <div v-if="option_type=='background'" class="ml-2" style="height: 40px; width: 40px;box-sizing: border-box;border-radius: 100%;border: 1px solid #dadada;box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14);background:#000000" :style="'background:'+option_value">
-                              </div>
-
-                              <div v-if="option_type=='text'" class="text-center">
-                                  <strong>Descripción:</strong> @{{option_value}}
-                              </div>
-
-                              <div class="image">
-                                  <div v-if="option_type=='image'" class="img-fluid">
-                                      <img :src="option_value">
-                                  </div>
-                              </div>--}}
-
                           </div>
 
                         </div>

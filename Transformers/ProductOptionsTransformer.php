@@ -32,9 +32,8 @@ class ProductOptionsTransformer extends Resource
               $child_option_id=null;
               $child_option=null;
               $child_option_type=null;
-              //If have child option value
               if($option_value->children_option_value_id!=0){
-                $child_option_description=$option_value->child_option_value->option->description;
+                $child_option_description = $option_value->child_option_value->option->description;
                 $child_option_id=$option_value->child_option_value->option->id;
                 $child_description=$option_value->child_option_value->description;
                 $child_option_type=$option_value->child_option_value->type;
@@ -69,6 +68,7 @@ class ProductOptionsTransformer extends Resource
                 $weight_prefix=$option_value->weight_prefix;
               }//else
               if(count($option_values)==0){
+                //Primer option value:
                 //Make array option_value
                 $option_values[]=[
                   'id'=>$option_value->option_value_id,
@@ -128,7 +128,6 @@ class ProductOptionsTransformer extends Resource
                       $optValue['children_option_values'][]=$children_option;
                   }
                 }//foreach option_Values
-                //New option value
                 if($f==0){
                   $option_values[]=[
                     'id'=>$option_value->option_value_id,
