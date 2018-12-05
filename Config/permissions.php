@@ -169,7 +169,21 @@ return [
         'edit' => 'icommerce::taxclassrates.edit resource',
         'destroy' => 'icommerce::taxclassrates.destroy resource',
     ],
+    'icommerce.itemtypes' => [
+        'index' => 'icommerce::itemtypes.list resource',
+        'create' => 'icommerce::itemtypes.create resource',
+        'edit' => 'icommerce::itemtypes.edit resource',
+        'destroy' => 'icommerce::itemtypes.destroy resource',
+    ],
+    'icommerce.relatedproducts' => [
+        'index' => 'icommerce::relatedproducts.list resource',
+        'create' => 'icommerce::relatedproducts.create resource',
+        'edit' => 'icommerce::relatedproducts.edit resource',
+        'destroy' => 'icommerce::relatedproducts.destroy resource',
+    ],
 // append
+
+
 
 
 

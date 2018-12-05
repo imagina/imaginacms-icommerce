@@ -11,6 +11,7 @@ class Category extends Model
   use Translatable;
   
   protected $table = 'icommerce__categories';
+  
   public $translatedAttributes = [
     'title',
     'slug',

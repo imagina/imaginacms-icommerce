@@ -928,7 +928,75 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'TaxClassRateController@destroy',
         'middleware' => 'can:icommerce.taxclassrates.destroy'
     ]);
+    $router->bind('itemtype', function ($id) {
+        return app('Modules\Icommerce\Repositories\ItemTypeRepository')->find($id);
+    });
+    $router->get('itemtypes', [
+        'as' => 'admin.icommerce.itemtype.index',
+        'uses' => 'ItemTypeController@index',
+        'middleware' => 'can:icommerce.itemtypes.index'
+    ]);
+    $router->get('itemtypes/create', [
+        'as' => 'admin.icommerce.itemtype.create',
+        'uses' => 'ItemTypeController@create',
+        'middleware' => 'can:icommerce.itemtypes.create'
+    ]);
+    $router->post('itemtypes', [
+        'as' => 'admin.icommerce.itemtype.store',
+        'uses' => 'ItemTypeController@store',
+        'middleware' => 'can:icommerce.itemtypes.create'
+    ]);
+    $router->get('itemtypes/{itemtype}/edit', [
+        'as' => 'admin.icommerce.itemtype.edit',
+        'uses' => 'ItemTypeController@edit',
+        'middleware' => 'can:icommerce.itemtypes.edit'
+    ]);
+    $router->put('itemtypes/{itemtype}', [
+        'as' => 'admin.icommerce.itemtype.update',
+        'uses' => 'ItemTypeController@update',
+        'middleware' => 'can:icommerce.itemtypes.edit'
+    ]);
+    $router->delete('itemtypes/{itemtype}', [
+        'as' => 'admin.icommerce.itemtype.destroy',
+        'uses' => 'ItemTypeController@destroy',
+        'middleware' => 'can:icommerce.itemtypes.destroy'
+    ]);
+    $router->bind('relatedproduct', function ($id) {
+        return app('Modules\Icommerce\Repositories\RelatedProductRepository')->find($id);
+    });
+    $router->get('relatedproducts', [
+        'as' => 'admin.icommerce.relatedproduct.index',
+        'uses' => 'RelatedProductController@index',
+        'middleware' => 'can:icommerce.relatedproducts.index'
+    ]);
+    $router->get('relatedproducts/create', [
+        'as' => 'admin.icommerce.relatedproduct.create',
+        'uses' => 'RelatedProductController@create',
+        'middleware' => 'can:icommerce.relatedproducts.create'
+    ]);
+    $router->post('relatedproducts', [
+        'as' => 'admin.icommerce.relatedproduct.store',
+        'uses' => 'RelatedProductController@store',
+        'middleware' => 'can:icommerce.relatedproducts.create'
+    ]);
+    $router->get('relatedproducts/{relatedproduct}/edit', [
+        'as' => 'admin.icommerce.relatedproduct.edit',
+        'uses' => 'RelatedProductController@edit',
+        'middleware' => 'can:icommerce.relatedproducts.edit'
+    ]);
+    $router->put('relatedproducts/{relatedproduct}', [
+        'as' => 'admin.icommerce.relatedproduct.update',
+        'uses' => 'RelatedProductController@update',
+        'middleware' => 'can:icommerce.relatedproducts.edit'
+    ]);
+    $router->delete('relatedproducts/{relatedproduct}', [
+        'as' => 'admin.icommerce.relatedproduct.destroy',
+        'uses' => 'RelatedProductController@destroy',
+        'middleware' => 'can:icommerce.relatedproducts.destroy'
+    ]);
 // append
+
+
 
 
 

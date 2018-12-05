@@ -19,8 +19,8 @@ class CreateIcommerceOrderOptionsTable extends Migration
       $table->integer('order_id')->unsigned();
       $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
       
-      $table->integer('order_product_id')->unsigned();
-      $table->foreign('order_product_id')->references('id')->on('icommerce__order_product')->onDelete('restrict');
+      $table->integer('order_product_id')->unsigned()->nullable();
+      $table->foreign('order_product_id')->references('id')->on('icommerce__order_item')->onDelete('restrict');
       
       $table->integer('product_option_id')->unsigned();
       $table->foreign('product_option_id')->references('id')->on('icommerce__product_option')->onDelete('restrict');

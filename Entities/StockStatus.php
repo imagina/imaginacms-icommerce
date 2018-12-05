@@ -19,8 +19,8 @@ class StockStatus
   public function __construct()
   {
     $this->statuses = [
-      self::OUTSTOCK => trans('icommerce::stock_status.outstock'),
-      self::INSTOCK => trans('icommerce::stock_status.instock'),
+      self::OUTSTOCK => trans('icommerce::stockStatus.outstock'),
+      self::INSTOCK => trans('icommerce::stockStatus.instock'),
     ];
   }
   

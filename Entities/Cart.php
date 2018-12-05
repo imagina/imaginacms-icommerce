@@ -21,4 +21,15 @@ class Cart extends Model
     'options' => 'array'
   ];
   
+  public function user()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+  }
+  
+  public function products()
+  {
+    return $this->belongsToMany(Product::class, 'icommerce__cart_products')->withPivot('id', 'product_name', 'quantity','price','options')->withTimestamps()->using(CartProduct::class);
+  }
+  
 }

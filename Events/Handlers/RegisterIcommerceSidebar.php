@@ -295,7 +295,27 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.taxclassrates.index')
                     );
                 });
+                $item->item(trans('icommerce::itemtypes.title.itemtypes'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.itemtype.create');
+                    $item->route('admin.icommerce.itemtype.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.itemtypes.index')
+                    );
+                });
+                $item->item(trans('icommerce::relatedproducts.title.relatedproducts'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.relatedproduct.create');
+                    $item->route('admin.icommerce.relatedproduct.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.relatedproducts.index')
+                    );
+                });
 // append
+
+
 
 
 

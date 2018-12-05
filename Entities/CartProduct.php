@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartProduct extends Model
 {
-  protected $table = 'icommerce__cart_products';
+  protected $table = 'icommerce__cart_product';
   protected $fillable = [
     'cart_id',
     'product_id',
@@ -22,4 +22,9 @@ class CartProduct extends Model
   protected $casts = [
     'options' => 'array'
   ];
+  
+  public function cart()
+  {
+    return $this->belongsTo(Cart::class);
+  }
 }

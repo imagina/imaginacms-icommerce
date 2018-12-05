@@ -22,8 +22,8 @@ class Product extends Model
     'status',
     'user_id',
     'category_id',
-    'related_ids',
     'parent_id',
+    'tax_class_id',
     'sku',
     'quantity',
     'stock_status',
@@ -52,12 +52,17 @@ class Product extends Model
   public function user()
   {
     $driver = config('asgard.user.config.driver');
-    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+    return $this->belongsTo('Modules\\User\\Entities\\{$driver}\\User','added_by_id');
   }
   
   public function category()
   {
     return $this->belongsTo(Category::class);
+  }
+  
+  public function taxClass()
+  {
+    return $this->belongsTo(TaxClass::class);
   }
   
   public function categories()
@@ -70,14 +75,14 @@ class Product extends Model
     return $this->belongsToMany(Tag::class, 'icommerce__product_tag')->withTimestamps();
   }
   
-  public function orderProducts()
+  public function orderItems()
   {
-    return $this->hasMany(OrderProduct::class);
+    return $this->hasMany(OrderItem::class);
   }
   
   public function featuredProducts()
   {
-    return $this->hasMany(OrderProduct::class)->select('SUM(quantity) AS total_products')->groupBy('product_id');
+    return $this->hasMany(OrderItem::class)->select('SUM(quantity) AS total_products')->groupBy('product_id');
   }
   
   public function manufacturer()
@@ -85,24 +90,29 @@ class Product extends Model
     return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
   }
   
-  public function productDiscounts()
+  public function discounts()
   {
     return $this->hasMany(ProductDiscount::class);
   }
   
-  public function optionsValue()
+  public function options()
   {
-    return $this->belongsToMany(Option::class, 'icommerce__product_option')->withPivot('id', 'value', 'required')->withTimestamps()->using(Product_Option::class);
+    return $this->belongsToMany(Option::class, 'icommerce__product_option')->withPivot('id', 'value', 'required')->withTimestamps()->using(ProductOption::class);
   }
   
-  public function productOptionValues()
+  public function optionValues()
   {
-    return $this->hasMany(ProductOptionValue::class);
+    return $this->belongsToMany(OptionValue::class, 'icommerce__option_values')->withPivot('id', 'product_option_id', 'option_id', 'parent_option_value_id', 'quantity', 'substract', 'price', 'weight')->withTimestamps()->using(ProductOptionValue::class);
+  }
+  
+  public function relatedProducts()
+  {
+    return $this->belongsToMany('Modules\Icommerce\Entities\Product', 'icommerce__related_product')->withTimestamps();
   }
   
   public function orders()
   {
-    return $this->belongsToMany(Order::class, 'icommerce__order_product')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(Order_Product::class);
+    return $this->belongsToMany(Order::class, 'icommerce__order_item')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(OrderItem::class);
   }
   
   public function wishlists()
@@ -242,14 +252,15 @@ class Product extends Model
     return $images;
   }
   
+  /*
   public function getRelatedIdsAttribute($value)
   {
     
     if (!empty($value)) {
       $ids = json_decode($value);
-      $products_related = Product::whereIn("id", $ids)->take(20)->get();
-      return $products_related;
+      $productsRelated = Product::whereIn("id", $ids)->take(20)->get();
+      return $productsRelated;
     }
     
-  }
+  }*/
 }

@@ -21,15 +21,20 @@ class CreateIcommerceProductsTable extends Migration
       $table->text('options')->default('')->nullable();
       $table->tinyInteger('status')->default(0)->unsigned();
       
-      $table->integer('user_id')->unsigned();
-      $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
-      
+      $table->integer('added_by_id')->unsigned();
+      $table->foreign('added_by_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
+  
       $table->integer('category_id')->unsigned()->nullable();
       $table->foreign('category_id')->references('id')->on('icommerce__categories')->onDelete('restrict');
+  
       
       $table->integer('parent_id')->default(0)->unsigned();
       
       $table->text('related_ids')->default('')->nullable();
+  
+      $table->integer('tax_class_id')->unsigned()->nullable();
+      $table->foreign('tax_class_id')->references('id')->on('icommerce__tax_classes')->onDelete('restrict');
+  
       $table->string('sku')->nullable();
       $table->integer('quantity')->default(0)->unsigned();
       $table->tinyInteger('stock_status')->default(0)->unsigned();

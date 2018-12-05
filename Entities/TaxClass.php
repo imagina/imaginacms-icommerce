@@ -15,4 +15,10 @@ class TaxClass extends Model
       'description'
     ];
     protected $fillable = [];
+  
+  public function rates()
+  {
+    return $this->belongsToMany(TaxRate::class, 'icommerce__tax_class_rate')->withPivot('id', 'based', 'priority')->withTimestamps()->using(TaxClassRate::class);
+  }
+  
 }

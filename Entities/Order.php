@@ -75,12 +75,12 @@ class Order extends Model
   
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'icommerce__order_product')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(Order_Product::class);
+    return $this->belongsToMany(Product::class, 'icommerce__order_item')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(OrderItem::class);
   }
   
   public function orderProducts()
   {
-    return $this->hasMany(OrderProduct::class, 'order_id');
+    return $this->hasMany(OrderItem::class, 'order_id');
   }
   
   public function coupons()
@@ -93,10 +93,6 @@ class Order extends Model
     return $this->hasMany(OrderStatusHistory::class);
   }
   
-  public function couriers()
-  {
-    return $this->belongsToMany(Shipping_Courier::class, 'icommerce__order_shipment')->withPivot('traking_number')->withTimestamps();
-  }
   
   public function orderOption()
   {
