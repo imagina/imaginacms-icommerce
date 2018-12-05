@@ -1,6 +1,11 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
-
+   "0.1.25":
+        added:
+          - new fields in table order_option to store values ​​of children options,
+          - validations of the backend / front side to show parents / children options of each product of an order.
+        changed:
+          -- Excel library version from 2.1.1 to 3.1.3
    "0.1.24":
         added:
           - news fields in optionValues to save hexcolor,image or text
