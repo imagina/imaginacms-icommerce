@@ -34,21 +34,21 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $optionValues = $this->optionValue->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => OptionValueTransformer::collection($optionValues)];
+      $response = ['data' => OptionValueTransformer::collection($optionValues)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($optionValues)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($optionValues)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -70,13 +70,13 @@ class OptionValueApiController extends BaseApiController
       $optionValue = $this->optionValue->show($p->filter, $p->include, $p->fields, $id);
       
       $response = [
-        "data" => $optionValue ? new OptionValueTransformer($optionValue) : "",
+        'data' => $optionValue ? new OptionValueTransformer($optionValue) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -91,12 +91,12 @@ class OptionValueApiController extends BaseApiController
     try {
       $this->optionValue->create($request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -113,12 +113,12 @@ class OptionValueApiController extends BaseApiController
       $optionValue = $this->optionValue->find($id);
       $this->optionValue->update($optionValue, $request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -134,12 +134,12 @@ class OptionValueApiController extends BaseApiController
       $optionValue = $this->optionValue->find($id);
       $optionValue->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);

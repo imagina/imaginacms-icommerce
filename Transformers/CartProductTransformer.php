@@ -8,7 +8,6 @@ class CartProductTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     $item =  [
       'id' => $this->id,
       'price' => $this->price,

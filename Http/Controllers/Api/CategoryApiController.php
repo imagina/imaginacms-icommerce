@@ -37,21 +37,21 @@ class CategoryApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $categories = $this->category->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => CategoryTransformer::collection($categories)];
+      $response = ['data' => CategoryTransformer::collection($categories)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($categories)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($categories)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -73,13 +73,13 @@ class CategoryApiController extends BaseApiController
       $category = $this->category->show($p->filter, $p->include, $p->fields, $criteria);
       
       $response = [
-        "data" => $category ? new CategoryTransformer($category) : "",
+        'data' => $category ? new CategoryTransformer($category) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -94,12 +94,12 @@ class CategoryApiController extends BaseApiController
     try {
       $this->category->create($request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -117,12 +117,12 @@ class CategoryApiController extends BaseApiController
       $category = $this->category->find($id);
       $this->category->update($category, $request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -139,12 +139,12 @@ class CategoryApiController extends BaseApiController
       $category = $this->category->find($id);
       $category->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);

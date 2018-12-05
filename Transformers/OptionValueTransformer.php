@@ -8,7 +8,6 @@ class OptionValueTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     return  [
       'id' => $this->id,
       'option_id' => $this->option_id,

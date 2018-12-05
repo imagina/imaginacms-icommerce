@@ -8,7 +8,6 @@ class CartTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     $item =  [
       'id' => $this->id,
       'total' => $this->total,
@@ -19,6 +18,7 @@ class CartTransformer extends Resource
       'updated_at' => $this->updated_at,
     ];
   
+    // User
     if(isset($this->user))
       $item['user'] = $this->user;
   

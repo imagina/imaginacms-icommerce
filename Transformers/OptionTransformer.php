@@ -8,7 +8,6 @@ class OptionTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     $item = [
       'id' => $this->id,
       'type' => $this->type,
@@ -19,6 +18,7 @@ class OptionTransformer extends Resource
       'updated_at' => $this->updated_at,
     ];
     
+    // Option Values
     if(isset($this->optionValues))
       $item["optionValues"] = $this->optionValues;
     

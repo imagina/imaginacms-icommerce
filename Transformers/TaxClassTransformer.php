@@ -8,7 +8,6 @@ class TaxClassTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     $item =  [
       'id' => $this->id,
       'name' => $this->name,
@@ -17,6 +16,7 @@ class TaxClassTransformer extends Resource
       'updated_at' => $this->updated_at,
     ];
     
+    // Rates
     if(isset($this->rates))
       $item['rates'] = $this->rates;
     

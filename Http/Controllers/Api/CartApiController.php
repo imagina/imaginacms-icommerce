@@ -34,21 +34,21 @@ class CartApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $carts = $this->cart->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => CartTransformer::collection($carts)];
+      $response = ['data' => CartTransformer::collection($carts)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($carts)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($carts)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -70,13 +70,13 @@ class CartApiController extends BaseApiController
       $cart = $this->cart->show($p->filter, $p->include, $p->fields, $id);
       
       $response = [
-        "data" => $cart ? new CartTransformer($cart) : "",
+        'data' => $cart ? new CartTransformer($cart) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -96,12 +96,12 @@ class CartApiController extends BaseApiController
         if (isset($request->products))
           $cart->products()->sync($request->products);
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -123,12 +123,12 @@ class CartApiController extends BaseApiController
         if (isset($request->products))
           $cart->products()->sync($request->products);
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -144,12 +144,12 @@ class CartApiController extends BaseApiController
       $cart = $this->cart->find($id);
       $cart->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);

@@ -8,7 +8,6 @@ class CouponTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     return  [
       'id' => $this->id,
       'name' => $this->name,

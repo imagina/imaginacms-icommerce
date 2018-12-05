@@ -34,21 +34,21 @@ class WishlistApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $wishlists = $this->wishlist->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => WishlistTransformer::collection($wishlists)];
+      $response = ['data' => WishlistTransformer::collection($wishlists)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($wishlists)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($wishlists)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -70,13 +70,13 @@ class WishlistApiController extends BaseApiController
       $wishlist = $this->wishlist->show($p->filter, $p->include, $p->fields, $id);
       
       $response = [
-        "data" => $wishlist ? new WishlistTransformer($wishlist) : "",
+        'data' => $wishlist ? new WishlistTransformer($wishlist) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -91,12 +91,12 @@ class WishlistApiController extends BaseApiController
     try {
       $this->wishlist->create($request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -113,12 +113,12 @@ class WishlistApiController extends BaseApiController
       $wishlist = $this->wishlist->find($id);
       $this->wishlist->update($wishlist, $request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -134,12 +134,12 @@ class WishlistApiController extends BaseApiController
       $wishlist = $this->wishlist->find($id);
       $wishlist->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);

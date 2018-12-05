@@ -34,21 +34,21 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $options = $this->option->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => OptionTransformer::collection($options)];
+      $response = ['data' => OptionTransformer::collection($options)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($options)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($options)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -70,13 +70,13 @@ class OptionApiController extends BaseApiController
       $option = $this->option->show($p->filter, $p->include, $p->fields, $id);
       
       $response = [
-        "data" => $option ? new OptionTransformer($option) : "",
+        'data' => $option ? new OptionTransformer($option) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -91,12 +91,12 @@ class OptionApiController extends BaseApiController
     try {
       $this->option->create($request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -113,12 +113,12 @@ class OptionApiController extends BaseApiController
       $option = $this->option->find($id);
       $this->option->update($option, $request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -134,12 +134,12 @@ class OptionApiController extends BaseApiController
       $option = $this->option->find($id);
       $option->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);

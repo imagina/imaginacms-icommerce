@@ -97,12 +97,21 @@ class Product extends Model
   
   public function options()
   {
-    return $this->belongsToMany(Option::class, 'icommerce__product_option')->withPivot('id', 'value', 'required')->withTimestamps()->using(ProductOption::class);
+    return $this->belongsToMany(Option::class, 'icommerce__product_option')
+      ->withPivot('id', 'value', 'required')
+      ->withTimestamps()
+      ->using(ProductOption::class);
   }
   
   public function optionValues()
   {
-    return $this->belongsToMany(OptionValue::class, 'icommerce__option_values')->withPivot('id', 'product_option_id', 'option_id', 'parent_option_value_id', 'quantity', 'substract', 'price', 'weight')->withTimestamps()->using(ProductOptionValue::class);
+    return $this->belongsToMany(OptionValue::class, 'icommerce__option_values')
+      ->withPivot(
+        'id', 'product_option_id', 'option_id',
+        'parent_option_value_id', 'quantity',
+        'substract', 'price', 'weight'
+      )->withTimestamps()
+      ->using(ProductOptionValue::class);
   }
   
   public function relatedProducts()
@@ -112,7 +121,10 @@ class Product extends Model
   
   public function orders()
   {
-    return $this->belongsToMany(Order::class, 'icommerce__order_item')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(OrderItem::class);
+    return $this->belongsToMany(Order::class, 'icommerce__order_item')
+      ->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')
+      ->withTimestamps()
+      ->using(OrderItem::class);
   }
   
   public function wishlists()
@@ -132,7 +144,9 @@ class Product extends Model
   
   public function children()
   {
-    return $this->hasMany('Modules\Icommerce\Entities\Product', 'parent_id')->orderBy('order_weight', 'desc')->orderBy('created_at', 'desc');
+    return $this->hasMany('Modules\Icommerce\Entities\Product', 'parent_id')
+      ->orderBy('order_weight', 'desc')
+      ->orderBy('created_at', 'desc');
   }
   
   public function comments()

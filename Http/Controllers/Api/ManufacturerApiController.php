@@ -34,21 +34,21 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $manufacturers = $this->manufacturer->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => ManufacturerTransformer::collection($manufacturers)];
+      $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($manufacturers)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($manufacturers)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -70,13 +70,13 @@ class ManufacturerApiController extends BaseApiController
       $manufacturer = $this->manufacturer->show($p->filter, $p->include, $p->fields, $id);
       
       $response = [
-        "data" => $manufacturer ? new ManufacturerTransformer($manufacturer) : "",
+        'data' => $manufacturer ? new ManufacturerTransformer($manufacturer) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -91,12 +91,12 @@ class ManufacturerApiController extends BaseApiController
     try {
       $this->manufacturer->create($request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -113,12 +113,12 @@ class ManufacturerApiController extends BaseApiController
       $manufacturer = $this->manufacturer->find($id);
       $this->manufacturer->update($manufacturer, $request->all());
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -134,12 +134,12 @@ class ManufacturerApiController extends BaseApiController
       $manufacturer = $this->manufacturer->find($id);
       $manufacturer->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);

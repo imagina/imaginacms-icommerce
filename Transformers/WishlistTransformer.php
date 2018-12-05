@@ -8,7 +8,6 @@ class WishlistTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     $item =  [
       'id' => $this->id,
       'user_id' => $this->user_id,
@@ -18,6 +17,7 @@ class WishlistTransformer extends Resource
       'updated_at' => $this->updated_at,
     ];
   
+    // User
     if(isset($this->user))
       $item['user'] = $this->user;
   

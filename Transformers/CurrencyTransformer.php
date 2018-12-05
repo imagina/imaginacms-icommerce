@@ -8,7 +8,6 @@ class CurrencyTransformer extends Resource
 {
   public function toArray($request)
   {
-    /*datos*/
     return  [
       'id' => $this->id,
       'title' => $this->title,

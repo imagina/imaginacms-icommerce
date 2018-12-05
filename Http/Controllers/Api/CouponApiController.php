@@ -34,21 +34,21 @@ class CouponApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ["status" => [1]], []);
+      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
       $coupons = $this->coupon->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
       
       //Response
-      $response = ["data" => CouponTransformer::collection($coupons)];
+      $response = ['data' => CouponTransformer::collection($coupons)];
       //If request pagination add meta-page
-      $p->page ? $response["meta"] = ["page" => $this->pageTransformer($coupons)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($coupons)] : false;
       
     } catch (\Exception $e) {
       //Message Error
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -70,13 +70,13 @@ class CouponApiController extends BaseApiController
       $coupon = $this->coupon->show($p->filter, $p->include, $p->fields, $id);
       
       $response = [
-        "data" => $coupon ? new CouponTransformer($coupon) : "",
+        'data' => $coupon ? new CouponTransformer($coupon) : '',
       ];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -101,12 +101,12 @@ class CouponApiController extends BaseApiController
       }
       
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -139,12 +139,12 @@ class CouponApiController extends BaseApiController
         
       }
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
@@ -160,12 +160,12 @@ class CouponApiController extends BaseApiController
       $coupon = $this->coupon->find($id);
       $coupon->delete();
       
-      $response = ["data" => ""];
+      $response = ['data' => ''];
       
     } catch (\Exception $e) {
       $status = 400;
       $response = [
-        "errors" => $e->getMessage()
+        'errors' => $e->getMessage()
       ];
     }
     return response()->json($response, $status ?? 200);
