@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Currency;
-use Modules\Icommerce\Http\Requests\CreateCurrencyRequest;
-use Modules\Icommerce\Http\Requests\UpdateCurrencyRequest;
+use Modules\Icommerce\Http\Requests\CurrencyRequest;
 use Modules\Icommerce\Repositories\CurrencyRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class CurrencyController extends AdminBaseController
      * @param  CreateCurrencyRequest $request
      * @return Response
      */
-    public function store(CreateCurrencyRequest $request)
+    public function store(CurrencyRequest $request)
     {
         $this->currency->create($request->all());
 
@@ -78,7 +77,7 @@ class CurrencyController extends AdminBaseController
      * @param  UpdateCurrencyRequest $request
      * @return Response
      */
-    public function update(Currency $currency, UpdateCurrencyRequest $request)
+    public function update(Currency $currency, CurrencyRequest $request)
     {
         $this->currency->update($currency, $request->all());
 

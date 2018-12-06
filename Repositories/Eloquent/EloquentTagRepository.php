@@ -8,80 +8,88 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 class EloquentTagRepository extends EloquentBaseRepository implements TagRepository
 {
   
-  public function index($page, $take, $filter, $include, $fields)
+  public function index($params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
-    
-    //Relationships
+  
+    // RELATIONSHIPS
     $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude, $include));
-    
-    //add filter by search
-    if (isset($filter->search)) {
+    $query->with(array_merge($defaultInclude, $params->include));
+  
+    // FILTERS
+    if ($params->filter) {
+      $filter = $params->filter;
+  
+      //set language translation
+      \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
-      //find search in columns
-      $query->where(function ($query) use ($filter, $lang) {
-        $query->whereHas('translations', function ($query) use ($filter, $lang) {
-          $query->where('locale', $lang)
-            ->where('title', 'like', '%' . $filter->search . '%');
-        })->orWhere('id', 'like', '%' . $filter->search . '%')
-          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-      });
+      
+      //add filter by search
+      if (isset($filter->search)) {
+      
+        //find search in columns
+        $query->where(function ($query) use ($filter, $lang) {
+          $query->whereHas('translations', function ($query) use ($filter, $lang) {
+            $query->where('locale', $lang)
+              ->where('title', 'like', '%' . $filter->search . '%');
+          })->orWhere('id', 'like', '%' . $filter->search . '%')
+            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+        });
+      }
     }
     
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
-    
+  
+    // PAGE & TAKE
     //Return request with pagination
-    if ($page) {
-      $take ? true : $take = 12; //If no specific take, query take 12 for default
-      return $query->paginate($take);
+    if ($params->page) {
+      $params->take ? true : $params->take = 12; //If no specific take, query take 12 for default
+      return $query->paginate($params->take);
     }
     
     //Return request without pagination
-    if (!$page) {
-      $take ? $query->take($take) : false; //if request to take a limit
+    if (!$params->page) {
+      $params->take ? $query->take($params->take) : false; //if request to take a limit
       return $query->get();
     }
   }
   
-  public function show($filter, $include, $fields, $criteria)
+  public function show($criteria, $params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    $lang = \App::getLocale();
-    
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
     
-    if (intval($criteria))
-      $query->where('id', $criteria);
-    else
-      $query->whereHas('translations', function ($query) use ($criteria, $lang) {
+    // RELATIONSHIPS
+    $includeDefault = ['translations'];
+    $query->with(array_merge($includeDefault, $params->include));
+    
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
+    }
+    
+    // FILTERS
+    //set language translation
+    \App::setLocale($params->filter->locale ?? null);
+    $lang = \App::getLocale();
+    
+    // First, find record by ID
+    $duplicate = $query;
+    $result = $duplicate->where('id', $criteria)->first();
+    
+    // If not give results, find by slug
+    if(!$result)
+      $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
         $query->where('locale', $lang)
           ->where('slug', $criteria);
-      });
+      })->first();
     
-    /*== RELATIONSHIPS ==*/
-    $includeDefault = ['translations'];
-    if (count($include))
-      $query->with(array_merge($includeDefault, $include));
-    else
-      $query->with($includeDefault);
-    
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
-    }
-    return $query->first();
+    return $result;
     
   }
   

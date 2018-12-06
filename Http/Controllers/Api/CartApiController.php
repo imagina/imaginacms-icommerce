@@ -13,17 +13,14 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CartTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\CartRepository;
 
 class CartApiController extends BaseApiController
 {
   private $cart;
   
-  public function __construct(
-    CartRepository $cart)
+  public function __construct()
   {
-    $this->cart = $cart;
+    $this->cart = app('Modules\Icommerce\Repositories\CartRepository');
   }
   
   /**
@@ -34,10 +31,9 @@ class CartApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
       
       //Request to Repository
-      $carts = $this->cart->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $carts = $this->cart->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => CartTransformer::collection($carts)];
@@ -46,7 +42,7 @@ class CartApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -63,18 +59,15 @@ class CartApiController extends BaseApiController
   public function show($id, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $cart = $this->cart->show($p->filter, $p->include, $p->fields, $id);
+      $cart = $this->cart->show($id, $this->parametersUrl());
       
       $response = [
         'data' => $cart ? new CartTransformer($cart) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -99,7 +92,7 @@ class CartApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -126,7 +119,7 @@ class CartApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -147,7 +140,7 @@ class CartApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

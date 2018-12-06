@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Tag;
-use Modules\Icommerce\Http\Requests\CreateTagRequest;
-use Modules\Icommerce\Http\Requests\UpdateTagRequest;
+use Modules\Icommerce\Http\Requests\TagRequest;
 use Modules\Icommerce\Repositories\TagRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class TagController extends AdminBaseController
      * @param  CreateTagRequest $request
      * @return Response
      */
-    public function store(CreateTagRequest $request)
+    public function store(TagRequest $request)
     {
         $this->tag->create($request->all());
 
@@ -78,7 +77,7 @@ class TagController extends AdminBaseController
      * @param  UpdateTagRequest $request
      * @return Response
      */
-    public function update(Tag $tag, UpdateTagRequest $request)
+    public function update(Tag $tag, TagRequest $request)
     {
         $this->tag->update($tag, $request->all());
 

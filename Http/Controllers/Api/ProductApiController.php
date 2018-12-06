@@ -13,9 +13,6 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\ProductTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\ProductRepository;
-
 // Entities
 use Modules\Icommerce\Entities\Tag;
 
@@ -26,10 +23,9 @@ class ProductApiController extends BaseApiController
   private $product;
   
   
-  public function __construct(
-    ProductRepository $product)
+  public function __construct()
   {
-    $this->product = $product;
+    $this->product = app('Modules\Icommerce\Repositories\ProductRepository');
   }
   
   /**
@@ -39,11 +35,8 @@ class ProductApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $products = $this->product->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $products = $this->product->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => ProductTransformer::collection($products)];
@@ -52,7 +45,7 @@ class ProductApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -69,18 +62,15 @@ class ProductApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $product = $this->product->show($p->filter, $p->include, $p->fields, $criteria);
+      $product = $this->product->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $product ? new ProductTransformer($product) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -155,7 +145,7 @@ class ProductApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -233,7 +223,7 @@ class ProductApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -255,7 +245,7 @@ class ProductApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

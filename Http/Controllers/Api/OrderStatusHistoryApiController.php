@@ -3,7 +3,7 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
-use Modules\Icommerce\Http\Requests\ManufacturerRequest;
+use Modules\Icommerce\Http\Requests\OrderHistoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -11,15 +11,16 @@ use Illuminate\Http\Response;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 // Transformers
-use Modules\Icommerce\Transformers\ManufacturerTransformer;
+use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 
-class ManufacturerApiController extends BaseApiController
+
+class OrderStatusHistoryApiController extends BaseApiController
 {
-  private $manufacturer;
+  private $orderHistory;
   
   public function __construct()
   {
-    $this->manufacturer = app('Modules\Icommerce\Repositories\ManufacturerRepository');
+    $this->orderHistory = app('Modules\Icommerce\Repositories\OrderHistoryRepository');
   }
   
   /**
@@ -29,13 +30,15 @@ class ManufacturerApiController extends BaseApiController
   public function index()
   {
     try {
+      //Get Parameters from URL.
+      
       //Request to Repository
-      $manufacturers = $this->manufacturer->index($this->getParamsRequest());
+      $orderHistories = $this->orderHistory->index($this->getParamsRequest());
       
       //Response
-      $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
+      $response = ['data' => OrderHistoryTransformer::collection($orderHistories)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($manufacturers)] : false;
+      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($orderHistories)] : false;
       
     } catch (\Exception $e) {
       //Message Error
@@ -57,10 +60,10 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $manufacturer = $this->manufacturer->show($id,$this->getParamsRequest());
+      $orderHistory = $this->orderHistory->show($id, $this->parametersUrl());
       
       $response = [
-        'data' => $manufacturer ? new ManufacturerTransformer($manufacturer) : '',
+        'data' => $orderHistory ? new OrderHistoryTransformer($orderHistory) : '',
       ];
       
     } catch (\Exception $e) {
@@ -76,10 +79,10 @@ class ManufacturerApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(ManufacturerRequest $request)
+  public function create(OrderHistoryRequest $request)
   {
     try {
-      $this->manufacturer->create($request->all());
+      $orderHistory = $this->orderHistory->create($request->all());
       
       $response = ['data' => ''];
       
@@ -97,11 +100,11 @@ class ManufacturerApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, ManufacturerRequest $request)
+  public function update($id, OrderHistoryRequest $request)
   {
     try {
-      $manufacturer = $this->manufacturer->find($id);
-      $this->manufacturer->update($manufacturer, $request->all());
+      $orderHistory = $this->orderHistory->find($id);
+      $orderHistory = $this->orderHistory->update($orderHistory, $request->all());
       
       $response = ['data' => ''];
       
@@ -121,8 +124,8 @@ class ManufacturerApiController extends BaseApiController
   public function delete($id, Request $request)
   {
     try {
-      $manufacturer = $this->manufacturer->find($id);
-      $manufacturer->delete();
+      $orderHistory = $this->orderHistory->find($id);
+      $orderHistory->delete();
       
       $response = ['data' => ''];
       

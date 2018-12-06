@@ -13,9 +13,6 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CategoryTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\CategoryRepository;
-
 
 class CategoryApiController extends BaseApiController
 {
@@ -23,10 +20,9 @@ class CategoryApiController extends BaseApiController
   private $category;
   
   
-  public function __construct(
-    CategoryRepository $category)
+  public function __construct()
   {
-    $this->category = $category;
+    $this->category = app('Modules\Icommerce\Repositories\CategoryRepository');
   }
   
   /**
@@ -36,11 +32,8 @@ class CategoryApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $categories = $this->category->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $categories = $this->category->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => CategoryTransformer::collection($categories)];
@@ -49,7 +42,7 @@ class CategoryApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -66,18 +59,15 @@ class CategoryApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $category = $this->category->show($p->filter, $p->include, $p->fields, $criteria);
+      $category = $this->category->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $category ? new CategoryTransformer($category) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -97,7 +87,7 @@ class CategoryApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -120,7 +110,7 @@ class CategoryApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -142,7 +132,7 @@ class CategoryApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

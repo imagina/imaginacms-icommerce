@@ -8,67 +8,65 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 class EloquentCartProductRepository extends EloquentBaseRepository implements CartProductRepository
 {
   
-  public function index($page, $take, $filter, $include, $fields)
+  public function index($params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
-    
-    //Relationships
+  
+    // RELATIONSHIP
     $defaultInclude = [];
-    $query->with(array_merge($defaultInclude,$include));
+    $query->with(array_merge($defaultInclude,$params->include));
     
-    //add filter by search
-    if (isset($filter->search)) {
-      //find search in columns
-      $query->where('id', 'like', '%' . $filter->search . '%')
-        ->orWhere('product_name', 'like', '%' . $filter->search . '%')
-        ->orWhere('product_id', 'like', '%' . $filter->search . '%')
-        ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-        ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+    // FILTERS
+    if($params->filters) {
+      $filter = $params->filter;
+      
+      //set language translation
+      \App::setLocale($filter->locale ?? null);
+      
+      //add filter by search
+      if (isset($filter->search)) {
+        //find search in columns
+        $query->where('id', 'like', '%' . $filter->search . '%')
+          ->orWhere('product_name', 'like', '%' . $filter->search . '%')
+          ->orWhere('product_id', 'like', '%' . $filter->search . '%')
+          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+      }
+    }
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
     
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
-    }
-    
+    // PAGE & TAKE
     //Return request with pagination
-    if ($page) {
-      $take ? true : $take = 12; //If no specific take, query take 12 for default
-      return $query->paginate($take);
+    if ($params->page) {
+      $params->take ? true : $params->take = 12; //If no specific take, query take 12 for default
+      return $query->paginate($params->take);
     }
     
     //Return request without pagination
-    if (!$page) {
-      $take ? $query->take($take) : false; //if request to take a limit
+    if (!$params->page) {
+      $params->take ? $query->take($params->take) : false; //if request to take a limit
       return $query->get();
     }
   }
   
-  public function show($filter, $include, $fields, $id)
+  public function show($criteria, $params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    
-    
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
     
-    $query->where('id', $id);
+    $query->where('id', $criteria);
     
-    /*== RELATIONSHIPS ==*/
-    $includeDefault = ['products'];
-    $query->with(array_merge($includeDefault, $include));
+    // RELATIONSHIPS
+    $includeDefault = [];
+    $query->with(array_merge($includeDefault, $params->include));
     
-    
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
     return $query->first();
     

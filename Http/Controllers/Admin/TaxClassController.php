@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\TaxClass;
-use Modules\Icommerce\Http\Requests\CreateTaxClassRequest;
-use Modules\Icommerce\Http\Requests\UpdateTaxClassRequest;
+use Modules\Icommerce\Http\Requests\TaxClassRequest;
 use Modules\Icommerce\Repositories\TaxClassRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class TaxClassController extends AdminBaseController
      * @param  CreateTaxClassRequest $request
      * @return Response
      */
-    public function store(CreateTaxClassRequest $request)
+    public function store(TaxClassRequest $request)
     {
         $this->taxclass->create($request->all());
 
@@ -78,7 +77,7 @@ class TaxClassController extends AdminBaseController
      * @param  UpdateTaxClassRequest $request
      * @return Response
      */
-    public function update(TaxClass $taxclass, UpdateTaxClassRequest $request)
+    public function update(TaxClass $taxclass, TaxClassRequest $request)
     {
         $this->taxclass->update($taxclass, $request->all());
 

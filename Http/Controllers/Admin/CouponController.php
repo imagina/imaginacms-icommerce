@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Coupon;
-use Modules\Icommerce\Http\Requests\CreateCouponRequest;
-use Modules\Icommerce\Http\Requests\UpdateCouponRequest;
+use Modules\Icommerce\Http\Requests\CouponRequest;
 use Modules\Icommerce\Repositories\CouponRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class CouponController extends AdminBaseController
      * @param  CreateCouponRequest $request
      * @return Response
      */
-    public function store(CreateCouponRequest $request)
+    public function store(CouponRequest $request)
     {
         $this->coupon->create($request->all());
 
@@ -78,7 +77,7 @@ class CouponController extends AdminBaseController
      * @param  UpdateCouponRequest $request
      * @return Response
      */
-    public function update(Coupon $coupon, UpdateCouponRequest $request)
+    public function update(Coupon $coupon, CouponRequest $request)
     {
         $this->coupon->update($coupon, $request->all());
 

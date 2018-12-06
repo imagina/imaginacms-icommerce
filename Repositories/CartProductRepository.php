@@ -6,7 +6,7 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface CartProductRepository extends BaseRepository
 {
-  public function index($page, $take, $filter, $include, $fields);
+  public function index($params);
   
-  public function show($filter, $include, $fields, $criteria);
+  public function show($criteria, $params);
 }

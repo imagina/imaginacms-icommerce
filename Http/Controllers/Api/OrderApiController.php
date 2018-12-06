@@ -13,20 +13,17 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\OrderTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\OrderRepository;
-
-
 class OrderApiController extends BaseApiController
 {
   
   private $order;
+  private $orderStatusHistory;
   
   
-  public function __construct(
-    OrderRepository $order)
+  public function __construct()
   {
-    $this->order = $order;
+    $this->order =  app('Modules\Icommerce\Repositories\OrderRepository');
+    $this->orderStatusHistory = app('Modules\Icommerce\Repositories\OrderHistoryRepository');
   }
   
   /**
@@ -36,11 +33,8 @@ class OrderApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $orders = $this->order->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $orders = $this->order->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => OrderTransformer::collection($orders)];
@@ -49,7 +43,7 @@ class OrderApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -66,18 +60,15 @@ class OrderApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $order = $this->order->show($p->filter, $p->include, $p->fields, $criteria);
+      $order = $this->order->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $order ? new OrderTransformer($order) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -96,28 +87,32 @@ class OrderApiController extends BaseApiController
       
       // sync tables
       if ($order){
-        // order Options
-        if (isset($request->options))
-          $order->options()->sync($request->options);
+        // Order Options
+        if (isset($request->coupons))
+          $order->coupons()->sync($request->coupons);
         
-        // order Option Values
+        // Order Option Values
         if (isset($request->optionValues))
           $order->optionValues()->sync($request->optionValues);
         
-        // Related Products
-        if (isset($request->relatedProducts))
-          $order->relatedProducts()->sync($request->relatedProducts);
+        // Products
+        if (isset($request->products))
+          $order->products()->sync($request->products);
         
-        // Discounts
-        if (isset($request->discounts))
-          $order->discounts()->sync($request->discounts);
+        // Status History
+        $this->orderStatusHistory->crete([
+          'order_id' => $order->id,
+          'status' => 0,
+          'notify' => 0,
+          'comment' => 'first status'
+        ]);
         
       }
       
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -136,31 +131,35 @@ class OrderApiController extends BaseApiController
       
       $order = $this->order->find($id);
       $order = $this->order->update($order, $request->all());
-      
+  
       // sync tables
       if ($order){
-        // order Options
-        if (isset($request->options))
-          $order->options()->sync($request->options);
-        
-        // order Option Values
+        // Order Options
+        if (isset($request->coupons))
+          $order->coupons()->sync($request->coupons);
+    
+        // Order Option Values
         if (isset($request->optionValues))
           $order->optionValues()->sync($request->optionValues);
-        
-        // Related Products
-        if (isset($request->relatedProducts))
-          $order->relatedProducts()->sync($request->relatedProducts);
-        
-        // Discounts
-        if (isset($request->discounts))
-          $order->discounts()->sync($request->discounts);
-        
+    
+        // Products
+        if (isset($request->products))
+          $order->products()->sync($request->products);
+    
+        // Status History
+        $this->orderStatusHistory->crete([
+          'order_id' => $order->id,
+          'status' => 0,
+          'notify' => 0,
+          'comment' => 'first status'
+        ]);
+    
       }
       
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -182,7 +181,7 @@ class OrderApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

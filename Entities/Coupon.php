@@ -24,6 +24,7 @@ class Coupon extends Model
     'date_end',
     'uses_total',
     'status',
+    'added_by_id',
     'options'
   ];
   protected $fakeColumns = ['options'];

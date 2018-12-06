@@ -13,17 +13,13 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CouponTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\CouponRepository;
-
 class CouponApiController extends BaseApiController
 {
   private $coupon;
   
-  public function __construct(
-    CouponRepository $coupon)
+  public function __construct()
   {
-    $this->coupon = $coupon;
+    $this->coupon = app('Modules\Icommerce\Repositories\CouponRepository');
   }
   
   /**
@@ -33,11 +29,8 @@ class CouponApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $coupons = $this->coupon->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $coupons = $this->coupon->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => CouponTransformer::collection($coupons)];
@@ -46,7 +39,7 @@ class CouponApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -63,18 +56,15 @@ class CouponApiController extends BaseApiController
   public function show($id, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $coupon = $this->coupon->show($p->filter, $p->include, $p->fields, $id);
+      $coupon = $this->coupon->show($id,$this->getParamsRequest());
       
       $response = [
         'data' => $coupon ? new CouponTransformer($coupon) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -104,7 +94,7 @@ class CouponApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -142,7 +132,7 @@ class CouponApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -163,7 +153,7 @@ class CouponApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

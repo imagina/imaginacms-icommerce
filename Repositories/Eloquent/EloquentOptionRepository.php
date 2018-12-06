@@ -7,71 +7,76 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentOptionRepository extends EloquentBaseRepository implements OptionRepository
 {
-  public function index($page, $take, $filter, $include, $fields)
+  public function index($params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
     
-    //Relationships
-    $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude, $include));
+    // RELATIONSHIPS
+    $defaultInclude = ['products'];
+    $query->with(array_merge($defaultInclude,$params->include));
     
-    //add filter by search
-    if (isset($filter->search)) {
-      $lang = \App::getLocale();
-      //find search in columns
-      $query->where(function ($query) use ($filter, $lang) {
-        $query->whereHas('translations', function ($query) use ($filter, $lang) {
-          $query->where('locale', $lang)
-            ->where('description', 'like', '%' . $filter->search . '%');
-        })->orWhere('id', 'like', '%' . $filter->search . '%')
-          ->orWhere('type', 'like', '%' . $filter->search . '%')
+    // FILTERS
+    if($params->filter) {
+      $filter = $params->filter;
+      
+      //add filter by search
+      if (isset($filter->search)) {
+        //find search in columns Customer_name and Customer_Last_Name
+        $query->where('id', 'like', '%' . $filter->search . '%')
           ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
           ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-      });
+      }
+  
+      //add filter by status
+      if (isset($filter->status)) {
+        $query->whereIn('status_id',$filter->status);
+      }
+  
+      //add filter by customers
+      if (isset($filter->customers)) {
+        $query->whereIn('customer_id',$filter->customers);
+      }
+  
+      //add filter by added by
+      if (isset($filter->addedBy)) {
+        $query->whereIn('added_by_id',$filter->addedBy);
+      }
+    }
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
     
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
+    // PAGE & TAKE
+    // Return request with pagination
+    if ($params->page) {
+      $params->take ? true : $params->take = 12; //If no specific take, query take 12 for default
+      return $query->paginate($params->take);
     }
     
-    //Return request with pagination
-    if ($page) {
-      $take ? true : $take = 12; //If no specific take, query take 12 for default
-      return $query->paginate($take);
-    }
-    
-    //Return request without pagination
-    if (!$page) {
-      $take ? $query->take($take) : false; //if request to take a limit
+    // Return request without pagination
+    if (!$params->page) {
+      $params->take ? $query->take($params->take) : false; //if request to take a limit
       return $query->get();
     }
   }
   
-  public function show($filter, $include, $fields, $id)
+  
+  public function show($criteria, $params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    
-    
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
     
-    $query->where('id', $id);
+    $query->where('id', $criteria);
     
-    /*== RELATIONSHIPS ==*/
-    $includeDefault = ['translations'];
-    $query->with(array_merge($includeDefault, $include));
+    // RELATIONSHIPS
+    $includeDefault = ['products'];
+    $query->with(array_merge($includeDefault, $params->include));
     
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
     return $query->first();
     

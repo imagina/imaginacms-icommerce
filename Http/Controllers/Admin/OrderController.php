@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Order;
-use Modules\Icommerce\Http\Requests\CreateOrderRequest;
-use Modules\Icommerce\Http\Requests\UpdateOrderRequest;
+use Modules\Icommerce\Http\Requests\OrderRequest;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -49,10 +48,10 @@ class OrderController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateOrderRequest $request
+     * @param  OrderRequest $request
      * @return Response
      */
-    public function store(CreateOrderRequest $request)
+    public function store(OrderRequest $request)
     {
         $this->order->create($request->all());
 
@@ -78,7 +77,7 @@ class OrderController extends AdminBaseController
      * @param  UpdateOrderRequest $request
      * @return Response
      */
-    public function update(Order $order, UpdateOrderRequest $request)
+    public function update(Order $order, OrderRequest $request)
     {
         $this->order->update($order, $request->all());
 

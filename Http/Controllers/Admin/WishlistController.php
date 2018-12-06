@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Wishlist;
-use Modules\Icommerce\Http\Requests\CreateWishlistRequest;
-use Modules\Icommerce\Http\Requests\UpdateWishlistRequest;
+use Modules\Icommerce\Http\Requests\WishlistRequest;
 use Modules\Icommerce\Repositories\WishlistRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class WishlistController extends AdminBaseController
      * @param  CreateWishlistRequest $request
      * @return Response
      */
-    public function store(CreateWishlistRequest $request)
+    public function store(WishlistRequest $request)
     {
         $this->wishlist->create($request->all());
 
@@ -78,7 +77,7 @@ class WishlistController extends AdminBaseController
      * @param  UpdateWishlistRequest $request
      * @return Response
      */
-    public function update(Wishlist $wishlist, UpdateWishlistRequest $request)
+    public function update(Wishlist $wishlist, WishlistRequest $request)
     {
         $this->wishlist->update($wishlist, $request->all());
 

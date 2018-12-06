@@ -1,38 +1,38 @@
 <?php
 
 use Illuminate\Routing\Router;
-
+$router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], function (Router $router) {
 //======  CATEGORIES
-require('ApiRoutes/categoryRoutes.php');
+  require('ApiRoutes/categoryRoutes.php');
 
 //======  COUPONS
-require('ApiRoutes/couponRoutes.php');
+  require('ApiRoutes/couponRoutes.php');
 
 //======  CURRENCIES
-require('ApiRoutes/currencyRoutes.php');
+  require('ApiRoutes/currencyRoutes.php');
 
 //======  MANUFACTURERS
-require('ApiRoutes/manufacturerRoutes.php');
+  require('ApiRoutes/manufacturerRoutes.php');
 
 //======  OPTIONS
-require('ApiRoutes/optionRoutes.php');
+  require('ApiRoutes/optionRoutes.php');
 
 //======  OPTIONS VALUES
-require('ApiRoutes/optionValueRoutes.php');
+  require('ApiRoutes/optionValueRoutes.php');
 
 //======  CARTS
-require('ApiRoutes/cartRoutes.php');
+  require('ApiRoutes/cartRoutes.php');
 
 //======  CART PRODUCTS
-require('ApiRoutes/cartProductRoutes.php');
+  require('ApiRoutes/cartProductRoutes.php');
 
 //======  WISHLISTS
-require('ApiRoutes/wishlistRoutes.php');
+  require('ApiRoutes/wishlistRoutes.php');
 
 //======  TAX CLASSES
-require('ApiRoutes/taxClassRoutes.php');
+  require('ApiRoutes/taxClassRoutes.php');
 
 //======  TAGS
-require('ApiRoutes/tagRoutes.php');
-
-
+  require('ApiRoutes/tagRoutes.php');
+  
+});

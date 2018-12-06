@@ -13,9 +13,6 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\TagTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\TagRepository;
-
 
 class TagApiController extends BaseApiController
 {
@@ -23,10 +20,9 @@ class TagApiController extends BaseApiController
   private $tag;
   
   
-  public function __construct(
-    TagRepository $tag)
+  public function __construct()
   {
-    $this->tag = $tag;
+    $this->tag = app('Modules\Icommerce\Repositories\TagRepository');
   }
   
   /**
@@ -36,11 +32,8 @@ class TagApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $tags = $this->tag->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $tags = $this->tag->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => TagTransformer::collection($tags)];
@@ -49,7 +42,7 @@ class TagApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -70,14 +63,14 @@ class TagApiController extends BaseApiController
       $p = $this->parametersUrl(false, false, [], []);
       
       //Request to Repository
-      $tag = $this->tag->show($p->filter, $p->include, $p->fields, $criteria);
+      $tag = $this->tag->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $tag ? new TagTransformer($tag) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -97,7 +90,7 @@ class TagApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -120,7 +113,7 @@ class TagApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -142,7 +135,7 @@ class TagApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

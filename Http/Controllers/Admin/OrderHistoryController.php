@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\OrderStatusHistory;
-use Modules\Icommerce\Http\Requests\CreateOrderHistoryRequest;
-use Modules\Icommerce\Http\Requests\UpdateOrderHistoryRequest;
+use Modules\Icommerce\Http\Requests\OrderHistoryRequest;
 use Modules\Icommerce\Repositories\OrderHistoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -49,10 +48,10 @@ class OrderHistoryController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateOrderHistoryRequest $request
+     * @param  OrderHistoryRequest $request
      * @return Response
      */
-    public function store(CreateOrderHistoryRequest $request)
+    public function store(OrderHistoryRequest $request)
     {
         $this->orderhistory->create($request->all());
 
@@ -78,7 +77,7 @@ class OrderHistoryController extends AdminBaseController
      * @param  UpdateOrderHistoryRequest $request
      * @return Response
      */
-    public function update(OrderStatusHistory $orderhistory, UpdateOrderHistoryRequest $request)
+    public function update(OrderStatusHistory $orderhistory, OrderHistoryRequest $request)
     {
         $this->orderhistory->update($orderhistory, $request->all());
 

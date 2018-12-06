@@ -13,17 +13,14 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\WishlistTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\WishlistRepository;
 
 class WishlistApiController extends BaseApiController
 {
   private $wishlist;
   
-  public function __construct(
-    WishlistRepository $wishlist)
+  public function __construct()
   {
-    $this->wishlist = $wishlist;
+    $this->wishlist = app('Modules\Icommerce\Repositories\WishlistRepository');
   }
   
   /**
@@ -33,11 +30,8 @@ class WishlistApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $wishlists = $this->wishlist->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $wishlists = $this->wishlist->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => WishlistTransformer::collection($wishlists)];
@@ -46,7 +40,7 @@ class WishlistApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -63,18 +57,15 @@ class WishlistApiController extends BaseApiController
   public function show($id, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $wishlist = $this->wishlist->show($p->filter, $p->include, $p->fields, $id);
+      $wishlist = $this->wishlist->show($id,$this->getParamsRequest());
       
       $response = [
         'data' => $wishlist ? new WishlistTransformer($wishlist) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -94,7 +85,7 @@ class WishlistApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -116,7 +107,7 @@ class WishlistApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -137,7 +128,7 @@ class WishlistApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

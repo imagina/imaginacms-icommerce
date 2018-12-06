@@ -22,8 +22,8 @@ class CreateIcommerceCouponOrderHistoryTable extends Migration
           $table->integer('order_id')->unsigned();
           $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
   
-          $table->integer('user_id')->unsigned();
-          $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
+          $table->integer('customer_id')->unsigned();
+          $table->foreign('customer_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
   
           $table->float('amount', 8, 2);
   

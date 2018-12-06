@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Category;
-use Modules\Icommerce\Http\Requests\CreateCategoryRequest;
-use Modules\Icommerce\Http\Requests\UpdateCategoryRequest;
+use Modules\Icommerce\Http\Requests\CategoryRequest;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class CategoryController extends AdminBaseController
      * @param  CreateCategoryRequest $request
      * @return Response
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(CategoryRequest $request)
     {
         $this->category->create($request->all());
 
@@ -78,7 +77,7 @@ class CategoryController extends AdminBaseController
      * @param  UpdateCategoryRequest $request
      * @return Response
      */
-    public function update(Category $category, UpdateCategoryRequest $request)
+    public function update(Category $category, CategoryRequest $request)
     {
         $this->category->update($category, $request->all());
 

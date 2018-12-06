@@ -13,17 +13,13 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CurrencyTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\CurrencyRepository;
-
 class CurrencyApiController extends BaseApiController
 {
   private $currency;
   
-  public function __construct(
-    CurrencyRepository $currency)
+  public function __construct()
   {
-    $this->currency = $currency;
+    $this->currency = app('Modules\Icommerce\Repositories\CurrencyRepository');
   }
   
   /**
@@ -33,11 +29,8 @@ class CurrencyApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $currencies = $this->currency->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $currencies = $this->currency->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => CurrencyTransformer::collection($currencies)];
@@ -46,7 +39,7 @@ class CurrencyApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -63,18 +56,15 @@ class CurrencyApiController extends BaseApiController
   public function show($id, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $currency = $this->currency->show($p->filter, $p->include, $p->fields, $id);
+      $currency = $this->currency->show($id,$this->getParamsRequest());
       
       $response = [
         'data' => $currency ? new CurrencyTransformer($currency) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -94,7 +84,7 @@ class CurrencyApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -116,7 +106,7 @@ class CurrencyApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -137,7 +127,7 @@ class CurrencyApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

@@ -7,73 +7,75 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxClassRepository
 {
-  public function index($page, $take, $filter, $include, $fields)
+  public function index($params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
-    
-    //Relationships
+  
+    // RELATIONSHIPS
     $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude, $include));
-    
-    //add filter by search
-    if (isset($filter->search)) {
+    $query->with(array_merge($defaultInclude, $params->include));
+  
+    // FILTERS
+    if ($params->filter) {
+      $filter = $params->filter;
+  
+      //set language translation
+      \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
-      //find search in columns
-      $query->where(function ($query) use ($filter, $lang) {
-        $query->whereHas('translations', function ($query) use ($filter, $lang) {
-          $query->where('locale', $lang)
-            ->where('name', 'like', '%' . $filter->search . '%');
-        })->orWhere('id', 'like', '%' . $filter->search . '%')
-          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-      });
+      
+      //add filter by search
+      if (isset($filter->search)) {
+        
+        //find search in columns
+        $query->where(function ($query) use ($filter, $lang) {
+          $query->whereHas('translations', function ($query) use ($filter, $lang) {
+            $query->where('locale', $lang)
+              ->where('name', 'like', '%' . $filter->search . '%');
+          })->orWhere('id', 'like', '%' . $filter->search . '%')
+            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+        });
+      }
     }
     
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
-    
+  
+    // PAGE & TAKE
     //Return request with pagination
-    if ($page) {
-      $take ? true : $take = 12; //If no specific take, query take 12 for default
-      return $query->paginate($take);
+    if ($params->page) {
+      $params->take ? true : $params->take = 12; //If no specific take, query take 12 for default
+      return $query->paginate($params->take);
     }
     
     //Return request without pagination
-    if (!$page) {
-      $take ? $query->take($take) : false; //if request to take a limit
+    if (!$params->page) {
+      $params->take ? $query->take($params->take) : false; //if request to take a limit
       return $query->get();
     }
   }
   
-  public function show($filter, $include, $fields, $id)
+  public function show($criteria, $params)
   {
-    //set language translation
-    \App::setLocale($filter->locale ?? null);
-    $lang = \App::getLocale();
-    
-    //Initialize Query
+    // INITIALIZE QUERY
     $query = $this->model->query();
     
-      $query->where('id', $id);
-
+    $query->where('id', $criteria);
     
-    /*== RELATIONSHIPS ==*/
+    // RELATIONSHIPS
     $includeDefault = ['translations'];
-    if (count($include))
-      $query->with(array_merge($includeDefault, $include));
-    else
-      $query->with($includeDefault);
+    $query->with(array_merge($includeDefault, $params->include));
     
-    /*== FIELDS ==*/
-    if ($fields) {
-      /*filter by user*/
-      $query->select($fields);
+    // FILTERS
+    //set language translation
+    \App::setLocale($params->filter->locale ?? null);
+    
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
     }
     return $query->first();
     

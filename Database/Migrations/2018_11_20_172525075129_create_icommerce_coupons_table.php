@@ -26,6 +26,10 @@ class CreateIcommerceCouponsTable extends Migration
       $table->date('date_end');
       $table->integer('uses_total')->unsigned();
       $table->tinyInteger('status')->default(0)->unsigned();
+  
+      $table->integer('customer_id')->unsigned()->nullable();
+      $table->foreign('customer_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
+      
       $table->text('options')->default('')->nullable();
       $table->timestamps();
     });

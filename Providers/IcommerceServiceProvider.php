@@ -37,7 +37,6 @@ class IcommerceServiceProvider extends ServiceProvider
       $event->load('productcategories', array_dot(trans('icommerce::productcategories')));
       $event->load('options', array_dot(trans('icommerce::options')));
       $event->load('coupons', array_dot(trans('icommerce::coupons')));
-      $event->load('shippingcouriers', array_dot(trans('icommerce::shippingcouriers')));
       $event->load('currencies', array_dot(trans('icommerce::currencies')));
       $event->load('orders', array_dot(trans('icommerce::orders')));
       $event->load('productdiscounts', array_dot(trans('icommerce::productdiscounts')));
@@ -182,18 +181,6 @@ class IcommerceServiceProvider extends ServiceProvider
         }
         
         return new \Modules\Icommerce\Repositories\Cache\CacheCouponDecorator($repository);
-      }
-    );
-    $this->app->bind(
-      'Modules\Icommerce\Repositories\ShippingCourierRepository',
-      function () {
-        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentShippingCourierRepository(new \Modules\Icommerce\Entities\ShippingCourier());
-        
-        if (!config('app.cache')) {
-          return $repository;
-        }
-        
-        return new \Modules\Icommerce\Repositories\Cache\CacheShippingCourierDecorator($repository);
       }
     );
     $this->app->bind(

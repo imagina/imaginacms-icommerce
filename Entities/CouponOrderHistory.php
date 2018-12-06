@@ -13,7 +13,7 @@ class CouponOrderHistory extends Model
     protected $fillable = [
       'coupon_id',
       'order_id',
-      'user_id',
+      'customer_id',
       'amount'
     ];
 }

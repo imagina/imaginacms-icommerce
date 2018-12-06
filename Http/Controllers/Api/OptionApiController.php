@@ -13,17 +13,14 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\OptionTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\OptionRepository;
 
 class OptionApiController extends BaseApiController
 {
   private $option;
   
-  public function __construct(
-    OptionRepository $option)
+  public function __construct()
   {
-    $this->option = $option;
+    $this->option = app('Modules\Icommerce\Repositories\OptionRepository');
   }
   
   /**
@@ -33,11 +30,8 @@ class OptionApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $options = $this->option->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $options = $this->option->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => OptionTransformer::collection($options)];
@@ -46,7 +40,7 @@ class OptionApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -63,18 +57,15 @@ class OptionApiController extends BaseApiController
   public function show($id, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $option = $this->option->show($p->filter, $p->include, $p->fields, $id);
+      $option = $this->option->show($id,$this->getParamsRequest());
       
       $response = [
         'data' => $option ? new OptionTransformer($option) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -94,7 +85,7 @@ class OptionApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -116,7 +107,7 @@ class OptionApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -137,7 +128,7 @@ class OptionApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

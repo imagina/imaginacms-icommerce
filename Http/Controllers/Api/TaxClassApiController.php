@@ -13,17 +13,13 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\TaxClassTransformer;
 
-// Repositories
-use Modules\Icommerce\Repositories\TaxClassRepository;
-
 class TaxClassApiController extends BaseApiController
 {
   private $taxClass;
   
-  public function __construct(
-    TaxClassRepository $taxClass)
+  public function __construct()
   {
-    $this->taxClass = $taxClass;
+    $this->taxClass = app('Modules\Icommerce\Repositories\TaxClassRepository');
   }
   
   /**
@@ -33,11 +29,8 @@ class TaxClassApiController extends BaseApiController
   public function index()
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, ['status' => [1]], []);
-      
       //Request to Repository
-      $taxClasses = $this->taxClass->index($p->page, $p->take, $p->filter, $p->include, $p->fields);
+      $taxClasses = $this->taxClass->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => TaxClassTransformer::collection($taxClasses)];
@@ -46,7 +39,7 @@ class TaxClassApiController extends BaseApiController
       
     } catch (\Exception $e) {
       //Message Error
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -63,18 +56,15 @@ class TaxClassApiController extends BaseApiController
   public function show($id, Request $request)
   {
     try {
-      //Get Parameters from URL.
-      $p = $this->parametersUrl(false, false, [], []);
-      
       //Request to Repository
-      $taxClass = $this->taxClass->show($p->filter, $p->include, $p->fields, $id);
+      $taxClass = $this->taxClass->show($id,$this->getParamsRequest());
       
       $response = [
         'data' => $taxClass ? new TaxClassTransformer($taxClass) : '',
       ];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -101,7 +91,7 @@ class TaxClassApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -131,7 +121,7 @@ class TaxClassApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];
@@ -152,7 +142,7 @@ class TaxClassApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      $status = 400;
+      $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

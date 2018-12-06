@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Manufacturer;
-use Modules\Icommerce\Http\Requests\CreateManufacturerRequest;
-use Modules\Icommerce\Http\Requests\UpdateManufacturerRequest;
+use Modules\Icommerce\Http\Requests\ManufacturerRequest;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class ManufacturerController extends AdminBaseController
      * @param  CreateManufacturerRequest $request
      * @return Response
      */
-    public function store(CreateManufacturerRequest $request)
+    public function store(ManufacturerRequest $request)
     {
         $this->manufacturer->create($request->all());
 
@@ -78,7 +77,7 @@ class ManufacturerController extends AdminBaseController
      * @param  UpdateManufacturerRequest $request
      * @return Response
      */
-    public function update(Manufacturer $manufacturer, UpdateManufacturerRequest $request)
+    public function update(Manufacturer $manufacturer, ManufacturerRequest $request)
     {
         $this->manufacturer->update($manufacturer, $request->all());
 

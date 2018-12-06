@@ -15,7 +15,8 @@ class Order extends Model
     'invoice_prefix',
     'total',
     'status_id',
-    'user_id',
+    'customer_id',
+    'added_by_id',
     'first_name',
     'last_name',
     'email',
@@ -67,15 +68,26 @@ class Order extends Model
     'options' => 'array'
   ];
   
-  public function user()
+  public function customer()
   {
     $driver = config('asgard.user.config.driver');
-    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User",'customer_id');
+  }
+  
+  public function addedBy()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User",'added_by_id');
   }
   
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'icommerce__order_item')->withPivot('title', 'reference', 'quantity', 'price', 'total', 'tax', 'reward')->withTimestamps()->using(OrderItem::class);
+    return $this->belongsToMany(Product::class, 'icommerce__order_item')
+      ->withPivot(
+        'title', 'reference', 'quantity',
+        'price', 'total', 'tax', 'reward'
+      )
+      ->withTimestamps()->using(OrderItem::class);
   }
   
   public function orderProducts()
@@ -85,7 +97,9 @@ class Order extends Model
   
   public function coupons()
   {
-    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_history')->withPivot('amount')->withTimestamps();
+    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_history')
+      ->withPivot('amount')
+      ->withTimestamps();
   }
   
   public function orderHistory()

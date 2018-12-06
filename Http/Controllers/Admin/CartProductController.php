@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\CartProduct;
-use Modules\Icommerce\Http\Requests\CreateCartProductRequest;
-use Modules\Icommerce\Http\Requests\UpdateCartProductRequest;
+use Modules\Icommerce\Http\Requests\CartProductRequest;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class CartProductController extends AdminBaseController
      * @param  CreateCartProductRequest $request
      * @return Response
      */
-    public function store(CreateCartProductRequest $request)
+    public function store(CartProductRequest $request)
     {
         $this->cartproduct->create($request->all());
 
@@ -78,7 +77,7 @@ class CartProductController extends AdminBaseController
      * @param  UpdateCartProductRequest $request
      * @return Response
      */
-    public function update(CartProduct $cartproduct, UpdateCartProductRequest $request)
+    public function update(CartProduct $cartproduct, CartProductRequest $request)
     {
         $this->cartproduct->update($cartproduct, $request->all());
 

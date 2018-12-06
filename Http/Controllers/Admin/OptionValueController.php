@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\OptionValue;
-use Modules\Icommerce\Http\Requests\CreateOptionValueRequest;
-use Modules\Icommerce\Http\Requests\UpdateOptionValueRequest;
+use Modules\Icommerce\Http\Requests\OptionValueRequest;
 use Modules\Icommerce\Repositories\OptionValueRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class OptionValueController extends AdminBaseController
      * @param  CreateOptionValueRequest $request
      * @return Response
      */
-    public function store(CreateOptionValueRequest $request)
+    public function store(OptionValueRequest $request)
     {
         $this->optionvalue->create($request->all());
 
@@ -78,7 +77,7 @@ class OptionValueController extends AdminBaseController
      * @param  UpdateOptionValueRequest $request
      * @return Response
      */
-    public function update(OptionValue $optionvalue, UpdateOptionValueRequest $request)
+    public function update(OptionValue $optionvalue, OptionValueRequest $request)
     {
         $this->optionvalue->update($optionvalue, $request->all());
 

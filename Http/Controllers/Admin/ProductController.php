@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Product;
-use Modules\Icommerce\Http\Requests\CreateProductRequest;
-use Modules\Icommerce\Http\Requests\UpdateProductRequest;
+use Modules\Icommerce\Http\Requests\ProductRequest;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class ProductController extends AdminBaseController
      * @param  CreateProductRequest $request
      * @return Response
      */
-    public function store(CreateProductRequest $request)
+    public function store(ProductRequest $request)
     {
         $this->product->create($request->all());
 
@@ -78,7 +77,7 @@ class ProductController extends AdminBaseController
      * @param  UpdateProductRequest $request
      * @return Response
      */
-    public function update(Product $product, UpdateProductRequest $request)
+    public function update(Product $product, ProductRequest $request)
     {
         $this->product->update($product, $request->all());
 

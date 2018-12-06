@@ -23,9 +23,13 @@ class CreateIcommerceOrdersTable extends Migration
           
           $table->integer('status_id')->unsigned();
           $table->foreign('status_id')->references('id')->on('icommerce__order_statuses')->onDelete('restrict');
+  
+          $table->integer('customer_id')->unsigned()->nullable();
+          $table->foreign('customer_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
+  
+          $table->integer('added_by_id')->unsigned()->nullable();
+          $table->foreign('added_by_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
           
-          $table->integer('user_id')->unsigned()->nullable();
-          $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
           $table->string('first_name');
           $table->string('last_name');
           $table->string('email');
@@ -66,7 +70,7 @@ class CreateIcommerceOrdersTable extends Migration
           $table->string('currency_code');
           $table->double('currency_value', 15, 8);
           $table->string('ip');
-          $table->text('user_agent');
+          $table->text('user_agent')->nullable();
           $table->string('key')->nullable();
   
           $table->text('options')->default('')->nullable();

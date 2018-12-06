@@ -12,7 +12,7 @@ class ProductTransformer extends Resource
       'id' => $this->id,
       'title' => $this->title,
       'slug' => $this->slug,
-      'sumary' => $this->sumary,
+      'summary' => $this->summary,
       'options' => $this->options,
       'status' => $this->status,
       'added_by_id' => $this->added_by_id,

@@ -5,8 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Option;
-use Modules\Icommerce\Http\Requests\CreateOptionRequest;
-use Modules\Icommerce\Http\Requests\UpdateOptionRequest;
+use Modules\Icommerce\Http\Requests\OptionRequest;
 use Modules\Icommerce\Repositories\OptionRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -52,7 +51,7 @@ class OptionController extends AdminBaseController
      * @param  CreateOptionRequest $request
      * @return Response
      */
-    public function store(CreateOptionRequest $request)
+    public function store(OptionRequest $request)
     {
         $this->option->create($request->all());
 
@@ -78,7 +77,7 @@ class OptionController extends AdminBaseController
      * @param  UpdateOptionRequest $request
      * @return Response
      */
-    public function update(Option $option, UpdateOptionRequest $request)
+    public function update(Option $option, OptionRequest $request)
     {
         $this->option->update($option, $request->all());
 

@@ -6,7 +6,7 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface CurrencyRepository extends BaseRepository
 {
-  public function index($page, $take, $filter, $include, $fields);
+  public function index($params);
   
-  public function show($filter, $include, $fields, $id);
+  public function show($criteria, $params);
 }
