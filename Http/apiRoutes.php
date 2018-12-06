@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Routing\Router;
+
 $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], function (Router $router) {
 //======  CATEGORIES
   require('ApiRoutes/categoryRoutes.php');
@@ -34,5 +35,15 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
 
 //======  TAGS
   require('ApiRoutes/tagRoutes.php');
+  
+  //======  PRODUCTS
+  require('ApiRoutes/productRoutes.php');
+  
+  //======  ORDERS
+  require('ApiRoutes/orderRoutes.php');
+  
+  
+  //======  ORDER STATUS HISTORY
+  require('ApiRoutes/orderHistoryRoutes.php');
   
 });
