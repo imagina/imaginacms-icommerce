@@ -28,8 +28,7 @@ use Modules\Icommerce\Repositories\TagRepository;
 use Modules\User\Contracts\Authentication;
 use Modules\User\Repositories\UserRepository;
 use Yajra\Datatables\Datatables;
-
-
+use Modules\Icommerce\Imports\IcommerceImport;
 class ProductController extends AdminBaseController
 {
 
@@ -993,63 +992,19 @@ class ProductController extends AdminBaseController
         return view('icommerce::admin.products.bulkload.index');
     }
 
-    public function importProducts(Request $request)
-    {
-        $msg="";
-        $data = ['folderpaht' => $request->folderpaht, 'user_id' => $this->auth->user()->id, 'Locale'=>$request->Locale];
-
-        $data_excel = Excel::Load($request->importfile, function ($reader) {
-            $excel = $reader->all();
-            return $excel;
-        });
-
-
-        foreach ($data_excel->parsed as $i => $page) {
-
-
-            switch ($page->getTitle()) {
-
-                case 'Categories':
-                    try {
-                        BulkloadCategory::dispatch(json_decode(json_encode($page)), $data);
-                    } catch (Exception $e) {
-                        $msg =  trans('icommerce::products.bulkload.error in migrate from category');
-                        return redirect()->route('admin.icommerce.product.index')
-                            ->withError($msg);
-                    }
-                    break;
-                case 'manufactures':
-
-                    try {
-                        BulkloadManufacturer::dispatch(json_decode(json_encode($page)), $data);
-                    } catch (Exception $e) {
-                        $msg  =  trans('icommerce::products.bulkload.error in migrate from manufacturer');
-                        return redirect()->route('admin.icommerce.product.index')
-                            ->withError($msg);
-                    }
-                    break;
-                case 'Products':
-                    try {
-                        $this->product->jobs_bulkload(json_decode(json_encode($page)),50,$data);
-
-                    } catch (Exception $e) {
-                        $msg = trans('icommerce::products.bulkload.error in migrate from page');
-                        return redirect()->route('admin.icommerce.product.index')
-                            ->withError($msg);
-
-                    }
-                    break;
-                default:
-
-
-            };
-            $msg=trans('icommerce::products.bulkload.success migrate from product');
-
-        }
-
-        return redirect()->route('admin.icommerce.product.index')
-            ->withSuccess($msg);
-
-    }
+    public function importProducts(Request $request){
+      $msg="";
+      try {
+          $data = ['folderpaht' => $request->folderpaht, 'user_id' => $this->auth->user()->id, 'Locale'=>$request->Locale];
+          $data_excel = Excel::import(new IcommerceImport($this->product,$this->category,$this->manufacturer,$data), $request->importfile);
+          $msg=trans('icommerce::products.bulkload.success migrate from product');
+          return redirect()->route('admin.icommerce.product.index')
+          ->withSuccess($msg);
+      } catch (Exception $e) {
+          $msg  =  trans('icommerce::products.bulkload.error in migrate from page');
+          return redirect()->route('admin.icommerce.product.index')
+          ->withError($msg);
+      }
+    }//importProducts()
 
 }
