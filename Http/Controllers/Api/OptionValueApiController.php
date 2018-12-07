@@ -26,7 +26,7 @@ class OptionValueApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -35,7 +35,7 @@ class OptionValueApiController extends BaseApiController
       //Response
       $response = ['data' => OptionValueTransformer::collection($optionValues)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($optionValues)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($optionValues)] : false;
       
     } catch (\Exception $e) {
       //Message Error

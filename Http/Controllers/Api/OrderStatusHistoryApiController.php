@@ -27,7 +27,7 @@ class OrderStatusHistoryApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Get Parameters from URL.
@@ -38,7 +38,7 @@ class OrderStatusHistoryApiController extends BaseApiController
       //Response
       $response = ['data' => OrderHistoryTransformer::collection($orderHistories)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($orderHistories)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($orderHistories)] : false;
       
     } catch (\Exception $e) {
       //Message Error

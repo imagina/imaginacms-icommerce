@@ -30,7 +30,7 @@ class OrderApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -39,7 +39,7 @@ class OrderApiController extends BaseApiController
       //Response
       $response = ['data' => OrderTransformer::collection($orders)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($orders)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($orders)] : false;
       
     } catch (\Exception $e) {
       //Message Error

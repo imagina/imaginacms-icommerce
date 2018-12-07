@@ -32,7 +32,7 @@ class ProductApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -41,7 +41,7 @@ class ProductApiController extends BaseApiController
       //Response
       $response = ['data' => ProductTransformer::collection($products)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($products)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($products)] : false;
       
     } catch (\Exception $e) {
       //Message Error

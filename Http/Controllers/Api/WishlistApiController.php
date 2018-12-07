@@ -27,7 +27,7 @@ class WishlistApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -36,7 +36,7 @@ class WishlistApiController extends BaseApiController
       //Response
       $response = ['data' => WishlistTransformer::collection($wishlists)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($wishlists)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($wishlists)] : false;
       
     } catch (\Exception $e) {
       //Message Error

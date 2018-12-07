@@ -29,7 +29,7 @@ class CategoryApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -38,7 +38,7 @@ class CategoryApiController extends BaseApiController
       //Response
       $response = ['data' => CategoryTransformer::collection($categories)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($categories)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($categories)] : false;
       
     } catch (\Exception $e) {
       //Message Error

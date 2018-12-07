@@ -27,7 +27,7 @@ class TaxRateApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -36,7 +36,7 @@ class TaxRateApiController extends BaseApiController
       //Response
       $response = ['data' => TaxRateTransformer::collection($taxRates)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($taxRates)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($taxRates)] : false;
       
     } catch (\Exception $e) {
       //Message Error

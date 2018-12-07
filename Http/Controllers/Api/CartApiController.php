@@ -27,18 +27,16 @@ class CartApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
-      //Get Parameters from URL.
-      
       //Request to Repository
       $carts = $this->cart->index($this->getParamsRequest());
       
       //Response
       $response = ['data' => CartTransformer::collection($carts)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($carts)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($carts)] : false;
       
     } catch (\Exception $e) {
       //Message Error

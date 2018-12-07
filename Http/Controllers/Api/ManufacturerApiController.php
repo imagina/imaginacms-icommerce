@@ -26,7 +26,7 @@ class ManufacturerApiController extends BaseApiController
    * Display a listing of the resource.
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
     try {
       //Request to Repository
@@ -35,7 +35,7 @@ class ManufacturerApiController extends BaseApiController
       //Response
       $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
       //If request pagination add meta-page
-      $p->page ? $response['meta'] = ['page' => $this->pageTransformer($manufacturers)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($manufacturers)] : false;
       
     } catch (\Exception $e) {
       //Message Error
