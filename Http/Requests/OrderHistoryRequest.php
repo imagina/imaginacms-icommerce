@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
 
-class OrderHistoryRequest extends BaseFormRequest
+class CreateOrderHistoryRequest extends BaseFormRequest
 {
     public function rules()
     {

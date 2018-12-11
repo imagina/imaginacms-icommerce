@@ -994,7 +994,75 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'RelatedProductController@destroy',
         'middleware' => 'can:icommerce.relatedproducts.destroy'
     ]);
+    $router->bind('list', function ($id) {
+        return app('Modules\Icommerce\Repositories\ListRepository')->find($id);
+    });
+    $router->get('lists', [
+        'as' => 'admin.icommerce.list.index',
+        'uses' => 'ListController@index',
+        'middleware' => 'can:icommerce.lists.index'
+    ]);
+    $router->get('lists/create', [
+        'as' => 'admin.icommerce.list.create',
+        'uses' => 'ListController@create',
+        'middleware' => 'can:icommerce.lists.create'
+    ]);
+    $router->post('lists', [
+        'as' => 'admin.icommerce.list.store',
+        'uses' => 'ListController@store',
+        'middleware' => 'can:icommerce.lists.create'
+    ]);
+    $router->get('lists/{list}/edit', [
+        'as' => 'admin.icommerce.list.edit',
+        'uses' => 'ListController@edit',
+        'middleware' => 'can:icommerce.lists.edit'
+    ]);
+    $router->put('lists/{list}', [
+        'as' => 'admin.icommerce.list.update',
+        'uses' => 'ListController@update',
+        'middleware' => 'can:icommerce.lists.edit'
+    ]);
+    $router->delete('lists/{list}', [
+        'as' => 'admin.icommerce.list.destroy',
+        'uses' => 'ListController@destroy',
+        'middleware' => 'can:icommerce.lists.destroy'
+    ]);
+    $router->bind('productlist', function ($id) {
+        return app('Modules\Icommerce\Repositories\ProductListRepository')->find($id);
+    });
+    $router->get('productlists', [
+        'as' => 'admin.icommerce.productlist.index',
+        'uses' => 'ProductListController@index',
+        'middleware' => 'can:icommerce.productlists.index'
+    ]);
+    $router->get('productlists/create', [
+        'as' => 'admin.icommerce.productlist.create',
+        'uses' => 'ProductListController@create',
+        'middleware' => 'can:icommerce.productlists.create'
+    ]);
+    $router->post('productlists', [
+        'as' => 'admin.icommerce.productlist.store',
+        'uses' => 'ProductListController@store',
+        'middleware' => 'can:icommerce.productlists.create'
+    ]);
+    $router->get('productlists/{productlist}/edit', [
+        'as' => 'admin.icommerce.productlist.edit',
+        'uses' => 'ProductListController@edit',
+        'middleware' => 'can:icommerce.productlists.edit'
+    ]);
+    $router->put('productlists/{productlist}', [
+        'as' => 'admin.icommerce.productlist.update',
+        'uses' => 'ProductListController@update',
+        'middleware' => 'can:icommerce.productlists.edit'
+    ]);
+    $router->delete('productlists/{productlist}', [
+        'as' => 'admin.icommerce.productlist.destroy',
+        'uses' => 'ProductListController@destroy',
+        'middleware' => 'can:icommerce.productlists.destroy'
+    ]);
 // append
+
+
 
 
 

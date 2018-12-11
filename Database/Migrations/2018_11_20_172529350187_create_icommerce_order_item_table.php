@@ -18,9 +18,12 @@ class CreateIcommerceOrderItemTable extends Migration
       // Your fields
       $table->integer('order_id')->unsigned();
       $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
-      
+  
       $table->integer('product_id')->unsigned()->nullable();
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+  
+      $table->integer('item_type_id')->unsigned()->nullable();
+      $table->foreign('item_type_id')->references('id')->on('icommerce__item_types')->onDelete('restrict');
       
       $table->text('title');
       $table->string('reference')->nullable();

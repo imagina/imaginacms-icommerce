@@ -313,7 +313,27 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.relatedproducts.index')
                     );
                 });
+                $item->item(trans('icommerce::lists.title.lists'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.list.create');
+                    $item->route('admin.icommerce.list.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.lists.index')
+                    );
+                });
+                $item->item(trans('icommerce::productlists.title.productlists'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.productlist.create');
+                    $item->route('admin.icommerce.productlist.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.productlists.index')
+                    );
+                });
 // append
+
+
 
 
 

@@ -181,7 +181,21 @@ return [
         'edit' => 'icommerce::relatedproducts.edit resource',
         'destroy' => 'icommerce::relatedproducts.destroy resource',
     ],
+    'icommerce.lists' => [
+        'index' => 'icommerce::lists.list resource',
+        'create' => 'icommerce::lists.create resource',
+        'edit' => 'icommerce::lists.edit resource',
+        'destroy' => 'icommerce::lists.destroy resource',
+    ],
+    'icommerce.productlists' => [
+        'index' => 'icommerce::productlists.list resource',
+        'create' => 'icommerce::productlists.create resource',
+        'edit' => 'icommerce::productlists.edit resource',
+        'destroy' => 'icommerce::productlists.destroy resource',
+    ],
 // append
+
+
 
 
 

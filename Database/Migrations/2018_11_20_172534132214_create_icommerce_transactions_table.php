@@ -16,6 +16,8 @@ class CreateIcommerceTransactionsTable extends Migration
       $table->engine = 'InnoDB';
       $table->increments('id');
       // Your fields
+  
+      $table->string('external_id')->nullable();
       $table->integer('order_id')->unsigned();
       $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
       

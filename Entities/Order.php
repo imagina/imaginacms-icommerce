@@ -85,9 +85,9 @@ class Order extends Model
     return $this->belongsToMany(Product::class, 'icommerce__order_item')
       ->withPivot(
         'title', 'reference', 'quantity',
-        'price', 'total', 'tax', 'reward'
-      )
-      ->withTimestamps()->using(OrderItem::class);
+        'price', 'total', 'tax', 'reward')
+      ->withTimestamps()
+      ->using(OrderItem::class);
   }
   
   public function orderProducts()

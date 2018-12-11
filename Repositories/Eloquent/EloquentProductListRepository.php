@@ -2,10 +2,10 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Icommerce\Repositories\CartRepository;
+use Modules\Icommerce\Repositories\ProductListRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
-class EloquentCartRepository extends EloquentBaseRepository implements CartRepository
+class EloquentProductListRepository extends EloquentBaseRepository implements ProductListRepository
 {
   public function index($params)
   {
@@ -27,8 +27,24 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
           ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
           ->orWhere('created_at', 'like', '%' . $filter->search . '%');
       }
+  
+      //add filter by product Ids
+      if(isset($filter->productIds)){
+        $query->whereIn('product_id', $filter->productIds);
+      }
+  
+      //add filter by product option Ids
+      if(isset($filter->productOptionIds)){
+        $query->whereIn('product_option_id', $filter->productOptionIds);
+      }
       
+      //add filter by product option value Ids
+      if(isset($filter->productOptionValueIds)){
+        $query->whereIn('product_option_value_id', $filter->productOptionValueIds);
+      }
     }
+    
+    
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);

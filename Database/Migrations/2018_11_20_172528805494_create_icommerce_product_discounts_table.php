@@ -18,10 +18,20 @@ class CreateIcommerceProductDiscountsTable extends Migration
       // Your fields
       $table->integer('product_id')->unsigned();
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+  
+      $table->integer('product_option_value_id')->unsigned()->nullable();
+      $table->foreign('product_option_value_id')->references('id')->on('icommerce__product_option_value')->onDelete('restrict');
+  
+      $table->integer('product_option_id')->unsigned()->nullable();
+      $table->foreign('product_option_id')->references('id')->on('icommerce__product_option')->onDelete('restrict');
       
       $table->integer('quantity')->default(0)->unsigned();
+      
       $table->integer('priority')->default(1)->unsigned();
-      $table->float('price', 50, 2)->default(0);
+      
+      $table->float('discount', 20, 2);
+      
+      $table->enum('criteria',['percentage','fixed']);
       
       $table->date('date_start');
       $table->date('date_end');

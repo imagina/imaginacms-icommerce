@@ -12,9 +12,12 @@ class ProductDiscount extends Model
   
   protected $fillable = [
     'product_id',
+    'product_option_id',
+    'product_option_value_id',
     'quantity',
     'priority',
-    'price',
+    'discount',
+    'criteria',
     'date_start',
     'date_end'
   ];
@@ -22,5 +25,14 @@ class ProductDiscount extends Model
   public function product()
   {
     return $this->belongsTo(Product::class);
+  }
+  
+  public function productOptionValue()
+  {
+    return $this->belongsTo(ProductOptionValue::class);
+  }
+  public function productOption()
+  {
+    return $this->belongsTo(ProductOption::class);
   }
 }

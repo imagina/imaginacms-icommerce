@@ -21,13 +21,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $filter = $params->filter;
       // set language translation
       \App::setLocale($filter->locale ?? null);
-  
+      $lang = \App::getLocale();
+      
       // default filter by Stock
       $query->where('stock_status', 1);
   
       // add filter by search
       if (isset($filter->search)) {
-        $lang = \App::getLocale();
         //find search in columns
         $query->where(function ($query) use ($filter, $lang) {
           $query->whereHas('translations', function ($query) use ($filter, $lang) {
@@ -65,8 +65,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // add filter by Rating
       // parameters {from: decimal, to:decimal}
       if (isset($filter->priceRange)) {
-        $query->where("rating", '>=', $filter->priceRange->from);
-        $query->where("rating", '<=', $filter->priceRange->to);
+        $query->where("rating", '>=', $filter->rating->from);
+        $query->where("rating", '<=', $filter->rating->to);
       }
   
       // add filter by Freeshipping
