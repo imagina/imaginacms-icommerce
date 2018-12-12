@@ -56,7 +56,7 @@ class IcommerceServiceProvider extends ServiceProvider
       $event->load('taxrates', array_dot(trans('icommerce::taxrates')));
       $event->load('taxclasses', array_dot(trans('icommerce::taxclasses')));
       $event->load('taxclassrates', array_dot(trans('icommerce::taxclassrates')));
-      $event->load('cart', array_dot(trans('icommerce::cart')));
+      $event->load('carts', array_dot(trans('icommerce::carts')));
       $event->load('cartproducts', array_dot(trans('icommerce::cartproducts')));
       $event->load('itemtypes', array_dot(trans('icommerce::itemtypes')));
             $event->load('relatedproducts', array_dot(trans('icommerce::relatedproducts')));
