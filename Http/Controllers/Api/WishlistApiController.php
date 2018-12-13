@@ -123,7 +123,7 @@ class WishlistApiController extends BaseApiController
   {
     try {
       $wishlist = $this->wishlist->find($id);
-      $wishlist->delete();
+      $this->wishlist->destroy($wishlist);
       
       $response = ['data' => ''];
       

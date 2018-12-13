@@ -123,7 +123,7 @@ class PriceListApiController extends BaseApiController
   {
     try {
       $priceList = $this->priceList->find($id);
-      $priceList->delete();
+      $this->priceList->destroy($priceList);
       
       $response = ['data' => ''];
       

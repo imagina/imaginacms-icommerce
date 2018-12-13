@@ -123,7 +123,7 @@ class CartProductApiController extends BaseApiController
   {
     try {
       $cartProduct = $this->cartProduct->find($id);
-      $cartProduct->delete();
+      $this->cartProduct->destroy($cartProduct);
       
       $response = ['data' => ''];
       

@@ -82,6 +82,7 @@ class OrderApiController extends BaseApiController
    */
   public function create(OrderRequest $request)
   {
+    \DB::beginTransaction();
     try {
       $order = $this->order->create($request->all());
       
@@ -108,10 +109,11 @@ class OrderApiController extends BaseApiController
         ]);
         
       }
-      
+      \DB::commit();
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
+      DB::rollback();
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -176,7 +178,7 @@ class OrderApiController extends BaseApiController
   {
     try {
       $order = $this->order->find($id);
-      $order->delete();
+      $this->order->destroy($order);
       
       $response = ['data' => ''];
       

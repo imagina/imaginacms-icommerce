@@ -240,7 +240,7 @@ class ProductApiController extends BaseApiController
   {
     try {
       $product = $this->product->find($id);
-      $product->delete();
+      $this->product->destroy($product);
       
       $response = ['data' => ''];
       

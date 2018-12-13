@@ -127,7 +127,7 @@ class CategoryApiController extends BaseApiController
   {
     try {
       $category = $this->category->find($id);
-      $category->delete();
+      $this->category->destroy($category);
       
       $response = ['data' => ''];
       

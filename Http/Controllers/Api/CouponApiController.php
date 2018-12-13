@@ -148,7 +148,7 @@ class CouponApiController extends BaseApiController
   {
     try {
       $coupon = $this->coupon->find($id);
-      $coupon->delete();
+      $this->coupon->destroy($coupon);
       
       $response = ['data' => ''];
       

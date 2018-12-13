@@ -138,7 +138,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
       $taxRate = $this->taxRate->find($id);
-      $taxRate->delete();
+      $this->taxRate->destroy($taxRate);
       
       $response = ['data' => ''];
       

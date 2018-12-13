@@ -123,7 +123,7 @@ class OptionApiController extends BaseApiController
   {
     try {
       $option = $this->option->find($id);
-      $option->delete();
+      $this->option->destroy($option);
       
       $response = ['data' => ''];
       

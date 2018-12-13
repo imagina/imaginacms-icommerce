@@ -122,7 +122,7 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       $optionValue = $this->optionValue->find($id);
-      $optionValue->delete();
+      $this->optionValue->destroy($optionValue);
       
       $response = ['data' => ''];
       

@@ -130,7 +130,7 @@ class TagApiController extends BaseApiController
   {
     try {
       $tag = $this->tag->find($id);
-      $tag->delete();
+      $this->tag->destroy($tag);
       
       $response = ['data' => ''];
       

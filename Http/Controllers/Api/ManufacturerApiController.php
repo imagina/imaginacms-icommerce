@@ -122,7 +122,7 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       $manufacturer = $this->manufacturer->find($id);
-      $manufacturer->delete();
+      $this->manufacturer->destroy($manufacturer);
       
       $response = ['data' => ''];
       

@@ -122,7 +122,7 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       $currency = $this->currency->find($id);
-      $currency->delete();
+      $this->currency->destroy($currency);
       
       $response = ['data' => ''];
       

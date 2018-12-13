@@ -125,7 +125,7 @@ class OrderStatusHistoryApiController extends BaseApiController
   {
     try {
       $orderHistory = $this->orderHistory->find($id);
-      $orderHistory->delete();
+      $this->orderHistory->destroy($orderHistory);
       
       $response = ['data' => ''];
       

@@ -133,7 +133,7 @@ class CartApiController extends BaseApiController
   {
     try {
       $cart = $this->cart->find($id);
-      $cart->delete();
+      $this->cart->destroy($cart);
       
       $response = ['data' => ''];
       

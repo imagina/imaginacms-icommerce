@@ -137,7 +137,7 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       $taxClass = $this->taxClass->find($id);
-      $taxClass->delete();
+      $this->taxClass->destroy($taxClass);
       
       $response = ['data' => ''];
       
