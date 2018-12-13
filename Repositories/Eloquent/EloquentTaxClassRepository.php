@@ -11,17 +11,18 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-  
+    
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
     $query->with(array_merge($defaultInclude, $params->include));
-  
+    
     // FILTERS
     if ($params->filter) {
       $filter = $params->filter;
-  
+      
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
@@ -43,7 +44,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     if ($params->fields) {
       $query->select($params->fields);
     }
-  
+    
     // PAGE & TAKE
     //Return request with pagination
     if ($params->page) {
@@ -71,7 +72,8 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {

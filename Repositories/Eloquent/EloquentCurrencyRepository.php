@@ -14,14 +14,15 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude,$params->include));
-  
+    $query->with(array_merge($defaultInclude, $params->include));
+    
     // FILTERS
-    if($params->filter) {
+    if ($params->filter) {
       $filter = $params->filter;
-  
+      
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
@@ -38,7 +39,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
       }
-  
+      
       //add filter by status
       if (!empty($filter->status)) {
         $query->where('status', $filter->status);
@@ -49,7 +50,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     if ($params->fields) {
       $query->select($params->fields);
     }
-  
+    
     // PAGE & TAKE
     //Return request with pagination
     if ($params->page) {
@@ -77,7 +78,8 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {

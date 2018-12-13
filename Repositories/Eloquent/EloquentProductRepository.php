@@ -17,15 +17,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $query->with(array_merge($defaultInclude, $params->include));
     
     // FILTERS
-    if($params->filter) {
+    if ($params->filter) {
       $filter = $params->filter;
       // set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       // default filter by Stock
       $query->where('stock_status', 1);
-  
+      
       // add filter by search
       if (isset($filter->search)) {
         //find search in columns
@@ -44,31 +45,31 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->categories)) {
         $query->whereIn("category_id", $filter->categories);
       }
-  
+      
       //add filter by Manufacturers 1 or more than 1, in array
       if (isset($filter->manufacturers)) {
         $query->whereIn("manufacturer_id", $filter->manufacturers);
       }
-  
+      
       // add filter by Tax Class 1 or more than 1, in array
       if (isset($filter->taxClass)) {
         $query->whereIn("tax_class_id", $filter->taxClass);
       }
-  
+      
       // add filter by Price Range
       // parameters {from: decimal, to:decimal}
       if (isset($filter->priceRange)) {
         $query->where("price", '>=', $filter->priceRange->from);
         $query->where("price", '<=', $filter->priceRange->to);
       }
-  
+      
       // add filter by Rating
       // parameters {from: decimal, to:decimal}
       if (isset($filter->priceRange)) {
         $query->where("rating", '>=', $filter->rating->from);
         $query->where("rating", '<=', $filter->rating->to);
       }
-  
+      
       // add filter by Freeshipping
       if (isset($filter->freeshipping)) {
         $query->where("freeshipping", $filter->freeshipping);
@@ -97,11 +98,11 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-  
+    
     // RELATIONSHIPS
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
-  
+    
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
@@ -109,15 +110,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     $lang = \App::getLocale();
     
     // First, find record by ID
     $duplicate = $query;
     $result = $duplicate->where('id', $criteria)->first();
-  
+    
     // If not give results, find by slug
-    if(!$result)
+    if (!$result)
       $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
         $query->where('locale', $lang)
           ->where('slug', $criteria);

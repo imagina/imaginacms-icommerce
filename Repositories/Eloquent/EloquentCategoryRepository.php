@@ -10,20 +10,21 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
   
   public function index($params)
   {
-  
+    
     // INITIALIZE QUERY
     $query = $this->model->query();
-  
+    
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
     $query->with(array_merge($defaultInclude, $params->include));
-  
+    
     // FILTERS
-    if($params->filter) {
+    if ($params->filter) {
       $filter = $params->filter;
-  
+      
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
@@ -40,12 +41,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         });
       }
     }
-  
+    
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
     }
-  
+    
     // PAGE & TAKE
     //Return request with pagination
     if ($params->page) {
@@ -76,7 +77,8 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     $lang = \App::getLocale();
     
     // First, find record by ID
@@ -84,7 +86,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     $result = $duplicate->where('id', $criteria)->first();
     
     // If not give results, find by slug
-    if(!$result)
+    if (!$result)
       $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
         $query->where('locale', $lang)
           ->where('slug', $criteria);
@@ -93,6 +95,6 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     return $result;
     
   }
-
+  
   
 }

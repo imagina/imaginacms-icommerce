@@ -75,7 +75,7 @@ class Product extends Model
     return $this->belongsToMany(Tag::class, 'icommerce__product_tag')->withTimestamps();
   }
   
-  public function orders()
+  public function orderItems()
   {
     return $this->hasMany(OrderItem::class);
   }

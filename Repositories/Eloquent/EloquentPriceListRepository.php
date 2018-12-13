@@ -14,14 +14,15 @@ class EloquentPriceListRepository extends EloquentBaseRepository implements Pric
     
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude,$params->include));
+    $query->with(array_merge($defaultInclude, $params->include));
     
     // FILTERS
-    if($params->filter) {
+    if ($params->filter) {
       $filter = $params->filter;
       
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
@@ -76,7 +77,8 @@ class EloquentPriceListRepository extends EloquentBaseRepository implements Pric
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {

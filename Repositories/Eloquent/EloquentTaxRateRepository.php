@@ -21,7 +21,8 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
       $filter = $params->filter;
       
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
@@ -71,7 +72,8 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {

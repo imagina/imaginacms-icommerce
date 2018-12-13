@@ -21,7 +21,8 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
       $filter = $params->filter;
       
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
@@ -76,10 +77,11 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     // RELATIONSHIPS
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
-  
+    
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {

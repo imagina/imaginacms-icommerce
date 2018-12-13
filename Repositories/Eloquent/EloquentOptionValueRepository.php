@@ -12,7 +12,7 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-  
+    
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
     $query->with(array_merge($defaultInclude, $params->include));
@@ -20,14 +20,15 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
     // FILTERS
     if ($params->filter) {
       $filter = $params->filter;
-  
+      
       //set language translation
-      \App::setLocale($filter->locale ?? null);
+      if (isset($params->filter->locale))
+        \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
       
       //add filter by search
       if (isset($filter->search)) {
-
+        
         //find search in columns
         $query->where(function ($query) use ($filter, $lang) {
           $query->whereHas('translations', function ($query) use ($filter, $lang) {
@@ -43,7 +44,7 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
     if ($params->fields) {
       $query->select($params->fields);
     }
-  
+    
     // PAGE & TAKE
     //Return request with pagination
     if ($params->page) {
@@ -71,7 +72,8 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
     
     // FILTERS
     //set language translation
-    \App::setLocale($params->filter->locale ?? null);
+    if (isset($params->filter->locale))
+      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {

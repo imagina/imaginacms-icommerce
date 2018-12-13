@@ -12,17 +12,14 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-  
+    
     // RELATIONSHIP
     $defaultInclude = [];
-    $query->with(array_merge($defaultInclude,$params->include));
+    $query->with(array_merge($defaultInclude, $params->include));
     
     // FILTERS
-    if($params->filters) {
+    if ($params->filters) {
       $filter = $params->filter;
-      
-      //set language translation
-      \App::setLocale($filter->locale ?? null);
       
       //add filter by search
       if (isset($filter->search)) {
