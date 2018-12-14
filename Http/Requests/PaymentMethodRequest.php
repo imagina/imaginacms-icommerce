@@ -4,11 +4,13 @@ namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
 
-class OrderHistoryRequest extends BaseFormRequest
+class PaymentMethodRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+          'name' => 'required'
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,10 @@ class OrderHistoryRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+          // Name
+          'name.required' => trans('icommerce::common.messages.field required'),
+        ];
     }
 
     public function translationMessages()

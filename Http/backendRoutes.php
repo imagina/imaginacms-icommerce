@@ -1060,7 +1060,41 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'ProductListController@destroy',
         'middleware' => 'can:icommerce.productlists.destroy'
     ]);
+    $router->bind('paymentmethod', function ($id) {
+        return app('Modules\Icommerce\Repositories\PaymentMethodRepository')->find($id);
+    });
+    $router->get('paymentmethods', [
+        'as' => 'admin.icommerce.paymentmethod.index',
+        'uses' => 'PaymentMethodController@index',
+        'middleware' => 'can:icommerce.paymentmethods.index'
+    ]);
+    $router->get('paymentmethods/create', [
+        'as' => 'admin.icommerce.paymentmethod.create',
+        'uses' => 'PaymentMethodController@create',
+        'middleware' => 'can:icommerce.paymentmethods.create'
+    ]);
+    $router->post('paymentmethods', [
+        'as' => 'admin.icommerce.paymentmethod.store',
+        'uses' => 'PaymentMethodController@store',
+        'middleware' => 'can:icommerce.paymentmethods.create'
+    ]);
+    $router->get('paymentmethods/{paymentmethod}/edit', [
+        'as' => 'admin.icommerce.paymentmethod.edit',
+        'uses' => 'PaymentMethodController@edit',
+        'middleware' => 'can:icommerce.paymentmethods.edit'
+    ]);
+    $router->put('paymentmethods/{paymentmethod}', [
+        'as' => 'admin.icommerce.paymentmethod.update',
+        'uses' => 'PaymentMethodController@update',
+        'middleware' => 'can:icommerce.paymentmethods.edit'
+    ]);
+    $router->delete('paymentmethods/{paymentmethod}', [
+        'as' => 'admin.icommerce.paymentmethod.destroy',
+        'uses' => 'PaymentMethodController@destroy',
+        'middleware' => 'can:icommerce.paymentmethods.destroy'
+    ]);
 // append
+
 
 
 

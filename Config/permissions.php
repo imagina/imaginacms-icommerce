@@ -193,7 +193,14 @@ return [
         'edit' => 'icommerce::productlists.edit resource',
         'destroy' => 'icommerce::productlists.destroy resource',
     ],
+    'icommerce.paymentmethods' => [
+        'index' => 'icommerce::paymentmethods.list resource',
+        'create' => 'icommerce::paymentmethods.create resource',
+        'edit' => 'icommerce::paymentmethods.edit resource',
+        'destroy' => 'icommerce::paymentmethods.destroy resource',
+    ],
 // append
+
 
 
 
