@@ -46,42 +46,43 @@ class CartController extends Controller
             foreach($product->options as &$optionN){
               if($optionN->option_id==$data['option_selected']){
                 foreach($optionN->option_values as $optValue){
-                  if($data['child_product_option_value_selected']!=0){
-                    //If child option selected
-                    foreach($optValue->children_option_values as $childOptValue){
-                      if($childOptValue->id==$data['child_product_option_value_selected']){
-                        if($childOptValue->price_prefix=="+"){
-                          //add
-                          $newPrice=(float)$product->unformatted_price+(float)$childOptValue->price;
-                        }else{
-                          $newPrice=(float)$product->unformatted_price-(float)$childOptValue->price;
-                        }//else price_prefix is -
-                        $option=$optionN->description;
-                        $option_type=$optionN->type;
-                        $option_value_description=$optValue->description;
-                        $option_value_type=$optValue->type;
-                        $option_value=$optValue->option;
-                        $child_option_value_description=$childOptValue->description;
-                        $child_option_description=$childOptValue->option_description;
-                        break;
-                      }
-                    }//foreach
-                    break;
-                  }else if($optValue->id==$data['option_value_selected']){
-                    if($optValue->price_prefix=="+"){
-                      //add
-                      $newPrice=(float)$product->unformatted_price+(float)$optValue->price;
+                  if($optValue->id==$data['option_value_selected']){
+                    if($data['child_product_option_value_selected']!=0){
+                      //If child option selected
+                      foreach($optValue->children_option_values as $childOptValue){
+                        if($childOptValue->id==$data['child_product_option_value_selected']){
+                          if($childOptValue->price_prefix=="+"){
+                            //add
+                            $newPrice=(float)$product->unformatted_price+(float)$childOptValue->price;
+                          }else{
+                            $newPrice=(float)$product->unformatted_price-(float)$childOptValue->price;
+                          }//else price_prefix is -
+                          $option=$optionN->description;
+                          $option_type=$optionN->type;
+                          $option_value_description=$optValue->description;
+                          $option_value_type=$optValue->type;
+                          $option_value=$optValue->option;
+                          $child_option_value_description=$childOptValue->description;
+                          $child_option_description=$childOptValue->option_description;
+                          break;
+                        }
+                      }//foreach
+                      break;
                     }else{
-                      $newPrice=(float)$product->unformatted_price-(float)$optValue->price;
-                    }//else price_prefix is -
-                    $option=$optionN->description;
-                    $option_type=$optionN->type;
-                    $option_value_description=$optValue->description;
-                    $option_value_type=$optValue->type;
-                    $option_value=$optValue->option;
-                    break;
+                      if($optValue->price_prefix=="+"){
+                        //add
+                        $newPrice=(float)$product->unformatted_price+(float)$optValue->price;
+                      }else{
+                        $newPrice=(float)$product->unformatted_price-(float)$optValue->price;
+                      }//else price_prefix is -
+                      $option=$optionN->description;
+                      $option_type=$optionN->type;
+                      $option_value_description=$optValue->description;
+                      $option_value_type=$optValue->type;
+                      $option_value=$optValue->option;
+                      break;
+                    }//Not child option selected
                   }//if option value == option value selected
-
                 }//foreach option values
               }//if option == option selected
             }//foreach options product
@@ -133,7 +134,7 @@ class CartController extends Controller
       ];
     }
 
-  }
+  }//add_cart()
 
   // devuelve los productos que hay en el carrito
   public function get_cart()

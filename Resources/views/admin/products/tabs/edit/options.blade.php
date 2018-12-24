@@ -469,23 +469,23 @@ $(function(){
 			if(objOptionChild[i].parent_id==optionid){
 				option_child_id=objOptionChild[i].id;
 				// console.log(objOptionChild[i].id);
-				break;
+				$.each(objOptionValues , function() {
+					htmlOpInd = "";
+					opValueDes = "";
+					if(option_child_id!=0 && option_child_id==this['option_id']){
+						if(trans==1){
+							opValueDes = this['description'][languaj];
+						}else{
+							opValueDes = this['description'];
+						}
+						htmlOpInd="<option value='"+this['id']+"'>"+opValueDes+"</option>";
+					}
+					htmlSOoptions+=htmlOpInd;
+				});
+				// break;
 			}
 		}//for get option child
 
-		$.each(objOptionValues , function() {
-			htmlOpInd = "";
-			opValueDes = "";
-			if(option_child_id!=0 && option_child_id==this['option_id']){
-				if(trans==1){
-					opValueDes = this['description'][languaj];
-				}else{
-					opValueDes = this['description'];
-				}
-				htmlOpInd="<option value='"+this['id']+"'>"+opValueDes+"</option>";
-			}
-				htmlSOoptions+=htmlOpInd;
-			});
 
 		htmlSelectOptions = htmlSOIni+htmlSOoptions+htmlSOEnd;
 		// htmlSelectOptions="<label>dasda</label>";

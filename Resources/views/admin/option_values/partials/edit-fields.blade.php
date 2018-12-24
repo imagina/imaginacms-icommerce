@@ -17,7 +17,7 @@ $normalSelectArray = ['text'=>'Text','background'=>'Background','image'=>'Image'
   {!! Form::normalInput('text',trans('icommerce::option_values.table.text'), $errors,$option_value->options) !!}
 </div>
 <div class="box-body" style="display: none;" id="options-color">
-  {!! Form::normalInputOfType('color','background',trans('icommerce::options.form.hexcolor'),$errors,$option_value->options) !!}
+  {!! Form::normalInputOfType('color','background',trans('icommerce::option_values.table.hexcolor'),$errors,$option_value->options) !!}
 </div>
 <div class="box-body text-center" style="display: none;" id="options-image">
   <div id="image">
@@ -39,7 +39,7 @@ $normalSelectArray = ['text'=>'Text','background'=>'Background','image'=>'Image'
     <div class="btn-group bt-upload">
       <br>
       <label class="btn btn-primary btn-file">
-        <i class="fa fa-picture-o"></i> trans('icommerce::option_values.form.select_image')
+        <i class="fa fa-picture-o"></i> {{trans('icommerce::option_values.form.select_image')}}
         <input
         type="file" accept="image/*" id="mainimage"
         name="mainimage"

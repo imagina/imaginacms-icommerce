@@ -231,12 +231,15 @@
                                           <input type="radio" :name="value.description" :value="indexChildOptValue" v-model="index_child_product_option_value_selected"  @change="update_product(index)"  :id="child_option.id" class="custom-control-input">
                                           <label class="custom-control-label" :for="child_option.id">
 
-                                               <span v-if="child_option.type!='background' && child_option.type!='image'">
-                                                @{{child_option.description}}
-                                               </span>
-                                              <span v-else v-bind:style="{ backgroundColor: child_option.option.background, backgroundImage: 'url(' + child_option.option.background + ')' }">
-                                                &nbsp;
-                                              </span>
+                                            <span class="text-capitalize" v-if="child_option.type!='background' && child_option.type!='image'">
+                                              @{{child_option.description}}
+                                            </span>
+                                            <span v-else-if="child_option.type=='image'" style="height:250px;width:250px;" v-bind:style="{ backgroundImage: 'url(' + child_option.option.image + ')' }">
+
+                                            </span>
+                                            <span v-else-if="child_option.type=='background'" v-bind:style="{ backgroundColor: child_option.option.background, backgroundImage: 'url(' + child_option.option.background + ')' }">
+                                              &nbsp;
+                                            </span>
 
                                           </label>
                                       </div>
