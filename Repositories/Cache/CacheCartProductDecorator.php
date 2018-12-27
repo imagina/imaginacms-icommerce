@@ -55,11 +55,11 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
    *
    * @return mixed
    */
-  public function update($model, $data)
+  public function updateBy($criteria, $data, $params)
   {
     $this->clearCache();
     
-    return $this->repository->update($model, $data);
+    return $this->repository->updateBy($criteria, $data, $params);
   }
   
   /**
@@ -67,11 +67,11 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
    *
    * @return mixed
    */
-  public function destroy($model)
+  public function deleteBy($criteria, $params)
   {
     $this->clearCache();
     
-    return $this->repository->destroy($model);
+    return $this->repository->deleteBy($criteria, $params);
   }
   
 }
