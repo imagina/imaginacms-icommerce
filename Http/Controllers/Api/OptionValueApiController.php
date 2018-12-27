@@ -13,6 +13,10 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\OptionValueTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\OptionValue;
+
+
 class OptionValueApiController extends BaseApiController
 {
   private $optionValue;
@@ -53,11 +57,11 @@ class OptionValueApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $optionValue = $this->optionValue->show($id,$this->getParamsRequest());
+      $optionValue = $this->optionValue->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $optionValue ? new OptionValueTransformer($optionValue) : '',
@@ -97,11 +101,10 @@ class OptionValueApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, OptionValueRequest $request)
+  public function update($criteria, OptionValueRequest $request)
   {
     try {
-      $optionValue = $this->optionValue->find($id);
-      $this->optionValue->update($optionValue, $request->all());
+      $this->optionValue->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -118,11 +121,10 @@ class OptionValueApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $optionValue = $this->optionValue->find($id);
-      $this->optionValue->destroy($optionValue);
+      $this->optionValue->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

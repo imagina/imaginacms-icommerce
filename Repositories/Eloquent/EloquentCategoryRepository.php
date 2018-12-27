@@ -22,9 +22,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     if ($params->filter) {
       $filter = $params->filter;
       
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
+      //get language translation
       $lang = \App::getLocale();
       
       //add filter by search
@@ -69,31 +67,75 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     // RELATIONSHIPS
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
-    
-    // FIELDS
-    if ($params->fields) {
+  
+    /*== FIELDS ==*/
+    if (is_array($params->fields) && count($params->fields))
       $query->select($params->fields);
-    }
     
     // FILTERS
-    //set language translation
-    if (isset($params->filter->locale))
-      \App::setLocale($params->filter->locale ?? null);
+    //get language translation
     $lang = \App::getLocale();
+  
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->slug) && $filter->slug)//Filter by slug
+        $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
+          $query->where('locale', $lang)
+            ->where('slug', $criteria);
+        });
+      else//Filter by ID
+        $query->where('id', $criteria);
+      
+    }
+    return $query->first();
+  }
+  
+  public function create($data){
     
-    // First, find record by ID
-    $duplicate = $query;
-    $result = $duplicate->where('id', $criteria)->first();
+    $category = $this->model->create($data);
     
-    // If not give results, find by slug
-    if (!$result)
-      $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
-        $query->where('locale', $lang)
-          ->where('slug', $criteria);
-      })->first();
+    return $category;
+  }
+  
+  
+  public function updateBy($criteria, $data, $params){
     
-    return $result;
+    // INITIALIZE QUERY
+    $query = $this->model->query();
     
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $query->update($data);
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
   
   

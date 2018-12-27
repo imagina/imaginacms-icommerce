@@ -4,20 +4,27 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class OptionValueTransformer extends Resource
+class TaxRateTransformer extends Resource
 {
   public function toArray($request)
   {
-    $data = [
+    $data =  [
       'id' => $this->id,
-      'option_id' => $this->option_id,
-      'sort_order' => $this->sort_order,
-      'description' => $this->description,
-      'options' => $this->options,
+      'name' => $this->name,
+      'rate' => $this->rate,
+      'type' => $this->type,
+      'geozone_id' => $this->geozone_id,
+      'customer' => $this->customer,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
+    
+    // Geozone
+    if(isset($this->geozone))
+      $data['geozone'] = $this->geozone;
   
+  
+    // TRANSLATIONS
     $filter = json_decode($request->filter);
   
     // Return data with available translations
@@ -28,10 +35,11 @@ class OptionValueTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
+          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
         }
       }
     }
+    
     return $data;
   }
 }

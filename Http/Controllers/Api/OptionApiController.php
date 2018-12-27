@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\OptionTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Option;
 
 class OptionApiController extends BaseApiController
 {
@@ -54,11 +56,11 @@ class OptionApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $option = $this->option->show($id,$this->getParamsRequest());
+      $option = $this->option->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $option ? new OptionTransformer($option) : '',
@@ -98,11 +100,10 @@ class OptionApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, OptionRequest $request)
+  public function update($criteria, OptionRequest $request)
   {
     try {
-      $option = $this->option->find($id);
-      $this->option->update($option, $request->all());
+      $this->option->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -119,11 +120,10 @@ class OptionApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $option = $this->option->find($id);
-      $this->option->destroy($option);
+      $this->option->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

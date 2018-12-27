@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\TaxRateTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\TaxRate;
 
 class TaxRateApiController extends BaseApiController
 {
@@ -54,11 +56,11 @@ class TaxRateApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $taxRate = $this->taxRate->show($id,$this->getParamsRequest());
+      $taxRate = $this->taxRate->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $taxRate ? new TaxRateTransformer($taxRate) : '',
@@ -81,13 +83,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
       $taxRate = $this->taxRate->create($request->all());
-      
-      // sync table
-      if ($taxRate)
-        if (isset($request->rates))
-          $taxRate->rates()->sync($request->rates);
-      
-      
+
       
       $response = ['data' => ''];
       
@@ -105,19 +101,11 @@ class TaxRateApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, TaxRateRequest $request)
+  public function update($criteria, TaxRateRequest $request)
   {
     try {
-      
-      $taxRate = $this->taxRate->find($id);
-      $taxRate = $this->taxRate->update($taxRate, $request->all());
-      
-      // sync tables
-      if ($taxRate)
-        if (isset($request->rates))
-          $taxRate->rates()->sync($request->rates);
-        else
-          $taxRate->rates()->detach();
+
+      $this->taxRate->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -134,11 +122,11 @@ class TaxRateApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $taxRate = $this->taxRate->find($id);
-      $this->taxRate->destroy($taxRate);
+
+      $this->taxRate->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

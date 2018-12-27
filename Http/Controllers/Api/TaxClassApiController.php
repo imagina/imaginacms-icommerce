@@ -13,6 +13,9 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\TaxClassTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\TaxClass;
+
 class TaxClassApiController extends BaseApiController
 {
   private $taxClass;
@@ -53,11 +56,11 @@ class TaxClassApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $taxClass = $this->taxClass->show($id,$this->getParamsRequest());
+      $taxClass = $this->taxClass->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $taxClass ? new TaxClassTransformer($taxClass) : '',
@@ -81,13 +84,6 @@ class TaxClassApiController extends BaseApiController
     try {
       $taxClass = $this->taxClass->create($request->all());
       
-      // sync table
-      if ($taxClass)
-        if (isset($request->rates))
-          $taxClass->rates()->sync($request->rates);
-        
-      
-      
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
@@ -104,19 +100,11 @@ class TaxClassApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, TaxClassRequest $request)
+  public function update($criteria, TaxClassRequest $request)
   {
     try {
       
-      $taxClass = $this->taxClass->find($id);
-      $taxClass = $this->taxClass->update($taxClass, $request->all());
-      
-      // sync tables
-      if ($taxClass)
-        if (isset($request->rates))
-          $taxClass->rates()->sync($request->rates);
-        else
-          $taxClass->rates()->detach();
+      $taxClass = $this->taxClass->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -133,11 +121,11 @@ class TaxClassApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $taxClass = $this->taxClass->find($id);
-      $this->taxClass->destroy($taxClass);
+
+      $this->taxClass->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

@@ -13,6 +13,9 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CurrencyTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Currency;
+
 class CurrencyApiController extends BaseApiController
 {
   private $currency;
@@ -53,11 +56,11 @@ class CurrencyApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $currency = $this->currency->show($id,$this->getParamsRequest());
+      $currency = $this->currency->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $currency ? new CurrencyTransformer($currency) : '',
@@ -97,11 +100,10 @@ class CurrencyApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, CurrencyRequest $request)
+  public function update($criteria, CurrencyRequest $request)
   {
     try {
-      $currency = $this->currency->find($id);
-      $this->currency->update($currency, $request->all());
+      $this->currency->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -118,11 +120,10 @@ class CurrencyApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $currency = $this->currency->find($id);
-      $this->currency->destroy($currency);
+      $this->currency->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\TagTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Tag;
 
 class TagApiController extends BaseApiController
 {
@@ -103,12 +105,11 @@ class TagApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, TagRequest $request)
+  public function update($criteria, TagRequest $request)
   {
     try {
-      
-      $tag = $this->tag->find($id);
-      $this->tag->update($tag, $request->all());
+
+      $this->tag->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -126,11 +127,10 @@ class TagApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $tag = $this->tag->find($id);
-      $this->tag->destroy($tag);
+      $this->tag->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

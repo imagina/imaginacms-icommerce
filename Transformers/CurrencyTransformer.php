@@ -8,7 +8,7 @@ class CurrencyTransformer extends Resource
 {
   public function toArray($request)
   {
-    return  [
+    $data =  [
       'id' => $this->id,
       'title' => $this->title,
       'code' => $this->code,
@@ -22,5 +22,21 @@ class CurrencyTransformer extends Resource
       'updated_at' => $this->updated_at,
       
     ];
+  
+    $filter = json_decode($request->filter);
+  
+    // Return data with available translations
+    if (isset($filter->allTranslations) && $filter->allTranslations){
+    
+      // Get langs avaliables
+      $languages = \LaravelLocalization::getSupportedLocales();
+    
+      foreach ($languages as  $key => $value){
+        if ($this->hasTranslation($key)) {
+          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
+        }
+      }
+    }
+    return $data;
   }
 }

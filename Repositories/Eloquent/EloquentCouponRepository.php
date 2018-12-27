@@ -20,9 +20,7 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     if ($params->filter) {
       $filter = $params->filter;
       
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
+      //get language translation
       $lang = \App::getLocale();
       
       //add filter by search
@@ -78,11 +76,6 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
     
-    // FILTERS
-    //set language translation
-    if (isset($params->filter->locale))
-      \App::setLocale($params->filter->locale ?? null);
-    
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
@@ -90,4 +83,63 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     return $query->first();
     
   }
+  
+  public function create($data){
+  
+    $coupon = $this->model->create($data);
+  
+    // sync tables
+    $coupon->categories()->sync(array_get($data, 'categories', []));
+    $coupon->products()->sync(array_get($data, 'products', []));
+  
+    return $coupon;
+  }
+  
+  
+  public function updateBy($criteria, $data, $params){
+    
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->first();
+  
+    if($model){
+      $query->update($data);
+      // sync tables
+      $model->categories()->sync(array_get($data, 'categories', []));
+      $model->products()->sync(array_get($data, 'products', []));
+    }
+    return $model;
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
+  }
+  
 }

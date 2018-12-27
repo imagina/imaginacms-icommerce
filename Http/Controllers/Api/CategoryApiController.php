@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CategoryTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Category;
 
 class CategoryApiController extends BaseApiController
 {
@@ -100,12 +102,11 @@ class CategoryApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, CategoryRequest $request)
+  public function update($criteria, CategoryRequest $request)
   {
     try {
-     
-      $category = $this->category->find($id);
-      $this->category->update($category, $request->all());
+      
+      $this->category->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -123,11 +124,11 @@ class CategoryApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $category = $this->category->find($id);
-      $this->category->destroy($category);
+
+      $this->category->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

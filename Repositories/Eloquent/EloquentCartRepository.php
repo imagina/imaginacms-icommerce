@@ -68,4 +68,63 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     
   }
   
+  public function create($data){
+    
+    $cart = $this->model->create($data);
+  
+    //sync tables
+    $cart->products()->sync(array_get($data, 'products', []));
+    
+    return $cart;
+  }
+  
+  public function updateBy($criteria, $data, $params){
+    
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->first();
+  
+    if($model){
+      $model->update($data);
+  
+      //sync tables
+      $model->products()->sync(array_get($data, 'products', []));
+    }
+    
+    return $model;
+  
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
+  }
+  
+  
 }

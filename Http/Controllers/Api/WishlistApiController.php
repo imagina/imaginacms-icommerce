@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\WishlistTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Wishlist;
 
 class WishlistApiController extends BaseApiController
 {
@@ -54,11 +56,11 @@ class WishlistApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $wishlist = $this->wishlist->show($id,$this->getParamsRequest());
+      $wishlist = $this->wishlist->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $wishlist ? new WishlistTransformer($wishlist) : '',
@@ -98,11 +100,10 @@ class WishlistApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, WishlistRequest $request)
+  public function update($criteria, WishlistRequest $request)
   {
     try {
-      $wishlist = $this->wishlist->find($id);
-      $this->wishlist->update($wishlist, $request->all());
+      $this->wishlist->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -119,11 +120,10 @@ class WishlistApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $wishlist = $this->wishlist->find($id);
-      $this->wishlist->destroy($wishlist);
+      $this->wishlist->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

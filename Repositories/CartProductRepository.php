@@ -9,4 +9,10 @@ interface CartProductRepository extends BaseRepository
   public function index($params);
   
   public function show($criteria, $params);
+  
+  public function create($data);
+  
+  public function updateBy($criteria, $data, $params);
+  
+  public function deleteBy($criteria, $params);
 }

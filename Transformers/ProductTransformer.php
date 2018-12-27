@@ -8,7 +8,7 @@ class ProductTransformer extends Resource
 {
   public function toArray($request)
   {
-    $item =  [
+    $data =  [
       'id' => $this->id,
       'title' => $this->title,
       'slug' => $this->slug,
@@ -41,70 +41,90 @@ class ProductTransformer extends Resource
       'updated_at' => $this->updated_at,
     ];
   
+    // RELATIONSHIPS
     // Tax Class
     if(isset($this->taxClass))
-      $item['taxClass'] = $this->taxClass;
+      $data['taxClass'] = $this->taxClass;
     
     // Categories
     if(isset($this->categories))
-      $item['categories'] = $this->categories;
+      $data['categories'] = $this->categories;
     
     // Category
     if(isset($this->category))
-      $item['category'] = $this->category;
+      $data['category'] = $this->category;
     
     // Tags
     if(isset($this->tags))
-      $item['tags'] = $this->tags;
+      $data['tags'] = $this->tags;
     
     // Orders
     if(isset($this->orders))
-      $item['orders'] = $this->orders;
+      $data['orders'] = $this->orders;
     
     // Featured Products
     if(isset($this->featuredProducts))
-      $item['featuredProducts'] = $this->featuredProducts;
+      $data['featuredProducts'] = $this->featuredProducts;
   
     // Manufacturer
     if(isset($this->manufacturer))
-      $item['manufacturer'] = $this->manufacturer;
+      $data['manufacturer'] = $this->manufacturer;
   
     // Discounts
     if(isset($this->discounts))
-      $item['discounts'] = $this->discounts;
+      $data['discounts'] = $this->discounts;
   
     // Options
     if(isset($this->options))
-      $item['options'] = $this->options;
+      $data['options'] = $this->options;
   
     // Option Values
     if(isset($this->optionValues))
-      $item['optionValues'] = $this->optionValues;
+      $data['optionValues'] = $this->optionValues;
   
     // Related Products
     if(isset($this->relatedProducts))
-      $item['relatedProducts'] = $this->relatedProducts;
+      $data['relatedProducts'] = $this->relatedProducts;
   
     // Wishlist
     if(isset($this->wishlists))
-      $item['wishlists'] = $this->wishlists;
+      $data['wishlists'] = $this->wishlists;
   
     // Coupons
     if(isset($this->coupons))
-      $item['coupons'] = $this->coupons;
+      $data['coupons'] = $this->coupons;
     
     // Parent
     if(isset($this->parent))
-      $item['parent'] = $this->parent;
+      $data['parent'] = $this->parent;
     
     // Children
     if(isset($this->children))
-      $item['children'] = $this->children;
+      $data['children'] = $this->children;
     
     // Gallery
     if(count($this->gallery))
-      $item['gallery'] = $this->gallery;
+      $data['gallery'] = $this->gallery;
   
-    return $item;
+  
+    // TRANSLATIONS
+    $filter = json_decode($request->filter);
+  
+    // Return data with available translations
+    if (isset($filter->allTranslations) && $filter->allTranslations){
+    
+      // Get langs avaliables
+      $languages = \LaravelLocalization::getSupportedLocales();
+    
+      foreach ($languages as  $key => $value){
+        if ($this->hasTranslation($key)) {
+          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
+          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
+          $data['translates'][$key]['summary'] = $this->translate("$key")['summary'];
+        }
+      }
+    }
+    
+    return $data;
   }
 }

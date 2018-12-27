@@ -13,6 +13,9 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CouponTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Coupon;
+
 class CouponApiController extends BaseApiController
 {
   private $coupon;
@@ -53,11 +56,11 @@ class CouponApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $coupon = $this->coupon->show($id,$this->getParamsRequest());
+      $coupon = $this->coupon->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $coupon ? new CouponTransformer($coupon) : '',
@@ -79,17 +82,7 @@ class CouponApiController extends BaseApiController
   public function create(CouponRequest $request)
   {
     try {
-      $coupon = $this->coupon->create($request->all());
-      
-      // sync tables
-      if ($coupon) {
-        if (isset($request->categories))
-          $coupon->categories()->sync($request->categories);
-        
-        if (isset($request->products))
-          $coupon->products()->sync($request->products);
-      }
-      
+     $this->coupon->create($request->all());
       
       $response = ['data' => ''];
       
@@ -107,27 +100,10 @@ class CouponApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, CouponRequest $request)
+  public function update($criteria, CouponRequest $request)
   {
     try {
-      
-      $coupon = $this->coupon->find($id);
-      $coupon = $this->coupon->update($coupon, $request->all());
-  
-      // sync tables
-      if ($coupon) {
-        if (isset($request->categories))
-          $coupon->categories()->sync($request->categories);
-         else
-          $coupon->categories()->detach();
-      
-        
-        if (isset($request->products))
-          $coupon->products()->sync($request->products);
-         else
-          $coupon->products()->detach();
-        
-      }
+      $this->coupon->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -144,11 +120,10 @@ class CouponApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $coupon = $this->coupon->find($id);
-      $this->coupon->destroy($coupon);
+      $this->coupon->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

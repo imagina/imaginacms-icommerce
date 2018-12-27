@@ -50,6 +50,8 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     }
   }
   
+
+  
   public function show($criteria, $params)
   {
     // INITIALIZE QUERY
@@ -68,4 +70,51 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     return $query->first();
     
   }
+  
+  public function create($data){
+    
+    $cartProduct = $this->model->create($data);
+
+    return $cartProduct;
+  }
+  
+  public function updateBy($criteria, $data, $params){
+  
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $query->update($data);
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+  
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
+  }
+  
+  
 }

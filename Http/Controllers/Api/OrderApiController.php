@@ -13,6 +13,9 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\OrderTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Order;
+
 class OrderApiController extends BaseApiController
 {
   
@@ -82,38 +85,23 @@ class OrderApiController extends BaseApiController
    */
   public function create(OrderRequest $request)
   {
-    \DB::beginTransaction();
+    
     try {
       $order = $this->order->create($request->all());
+  
+      // Status History
+      $this->orderStatusHistory->crete([
+        'order_id' => $order->id,
+        'status' => 0,
+        'notify' => 0,
+        'comment' => 'first status'
+      ]);
       
-      // sync tables
-      if ($order){
-        // Order Options
-        if (isset($request->coupons))
-          $order->coupons()->sync($request->coupons);
-        
-        // Order Option Values
-        if (isset($request->optionValues))
-          $order->optionValues()->sync($request->optionValues);
-        
-        // Products
-        if (isset($request->products))
-          $order->products()->sync($request->products);
-        
-        // Status History
-        $this->orderStatusHistory->crete([
-          'order_id' => $order->id,
-          'status' => 0,
-          'notify' => 0,
-          'comment' => 'first status'
-        ]);
-        
-      }
-      \DB::commit();
+ 
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
-      DB::rollback();
+  
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -127,36 +115,11 @@ class OrderApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, OrderRequest $request)
+  public function update($criteria, OrderRequest $request)
   {
     try {
       
-      $order = $this->order->find($id);
-      $order = $this->order->update($order, $request->all());
-  
-      // sync tables
-      if ($order){
-        // Order Options
-        if (isset($request->coupons))
-          $order->coupons()->sync($request->coupons);
-    
-        // Order Option Values
-        if (isset($request->optionValues))
-          $order->optionValues()->sync($request->optionValues);
-    
-        // Products
-        if (isset($request->products))
-          $order->products()->sync($request->products);
-    
-        // Status History
-        $this->orderStatusHistory->crete([
-          'order_id' => $order->id,
-          'status' => 0,
-          'notify' => 0,
-          'comment' => 'first status'
-        ]);
-    
-      }
+      $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -174,11 +137,11 @@ class OrderApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $order = $this->order->find($id);
-      $this->order->destroy($order);
+
+      $this->order->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

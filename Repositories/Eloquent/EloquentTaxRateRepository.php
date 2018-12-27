@@ -20,9 +20,7 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
     if ($params->filter) {
       $filter = $params->filter;
       
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
+      //get language translation
       $lang = \App::getLocale();
       
       //add filter by search
@@ -70,16 +68,66 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
     
-    // FILTERS
-    //set language translation
-    if (isset($params->filter->locale))
-      \App::setLocale($params->filter->locale ?? null);
-    
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
     }
     return $query->first();
     
+  }
+  
+  public function create($data)
+  {
+    
+    $taxRate = $this->model->create($data);
+  
+    $taxRate->rates()->sync(array_get($data, 'rates', []));
+
+    
+    return $taxRate;
+  }
+  
+  public function updateBy($criteria, $data, $params){
+    
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->first();
+    
+    if($model){
+      $model->update($data);
+      $model->rates()->sync(array_get($data, 'rates', []));
+    }
+    return $model;
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

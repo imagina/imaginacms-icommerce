@@ -69,30 +69,76 @@ class EloquentTagRepository extends EloquentBaseRepository implements TagReposit
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
     
-    // FIELDS
-    if ($params->fields) {
+    /*== FIELDS ==*/
+    if (is_array($params->fields) && count($params->fields))
       $query->select($params->fields);
-    }
     
     // FILTERS
-    //set language translation
-    if (isset($params->filter->locale))
-      \App::setLocale($params->filter->locale ?? null);
+    //get language translation
     $lang = \App::getLocale();
     
-    // First, find record by ID
-    $duplicate = $query;
-    $result = $duplicate->where('id', $criteria)->first();
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->slug) && $filter->slug)//Filter by slug
+        $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
+          $query->where('locale', $lang)
+            ->where('slug', $criteria);
+        });
+      else//Filter by ID
+        $query->where('id', $criteria);
+      
+    }
+    return $query->first();
+  }
+  
+  public function create($data)
+  {
     
-    // If not give results, find by slug
-    if (!$result)
-      $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
-        $query->where('locale', $lang)
-          ->where('slug', $criteria);
-      })->first();
+    $tag = $this->model->create($data);
     
-    return $result;
+    return $tag;
+  }
+  
+  public function updateBy($criteria, $data, $params){
     
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->update($data);
+    
+    return $model;
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
   
 }

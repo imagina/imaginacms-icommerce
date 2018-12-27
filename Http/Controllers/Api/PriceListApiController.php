@@ -13,10 +13,12 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\PriceListTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\PriceList;
 
 class PriceListApiController extends BaseApiController
 {
-  private $priceList;
+  private $criteria;
   
   public function __construct()
   {
@@ -54,14 +56,14 @@ class PriceListApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $priceList = $this->priceList->show($id, $this->parametersUrl());
+      $criteria = $this->priceList->show($criteria, $this->parametersUrl());
       
       $response = [
-        'data' => $priceList ? new PriceListTransformer($priceList) : '',
+        'data' => $criteria ? new PriceListTransformer($criteria) : '',
       ];
       
     } catch (\Exception $e) {
@@ -98,11 +100,11 @@ class PriceListApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, PriceListRequest $request)
+  public function update($criteria, PriceListRequest $request)
   {
     try {
-      $priceList = $this->priceList->find($id);
-      $this->priceList->update($priceList, $request->all());
+
+      $this->priceList->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -119,11 +121,11 @@ class PriceListApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $priceList = $this->priceList->find($id);
-      $this->priceList->destroy($priceList);
+
+      $this->priceList->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

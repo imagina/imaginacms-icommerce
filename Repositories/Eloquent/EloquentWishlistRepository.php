@@ -11,15 +11,15 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-  
+    
     // RELATIONSHIPS
     $defaultInclude = ['product'];
     $query->with(array_merge($defaultInclude, $params->include));
-  
+    
     // FILTERS
-    if($params->filter) {
+    if ($params->filter) {
       $filter = $params->filter;
-  
+      
       //add filter by search
       if (isset($filter->search)) {
         //find search in columns
@@ -27,7 +27,7 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
           ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
           ->orWhere('created_at', 'like', '%' . $filter->search . '%');
       }
-  
+      
       //add filter by user
       if (isset($filter->user)) {
         $query->where('user_id', $filter->user);
@@ -38,7 +38,7 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
     if ($params->fields) {
       $query->select($params->fields);
     }
-  
+    
     // PAGE & TAKE
     //Return request with pagination
     if ($params->page) {
@@ -70,5 +70,53 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
     }
     return $query->first();
     
+  }
+  
+  public function create($data)
+  {
+    
+    $wishlist = $this->model->create($data);
+    
+    return $wishlist;
+  }
+  
+  public function updateBy($criteria, $data, $params){
+    
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->update($data);
+    
+    return $model;
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

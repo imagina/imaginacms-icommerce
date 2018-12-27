@@ -21,9 +21,7 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
     if ($params->filter) {
       $filter = $params->filter;
       
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
+      //get language translation
       $lang = \App::getLocale();
       
       //add filter by search
@@ -70,10 +68,6 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
     
-    // FILTERS
-    //set language translation
-    if (isset($params->filter->locale))
-      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {
@@ -81,5 +75,53 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
     }
     return $query->first();
     
+  }
+  
+  public function create($data)
+  {
+    
+    $optionValue = $this->model->create($data);
+    
+    return $optionValue;
+  }
+  
+  public function updateBy($criteria, $data, $params){
+    
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->update($data);
+    
+    return $model;
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

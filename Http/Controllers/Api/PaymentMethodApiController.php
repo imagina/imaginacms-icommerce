@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\PaymentMethodTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\PaymentMethod;
 
 class PaymentMethodApiController extends BaseApiController
 {
@@ -54,11 +56,11 @@ class PaymentMethodApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $paymentMethod = $this->paymentMethod->show($id, $this->parametersUrl());
+      $paymentMethod = $this->paymentMethod->show($criteria, $this->parametersUrl());
       
       $response = [
         'data' => $paymentMethod ? new PaymentMethodTransformer($paymentMethod) : '',
@@ -98,11 +100,11 @@ class PaymentMethodApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, PaymentMethodRequest $request)
+  public function update($criteria, PaymentMethodRequest $request)
   {
     try {
-      $paymentMethod = $this->paymentMethod->find($id);
-      $this->paymentMethod->update($paymentMethod, $request->all());
+
+      $this->paymentMethod->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -119,11 +121,11 @@ class PaymentMethodApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $paymentMethod = $this->paymentMethod->find($id);
-      $this->paymentMethod->destroy($paymentMethod);
+
+      $this->paymentMethod->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

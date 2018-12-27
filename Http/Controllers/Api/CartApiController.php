@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CartTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Cart;
 
 class CartApiController extends BaseApiController
 {
@@ -81,11 +83,6 @@ class CartApiController extends BaseApiController
   {
     try {
       $cart = $this->cart->create($request->all());
-  
-      // sync tables
-      if ($cart)
-        if (isset($request->products))
-          $cart->products()->sync($request->products);
       
       $response = ['data' => ''];
       
@@ -103,16 +100,10 @@ class CartApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, CartRequest $request)
+  public function update($criteria, CartRequest $request)
   {
     try {
-      $cart = $this->cart->find($id);
-      $cart = $this->cart->update($cart, $request->all());
-  
-      // sync tables
-      if ($cart)
-        if (isset($request->products))
-          $cart->products()->sync($request->products);
+      $this->cart->updateBy($criteria, $request->all(),$this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -129,11 +120,10 @@ class CartApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $cart = $this->cart->find($id);
-      $this->cart->destroy($cart);
+      $this->cart->deleteBy($criteria,$this->parametersUrl());
       
       $response = ['data' => ''];
       

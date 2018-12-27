@@ -13,6 +13,9 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\ManufacturerTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\Manufacturer;
+
 class ManufacturerApiController extends BaseApiController
 {
   private $manufacturer;
@@ -53,11 +56,11 @@ class ManufacturerApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $manufacturer = $this->manufacturer->show($id,$this->getParamsRequest());
+      $manufacturer = $this->manufacturer->show($criteria,$this->getParamsRequest());
       
       $response = [
         'data' => $manufacturer ? new ManufacturerTransformer($manufacturer) : '',
@@ -97,11 +100,10 @@ class ManufacturerApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, ManufacturerRequest $request)
+  public function update($criteria, ManufacturerRequest $request)
   {
     try {
-      $manufacturer = $this->manufacturer->find($id);
-      $this->manufacturer->update($manufacturer, $request->all());
+      $this->manufacturer->updateBy($criteria, $request->all(),$this->getParamsRequest());
       
       $response = ['data' => ''];
       
@@ -118,11 +120,10 @@ class ManufacturerApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $manufacturer = $this->manufacturer->find($id);
-      $this->manufacturer->destroy($manufacturer);
+      $this->manufacturer->deleteBy($criteria,$this->getParamsRequest());
       
       $response = ['data' => ''];
       

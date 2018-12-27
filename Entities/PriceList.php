@@ -15,7 +15,9 @@ class PriceList extends Model
   ];
   protected $fillable = [
     'status',
-    'criteria'
+    'criteria',
+    'related_id',
+    'related_entity',
   ];
   
   public function products()

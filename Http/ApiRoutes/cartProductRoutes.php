@@ -3,7 +3,8 @@
 use Illuminate\Routing\Router;
 
 $router->group(['prefix' => '/cartproducts'/*,'middleware' => ['auth:api']*/], function (Router $router) {
-  $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
+  $locale = \LaravelLocalization::setLocale() ? : \App::getLocale();
+  
   $router->post('/', [
     'as' => $locale . 'api.icommerce.cartproducts.create',
     'uses' => 'CartProductApiController@create',
@@ -12,11 +13,11 @@ $router->group(['prefix' => '/cartproducts'/*,'middleware' => ['auth:api']*/], f
     'as' => $locale . 'api.icommerce.cartproducts.index',
     'uses' => 'CartProductApiController@index',
   ]);
-  $router->put('/{id}', [
+  $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.cartproducts.update',
     'uses' => 'CartProductApiController@update',
   ]);
-  $router->delete('/{id}', [
+  $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.cartproducts.delete',
     'uses' => 'CartProductApiController@delete',
   ]);

@@ -8,7 +8,7 @@ class PriceListTransformer extends Resource
 {
   public function toArray($request)
   {
-    $item = [
+    $data = [
       'id' => $this->id,
       'name' => $this->name,
       'status' => $this->status,
@@ -18,8 +18,22 @@ class PriceListTransformer extends Resource
     ];
     
     if(isset($this->products))
-      $item['products'] = $this->products;
+      $data['products'] = $this->products;
+  
+    $filter = json_decode($request->filter);
+  
+    // Return data with available translations
+    if (isset($filter->allTranslations) && $filter->allTranslations){
     
-    return $item;
+      // Get langs avaliables
+      $languages = \LaravelLocalization::getSupportedLocales();
+    
+      foreach ($languages as  $key => $value){
+        if ($this->hasTranslation($key)) {
+          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
+        }
+      }
+    }
+    return $data;
   }
 }

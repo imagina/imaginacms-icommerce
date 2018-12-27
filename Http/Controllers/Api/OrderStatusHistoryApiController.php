@@ -13,6 +13,8 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 
+// Entities
+use Modules\Icommerce\Entities\OrderStatusHistory;
 
 class OrderStatusHistoryApiController extends BaseApiController
 {
@@ -56,11 +58,11 @@ class OrderStatusHistoryApiController extends BaseApiController
    *  &fields = type string
    *  &include = type string
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
       //Request to Repository
-      $orderHistory = $this->orderHistory->show($id, $this->parametersUrl());
+      $orderHistory = $this->orderHistory->show($criteria, $this->parametersUrl());
       
       $response = [
         'data' => $orderHistory ? new OrderHistoryTransformer($orderHistory) : '',
@@ -100,11 +102,11 @@ class OrderStatusHistoryApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, OrderHistoryRequest $request)
+  public function update($criteria, OrderHistoryRequest $request)
   {
     try {
-      $orderHistory = $this->orderHistory->find($id);
-      $orderHistory = $this->orderHistory->update($orderHistory, $request->all());
+
+      $this->orderHistory->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -121,11 +123,11 @@ class OrderStatusHistoryApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $orderHistory = $this->orderHistory->find($id);
-      $this->orderHistory->destroy($orderHistory);
+
+      $this->orderHistory->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

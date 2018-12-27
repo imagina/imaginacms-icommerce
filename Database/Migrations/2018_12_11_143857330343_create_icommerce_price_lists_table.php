@@ -18,6 +18,9 @@ class CreateIcommercePriceListsTable extends Migration
       // Your fields
       $table->integer('status')->default(1);
       $table->enum('criteria', ['percentage', 'fixed']);
+      $table->integer('related_id')->nullable();
+      $table->string('related_entity')->nullable();
+
       $table->timestamps();
     });
   }

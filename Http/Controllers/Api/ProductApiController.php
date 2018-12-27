@@ -15,7 +15,7 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 
 // Entities
 use Modules\Icommerce\Entities\Tag;
-
+use Modules\Icommerce\Entities\Product;
 
 class ProductApiController extends BaseApiController
 {
@@ -89,31 +89,7 @@ class ProductApiController extends BaseApiController
   
       // sync tables
       if ($product) {
-        // Categories
-        if (isset($request->categories))
-          $product->categories()->sync($request->categories);
-    
-        // Product Options
-        if (isset($request->options))
-          $product->options()->sync($request->options);
-    
-        // Product Option Values
-        if (isset($request->optionValues))
-          $product->optionValues()->sync($request->optionValues);
-    
-        // Related Products
-        if (isset($request->relatedProducts))
-          $product->relatedProducts()->sync($request->relatedProducts);
-    
-        // Discounts
-        if (isset($request->discounts))
-          $product->discounts()->sync($request->discounts);
-    
-        // Tags
-        if (isset($request->tags)){
-          $request->tags = $this->addTags($request->tags);
-          $product->tags()->sync($request->tags);
-        }
+
     
         // Image
         if (isset($request->mainimage) && !empty($request->mainimage)) {
@@ -158,41 +134,15 @@ class ProductApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($id, ProductRequest $request)
+  public function update($criteria, ProductRequest $request)
   {
     try {
       
-      $product = $this->product->find($id);
-      $product = $this->product->update($product, $request->all());
+      $product = $this->product->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       // sync tables
       if ($product) {
-        // Categories
-        if (isset($request->categories))
-          $product->categories()->sync($request->categories);
         
-        // Product Options
-        if (isset($request->options))
-          $product->options()->sync($request->options);
-        
-        // Product Option Values
-        if (isset($request->optionValues))
-          $product->optionValues()->sync($request->optionValues);
-        
-        // Related Products
-        if (isset($request->relatedProducts))
-          $product->relatedProducts()->sync($request->relatedProducts);
-        
-        // Discounts
-        if (isset($request->discounts))
-          $product->discounts()->sync($request->discounts);
-  
-        // Tags
-        if (isset($request->tags)){
-          $request->tags = $this->addTags($request->tags);
-          $product->tags()->sync($request->tags);
-        }
-  
         // Image
         if (isset($request->mainimage) && !empty($request->mainimage)) {
           $mainimage = $this->saveImage($request->mainimage, "assets/icommerce/product/" . $product->id . ".jpg");
@@ -236,11 +186,11 @@ class ProductApiController extends BaseApiController
    * Remove the specified resource from storage.
    * @return Response
    */
-  public function delete($id, Request $request)
+  public function delete($criteria, Request $request)
   {
     try {
-      $product = $this->product->find($id);
-      $this->product->destroy($product);
+
+      $this->product->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

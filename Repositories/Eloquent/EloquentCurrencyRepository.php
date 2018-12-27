@@ -20,9 +20,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     if ($params->filter) {
       $filter = $params->filter;
       
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
+      //get language translation
       $lang = \App::getLocale();
       
       //add filter by search
@@ -76,10 +74,6 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
     
-    // FILTERS
-    //set language translation
-    if (isset($params->filter->locale))
-      \App::setLocale($params->filter->locale ?? null);
     
     // FIELDS
     if ($params->fields) {
@@ -87,5 +81,54 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     }
     return $query->first();
     
+  }
+  
+  public function create($data){
+    
+    $currency = $this->model->create($data);
+    
+  
+    return $currency;
+  }
+  
+  
+  public function updateBy($criteria, $data, $params){
+    
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+    
+    // REQUEST
+    $model = $query->update($data);
+    
+    return $model;
+  }
+  
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+    
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }
