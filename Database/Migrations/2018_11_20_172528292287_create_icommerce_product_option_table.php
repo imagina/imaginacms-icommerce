@@ -17,10 +17,10 @@ class CreateIcommerceProductOptionTable extends Migration
       $table->increments('id');
       // Your fields
       $table->integer('product_id')->unsigned();
-      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
       
       $table->integer('option_id')->unsigned();
-      $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('restrict');
+      $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('cascade');
       
       $table->string('value');
       $table->integer('required')->unsigned();

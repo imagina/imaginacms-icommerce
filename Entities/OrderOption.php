@@ -13,18 +13,17 @@ class OrderOption extends Model
   protected $fillable = [
     'order_id',
     'order_product_id',
-    'product_option_id',
-    'product_option_value_id',
-    'name',
+    'parent_value',
+    'quantity',
+    'subtract',
+    'price',
+    'weight',
+    'option_value',
     'value',
-    'type',
-    'options'
+    'required',
+    'type'
   ];
-  protected $fakeColumns = ['options'];
-  
-  protected $casts = [
-    'options' => 'array'
-  ];
+
   public function order()
   {
     return $this->belongsTo(Order::class);

@@ -17,19 +17,19 @@ class CreateIcommerceProductOptionValueTable extends Migration
       $table->increments('id');
       // Your fields
       $table->integer('product_option_id')->unsigned();
-      $table->foreign('product_option_id')->references('id')->on('icommerce__product_option')->onDelete('restrict');
+      $table->foreign('product_option_id')->references('id')->on('icommerce__product_option')->onDelete('cascade');
       
       $table->integer('product_id')->unsigned();
-      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
       
       $table->integer('option_id')->unsigned();
-      $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('restrict');
+      $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('cascade');
   
       $table->integer('option_value_id')->unsigned();
-      $table->foreign('option_value_id')->references('id')->on('icommerce__option_values')->onDelete('restrict');
+      $table->foreign('option_value_id')->references('id')->on('icommerce__option_values')->onDelete('cascade');
   
       $table->integer('parent_option_value_id')->unsigned()->nullable();
-      $table->foreign('parent_option_value_id')->references('id')->on('icommerce__option_values')->onDelete('restrict');
+      $table->foreign('parent_option_value_id')->references('id')->on('icommerce__option_values')->onDelete('cascade');
       
       $table->integer('quantity')->unsigned();
       $table->tinyInteger('subtract')->unsigned();

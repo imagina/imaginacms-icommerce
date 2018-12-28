@@ -17,7 +17,7 @@ class CreateIcommerceOptionValuesTable extends Migration
       $table->increments('id');
       // Your fields
       $table->integer('option_id')->unsigned()->nullable();
-      $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('restrict');
+      $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('cascade');
       
       $table->integer('sort_order')->default(0);
       $table->text('options')->default('')->nullable();

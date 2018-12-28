@@ -17,13 +17,13 @@ class CreateIcommerceProductDiscountsTable extends Migration
       $table->increments('id');
       // Your fields
       $table->integer('product_id')->unsigned();
-      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
   
       $table->integer('product_option_value_id')->unsigned()->nullable();
-      $table->foreign('product_option_value_id')->references('id')->on('icommerce__product_option_value')->onDelete('restrict');
+      $table->foreign('product_option_value_id')->references('id')->on('icommerce__product_option_value')->onDelete('cascade');
   
       $table->integer('product_option_id')->unsigned()->nullable();
-      $table->foreign('product_option_id')->references('id')->on('icommerce__product_option')->onDelete('restrict');
+      $table->foreign('product_option_id')->references('id')->on('icommerce__product_option')->onDelete('cascade');
       
       $table->integer('quantity')->default(0)->unsigned();
       
