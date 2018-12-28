@@ -16,6 +16,7 @@ class Option extends Model
   protected $fillable = [
     'type',
     'sort_order',
+    'parent_id',
     'options'
   ];
   protected $fakeColumns = ['options'];

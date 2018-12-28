@@ -39,6 +39,12 @@ class ProductOptionValue extends Model
   }
   
   //************* OJO DUDAS PROBAR ********************
+  public function parent()
+  {
+    return $this->belongsTo('Modules\Icommerce\Entities\ProductOptionValue');
+  }
+  
+  //************* OJO DUDAS PROBAR ********************
   public function option()
   {
     return $this->belongsTo(Option::class);

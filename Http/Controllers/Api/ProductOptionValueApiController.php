@@ -3,7 +3,7 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
-use Modules\Icommerce\Http\Requests\OptionRequest;
+use Modules\Icommerce\Http\Requests\ProductOptionValueRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -11,20 +11,21 @@ use Illuminate\Http\Response;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 // Transformers
-use Modules\Icommerce\Transformers\OptionTransformer;
+use Modules\Icommerce\Transformers\ProductOptionValueTransformer;
 
 // Entities
-use Modules\Icommerce\Entities\Option;
+use Modules\Icommerce\Entities\Tag;
+use Modules\Icommerce\Entities\Product;
 
-class OptionApiController extends BaseApiController
+class ProductOptionValueApiController extends BaseApiController
 {
-  private $option;
-  private $optionValue;
+  
+  private $productOptionValue;
+  
   
   public function __construct()
   {
-    $this->option = app('Modules\Icommerce\Repositories\OptionRepository');
-    $this->optionValue = app('Modules\Icommerce\Repositories\OptionValueRepository');
+    $this->productOptionValue = app('Modules\Icommerce\Repositories\ProductOptionValueRepository');
   }
   
   /**
@@ -35,12 +36,12 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $options = $this->option->index($this->getParamsRequest());
+      $productOptionValues = $this->productOptionValue->index($this->getParamsRequest());
       
       //Response
-      $response = ['data' => OptionTransformer::collection($options)];
+      $response = ['data' => ProductOptionValueTransformer::collection($productOptionValues)];
       //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($options)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($productOptionValues)] : false;
       
     } catch (\Exception $e) {
       //Message Error
@@ -62,10 +63,10 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $option = $this->option->show($criteria,$this->getParamsRequest());
+      $productOptionValue = $this->productOptionValue->show($criteria,$this->getParamsRequest());
       
       $response = [
-        'data' => $option ? new OptionTransformer($option) : '',
+        'data' => $productOptionValue ? new ProductOptionValueTransformer($productOptionValue) : '',
       ];
       
     } catch (\Exception $e) {
@@ -81,22 +82,14 @@ class OptionApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(OptionRequest $request)
+  public function create(ProductOptionValueRequest $request)
   {
-    \DB::beginTransaction();
     try {
-      $option = $this->option->create($request->all());
-      
-      foreach ($request->optionValues as $optionValue){
-        $optionValue["option_id"] = $option->id;
-        $this->optionValue->create($optionValue);
-      }
+      $this->productOptionValue->create($request->all());
       
       $response = ['data' => ''];
-      \DB::commit();
       
     } catch (\Exception $e) {
-      \DB::rollback();
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -110,20 +103,12 @@ class OptionApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, OptionRequest $request)
+  public function update($criteria, ProductOptionValueRequest $request)
   {
     try {
-      $option = $this->option->updateBy($criteria, $request->all(),$this->getParamsRequest());
-  
-      foreach ($request->optionValues as $optionValue)
-        if(isset($optionValue['id']) && !empty($optionValue['id']))
-          $this->optionValue->updateBy($optionValue['id'],$optionValue,$this->getParamsRequest());
-        else{
-          $optionValue["option_id"] = $option->id;
-          $this->optionValue->create($optionValue);
-        }
-  
-  
+      
+      $this->productOptionValue->updateBy($criteria, $request->all(), $this->parametersUrl());
+      
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
@@ -134,6 +119,7 @@ class OptionApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
+  
   
   /**
    * Remove the specified resource from storage.
@@ -142,7 +128,8 @@ class OptionApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->option->deleteBy($criteria,$this->getParamsRequest());
+      
+      $this->productOptionValue->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -154,4 +141,5 @@ class OptionApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
+  
 }

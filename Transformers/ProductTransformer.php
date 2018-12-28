@@ -10,7 +10,7 @@ class ProductTransformer extends Resource
   {
     $data =  [
       'id' => $this->id,
-      'title' => $this->title,
+      'name' => $this->name,
       'slug' => $this->slug,
       'summary' => $this->summary,
       'options' => $this->options,
@@ -74,9 +74,9 @@ class ProductTransformer extends Resource
     if(isset($this->discounts))
       $data['discounts'] = $this->discounts;
   
-    // Options
-    if(isset($this->options))
-      $data['options'] = $this->options;
+    // Product Options
+    if(isset($this->productOptions))
+      $data['productOptions'] = $this->productOptions;
   
     // Option Values
     if(isset($this->optionValues))
@@ -118,7 +118,7 @@ class ProductTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
+          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
           $data['translates'][$key]['description'] = $this->translate("$key")['description'];
           $data['translates'][$key]['summary'] = $this->translate("$key")['summary'];
         }

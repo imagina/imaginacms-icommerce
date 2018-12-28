@@ -95,7 +95,7 @@ class Product extends Model
     return $this->hasMany(ProductDiscount::class);
   }
   
-  public function options()
+  public function productOptions()
   {
     return $this->belongsToMany(Option::class, 'icommerce__product_option')
       ->withPivot('id', 'value', 'required')

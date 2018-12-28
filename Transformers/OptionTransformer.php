@@ -19,8 +19,8 @@ class OptionTransformer extends Resource
     ];
     
     // Option Values
-    if(isset($this->optionValues))
-      $data["optionValues"] = $this->optionValues;
+    if(count($this->optionValues))
+      $data["optionValues"] = OptionValueTransformer::collection($this->optionValues);;
   
     $filter = json_decode($request->filter);
   

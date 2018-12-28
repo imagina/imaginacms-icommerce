@@ -5,7 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\ProductOptionValue;
-use Modules\Icommerce\Http\Requests\CreateProductOptionValueRequest;
+use Modules\Icommerce\Http\Requests\ProductOptionValueRequest;
 use Modules\Icommerce\Http\Requests\UpdateProductOptionValueRequest;
 use Modules\Icommerce\Repositories\ProductOptionValueRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
@@ -49,10 +49,10 @@ class ProductOptionValueController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateProductOptionValueRequest $request
+     * @param  ProductOptionValueRequest $request
      * @return Response
      */
-    public function store(CreateProductOptionValueRequest $request)
+    public function store(ProductOptionValueRequest $request)
     {
         $this->productoptionvalue->create($request->all());
 
@@ -78,7 +78,7 @@ class ProductOptionValueController extends AdminBaseController
      * @param  UpdateProductOptionValueRequest $request
      * @return Response
      */
-    public function update(ProductOptionValue $productoptionvalue, UpdateProductOptionValueRequest $request)
+    public function update(ProductOptionValue $productoptionvalue, ProductOptionValueRequest $request)
     {
         $this->productoptionvalue->update($productoptionvalue, $request->all());
 

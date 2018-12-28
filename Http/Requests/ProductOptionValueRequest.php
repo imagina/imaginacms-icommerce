@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
 
-class CreateProductOptionValueRequest extends BaseFormRequest
+class ProductOptionValueRequest extends BaseFormRequest
 {
     public function rules()
     {

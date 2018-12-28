@@ -28,7 +28,7 @@ class CreateIcommerceProductOptionValueTable extends Migration
       $table->integer('option_value_id')->unsigned();
       $table->foreign('option_value_id')->references('id')->on('icommerce__option_values')->onDelete('restrict');
   
-      $table->integer('parent_option_value_id')->unsigned();
+      $table->integer('parent_option_value_id')->unsigned()->nullable();
       $table->foreign('parent_option_value_id')->references('id')->on('icommerce__option_values')->onDelete('restrict');
       
       $table->integer('quantity')->unsigned();
