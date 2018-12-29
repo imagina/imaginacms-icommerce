@@ -205,8 +205,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       else //where id
         $query->where('id', $criteria);
     }
-    
-    /*== REQUEST ==*/
-    $query->delete();
+  
+    // REQUEST
+    $model = $query->first();
+  
+    if($model) {
+      $model->delete();
+    }
   }
 }

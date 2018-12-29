@@ -4,9 +4,10 @@
     <bookmark url="file://$PROJECT_DIR$/Http/ApiRoutes/manufacturerRoutes.php" line="10" mnemonic="1" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="">
+    <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="+Update: UpdateBy repositories">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCurrencyRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCurrencyRepository.php" afterDir="false" />
@@ -14,11 +15,15 @@
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -77,15 +82,17 @@
       <file leaf-file-name="EloquentProductOptionValueRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1377" />
+            <state relative-caret-position="591">
+              <caret line="140" column="5" selection-start-line="140" selection-start-column="5" selection-end-line="140" selection-end-column="5" />
+            </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="EloquentProductRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="174" column="4" selection-start-line="174" selection-start-column="4" selection-end-line="176" selection-end-column="15" />
+            <state relative-caret-position="605">
+              <caret line="213" column="5" selection-start-line="213" selection-start-column="5" selection-end-line="213" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -108,8 +115,8 @@
       <file leaf-file-name="EloquentTagRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="124" column="18" selection-start-line="124" selection-start-column="18" selection-end-line="124" selection-end-column="18" />
+            <state relative-caret-position="588">
+              <caret line="147" column="5" selection-start-line="147" selection-start-column="5" selection-end-line="147" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -122,8 +129,8 @@
       <file leaf-file-name="EloquentTaxClassRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="118" column="18" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
+            <state relative-caret-position="571">
+              <caret line="141" column="5" selection-start-line="141" selection-start-column="5" selection-end-line="141" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -131,15 +138,17 @@
       <file leaf-file-name="EloquentTaxRateRepository.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1428" />
+            <state relative-caret-position="629">
+              <caret line="134" column="5" selection-start-line="134" selection-start-column="5" selection-end-line="134" selection-end-column="5" />
+            </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="EloquentWishlistRepository.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="103" column="18" selection-start-line="103" selection-start-column="18" selection-end-line="103" selection-end-column="18" />
+            <state relative-caret-position="622">
+              <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -195,19 +204,24 @@
         <option value="$PROJECT_DIR$/Http/Controllers/Api/TaxClassApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/TaxRateApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/WishlistApiController.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCurrencyRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentManufacturerRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" />
+        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" />
       </list>
     </option>
@@ -243,24 +257,6 @@
             <path>
               <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
               <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
               <item name="Repositories" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -287,11 +283,11 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../fhaproducts2018_backend/Modules/Icommerce" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../fhaproducts2018_backend/Modules/Icommerce/Repositories/Eloquent" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-    <property name="two.files.diff.last.used.folder" value="$PROJECT_DIR$/../fhaproducts2018_backend/Modules/Icommerce" />
+    <property name="two.files.diff.last.used.folder" value="$PROJECT_DIR$/../fhaproducts2018_backend/Modules/Icommerce/Repositories/Eloquent" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -331,11 +327,18 @@
       <option name="project" value="LOCAL" />
       <updated>1546097089204</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="+Update: UpdateBy repositories">
+      <created>1546105690822</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1546105690822</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12984000" />
+    <option name="totallyTimeSpent" value="13446000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1616" height="876" extended-state="6" />
@@ -413,7 +416,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add field parent_id, show_menu in transformer`s category" />
     <MESSAGE value="fix use repository category in controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix use repository category in controller" />
+    <MESSAGE value="+Update: UpdateBy repositories" />
+    <option name="LAST_COMMIT_MESSAGE" value="+Update: UpdateBy repositories" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/OrderStatusHistoryApiController.php">
@@ -499,13 +503,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/CartRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="16" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheCartDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -533,50 +530,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponProductRepository.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponHistoryRepository.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponCategoryRepository.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="99" column="20" selection-start-line="99" selection-start-column="14" selection-end-line="99" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/CategoryRepository.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php">
+    <entry file="file://$PROJECT_DIR$/Repositories/CartRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="117" column="4" lean-forward="true" selection-start-line="117" selection-start-column="4" selection-end-line="123" selection-end-column="18" />
+        <state relative-caret-position="136">
+          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="16" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="89" column="44" selection-start-line="89" selection-start-column="44" selection-end-line="89" selection-end-column="44" />
+        <state relative-caret-position="435">
+          <caret line="119" column="4" lean-forward="true" selection-start-line="119" selection-start-column="4" selection-end-line="124" selection-end-column="5" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="571">
+          <caret line="129" column="5" selection-start-line="129" selection-start-column="5" selection-end-line="129" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="571">
+          <caret line="146" column="5" selection-start-line="146" selection-start-column="5" selection-end-line="146" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponCategoryRepository.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponHistoryRepository.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponProductRepository.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="117" column="12" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="12" />
+        <state relative-caret-position="588">
+          <caret line="145" column="5" selection-start-line="145" selection-start-column="5" selection-end-line="145" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCurrencyRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="115" column="18" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="138" column="5" selection-start-line="138" selection-start-column="5" selection-end-line="138" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -585,29 +589,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentManufacturerRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="115" column="18" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="138" column="5" selection-start-line="138" selection-start-column="5" selection-end-line="138" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="114" column="18" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="108" column="18" selection-start-line="108" selection-start-column="18" selection-end-line="108" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="131" column="5" selection-start-line="131" selection-start-column="5" selection-end-line="131" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="100" column="18" selection-start-line="100" selection-start-column="18" selection-end-line="100" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="123" column="5" selection-start-line="123" selection-start-column="5" selection-end-line="123" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -619,7 +623,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1377" />
+        <state relative-caret-position="605">
+          <caret line="141" column="5" selection-start-line="141" selection-start-column="5" selection-end-line="141" selection-end-column="5" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderShipmentRepository.php">
@@ -630,8 +636,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="102" column="18" selection-start-line="102" selection-start-column="18" selection-end-line="102" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="125" column="5" selection-start-line="125" selection-start-column="5" selection-end-line="125" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -640,8 +646,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="113" column="18" selection-start-line="113" selection-start-column="18" selection-end-line="113" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="136" column="5" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -653,8 +659,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="103" column="18" selection-start-line="103" selection-start-column="18" selection-end-line="103" selection-end-column="18" />
+        <state relative-caret-position="605">
+          <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -663,13 +669,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1377" />
+        <state relative-caret-position="591">
+          <caret line="140" column="5" selection-start-line="140" selection-start-column="5" selection-end-line="140" selection-end-column="5" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="174" column="4" selection-start-line="174" selection-start-column="4" selection-end-line="176" selection-end-column="15" />
+        <state relative-caret-position="605">
+          <caret line="213" column="5" selection-start-line="213" selection-start-column="5" selection-end-line="213" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -684,8 +692,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="124" column="18" selection-start-line="124" selection-start-column="18" selection-end-line="124" selection-end-column="18" />
+        <state relative-caret-position="588">
+          <caret line="147" column="5" selection-start-line="147" selection-start-column="5" selection-end-line="147" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -694,20 +702,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="118" column="18" selection-start-line="118" selection-start-column="18" selection-end-line="118" selection-end-column="18" />
+        <state relative-caret-position="571">
+          <caret line="141" column="5" selection-start-line="141" selection-start-column="5" selection-end-line="141" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1428" />
+        <state relative-caret-position="629">
+          <caret line="134" column="5" selection-start-line="134" selection-start-column="5" selection-end-line="134" selection-end-column="5" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="103" column="18" selection-start-line="103" selection-start-column="18" selection-end-line="103" selection-end-column="18" />
+        <state relative-caret-position="622">
+          <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
         </state>
       </provider>
     </entry>

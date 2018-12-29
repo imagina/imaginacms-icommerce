@@ -118,8 +118,12 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
       else //where id
         $query->where('id', $criteria);
     }
-    
-    /*== REQUEST ==*/
-    $query->delete();
+  
+    // REQUEST
+    $model = $query->first();
+  
+    if($model) {
+      $model->delete();
+    }
   }
 }
