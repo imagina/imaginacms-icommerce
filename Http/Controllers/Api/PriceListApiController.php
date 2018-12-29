@@ -20,9 +20,9 @@ class PriceListApiController extends BaseApiController
 {
   private $criteria;
   
-  public function __construct()
+  public function __construct(PriceListRepository $priceList)
   {
-    $this->priceList = app('Modules\Icommerce\Repositories\PriceListRepository');
+    $this->priceList = $priceList;
   }
   
   /**

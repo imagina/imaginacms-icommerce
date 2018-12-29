@@ -3,7 +3,7 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
-use Modules\Icommerce\Http\Requests\TaxClassRequest;
+use Modules\Icommerce\Http\Requests\ProductListRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -11,18 +11,16 @@ use Illuminate\Http\Response;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 // Transformers
-use Modules\Icommerce\Transformers\TaxClassTransformer;
+use Modules\Icommerce\Transformers\ProductListTransformer;
 
-// Entities
-use Modules\Icommerce\Entities\TaxClass;
 
-class TaxClassApiController extends BaseApiController
+class ProductListApiController extends BaseApiController
 {
-  private $taxClass;
+  private $productList;
   
-  public function __construct(TaxClassRepository $taxClass)
+  public function __construct(ProductListRepository $productList)
   {
-    $this->taxClass = $taxClass;
+    $this->productList = $productList;
   }
   
   /**
@@ -33,12 +31,12 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxClasses = $this->taxClass->index($this->getParamsRequest());
+      $productLists = $this->productList->index($this->getParamsRequest());
       
       //Response
-      $response = ['data' => TaxClassTransformer::collection($taxClasses)];
+      $response = ['data' => ProductListTransformer::collection($productLists)];
       //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($taxClasses)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($productLists)] : false;
       
     } catch (\Exception $e) {
       //Message Error
@@ -60,10 +58,10 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxClass = $this->taxClass->show($criteria,$this->getParamsRequest());
+      $productList = $this->productList->show($criteria, $this->parametersUrl());
       
       $response = [
-        'data' => $taxClass ? new TaxClassTransformer($taxClass) : '',
+        'data' => $productList ? new ProductListTransformer($productList) : '',
       ];
       
     } catch (\Exception $e) {
@@ -79,10 +77,10 @@ class TaxClassApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(TaxClassRequest $request)
+  public function create(ProductListRequest $request)
   {
     try {
-      $taxClass = $this->taxClass->create($request->all());
+      $this->productList->create($request->all());
       
       $response = ['data' => ''];
       
@@ -100,11 +98,11 @@ class TaxClassApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, TaxClassRequest $request)
+  public function update($criteria, ProductListRequest $request)
   {
     try {
-      
-      $taxClass = $this->taxClass->updateBy($criteria, $request->all(), $this->parametersUrl());
+
+      $this->productList->updateBy($criteria, $request->all(), $this->parametersUrl());
       
       $response = ['data' => ''];
       
@@ -124,8 +122,7 @@ class TaxClassApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-
-      $this->taxClass->deleteBy($criteria, $this->parametersUrl());
+      $this->productList->deleteBy($criteria, $this->parametersUrl());
       
       $response = ['data' => ''];
       

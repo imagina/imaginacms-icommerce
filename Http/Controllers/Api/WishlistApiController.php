@@ -20,9 +20,9 @@ class WishlistApiController extends BaseApiController
 {
   private $wishlist;
   
-  public function __construct()
+  public function __construct(WishlistRepository $wishlist)
   {
-    $this->wishlist = app('Modules\Icommerce\Repositories\WishlistRepository');
+    $this->wishlist = $wishlist;
   }
   
   /**

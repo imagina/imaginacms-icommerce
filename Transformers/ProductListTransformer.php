@@ -12,7 +12,6 @@ class ProductListTransformer extends Resource
       'id' => $this->id,
       'product_id' => $this->product_id,
       'price_list_id' => $this->price_list_id,
-      'product_option_id' => $this->product_option_id,
       'product_option_value_id' => $this->product_option_value_id,
       'price' => $this->price,
       'created_at' => $this->created_at,
@@ -21,9 +20,7 @@ class ProductListTransformer extends Resource
   
     if(isset($this->product))
       $item['product'] = $this->product;
-  
-    if(isset($this->productOption))
-      $item['productOption'] = $this->productOption;
+    
   
     if(isset($this->productOptionValue))
       $item['productOptionValue'] = $this->productOptionValue;

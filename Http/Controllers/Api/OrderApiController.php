@@ -23,10 +23,10 @@ class OrderApiController extends BaseApiController
   private $orderStatusHistory;
   
   
-  public function __construct()
+  public function __construct(OrderRepository $order,OrderHistoryRepository $orderStatusHistory)
   {
-    $this->order =  app('Modules\Icommerce\Repositories\OrderRepository');
-    $this->orderStatusHistory = app('Modules\Icommerce\Repositories\OrderHistoryRepository');
+    $this->order = $order;
+    $this->orderStatusHistory = $orderStatusHistory;
   }
   
   /**

@@ -23,9 +23,9 @@ class ProductOptionValueApiController extends BaseApiController
   private $productOptionValue;
   
   
-  public function __construct()
+  public function __construct(ProductOptionValueRepository $productOptionValue)
   {
-    $this->productOptionValue = app('Modules\Icommerce\Repositories\ProductOptionValueRepository');
+    $this->productOptionValue = $productOptionValue;
   }
   
   /**

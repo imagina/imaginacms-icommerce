@@ -22,9 +22,9 @@ class TagApiController extends BaseApiController
   private $tag;
   
   
-  public function __construct()
+  public function __construct(TagRepository $tag)
   {
-    $this->tag = app('Modules\Icommerce\Repositories\TagRepository');
+    $this->tag = $tag;
   }
   
   /**

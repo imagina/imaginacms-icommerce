@@ -22,9 +22,9 @@ class CategoryApiController extends BaseApiController
   private $category;
   
   
-  public function __construct()
+  public function __construct(CategoryRepository $category)
   {
-    $this->category = app('Modules\Icommerce\Repositories\CategoryRepository');
+    $this->category = $category;
   }
   
   /**

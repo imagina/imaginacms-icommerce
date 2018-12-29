@@ -20,9 +20,9 @@ class ManufacturerApiController extends BaseApiController
 {
   private $manufacturer;
   
-  public function __construct()
+  public function __construct(ManufacturerRepository $manufacturer)
   {
-    $this->manufacturer = app('Modules\Icommerce\Repositories\ManufacturerRepository');
+    $this->manufacturer = $manufacturer;
   }
   
   /**
