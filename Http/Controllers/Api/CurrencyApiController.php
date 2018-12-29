@@ -20,9 +20,9 @@ class CurrencyApiController extends BaseApiController
 {
   private $currency;
   
-  public function __construct()
+  public function __construct(CurrencyRepository $currency)
   {
-    $this->currency = app('Modules\Icommerce\Repositories\CurrencyRepository');
+    $this->currency = $currency;
   }
   
   /**

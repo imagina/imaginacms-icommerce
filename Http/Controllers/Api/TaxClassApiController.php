@@ -20,9 +20,9 @@ class TaxClassApiController extends BaseApiController
 {
   private $taxClass;
   
-  public function __construct()
+  public function __construct(TaxClassRepository $taxClass)
   {
-    $this->taxClass = app('Modules\Icommerce\Repositories\TaxClassRepository');
+    $this->taxClass = $taxClass;
   }
   
   /**

@@ -20,9 +20,9 @@ class CouponApiController extends BaseApiController
 {
   private $coupon;
   
-  public function __construct()
+  public function __construct(CouponRepository $coupon)
   {
-    $this->coupon = app('Modules\Icommerce\Repositories\CouponRepository');
+    $this->coupon = $coupon;
   }
   
   /**

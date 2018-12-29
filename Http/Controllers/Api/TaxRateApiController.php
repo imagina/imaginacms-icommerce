@@ -20,9 +20,9 @@ class TaxRateApiController extends BaseApiController
 {
   private $taxRate;
   
-  public function __construct()
+  public function __construct(TaxRateRepository $taxRate)
   {
-    $this->taxRate = app('Modules\Icommerce\Repositories\TaxRateRepository');
+    $this->taxRate = $taxRate;
   }
   
   /**

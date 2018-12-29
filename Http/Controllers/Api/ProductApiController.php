@@ -23,9 +23,9 @@ class ProductApiController extends BaseApiController
   private $product;
   
   
-  public function __construct()
+  public function __construct(ProductRepository $product)
   {
-    $this->product = app('Modules\Icommerce\Repositories\ProductRepository');
+    $this->product = $product;
   }
   
   /**

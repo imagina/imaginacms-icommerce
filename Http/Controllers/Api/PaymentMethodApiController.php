@@ -20,9 +20,9 @@ class PaymentMethodApiController extends BaseApiController
 {
   private $paymentMethod;
   
-  public function __construct()
+  public function __construct(PaymentMethodRepository $paymentMethod)
   {
-    $this->paymentMethod = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
+    $this->paymentMethod = $paymentMethod;
   }
   
   /**

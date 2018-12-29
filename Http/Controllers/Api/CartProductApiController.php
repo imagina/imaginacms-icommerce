@@ -21,9 +21,9 @@ class CartProductApiController extends BaseApiController
 {
   private $cartProduct;
   
-  public function __construct()
+  public function __construct(CartProductRepository $cartProduct)
   {
-    $this->cartProduct = app('Modules\Icommerce\Repositories\CartProductRepository');
+    $this->cartProduct = $cartProduct;
   }
   
   /**
