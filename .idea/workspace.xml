@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="Add field parent_id, show_menu in transformer`s category">
-      <change afterPath="$PROJECT_DIR$/.idea/asgardcms-icommerce2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/ApiRoutes/manufacturerRoutes.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/ApiRoutes/manufacturerRoutes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Transformers/CategoryTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/Transformers/CategoryTransformer.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,12 +33,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="php" value="4" />
+          <entry key="php" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PHP" value="4" />
+          <entry key="PHP" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -61,10 +58,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Transformers/CategoryTransformer.php">
+        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+            <state relative-caret-position="360">
+              <caret line="24" column="48" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="48" />
+              <folding>
+                <element signature="e#81#133#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -84,6 +84,7 @@
       <list>
         <option value="$PROJECT_DIR$/Http/ApiRoutes/manufacturerRoutes.php" />
         <option value="$PROJECT_DIR$/Transformers/CategoryTransformer.php" />
+        <option value="$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php" />
       </list>
     </option>
   </component>
@@ -120,7 +121,15 @@
             <path>
               <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
               <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
-              <item name="Transformers" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+              <item name="Api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -162,12 +171,12 @@
       <option name="presentableId" value="Default" />
       <updated>1546038076544</updated>
       <workItem from="1546038078264" duration="2886000" />
-      <workItem from="1546092982375" duration="1039000" />
+      <workItem from="1546092982375" duration="3932000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3925000" />
+    <option name="totallyTimeSpent" value="6818000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="0" />
@@ -184,7 +193,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32838285" />
       <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32838285" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="11" />
@@ -226,8 +235,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Transformers/CategoryTransformer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+        <state relative-caret-position="168">
+          <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="48" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="48" />
+          <folding>
+            <element signature="e#81#133#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

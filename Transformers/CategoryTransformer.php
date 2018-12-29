@@ -11,7 +11,7 @@ class CategoryTransformer extends Resource
     $data =  [
       'id' => $this->id,
       'title' => $this->title,
-      'url' => $this->url, 
+      'url' => $this->url,
       'parent_id' => $this->parent_id,
        'show_menu' => $this->show_menu,
       'description' => $this->description,
