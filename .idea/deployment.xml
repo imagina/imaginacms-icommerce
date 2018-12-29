@@ -5,7 +5,7 @@
       <paths name="icommerce v1">
         <serverdata>
           <mappings>
-            <mapping deploy="/acms/Modules/Icommerce" local="$PROJECT_DIR$" web="/acms/Modules/Icommerce" />
+            <mapping deploy="/acms/Modules/Icommerce" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -4,7 +4,7 @@ use Illuminate\Routing\Router;
 
 $router->group(['prefix' => '/manufacturers'/*,'middleware' => ['auth:api']*/], function (Router $router) {
   $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
-  
+
   $router->post('/', [
     'as' => $locale . 'api.icommerce.manufacturers.create',
     'uses' => 'ManufacturerApiController@create',
@@ -25,5 +25,5 @@ $router->group(['prefix' => '/manufacturers'/*,'middleware' => ['auth:api']*/], 
     'as' => $locale . 'api.icommerce.manufacturers.show',
     'uses' => 'ManufacturerApiController@show',
   ]);
-  
+
 });

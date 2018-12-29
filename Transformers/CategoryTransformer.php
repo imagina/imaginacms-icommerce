@@ -11,7 +11,9 @@ class CategoryTransformer extends Resource
     $data =  [
       'id' => $this->id,
       'title' => $this->title,
-      'url' => $this->url,
+      'url' => $this->url, 
+      'parent_id' => $this->parent_id,
+       'show_menu' => $this->show_menu,
       'description' => $this->description,
       'slug' => $this->slug,
       'meta_title' => $this->meta_title,
@@ -19,15 +21,15 @@ class CategoryTransformer extends Resource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
-    
+
     $filter = json_decode($request->filter);
-    
+
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations){
-    
+
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-    
+
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
           $data['translates'][$key]['title'] = $this->translate("$key")['title'];
