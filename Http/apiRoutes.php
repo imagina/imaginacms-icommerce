@@ -54,6 +54,9 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
   //======  PRICE LISTS
   require('ApiRoutes/priceListRoutes.php');
   
+  //======  PRODUCT LISTS
+  require('ApiRoutes/productListRoutes.php');
+  
   //======  PAYMENT METHODS
   require('ApiRoutes/paymentMethodRoutes.php');
   

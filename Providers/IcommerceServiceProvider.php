@@ -61,6 +61,7 @@ class IcommerceServiceProvider extends ServiceProvider
       $event->load('itemtypes', array_dot(trans('icommerce::itemtypes')));
             $event->load('relatedproducts', array_dot(trans('icommerce::relatedproducts')));
             $event->load('lists', array_dot(trans('icommerce::lists')));
+            $event->load('productlists', array_dot(trans('icommerce::productlists')));
             $event->load('paymentmethods', array_dot(trans('icommerce::paymentmethods')));
             // append translations
 
@@ -474,6 +475,18 @@ class IcommerceServiceProvider extends ServiceProvider
                 }
 
                 return new \Modules\Icommerce\Repositories\Cache\CachePriceListDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\ProductListRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductListRepository(new \Modules\Icommerce\Entities\ProductList());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheProductListDecorator($repository);
             }
         );
         $this->app->bind(
