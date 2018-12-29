@@ -115,7 +115,7 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     $model = $query->first();
   
     if($model){
-      $query->update($data);
+      $model->update($data);
       // sync tables
       $model->categories()->sync(array_get($data, 'categories', []));
       $model->products()->sync(array_get($data, 'products', []));

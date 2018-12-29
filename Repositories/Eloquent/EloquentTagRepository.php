@@ -115,10 +115,13 @@ class EloquentTagRepository extends EloquentBaseRepository implements TagReposit
       else//where id
         $query->where('id', $criteria);
     }
-    
+  
     // REQUEST
-    $model = $query->update($data);
-    
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
     return $model;
   }
   

@@ -92,9 +92,14 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       else//where id
         $query->where('id', $criteria);
     }
-    
+  
     // REQUEST
-    $query->update($data);
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
+    return $model;
   }
   
   public function deleteBy($criteria, $params)

@@ -116,7 +116,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     }
     
     // REQUEST
-    $query->update($data);
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
+    return $model;
   }
   
   public function deleteBy($criteria, $params)

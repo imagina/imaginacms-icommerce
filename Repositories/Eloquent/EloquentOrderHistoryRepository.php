@@ -91,10 +91,13 @@ class EloquentOrderHistoryRepository extends EloquentBaseRepository implements O
       else//where id
         $query->where('id', $criteria);
     }
-    
+  
     // REQUEST
-    $model = $query->update($data);
-    
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
     return $model;
   }
   
