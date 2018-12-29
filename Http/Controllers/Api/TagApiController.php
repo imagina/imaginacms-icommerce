@@ -16,17 +16,20 @@ use Modules\Icommerce\Transformers\TagTransformer;
 // Entities
 use Modules\Icommerce\Entities\Tag;
 
+// Repositories
+use Modules\Icommerce\Repositories\TagRepository;
+
 class TagApiController extends BaseApiController
 {
-  
+
   private $tag;
-  
-  
+
+
   public function __construct(TagRepository $tag)
   {
     $this->tag = $tag;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -36,12 +39,12 @@ class TagApiController extends BaseApiController
     try {
       //Request to Repository
       $tags = $this->tag->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => TagTransformer::collection($tags)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($tags)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -51,7 +54,7 @@ class TagApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -63,14 +66,14 @@ class TagApiController extends BaseApiController
     try {
       //Get Parameters from URL.
       $p = $this->parametersUrl(false, false, [], []);
-      
+
       //Request to Repository
       $tag = $this->tag->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $tag ? new TagTransformer($tag) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -79,7 +82,7 @@ class TagApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -88,9 +91,9 @@ class TagApiController extends BaseApiController
   {
     try {
       $this->tag->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -99,7 +102,7 @@ class TagApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -110,9 +113,9 @@ class TagApiController extends BaseApiController
     try {
 
       $this->tag->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -121,8 +124,8 @@ class TagApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
-  
+
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -131,9 +134,9 @@ class TagApiController extends BaseApiController
   {
     try {
       $this->tag->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

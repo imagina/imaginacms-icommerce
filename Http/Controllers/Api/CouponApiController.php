@@ -16,15 +16,18 @@ use Modules\Icommerce\Transformers\CouponTransformer;
 // Entities
 use Modules\Icommerce\Entities\Coupon;
 
+// Repositories
+use Modules\Icommerce\Repositories\CouponRepository;
+
 class CouponApiController extends BaseApiController
 {
   private $coupon;
-  
+
   public function __construct(CouponRepository $coupon)
   {
     $this->coupon = $coupon;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -34,12 +37,12 @@ class CouponApiController extends BaseApiController
     try {
       //Request to Repository
       $coupons = $this->coupon->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => CouponTransformer::collection($coupons)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($coupons)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -49,7 +52,7 @@ class CouponApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -61,11 +64,11 @@ class CouponApiController extends BaseApiController
     try {
       //Request to Repository
       $coupon = $this->coupon->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $coupon ? new CouponTransformer($coupon) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -74,7 +77,7 @@ class CouponApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -83,9 +86,9 @@ class CouponApiController extends BaseApiController
   {
     try {
      $this->coupon->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -94,7 +97,7 @@ class CouponApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -104,9 +107,9 @@ class CouponApiController extends BaseApiController
   {
     try {
       $this->coupon->updateBy($criteria, $request->all(),$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -115,7 +118,7 @@ class CouponApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -124,9 +127,9 @@ class CouponApiController extends BaseApiController
   {
     try {
       $this->coupon->deleteBy($criteria,$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

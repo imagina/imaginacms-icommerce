@@ -16,16 +16,19 @@ use Modules\Icommerce\Transformers\CartProductTransformer;
 // Entities
 use Modules\Icommerce\Entities\CartProduct;
 
+// Repositories
+use Modules\Icommerce\Repositories\CartProductRepository;
+
 
 class CartProductApiController extends BaseApiController
 {
   private $cartProduct;
-  
+
   public function __construct(CartProductRepository $cartProduct)
   {
     $this->cartProduct = $cartProduct;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -35,12 +38,12 @@ class CartProductApiController extends BaseApiController
     try {
       //Request to Repository
       $cartProducts = $this->cartProduct->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => CartProductTransformer::collection($cartProducts)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($cartProducts)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -50,7 +53,7 @@ class CartProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -62,11 +65,11 @@ class CartProductApiController extends BaseApiController
     try {
       //Request to Repository
       $cartProduct = $this->cartProduct->show($id,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $cartProduct ? new CartProductTransformer($cartProduct) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -75,7 +78,7 @@ class CartProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -84,9 +87,9 @@ class CartProductApiController extends BaseApiController
   {
     try {
       $this->cartProduct->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -95,7 +98,7 @@ class CartProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -105,9 +108,9 @@ class CartProductApiController extends BaseApiController
   {
     try {
       $this->cartProduct->updateBy($criteria, $request->all(),$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -116,7 +119,7 @@ class CartProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -125,9 +128,9 @@ class CartProductApiController extends BaseApiController
   {
     try {
       $this->cartProduct->deleteBy($criteria,$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

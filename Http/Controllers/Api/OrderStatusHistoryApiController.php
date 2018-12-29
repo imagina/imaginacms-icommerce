@@ -16,15 +16,18 @@ use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 // Entities
 use Modules\Icommerce\Entities\OrderStatusHistory;
 
+// Repositories
+use Modules\Icommerce\Repositories\OrderHistoryRepository;
+
 class OrderStatusHistoryApiController extends BaseApiController
 {
   private $orderHistory;
-  
+
   public function __construct(OrderHistoryRepository $orderHistory)
   {
     $this->orderHistory = $orderHistory;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -33,15 +36,15 @@ class OrderStatusHistoryApiController extends BaseApiController
   {
     try {
       //Get Parameters from URL.
-      
+
       //Request to Repository
       $orderHistories = $this->orderHistory->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => OrderHistoryTransformer::collection($orderHistories)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($orderHistories)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -51,7 +54,7 @@ class OrderStatusHistoryApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -63,11 +66,11 @@ class OrderStatusHistoryApiController extends BaseApiController
     try {
       //Request to Repository
       $orderHistory = $this->orderHistory->show($criteria, $this->parametersUrl());
-      
+
       $response = [
         'data' => $orderHistory ? new OrderHistoryTransformer($orderHistory) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -76,7 +79,7 @@ class OrderStatusHistoryApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -85,9 +88,9 @@ class OrderStatusHistoryApiController extends BaseApiController
   {
     try {
       $orderHistory = $this->orderHistory->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -96,7 +99,7 @@ class OrderStatusHistoryApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -107,9 +110,9 @@ class OrderStatusHistoryApiController extends BaseApiController
     try {
 
       $this->orderHistory->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -118,7 +121,7 @@ class OrderStatusHistoryApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -128,9 +131,9 @@ class OrderStatusHistoryApiController extends BaseApiController
     try {
 
       $this->orderHistory->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

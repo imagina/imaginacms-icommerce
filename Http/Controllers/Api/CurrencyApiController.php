@@ -16,15 +16,18 @@ use Modules\Icommerce\Transformers\CurrencyTransformer;
 // Entities
 use Modules\Icommerce\Entities\Currency;
 
+// Repositories
+use Modules\Icommerce\Repositories\CurrencyRepository;
+
 class CurrencyApiController extends BaseApiController
 {
   private $currency;
-  
+
   public function __construct(CurrencyRepository $currency)
   {
     $this->currency = $currency;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -34,12 +37,12 @@ class CurrencyApiController extends BaseApiController
     try {
       //Request to Repository
       $currencies = $this->currency->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => CurrencyTransformer::collection($currencies)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($currencies)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -49,7 +52,7 @@ class CurrencyApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -61,11 +64,11 @@ class CurrencyApiController extends BaseApiController
     try {
       //Request to Repository
       $currency = $this->currency->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $currency ? new CurrencyTransformer($currency) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -74,7 +77,7 @@ class CurrencyApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -83,9 +86,9 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       $this->currency->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -94,7 +97,7 @@ class CurrencyApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -104,9 +107,9 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       $this->currency->updateBy($criteria, $request->all(),$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -115,7 +118,7 @@ class CurrencyApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -124,9 +127,9 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       $this->currency->deleteBy($criteria,$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

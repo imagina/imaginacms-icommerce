@@ -16,6 +16,7 @@ use Modules\Icommerce\Transformers\CategoryTransformer;
 // Entities
 use Modules\Icommerce\Entities\Category;
 
+// Repositories
 use Modules\Icommerce\Repositories\CategoryRepository;
 
 class CategoryApiController extends BaseApiController

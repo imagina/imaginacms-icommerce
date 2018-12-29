@@ -13,16 +13,18 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\ProductListTransformer;
 
+// Repositories
+use Modules\Icommerce\Repositories\ProductListRepository;
 
 class ProductListApiController extends BaseApiController
 {
   private $productList;
-  
+
   public function __construct(ProductListRepository $productList)
   {
     $this->productList = $productList;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -32,12 +34,12 @@ class ProductListApiController extends BaseApiController
     try {
       //Request to Repository
       $productLists = $this->productList->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => ProductListTransformer::collection($productLists)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($productLists)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -47,7 +49,7 @@ class ProductListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -59,11 +61,11 @@ class ProductListApiController extends BaseApiController
     try {
       //Request to Repository
       $productList = $this->productList->show($criteria, $this->parametersUrl());
-      
+
       $response = [
         'data' => $productList ? new ProductListTransformer($productList) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -72,7 +74,7 @@ class ProductListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -81,9 +83,9 @@ class ProductListApiController extends BaseApiController
   {
     try {
       $this->productList->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -92,7 +94,7 @@ class ProductListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -103,9 +105,9 @@ class ProductListApiController extends BaseApiController
     try {
 
       $this->productList->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -114,7 +116,7 @@ class ProductListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -123,9 +125,9 @@ class ProductListApiController extends BaseApiController
   {
     try {
       $this->productList->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

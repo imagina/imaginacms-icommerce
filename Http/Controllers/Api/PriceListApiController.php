@@ -16,15 +16,18 @@ use Modules\Icommerce\Transformers\PriceListTransformer;
 // Entities
 use Modules\Icommerce\Entities\PriceList;
 
+// Repositories
+use Modules\Icommerce\Repositories\PriceListRepository;
+
 class PriceListApiController extends BaseApiController
 {
   private $criteria;
-  
+
   public function __construct(PriceListRepository $priceList)
   {
     $this->priceList = $priceList;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -34,12 +37,12 @@ class PriceListApiController extends BaseApiController
     try {
       //Request to Repository
       $priceLists = $this->priceList->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => PriceListTransformer::collection($priceLists)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($priceLists)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -49,7 +52,7 @@ class PriceListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -61,11 +64,11 @@ class PriceListApiController extends BaseApiController
     try {
       //Request to Repository
       $criteria = $this->priceList->show($criteria, $this->parametersUrl());
-      
+
       $response = [
         'data' => $criteria ? new PriceListTransformer($criteria) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -74,7 +77,7 @@ class PriceListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -83,9 +86,9 @@ class PriceListApiController extends BaseApiController
   {
     try {
       $this->priceList->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -94,7 +97,7 @@ class PriceListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -105,9 +108,9 @@ class PriceListApiController extends BaseApiController
     try {
 
       $this->priceList->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -116,7 +119,7 @@ class PriceListApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -126,9 +129,9 @@ class PriceListApiController extends BaseApiController
     try {
 
       $this->priceList->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

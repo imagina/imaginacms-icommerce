@@ -17,17 +17,20 @@ use Modules\Icommerce\Transformers\ProductOptionValueTransformer;
 use Modules\Icommerce\Entities\Tag;
 use Modules\Icommerce\Entities\Product;
 
+// Repositories
+use Modules\Icommerce\Repositories\ProductOptionValueRepository;
+
 class ProductOptionValueApiController extends BaseApiController
 {
-  
+
   private $productOptionValue;
-  
-  
+
+
   public function __construct(ProductOptionValueRepository $productOptionValue)
   {
     $this->productOptionValue = $productOptionValue;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -37,12 +40,12 @@ class ProductOptionValueApiController extends BaseApiController
     try {
       //Request to Repository
       $productOptionValues = $this->productOptionValue->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => ProductOptionValueTransformer::collection($productOptionValues)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($productOptionValues)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -52,7 +55,7 @@ class ProductOptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -64,11 +67,11 @@ class ProductOptionValueApiController extends BaseApiController
     try {
       //Request to Repository
       $productOptionValue = $this->productOptionValue->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $productOptionValue ? new ProductOptionValueTransformer($productOptionValue) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -77,7 +80,7 @@ class ProductOptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -86,9 +89,9 @@ class ProductOptionValueApiController extends BaseApiController
   {
     try {
       $this->productOptionValue->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -97,7 +100,7 @@ class ProductOptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -106,11 +109,11 @@ class ProductOptionValueApiController extends BaseApiController
   public function update($criteria, ProductOptionValueRequest $request)
   {
     try {
-      
+
       $this->productOptionValue->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -119,8 +122,8 @@ class ProductOptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
-  
+
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -128,11 +131,11 @@ class ProductOptionValueApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      
+
       $this->productOptionValue->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -141,5 +144,5 @@ class ProductOptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
 }

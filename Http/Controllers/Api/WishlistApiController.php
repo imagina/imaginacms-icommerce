@@ -16,15 +16,18 @@ use Modules\Icommerce\Transformers\WishlistTransformer;
 // Entities
 use Modules\Icommerce\Entities\Wishlist;
 
+// Repositories
+use Modules\Icommerce\Repositories\WishlistRepository;
+
 class WishlistApiController extends BaseApiController
 {
   private $wishlist;
-  
+
   public function __construct(WishlistRepository $wishlist)
   {
     $this->wishlist = $wishlist;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -34,12 +37,12 @@ class WishlistApiController extends BaseApiController
     try {
       //Request to Repository
       $wishlists = $this->wishlist->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => WishlistTransformer::collection($wishlists)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($wishlists)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -49,7 +52,7 @@ class WishlistApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -61,11 +64,11 @@ class WishlistApiController extends BaseApiController
     try {
       //Request to Repository
       $wishlist = $this->wishlist->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $wishlist ? new WishlistTransformer($wishlist) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -74,7 +77,7 @@ class WishlistApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -83,9 +86,9 @@ class WishlistApiController extends BaseApiController
   {
     try {
       $this->wishlist->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -94,7 +97,7 @@ class WishlistApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -104,9 +107,9 @@ class WishlistApiController extends BaseApiController
   {
     try {
       $this->wishlist->updateBy($criteria, $request->all(),$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -115,7 +118,7 @@ class WishlistApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -124,9 +127,9 @@ class WishlistApiController extends BaseApiController
   {
     try {
       $this->wishlist->deleteBy($criteria,$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

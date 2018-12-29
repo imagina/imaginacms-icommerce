@@ -16,15 +16,18 @@ use Modules\Icommerce\Transformers\PaymentMethodTransformer;
 // Entities
 use Modules\Icommerce\Entities\PaymentMethod;
 
+// Repositories
+use Modules\Icommerce\Repositories\PaymentMethodRepository;
+
 class PaymentMethodApiController extends BaseApiController
 {
   private $paymentMethod;
-  
+
   public function __construct(PaymentMethodRepository $paymentMethod)
   {
     $this->paymentMethod = $paymentMethod;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -34,12 +37,12 @@ class PaymentMethodApiController extends BaseApiController
     try {
       //Request to Repository
       $paymentMethods = $this->paymentMethod->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => PaymentMethodTransformer::collection($paymentMethods)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($paymentMethods)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -49,7 +52,7 @@ class PaymentMethodApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -61,11 +64,11 @@ class PaymentMethodApiController extends BaseApiController
     try {
       //Request to Repository
       $paymentMethod = $this->paymentMethod->show($criteria, $this->parametersUrl());
-      
+
       $response = [
         'data' => $paymentMethod ? new PaymentMethodTransformer($paymentMethod) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -74,7 +77,7 @@ class PaymentMethodApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -83,9 +86,9 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
       $this->paymentMethod->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -94,7 +97,7 @@ class PaymentMethodApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -105,9 +108,9 @@ class PaymentMethodApiController extends BaseApiController
     try {
 
       $this->paymentMethod->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -116,7 +119,7 @@ class PaymentMethodApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -126,9 +129,9 @@ class PaymentMethodApiController extends BaseApiController
     try {
 
       $this->paymentMethod->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [

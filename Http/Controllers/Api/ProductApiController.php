@@ -17,17 +17,20 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 use Modules\Icommerce\Entities\Tag;
 use Modules\Icommerce\Entities\Product;
 
+// Repositories
+use Modules\Icommerce\Repositories\ProductRepository;
+
 class ProductApiController extends BaseApiController
 {
-  
+
   private $product;
-  
-  
+
+
   public function __construct(ProductRepository $product)
   {
     $this->product = $product;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -37,12 +40,12 @@ class ProductApiController extends BaseApiController
     try {
       //Request to Repository
       $products = $this->product->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => ProductTransformer::collection($products)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($products)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -52,7 +55,7 @@ class ProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -64,11 +67,11 @@ class ProductApiController extends BaseApiController
     try {
       //Request to Repository
       $product = $this->product->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $product ? new ProductTransformer($product) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -77,7 +80,7 @@ class ProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -86,21 +89,21 @@ class ProductApiController extends BaseApiController
   {
     try {
       $product = $this->product->create($request->all());
-  
+
       // sync tables
       if ($product) {
 
-    
+
         // Image
         if (isset($request->mainimage) && !empty($request->mainimage)) {
           $mainimage = $this->saveImage($request->mainimage, "assets/icommerce/product/" . $product->id . ".jpg");
-      
+
           $options = $product->options;
           $options["mainImage"] = $mainimage;
           $product->options = json_encode($options);
-      
+
         }
-    
+
         // File
         if ($request->hasFile('pfile') && $request->file('pfile')->isValid()) {
           $filePath = $this->saveFile($request->file('pfile'), $product->id);
@@ -108,18 +111,18 @@ class ProductApiController extends BaseApiController
             $options = (array)$product->options;
             $options["mainFile"] = $filePath;
             $product->options = json_encode($options);
-        
+
           }
         }
-    
+
         // Metas
         $this->saveMetas($request,$product);
-    
+
         $product->save();
       }
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -128,7 +131,7 @@ class ProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -137,22 +140,22 @@ class ProductApiController extends BaseApiController
   public function update($criteria, ProductRequest $request)
   {
     try {
-      
+
       $product = $this->product->updateBy($criteria, $request->all(), $this->parametersUrl());
-      
+
       // sync tables
       if ($product) {
-        
+
         // Image
         if (isset($request->mainimage) && !empty($request->mainimage)) {
           $mainimage = $this->saveImage($request->mainimage, "assets/icommerce/product/" . $product->id . ".jpg");
-    
+
           $options = $product->options;
           $options["mainImage"] = $mainimage;
           $product->options = json_encode($options);
-    
+
         }
-  
+
         // File
         if ($request->hasFile('pfile') && $request->file('pfile')->isValid()) {
           $filePath = $this->saveFile($request->file('pfile'), $product->id);
@@ -160,18 +163,18 @@ class ProductApiController extends BaseApiController
             $options = (array)$product->options;
             $options["mainFile"] = $filePath;
             $product->options = json_encode($options);
-      
+
           }
         }
-        
+
         // Metas
         $this->saveMetas($request,$product);
-  
+
         $product->save();
       }
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -180,8 +183,8 @@ class ProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
-  
+
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -191,9 +194,9 @@ class ProductApiController extends BaseApiController
     try {
 
       $this->product->deleteBy($criteria, $this->parametersUrl());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -202,7 +205,7 @@ class ProductApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Add tags Product
    *
@@ -211,14 +214,14 @@ class ProductApiController extends BaseApiController
    */
   public function addTags($tags)
   {
-    
+
     $tags = $tags;
     $newtags = Array();
     $lasttagsid = Array();
     $newtagsid = Array();
-    
+
     if (!empty($tags)) {
-      
+
       //se recorren todos lostags en busca de alguno nuevo
       foreach ($tags as $tag) {
         //si el tag no existe se agrega al array de de nuevos tags
@@ -236,15 +239,15 @@ class ProductApiController extends BaseApiController
       $modeltag->title = $newtag;
       $modeltag->slug = str_slug($newtag, '-');
       $modeltag->save();
-      
+
       array_push($newtagsid, $modeltag->id);
     }
-    
+
     //se modifica el valor tags enviado desde el form uniendolos visjos tags y los tags nuevos
     return array_merge($lasttagsid, $newtagsid);
-    
+
   }
-  
+
   /**
    * Save Metas.
    *
@@ -255,25 +258,25 @@ class ProductApiController extends BaseApiController
   public function saveMetas(Request $request, $product)
   {
     $options = (array)$product->options;
-  
+
     if (empty($request->meta_title))
       $options["meta_title"] = $product->title;
     else
       $options["meta_title"] = $request->meta_title;
-  
-  
+
+
     if (empty($request->meta_description))
       $options["meta_description"] = substr(strip_tags($product->description), 0, 150);
     else
       $options["
           meta_description"] = $request->meta_description;
-  
-  
+
+
     if (empty($request->meta_keyword))
       $options["meta_keyword"] = $product->meta_keyword;
     else
       $options["meta_keyword"] = $request->meta_keyword;
-  
+
     $product->options = json_encode($options);
   }
 }

@@ -16,16 +16,18 @@ use Modules\Icommerce\Transformers\OptionValueTransformer;
 // Entities
 use Modules\Icommerce\Entities\OptionValue;
 
+// Repositories
+use Modules\Icommerce\Repositories\OptionValueRepository;
 
 class OptionValueApiController extends BaseApiController
 {
   private $optionValue;
-  
+
   public function __construct(OptionValueRepository $optionValue)
   {
     $this->optionValue = $optionValue;
   }
-  
+
   /**
    * Display a listing of the resource.
    * @return Response
@@ -35,12 +37,12 @@ class OptionValueApiController extends BaseApiController
     try {
       //Request to Repository
       $optionValues = $this->optionValue->index($this->getParamsRequest());
-      
+
       //Response
       $response = ['data' => OptionValueTransformer::collection($optionValues)];
       //If request pagination add meta-page
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($optionValues)] : false;
-      
+
     } catch (\Exception $e) {
       //Message Error
       $status = 500;
@@ -50,7 +52,7 @@ class OptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /** SHOW
    * @param Request $request
    *  URL GET:
@@ -62,11 +64,11 @@ class OptionValueApiController extends BaseApiController
     try {
       //Request to Repository
       $optionValue = $this->optionValue->show($criteria,$this->getParamsRequest());
-      
+
       $response = [
         'data' => $optionValue ? new OptionValueTransformer($optionValue) : '',
       ];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -75,7 +77,7 @@ class OptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Show the form for creating a new resource.
    * @return Response
@@ -84,9 +86,9 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       $this->optionValue->create($request->all());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -95,7 +97,7 @@ class OptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -105,9 +107,9 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       $this->optionValue->updateBy($criteria, $request->all(),$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
@@ -116,7 +118,7 @@ class OptionValueApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -125,9 +127,9 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       $this->optionValue->deleteBy($criteria,$this->getParamsRequest());
-      
+
       $response = ['data' => ''];
-      
+
     } catch (\Exception $e) {
       $status = 500;
       $response = [
