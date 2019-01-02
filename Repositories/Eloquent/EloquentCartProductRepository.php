@@ -8,7 +8,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 class EloquentCartProductRepository extends EloquentBaseRepository implements CartProductRepository
 {
   
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -52,7 +52,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   
 
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

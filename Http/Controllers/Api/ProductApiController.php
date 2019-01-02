@@ -39,7 +39,7 @@ class ProductApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $products = $this->product->index($this->getParamsRequest());
+      $products = $this->product->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => ProductTransformer::collection($products)];
@@ -66,7 +66,7 @@ class ProductApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $product = $this->product->show($criteria,$this->getParamsRequest());
+      $product = $this->product->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $product ? new ProductTransformer($product) : '',

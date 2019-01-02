@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentWishlistRepository extends EloquentBaseRepository implements WishlistRepository
 {
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -53,7 +53,7 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
     }
   }
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

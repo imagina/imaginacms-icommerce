@@ -2,12 +2,12 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\PaymentRepository;
+use Modules\Icommerce\Repositories\TransactionRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
 
-class CachePaymentDecorator extends BaseCacheDecorator implements PaymentRepository
+class CacheTransactionDecorator extends BaseCacheDecorator implements TransactionRepository
 {
-    public function __construct(PaymentRepository $payment)
+    public function __construct(TransactionRepository $payment)
     {
         parent::__construct();
         $this->entityName = 'icommerce.payments';

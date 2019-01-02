@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentOptionRepository extends EloquentBaseRepository implements OptionRepository
 {
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -63,7 +63,7 @@ class EloquentOptionRepository extends EloquentBaseRepository implements OptionR
   }
   
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

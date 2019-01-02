@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentCurrencyRepository extends EloquentBaseRepository implements CurrencyRepository
 {
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -63,7 +63,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     }
   }
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

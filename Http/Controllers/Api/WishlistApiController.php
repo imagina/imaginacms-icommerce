@@ -36,7 +36,7 @@ class WishlistApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $wishlists = $this->wishlist->index($this->getParamsRequest());
+      $wishlists = $this->wishlist->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => WishlistTransformer::collection($wishlists)];
@@ -63,7 +63,7 @@ class WishlistApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $wishlist = $this->wishlist->show($criteria,$this->getParamsRequest());
+      $wishlist = $this->wishlist->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $wishlist ? new WishlistTransformer($wishlist) : '',

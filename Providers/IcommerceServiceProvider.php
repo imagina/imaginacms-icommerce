@@ -358,15 +358,15 @@ class IcommerceServiceProvider extends ServiceProvider
       }
     );
     $this->app->bind(
-      'Modules\Icommerce\Repositories\PaymentRepository',
+      'Modules\Icommerce\Repositories\TransactionRepository',
       function () {
-        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentPaymentRepository(new \Modules\Icommerce\Entities\Transaction());
+        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTransactionRepository(new \Modules\Icommerce\Entities\Transaction());
         
         if (!config('app.cache')) {
           return $repository;
         }
         
-        return new \Modules\Icommerce\Repositories\Cache\CachePaymentDecorator($repository);
+        return new \Modules\Icommerce\Repositories\Cache\CacheTransactionDecorator($repository);
       }
     );
     $this->app->bind(

@@ -36,7 +36,7 @@ class CouponApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $coupons = $this->coupon->index($this->getParamsRequest());
+      $coupons = $this->coupon->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => CouponTransformer::collection($coupons)];
@@ -63,7 +63,7 @@ class CouponApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $coupon = $this->coupon->show($criteria,$this->getParamsRequest());
+      $coupon = $this->coupon->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $coupon ? new CouponTransformer($coupon) : '',

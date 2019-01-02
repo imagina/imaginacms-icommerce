@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="6777acb9-b683-4a60-8b7f-7ee7fc352984" name="icommerce v1" url="http://icommerce.imagina.com.co/">
-        <fileTransfer host="purplecorn.imaginacolombia.com" port="21">
+        <fileTransfer host="icommerce.imagina.com.co" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" accurateTimestamps="NEVER" />
           </advancedOptions>

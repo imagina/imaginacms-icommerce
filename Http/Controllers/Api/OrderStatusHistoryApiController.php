@@ -38,7 +38,7 @@ class OrderStatusHistoryApiController extends BaseApiController
       //Get Parameters from URL.
 
       //Request to Repository
-      $orderHistories = $this->orderHistory->index($this->getParamsRequest());
+      $orderHistories = $this->orderHistory->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => OrderHistoryTransformer::collection($orderHistories)];
@@ -65,7 +65,7 @@ class OrderStatusHistoryApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $orderHistory = $this->orderHistory->show($criteria, $this->parametersUrl());
+      $orderHistory = $this->orderHistory->getItem($criteria, $this->parametersUrl());
 
       $response = [
         'data' => $orderHistory ? new OrderHistoryTransformer($orderHistory) : '',

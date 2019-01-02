@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentProductOptionValueRepository extends EloquentBaseRepository implements ProductOptionValueRepository
 {
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -65,7 +65,7 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
     
   }
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

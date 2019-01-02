@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentOrderHistoryRepository extends EloquentBaseRepository implements OrderHistoryRepository
 {
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -49,7 +49,7 @@ class EloquentOrderHistoryRepository extends EloquentBaseRepository implements O
     }
   }
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

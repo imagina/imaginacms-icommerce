@@ -13,6 +13,8 @@ class ProductOption extends Model
   protected $fillable = [
     'product_id',
     'option_id',
+    'parent_id',
+    'parent_option_value_id',
     'value',
     'required'
   ];

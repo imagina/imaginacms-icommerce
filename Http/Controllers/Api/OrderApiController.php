@@ -41,7 +41,7 @@ class OrderApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $orders = $this->order->index($this->getParamsRequest());
+      $orders = $this->order->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => OrderTransformer::collection($orders)];
@@ -68,7 +68,7 @@ class OrderApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $order = $this->order->show($criteria,$this->getParamsRequest());
+      $order = $this->order->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $order ? new OrderTransformer($order) : '',

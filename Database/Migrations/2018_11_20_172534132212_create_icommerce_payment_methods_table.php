@@ -18,6 +18,7 @@ class CreateIcommercePaymentMethodsTable extends Migration
       // Your fields
       $table->string('payment_code')->nullable();
       $table->string('name');
+      $table->integer('status')->unsigned();
       
       $table->timestamps();
     });

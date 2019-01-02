@@ -36,7 +36,7 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $paymentMethods = $this->paymentMethod->index($this->getParamsRequest());
+      $paymentMethods = $this->paymentMethod->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => PaymentMethodTransformer::collection($paymentMethods)];
@@ -63,7 +63,7 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $paymentMethod = $this->paymentMethod->show($criteria, $this->parametersUrl());
+      $paymentMethod = $this->paymentMethod->getItem($criteria, $this->parametersUrl());
 
       $response = [
         'data' => $paymentMethod ? new PaymentMethodTransformer($paymentMethod) : '',

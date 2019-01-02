@@ -14,14 +14,11 @@ class OrderOption extends Model
     'order_id',
     'order_product_id',
     'parent_value',
-    'quantity',
-    'subtract',
     'price',
     'weight',
     'option_value',
     'value',
-    'required',
-    'type'
+    'required'
   ];
 
   public function order()

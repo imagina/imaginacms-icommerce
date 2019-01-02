@@ -19,11 +19,7 @@ class CreateIcommerceOptionsTable extends Migration
       $table->string('type');
       $table->integer('sort_order')->default(0);
   
-      $table->integer('parent_id')->unsigned();
-      $table->foreign('parent_id')
-        ->references('id')
-        ->on('icommerce__options')
-        ->onDelete('restrict');
+      
   
       $table->text('options')->default('')->nullable();
       $table->timestamps();

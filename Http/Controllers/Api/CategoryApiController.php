@@ -38,7 +38,7 @@ class CategoryApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $categories = $this->category->index($this->getParamsRequest());
+      $categories = $this->category->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => CategoryTransformer::collection($categories)];
@@ -65,7 +65,7 @@ class CategoryApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $category = $this->category->show($criteria,$this->getParamsRequest());
+      $category = $this->category->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $category ? new CategoryTransformer($category) : '',

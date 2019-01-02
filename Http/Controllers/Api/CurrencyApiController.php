@@ -36,7 +36,7 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $currencies = $this->currency->index($this->getParamsRequest());
+      $currencies = $this->currency->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => CurrencyTransformer::collection($currencies)];
@@ -63,7 +63,7 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $currency = $this->currency->show($criteria,$this->getParamsRequest());
+      $currency = $this->currency->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $currency ? new CurrencyTransformer($currency) : '',

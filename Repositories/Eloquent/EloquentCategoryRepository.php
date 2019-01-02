@@ -8,7 +8,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 class EloquentCategoryRepository extends EloquentBaseRepository implements CategoryRepository
 {
   
-  public function index($params)
+  public function getItemsBy($params)
   {
     
     // INITIALIZE QUERY
@@ -59,7 +59,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     }
   }
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

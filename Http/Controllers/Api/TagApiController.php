@@ -38,7 +38,7 @@ class TagApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $tags = $this->tag->index($this->getParamsRequest());
+      $tags = $this->tag->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => TagTransformer::collection($tags)];
@@ -68,7 +68,7 @@ class TagApiController extends BaseApiController
       $p = $this->parametersUrl(false, false, [], []);
 
       //Request to Repository
-      $tag = $this->tag->show($criteria,$this->getParamsRequest());
+      $tag = $this->tag->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $tag ? new TagTransformer($tag) : '',

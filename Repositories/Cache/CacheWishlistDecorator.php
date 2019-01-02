@@ -19,10 +19,10 @@ class CacheWishlistDecorator extends BaseCacheDecorator implements WishlistRepos
    *
    * @return collection
    */
-  public function index($params)
+  public function getItemsBy($params)
   {
     return $this->remember(function () use ($params) {
-      return $this->repository->index($params);
+      return $this->repository->getItemsBy($params);
     });
   }
   
@@ -31,10 +31,10 @@ class CacheWishlistDecorator extends BaseCacheDecorator implements WishlistRepos
    *
    * @return object
    */
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     return $this->remember(function () use ($criteria, $params) {
-      return $this->repository->show($criteria, $params);
+      return $this->repository->getItem($criteria, $params);
     });
   }
   

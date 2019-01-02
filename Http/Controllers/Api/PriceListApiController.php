@@ -36,7 +36,7 @@ class PriceListApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $priceLists = $this->priceList->index($this->getParamsRequest());
+      $priceLists = $this->priceList->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => PriceListTransformer::collection($priceLists)];
@@ -63,7 +63,7 @@ class PriceListApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $criteria = $this->priceList->show($criteria, $this->parametersUrl());
+      $criteria = $this->priceList->getItem($criteria, $this->parametersUrl());
 
       $response = [
         'data' => $criteria ? new PriceListTransformer($criteria) : '',

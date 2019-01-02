@@ -20,8 +20,6 @@ class CreateIcommerceOrderOptionsTable extends Migration
       //-- ProductOptionValue values
       $table->string('parent_option_value')->nullable();
       $table->string('option_value')->nullable();
-      $table->integer('quantity')->nullable();
-      $table->tinyInteger('subtract')->unsigned()->nullable();
       $table->float('price', 50, 2)->nullable();
       $table->string('price_prefix')->nullable();
       $table->integer('points')->unsigned()->nullable();
