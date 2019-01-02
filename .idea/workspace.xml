@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +23,9 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
@@ -33,23 +35,23 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="php" value="64" />
+          <entry key="php" value="73" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PHP" value="64" />
+          <entry key="PHP" value="73" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="php" value="186" />
+          <entry key="php" value="249" />
           <entry key="txt" value="154" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PHP" value="186" />
+          <entry key="PHP" value="249" />
           <entry key="PLAIN_TEXT" value="154" />
         </counts>
       </usages-collector>
@@ -57,23 +59,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
-              <caret line="108" column="3" lean-forward="true" selection-start-line="108" selection-start-column="3" selection-end-line="108" selection-end-column="3" />
+              <caret line="90" column="8" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="8" />
               <folding>
-                <element signature="e#81#133#0#PHP" expanded="true" />
+                <element signature="e#81#132#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Entities/Product.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+            <state relative-caret-position="204">
+              <caret line="19" column="16" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -84,6 +86,7 @@
     <findStrings>
       <find>ProductRepository</find>
       <find>getParamsRequest</find>
+      <find>added_by_id</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -110,7 +113,6 @@
         <option value="$PROJECT_DIR$/Http/Controllers/Api/OrderStatusHistoryApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/PaymentMethodApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/PriceListApiController.php" />
-        <option value="$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/ProductListApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/ProductOptionValueApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/TagApiController.php" />
@@ -120,6 +122,8 @@
         <option value="&lt;6777acb9-b683-4a60-8b7f-7ee7fc352984&gt;/acms/Modules/Ihelpers/Http/Controllers/Api/BaseApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" />
+        <option value="$PROJECT_DIR$/Entities/Product.php" />
+        <option value="$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php" />
       </list>
     </option>
   </component>
@@ -151,6 +155,17 @@
             <path>
               <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
               <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
+              <item name="Database" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
+              <item name="Database" type="462c0819:PsiDirectoryNode" />
+              <item name="Migrations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
               <item name="Http" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -158,13 +173,6 @@
               <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
               <item name="Http" type="462c0819:PsiDirectoryNode" />
               <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="asgardcms-icommerce2" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="asgardcms-icommerce2" type="b2602c69:ProjectViewProjectNode" />
@@ -218,6 +226,7 @@
       <updated>1546038076544</updated>
       <workItem from="1546038078264" duration="2886000" />
       <workItem from="1546092982375" duration="11994000" />
+      <workItem from="1546436185277" duration="5353000" />
     </task>
     <task id="LOCAL-00001" summary="fix use repository category in controller">
       <created>1546097089204</created>
@@ -237,13 +246,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14880000" />
+    <option name="totallyTimeSpent" value="20881000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-206" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17857143" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2857143" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -255,7 +264,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32838285" />
-      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32838285" />
+      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.3278867" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32838285" />
@@ -286,9 +295,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Entities/Product.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Admin/CategoryController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -307,9 +313,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="358">
           <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#81#136#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -376,13 +379,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductListApiController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -446,16 +442,54 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="108" column="3" lean-forward="true" selection-start-line="108" selection-start-column="3" selection-end-line="108" selection-end-column="3" />
-          <folding>
-            <element signature="e#81#133#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+        <state relative-caret-position="300">
+          <caret line="116" selection-start-line="116" selection-end-line="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172524541156_create_icommerce_options_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="24" column="32" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="144" column="74" lean-forward="true" selection-start-line="144" selection-start-column="74" selection-end-line="144" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/ProductOption.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="14" column="16" lean-forward="true" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/Option.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/Product.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="19" column="16" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="90" column="8" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="8" />
+          <folding>
+            <element signature="e#81#132#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

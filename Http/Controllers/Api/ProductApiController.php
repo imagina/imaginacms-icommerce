@@ -88,6 +88,9 @@ class ProductApiController extends BaseApiController
   public function create(ProductRequest $request)
   {
     try {
+
+        $request->merge(['added_by_id' => 1]);
+
       $product = $this->product->create($request->all());
 
       // sync tables
