@@ -132,12 +132,8 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

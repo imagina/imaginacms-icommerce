@@ -99,13 +99,10 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
       else//where id
         $query->where('id', $criteria);
     }
-  
+    
     // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->update($data);
-    }
+    $model = $query->update($data);
+    
     return $model;
   }
   
@@ -123,12 +120,8 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

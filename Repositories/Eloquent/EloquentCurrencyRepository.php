@@ -106,13 +106,10 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
       else//where id
         $query->where('id', $criteria);
     }
-  
+    
     // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->update($data);
-    }
+    $model = $query->update($data);
+    
     return $model;
   }
   
@@ -130,12 +127,8 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

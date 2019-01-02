@@ -92,14 +92,9 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       else//where id
         $query->where('id', $criteria);
     }
-  
+    
     // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->update($data);
-    }
-    return $model;
+    $query->update($data);
   }
   
   public function deleteBy($criteria, $params)
@@ -116,14 +111,9 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
-
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
   
   

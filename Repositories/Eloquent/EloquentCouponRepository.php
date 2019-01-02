@@ -115,7 +115,7 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     $model = $query->first();
   
     if($model){
-      $model->update($data);
+      $query->update($data);
       // sync tables
       $model->categories()->sync(array_get($data, 'categories', []));
       $model->products()->sync(array_get($data, 'products', []));
@@ -137,13 +137,9 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
   
 }

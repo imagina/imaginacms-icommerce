@@ -126,12 +126,8 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
 }

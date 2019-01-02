@@ -1,0 +1,146 @@
+[33mbc72b6d[m[33m ([m[1;36mHEAD -> [m[1;32m1.0[m[33m)[m fix, add support method updateby for fields translatables
+[33mc753a1f[m fix upddateby with fields translatables
+[33m2b5490a[m[33m ([m[1;31morigin/1.0[m[33m)[m +Update: DeleteBy repositories
+[33m5f1eb3d[m +Update: UpdateBy repositories
+[33m1251d46[m fix, add use repositories in api controllers
+[33m15d88ad[m fix use repository category in controller
+[33m28eaa94[m Merge branch '1.0' of https://github.com/imagina/asgardcms-icommerce into 1.0
+[33ma70f251[m  - add field en product entity
+[33mdef152c[m +Fix: controller constructors
+[33m0261e50[m +Add: product price list pivot
+[33mdbb4369[m +Update: delete cascade product options +Update: order option migration
+[33m99925b1[m +Add: parent Options and parent options values
+[33m1218a7b[m +Update: cache decorators
+[33m8e07f66[m +Update: routes, controllers, repositories, cacheDecorators, Transformers and model
+[33m02210a4[m +Fix: payment method transformer class name
+[33md211424[m +Add: payment methods entity scaffold files
+[33m2d2bb31[m +Fix: Repositories set Locale
+[33m489e5e7[m +Fix: delete function in all controllers
+[33m3d3000c[m +Fix: Icommerce provider
+[33m51aee1a[m +Add: Price Lists Entity scaffold Files +Add: Product List Entity scaffold Files +Update: Product Discounts by product option and product option value
+[33m7f09c04[m +Fix: index controllers
+[33mc42a896[m +Add: Product, Order and Order history Routes
+[33md527c11[m +Add: Order Controller, Request, Repository, transformer +Add: Order History Controller, Request, Repository, transformer +Add: customer id and added by id in order +Add: added by id on coupons +Fix: Estandar Notacion, Nomenclatura, etc +Fix: Api Controllers constructors +Fix: Admin Controllers Requests renamed +Fix: user id by customer id on coupon order history
+[33mca00dee[m +Add: Tags and fake options in products +Add: Product repository +Add: Product Transformer +Fix: Identation Product Entity +Fix: Replace " by '
+[33m6862990[m +Add Entities files, Item Types, Related products +Add ApiRoutes folder +Add Api Controllers 80% +Add crud Repositories +Add Transformers +Fix Requests renamed, deletes updates +Fix Migrations renamed, order to migrate
+[33m99fb9f4[m +Fix Migrations translations name, because the Identifier name for unique id was to long
+[33m5fd7626[m +Fix Manufacturer translations name, because the Identifier name for unique id was to long
+[33mefb41d9[m +Fix Migrations
+[33m23a9e5c[m +Add: Model and Migrations
+[33m309c37e[m + Flush Branch
+[33m193e8c1[m[33m ([m[1;33mtag: 0.1.20[m[33m)[m Preparing Version 0.1.20
+[33mf7e7680[m Merge branch 'master' of https://github.com/imagina/asgardcms-icommerce
+[33md2d8b07[m Fixed validation type person in checkout
+[33m056717d[m Fixed logical error in checkbox legal / natural person
+[33mf44352d[m Added trans in form customer
+[33m09d0eae[m Added company_email and company_nit in table order, added in checkout view validation if user is legal or natural person
+[33mfaa533b[m Change Api V2 standar Json
+[33me5ffdfb[m[33m ([m[1;33mtag: 0.1.19[m[33m)[m Preparing Version 0.1.19
+[33m9a1f7b4[m Delete crud option values in edit options
+[33m3ef435e[m Adjusted transformer of products to decode the options of the option_values ​​associated with a product
+[33mfb769a8[m Modified routes of module of options values, Added new functions in controller of options values, Added decoder of JSON of options options options when sending options when creating / editing a product
+[33mbd42a65[m Added new fields type and options in table icommerce_option_Values
+[33m2be3ae0[m[33m ([m[1;33mtag: 0.1.18[m[33m)[m Preparing Version 0.1.18
+[33m2560167[m Added product options, configuration of values ​​of an option and associate product options to a product. Added filter of option values ​​in apiv2 of products wherefilters method
+[33mf4d9047[m Fixed insertion field in icommerce products option values ​​table, it is subtract no substract
+[33m1d86e60[m[33m ([m[1;33mtag: 0.1.17[m[33m)[m - Change version
+[33ma2f697c[m - Change entity Product Option
+[33m7efe6f1[m[33m ([m[1;33mtag: 0.1.16[m[33m)[m - Change entity Product Option
+[33mbd6ae4f[m - change helper function localSymbol
+[33m07a96b2[m - Changelog
+[33mb7f9851[m[33m ([m[1;33mtag: 0.1.15[m[33m)[m - Api Routes Category
+[33m6ad3e10[m[33m ([m[1;33mtag: dev[m[33m, [m[1;31morigin/dev[m[33m)[m added:   - CategoryControllerV2   - EloquentCategoryRepository filters method Chnaged:   - Metadata View Category   - Metadata View show   - EloquentproductRepository filters method
+[33m8f4ce9e[m[33m ([m[1;33mtag: 0.1.14[m[33m)[m added:   - CategoryControllerV2   - EloquentCategoryRepository filters method Chnaged:   - Metadata View Category   - Metadata View show   - EloquentproductRepository filters method
+[33meaa994f[m[33m ([m[1;33mtag: 0.1.13[m[33m)[m Added: Migration orderweight form products Changed: Entity product ApiProductController Method products_category
+[33m717313d[m[33m ([m[1;33mtag: 0.1.12[m[33m)[m Added: lang Tax lang TaxClass
+[33m32f4602[m[33m ([m[1;33mtag: 0.1.11[m[33m)[m Change: view components Added: Repositories Tax Repositories TaxClass View admin Tax View admin TaxClass Migrations Tax Migrations TaxClass Entities Tax Entities TaxClass
+[33m30da82b[m[33m ([m[1;33mtag: 0.1.10[m[33m)[m Change: Components Widget Method search Admin Product Controller View forntend index, show. Order Controller Added: Routes Category Api
+[33m2dce2a8[m[33m ([m[1;33mtag: 0.1.9[m[33m)[m added filter Category in view Admin Products
+[33ma13d273[m change validate date new product
+[33mf5b98e0[m added:    - changelog
+[33mc0c7843[m[33m ([m[1;33mtag: 0.1.8[m[33m)[m added:    - Components widget products
+[33mb868b5f[m changed:    - Views cart
+[33mb8cac33[m[33m ([m[1;33mtag: 0.1.7[m[33m)[m added:    - Format Monery helper and config    - multi-language url changed:    - Views orders    - PHP Function number_format by helprer formatmoney() in view and transformers
+[33mbe2a07a[m[33m ([m[1;33mtag: 0.1.6[m[33m)[m Added Components examples Aeleted dir json Change View Checkout
+[33mbe199ee[m[33m ([m[1;33mtag: 0.1.5[m[33m)[m Changed Api/ProductController default max-price min-price Added Api/ProductControllerV2 Changed ApiRoute Change purchase for guest user
+[33m846d829[m Change Register Sidebar Change translates Spanish
+[33mdba7323[m[33m ([m[1;33mtag: 0.1.4[m[33m)[m Merge remote-tracking branch 'origin/master'
+[33m28321de[m[33m ([m[1;33mtag: 0.1.3[m[33m)[m Change Config translates Corrections in migrations Corrections in view admin product
+[33mb98ece9[m Fix: Version tag 0.1.2
+[33m7c9ccbb[m[33m ([m[1;33mtag: 0.1.2[m[33m)[m Fix: Add Composer Required Packages
+[33m207ea06[m Add bulkload permission Correction of Admin ProductController Add bulkload Sidebar Items Add bulkload Translations
+[33mea0b55e[m[33m ([m[1;33mtag: 0.1.1[m[33m, [m[1;33mtag: 0.1.0[m[33m)[m Fix: Composer Package Name imagina/icommerce-module
+[33m4b10621[m Fix: Version 0.1.0. Tag: 0.1.0 Delete: Vendor Folder.
+[33m458ddcf[m Cleaning README
+[33m8c33019[m Update: module views like Theme
+[33ma874ae9[m Merge remote-tracking branch 'origin/master'
+[33mfb9f2a1[m Fix: middleware frontend routes
+[33m3244973[m addresses Iprofile, Vue carousel component, fix error show product text-stroke
+[33mcb98900[m Merge branch 'master' of https://github.com/imagina/lifemedicalsupplier
+[33m94415bc[m sitemaps jobs Marcos
+[33m18e8649[m Fix: migration names, Entities Order_Hsitory and Order Option
+[33m65a992a[m Merge remote-tracking branch 'origin/master'
+[33mf135ae7[m Update: Deletion of unused modules
+[33m0bfd3ad[m Update Schema checkout and frontend routes 08/08/2018
+[33m690a892[m Fix: updating data checkout
+[33meb5d281[m Fix: redirect home/order detail after checkout
+[33m17d4dcb[m Fix: shipping methods first Call
+[33mb7aa636[m Update: 08/07/2018
+[33mfb67d33[m Merge remote-tracking branch 'origin/juancarlos'
+[33mc1e8394[m Fix: 07/07/2018
+[33m5e020ec[m Schema.org Metadata Marcos
+[33m7d3f8f0[m Fix: Renamed IcommerceCheckMoney by IcommerceCheckmo
+[33m6e7950c[m Merge Conflicts Leo
+[33mab819e2[m Update: spanish translations Leo
+[33m65d3767[m Merge remote-tracking branch 'origin/sabas'
+[33mb4e9ca8[m Fix: Iprofile index addresses
+[33m8ea2879[m Add prefix Icommerce to module icheckmoney, and change table config to work with settings,fix:translate text status in module IcommercePaypal
+[33ma287372[m Fix: Checkout
+[33m7fea7c6[m Fix:show payment method in view checkout, change payment.options.mainimage to payment.image
+[33md662662[m Fix: Form broken to register paypal config, Fix: Query paypalconfig in module icommerce change to function getData of entity
+[33mdd624f6[m Add: prefix icommerpaypal and now work with settings
+[33m26d1448[m Merge branch 'sabas' of https://github.com/imagina/lifemedicalsupplier into sabas
+[33m3db968a[m Add: First part of changes settings in module icommercepaypal
+[33mb279d02[m Merge branch 'sabas' of https://github.com/imagina/lifemedicalsupplier into sabas
+[33mc1b0602[m Merge remote-tracking branch 'origin/master' into sabas
+[33ma5c8de9[m Merge branch 'sabas' of https://github.com/imagina/lifemedicalsupplier into sabas
+[33ma09e07d[m Merge remote-tracking branch 'origin/sabas'
+[33maf5d573[m Merge branch 'juancarlos'
+[33mcbace56[m Merge branch 'juancarlos' into sabas
+[33m8345310[m Fix: Checkout + Iprofile Addresses
+[33m4044af5[m Fix: Language Strings. Leopoldo
+[33m4528309[m Fix: Iprofile Migration and permissions
+[33m532fb08[m Fix: Addresses to Iprofile
+[33mbc63dd6[m Fix: Address to Iprofile
+[33mb910766[m Fix: Checkout Address, checkout shipping methods
+[33mcccf77b[m =Addresses Iprofile
+[33md350d92[m Merge branch 'juancarlos' into sabas
+[33mb7bf3df[m Fix: Prefixes Module Iagree to IcommerceAgree, Add: method settings to get data
+[33m59cec7a[m Fix: renamed Iusps to IcommerceUsps
+[33mb1576b8[m Fix: IcommerceUsp Ready
+[33m6ce063d[m Fix: IcommerceUsp
+[33m0356fab[m Admin Theme Update. Ibanners Module Update
+[33mb525d01[m =03/07/2018
+[33m3b90801[m Merge remote-tracking branch 'origin/master'
+[33m3d9239a[m Fix: binding AddresEcommerce
+[33m5fd6b52[m Ajuste de prefijos en modulo Iagree
+[33m99ba213[m Revert "=renamed shipping and payment modules"
+[33mb592214[m Revert "Fix: order_product migration"
+[33m8438d37[m Merge remote-tracking branch 'origin/master'
+[33m88d0133[m Fix: iprofile
+[33ma4ebefe[m =renamed shipping and payment modules
+[33ma2b3c9b[m Fix: order_product migration
+[33mea83a46[m Merge remote-tracking branch 'origin/master'
+[33ma4af2f6[m Fix: product_option migration
+[33m4603a0f[m Merge branch 'master' of https://github.com/imagina/lifemedicalsupplier
+[33m8941c28[m =Fix: sitemap
+[33m4f2da2b[m Fix: product_tag migration
+[33m9fb2aff[m Create: address entity, migration and repos
+[33md4f72dd[m =address icommerce
+[33mf61bd12[m =translations and cacheDecorators
+[33mc542a60[m Merge branch 'master' of https://github.com/imagina/lifemedicalsupplier
+[33m9e1952b[m =translation
+[33m7545d75[m =translations
+[33m164cf19[m =translations
+[33m2afe8b0[m Fix: BD tables and columns, entity variables, and replace in path names
+[33m6f39c13[m Initial Commit

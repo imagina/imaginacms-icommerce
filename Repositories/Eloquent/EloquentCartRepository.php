@@ -121,13 +121,9 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
       else //where id
         $query->where('id', $criteria);
     }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
+    
+    /*== REQUEST ==*/
+    $query->delete();
   }
   
   
