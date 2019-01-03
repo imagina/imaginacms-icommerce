@@ -10,12 +10,12 @@ class Status
 {
   const DISABLED = 0;
   const ENABLED = 1;
-  
+
   /**
    * @var array
    */
   private $statuses = [];
-  
+
   public function __construct()
   {
     $this->statuses = [
@@ -23,7 +23,7 @@ class Status
       self::ENABLED => trans('icommerce::status.enabled'),
     ];
   }
-  
+
   /**
    * Get the available statuses
    * @return array
@@ -32,7 +32,7 @@ class Status
   {
     return $this->statuses;
   }
-  
+
   /**
    * Get the post status
    * @param int $statusId
@@ -43,7 +43,7 @@ class Status
     if (isset($this->statuses[$statusId])) {
       return $this->statuses[$statusId];
     }
-    
+
     return $this->statuses[self::DISABLED];
   }
 }
