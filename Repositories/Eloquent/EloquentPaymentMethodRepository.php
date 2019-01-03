@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentPaymentMethodRepository extends EloquentBaseRepository implements PaymentMethodRepository
 {
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -51,7 +51,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
   }
   
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

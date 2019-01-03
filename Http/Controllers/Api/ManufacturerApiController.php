@@ -36,7 +36,7 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $manufacturers = $this->manufacturer->index($this->getParamsRequest());
+      $manufacturers = $this->manufacturer->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
@@ -63,7 +63,7 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $manufacturer = $this->manufacturer->show($criteria,$this->getParamsRequest());
+      $manufacturer = $this->manufacturer->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $manufacturer ? new ManufacturerTransformer($manufacturer) : '',

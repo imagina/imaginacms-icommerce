@@ -36,7 +36,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxRates = $this->taxRate->index($this->getParamsRequest());
+      $taxRates = $this->taxRate->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => TaxRateTransformer::collection($taxRates)];
@@ -63,7 +63,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxRate = $this->taxRate->show($criteria,$this->getParamsRequest());
+      $taxRate = $this->taxRate->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $taxRate ? new TaxRateTransformer($taxRate) : '',

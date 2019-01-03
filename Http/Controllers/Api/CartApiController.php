@@ -36,7 +36,7 @@ class CartApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $carts = $this->cart->index($this->getParamsRequest());
+      $carts = $this->cart->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => CartTransformer::collection($carts)];
@@ -63,7 +63,7 @@ class CartApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $cart = $this->cart->show($id, $this->parametersUrl());
+      $cart = $this->cart->getItem($id, $this->parametersUrl());
 
       $response = [
         'data' => $cart ? new CartTransformer($cart) : '',

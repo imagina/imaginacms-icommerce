@@ -36,7 +36,7 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxClasses = $this->taxClass->index($this->getParamsRequest());
+      $taxClasses = $this->taxClass->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => TaxClassTransformer::collection($taxClasses)];
@@ -63,7 +63,7 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxClass = $this->taxClass->show($criteria,$this->getParamsRequest());
+      $taxClass = $this->taxClass->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $taxClass ? new TaxClassTransformer($taxClass) : '',

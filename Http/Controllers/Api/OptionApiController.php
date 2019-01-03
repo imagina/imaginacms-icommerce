@@ -39,7 +39,7 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $options = $this->option->index($this->getParamsRequest());
+      $options = $this->option->getItemsBy($this->getParamsRequest());
 
       //Response
       $response = ['data' => OptionTransformer::collection($options)];
@@ -66,7 +66,7 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $option = $this->option->show($criteria,$this->getParamsRequest());
+      $option = $this->option->getItem($criteria,$this->getParamsRequest());
 
       $response = [
         'data' => $option ? new OptionTransformer($option) : '',

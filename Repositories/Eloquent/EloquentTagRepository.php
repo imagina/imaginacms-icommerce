@@ -8,7 +8,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 class EloquentTagRepository extends EloquentBaseRepository implements TagRepository
 {
   
-  public function index($params)
+  public function getItemsBy($params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -60,7 +60,7 @@ class EloquentTagRepository extends EloquentBaseRepository implements TagReposit
     }
   }
   
-  public function show($criteria, $params)
+  public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

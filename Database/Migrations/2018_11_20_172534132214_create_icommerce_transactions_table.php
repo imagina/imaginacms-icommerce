@@ -17,7 +17,7 @@ class CreateIcommerceTransactionsTable extends Migration
       $table->increments('id');
       // Your fields
   
-      $table->string('external_id')->nullable();
+      $table->string('external_code')->nullable();
       $table->integer('order_id')->unsigned();
       $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
   
@@ -26,7 +26,7 @@ class CreateIcommerceTransactionsTable extends Migration
   
       $table->decimal('amount', 20, 2);
       $table->integer('status')->unsigned();
-      $table->integer('external_status')->unsigned();
+      $table->string('external_status')->nullable();
       
       $table->timestamps();
     });

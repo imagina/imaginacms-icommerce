@@ -764,7 +764,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'middleware' => 'can:icommerce.wishlists.destroy'
     ]);
     $router->bind('payment', function ($id) {
-        return app('Modules\Icommerce\Repositories\PaymentRepository')->find($id);
+        return app('Modules\Icommerce\Repositories\TransactionRepository')->find($id);
     });
     $router->get('payments', [
         'as' => 'admin.icommerce.payment.index',

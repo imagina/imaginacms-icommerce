@@ -7,17 +7,17 @@ use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Transaction;
 use Modules\Icommerce\Http\Requests\CreatePaymentRequest;
 use Modules\Icommerce\Http\Requests\UpdatePaymentRequest;
-use Modules\Icommerce\Repositories\PaymentRepository;
+use Modules\Icommerce\Repositories\TransactionRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
 class PaymentController extends AdminBaseController
 {
     /**
-     * @var PaymentRepository
+     * @var TransactionRepository
      */
     private $payment;
 
-    public function __construct(PaymentRepository $payment)
+    public function __construct(TransactionRepository $payment)
     {
         parent::__construct();
 
