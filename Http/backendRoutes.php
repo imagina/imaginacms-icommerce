@@ -1093,7 +1093,41 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'PaymentMethodController@destroy',
         'middleware' => 'can:icommerce.paymentmethods.destroy'
     ]);
+    $router->bind('cartproductoption', function ($id) {
+        return app('Modules\Icommerce\Repositories\CartProductOptionRepository')->find($id);
+    });
+    $router->get('cartproductoptions', [
+        'as' => 'admin.icommerce.cartproductoption.index',
+        'uses' => 'CartProductOptionController@index',
+        'middleware' => 'can:icommerce.cartproductoptions.index'
+    ]);
+    $router->get('cartproductoptions/create', [
+        'as' => 'admin.icommerce.cartproductoption.create',
+        'uses' => 'CartProductOptionController@create',
+        'middleware' => 'can:icommerce.cartproductoptions.create'
+    ]);
+    $router->post('cartproductoptions', [
+        'as' => 'admin.icommerce.cartproductoption.store',
+        'uses' => 'CartProductOptionController@store',
+        'middleware' => 'can:icommerce.cartproductoptions.create'
+    ]);
+    $router->get('cartproductoptions/{cartproductoption}/edit', [
+        'as' => 'admin.icommerce.cartproductoption.edit',
+        'uses' => 'CartProductOptionController@edit',
+        'middleware' => 'can:icommerce.cartproductoptions.edit'
+    ]);
+    $router->put('cartproductoptions/{cartproductoption}', [
+        'as' => 'admin.icommerce.cartproductoption.update',
+        'uses' => 'CartProductOptionController@update',
+        'middleware' => 'can:icommerce.cartproductoptions.edit'
+    ]);
+    $router->delete('cartproductoptions/{cartproductoption}', [
+        'as' => 'admin.icommerce.cartproductoption.destroy',
+        'uses' => 'CartProductOptionController@destroy',
+        'middleware' => 'can:icommerce.cartproductoptions.destroy'
+    ]);
 // append
+
 
 
 

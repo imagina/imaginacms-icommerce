@@ -4,100 +4,31 @@
     <bookmark url="file://$PROJECT_DIR$/Http/ApiRoutes/manufacturerRoutes.php" line="10" mnemonic="1" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="+Update: DeleteBy repositories">
-      <change afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTransactionRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/icommerce_v1.0.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/icommerce_v1.0.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+    <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods">
+      <change afterPath="$PROJECT_DIR$/Database/Migrations/2019_01_03_205323872503_create_icommerce_cart_product_options_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Migrations/2019_01_03_205506_alter_icommerce_payment_methods_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Entities/CartProductOption.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Entities/PaymentMethodTranslation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Http/Controllers/Admin/CartProductOptionController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Http/Requests/CreateCartProductOptionRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Http/Requests/UpdateCartProductOptionRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCartProductOptionDecorator.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Repositories/CartProductOptionRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductOptionRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/lang/en/cartproductoptions.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/partials/create-fields.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/partials/edit-fields.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172524541156_create_icommerce_options_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172524541156_create_icommerce_options_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172528292287_create_icommerce_product_option_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172528292287_create_icommerce_product_option_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172529886071_create_icommerce_order_options_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172529886071_create_icommerce_order_options_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172534132212_create_icommerce_payment_methods_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172534132212_create_icommerce_payment_methods_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172534132214_create_icommerce_transactions_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Migrations/2018_11_20_172534132214_create_icommerce_transactions_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/Option.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/Option.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/OrderOption.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/OrderOption.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/ProductOption.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/ProductOption.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Admin/PaymentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Admin/PaymentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/CartApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/CartApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/CartProductApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/CartProductApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/CategoryApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/CouponApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/CouponApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/CurrencyApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/CurrencyApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/ManufacturerApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/ManufacturerApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/OptionApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/OptionApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/OptionValueApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/OptionValueApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/OrderApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/OrderApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/OrderStatusHistoryApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/OrderStatusHistoryApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/PaymentMethodApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/PaymentMethodApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/PriceListApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/PriceListApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/ProductListApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/ProductListApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/ProductOptionValueApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/ProductOptionValueApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/TagApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/TagApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/TaxClassApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/TaxClassApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/TaxRateApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/TaxRateApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Api/WishlistApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Api/WishlistApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/permissions.php" beforeDir="false" afterPath="$PROJECT_DIR$/Config/permissions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/PaymentMethod.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/PaymentMethod.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Events/Handlers/RegisterIcommerceSidebar.php" beforeDir="false" afterPath="$PROJECT_DIR$/Events/Handlers/RegisterIcommerceSidebar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Http/Controllers/Admin/PaymentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Admin/TransactionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Http/backendRoutes.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/backendRoutes.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Providers/IcommerceServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/Providers/IcommerceServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheCartDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCartDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheCartProductDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCartProductDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheCategoryDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCategoryDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheCouponDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCouponDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheCurrencyDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCurrencyDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheManufacturerDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheManufacturerDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheOptionDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheOptionDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheOptionValueDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheOptionValueDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheOrderDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheOrderDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheOrderHistoryDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheOrderHistoryDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CachePaymentDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheTransactionDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CachePaymentMethodDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CachePaymentMethodDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CachePriceListDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CachePriceListDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheProductDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheProductDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheProductOptionValueDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheProductOptionValueDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheTagDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheTagDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheTaxClassDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheTaxClassDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheTaxRateDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheTaxRateDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Cache/CacheWishlistDecorator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Cache/CacheWishlistDecorator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/CartProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/CartProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/CartRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/CartRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/CategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/CategoryRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/CouponRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/CouponRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/CurrencyRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/CurrencyRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCouponRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCurrencyRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCurrencyRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentManufacturerRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentManufacturerRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentRepository.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/ManufacturerRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/ManufacturerRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/OptionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/OptionRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/OptionValueRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/OptionValueRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/OrderHistoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/OrderHistoryRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/OrderRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/OrderRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/PaymentMethodRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/PaymentMethodRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/PaymentRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/TransactionRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/PriceListRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/PriceListRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/ProductListRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/ProductListRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/ProductOptionValueRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/ProductOptionValueRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/ProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/ProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/TagRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/TagRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/TaxClassRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/TaxClassRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/TaxRateRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/TaxRateRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/WishlistRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/WishlistRepository.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -152,102 +83,88 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="OrderStatusHistoryApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/OrderStatusHistoryApiController.php">
+      <file leaf-file-name="2019_01_03_205506_alter_icommerce_payment_methods_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_205506_alter_icommerce_payment_methods_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="40" column="55" selection-start-line="40" selection-start-column="55" selection-end-line="40" selection-end-column="55" />
-              <caret line="67" column="50" selection-start-line="67" selection-start-column="50" selection-end-line="67" selection-end-column="50" />
+            <state relative-caret-position="340">
+              <caret line="22" column="7" lean-forward="true" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PaymentMethodApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/PaymentMethodApiController.php">
+      <file leaf-file-name="IcommerceServiceProvider.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Providers/IcommerceServiceProvider.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="38" column="56" selection-start-line="38" selection-start-column="56" selection-end-line="38" selection-end-column="56" />
-              <caret line="65" column="52" selection-start-line="65" selection-start-column="52" selection-end-line="65" selection-end-column="52" />
+            <state relative-caret-position="6035">
+              <caret line="362" column="61" lean-forward="true" selection-start-line="362" selection-start-column="61" selection-end-line="362" selection-end-column="61" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PriceListApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/PriceListApiController.php">
+      <file leaf-file-name="2019_01_03_205323872503_create_icommerce_cart_product_options_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_205323872503_create_icommerce_cart_product_options_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="38" column="48" selection-start-line="38" selection-start-column="48" selection-end-line="38" selection-end-column="48" />
-              <caret line="65" column="43" selection-start-line="65" selection-start-column="43" selection-end-line="65" selection-end-column="43" />
+            <state relative-caret-position="228">
+              <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProductApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php">
+      <file leaf-file-name="2018_11_28_224548367978_create_icommerce_carts_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_28_224548367978_create_icommerce_carts_table.php">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="2018_11_28_224601928349_create_icommerce_cart_product_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_28_224601928349_create_icommerce_cart_product_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-              <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
+            <state relative-caret-position="221">
+              <caret line="14" column="43" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProductListApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductListApiController.php">
+      <file leaf-file-name="2018_11_20_172528292287_create_icommerce_product_option_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172528292287_create_icommerce_product_option_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="35" column="52" selection-start-line="35" selection-start-column="52" selection-end-line="35" selection-end-column="52" />
-              <caret line="62" column="48" selection-start-line="62" selection-start-column="48" selection-end-line="62" selection-end-column="48" />
+            <state relative-caret-position="221">
+              <caret line="14" column="45" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProductOptionValueApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductOptionValueApiController.php">
+      <file leaf-file-name="2018_12_11_145749709924_create_icommerce_product_lists_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_12_11_145749709924_create_icommerce_product_lists_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="41" column="66" selection-start-line="41" selection-start-column="66" selection-end-line="41" selection-end-column="66" />
-              <caret line="68" column="62" selection-start-line="68" selection-start-column="62" selection-end-line="68" selection-end-column="62" />
+            <state relative-caret-position="340">
+              <caret line="21" column="51" lean-forward="true" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TagApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/TagApiController.php">
+      <file leaf-file-name="2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="40" column="36" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
-              <caret line="70" column="32" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="32" />
+            <state relative-caret-position="425">
+              <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TaxClassApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/TaxClassApiController.php">
+      <file leaf-file-name="CartProductOption.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Entities/CartProductOption.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="38" column="47" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
-              <caret line="65" column="42" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
+            <state relative-caret-position="170">
+              <caret line="11" column="55" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TaxRateApiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/TaxRateApiController.php">
+      <file leaf-file-name="2018_11_20_172534132212_create_icommerce_payment_methods_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172534132212_create_icommerce_payment_methods_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="38" column="44" selection-start-line="38" selection-start-column="44" selection-end-line="38" selection-end-column="44" />
-              <caret line="65" column="40" selection-start-line="65" selection-start-column="40" selection-end-line="65" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WishlistApiController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/WishlistApiController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="38" column="46" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="46" />
-              <caret line="65" column="42" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
+            <state relative-caret-position="221">
+              <caret line="14" column="46" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -258,6 +175,8 @@
     <findStrings>
       <find>ProductRepository</find>
       <find>CategoryRepository</find>
+      <find>Transaction</find>
+      <find>status</find>
     </findStrings>
     <replaceStrings>
       <replace>$productOptionValues</replace>
@@ -282,16 +201,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOptionValueRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderHistoryRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentOrderRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentPaymentMethodRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentPriceListRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductListRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductOptionValueRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentProductRepository.php" />
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTagRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" />
@@ -333,6 +242,16 @@
         <option value="$PROJECT_DIR$/Http/Controllers/Api/TaxClassApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/TaxRateApiController.php" />
         <option value="$PROJECT_DIR$/Http/Controllers/Api/WishlistApiController.php" />
+        <option value="$PROJECT_DIR$/Database/Migrations/2018_11_20_172526692193_create_icommerce_orders_table.php" />
+        <option value="$PROJECT_DIR$/Transformers/CategoryTransformer.php" />
+        <option value="$PROJECT_DIR$/Http/Controllers/Admin/TransactionController.php" />
+        <option value="$PROJECT_DIR$/Entities/CartProductOption.php" />
+        <option value="$PROJECT_DIR$/Entities/PaymentMethodTranslation.php" />
+        <option value="$PROJECT_DIR$/Entities/PaymentMethod.php" />
+        <option value="$PROJECT_DIR$/Database/Migrations/2019_01_03_205506_alter_icommerce_payment_methods_table.php" />
+        <option value="$PROJECT_DIR$/Database/Migrations/2019_01_03_205323872503_create_icommerce_cart_product_options_table.php" />
+        <option value="$PROJECT_DIR$/Database/Migrations/2018_12_11_145749709924_create_icommerce_product_lists_table.php" />
+        <option value="$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" />
       </list>
     </option>
   </component>
@@ -346,10 +265,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="277" />
+    <option name="y" value="-18" />
+    <option name="width" value="1616" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -379,36 +298,12 @@
             <path>
               <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
               <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
               <item name="Providers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
               <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
               <item name="Repositories" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Repositories" type="462c0819:PsiDirectoryNode" />
-              <item name="Cache" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
@@ -464,7 +359,8 @@
       <workItem from="1546038078264" duration="2886000" />
       <workItem from="1546092982375" duration="7544000" />
       <workItem from="1546438369223" duration="4864000" />
-      <workItem from="1546470655026" duration="1444000" />
+      <workItem from="1546470655026" duration="2266000" />
+      <workItem from="1546527766943" duration="7728000" />
     </task>
     <task id="LOCAL-00001" summary="fix use repository category in controller">
       <created>1546097089204</created>
@@ -487,29 +383,47 @@
       <option name="project" value="LOCAL" />
       <updated>1546106138556</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods">
+      <created>1546472198677</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1546472198677</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20718000" />
+    <option name="totallyTimeSpent" value="29268000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32838285" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" order="9" visible="true" weight="0.18736383" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.18736383" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32838285" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.2217484" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2835821" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.19083156" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28091684" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="bottom" id="Find" order="1" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -517,7 +431,6 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="9" visible="true" weight="0.32903227" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -557,80 +470,15 @@
     <MESSAGE value="fix use repository category in controller" />
     <MESSAGE value="+Update: UpdateBy repositories" />
     <MESSAGE value="+Update: DeleteBy repositories" />
-    <option name="LAST_COMMIT_MESSAGE" value="+Update: DeleteBy repositories" />
+    <MESSAGE value="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheCartProductDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheCategoryDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheCouponDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheCurrencyDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheManufacturerDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOrderDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOptionValueDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOptionDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
           <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
           <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/TransactionRepository.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Providers/IcommerceServiceProvider.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="362" column="140" selection-start-line="362" selection-start-column="129" selection-end-line="362" selection-end-column="140" />
         </state>
       </provider>
     </entry>
@@ -641,18 +489,6 @@
           <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOrderOptionDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOrderProductDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOrderShipmentDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOrderStatusDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CachePaymentMethodDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -670,9 +506,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductCategoryDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -681,15 +514,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductDiscountDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductListDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductOptionDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductOptionValueDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -697,15 +521,6 @@
           <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheProductTagDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheRelatedProductDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheShippingDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheTagDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -723,9 +538,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheTaxClassRateDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheTaxRateDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -733,9 +545,6 @@
           <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheTransactionDecorator.php">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheWishlistDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -793,14 +602,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/OptionApiController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="41" column="42" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
-          <caret line="68" column="38" selection-start-line="68" selection-start-column="38" selection-end-line="68" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/OptionValueApiController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -819,7 +620,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/OrderStatusHistoryApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
+        <state relative-caret-position="901">
           <caret line="40" column="55" selection-start-line="40" selection-start-column="55" selection-end-line="40" selection-end-column="55" />
           <caret line="67" column="50" selection-start-line="67" selection-start-column="50" selection-end-line="67" selection-end-column="50" />
         </state>
@@ -827,7 +628,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/PaymentMethodApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
+        <state relative-caret-position="867">
           <caret line="38" column="56" selection-start-line="38" selection-start-column="56" selection-end-line="38" selection-end-column="56" />
           <caret line="65" column="52" selection-start-line="65" selection-start-column="52" selection-end-line="65" selection-end-column="52" />
         </state>
@@ -835,23 +636,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/PriceListApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
+        <state relative-caret-position="867">
           <caret line="38" column="48" selection-start-line="38" selection-start-column="48" selection-end-line="38" selection-end-column="48" />
           <caret line="65" column="43" selection-start-line="65" selection-start-column="43" selection-end-line="65" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-          <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductListApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
+        <state relative-caret-position="867">
           <caret line="35" column="52" selection-start-line="35" selection-start-column="52" selection-end-line="35" selection-end-column="52" />
           <caret line="62" column="48" selection-start-line="62" selection-start-column="48" selection-end-line="62" selection-end-column="48" />
         </state>
@@ -859,7 +652,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductOptionValueApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
+        <state relative-caret-position="901">
           <caret line="41" column="66" selection-start-line="41" selection-start-column="66" selection-end-line="41" selection-end-column="66" />
           <caret line="68" column="62" selection-start-line="68" selection-start-column="62" selection-end-line="68" selection-end-column="62" />
         </state>
@@ -867,7 +660,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/TagApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
+        <state relative-caret-position="952">
           <caret line="40" column="36" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
           <caret line="70" column="32" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="32" />
         </state>
@@ -875,7 +668,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/TaxClassApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
+        <state relative-caret-position="867">
           <caret line="38" column="47" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
           <caret line="65" column="42" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
         </state>
@@ -883,7 +676,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/TaxRateApiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
+        <state relative-caret-position="867">
           <caret line="38" column="44" selection-start-line="38" selection-start-column="44" selection-end-line="38" selection-end-column="44" />
           <caret line="65" column="40" selection-start-line="65" selection-start-column="40" selection-end-line="65" selection-end-column="40" />
         </state>
@@ -894,6 +687,164 @@
         <state relative-caret-position="612">
           <caret line="38" column="46" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="46" />
           <caret line="65" column="42" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172521858707_create_icommerce_categories_table.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172522109029_create_icommerce_category_translations_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="23" column="28" lean-forward="true" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Repositories/Eloquent/EloquentCategoryRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="37" column="73" selection-start-line="35" selection-start-column="12" selection-end-line="37" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Transformers/CategoryTransformer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/ProductApiController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
+          <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Http/Controllers/Api/OptionApiController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-425">
+          <caret line="41" column="42" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
+          <caret line="68" column="38" selection-start-line="68" selection-start-column="38" selection-end-line="68" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Seeders/IcommerceDatabaseSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Http/Controllers/Admin/TransactionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/CartProductOption.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="11" column="55" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/OrderStatusHistory.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/OrderStatus.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/Order.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="68" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/PaymentMethod.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="23" column="2" lean-forward="true" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Entities/PaymentMethodTranslation.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172526692193_create_icommerce_orders_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="24" column="36" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172534132212_create_icommerce_payment_methods_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="46" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_205506_alter_icommerce_payment_methods_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="22" column="7" lean-forward="true" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Providers/IcommerceServiceProvider.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6035">
+          <caret line="362" column="61" lean-forward="true" selection-start-line="362" selection-start-column="61" selection-end-line="362" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_20_172528292287_create_icommerce_product_option_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="45" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_28_224601928349_create_icommerce_cart_product_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="43" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_11_28_224548367978_create_icommerce_carts_table.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_205323872503_create_icommerce_cart_product_options_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2018_12_11_145749709924_create_icommerce_product_lists_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="21" column="51" lean-forward="true" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
         </state>
       </provider>
     </entry>

@@ -199,7 +199,14 @@ return [
         'edit' => 'icommerce::paymentmethods.edit resource',
         'destroy' => 'icommerce::paymentmethods.destroy resource',
     ],
+    'icommerce.cartproductoptions' => [
+        'index' => 'icommerce::cartproductoptions.list resource',
+        'create' => 'icommerce::cartproductoptions.create resource',
+        'edit' => 'icommerce::cartproductoptions.edit resource',
+        'destroy' => 'icommerce::cartproductoptions.destroy resource',
+    ],
 // append
+
 
 
 

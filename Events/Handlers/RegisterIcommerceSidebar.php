@@ -340,7 +340,17 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.paymentmethods.index')
                     );
                 });
+                $item->item(trans('icommerce::cartproductoptions.title.cartproductoptions'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.cartproductoption.create');
+                    $item->route('admin.icommerce.cartproductoption.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.cartproductoptions.index')
+                    );
+                });
 // append
+
 
 
 

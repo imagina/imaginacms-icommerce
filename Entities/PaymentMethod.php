@@ -7,12 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethod extends Model
 {
-
-    protected $table = 'icommerce__payment_methods';
-
-    protected $fillable = [
-      'payment_method',
-      'name',
-
-    ];
+  use Translatable;
+  
+  public $translatedAttributes = [
+    'title',
+    'description'
+  ];
+  
+  protected $table = 'icommerce__payment_methods';
+  
+  protected $fillable = [
+    'status',
+    'name',
+    'options'
+  ];
+  
+  protected $fakeColumns = ['options'];
+  
+  protected $casts = [
+    'options' => 'array'
+  ];
 }
