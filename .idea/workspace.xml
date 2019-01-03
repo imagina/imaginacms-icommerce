@@ -4,31 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/Http/ApiRoutes/manufacturerRoutes.php" line="10" mnemonic="1" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods">
-      <change afterPath="$PROJECT_DIR$/Database/Migrations/2019_01_03_205323872503_create_icommerce_cart_product_options_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Database/Migrations/2019_01_03_205506_alter_icommerce_payment_methods_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Entities/CartProductOption.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Entities/PaymentMethodTranslation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Http/Controllers/Admin/CartProductOptionController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Http/Requests/CreateCartProductOptionRequest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Http/Requests/UpdateCartProductOptionRequest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Repositories/Cache/CacheCartProductOptionDecorator.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Repositories/CartProductOptionRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductOptionRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/lang/en/cartproductoptions.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/partials/create-fields.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/views/admin/cartproductoptions/partials/edit-fields.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/permissions.php" beforeDir="false" afterPath="$PROJECT_DIR$/Config/permissions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/PaymentMethod.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/PaymentMethod.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Events/Handlers/RegisterIcommerceSidebar.php" beforeDir="false" afterPath="$PROJECT_DIR$/Events/Handlers/RegisterIcommerceSidebar.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/Controllers/Admin/PaymentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/Admin/TransactionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Http/backendRoutes.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/backendRoutes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Providers/IcommerceServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/Providers/IcommerceServiceProvider.php" afterDir="false" />
+    <list default="true" id="6c738ba9-063a-4440-8f8e-cd48cf4f78e4" name="Default Changelist" comment="+Add: cart product option scaffold&#10;+Add: payment method translatable columns&#10;+Update: alter payment method table">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/et HEAD^ --hard" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -142,7 +120,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
@@ -151,11 +129,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CartProductOption.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Entities/CartProductOption.php">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="11" column="55" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
+            <state>
+              <caret column="6" selection-start-column="6" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -201,7 +179,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxClassRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentTaxRateRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Eloquent/EloquentWishlistRepository.php" />
         <option value="$PROJECT_DIR$/Repositories/Cache/CacheCartDecorator.php" />
@@ -252,6 +229,7 @@
         <option value="$PROJECT_DIR$/Database/Migrations/2019_01_03_205323872503_create_icommerce_cart_product_options_table.php" />
         <option value="$PROJECT_DIR$/Database/Migrations/2018_12_11_145749709924_create_icommerce_product_lists_table.php" />
         <option value="$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -283,27 +261,6 @@
             <path>
               <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
               <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Database" type="462c0819:PsiDirectoryNode" />
-              <item name="Migrations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Providers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
-              <item name="icommerce_v1.0" type="462c0819:PsiDirectoryNode" />
-              <item name="Repositories" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="icommerce_v1.0" type="b2602c69:ProjectViewProjectNode" />
@@ -360,7 +317,7 @@
       <workItem from="1546092982375" duration="7544000" />
       <workItem from="1546438369223" duration="4864000" />
       <workItem from="1546470655026" duration="2266000" />
-      <workItem from="1546527766943" duration="7728000" />
+      <workItem from="1546527766943" duration="8001000" />
     </task>
     <task id="LOCAL-00001" summary="fix use repository category in controller">
       <created>1546097089204</created>
@@ -390,11 +347,18 @@
       <option name="project" value="LOCAL" />
       <updated>1546472198677</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="+Add: cart product option scaffold&#10;+Add: payment method translatable columns&#10;+Update: alter payment method table">
+      <created>1546553035476</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1546553035476</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29268000" />
+    <option name="totallyTimeSpent" value="29541000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -407,7 +371,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32838285" />
@@ -416,8 +379,8 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32838285" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.19083156" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28091684" />
+      <window_info active="true" anchor="right" id="Remote Host" order="3" visible="true" weight="0.19083156" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28091684" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -471,25 +434,10 @@
     <MESSAGE value="+Update: UpdateBy repositories" />
     <MESSAGE value="+Update: DeleteBy repositories" />
     <MESSAGE value="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="+Update: Options Migrations&#10;+Update: 'getItemsBy' and 'getItem' standard repositories methods" />
+    <MESSAGE value="+Add: cart product option scaffold&#10;+Add: payment method translatable columns&#10;+Update: alter payment method table" />
+    <option name="LAST_COMMIT_MESSAGE" value="+Add: cart product option scaffold&#10;+Add: payment method translatable columns&#10;+Update: alter payment method table" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOptionDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Repositories/Cache/CacheOrderHistoryDecorator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Repositories/Cache/CachePaymentMethodDecorator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -841,10 +789,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/et HEAD^ --hard">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2007" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Database/Migrations/2019_01_03_210332352077_create_icommerce_payment_method_translations_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
         </state>
       </provider>
     </entry>
