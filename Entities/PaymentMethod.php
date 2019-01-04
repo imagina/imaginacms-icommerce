@@ -27,4 +27,12 @@ class PaymentMethod extends Model
   protected $casts = [
     'options' => 'array'
   ];
+
+
+  public function getOptionsAttribute($value) {
+    
+      return json_decode(json_decode($value));
+
+  }
+
 }

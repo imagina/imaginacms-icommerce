@@ -11,99 +11,51 @@
 @stop
 
 @section('content')
+
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
-                <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ route('admin.icommerce.paymentmethod.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('icommerce::paymentmethods.button.create paymentmethod') }}
-                    </a>
-                </div>
-            </div>
+            
             <div class="box box-primary">
                 <div class="box-header">
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="data-table table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (isset($paymentmethods)): ?>
-                            <?php foreach ($paymentmethods as $paymentmethod): ?>
-                            <tr>
-                                <td>
-                                    <a href="{{ route('admin.icommerce.paymentmethod.edit', [$paymentmethod->id]) }}">
-                                        {{ $paymentmethod->created_at }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('admin.icommerce.paymentmethod.edit', [$paymentmethod->id]) }}" class="btn btn-default btn-flat"><i class="fa fa-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-delete-confirmation" data-action-target="{{ route('admin.icommerce.paymentmethod.destroy', [$paymentmethod->id]) }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <?php endif; ?>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>{{ trans('core::core.table.created at') }}</th>
-                                <th>{{ trans('core::core.table.actions') }}</th>
-                            </tr>
-                            </tfoot>
-                        </table>
-                        <!-- /.box-body -->
+
+                @if(isset($paymentMethods) && count($paymentMethods)>0)
+                    
+                    @php $c= 0; @endphp
+                    <ul class="nav nav-tabs">
+                        @foreach ($paymentMethods  as $index => $method)
+                        <li @if($c==0) class='active' @endif>
+                        <a data-toggle="tab" href="#{{$method['name']}}">{{$method->title}}</a>
+                        </li>
+                        @php $c++; @endphp
+                        @endforeach
+                    </ul>
+
+                    @php $c= 0; @endphp
+                    <div class="tab-content">
+                        @foreach ($paymentMethods  as $ind => $method)
+                        <div id="{{$method['name']}}" class="tab-pane fade @if($c==0) in active @endif ">
+
+                            <h3>{{$method->title}}</h3>
+                            @include($method->name.'::admin.'.$method->name.'s.index') 
+                           
+                        </div>
+                        @php $c++; @endphp
+                        @endforeach
                     </div>
+                    
+                @else
+                    <div class="alert alert-danger">
+                        {{ trans('icommerce::paymentmethods.messages.no payment methods') }}
+                    </div>
+                @endif
+                
                 </div>
                 <!-- /.box -->
             </div>
         </div>
     </div>
-    @include('core::partials.delete-modal')
-@stop
 
-@section('footer')
-    <a data-toggle="modal" data-target="#keyboardShortcutsModal"><i class="fa fa-keyboard-o"></i></a> &nbsp;
 @stop
-@section('shortcuts')
-    <dl class="dl-horizontal">
-        <dt><code>c</code></dt>
-        <dd>{{ trans('icommerce::paymentmethods.title.create paymentmethod') }}</dd>
-    </dl>
-@stop
-
-@push('js-stack')
-    <script type="text/javascript">
-        $( document ).ready(function() {
-            $(document).keypressAction({
-                actions: [
-                    { key: 'c', route: "<?= route('admin.icommerce.paymentmethod.create') ?>" }
-                ]
-            });
-        });
-    </script>
-    <?php $locale = locale(); ?>
-    <script type="text/javascript">
-        $(function () {
-            $('.data-table').dataTable({
-                "paginate": true,
-                "lengthChange": true,
-                "filter": true,
-                "sort": true,
-                "info": true,
-                "autoWidth": true,
-                "order": [[ 0, "desc" ]],
-                "language": {
-                    "url": '<?php echo Module::asset("core:js/vendor/datatables/{$locale}.json") ?>'
-                }
-            });
-        });
-    </script>
-@endpush

@@ -5,7 +5,8 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\PaymentMethod;
-use Modules\Icommerce\Http\Requests\PaymentMethodRequest;
+use Modules\Icommerce\Http\Requests\CreatePaymentMethodRequest;
+use Modules\Icommerce\Http\Requests\UpdatePaymentMethodRequest;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 
@@ -30,9 +31,8 @@ class PaymentMethodController extends AdminBaseController
      */
     public function index()
     {
-        //$paymentmethods = $this->paymentmethod->all();
-
-        return view('icommerce::admin.paymentmethods.index', compact(''));
+        $paymentMethods = $this->paymentmethod->all();
+        return view('icommerce::admin.paymentmethods.index', compact('paymentMethods'));
     }
 
     /**
@@ -48,10 +48,10 @@ class PaymentMethodController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  PaymentMethodRequest $request
+     * @param  CreatePaymentMethodRequest $request
      * @return Response
      */
-    public function store(PaymentMethodRequest $request)
+    public function store(CreatePaymentMethodRequest $request)
     {
         $this->paymentmethod->create($request->all());
 
@@ -77,9 +77,11 @@ class PaymentMethodController extends AdminBaseController
      * @param  UpdatePaymentMethodRequest $request
      * @return Response
      */
-    public function update(PaymentMethod $paymentmethod, PaymentMethodRequest $request)
+    public function update($id, UpdatePaymentMethodRequest $request)
     {
-        $this->paymentmethod->update($paymentmethod, $request->all());
+
+        dd($id,$request);
+        //$this->paymentmethod->update($paymentmethod, $request->all());
 
         return redirect()->route('admin.icommerce.paymentmethod.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::paymentmethods.title.paymentmethods')]));
