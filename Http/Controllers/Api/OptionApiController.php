@@ -121,13 +121,15 @@ class OptionApiController extends BaseApiController
     try {
       $option = $this->option->updateBy($criteria, $request->all(),$this->getParamsRequest());
 
-      foreach ($request->optionValues as $optionValue)
-        if(isset($optionValue['id']) && !empty($optionValue['id']))
-          $this->optionValue->updateBy($optionValue['id'],$optionValue,$this->getParamsRequest());
-        else{
-          $optionValue["option_id"] = $option->id;
-          $this->optionValue->create($optionValue);
-        }
+      if (isset($request->optionValues)){
+            foreach ($request->optionValues as $optionValue)
+                if(isset($optionValue['id']) && !empty($optionValue['id']))
+                    $this->optionValue->updateBy($optionValue['id'],$optionValue,$this->getParamsRequest());
+                else{
+                    $optionValue["option_id"] = $option->id;
+                    $this->optionValue->create($optionValue);
+                }
+      }
 
 
       $response = ['data' => ''];
