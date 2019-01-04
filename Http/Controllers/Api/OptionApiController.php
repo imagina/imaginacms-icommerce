@@ -91,9 +91,11 @@ class OptionApiController extends BaseApiController
     try {
       $option = $this->option->create($request->all());
 
-      foreach ($request->optionValues as $optionValue){
-        $optionValue["option_id"] = $option->id;
-        $this->optionValue->create($optionValue);
+      if (isset($request->optionValues)){
+          foreach ($request->optionValues as $optionValue){
+              $optionValue["option_id"] = $option->id;
+              $this->optionValue->create($optionValue);
+          }
       }
 
       $response = ['data' => ''];
