@@ -11,21 +11,21 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
     $query->with(array_merge($defaultInclude, $params->include));
-    
+
     // FILTERS
     if ($params->filter) {
       $filter = $params->filter;
-      
+
       // get language translation
       $lang = \App::getLocale();
-  
+
       // default filter by Stock
       $query->where('stock_status', 1);
-  
+
       // add filter by search
       if (isset($filter->search)) {
         //find search in columns
@@ -40,7 +40,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
       }
-  
+
       // add filter by date
       if (isset($filter->date)) {
         $date = $filter->date;//Short filter date
@@ -50,36 +50,36 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if (isset($date->to))//to a date
           $query->whereDate($date->field, '<=', $date->to);
       }
-      
+
       // add filter by Categories 1 or more than 1, in array
       if (isset($filter->categories)) {
         $query->whereIn("category_id", $filter->categories);
       }
-      
+
       //add filter by Manufacturers 1 or more than 1, in array
       if (isset($filter->manufacturers)) {
         $query->whereIn("manufacturer_id", $filter->manufacturers);
       }
-      
+
       // add filter by Tax Class 1 or more than 1, in array
       if (isset($filter->taxClass)) {
         $query->whereIn("tax_class_id", $filter->taxClass);
       }
-      
+
       // add filter by Price Range
       // parameters {from: decimal, to:decimal}
       if (isset($filter->priceRange)) {
         $query->where("price", '>=', $filter->priceRange->from);
         $query->where("price", '<=', $filter->priceRange->to);
       }
-      
+
       // add filter by Rating
       // parameters {from: decimal, to:decimal}
       if (isset($filter->priceRange)) {
         $query->where("rating", '>=', $filter->rating->from);
         $query->where("rating", '<=', $filter->rating->to);
       }
-      
+
       // add filter by Freeshipping
       if (isset($filter->freeshipping)) {
         $query->where("freeshipping", $filter->freeshipping);
@@ -88,39 +88,39 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     // FIELDS
     if (is_array($params->fields) && count($params->fields))
       $query->select($params->fields);
-    
+
     // PAGINATION or GET
     // return request with pagination
     if ($params->page)
       return $query->paginate($params->take);
     else
       $params->take ? $query->take($params->take) : false;//Take
-    
+
     return $query->get();
-    
+
   }
-  
+
   public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // RELATIONSHIPS
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
-    
+
     /*== FIELDS ==*/
     if (is_array($params->fields) && count($params->fields))
       $query->select($params->fields);
-    
+
     // FILTERS
     //get language translation
     $lang = \App::getLocale();
-    
+
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->slug) && $filter->slug)//Filter by slug
         $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
           $query->where('locale', $lang)
@@ -128,84 +128,84 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         });
       else//Filter by ID
         $query->where('id', $criteria);
-      
+
     }
     return $query->first();
   }
-  
+
   public function create($data)
   {
-    
+
     $product = $this->model->create($data);
-    
+
     if($product){
       // sync tables
       $product->categories()->sync(array_get($data, 'categories', []));
-  
+
       $product->productOptions()->sync(array_get($data, 'productOptions', []));
-  
+
       $product->optionValues()->sync(array_get($data, 'optionValues', []));
-  
+
       $product->relatedProducts()->sync(array_get($data, 'relatedProducts', []));
-  
-      $product->discounts()->sync(array_get($data, 'discounts', []));
-  
+
+//      $product->discounts()->sync(array_get($data, 'discounts', []));
+
       $product->tags()->sync(array_get($data, 'tags', []));
     }
-    
+
     return $product;
   }
-  
+
 
   public function updateBy($criteria, $data, $params){
-    
+
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // FILTER
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field))//Where field
         $query->where($filter->field, $criteria);
       else//where id
         $query->where('id', $criteria);
     }
-  
+
     $model = $query->first();
-    
+
     if($model){
       $model->update($data);
       $model->categories()->sync(array_get($data, 'categories', []));
-  
+
       $model->options()->sync(array_get($data, 'options', []));
-  
+
       $model->optionValues()->sync(array_get($data, 'optionValues', []));
-  
+
       $model->relatedProducts()->sync(array_get($data, 'relatedProducts', []));
-  
+
       $model->discounts()->sync(array_get($data, 'discounts', []));
-  
+
       $model->tags()->sync(array_get($data, 'tags', []));
     }
     return $model;
   }
-  
+
   public function deleteBy($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // FILTER
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field)) //Where field
         $query->where($filter->field, $criteria);
       else //where id
         $query->where('id', $criteria);
     }
-    
+
     /*== REQUEST ==*/
     $query->delete();
   }
