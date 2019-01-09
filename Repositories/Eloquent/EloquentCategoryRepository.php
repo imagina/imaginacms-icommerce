@@ -38,23 +38,28 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
       }
+      
+      if(isset($filter->parent_id))
+      {
+        $query->where("parent_id",$filter->parent_id);
+      }
     }
     
     // FIELDS
-    if ($params->fields) {
+    if (isset($params->fields)) {
       $query->select($params->fields);
     }
     
     // PAGE & TAKE
     //Return request with pagination
-    if ($params->page) {
-      $params->take ? true : $params->take = 12; //If no specific take, query take 12 for default
+    if (isset($params->page)) {
+      isset($params->take) ? true : $params->take = 12; //If no specific take, query take 12 for default
       return $query->paginate($params->take);
     }
     
     //Return request without pagination
-    if (!$params->page) {
-      $params->take ? $query->take($params->take) : false; //if request to take a limit
+    if (!isset($params->page)) {
+      isset($params->take) ? $query->take($params->take) : false; //if request to take a limit
       return $query->get();
     }
   }

@@ -183,9 +183,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $model->optionValues()->sync(array_get($data, 'optionValues', []));
 
       $model->relatedProducts()->sync(array_get($data, 'relatedProducts', []));
-
-      $model->discounts()->sync(array_get($data, 'discounts', []));
-
+  
+      //$model->discounts()->sync(array_get($data, 'discounts', []));
+  
       $model->tags()->sync(array_get($data, 'tags', []));
     }
     return $model;

@@ -14,4 +14,19 @@ class ProductTranslation extends Model
       'slug',
     ];
     protected $table = 'icommerce__product_translations';
+  
+  protected function setSlugAttribute($value){
+    
+    if($this->parent_id==0){
+      if(!empty($value)){
+        $this->attributes['slug'] = str_slug($value,'-');
+      }else{
+        $this->attributes['slug'] = str_slug($this->title,'-');
+      }
+    }else{
+      $this->attributes['slug'] = $this->parent->slug.'/'.str_slug($this->title,'-');
+    }
+    
+    
+  }
 }

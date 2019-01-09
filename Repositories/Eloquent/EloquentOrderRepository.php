@@ -111,7 +111,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       $model->update($data);
       // sync tables
       $model->coupons()->sync(array_get($data, 'coupons', []));
-      $model->optionValues()->sync(array_get($data, 'optionValues', []));
+      //$model->optionValues()->sync(array_get($data, 'optionValues', []));
       $model->products()->sync(array_get($data, 'products', []));
       
     }

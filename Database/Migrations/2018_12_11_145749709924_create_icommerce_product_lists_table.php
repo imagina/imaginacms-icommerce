@@ -21,9 +21,6 @@ class CreateIcommerceProductListsTable extends Migration
   
       $table->integer('price_list_id')->unsigned();
       $table->foreign('price_list_id')->references('id')->on('icommerce__price_lists')->onDelete('restrict');
-  
- $table->integer('product_option_value_id')->unsigned()->nullable();
-      $table->foreign('product_option_value_id')->references('id')->on('icommerce__product_option_value')->onDelete('restrict');
       
       $table->decimal('price',20,2);
       
