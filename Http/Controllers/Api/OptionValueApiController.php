@@ -36,7 +36,7 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $optionValues = $this->optionValue->getItemsBy($this->getParamsRequest());
+      $optionValues = $this->optionValue->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => OptionValueTransformer::collection($optionValues)];
@@ -63,7 +63,7 @@ class OptionValueApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $optionValue = $this->optionValue->getItem($criteria,$this->getParamsRequest());
+      $optionValue = $this->optionValue->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $optionValue ? new OptionValueTransformer($optionValue) : '',
@@ -82,7 +82,7 @@ class OptionValueApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(OptionValueRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->optionValue->create($request->all());
@@ -103,10 +103,10 @@ class OptionValueApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, OptionValueRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
-      $this->optionValue->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $this->optionValue->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -126,7 +126,7 @@ class OptionValueApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->optionValue->deleteBy($criteria,$this->getParamsRequest());
+      $this->optionValue->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

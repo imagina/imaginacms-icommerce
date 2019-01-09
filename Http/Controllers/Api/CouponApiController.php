@@ -36,7 +36,7 @@ class CouponApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $coupons = $this->coupon->getItemsBy($this->getParamsRequest());
+      $coupons = $this->coupon->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => CouponTransformer::collection($coupons)];
@@ -63,7 +63,7 @@ class CouponApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $coupon = $this->coupon->getItem($criteria,$this->getParamsRequest());
+      $coupon = $this->coupon->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $coupon ? new CouponTransformer($coupon) : '',
@@ -82,7 +82,7 @@ class CouponApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(CouponRequest $request)
+  public function create(Request $request)
   {
     try {
      $this->coupon->create($request->all());
@@ -103,10 +103,10 @@ class CouponApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, CouponRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
-      $this->coupon->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $this->coupon->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -126,7 +126,7 @@ class CouponApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->coupon->deleteBy($criteria,$this->getParamsRequest());
+      $this->coupon->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

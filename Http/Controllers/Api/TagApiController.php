@@ -38,7 +38,7 @@ class TagApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $tags = $this->tag->getItemsBy($this->getParamsRequest());
+      $tags = $this->tag->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => TagTransformer::collection($tags)];
@@ -68,7 +68,7 @@ class TagApiController extends BaseApiController
       $p = $this->parametersUrl(false, false, [], []);
 
       //Request to Repository
-      $tag = $this->tag->getItem($criteria,$this->getParamsRequest());
+      $tag = $this->tag->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $tag ? new TagTransformer($tag) : '',
@@ -87,7 +87,7 @@ class TagApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(TagRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->tag->create($request->all());
@@ -108,11 +108,11 @@ class TagApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, TagRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->tag->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->tag->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -133,7 +133,7 @@ class TagApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->tag->deleteBy($criteria, $this->parametersUrl());
+      $this->tag->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

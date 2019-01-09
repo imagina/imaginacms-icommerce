@@ -36,7 +36,7 @@ class CartApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $carts = $this->cart->getItemsBy($this->getParamsRequest());
+      $carts = $this->cart->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => CartTransformer::collection($carts)];
@@ -63,7 +63,7 @@ class CartApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $cart = $this->cart->getItem($id, $this->parametersUrl());
+      $cart = $this->cart->getItem($id, $this->getParamsRequest($request));
 
       $response = [
         'data' => $cart ? new CartTransformer($cart) : '',
@@ -82,7 +82,7 @@ class CartApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(CartRequest $request)
+  public function create(Request $request)
   {
     try {
       $cart = $this->cart->create($request->all());
@@ -103,10 +103,10 @@ class CartApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, CartRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
-      $this->cart->updateBy($criteria, $request->all(),$this->parametersUrl());
+      $this->cart->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -126,7 +126,7 @@ class CartApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->cart->deleteBy($criteria,$this->parametersUrl());
+      $this->cart->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

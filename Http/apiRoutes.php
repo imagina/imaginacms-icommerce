@@ -48,6 +48,9 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
   //======  ORDERS
   require('ApiRoutes/orderRoutes.php');
   
+  //======  ORDER STATUS
+  require('ApiRoutes/orderStatusRoutes.php');
+  
   //======  ORDER STATUS HISTORY
   require('ApiRoutes/orderHistoryRoutes.php');
   

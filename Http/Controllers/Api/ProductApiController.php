@@ -39,7 +39,7 @@ class ProductApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $products = $this->product->getItemsBy($this->getParamsRequest());
+      $products = $this->product->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => ProductTransformer::collection($products)];
@@ -66,7 +66,7 @@ class ProductApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $product = $this->product->getItem($criteria,$this->getParamsRequest());
+      $product = $this->product->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $product ? new ProductTransformer($product) : '',
@@ -85,7 +85,7 @@ class ProductApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(ProductRequest $request)
+  public function create(Request $request)
   {
     try {
 
@@ -140,11 +140,11 @@ class ProductApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, ProductRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $product = $this->product->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $product = $this->product->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       // sync tables
       if ($product) {
@@ -196,7 +196,7 @@ class ProductApiController extends BaseApiController
   {
     try {
 
-      $this->product->deleteBy($criteria, $this->parametersUrl());
+      $this->product->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

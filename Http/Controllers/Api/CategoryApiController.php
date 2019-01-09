@@ -38,7 +38,7 @@ class CategoryApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $categories = $this->category->getItemsBy($this->getParamsRequest());
+      $categories = $this->category->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => CategoryTransformer::collection($categories)];
@@ -65,7 +65,7 @@ class CategoryApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $category = $this->category->getItem($criteria,$this->getParamsRequest());
+      $category = $this->category->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $category ? new CategoryTransformer($category) : '',
@@ -84,7 +84,7 @@ class CategoryApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(CategoryRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->category->create($request->all());
@@ -105,11 +105,11 @@ class CategoryApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, CategoryRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->category->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $this->category->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -131,7 +131,7 @@ class CategoryApiController extends BaseApiController
   {
     try {
 
-      $this->category->deleteBy($criteria,$this->getParamsRequest());
+      $this->category->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

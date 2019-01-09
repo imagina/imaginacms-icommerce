@@ -36,7 +36,7 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $paymentMethods = $this->paymentMethod->getItemsBy($this->getParamsRequest());
+      $paymentMethods = $this->paymentMethod->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => PaymentMethodTransformer::collection($paymentMethods)];
@@ -63,7 +63,7 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $paymentMethod = $this->paymentMethod->getItem($criteria, $this->parametersUrl());
+      $paymentMethod = $this->paymentMethod->getItem($criteria, $this->getParamsRequest($request));
 
       $response = [
         'data' => $paymentMethod ? new PaymentMethodTransformer($paymentMethod) : '',
@@ -82,7 +82,7 @@ class PaymentMethodApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(PaymentMethodRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->paymentMethod->create($request->all());
@@ -103,11 +103,11 @@ class PaymentMethodApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, PaymentMethodRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->paymentMethod->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->paymentMethod->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -128,7 +128,7 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
 
-      $this->paymentMethod->deleteBy($criteria, $this->parametersUrl());
+      $this->paymentMethod->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

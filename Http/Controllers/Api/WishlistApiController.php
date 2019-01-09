@@ -36,7 +36,7 @@ class WishlistApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $wishlists = $this->wishlist->getItemsBy($this->getParamsRequest());
+      $wishlists = $this->wishlist->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => WishlistTransformer::collection($wishlists)];
@@ -63,7 +63,7 @@ class WishlistApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $wishlist = $this->wishlist->getItem($criteria,$this->getParamsRequest());
+      $wishlist = $this->wishlist->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $wishlist ? new WishlistTransformer($wishlist) : '',
@@ -82,7 +82,7 @@ class WishlistApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(WishlistRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->wishlist->create($request->all());
@@ -103,10 +103,10 @@ class WishlistApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, WishlistRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
-      $this->wishlist->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $this->wishlist->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -126,7 +126,7 @@ class WishlistApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->wishlist->deleteBy($criteria,$this->getParamsRequest());
+      $this->wishlist->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

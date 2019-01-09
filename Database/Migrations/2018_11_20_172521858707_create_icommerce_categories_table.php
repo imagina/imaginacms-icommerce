@@ -18,7 +18,12 @@ class CreateIcommerceCategoriesTable extends Migration
       // Your fields
       
       $table->text('options')->default('')->nullable();
+  
       $table->integer('parent_id')->default(0);
+      $table->integer('lft')->unsigned()->nullable();
+      $table->integer('rgt')->unsigned()->nullable();
+      $table->integer('depth')->unsigned()->nullable();
+      
       $table->tinyInteger('show_menu')->default(0)->unsigned();
       
       $table->timestamps();

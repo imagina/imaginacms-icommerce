@@ -39,7 +39,7 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $options = $this->option->getItemsBy($this->getParamsRequest());
+      $options = $this->option->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => OptionTransformer::collection($options)];
@@ -66,7 +66,7 @@ class OptionApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $option = $this->option->getItem($criteria,$this->getParamsRequest());
+      $option = $this->option->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $option ? new OptionTransformer($option) : '',
@@ -85,7 +85,7 @@ class OptionApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(OptionRequest $request)
+  public function create(Request $request)
   {
     \DB::beginTransaction();
     try {
@@ -116,10 +116,10 @@ class OptionApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, OptionRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
-      $option = $this->option->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $option = $this->option->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       if (isset($request->optionValues)){
             foreach ($request->optionValues as $optionValue)
@@ -150,7 +150,7 @@ class OptionApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->option->deleteBy($criteria,$this->getParamsRequest());
+      $this->option->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

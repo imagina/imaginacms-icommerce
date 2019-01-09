@@ -106,11 +106,15 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
       else//where id
         $query->where('id', $criteria);
     }
-    
+  
     // REQUEST
-    $model = $query->update($data);
-    
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
     return $model;
+    
   }
   
   public function deleteBy($criteria, $params)
@@ -127,8 +131,12 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
       else //where id
         $query->where('id', $criteria);
     }
-    
-    /*== REQUEST ==*/
-    $query->delete();
+  
+    // REQUEST
+    $model = $query->first();
+  
+    if($model) {
+      $model->delete();
+    }
   }
 }

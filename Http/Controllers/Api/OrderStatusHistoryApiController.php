@@ -38,7 +38,7 @@ class OrderStatusHistoryApiController extends BaseApiController
       //Get Parameters from URL.
 
       //Request to Repository
-      $orderHistories = $this->orderHistory->getItemsBy($this->getParamsRequest());
+      $orderHistories = $this->orderHistory->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => OrderHistoryTransformer::collection($orderHistories)];
@@ -65,7 +65,7 @@ class OrderStatusHistoryApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $orderHistory = $this->orderHistory->getItem($criteria, $this->parametersUrl());
+      $orderHistory = $this->orderHistory->getItem($criteria, $this->getParamsRequest($request));
 
       $response = [
         'data' => $orderHistory ? new OrderHistoryTransformer($orderHistory) : '',
@@ -84,7 +84,7 @@ class OrderStatusHistoryApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(OrderHistoryRequest $request)
+  public function create(Request $request)
   {
     try {
       $orderHistory = $this->orderHistory->create($request->all());
@@ -105,11 +105,11 @@ class OrderStatusHistoryApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, OrderHistoryRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->orderHistory->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->orderHistory->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -130,7 +130,7 @@ class OrderStatusHistoryApiController extends BaseApiController
   {
     try {
 
-      $this->orderHistory->deleteBy($criteria, $this->parametersUrl());
+      $this->orderHistory->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

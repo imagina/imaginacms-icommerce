@@ -46,6 +46,7 @@ class IcommerceServiceProvider extends ServiceProvider
       $event->load('orderproducts', array_dot(trans('icommerce::orderproducts')));
       $event->load('orderoptions', array_dot(trans('icommerce::orderoptions')));
       $event->load('orderhistories', array_dot(trans('icommerce::orderhistories')));
+      $event->load('orderstatuses', array_dot(trans('icommerce::orderstatuses')));
       $event->load('ordershipments', array_dot(trans('icommerce::ordershipments')));
       $event->load('couponcategories', array_dot(trans('icommerce::couponcategories')));
       $event->load('couponproducts', array_dot(trans('icommerce::couponproducts')));
@@ -291,12 +292,24 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderHistoryRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderHistoryRepository(new \Modules\Icommerce\Entities\OrderStatusHistory());
-        
+      
         if (!config('app.cache')) {
           return $repository;
         }
-        
+      
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderHistoryDecorator($repository);
+      }
+    );
+    $this->app->bind(
+      'Modules\Icommerce\Repositories\OrderStatusRepository',
+      function () {
+        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderStatusRepository(new \Modules\Icommerce\Entities\OrderStatus());
+      
+        if (!config('app.cache')) {
+          return $repository;
+        }
+      
+        return new \Modules\Icommerce\Repositories\Cache\CacheOrderStatusDecorator($repository);
       }
     );
     $this->app->bind(

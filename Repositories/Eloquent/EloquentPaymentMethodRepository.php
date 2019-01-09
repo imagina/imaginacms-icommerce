@@ -13,7 +13,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     $query = $this->model->query();
     
     // RELATIONSHIPS
-    $defaultInclude = ['products'];
+    $defaultInclude = [];
     $query->with(array_merge($defaultInclude,$params->include));
     
     // FILTERS
@@ -93,10 +93,13 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
       else//where id
         $query->where('id', $criteria);
     }
-    
+  
     // REQUEST
-    $model = $query->update($data);
-    
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
     return $model;
   }
   
@@ -114,8 +117,12 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
       else //where id
         $query->where('id', $criteria);
     }
-    
-    /*== REQUEST ==*/
-    $query->delete();
+  
+    // REQUEST
+    $model = $query->first();
+  
+    if($model) {
+      $model->delete();
+    }
   }
 }

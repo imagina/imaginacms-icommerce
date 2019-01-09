@@ -94,10 +94,13 @@ class EloquentProductListRepository extends EloquentBaseRepository implements Pr
       else//where id
         $query->where('id', $criteria);
     }
-    
+  
     // REQUEST
-    $model = $query->update($data);
-    
+    $model = $query->first();
+  
+    if($model) {
+      $model->update($data);
+    }
     return $model;
   }
   
@@ -115,8 +118,12 @@ class EloquentProductListRepository extends EloquentBaseRepository implements Pr
       else //where id
         $query->where('id', $criteria);
     }
-    
-    /*== REQUEST ==*/
-    $query->delete();
+  
+    // REQUEST
+    $model = $query->first();
+  
+    if($model) {
+      $model->delete();
+    }
   }
 }

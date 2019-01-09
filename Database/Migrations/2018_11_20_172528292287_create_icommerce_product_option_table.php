@@ -22,11 +22,10 @@ class CreateIcommerceProductOptionTable extends Migration
       $table->integer('option_id')->unsigned();
       $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('cascade');
   
-      $table->integer('parent_id')->unsigned()->nullable();
-      $table->foreign('parent_id')
-        ->references('id')
-        ->on('icommerce__options')
-        ->onDelete('restrict');
+      $table->integer('parent_id')->unsigned()->default(0);
+      $table->integer('lft')->unsigned()->nullable();
+      $table->integer('rgt')->unsigned()->nullable();
+      $table->integer('depth')->unsigned()->nullable();
   
       $table->integer('parent_option_value_id')->unsigned()->nullable();
       $table->foreign('parent_option_value_id')

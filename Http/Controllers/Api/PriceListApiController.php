@@ -36,7 +36,7 @@ class PriceListApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $priceLists = $this->priceList->getItemsBy($this->getParamsRequest());
+      $priceLists = $this->priceList->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => PriceListTransformer::collection($priceLists)];
@@ -63,7 +63,7 @@ class PriceListApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $criteria = $this->priceList->getItem($criteria, $this->parametersUrl());
+      $criteria = $this->priceList->getItem($criteria, $this->getParamsRequest($request));
 
       $response = [
         'data' => $criteria ? new PriceListTransformer($criteria) : '',
@@ -82,7 +82,7 @@ class PriceListApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(PriceListRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->priceList->create($request->all());
@@ -103,11 +103,11 @@ class PriceListApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, PriceListRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->priceList->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->priceList->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -128,7 +128,7 @@ class PriceListApiController extends BaseApiController
   {
     try {
 
-      $this->priceList->deleteBy($criteria, $this->parametersUrl());
+      $this->priceList->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

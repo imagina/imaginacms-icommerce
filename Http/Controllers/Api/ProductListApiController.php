@@ -33,7 +33,7 @@ class ProductListApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $productLists = $this->productList->getItemsBy($this->getParamsRequest());
+      $productLists = $this->productList->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => ProductListTransformer::collection($productLists)];
@@ -60,7 +60,7 @@ class ProductListApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $productList = $this->productList->getItem($criteria, $this->parametersUrl());
+      $productList = $this->productList->getItem($criteria, $this->getParamsRequest($request));
 
       $response = [
         'data' => $productList ? new ProductListTransformer($productList) : '',
@@ -79,7 +79,7 @@ class ProductListApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(ProductListRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->productList->create($request->all());
@@ -100,11 +100,11 @@ class ProductListApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, ProductListRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->productList->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->productList->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -124,7 +124,7 @@ class ProductListApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->productList->deleteBy($criteria, $this->parametersUrl());
+      $this->productList->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

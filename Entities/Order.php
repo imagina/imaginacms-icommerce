@@ -97,7 +97,7 @@ class Order extends Model
   
   public function coupons()
   {
-    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_history')
+    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
       ->withPivot('amount')
       ->withTimestamps();
   }

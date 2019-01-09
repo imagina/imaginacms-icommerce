@@ -36,7 +36,7 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $currencies = $this->currency->getItemsBy($this->getParamsRequest());
+      $currencies = $this->currency->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => CurrencyTransformer::collection($currencies)];
@@ -63,7 +63,7 @@ class CurrencyApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $currency = $this->currency->getItem($criteria,$this->getParamsRequest());
+      $currency = $this->currency->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $currency ? new CurrencyTransformer($currency) : '',
@@ -82,7 +82,7 @@ class CurrencyApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(CurrencyRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->currency->create($request->all());
@@ -103,10 +103,10 @@ class CurrencyApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, CurrencyRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
-      $this->currency->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $this->currency->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -126,7 +126,7 @@ class CurrencyApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->currency->deleteBy($criteria,$this->getParamsRequest());
+      $this->currency->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

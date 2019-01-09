@@ -39,7 +39,7 @@ class ProductOptionValueApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $productOptionValues = $this->productOptionValue->getItemsBy($this->getParamsRequest());
+      $productOptionValues = $this->productOptionValue->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => ProductOptionValueTransformer::collection($productOptionValues)];
@@ -66,7 +66,7 @@ class ProductOptionValueApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $productOptionValue = $this->productOptionValue->getItem($criteria,$this->getParamsRequest());
+      $productOptionValue = $this->productOptionValue->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $productOptionValue ? new ProductOptionValueTransformer($productOptionValue) : '',
@@ -85,7 +85,7 @@ class ProductOptionValueApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(ProductOptionValueRequest $request)
+  public function create(Request $request)
   {
     try {
       $this->productOptionValue->create($request->all());
@@ -106,11 +106,11 @@ class ProductOptionValueApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, ProductOptionValueRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->productOptionValue->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->productOptionValue->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -132,7 +132,7 @@ class ProductOptionValueApiController extends BaseApiController
   {
     try {
 
-      $this->productOptionValue->deleteBy($criteria, $this->parametersUrl());
+      $this->productOptionValue->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

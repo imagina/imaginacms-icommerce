@@ -41,7 +41,7 @@ class OrderApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $orders = $this->order->getItemsBy($this->getParamsRequest());
+      $orders = $this->order->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => OrderTransformer::collection($orders)];
@@ -68,7 +68,7 @@ class OrderApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $order = $this->order->getItem($criteria,$this->getParamsRequest());
+      $order = $this->order->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $order ? new OrderTransformer($order) : '',
@@ -87,14 +87,14 @@ class OrderApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(OrderRequest $request)
+  public function create(Request $request)
   {
 
     try {
       $order = $this->order->create($request->all());
 
       // Status History
-      $this->orderStatusHistory->crete([
+      $this->orderStatusHistory->create([
         'order_id' => $order->id,
         'status' => 0,
         'notify' => 0,
@@ -119,11 +119,11 @@ class OrderApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, OrderRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest());
+      $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -145,7 +145,7 @@ class OrderApiController extends BaseApiController
   {
     try {
 
-      $this->order->deleteBy($criteria,$this->getParamsRequest());
+      $this->order->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

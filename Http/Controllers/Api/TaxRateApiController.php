@@ -36,7 +36,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxRates = $this->taxRate->getItemsBy($this->getParamsRequest());
+      $taxRates = $this->taxRate->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => TaxRateTransformer::collection($taxRates)];
@@ -63,7 +63,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxRate = $this->taxRate->getItem($criteria,$this->getParamsRequest());
+      $taxRate = $this->taxRate->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $taxRate ? new TaxRateTransformer($taxRate) : '',
@@ -82,7 +82,7 @@ class TaxRateApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(TaxRateRequest $request)
+  public function create(Request $request)
   {
     try {
       $taxRate = $this->taxRate->create($request->all());
@@ -104,11 +104,11 @@ class TaxRateApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, TaxRateRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $this->taxRate->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $this->taxRate->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -129,7 +129,7 @@ class TaxRateApiController extends BaseApiController
   {
     try {
 
-      $this->taxRate->deleteBy($criteria, $this->parametersUrl());
+      $this->taxRate->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

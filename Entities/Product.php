@@ -103,16 +103,16 @@ class Product extends Model
       ->using(ProductOption::class);
   }
 
-  /*public function optionValues()
+  public function optionValues()
   {
-    return $this->belongsToMany(OptionValue::class, 'icommerce__option_values')
+    return $this->belongsToMany(OptionValue::class, 'icommerce__product_option_value')
       ->withPivot(
         'id', 'product_option_id', 'option_id',
         'parent_option_value_id', 'quantity',
-        'substract', 'price', 'weight'
+        'subtract', 'price', 'weight'
       )->withTimestamps()
       ->using(ProductOptionValue::class);
-  }*/
+  }
 
   public function relatedProducts()
   {

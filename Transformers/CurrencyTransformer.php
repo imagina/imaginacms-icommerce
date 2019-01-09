@@ -10,7 +10,7 @@ class CurrencyTransformer extends Resource
   {
     $data =  [
       'id' => $this->id,
-      'title' => $this->title,
+      'name' => $this->name,
       'code' => $this->code,
       'symbol_left' => $this->symbol_left,
       'symbol_right' => $this->symbol_right,
@@ -33,7 +33,7 @@ class CurrencyTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
+          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
         }
       }
     }

@@ -83,7 +83,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
   
     // sync tables
     $order->coupons()->sync(array_get($data, 'coupons', []));
-    $order->optionValues()->sync(array_get($data, 'optionValues', []));
+    //$order->orderOption()->sync(array_get($data, 'orderOption', []));
     $order->products()->sync(array_get($data, 'products', []));
     
     return $order;
@@ -133,8 +133,12 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       else //where id
         $query->where('id', $criteria);
     }
-    
-    /*== REQUEST ==*/
-    $query->delete();
+  
+    // REQUEST
+    $model = $query->first();
+  
+    if($model) {
+      $model->delete();
+    }
   }
 }

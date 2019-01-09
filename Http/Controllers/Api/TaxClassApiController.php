@@ -36,7 +36,7 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxClasses = $this->taxClass->getItemsBy($this->getParamsRequest());
+      $taxClasses = $this->taxClass->getItemsBy($this->getParamsRequest($request));
 
       //Response
       $response = ['data' => TaxClassTransformer::collection($taxClasses)];
@@ -63,7 +63,7 @@ class TaxClassApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $taxClass = $this->taxClass->getItem($criteria,$this->getParamsRequest());
+      $taxClass = $this->taxClass->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
         'data' => $taxClass ? new TaxClassTransformer($taxClass) : '',
@@ -82,7 +82,7 @@ class TaxClassApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(TaxClassRequest $request)
+  public function create(Request $request)
   {
     try {
       $taxClass = $this->taxClass->create($request->all());
@@ -103,11 +103,11 @@ class TaxClassApiController extends BaseApiController
    * @param  Request $request
    * @return Response
    */
-  public function update($criteria, TaxClassRequest $request)
+  public function update($criteria, Request $request)
   {
     try {
 
-      $taxClass = $this->taxClass->updateBy($criteria, $request->all(), $this->parametersUrl());
+      $taxClass = $this->taxClass->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -128,7 +128,7 @@ class TaxClassApiController extends BaseApiController
   {
     try {
 
-      $this->taxClass->deleteBy($criteria, $this->parametersUrl());
+      $this->taxClass->deleteBy($criteria, $this->getParamsRequest($request));
 
       $response = ['data' => ''];
 

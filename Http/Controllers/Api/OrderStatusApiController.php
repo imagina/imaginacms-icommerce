@@ -3,7 +3,6 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
-use Modules\Icommerce\Http\Requests\ManufacturerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -11,21 +10,22 @@ use Illuminate\Http\Response;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 // Transformers
-use Modules\Icommerce\Transformers\ManufacturerTransformer;
+use Modules\Icommerce\Transformers\OrderStatusTransformer;
 
-// Entities
-use Modules\Icommerce\Entities\Manufacturer;
 
 // Repositories
-use Modules\Icommerce\Repositories\ManufacturerRepository;
+use Modules\Icommerce\Repositories\OrderStatusRepository;
 
-class ManufacturerApiController extends BaseApiController
+
+class OrderStatusApiController extends BaseApiController
 {
-  private $manufacturer;
+  
+  private $orderStatus;
 
-  public function __construct(ManufacturerRepository $manufacturer)
+
+  public function __construct(OrderStatusRepository $orderStatus)
   {
-    $this->manufacturer = $manufacturer;
+    $this->orderStatus = $orderStatus;
   }
 
   /**
@@ -36,12 +36,12 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $manufacturers = $this->manufacturer->getItemsBy($this->getParamsRequest($request));
+      $orderStatuses = $this->orderStatus->getItemsBy($this->getParamsRequest($request));
 
       //Response
-      $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
+      $response = ['data' => OrderStatusTransformer::collection($orderStatuses)];
       //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($manufacturers)] : false;
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($orderStatuses)] : false;
 
     } catch (\Exception $e) {
       //Message Error
@@ -63,10 +63,10 @@ class ManufacturerApiController extends BaseApiController
   {
     try {
       //Request to Repository
-      $manufacturer = $this->manufacturer->getItem($criteria,$this->getParamsRequest($request));
+      $orderStatus = $this->orderStatus->getItem($criteria,$this->getParamsRequest($request));
 
       $response = [
-        'data' => $manufacturer ? new ManufacturerTransformer($manufacturer) : '',
+        'data' => $orderStatus ? new OrderStatusTransformer($orderStatus) : '',
       ];
 
     } catch (\Exception $e) {
@@ -84,12 +84,14 @@ class ManufacturerApiController extends BaseApiController
    */
   public function create(Request $request)
   {
+
     try {
-      $this->manufacturer->create($request->all());
+      $this->orderStatus->create($request->all());
 
       $response = ['data' => ''];
 
     } catch (\Exception $e) {
+
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -106,7 +108,8 @@ class ManufacturerApiController extends BaseApiController
   public function update($criteria, Request $request)
   {
     try {
-      $this->manufacturer->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+
+      $this->orderStatus->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
@@ -119,6 +122,7 @@ class ManufacturerApiController extends BaseApiController
     return response()->json($response, $status ?? 200);
   }
 
+
   /**
    * Remove the specified resource from storage.
    * @return Response
@@ -126,7 +130,8 @@ class ManufacturerApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->manufacturer->deleteBy($criteria,$this->getParamsRequest($request));
+
+      $this->orderStatus->deleteBy($criteria,$this->getParamsRequest($request));
 
       $response = ['data' => ''];
 
