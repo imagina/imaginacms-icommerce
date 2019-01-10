@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Order\Events;
+namespace Modules\Icommerce\Events;
 
 class OrderWasCreated
 {
