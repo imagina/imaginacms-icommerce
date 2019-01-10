@@ -23,6 +23,8 @@ return [
         'name'          => 'Option name',
         'type'          => 'Type',
         'sort_order'    => 'Sort order',
+        'parent_option'     => 'Parent Option',
+        'select parent option' => 'Select a parent option'
     ],
     'messages'      => [
         'select'        => 'Select an option',

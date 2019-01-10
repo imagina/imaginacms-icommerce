@@ -14,9 +14,18 @@
 		@include('icommerce::admin.products.partials.flag-icon',['entity' => $entity,'att' => 'description'])
 		{!! Form::normalInput('description',trans('icommerce::options.table.description'), $errors,null,$op) !!}
 		{!! Form::normalSelect('type', trans('icommerce::options.form.type'), $errors, $normalSelectArray,null,$opSelect) !!}
+		<div class="form-group dropdrown">
+			<label for="parentOption">trans('icommerce::options.form.parent_option')</label>
+			<select class="form-control" name="parent_id" id="parent_option">
+				<option value="0">trans('icommerce::options.form.select parent option')</option>
+				@foreach($parentOptions as $option)
+				<option value="{{$option->id}}">{{$option->description}}</option>
+				@endforeach
+			</select>
+		</div>
 		{!! Form::normalInputOfType('number','sort_order',trans('icommerce::options.form.sort_order'),$errors) !!}
-	</div>	
-</div>	
+	</div>
+</div>
 
 <!-- /.box-header -->
 <div id="options-multiple" class="box-body" style="display: none;">
@@ -35,7 +44,7 @@
             </thead>
             <tbody class="items">
 
-            </tbody> 
+            </tbody>
             <tfoot>
 			    <tr>
 					<td colspan="3"></td>
@@ -43,7 +52,7 @@
 						<button class="btn btn-success btn-flat add_field_button"><i class="fa fa-pencil"></i></button>
 					</td>
                 </tr>
-            </tfoot>                            
+            </tfoot>
         </table>
         <!-- /.box-body -->
     </div>
@@ -234,21 +243,21 @@
         };
     </script>
 
-    <script>     
+    <script>
         $(document).ready(function () {
 
             var max_fields = 100;
             var wrapper = $(".items");
             var add_button = $(".add_field_button");
-            var fieldHTML = 
+            var fieldHTML =
                 '<tr>'
                 +
                     '<td>'
                 +
-                        '<div class="form-group">' 
+                        '<div class="form-group">'
                 +
-                            '<input type="text" class="form-control" value="" name="description_value[]" id="description" placeholder="Option Value Name" required>' 
-                + 
+                            '<input type="text" class="form-control" value="" name="description_value[]" id="description" placeholder="Option Value Name" required>'
+                +
                         '</div>'
                 +
                     '</td>'
@@ -269,7 +278,7 @@
                 +
                                     '<img id="mainImage" src="https://ecommerce.imagina.com.co/modules/bcrud/img/default.jpg">'
                 +
-                                '</div>'            
+                                '</div>'
                 +
                                 '<div class="col-sm-3">'
                 +
@@ -338,15 +347,15 @@
 
             $(add_button).click(function(e){
                 e.preventDefault();
-                if(x < max_fields){ 
-                    x++;     
+                if(x < max_fields){
+                    x++;
                     $(wrapper).append(fieldHTML);
                 }
             });
 
             $(wrapper).on("click",".remove_field", function(e){
-                e.preventDefault(); 
-                $(this).parents('tr').remove(); 
+                e.preventDefault();
+                $(this).parents('tr').remove();
                 x--;
             })
         });
