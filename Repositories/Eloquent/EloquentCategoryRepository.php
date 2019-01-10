@@ -44,22 +44,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query->where("parent_id",$filter->parent_id);
       }
     }
-    
-    // FIELDS
-    if (isset($params->fields)) {
+  
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-    }
-    
-    // PAGE & TAKE
-    //Return request with pagination
-    if (isset($params->page)) {
-      isset($params->take) ? true : $params->take = 12; //If no specific take, query take 12 for default
+  
+    /*== REQUEST ==*/
+    if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
-    }
-    
-    //Return request without pagination
-    if (!isset($params->page)) {
-      isset($params->take) ? $query->take($params->take) : false; //if request to take a limit
+    } else {
+      $params->take ? $query->take($params->take) : false;//Take
       return $query->get();
     }
   }

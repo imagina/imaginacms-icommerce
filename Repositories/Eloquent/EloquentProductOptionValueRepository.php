@@ -50,18 +50,17 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
       }
       
     }
-    // FIELDS
-    if (is_array($params->fields) && count($params->fields))
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-    
-    // PAGINATION or GET
-    // return request with pagination
-    if ($params->page)
+  
+    /*== REQUEST ==*/
+    if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
-    else
+    } else {
       $params->take ? $query->take($params->take) : false;//Take
-    
-    return $query->get();
+      return $query->get();
+    }
     
   }
   

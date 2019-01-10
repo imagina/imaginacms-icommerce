@@ -2,27 +2,27 @@
 
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' => '/productoptionvalues'/*,'middleware' => ['auth:api']*/], function (Router $router) {
+$router->group(['prefix' => '/product-option-values'/*,'middleware' => ['auth:api']*/], function (Router $router) {
   $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
   
   $router->post('/', [
-    'as' => $locale . 'api.icommerce.productoptionvalues.create',
+    'as' => $locale . 'api.icommerce.product-option-values.create',
     'uses' => 'ProductOptionValueApiController@create',
   ]);
   $router->get('/', [
-    'as' => $locale . 'api.icommerce.productoptionvalues.index',
+    'as' => $locale . 'api.icommerce.product-option-values.index',
     'uses' => 'ProductOptionValueApiController@index',
   ]);
   $router->put('/{criteria}', [
-    'as' => $locale . 'api.icommerce.productoptionvalues.update',
+    'as' => $locale . 'api.icommerce.product-option-values.update',
     'uses' => 'ProductOptionValueApiController@update',
   ]);
   $router->delete('/{criteria}', [
-    'as' => $locale . 'api.icommerce.productoptionvalues.delete',
+    'as' => $locale . 'api.icommerce.product-option-values.delete',
     'uses' => 'ProductOptionValueApiController@delete',
   ]);
   $router->get('/{criteria}', [
-    'as' => $locale . 'api.icommerce.productoptionvalues.show',
+    'as' => $locale . 'api.icommerce.product-option-values.show',
     'uses' => 'ProductOptionValueApiController@show',
   ]);
   

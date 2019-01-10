@@ -2,27 +2,27 @@
 
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' => '/pricelists'/*,'middleware' => ['auth:api']*/], function (Router $router) {
+$router->group(['prefix' => '/price-lists'/*,'middleware' => ['auth:api']*/], function (Router $router) {
   $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
 
   $router->post('/', [
-    'as' => $locale . 'api.icommerce.pricelists.create',
+    'as' => $locale . 'api.icommerce.price-lists.create',
     'uses' => 'PriceListApiController@create',
   ]);
   $router->get('/', [
-    'as' => $locale . 'api.icommerce.pricelists.index',
+    'as' => $locale . 'api.icommerce.price-lists.index',
     'uses' => 'PriceListApiController@index',
   ]);
   $router->put('/{criteria}', [
-    'as' => $locale . 'api.icommerce.pricelists.update',
+    'as' => $locale . 'api.icommerce.price-lists.update',
     'uses' => 'PriceListApiController@update',
   ]);
   $router->delete('/{criteria}', [
-    'as' => $locale . 'api.icommerce.pricelists.delete',
+    'as' => $locale . 'api.icommerce.price-lists.delete',
     'uses' => 'PriceListApiController@delete',
   ]);
   $router->get('/{criteria}', [
-    'as' => $locale . 'api.icommerce.pricelists.show',
+    'as' => $locale . 'api.icommerce.price-lists.show',
     'uses' => 'PriceListApiController@show',
   ]);
   
