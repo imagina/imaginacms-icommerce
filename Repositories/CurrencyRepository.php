@@ -15,4 +15,7 @@ interface CurrencyRepository extends BaseRepository
   public function updateBy($criteria, $data, $params);
   
   public function deleteBy($criteria, $params);
+
+  public function getActive();
+
 }
