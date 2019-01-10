@@ -35,4 +35,10 @@ class PaymentMethod extends Model
 
   }
 
+  public function setOptionsAttribute($value) {
+    
+    return json_encode($value);
+
+  }
+
 }

@@ -13,9 +13,6 @@ class OrderSuccess extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * @var UserInterface
-     */
     public $order;
 
     public function __construct(OrderRepository $order)
@@ -30,6 +27,7 @@ class OrderSuccess extends Mailable implements ShouldQueue
      */
     public function build()
     {
+       
         return $this->view('icommerce::emails.OrderSuccess')
             ->subject(trans('icommerce::messages.welcome'));
     }
