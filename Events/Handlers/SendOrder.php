@@ -7,6 +7,7 @@ use Illuminate\Contracts\Mail\Mailer;
 use Modules\Icommerce\Emails\OrderSuccess;
 use Modules\Icommerce\Events\OrderWasCreated;
 
+
 class SendOrder
 {
    
@@ -17,7 +18,7 @@ class SendOrder
 
     public function __construct(Mailer $mail)
     {
-        dd($mail);
+        \Log::info('Ingreso a send order');
         $this->mail = $mail;
     }
 
