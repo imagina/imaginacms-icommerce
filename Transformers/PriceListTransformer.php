@@ -16,9 +16,9 @@ class PriceListTransformer extends Resource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
-    
-    if(isset($this->products))
-      $data['products'] = $this->products;
+  
+    $this->ifRequestInclude('products') ?
+      $data['products'] = ($this->products ? new ProductTransformer($this->products) : false) : false;
   
     $filter = json_decode($request->filter);
   

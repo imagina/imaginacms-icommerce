@@ -4,13 +4,14 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Icommerce\Entities\Status;
+use Modules\Ihelpers\Transformers\BaseApiTransformer;
 
-class ProductTransformer extends Resource
+class ProductTransformer extends BaseApiTransformer
 {
   public function toArray($request)
   {
-      $status_obj = new Status();
-
+    
+    
     $data =  [
       'id' => $this->id,
       'name' => $this->name,
@@ -18,16 +19,10 @@ class ProductTransformer extends Resource
       'summary' => $this->summary,
       'options' => $this->options,
       'status' => $this->status,
-       'status_name' => $status_obj->get($this->status),
-      'added_by_id' => $this->added_by_id,
-      'category_id' => $this->category_id,
-      'category_title' => $this->category->title,
-      'parent_id' => $this->parent_id,
-      'tax_class_id' => $this->tax_class_id,
+      'status_name' => $this->getStatus,
       'sku' => $this->sku,
       'quantity' => $this->quantity,
-      'stock_status' => $this->stock_status,
-      'manufacturer_id' => $this->manufacturer_id,
+      'stock_status' => $this->stockStatus,
       'shipping' => $this->shipping,
       'price' => $this->price,
       'date_available' => $this->date_available,
@@ -45,82 +40,92 @@ class ProductTransformer extends Resource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
-
-    // RELATIONSHIPS
+    
+    /*RELATIONSHIPS*/
+    
     // Tax Class
-    if(isset($this->taxClass))
-      $data['taxClass'] = $this->taxClass;
-
+    $this->ifRequestInclude('addedBy') ?
+      $data['addedBy'] = ($this->added_by_id ? new TaxClassTransformer($this->addedBy) : false) : false;
+    
+    
+    // Tax Class
+    $this->ifRequestInclude('taxClass') ?
+      $data['taxClass'] = ($this->tax_class_id ? new TaxClassTransformer($this->taxClass) : false) : false;
+    
     // Categories
-    if(isset($this->categories))
-      $data['categories'] = $this->categories;
-
+    $this->ifRequestInclude('categories') ?
+      $data['categories'] = ($this->categories ? CategoryTransformer::collection($this->categories) : false) : false;
+    
     // Category
-    if(isset($this->category))
-      $data['category'] = $this->category;
-
+    $this->ifRequestInclude('category') ?
+      $data['category'] = ($this->category_id ? CategoryTransformer::collection($this->category) : false) : false;
+    
     // Tags
-    if(isset($this->tags))
-      $data['tags'] = $this->tags;
-
+    $this->ifRequestInclude('tags') ?
+      $data['tags'] = ($this->tags ? TagTransformer::collection($this->tags) : false) : false;
+    
     // Orders
-    if(isset($this->orders))
-      $data['orders'] = $this->orders;
-
+    $this->ifRequestInclude('orders') ?
+      $data['orders'] = ($this->orders ? OrderTransformer::collection($this->orders) : false) : false;
+    
     // Featured Products
-    if(isset($this->featuredProducts))
-      $data['featuredProducts'] = $this->featuredProducts;
-
+    $this->ifRequestInclude('featuredProducts') ?
+      $data['featuredProducts'] = ($this->featuredProducts ? ProductTransformer::collection($this->featuredProducts) : false) : false;
+    
     // Manufacturer
-    if(isset($this->manufacturer))
-      $data['manufacturer'] = $this->manufacturer;
-
+    $this->ifRequestInclude('manufacturer') ?
+      $data['manufacturer'] = ($this->manufacturer_id ? OrderTransformer::collection($this->manufacturer) : false) : false;
+    
+    /* OJO PROBAR
     // Discounts
-    if(isset($this->discounts))
-      $data['discounts'] = $this->discounts;
-
+    $this->ifRequestInclude('discounts') ?
+      $data['discounts'] = ($this->discounts ? OrderTransformer::collection($this->discounts) : false) : false;
+  */
+    
+    /* OJO FALTA TRANSFORMER
     // Product Options
-    if(isset($this->productOptions))
-      $data['productOptions'] = $this->productOptions;
-
+    $this->ifRequestInclude('productOptions') ?
+      $data['productOptions'] = ($this->productOptions ? $this->productOptions : false) : false;
+  */
+    
     // Option Values
-    if(isset($this->optionValues))
-      $data['optionValues'] = $this->optionValues;
-
+    $this->ifRequestInclude('optionValues') ?
+      $data['optionValues'] = ($this->optionValues ? OptionValueTransformer::collection($this->optionValues) : false) : false;
+    
     // Related Products
-    if(isset($this->relatedProducts))
-      $data['relatedProducts'] = $this->relatedProducts;
-
+    $this->ifRequestInclude('relatedProducts') ?
+      $data['relatedProducts'] = ($this->relatedProducts ? ProductTransformer::collection($this->relatedProducts) : false) : false;
+    
     // Wishlist
-    if(isset($this->wishlists))
-      $data['wishlists'] = $this->wishlists;
-
+    $this->ifRequestInclude('wishlists') ?
+      $data['wishlists'] = ($this->wishlists ? WishlistTransformer::collection($this->wishlists) : false) : false;
+    
     // Coupons
-    if(isset($this->coupons))
-      $data['coupons'] = $this->coupons;
-
+    $this->ifRequestInclude('coupons') ?
+      $data['coupons'] = ($this->coupons ? CouponTransformer::collection($this->coupons) : false) : false;
+    
     // Parent
-    if(isset($this->parent))
-      $data['parent'] = $this->parent;
-
+    $this->ifRequestInclude('parent') ?
+      $data['parent'] = ($this->parent_id ? new ProductTransformer($this->parent) : false) : false;
+    
     // Children
-    if(isset($this->children))
-      $data['children'] = $this->children;
-
+    $this->ifRequestInclude('children') ?
+      $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
+    
     // Gallery
-    if(count($this->gallery))
-      $data['gallery'] = $this->gallery;
-
-
+    $this->ifRequestInclude('gallery') ?
+      $data['gallery'] = ($this->gallery ? $this->gallery : false) : false;
+    
+    
     // TRANSLATIONS
     $filter = json_decode($request->filter);
-
+    
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations){
-
+      
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-
+      
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
           $data['translates'][$key]['name'] = $this->translate("$key")['name'];
@@ -129,7 +134,7 @@ class ProductTransformer extends Resource
         }
       }
     }
-
+    
     return $data;
   }
 }

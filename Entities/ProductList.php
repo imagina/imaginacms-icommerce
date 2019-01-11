@@ -13,7 +13,6 @@ class ProductList extends Model
   protected $fillable = [
     'product_id',
     'price_list_id',
-    'product_option_value_id',
     'price'
     ];
   

@@ -49,12 +49,27 @@ class Product extends Model
     'options' => 'array'
   ];
 
-  public function user()
+  public function addedBy()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo('Modules\\User\\Entities\\{$driver}\\User','added_by_id');
   }
-
+  
+  public function getStatus(){
+    $status = new Status();
+    return $status->get($this->status);
+  }
+  
+  public function stockStatus(){
+    $stockStatus = new StockStatus();
+    return $stockStatus->get($this->stock_status);
+  }
+  public function priceLists()
+  {
+    return $this->belongsToMany(PriceList::class,'icommerce__product_lists')
+      ->withPivot('id', 'price')
+      ->withTimestamps();
+  }
   public function category()
   {
     return $this->belongsTo(Category::class);

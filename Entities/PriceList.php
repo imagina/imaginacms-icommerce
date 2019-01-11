@@ -22,8 +22,8 @@ class PriceList extends Model
   
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'icommerce__product_list')
-      ->withPivot('id', 'item_option_value_id', 'price')
+    return $this->belongsToMany(Product::class, 'icommerce__product_lists')
+      ->withPivot('id', 'price')
       ->withTimestamps()
       ->using(ProductList::class);
   }

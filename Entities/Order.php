@@ -90,7 +90,7 @@ class Order extends Model
       ->using(OrderItem::class);
   }
   
-  public function orderProducts()
+  public function orderItems()
   {
     return $this->hasMany(OrderItem::class, 'order_id');
   }
@@ -111,6 +111,11 @@ class Order extends Model
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
+  }
+  
+  public function status()
+  {
+    return $this->belongsTo(OrderStatus::class,'status_id');
   }
   
   public function currency()
