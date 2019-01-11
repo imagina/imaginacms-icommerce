@@ -41,6 +41,7 @@
                   <p class="mb-0 text-center">
                     <div v-if="item.option_selected!=''" class="mt-1">
                       <strong>@{{item.option_selected}} :</strong> @{{item.option_value_description_selected}}
+                      <p v-if="item.child_product_option_value_selected_id!=0"><strong>@{{item.child_option_description_selected}}: </strong>@{{item.child_option_value_description_selected}}</p>
                     </div>
                     @{{ item.price | numberFormat }}
 
