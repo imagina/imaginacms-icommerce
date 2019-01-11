@@ -8,7 +8,6 @@ class OrderWasCreated
 
     public function __construct($order)
     {
-        \Log::info('Ingreso a OrderWasCreated');
         $this->order = $order;
     }
 }
