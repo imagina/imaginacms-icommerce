@@ -5,7 +5,6 @@ namespace Modules\Icommerce\Events\Handlers;
 use Illuminate\Contracts\Mail\Mailer;
 
 use Modules\Icommerce\Emails\Order;
-use Modules\Icommerce\Events\OrderWasCreated;
 
 class SendOrder
 {
@@ -22,7 +21,7 @@ class SendOrder
         $this->setting = app('Modules\Setting\Contracts\Setting');
     }
 
-    public function handle(OrderWasCreated $event)
+    public function handle($event)
     {
         $order = $event->order;
 
