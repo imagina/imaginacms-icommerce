@@ -80,6 +80,7 @@ class IcommerceServiceProvider extends ServiceProvider
   public function boot()
   {
     $this->publishConfig('icommerce', 'permissions');
+    $this->publishConfig('icommerce', 'settings');
     
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
   }

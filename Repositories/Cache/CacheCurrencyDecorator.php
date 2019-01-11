@@ -73,5 +73,19 @@ class CacheCurrencyDecorator extends BaseCacheDecorator implements CurrencyRepos
     
     return $this->repository->deleteBy($criteria, $params);
   }
+
+  /**
+   * get Currency Active
+   *
+   * @return mixed
+   */
+  public function getActive(){
+
+    return $this->remember(function () {
+      return $this->repository->getActive();
+    });
+
+  }
+
   
 }

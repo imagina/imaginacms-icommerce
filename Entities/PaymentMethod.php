@@ -31,14 +31,14 @@ class PaymentMethod extends Model
 
   public function getOptionsAttribute($value) {
     
-      return json_decode(json_decode($value));
+      return json_decode($value);
 
   }
 
   public function setOptionsAttribute($value) {
     
-    return json_encode($value);
-
+      $this->attributes['options'] = json_encode($value);
+    
   }
 
 }
