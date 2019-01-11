@@ -1,5 +1,18 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+   "0.1.27":
+        added:
+          - news import to categories,manufacturers and products with new version maatwebsite excel v3
+          - html select tag to select parent options, in options settings
+          - Paragraph with selected child option, in order of backend and partial checkout
+          - New filter in api of options to obtain the options that have products of a specific category.
+        changed:
+          - Fixed problem when adding products to cart with selected child option Corrected translation of text of selecting image in options values,
+          - corrected problem that did not obtain all the child options of a parent option in the edit / create of products, added to the front of the show, displaying text / image / color of a product's options.
+          - Fixed problem in translate options backend
+          - Updated in view index the function order_response for the api v2 of products
+          - Updated options filter widget
+
    "0.1.26":
         changed:
           -  Excel library version from 3.1.3 to 3.1.1
