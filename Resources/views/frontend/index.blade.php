@@ -259,6 +259,9 @@
                     responseType: 'json',
                     url: "{{ route('icommerce.api.options') }}",
                     params: {
+                      filters:{
+                        category_id:this.category.id
+                      }
                     }
                   }).then(function (response) {
                     vue_index_commerce.options=response.data;
@@ -266,7 +269,23 @@
                     // vue_index_commerce.order_response(response);
                   });
                 },
-
+                /////Obtener valores de select de opciones
+                getValues(e){
+                  if(e.target.options.selectedIndex > -1) {
+                    var optValueId=e.target.options[e.target.options.selectedIndex].value;
+                    var optionDesc=e.target.options[e.target.options.selectedIndex].dataset.optiondesc;
+                    var b=0;
+                    for(var i=0;i<this.options_selected.length;i++){
+                      if(this.options_selected[i].optionDesc==optionDesc){
+                        this.options_selected[i].optionDesc=optionDesc;
+                        this.options_selected[i].optValueId=optValueId;
+                        b=1;//Found
+                      }//if option desc selected
+                    }//for options selected
+                    if(b==0)
+                      this.options_selected.push({'optionDesc':optionDesc,'optValueId':optValueId});
+                  }//target options select
+                },
                 /* Buscar productos por filtro */
                 searchProducts(){
                   // console.log(this.options_selected);
@@ -277,10 +296,14 @@
                     criterion: this.criterion,
                     categories:this.category.id
                   };
+                  var option_values=[];
+                  // console.log(option_values);
                   if(this.options_selected.length>0){
-                    //If some option selected,add to filter
-                    filter.options_values=this.options_selected;
-                  }
+                    for(var i=0;i<this.options_selected.length;i++){
+                      option_values.push(this.options_selected[i].optValueId);
+                    }//for
+                    filter.options_values=option_values;
+                  }//if options_selected > 0
                   axios({
                     method: 'Get',
                     responseType: 'json',
@@ -289,10 +312,22 @@
                       filter:filter
                     }
                   }).then(function (response) {
-                    vue_index_commerce.articles=response.data.data;
+                    vue_index_commerce.order_response2(response);
+                    //vue_index_commerce.articles=response.data.data;
                   });
                 },
+                //////Order response v2
+                order_response2(response){
+                  //console.log('Data response:');
+                  //console.log(response);
+                  /*productos*/
+                  this.articles=response.data.data;
+                  /*paginador*/
+                  this.p_currence = response.data.meta.page.currentPage;
+                  this.pages = response.data.meta.page.lastPage;
 
+                },
+                //////Order response v2
                 /*Limpiar los filtros y traer todos los productos de la categoria*/
                 clearAll(){
                   this.options_selected=[];

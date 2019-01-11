@@ -45,6 +45,18 @@ class EloquentOptionRepository extends EloquentBaseRepository implements OptionR
 				$query->skip($filter->skip ?? 0);
 			}
 			$query->orderBy($orderby, $ordertype);
+			if(isset($filter->category_id)){
+				//Options of specific category
+				$query->whereIn('icommerce__options.id', function($query) use($filter){
+					$query->select('option_id')
+						->from('icommerce__product_option')
+						->whereIn('product_id',function($query) use($filter){
+							$query->select('product_id')
+								->from('icommerce__product_category')
+								->where('category_id',$filter->category_id);
+						});
+				});
+			}//category_id
 			if (isset($filter->take)) {
 				$query->take($filter->take ?? 5);
 				return $query->get();
