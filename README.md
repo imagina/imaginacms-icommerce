@@ -18,7 +18,7 @@
 		2. Create a folder inside of "icommerce" with the name "emails". 
             Example: YourTheme/views/icommerce/emails
 
-        3. If you want just edit the header, so copy only the header file
+		3. If you want just edit the header, so copy only the header file
         from the module in your folder in the theme: 
 			
 			(copy this file)

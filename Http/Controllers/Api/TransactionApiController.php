@@ -86,9 +86,10 @@ class TransactionApiController extends BaseApiController
   public function create(Request $request)
   {
     try {
-      $this->transaction->create($request->all());
+      
+      $data = $this->transaction->create($request->all());
 
-      $response = ['data' => ''];
+      $response = ['data' => $data];
 
     } catch (\Exception $e) {
       $status = 500;
