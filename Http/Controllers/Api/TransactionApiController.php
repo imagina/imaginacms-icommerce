@@ -109,9 +109,9 @@ class TransactionApiController extends BaseApiController
   {
     try {
 
-      $this->transaction->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      $data = $this->transaction->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
-      $response = ['data' => ''];
+      $response = ['data' => $data];
 
     } catch (\Exception $e) {
       $status = 500;
