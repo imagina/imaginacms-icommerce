@@ -124,7 +124,7 @@ class ProductApiController extends BaseApiController
         $product->save();
       }
 
-      $response = ['data' => ''];
+      $response = ['data' => $product->id];
 
     } catch (\Exception $e) {
       $status = 500;
