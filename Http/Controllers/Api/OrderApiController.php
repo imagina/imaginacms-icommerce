@@ -20,6 +20,10 @@ use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Repositories\OrderHistoryRepository;
 
+// Events
+use Modules\Icommerce\Events\OrderWasCreated;
+use Modules\Icommerce\Events\OrderWasUpdated;
+
 class OrderApiController extends BaseApiController
 {
 
@@ -101,6 +105,7 @@ class OrderApiController extends BaseApiController
         'comment' => 'first status'
       ]);
 
+      event(new OrderWasCreated($order));
 
       $response = ['data' => ''];
 
@@ -123,8 +128,10 @@ class OrderApiController extends BaseApiController
   {
     try {
 
-      $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+      $order = $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
+      event(new OrderWasUpdated($order));
+      
       $response = ['data' => ''];
 
     } catch (\Exception $e) {
