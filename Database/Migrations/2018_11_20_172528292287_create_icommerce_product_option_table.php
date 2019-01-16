@@ -18,27 +18,27 @@ class CreateIcommerceProductOptionTable extends Migration
       // Your fields
       $table->integer('product_id')->unsigned();
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
-      
+
       $table->integer('option_id')->unsigned();
       $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('cascade');
-  
+
       $table->integer('parent_id')->unsigned()->default(0);
       $table->integer('lft')->unsigned()->nullable();
       $table->integer('rgt')->unsigned()->nullable();
       $table->integer('depth')->unsigned()->nullable();
-  
+
       $table->integer('parent_option_value_id')->unsigned()->nullable();
       $table->foreign('parent_option_value_id')
         ->references('id')
         ->on('icommerce__option_values')
         ->onDelete('restrict');
-      
-      $table->string('value');
+
+      $table->string('value')->nullable();
       $table->integer('required')->unsigned();
       $table->timestamps();
     });
   }
-  
+
   /**
    * Reverse the migrations.
    *

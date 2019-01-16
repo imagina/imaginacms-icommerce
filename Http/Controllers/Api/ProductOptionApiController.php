@@ -83,9 +83,9 @@ class ProductOptionApiController extends BaseApiController
     public function create(Request $request)
     {
         try {
-            $this->productOption->create($request->all());
+            $data = $this->productOption->create($request->all());
 
-            $response = ['data' => ''];
+            $response = ['data' => $data];
 
         } catch (\Exception $e) {
             $status = 500;
