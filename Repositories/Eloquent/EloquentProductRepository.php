@@ -85,11 +85,11 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("freeshipping", $filter->freeshipping);
       }
     }
-    
+
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
+
     /*== REQUEST ==*/
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
@@ -176,16 +176,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     if($model){
       $model->update($data);
-      $model->categories()->sync(array_get($data, 'categories', []));
 
-      $model->options()->sync(array_get($data, 'options', []));
+      // sync tables
+       $model->categories()->sync(array_get($data, 'categories', []));
 
-      $model->optionValues()->sync(array_get($data, 'optionValues', []));
+       $model->productOptions()->sync(array_get($data, 'productOptions', []));
 
-      $model->relatedProducts()->sync(array_get($data, 'relatedProducts', []));
-  
+       $model->optionValues()->sync(array_get($data, 'optionValues', []));
+
+       $model->relatedProducts()->sync(array_get($data, 'relatedProducts', []));
+
       //$model->discounts()->sync(array_get($data, 'discounts', []));
-  
+
       $model->tags()->sync(array_get($data, 'tags', []));
     }
     return $model;
@@ -205,10 +207,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       else //where id
         $query->where('id', $criteria);
     }
-  
+
     // REQUEST
     $model = $query->first();
-  
+
     if($model) {
       $model->delete();
     }
