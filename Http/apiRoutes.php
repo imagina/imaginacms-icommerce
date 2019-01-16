@@ -32,38 +32,41 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
 
 //======  TAX CLASSES
   require('ApiRoutes/taxClassRoutes.php');
-  
+
   //======  TAX RATES
   require('ApiRoutes/taxRateRoutes.php');
 
 //======  TAGS
   require('ApiRoutes/tagRoutes.php');
-  
+
   //======  PRODUCTS
   require('ApiRoutes/productRoutes.php');
-  
+
+  //======  PRODUCT OPTION OPTION
+  require('ApiRoutes/productOptionRoutes.php');
+
   //======  PRODUCT OPTION VALUES
   require('ApiRoutes/productOptionValueRoutes.php');
-  
+
   //======  ORDERS
   require('ApiRoutes/orderRoutes.php');
-  
+
   //======  ORDER STATUS
   require('ApiRoutes/orderStatusRoutes.php');
-  
+
   //======  ORDER STATUS HISTORY
   require('ApiRoutes/orderHistoryRoutes.php');
-  
+
   //======  PRICE LISTS
   require('ApiRoutes/priceListRoutes.php');
-  
+
   //======  PRODUCT LISTS
   require('ApiRoutes/productListRoutes.php');
-  
+
   //======  PAYMENT METHODS
   require('ApiRoutes/paymentMethodRoutes.php');
-  
+
   //======  TRANSACTION
   require('ApiRoutes/transactionRoutes.php');
-  
+
 });
