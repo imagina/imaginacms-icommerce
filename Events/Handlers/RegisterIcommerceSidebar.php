@@ -349,7 +349,17 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.cartproductoptions.index')
                     );
                 });
+                $item->item(trans('icommerce::shippingmethods.title.shippingmethods'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.shippingmethod.create');
+                    $item->route('admin.icommerce.shippingmethod.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.shippingmethods.index')
+                    );
+                });
 // append
+
 
 
 
