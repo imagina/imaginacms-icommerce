@@ -205,7 +205,14 @@ return [
         'edit' => 'icommerce::cartproductoptions.edit resource',
         'destroy' => 'icommerce::cartproductoptions.destroy resource',
     ],
+    'icommerce.shippingmethods' => [
+        'index' => 'icommerce::shippingmethods.list resource',
+        'create' => 'icommerce::shippingmethods.create resource',
+        'edit' => 'icommerce::shippingmethods.edit resource',
+        'destroy' => 'icommerce::shippingmethods.destroy resource',
+    ],
 // append
+
 
 
 

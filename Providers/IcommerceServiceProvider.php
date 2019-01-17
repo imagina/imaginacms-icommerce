@@ -65,7 +65,9 @@ class IcommerceServiceProvider extends ServiceProvider
             $event->load('productlists', array_dot(trans('icommerce::productlists')));
             $event->load('paymentmethods', array_dot(trans('icommerce::paymentmethods')));
             $event->load('cartproductoptions', array_dot(trans('icommerce::cartproductoptions')));
+            $event->load('shippingmethods', array_dot(trans('icommerce::shippingmethods')));
             // append translations
+
 
 
 
@@ -529,7 +531,20 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheCartProductOptionDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\ShippingMethodRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentShippingMethodRepository(new \Modules\Icommerce\Entities\ShippingMethod());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheShippingMethodDecorator($repository);
+            }
+        );
 // add bindings
+
 
 
 

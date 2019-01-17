@@ -1126,7 +1126,41 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'CartProductOptionController@destroy',
         'middleware' => 'can:icommerce.cartproductoptions.destroy'
     ]);
+    $router->bind('shippingmethod', function ($id) {
+        return app('Modules\Icommerce\Repositories\ShippingMethodRepository')->find($id);
+    });
+    $router->get('shippingmethods', [
+        'as' => 'admin.icommerce.shippingmethod.index',
+        'uses' => 'ShippingMethodController@index',
+        'middleware' => 'can:icommerce.shippingmethods.index'
+    ]);
+    $router->get('shippingmethods/create', [
+        'as' => 'admin.icommerce.shippingmethod.create',
+        'uses' => 'ShippingMethodController@create',
+        'middleware' => 'can:icommerce.shippingmethods.create'
+    ]);
+    $router->post('shippingmethods', [
+        'as' => 'admin.icommerce.shippingmethod.store',
+        'uses' => 'ShippingMethodController@store',
+        'middleware' => 'can:icommerce.shippingmethods.create'
+    ]);
+    $router->get('shippingmethods/{shippingmethod}/edit', [
+        'as' => 'admin.icommerce.shippingmethod.edit',
+        'uses' => 'ShippingMethodController@edit',
+        'middleware' => 'can:icommerce.shippingmethods.edit'
+    ]);
+    $router->put('shippingmethods/{shippingmethod}', [
+        'as' => 'admin.icommerce.shippingmethod.update',
+        'uses' => 'ShippingMethodController@update',
+        'middleware' => 'can:icommerce.shippingmethods.edit'
+    ]);
+    $router->delete('shippingmethods/{shippingmethod}', [
+        'as' => 'admin.icommerce.shippingmethod.destroy',
+        'uses' => 'ShippingMethodController@destroy',
+        'middleware' => 'can:icommerce.shippingmethods.destroy'
+    ]);
 // append
+
 
 
 
