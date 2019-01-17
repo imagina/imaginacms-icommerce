@@ -54,6 +54,10 @@ class EloquentProductOptionRepository extends EloquentBaseRepository implements 
         if (isset($params->fields) && count($params->fields))
             $query->select($params->fields);
 
+        /*== By product ==*/
+        if (isset($filter->product))
+            $query->where('product_id', $filter->product);
+
         /*== REQUEST ==*/
         if (isset($params->page) && $params->page) {
             return $query->paginate($params->take);

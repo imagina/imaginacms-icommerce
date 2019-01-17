@@ -13,6 +13,7 @@ class ProductOptionTransformer extends Resource
             'id' => $this->id,
             'product_id' => $this->product_id,
             'option_id' => $this->option_id,
+            'option' => $this->option,
             'parent_id' => $this->parent_id,
             'parent_option_value_id' => $this->parent_option_value_id,
             'value' => $this->value,

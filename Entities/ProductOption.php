@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductOption extends Model
 {
-  
+
   protected $table = 'icommerce__product_option';
 
   protected $fillable = [
@@ -18,15 +18,21 @@ class ProductOption extends Model
     'value',
     'required'
   ];
-  
+
+    public function option()
+    {
+        return $this->belongsTo(Option::class);
+    }
+
+
   public function productOptionValues()
   {
     return $this->hasMany(ProductOptionValue::class);
   }
-  
+
   public function orderOptions()
   {
     return $this->hasMany(OrderOption::class);
   }
-  
+
 }
