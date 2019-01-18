@@ -77,14 +77,13 @@ class PaymentMethodController extends AdminBaseController
      * @param  UpdatePaymentMethodRequest $request
      * @return Response
      */
-    public function update($id, UpdatePaymentMethodRequest $request)
+    public function update(PaymentMethod $paymentmethod, UpdatePaymentMethodRequest $request)
     {
 
-        dd($id,$request);
-        //$this->paymentmethod->update($paymentmethod, $request->all());
+        $this->paymentmethod->update($paymentmethod, $request->all());
 
         return redirect()->route('admin.icommerce.paymentmethod.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::paymentmethods.title.paymentmethods')]));
+            ->withSuccess(trans('core::core.messages.resource updated', ['name' => $paymentmethod->title]));
     }
 
     /**

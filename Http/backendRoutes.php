@@ -1083,7 +1083,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'PaymentMethodController@edit',
         'middleware' => 'can:icommerce.paymentmethods.edit'
     ]);
-    $router->put('paymentmethods/{id}', [
+    $router->put('paymentmethods/{paymentmethod}', [
         'as' => 'admin.icommerce.paymentmethod.update',
         'uses' => 'PaymentMethodController@update',
         'middleware' => 'can:icommerce.paymentmethods.edit'

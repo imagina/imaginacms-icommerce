@@ -73,6 +73,35 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      
    }
    
+
+   public function update($model, $data){
+
+    // validate status
+    if(isset($data['status']))
+      $data['status'] = "1";   
+    else
+      $data['status'] = "0"; 
+
+    // init
+    $options['init'] = $model->options->init;
+
+    // Extra Options
+    foreach ($model->options as $key => $value) {
+        if($key!="init"){
+          $options[$key] = $data[$key];
+          unset($data[$key]);
+        }
+    }
+
+    $data['options'] = $options;
+
+    $model->update($data);
+
+    return $model;
+
+}
+
+
    public function updateBy($criteria, $data, $params){
      
      // INITIALIZE QUERY

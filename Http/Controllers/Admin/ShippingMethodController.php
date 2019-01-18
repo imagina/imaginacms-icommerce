@@ -79,10 +79,11 @@ class ShippingMethodController extends AdminBaseController
      */
     public function update(ShippingMethod $shippingmethod, UpdateShippingMethodRequest $request)
     {
+
         $this->shippingmethod->update($shippingmethod, $request->all());
 
         return redirect()->route('admin.icommerce.shippingmethod.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::shippingmethods.title.shippingmethods')]));
+            ->withSuccess(trans('core::core.messages.resource updated', ['name' => $shippingmethod->title]));
     }
 
     /**
