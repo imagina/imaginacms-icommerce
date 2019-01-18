@@ -31,9 +31,8 @@ class ShippingMethodController extends AdminBaseController
      */
     public function index()
     {
-        //$shippingmethods = $this->shippingmethod->all();
-
-        return view('icommerce::admin.shippingmethods.index', compact(''));
+        $shippingMethods = $this->shippingmethod->all();
+        return view('icommerce::admin.shippingmethods.index', compact('shippingMethods'));
     }
 
     /**

@@ -18,6 +18,7 @@ class CreateIcommerceShippingMethodsTable extends Migration
             // Your fields
             $table->string('name');
             $table->integer('status')->unsigned();
+            $table->text('options');
 
             $table->timestamps();
         });
