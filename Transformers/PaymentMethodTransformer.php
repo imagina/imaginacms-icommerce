@@ -10,8 +10,11 @@ class PaymentMethodTransformer extends Resource
   {
     $item =  [
       'id' => $this->id,
+      'title' => $this->title,
+      'description' => $this->description,
       'name' => $this->name,
-      'payment_code' => $this->payment_code,
+      'status' => $this->status,
+      'image' => $this->options->mainimage,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];

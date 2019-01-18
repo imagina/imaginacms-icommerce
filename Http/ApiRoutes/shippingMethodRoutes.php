@@ -25,5 +25,10 @@ $router->group(['prefix' => '/shipping-methods'/*,'middleware' => ['auth:api']*/
     'as' => $locale . 'api.icommerce.shipping-methods.show',
     'uses' => 'ShippingMethodApiController@show',
   ]);
+
+  $router->get('/calculations/all', [
+    'as' => $locale . 'api.icommerce.shipping-methods.calculations',
+    'uses' => 'ShippingMethodApiController@calculations',
+  ]);
   
 });

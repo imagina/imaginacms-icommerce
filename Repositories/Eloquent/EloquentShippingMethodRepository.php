@@ -5,6 +5,8 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Icommerce\Repositories\ShippingMethodRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
+use Illuminate\Http\Request;
+
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {
 
@@ -34,7 +36,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      /*== FIELDS ==*/
      if (isset($params->fields) && count($params->fields))
        $query->select($params->fields);
-   
+
      /*== REQUEST ==*/
      if (isset($params->page) && $params->page) {
        return $query->paginate($params->take);
@@ -148,4 +150,75 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
        $model->delete();
      }
    }
+
+
+  /**
+   * 
+   * @param  Request $request - $products
+   * @param  Request $request - $options = array()
+   * @return Response
+   */
+
+   public function getCalculations($request){
+
+      // INITIALIZE QUERY
+      $query = $this->model->query();
+
+      // Check actives
+      $methods = $query->where("status",1)->get();
+
+      if(isset($methods) && count($methods)>0){
+
+
+        // Items mixtos with Freeshipping and not freeshipping
+        //if(!icommerce_checkAllItemsFreeshipping($products["items"],$options)){
+
+        foreach ($methods as $key => $method) {
+          
+          /*
+                if msj is "success" and 'items' is not null
+                    - Items has a list (array)
+
+                if msj is "success" and items is null:
+                    - Price will be defined (Number 0,1,2,3,4,5)
+                    - PriceShow will be defined (true or false)
+
+                if msj is "error":
+                    - 'items' has an error msj (string)
+
+                if msj is "freeshipping":
+                    - 'items' has a msj (string)
+          */
+
+
+          try {
+
+            $data['products'] = "array de productos";
+            $data['options'] = "array de options";
+
+            $results = app($method->options->init)->init(new Request($data));
+            $resultData = $results->getData();
+
+            $method->calculations = $resultData;
+            
+          } catch (\Exception $e) {
+
+            $resultData["msj"] = "error";
+            $resultData["items"] = $e->getMessage();
+           
+            $method->calculations = $resultData;
+
+          }// Try catch
+
+         
+
+        }// Foreach
+
+      }// If actives
+
+      return $methods;
+
+
+   }
+
 }

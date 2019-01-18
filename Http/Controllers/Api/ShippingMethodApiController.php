@@ -141,4 +141,31 @@ class ShippingMethodApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
+
+  /**
+   * Display a listing of the resource.
+   * @return Response
+   */
+  public function calculations(Request $request)
+  {
+    try {
+      //Request to Repository
+      
+      $shippingMethods = $this->shippingMethod->getCalculations($request);
+
+      //Response
+      $response = ['data' => ShippingMethodTransformer::collection($shippingMethods)];
+      //If request pagination add meta-page
+      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($shippingMethods)] : false;
+
+    } catch (\Exception $e) {
+      //Message Error
+      $status = 500;
+      $response = [
+        'errors' => $e->getMessage()
+      ];
+    }
+    return response()->json($response, $status ?? 200);
+  }
+
 }
