@@ -38,7 +38,15 @@
                               <div id="{{$method['name']}}" class="tab-pane fade @if($c==0) in active @endif ">
     
                                 <h3>{{$method->title}}</h3>
-                                @include($method->name.'::admin.'.$method->name.'s.index')
+                                @php
+                                    $lastCharacter = substr($method->name, -1); 
+                                    if($lastCharacter!='s')
+                                        $viewPath = $method->name.'s.index';
+                                    else
+                                        $viewPath = $method->name.'.index';
+
+                                @endphp
+                                @include($method->name.'::admin.'.$viewPath)
                                
                               </div>
                               @php $c++; @endphp
