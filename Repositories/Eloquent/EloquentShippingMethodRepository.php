@@ -154,8 +154,8 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
   /**
    * 
-   * @param  Request $request - $products
-   * @param  Request $request - $options = array()
+   * @param  Request $products array (items,total)
+   * @param  Request $options  array (countryCode,postCode,country)
    * @return Response
    */
 
@@ -192,10 +192,10 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
 
           try {
-
-            $data['products'] = "array de productos";
-            $data['options'] = "array de options";
-
+            
+            $data['products'] = $request->products;
+            $data['options'] =  $request->options;
+            
             $results = app($method->options->init)->init(new Request($data));
             $resultData = $results->getData();
 
