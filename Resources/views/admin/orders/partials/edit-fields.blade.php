@@ -119,11 +119,20 @@
                         <tr class="product-order">
                             <td>
                                 {{$product->title}}<br>
-                                @if(isset($product->pivot->option_name))
-                                  <strong>{{$product->pivot->option_name}}: </strong>{{$product->pivot->option_value}}
-                                  @if($product->pivot->child_option_name!=null && $product->pivot->child_option_name!="")
-                                    <br><strong>{{$product->pivot->child_option_name}}: </strong>{{$product->pivot->child_option_value}}
+                                @if(count($product->pivot->order_option)>0)
+                                  @foreach($product->pivot->order_option as $productOption)
+                                  <strong>{{$productOption->name}}: </strong>{{$productOption->value}}
+                                  @if($productOption->child_option_name)
+                                  <ul>
+                                    <li>
+                                      <strong>{{$productOption->child_option_name}}:</strong>
+                                      {{$productOption->child_option_value}}
+                                    </li>
+                                  </ul>
+                                  @else
+                                  <br>
                                   @endif
+                                  @endforeach
                                 @endif
                                 {{-- Options Product Order Value --}}
                             </td>
