@@ -39,13 +39,21 @@
     
                                 <h3>{{$method->title}}</h3>
                                 @php
+
+                                    $viewPath = $method->name.'s.index';
+
                                     $lastCharacter = substr($method->name, -1); 
-                                    if($lastCharacter!='s')
-                                        $viewPath = $method->name.'s.index';
-                                    else
+
+                                    if($lastCharacter=='s')
                                         $viewPath = $method->name.'.index';
 
+                                    if($lastCharacter=='y'){
+                                        $methodName = substr($method->name, 0, -1); 
+                                        $viewPath = $methodName.'ies.index';
+                                    }
+                                    
                                 @endphp
+                                
                                 @include($method->name.'::admin.'.$viewPath)
                                
                               </div>
