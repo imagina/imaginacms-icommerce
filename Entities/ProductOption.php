@@ -24,6 +24,11 @@ class ProductOption extends Model
         return $this->belongsTo(Option::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Option::class, 'parent_id');
+    }
+
 
   public function productOptionValues()
   {
