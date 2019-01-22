@@ -996,7 +996,7 @@ class ProductController extends AdminBaseController
       $msg="";
       try {
           $data = ['folderpaht' => $request->folderpaht, 'user_id' => $this->auth->user()->id, 'Locale'=>$request->Locale];
-          $data_excel = Excel::import(new IcommerceImport($this->product,$this->category,$this->manufacturer,$this->option,$this->optionValues,$this->productOption,$this->productOptionValue,$data), $request->importfile);
+          $data_excel = Excel::import(new IcommerceImport($this->product,$this->category,$this->manufacturer,$data), $request->importfile);
           $msg=trans('icommerce::products.bulkload.success migrate from product');
           return redirect()->route('admin.icommerce.product.index')
           ->withSuccess($msg);

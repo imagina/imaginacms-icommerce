@@ -254,21 +254,20 @@
 
                 /*obtiene las opciones de producto */
                 get_options: function () {
-                  if(this.category!=""){
-                    axios({
-                      method: 'Get',
-                      responseType: 'json',
-                      url: "{{ route('icommerce.api.options') }}",
-                      params: {
-                        filters:{
-                          category_id:this.category.id
-                          // withProducts:true
-                        }
+                  axios({
+                    method: 'Get',
+                    responseType: 'json',
+                    url: "{{ route('icommerce.api.options') }}",
+                    params: {
+                      filters:{
+                        category_id:this.category.id
                       }
-                    }).then(function (response) {
-                      vue_index_commerce.options=response.data;
-                    });
-                  }//category !=""
+                    }
+                  }).then(function (response) {
+                    vue_index_commerce.options=response.data;
+                    // console.log(response.data);
+                    // vue_index_commerce.order_response(response);
+                  });
                 },
                 /////Obtener valores de select de opciones
                 getValues(e){

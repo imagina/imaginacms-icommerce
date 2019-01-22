@@ -155,20 +155,9 @@
                   <tr class="product-order" >
                     <td>
                       {{$product['title']}}<br>
-                      @if(isset($product['options']))
-                        @foreach($product['options'] as $productOption)
-                        <strong>{{$productOption->name}}: </strong>{{$productOption->value}}
-                        @if($productOption->child_option_name)
-                        <ul>
-                          <li>
-                            <strong>{{$productOption->child_option_name}}:</strong>
-                            {{$productOption->child_option_value}}
-                          </li>
-                        </ul>
-                        @else
-                        <br>
-                        @endif
-                        @endforeach
+                      @if(isset($product['option_name']))
+                      <strong>{{$product['option_name']}}: </strong>{{$product['option_value']}}
+                      @if($product['child_option_name']!=null && $product['child_option_name']!="")<br><strong>{{$product['child_option_name']}}: </strong>{{$product['child_option_value']}} @endif
                       @endif
                     </td>
                     <td>{{$product['sku']}}</td>

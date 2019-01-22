@@ -71,7 +71,15 @@ class OrderController extends AdminBaseController
      */
     public function edit(Order $order)
     {
-
+        foreach($order->products as &$product){
+          if($product->pivot->order_option){
+            $product->pivot->option_name=$product->pivot->order_option->name;
+            $product->pivot->option_value=$product->pivot->order_option->value;
+            $product->pivot->option_type=$product->pivot->order_option->type;
+            $product->pivot->child_option_name=$product->pivot->order_option->child_option_name;
+            $product->pivot->child_option_value=$product->pivot->order_option->child_option_value;
+          }//count option>0
+        }//foreach
         $order_status = new Order_Status();
         return view('icommerce::admin.orders.edit', compact('order','order_status'));
     }

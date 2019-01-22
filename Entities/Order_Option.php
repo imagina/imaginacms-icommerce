@@ -12,7 +12,7 @@ class Order_Option extends Model
     protected $table = 'icommerce__order_option';
     public $translatable = [];
 
-    protected $fillable = ['order_id','order_product_id','name','value','type','child_option_name','child_option_value'];
+    protected $fillable = ['order_id','order_product_id','product_option_id','product_option_value_id','name','value','type','child_option_name','child_option_value'];
 
 
     public function order()

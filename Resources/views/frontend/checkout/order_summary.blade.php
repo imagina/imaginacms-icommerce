@@ -39,22 +39,9 @@
                     @{{ item.name }}
                   </h5>
                   <p class="mb-0 text-center">
-                    <div v-if="item.options_selected.length>0" class="mt-1">
-                      <div v-for="option in item.options_selected">
-                        <strong>
-                          @{{option.description}}:
-                        </strong>
-                        <ul>
-                          <li v-for="(value,index) in option.option_values">
-                            @{{value.description}}
-                            <ul v-if="value.child_options.length>0">
-                              <li v-for="(childValue,indexChild) in value.child_options">
-                                <strong>@{{childValue.option_description}}:</strong> @{{childValue.description}}
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
+                    <div v-if="item.option_selected!=''" class="mt-1">
+                      <strong>@{{item.option_selected}} :</strong> @{{item.option_value_description_selected}}
+                      <p v-if="item.child_product_option_value_selected_id!=0"><strong>@{{item.child_option_description_selected}}: </strong>@{{item.child_option_value_description_selected}}</p>
                     </div>
                     @{{ item.price | numberFormat }}
 

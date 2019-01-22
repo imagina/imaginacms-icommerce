@@ -28,7 +28,6 @@
 </div>
 
 <!-- /.box-header -->
-<!--
 <div id="options-multiple" class="box-body" style="display: none;">
 
 	<div class="box-header with-border">{{ trans('icommerce::option_values.title.option_values') }}</div>
@@ -55,10 +54,11 @@
                 </tr>
             </tfoot>
         </table>
+        <!-- /.box-body -->
     </div>
 
 </div>
- /.box -->
+<!-- /.box -->
 
 @section('scripts')
     @parent

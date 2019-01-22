@@ -27,6 +27,5 @@ return [
     'messages'      => [
     ],
     'validation'    => [
-      'option value has products' => 'This option value has associated products'
     ],
 ];
