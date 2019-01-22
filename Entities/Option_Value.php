@@ -8,20 +8,20 @@ use Modules\Bcrud\Support\ModelTraits\SpatieTranslatable\HasTranslations;
 
 class Option_Value extends Model
 {
-    
+
     use CrudTrait;
     use HasTranslations;
 
     protected $table = 'icommerce__option_values';
     public $translatable = ['description'];
-    
-    protected $fillable = ['option_id','image','description','sort_order'];
+
+    protected $fillable = ['option_id','image','description','sort_order','options','type'];
 
     public function option()
     {
         return $this->belongsTo(Option::class);
     }
-    
+
     //************* OJO DUDAS PROBAR ********************
     public function product_option_values(){
     	return $this->hasMany(Product_Option_Value::class, 'icommerce__product_option_values')->withTimestamps();

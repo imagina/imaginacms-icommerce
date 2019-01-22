@@ -20,14 +20,17 @@ class Option_ValueController extends AdminBaseController
     private $option_value;
     private $option;
     private $entity;
+    private $product_option_value;
 
-    public function __construct(Option_ValueRepository $option_value,OptionRepository $option,Option_Value $entity)
+    public function __construct(Product_Option_ValueRepository $product_option_value,Option_ValueRepository $option_value,OptionRepository $option,Option_Value $entity)
     {
         parent::__construct();
 
         $this->option = $option;
         $this->entity = $entity;
         $this->option_value = $option_value;
+        $this->product_option_value = $product_option_value;
+        
     }
 
     /**
@@ -167,13 +170,17 @@ class Option_ValueController extends AdminBaseController
      * @param  Option_Value $option_value
      * @return Response
      */
-    public function destroy(Option_Value $option_value)
-    {
-        $this->option_value->destroy($option_value);
+     public function destroy(Option_Value $option_value)
+     {
+       if(count($this->product_option_value->findByOptionValueId($option_value->id))>0){
+         return redirect()->route('admin.icommerce.option_value.index',[$option_value->option_id])
+         ->withError(trans('icommerce::option_values.validation.option value has products'));
+       }
+       $this->option_value->destroy($option_value);
 
-        return redirect()->route('admin.icommerce.option_value.index',[$option_value->option_id])
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::option_values.title.option_values')]));
-    }
+       return redirect()->route('admin.icommerce.option_value.index',[$option_value->option_id])
+       ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::option_values.title.option_values')]));
+     }
 
     public function saveImage($value,$destination_path)
 {

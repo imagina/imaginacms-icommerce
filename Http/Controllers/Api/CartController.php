@@ -34,63 +34,8 @@ class CartController extends Controller
           $product = new ProductTransformer($this->product->find($data['id']));
           $product = json_decode(json_encode($product));
           // dd(isset($data['option_selected']));
-          $newPrice=0;
-          $option="";
-          $option_type='';
-          $option_value_description="";
-          $option_value_type="";
-          $option_value="";
-          $child_option_value_description="";
-          $child_option_description="";
-          if((isset($data['option_selected']) && $data['option_selected']!=0) && (isset($data['option_value_selected']) && $data['option_value_selected']!=0)){
-            foreach($product->options as &$optionN){
-              if($optionN->option_id==$data['option_selected']){
-                foreach($optionN->option_values as $optValue){
-                  if($optValue->id==$data['option_value_selected']){
-                    if($data['child_product_option_value_selected']!=0){
-                      //If child option selected
-                      foreach($optValue->children_option_values as $childOptValue){
-                        if($childOptValue->id==$data['child_product_option_value_selected']){
-                          if($childOptValue->price_prefix=="+"){
-                            //add
-                            $newPrice=(float)$product->unformatted_price+(float)$childOptValue->price;
-                          }else{
-                            $newPrice=(float)$product->unformatted_price-(float)$childOptValue->price;
-                          }//else price_prefix is -
-                          $option=$optionN->description;
-                          $option_type=$optionN->type;
-                          $option_value_description=$optValue->description;
-                          $option_value_type=$optValue->type;
-                          $option_value=$optValue->option;
-                          $child_option_value_description=$childOptValue->description;
-                          $child_option_description=$childOptValue->option_description;
-                          break;
-                        }
-                      }//foreach
-                      break;
-                    }else{
-                      if($optValue->price_prefix=="+"){
-                        //add
-                        $newPrice=(float)$product->unformatted_price+(float)$optValue->price;
-                      }else{
-                        $newPrice=(float)$product->unformatted_price-(float)$optValue->price;
-                      }//else price_prefix is -
-                      $option=$optionN->description;
-                      $option_type=$optionN->type;
-                      $option_value_description=$optValue->description;
-                      $option_value_type=$optValue->type;
-                      $option_value=$optValue->option;
-                      break;
-                    }//Not child option selected
-                  }//if option value == option value selected
-                }//foreach option values
-              }//if option == option selected
-            }//foreach options product
-          }//if option selected
-          if($newPrice!=0){
-            $product->unformatted_price=$newPrice;
-            $product->price=formatMoney($newPrice);
-          }//if new price.
+          $product->unformatted_price=$data['price'];
+          $product->price=formatMoney($data['price']);
           $this->cart->add([
             'id' => $product->id,
             'name' => $product->title,
@@ -105,17 +50,7 @@ class CartController extends Controller
             'length' => $product->length ?? 0,
             'height' => $product->height ?? 0,
             'freeshipping' => $product->freeshipping ?? 0,
-            'option_selected_id'=>$data['option_selected'] ?? 0,
-            'option_selected'=>$option,
-            'option_type_selected'=>$option_type,
-            'product_option_selected_id'=>$data['product_option_selected'] ?? 0,
-            'product_option_value_selected_id'=>$data['product_option_value_selected'] ?? 0,
-            'option_value_description_selected'=>$option_value_description,
-            'option_value_type_selected'=>$option_value_type,
-            'option_value_selected'=>$option_value,
-            'child_product_option_value_selected_id'=>$data['child_product_option_value_selected'] ?? 0,
-            'child_option_value_description_selected'=>$child_option_value_description,
-            'child_option_description_selected'=>$child_option_description,
+            'options_selected'=>$data['options_selected'],
             'options'=>$product->options
           ]);
         }

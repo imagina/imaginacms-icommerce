@@ -10,7 +10,8 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Entities\Category;
 
-class CategoriesImport implements ToCollection,WithChunkReading,ShouldQueue
+// class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
+class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
 {
 
     private $category;
@@ -30,15 +31,15 @@ class CategoriesImport implements ToCollection,WithChunkReading,ShouldQueue
     public function collection(Collection $rows)
     {
         \App::setLocale($this->info['Locale']);
+        $rows=json_decode(json_encode($rows));
         foreach ($rows as $row)
         {
             try {
-                if(isset($row[0]) && $row[0]!="id"){
-                  $category_id=(int)$row[0];
-                  $title=(string)$row[1];
-                  $description=(string)$row[2];
-                  $parent_id=(int)$row[3];
-                  $image=(string)$row[4];
+                if(isset($row->id)){
+                  $category_id=(int)$row->id;
+                  $title=(string)$row->title;
+                  $description=(string)$row->description;
+                  $image=(string)$row->image;
                   $options=null;
                   $slug="";
                   // Search by id
@@ -55,21 +56,30 @@ class CategoriesImport implements ToCollection,WithChunkReading,ShouldQueue
                       $options = $category->options;
                   }//else
                   $options=json_encode($options);
-                  // Parent_id - make slug
-                  if ($parent_id == 0) {
-                      $slug = str_slug($title, '-');
-                  } else {
-                      $parent = $this->category->find($parent_id);
-                      $slug = $parent->slug . '/' . str_slug($title, '-');
-                  }
                   //data
                   $param = [
                     'id' => $category_id,
-                    'slug' => $slug,
                     'title' => $title,
                     'description'=>$description,
                     'options'=>$options
                   ];
+                  if(isset($row->parent_id) && $row->parent_id!=0){
+                    $parent_id=(int)$row->parent_id;
+                    if(!Category::find($parent_id))
+                      throw new \Exception('Parent Category id: '.$row->parent_id.', not exist');
+                    else{
+                      $param['parent_id']=$parent_id;
+                      // Parent_id - make slug
+                      if ($parent_id == 0) {
+                        $slug = str_slug($title, '-');
+                        $param['slug']=$slug;
+                      } else {
+                        $parent = $this->category->find($parent_id);
+                        $slug = $parent->slug . '/' . str_slug($title, '-');
+                        $param['slug']=$slug;
+                      }
+                    }//else
+                  }//isset parent id
                   if(isset($category->slug) && !empty($category->slug)){
                     // Update
                     $this->category->update($category,  $param);
@@ -82,7 +92,7 @@ class CategoriesImport implements ToCollection,WithChunkReading,ShouldQueue
                     $newCategory->save();
                     \Log::info('Create a Category: '.$param['slug']);
                   }//if exist
-                }//if isset id
+                }//if isset title
             } catch (\Exception $e) {
                 \Log::error($e);
                 // dd($e->getMessage());
