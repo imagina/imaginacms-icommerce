@@ -188,7 +188,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
           try {
             
             $data['products'] = $request->products;
-            $data['options'] =  $request->options;
+            
+            if(isset($request->options))
+              $data['options'] =  $request->options;
             
             $results = app($method->options->init)->init(new Request($data));
             $resultData = $results->getData();
