@@ -176,18 +176,12 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         foreach ($methods as $key => $method) {
           
           /*
-                if msj is "success" and 'items' is not null
+                if status is "success" and 'items' is not null
                     - Items has a list (array)
 
-                if msj is "success" and items is null:
+                if status is "success" and items is null:
                     - Price will be defined (Number 0,1,2,3,4,5)
                     - PriceShow will be defined (true or false)
-
-                if msj is "error":
-                    - 'items' has an error msj (string)
-
-                if msj is "freeshipping":
-                    - 'items' has a msj (string)
           */
 
 
