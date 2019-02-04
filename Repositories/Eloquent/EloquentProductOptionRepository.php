@@ -58,6 +58,14 @@ class EloquentProductOptionRepository extends EloquentBaseRepository implements 
         if (isset($filter->product))
             $query->where('product_id', $filter->product);
 
+        /*== By parent ==*/
+        if (isset($filter->parent))
+            $query->where('parent_id', $filter->parent);
+
+        /*== By parent Option Value ==*/
+        if (isset($filter->parentOptionValue))
+            $query->where('parent_option_value_id', $filter->parentOptionValue);
+
         /*== REQUEST ==*/
         if (isset($params->page) && $params->page) {
             return $query->paginate($params->take);
