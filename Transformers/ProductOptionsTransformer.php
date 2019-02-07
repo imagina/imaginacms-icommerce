@@ -156,6 +156,7 @@ class ProductOptionsTransformer extends Resource
             'required' => $this->pivot->required,
             'type' => $this->type,
             'description' => $this->description,
+            'value'=>$this->pivot->value,
             'option_product_id'=>$this->pivot->product_id,
             'product_option_id'=>$this->pivot->id,
             'option_values'=>$option_values
