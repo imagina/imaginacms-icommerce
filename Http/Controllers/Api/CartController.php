@@ -34,8 +34,12 @@ class CartController extends Controller
           $product = new ProductTransformer($this->product->find($data['id']));
           $product = json_decode(json_encode($product));
           // dd(isset($data['option_selected']));
-          $product->unformatted_price=$data['price'];
-          $product->price=formatMoney($data['price']);
+          if(!isset($data['options_selected']))
+          $data['options_selected']=[];
+          else{
+            $product->unformatted_price=$data['price'];
+            $product->price=formatMoney($data['price']);
+          }
           $this->cart->add([
             'id' => $product->id,
             'name' => $product->title,

@@ -23,7 +23,7 @@ class Order_Product extends Pivot
     ];
 
     public function order_option(){
-        return $this->hasMany(Order_Option::class);
+      return $this->hasMany(Order_Option::class,'order_product_id');
     }
 
 }

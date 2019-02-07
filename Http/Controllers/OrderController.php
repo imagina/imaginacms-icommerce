@@ -371,18 +371,14 @@ class OrderController extends BasePublicController
     $order = $this->order->find(10);
     $products = [];
     foreach ($order->products as $product) {
-      if($product->pivot->order_option){
+      if(count($product->pivot->order_option)>0){
         array_push($products, [
           "title" => $product->title,
           "sku" => $product->sku,
           "quantity" => $product->pivot->quantity,
           "price" => $product->pivot->price,
           "total" => $product->pivot->total,
-          "option_name" => $product->pivot->order_option->name,
-          "option_value" => $product->pivot->order_option->value,
-          "option_type" => $product->pivot->order_option->type,
-          'child_option_name'=>$product->pivot->order_option->child_option_name,
-          'child_option_value'=>$product->pivot->order_option->child_option_value
+          "options"=>$product->pivot->order_option
         ]);
       }//
       else{
@@ -436,18 +432,14 @@ class OrderController extends BasePublicController
         $products = [];
         if (!empty($order)) {
           foreach ($order->products as $product) {
-            if($product->pivot->order_option){
+            if(count($product->pivot->order_option)>0){
               array_push($products, [
                 "title" => $product->title,
                 "sku" => $product->sku,
                 "quantity" => $product->pivot->quantity,
                 "price" => $product->pivot->price,
                 "total" => $product->pivot->total,
-                "option_name" => $product->pivot->order_option->name,
-                "option_value" => $product->pivot->order_option->value,
-                "option_type" => $product->pivot->order_option->type,
-                'child_option_name'=>$product->pivot->order_option->child_option_name,
-                'child_option_value'=>$product->pivot->order_option->child_option_value
+                "options"=>$product->pivot->order_option
               ]);
             }//
             else{
