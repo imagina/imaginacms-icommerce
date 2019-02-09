@@ -1,7 +1,8 @@
 <?php
 
 namespace Modules\Icommerce\Http\Controllers\Api;
-
+//Auth
+use Modules\User\Contracts\Authentication;
 // Requests & Response
 use Modules\Icommerce\Http\Requests\CartProductRequest;
 use Illuminate\Http\Request;
@@ -19,14 +20,18 @@ use Modules\Icommerce\Entities\CartProduct;
 // Repositories
 use Modules\Icommerce\Repositories\CartProductRepository;
 
+//Transactions
+use DB;
 
 class CartProductApiController extends BaseApiController
 {
   private $cartProduct;
+  protected $auth;
 
   public function __construct(CartProductRepository $cartProduct)
   {
     $this->cartProduct = $cartProduct;
+    $this->auth = app(Authentication::class);
   }
 
   /**
@@ -83,21 +88,36 @@ class CartProductApiController extends BaseApiController
    * Show the form for creating a new resource.
    * @return Response
    */
-  public function create(Request $request)
-  {
-    try {
-      $this->cartProduct->create($request->all());
-
-      $response = ['data' => ''];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
-    }
-    return response()->json($response, $status ?? 200);
-  }
+   public function create(Request $request)
+   {
+     try {
+       DB::beginTransaction();
+       //Validate Request
+       $this->validateRequestApi(new CartProductRequest($request->all()));
+       //Get user autenticated
+       $user=Auth::guard('api')->user();
+       if($user){
+         //If user autenticated
+         //Validate if cart belongs to user autenticated
+         $cart=Cart::where('id',$request->cart_id)->where('user_id',$user->id)->first();
+         if($cart){
+           //Create Product Api
+           $this->cartProduct->create($request->all());
+         }else
+         throw new \Exception("This cart id doesn't belongs to user autenticated",404);
+       }else
+         $this->cartProduct->create($request->all());
+       DB::commit();
+       $response = ['data' => ''];
+     } catch (\Exception $e) {
+       DB::rollBack();
+       $status = 500;
+       $response = [
+         'errors' => $e->getMessage()
+       ];
+     }
+     return response()->json($response, $status ?? 200);
+   }
 
   /**
    * Update the specified resource in storage.

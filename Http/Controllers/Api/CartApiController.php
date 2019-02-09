@@ -16,16 +16,22 @@ use Modules\Icommerce\Transformers\CartTransformer;
 // Entities
 use Modules\Icommerce\Entities\Cart;
 
+//Auth
+use Modules\User\Contracts\Authentication;
+
 // Repositories
 use Modules\Icommerce\Repositories\CartRepository;
-
+//Transactions
+use DB;
 class CartApiController extends BaseApiController
 {
   private $cart;
+  protected $auth;
 
   public function __construct(CartRepository $cart)
   {
     $this->cart = $cart;
+    $this->auth = app(Authentication::class);
   }
 
   /**
@@ -79,24 +85,41 @@ class CartApiController extends BaseApiController
   }
 
   /**
-   * Show the form for creating a new resource.
+   * Create a new resource.
    * @return Response
    */
-  public function create(Request $request)
-  {
-    try {
-      $cart = $this->cart->create($request->all());
-
-      $response = ['data' => ''];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
-    }
-    return response()->json($response, $status ?? 200);
-  }
+   public function create(Request $request)
+   {
+     try {
+       DB::beginTransaction();
+       //Validate Request
+       $request['ip']=$request->ip();
+       $this->validateRequestApi(new CartProductRequest($request->all()));
+       //Get user autenticated
+       $user=Auth::guard('api')->user();
+       if($user){
+         //If user autenticated
+         $request['user_id']=$user->id;
+         $cart=Cart::where('user_id',$user->id)->first();
+         if(!$cart)
+         $cart = $this->cart->create($request->all());
+         //else
+         //throw new \Exception("This user already has a cart created",404);
+       }else{
+         //User not autenticated.
+         $cart = $this->cart->create($request->all());
+       }
+       DB::commit();
+       $response = ['data' => ['cart_id'=>$cart->id]];
+     } catch (\Exception $e) {
+       DB::rollBack();
+       $status = 500;
+       $response = [
+         'errors' => $e->getMessage()
+       ];
+     }
+     return response()->json($response, $status ?? 200);
+   }
 
   /**
    * Update the specified resource in storage.
