@@ -27,5 +27,6 @@ return [
     'messages'      => [
     ],
     'validation'    => [
+      'option value has products' => 'Este valor de opción tiene productos asociados.'
     ],
 ];

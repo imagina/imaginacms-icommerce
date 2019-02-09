@@ -4,11 +4,14 @@ namespace Modules\Icommerce\Imports;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
-class ManufacturersImport implements ToCollection,WithChunkReading,ShouldQueue
+
+// class ManufacturersImport implements ToCollection,WithChunkReading,ShouldQueue
+class ManufacturersImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
 {
 
     private $manufacturer;
@@ -29,13 +32,14 @@ class ManufacturersImport implements ToCollection,WithChunkReading,ShouldQueue
     public function collection(Collection $rows)
     {
         \App::setLocale($this->info['Locale']);
+        $rows=json_decode(json_encode($rows));
         foreach ($rows as $row)
         {
             try {
-              if(isset($row[0]) && $row[0]!='id'){
-                $manufacturer_id=(int)$row[0];
-                $name=(string)$row[1];
-                $image=(string)$row[2];
+              if(isset($row->id)){
+                $manufacturer_id=(int)$row->id;
+                $name=(string)$row->name;
+                $image=(string)$row->image;
                 $options=null;
                 // Search by id
                 $manufacturer=$this->manufacturer->find($manufacturer_id);
@@ -68,7 +72,7 @@ class ManufacturersImport implements ToCollection,WithChunkReading,ShouldQueue
                   $newManufacturer->save();
                   \Log::info('Create a Manufacturer: '.$param['name']);
                 }
-              }//if row!=id
+              }//if row!=name
             } catch (\Exception $e) {
                 \Log::error($e);
                 dd($e->getMessage());

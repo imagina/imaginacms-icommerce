@@ -202,50 +202,49 @@
                                 </div>
                             </div>
                           </div>--}}
-                          <div v-if="product.options.length>0 && option.option_values.length>0" class="col-md-6 mb-3" v-for="(option,index) in product.options">
-
+                          <!-- options -->
+                          <div class="options">
+                            <div v-if="product.options.length>0 && option.option_values.length>0" v-for="(option,index) in product.options">
                               <h6 class="text-primary font-weight-bold text-uppercase mb-1">
-                                  @{{option.description}}
+                                @{{option.description}}
                               </h6>
                               <div class="d-inline-block" v-for="(value,indexOptValue) in option.option_values">
-                                  <div class="custom-control custom-radio mb-2">
-                                      <input type="radio" :name="option.description" :value="indexOptValue" v-model="index_product_option_value_selected" @change="update_product(index)" :id="value.id" class="custom-control-input">
-                                      <label class="custom-control-label" :for="value.id">
-                                          <span v-if="value.type!='background' && value.type!='image'">
-                                            @{{value.description}}
-                                          </span>
-                                          <span v-else v-bind:style="{ backgroundColor: value.option.background, backgroundImage: 'url(' + value.option.background + ')' }">
-                                              &nbsp;
-                                          </span>
-                                      </label>
-                                  </div>
-
+                                <div class="custom-control custom-radio mb-2">
+                                  <input v-if="option.type!='checkbox'" type="radio" :name="option.description" :value="value.id" @change="update_product(index,indexOptValue)" :id="value.id" class="custom-control-input">
+                                  <input v-else type="checkbox" :name="value.description" :value="value.id" :id="value.id" data-toggle="collapse" :data-target="'#'+value.description"  @change="update_product(index,indexOptValue)" class="custom-control-input">
+                                  <label class="custom-control-label" v-bind:class="[ (value.type=='text') ? 'ml-2 mr-2' : '']" :for="value.id">
+                                    <span v-if="value.type=='background' || value.type=='image'" v-bind:style="{ backgroundColor: value.option.background, backgroundImage: 'url(' + value.option.image + ')' }">
+                                      &nbsp;
+                                    </span>
+                                    <label v-else>@{{value.description}}</label>
+                                  </label>
+                                </div>
                               </div>
-
-                              <div class="mt-3" v-for="(value,indexOptValue) in option.option_values">
-                                  <div v-if="value.children_option_values.length>0 && indexOptValue==index_product_option_value_selected">
-                                      <h6 class="text-primary font-weight-bold text-uppercase mb-1">
-                                          @{{value.child_option_description}}
-                                      </h6>
-                                      <div class="d-inline-block custom-control custom-radio mb-2" v-for="(child_option,indexChildOptValue) in value.children_option_values">
-                                          <input type="radio" :name="value.description" :value="indexChildOptValue" v-model="index_child_product_option_value_selected"  @change="update_product(index)"  :id="child_option.id" class="custom-control-input">
-                                          <label class="custom-control-label" :for="child_option.id">
-
-                                            <span class="text-capitalize" v-if="child_option.type!='background' && child_option.type!='image'">
-                                              @{{child_option.description}}
-                                            </span>
-                                            <span v-else-if="child_option.type=='image'" style="height:250px;width:250px;" v-bind:style="{ backgroundImage: 'url(' + child_option.option.image + ')' }">
-
-                                            </span>
-                                            <span v-else-if="child_option.type=='background'" v-bind:style="{ backgroundColor: child_option.option.background, backgroundImage: 'url(' + child_option.option.background + ')' }">
-                                              &nbsp;
-                                            </span>
-
-                                          </label>
-                                      </div>
+                              <!-- OPTIONS CHILDS v2-->
+                                <div :id="value.description" role="tabpanel" v-for="(value,indexOptValue) in option.option_values" v-if="value.children_option_values.length>0" class="collapse" >
+                                  <h6 class="text-primary font-weight-bold text-uppercase mb-1">
+                                    (@{{value.description}}) @{{value.child_option_description}}
+                                  </h6>
+                                  <div class="d-inline-block custom-control custom-radio mb-2" v-for="(child_option,indexChildOptValue) in value.children_option_values">
+                                    <input type="radio" :name="value.description" :value="value.description+'-'+child_option.id" @change="update_product(index,indexOptValue,indexChildOptValue)" :id="value.description+'-'+child_option.id" class="custom-control-input">
+                                    <label class="custom-control-label" :for="value.description+'-'+child_option.id">
+                                      <span class="text-capitalize" v-if="child_option.type=='text'">
+                                        @{{child_option.description}}
+                                      </span>
+                                      <span v-else-if="child_option.type=='image'" >
+                                        <img :src="child_option.option.image" alt="">
+                                        <!-- <img :src="child_option.option.image" alt=""> -->
+                                      </span>
+                                      <span v-else-if="child_option.type=='background'" v-bind:style="{ backgroundColor: child_option.option.background, backgroundImage: 'url(' + child_option.option.background + ')' }">
+                                        &nbsp;
+                                      </span>
+                                    </label>
                                   </div>
-                              </div>
+                                </div>
+                              <!-- OPTIONS CHILDS v2-->
+                            </div>
                           </div>
+                          <!-- options -->
 
                         </div>
 
@@ -350,13 +349,20 @@
                 product_parent: false,
                 products_brother: false,
                 /*breadcrumb*/
-                index_product_option_value_selected:"select",
-                option_type:null,
-                option_value:'',
                 breadcrumb: [],
                 sending_data: false,
                 currencysymbolleft: icommerce.currencySymbolLeft,
                 currencysymbolright: icommerce.currencySymbolRight,
+                //New variables
+                index_option_selected:0,
+                index_option_value_selected:0,
+                options_selected:[],
+                //New variables
+                index_product_option_value_selected:"select",
+                index_child_product_option_value_selected:0,
+                id_product_option_value_selected:0,
+                option_type:null,
+                option_value:''
             },
             filters: {
                 numberFormat: function (value) {
@@ -365,49 +371,235 @@
             },
             methods: {
               /* actualizar precio de producto */
-                update_product(indexOption){
-                  if(this.index_product_option_value_selected!="select"){
-                    this.option_type=this.product.options[indexOption].option_values[this.index_product_option_value_selected].type;
-                    if(this.option_type=="image")
-                    this.option_value=this.product.options[indexOption].option_values[this.index_product_option_value_selected].option.image;
-                    else if(this.option_type=="text")
-                    this.option_value=this.product.options[indexOption].option_values[this.index_product_option_value_selected].option.text;
-                    else if(this.option_type=="background")
-                    this.option_value=this.product.options[indexOption].option_values[this.index_product_option_value_selected].option.background;
-                    var option=this.product.options[indexOption].option_values[this.index_product_option_value_selected];
-                    if(parseFloat(option.price)!=0.00){
-                      if(option.price_prefix=="+")
-                        this.product.price_updated=parseFloat(this.product.unformatted_price)+parseFloat(this.product.options[indexOption].option_values[this.index_product_option_value_selected].price);
-                      else{
-                        // console.log(parseFloat(this.product.price));
-                        // console.log(parseFloat(this.product.options[indexOption].option_values[this.index_product_option_value_selected].price));
-                        this.product.price_updated=parseFloat(this.product.unformatted_price)-parseFloat(this.product.options[indexOption].option_values[this.index_product_option_value_selected].price);
-                      }
-                      this.product.option_selected=this.product.options[indexOption].option_id;
-                      this.product.product_option_selected=this.product.options[indexOption].product_option_id;
-                      this.product.option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].id;
-                      this.product.product_option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].product_option_value_id;
+              calculate_price(){
+                //If you do not have options selected children take the price of the option value.
+                //If you have selected children options, it does not take the price of the option value but of the children.
+                var total=parseFloat(this.product.unformatted_price);
+                for(var i=0;i<this.options_selected.length;i++){
+                  for(o=0;o<this.options_selected[i].option_values.length;o++){
+                    //If you do not have values ​​of selected children options, take the price of the option value
+                    if(this.options_selected[i].option_values[o].child_options.length>0){
+                      for(var z=0;z<this.options_selected[i].option_values[o].child_options.length;z++){
+                        if(parseFloat(this.options_selected[i].option_values[o].child_options[z].price)>0){
+                          //If the price is> 0, if it is 0 nothing happens.
+                          if(this.options_selected[i].option_values[o].price_prefix=="+")
+                          total=parseFloat(total)+parseFloat(this.options_selected[i].option_values[o].child_options[z].price);
+                          else
+                          total=parseFloat(total)-parseFloat(this.options_selected[i].option_values[o].child_options[z].price);
+                        }// if price > 0
+                      }//for child options
                     }else{
-                      this.product.price_updated=this.product.unformatted_price;
-                      this.product.price=this.product.unformatted_price;
-                      this.product.option_selected=this.product.options[indexOption].option_id;
-                      this.product.product_option_selected=this.product.options[indexOption].product_option_id;
-                      this.product.option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].id;
-                      this.product.product_option_value_selected=this.product.options[indexOption].option_values[this.index_product_option_value_selected].product_option_value_id;
+                      if(parseFloat(this.options_selected[i].option_values[o].price)>0){
+                        //If the price is> 0, if it is 0 nothing happens
+                        if(this.options_selected[i].option_values[o].price_prefix=="+")
+                        total=parseFloat(total)+parseFloat(this.options_selected[i].option_values[o].price);
+                        else
+                        total=parseFloat(total)-parseFloat(this.options_selected[i].option_values[o].price);
+                      }// if price > 0
                     }
-                  }else{
-                    this.option_type=null;
-                    this.option_value='';
-                    if('price_updated' in this.product){
-                      this.product.price_updated=this.product.price;
-                    }
-                    this.product.option_selected=0;
-                    this.product.product_option_selected=0;
-                    this.product.option_value_selected=0;
-                    this.product.product_option_value_selected=0;
+                  }//for option values
+                }//for
+                this.product.price=total;
+              },
+              update_product(indexOption,indexOptionValue,indexChildOptValue=null){
+                this.index_option_selected=indexOption;
+                this.index_option_value_selected=indexOptionValue;
+                //console.log('IndexOpt, IndexOptValue','indexChildOptValue',indexOption,indexOptionValue,indexChildOptValue);
+                var b_option=0;//Exist option in array
+                var position_option=null;
+                var position_option_value=null;
+                var b_option_value=0;//Exist option value in array
 
-                  }
-                },
+                var position_child_option_value=null;
+                var b_child_option_value=0;
+                //Options
+                var option_id=this.product.options[indexOption].option_id;
+                var option_type=this.product.options[indexOption].type;
+                var product_option_id=this.product.options[indexOption].product_option_id;
+                var option_description=this.product.options[indexOption].description;
+                //Option value
+                var option_value_id=this.product.options[indexOption].option_values[indexOptionValue].id;
+                var price_prefix=this.product.options[indexOption].option_values[indexOptionValue].price_prefix;
+                var price=parseFloat(this.product.options[indexOption].option_values[indexOptionValue].price);
+                var product_option_value_id=this.product.options[indexOption].option_values[indexOptionValue].product_option_value_id;
+                var option_value_description=this.product.options[indexOption].option_values[indexOptionValue].description;
+                //Child Option Value
+                if(indexChildOptValue!=null){
+                  var child_option_value_id=this.product.options[indexOption].option_values[indexOptionValue].children_option_values[indexChildOptValue].id;
+                  var child_price_prefix=this.product.options[indexOption].option_values[indexOptionValue].children_option_values[indexChildOptValue].price_prefix;
+                  var child_price=parseFloat(this.product.options[indexOption].option_values[indexOptionValue].children_option_values[indexChildOptValue].price);
+                  var child_option_description=this.product.options[indexOption].option_values[indexOptionValue].children_option_values[indexChildOptValue].option_description;
+                  var child_option_value_description=this.product.options[indexOption].option_values[indexOptionValue].children_option_values[indexChildOptValue].description;
+                }//index child option value
+                for(i=0;i<this.options_selected.length;i++){
+                  if(this.options_selected[i].id==option_id){
+                    //Exist options in array
+                    b_option=1;
+                    position_option=i;
+                    for(o=0;o<this.options_selected[i].option_values.length;o++){
+                      if(this.options_selected[i].option_values[o].id==option_value_id){
+                        b_option_value=1;
+                        position_option_value=o;
+                        for(var z=0;z<this.options_selected[i].option_values[o].child_options.length;z++){
+                          if(child_option_value_id==this.options_selected[i].option_values[o].child_options[z].id){
+                            b_child_option_value=1;
+                            position_child_option_value=z;
+                          }//if
+                        }//child options
+                        break;
+                      }
+                    }//for option values
+                  }//exist option id
+                }//for options
+                if(option_type=="checkbox"){
+                  //Multiple option values selected
+                  if(b_option==1 && b_option_value==1 && indexChildOptValue==null){
+                    /*
+                    If there is the option and the option value in the array
+                      removes it from it.
+                    */
+                    this.options_selected[position_option].option_values.splice(position_option_value,1);
+                    //Validate if option_Values ​​has no records, also remove the option.
+                    if(this.options_selected[position_option].option_values.length==0){
+                      this.options_selected.splice(position_option,1);
+                    }
+                    this.index_option_selected=0;
+                    this.index_option_value_selected=0;
+                  }else{
+                    if(b_option==1 && b_option_value==1 && indexChildOptValue!=null){
+                      /*
+                        There is the option and option value, so only add the child option
+                      */
+                      this.options_selected[position_option].option_values[position_option_value].child_options=[];
+                      this.options_selected[position_option].option_values[position_option_value].child_options.push({
+                        id:child_option_value_id,
+                        price_prefix:child_price_prefix,
+                        price:child_price,
+                        option_description:child_option_description,
+                        description:child_option_value_description
+                      });
+                    }else if(b_option==1){
+                      /*
+                        If the option exists but not the option value, just add the option value
+                      */
+                      this.options_selected[position_option].option_values.push({
+                        id:option_value_id,
+                        description:option_value_description,
+                        product_option_value_id:product_option_value_id,
+                        price:price,
+                        price_prefix:price_prefix,
+                        child_options:[]
+                      });
+                      if(indexChildOptValue!=null){
+                        var position=this.options_selected[position_option].option_values.length;
+                        position--;
+                        this.options_selected[position_option].option_values[position].child_options.push({
+                          id:child_option_value_id,
+                          price_prefix:child_price_prefix,
+                          price:child_price,
+                          option_description:child_option_description,
+                          description:child_option_value_description
+                        });
+                      }//if child option selected
+                    }else{
+                      /*
+                      If it does not exist in the array, add the option and then its option value
+                      */
+                      this.options_selected.push({
+                        id:option_id,
+                        type:option_type,
+                        description:option_description,
+                        option_values:[]
+                      });
+                      var position=this.options_selected.length;
+                      position--;
+                      this.options_selected[position].option_values.push({
+                        id:option_value_id,
+                        description:option_value_description,
+                        product_option_value_id:product_option_value_id,
+                        price:price,
+                        price_prefix:price_prefix,
+                        child_options:[]
+                      });
+                      if(indexChildOptValue!=null){
+                        console.log('Si no existe el option,lo agrega y posterior agrega el option value y su child option');
+                        var position2=this.options_selected[position].option_values.length;
+                        position2--;
+                        this.options_selected[position_option].option_values[position2].child_options.push({
+                          id:child_option_value_id,
+                          price_prefix:child_price_prefix,
+                          price:child_price,
+                          option_description:child_option_description,
+                          description:child_option_value_description
+                        });
+                      }//if child option selected
+                    }
+                  }//else
+                }else{
+                  /*Option type != checkbox
+                  One option value each option selected.
+                  */
+                  for(i=0;i<this.options_selected.length;i++){
+                    if(this.options_selected[i].id==option_id){
+                      //Exist options in array
+                      b_option=1;
+                      this.options_selected[i].option_values=[];//Clear
+                      this.options_selected[i].option_values.push({
+                        id:option_value_id,
+                        description:option_value_description,
+                        product_option_value_id:product_option_value_id,
+                        price:price,
+                        price_prefix:price_prefix,
+                        child_options:[]
+                      });
+                      if(indexChildOptValue!=null){
+                        var position2=this.options_selected[i].option_values.length;
+                        position2--;
+                        this.options_selected[i].option_values[position2].child_options.push({
+                          id:child_option_value_id,
+                          price_prefix:child_price_prefix,
+                          price:child_price,
+                          option_description:child_option_description,
+                          description:child_option_value_description
+                        });
+                      }//if child option selected
+                      break;
+                    }//exist option id
+                  }//for options
+                  if(b_option==0){
+                    //Add option
+                    this.options_selected.push({
+                      id:option_id,
+                      type:option_type,
+                      description:option_description,
+                      option_values:[]
+                    });
+                    var position=this.options_selected.length;
+                    position--;
+                    this.options_selected[position].option_values.push({
+                      id:option_value_id,
+                      description:option_value_description,
+                      product_option_value_id:product_option_value_id,
+                      price:price,
+                      price_prefix:price_prefix,
+                      child_options:[]
+                    });
+                    if(indexChildOptValue!=null){
+                      var position2=this.options_selected[position].option_values.length;
+                      position2--;
+                      this.options_selected[i].option_values[position2].child_options.push({
+                        id:child_option_value_id,
+                        price_prefix:child_price_prefix,
+                        price:child_price,
+                        option_description:child_option_description,
+                        description:child_option_value_description
+                      });
+                    }//if child option selected
+                  }//b_option==0
+                }//Option type != checkbox
+                this.calculate_price();
+                this.product.options_selected=this.options_selected;
+              },
                 /* obtiene los productos */
                 get_product: function () {
                     axios({

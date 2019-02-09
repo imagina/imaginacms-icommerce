@@ -23,7 +23,7 @@ use Modules\Iprofile\Repositories\AddressRepository;
 use Modules\Iprofile\Repositories\ProfileRepository;
 use Modules\Icommerce\Repositories\PaymentRepository;
 use Session;
-
+Use DB;
 class OrderController extends BasePublicController
 {
   private $cart;
@@ -96,18 +96,14 @@ class OrderController extends BasePublicController
         $subtotal = $subtotal - $order->tax_amount;
 
       foreach ($order->products as $product){
-        if($product->pivot->order_option){
+        if(count($product->pivot->order_option)>0){
           array_push($products, [
             "title" => $product->title,
             "sku" => $product->sku,
             "quantity" => $product->pivot->quantity,
             "price" => $product->pivot->price,
             "total" => $product->pivot->total,
-            "option_name" => $product->pivot->order_option->name,
-            "option_value" => $product->pivot->order_option->value,
-            "option_type" => $product->pivot->order_option->type,
-            'child_option_name'=>$product->pivot->order_option->child_option_name,
-            'child_option_value'=>$product->pivot->order_option->child_option_value
+            "options"=>$product->pivot->order_option
           ]);
         }//
         else{
@@ -147,164 +143,185 @@ class OrderController extends BasePublicController
    * @param  Request $request
    * @return Response
    */
-  public function store(Request $request)
-  {
+   public function store(Request $request)
+   {
+     DB::beginTransaction();
 
 
-    $cart = $this->getItems();
-    $currency = $this->currency->getActive();
+     $cart = $this->getItems();
+     $currency = $this->currency->getActive();
 
-    $request["ip"] = $request->ip();
-    $request["user_agent"] = $request->header('User-Agent');
-    $request['order_status'] = 0;
-    $request['key'] = substr(md5 (date("Y-m-d H:i:s").$request->ip()),0,20);
+     $request["ip"] = $request->ip();
+     $request["user_agent"] = $request->header('User-Agent');
+     $request['order_status'] = 0;
+     $request['key'] = substr(md5 (date("Y-m-d H:i:s").$request->ip()),0,20);
 
-    $profile = $this->profile->findByUserId($request->user_id);
-    if($request->type_person=='legal'){
-      $profile->business=$request->profile_business_name;
-      $profile->nit=$request->profile_business_nit;
-      $profile->type_person="legal";
-      $profile->update();
-    }
-    if ($request->existingOrNewPaymentAddress == '2') {
+     $profile = $this->profile->findByUserId($request->user_id);
+     if($request->type_person=='legal'){
+       $profile->business=$request->profile_business_name;
+       $profile->nit=$request->profile_business_nit;
+       $profile->type_person="legal";
+       $profile->update();
+     }
+     if ($request->existingOrNewPaymentAddress == '2') {
 
-      try {
-        $this->address->create([
-          'profile_id' => $profile->id,
-          'firstname' => $request->payment_firstname,
-          'lastname' => $request->payment_lastname,
-          'company' => $request->payment_company,
-          'address_1' => $request->payment_address_1,
-          'address_2' => $request->payment_address_2,
-          'city' => $request->payment_city,
-          'postcode' => $request->payment_postcode,
-          'country' => $request->payment_country,
-          'zone' => $request->payment_zone,
-          'email'=>$request->payment_email,
-          'nit'=>$request->payment_nit
-        ]);
+       try {
+         $this->address->create([
+           'profile_id' => $profile->id,
+           'firstname' => $request->payment_firstname,
+           'lastname' => $request->payment_lastname,
+           'company' => $request->payment_company,
+           'address_1' => $request->payment_address_1,
+           'address_2' => $request->payment_address_2,
+           'city' => $request->payment_city,
+           'postcode' => $request->payment_postcode,
+           'country' => $request->payment_country,
+           'zone' => $request->payment_zone,
+           'email'=>$request->payment_email,
+           'nit'=>$request->payment_nit
+         ]);
 
-      } catch (Exception $e) {
-        \Log::info($e->getMessage());
-        return redirect()->back()->withError($e->getMessage());
-      }
-    }
-    if ($request->existingOrNewShippingAddress == '2' && $request->sameDeliveryBilling!='on') {
-      try {
-        $this->address->create([
-          'profile_id' => $profile->id,
-          'firstname' => $request->shipping_firstname,
-          'lastname' => $request->shipping_lastname,
-          'company' => $request->shipping_company,
-          'address_1' => $request->shipping_address_1,
-          'address_2' => $request->shipping_address_2,
-          'city' => $request->shipping_city,
-          'postcode' => $request->shipping_postcode,
-          'country' => $request->shipping_country,
-          'zone' => $request->shipping_zone,
-        ]);
-      } catch (Exception $e) {
-        \Log::info($e->getMessage());
-        return redirect()->back()->withError($e->getMessage());
-      }
-    }
+       } catch (Exception $e) {
+         DB::rollBack();
+         \Log::info($e->getMessage());
+         return redirect()->back()->withError($e->getMessage());
+       }
+     }
+     if ($request->existingOrNewShippingAddress == '2' && $request->sameDeliveryBilling!='on') {
+       try {
+         $this->address->create([
+           'profile_id' => $profile->id,
+           'firstname' => $request->shipping_firstname,
+           'lastname' => $request->shipping_lastname,
+           'company' => $request->shipping_company,
+           'address_1' => $request->shipping_address_1,
+           'address_2' => $request->shipping_address_2,
+           'city' => $request->shipping_city,
+           'postcode' => $request->shipping_postcode,
+           'country' => $request->shipping_country,
+           'zone' => $request->shipping_zone,
+         ]);
+       } catch (Exception $e) {
+         DB::rollBack();
+         \Log::info($e->getMessage());
+         return redirect()->back()->withError($e->getMessage());
+       }
+     }
 
-    try {
-      $order = Order::create($request->all());
-    } catch (Exception $e) {
-      \Log::info($e->getMessage());
-      return redirect()->back()->withError($e->getMessage());
-    }
-    try {
-      Order_History::create([
-        'order_id' => $order->id,
-        'status' => $order->order_status,
-        'notify' => 1,
-      ]);
-    } catch (Exception $e) {
-      \Log::info($e->getMessage());
-      return response()->json([
-        "status" => "500",
-        "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
-      ]);
-    }
+     try {
+       $order = Order::create($request->all());
+     } catch (Exception $e) {
+       DB::rollBack();
+       \Log::info($e->getMessage());
+       return redirect()->back()->withError($e->getMessage());
+     }
+     try {
+       Order_History::create([
+         'order_id' => $order->id,
+         'status' => $order->order_status,
+         'notify' => 1,
+       ]);
+     } catch (Exception $e) {
+       \Log::info($e->getMessage());
+       DB::rollBack();
+       return response()->json([
+         "status" => "500",
+         "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
+       ]);
+     }
 
-    try {
-      foreach ($cart["items"] as $item) {
-        $p=Order_Product::create([
-          "order_id" => $order->id,
-          "product_id" => $item->id,
-          "title" => $item->name,
-          "quantity" => $item->quantity,
-          "price" => floatval($item->price),
-          "total" => floatval($item->quantity) * floatval($item->price),
-          "tax" => 0,
-          "reward" => 0,
-        ]);
+     try {
+       foreach ($cart["items"] as $item) {
+         $p=Order_Product::create([
+           "order_id" => $order->id,
+           "product_id" => $item->id,
+           "title" => $item->name,
+           "quantity" => $item->quantity,
+           "price" => floatval($item->price),
+           "total" => floatval($item->quantity) * floatval($item->price),
+           "tax" => 0,
+           "reward" => 0,
+         ]);
+         if(count($item->options_selected)>0){
+           for($i=0;$i<count($item->options_selected);$i++){
+             for($o=0;$o<count($item->options_selected[$i]['option_values']);$o++){
+               if(count($item->options_selected[$i]['option_values'][$o]['child_options'])>0){
+                 for($z=0;$z<count($item->options_selected[$i]['option_values'][$o]['child_options']);$z++){
+                   Order_Option::create([
+                     "order_id" => $order->id,
+                     "order_product_id"=>$p->id,
+                     'name'=>$item->options_selected[$i]['description'],
+                     'value'=>$item->options_selected[$i]['option_values'][$o]['description'],
+                     'type'=>$item->options_selected[$i]['type'],
+                     'child_option_name'=>$item->options_selected[$i]['option_values'][$o]['child_options'][$z]['option_description'],
+                     'child_option_value'=>$item->options_selected[$i]['option_values'][$o]['child_options'][$z]['description']
+                   ]);
+                 }//for child options
+               }else {
+                 Order_Option::create([
+                   "order_id" => $order->id,
+                   "order_product_id"=>$p->id,
+                   'name'=>$item->options_selected[$i]['description'],
+                   'value'=>$item->options_selected[$i]['option_values'][$o]['description'],
+                   'type'=>$item->options_selected[$i]['type']
+                 ]);
+               }//else
+             }//for option values
+           }//for options selected
+         }
+       }
+     } catch (Exception $e) {
+       \Log::info($e->getMessage());
+       DB::rollBack();
+       return response()->json([
+         "status" => "500",
+         "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
+       ]);
+     }
 
-        if($item->product_option_selected_id!=0 && $item->product_option_value_selected_id!=0){
-          $o=Order_Option::create([
-            "order_id" => $order->id,
-            "order_product_id"=>$p->id,
-            "product_option_id"=>$item->product_option_selected_id,
-            "product_option_value_id"=>$item->product_option_value_selected_id,
-            'name'=>$item->option_selected,
-            'value'=>$item->option_value_description_selected,
-            'type'=>$item->option_type_selected,
-            'child_option_name'=>$item->child_option_description_selected,
-            'child_option_value'=>$item->child_option_value_description_selected
-          ]);
-        }
+     try {
+       foreach ($cart["items"] as $item) {
+         Payment::create([
+           "order_id" => $order->id,
+           "name" => $order->payment_method,
+           "amount" => $order->total,
+           "status" => $order->order_status,
+         ]);
+       }
+     } catch (Exception $e) {
+       \Log::info($e->getMessage());
+       DB::rollBack();
+       return response()->json([
+         "status" => "500",
+         "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
+       ]);
+     }
 
-      }
-    } catch (Exception $e) {
-      \Log::info($e->getMessage());
-      return response()->json([
-        "status" => "500",
-        "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
-      ]);
-    }
+     //$this->notification->push('New Order', 'New generated order!', 'fa fa-check-square-o text-green', route('admin.icommerce.order.index'));
+     try{
+         Session::put('orderID', $order->id);
+         $this->cart->clear();
+         $paymentMethods = config('asgard.icommerce.config.paymentmethods');
+         foreach ($paymentMethods as $paymentMethod)
+             if($paymentMethod['name']==$request->payment_method)
+                 $urlPayment = route($paymentMethod['name']);
+         DB::commit();
+         return response()->json([
+             "status" => "202",
+             "message" => trans('icommerce::checkout.alerts.order_created'),
+             "url" => $urlPayment,
+             "session" => session('orderID')
+         ]);
+     }catch (\Exception $e){
+         \Log::info($e->getMessage());
+         DB::rollBack();
+         return response()->json([
+             "status" => "500",
+             "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
+         ]);
+     }
 
-    try {
-      foreach ($cart["items"] as $item) {
-        Payment::create([
-          "order_id" => $order->id,
-          "name" => $order->payment_method,
-          "amount" => $order->total,
-          "status" => $order->order_status,
-        ]);
-      }
-    } catch (Exception $e) {
-      \Log::info($e->getMessage());
-      return response()->json([
-        "status" => "500",
-        "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
-      ]);
-    }
-
-    //$this->notification->push('New Order', 'New generated order!', 'fa fa-check-square-o text-green', route('admin.icommerce.order.index'));
-    try{
-        Session::put('orderID', $order->id);
-        $this->cart->clear();
-        $paymentMethods = config('asgard.icommerce.config.paymentmethods');
-        foreach ($paymentMethods as $paymentMethod)
-            if($paymentMethod['name']==$request->payment_method)
-                $urlPayment = route($paymentMethod['name']);
-        return response()->json([
-            "status" => "202",
-            "message" => trans('icommerce::checkout.alerts.order_created'),
-            "url" => $urlPayment,
-            "session" => session('orderID')
-        ]);
-    }catch (\Exception $e){
-        \Log::info($e->getMessage());
-        return response()->json([
-            "status" => "500",
-            "message" => trans('icommerce::checkout.alerts.error_order') . $e->getMessage()
-        ]);
-    }
-
-  }
+   }
 
   /**
    * Show the form for editing the specified resource.
@@ -354,18 +371,14 @@ class OrderController extends BasePublicController
     $order = $this->order->find(10);
     $products = [];
     foreach ($order->products as $product) {
-      if($product->pivot->order_option){
+      if(count($product->pivot->order_option)>0){
         array_push($products, [
           "title" => $product->title,
           "sku" => $product->sku,
           "quantity" => $product->pivot->quantity,
           "price" => $product->pivot->price,
           "total" => $product->pivot->total,
-          "option_name" => $product->pivot->order_option->name,
-          "option_value" => $product->pivot->order_option->value,
-          "option_type" => $product->pivot->order_option->type,
-          'child_option_name'=>$product->pivot->order_option->child_option_name,
-          'child_option_value'=>$product->pivot->order_option->child_option_value
+          "options"=>$product->pivot->order_option
         ]);
       }//
       else{
@@ -419,18 +432,14 @@ class OrderController extends BasePublicController
         $products = [];
         if (!empty($order)) {
           foreach ($order->products as $product) {
-            if($product->pivot->order_option){
+            if(count($product->pivot->order_option)>0){
               array_push($products, [
                 "title" => $product->title,
                 "sku" => $product->sku,
                 "quantity" => $product->pivot->quantity,
                 "price" => $product->pivot->price,
                 "total" => $product->pivot->total,
-                "option_name" => $product->pivot->order_option->name,
-                "option_value" => $product->pivot->order_option->value,
-                "option_type" => $product->pivot->order_option->type,
-                'child_option_name'=>$product->pivot->order_option->child_option_name,
-                'child_option_value'=>$product->pivot->order_option->child_option_value
+                "options"=>$product->pivot->order_option
               ]);
             }//
             else{
