@@ -5,6 +5,8 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
+use Modules\Icommerce\Entities\CartProduct;
+
 class EloquentCartRepository extends EloquentBaseRepository implements CartRepository
 {
   public function getItemsBy($params)
@@ -50,7 +52,6 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     }
   }
 
-
   public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
@@ -72,10 +73,25 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
 
   public function create($data){
 
-    $cart = $this->model->create($data);
+    if (isset($data['cart_id'])){
+        $cart = $this->model->find($data['cart_id']);
+    }else {
+        $cart = $this->model->create($data);
+    }
+    $product = array_get($data, 'cart_products', []);
+    $cartProduct = CartProduct::where('product_id', $product['product_id'])->first();
+    if ($cartProduct){
+        $cartProduct->update($product);
+        //SyncOptons
+    }else {
+        $product['cart_id'] = $cart->id;4
+        CartProduct::create($product);
+        //SyncOptons
+    }
+
 
     //sync tables
-    $cart->products()->sync(array_get($data, 'products', []));
+    //$cart->products()->sync(array_get($data, 'cart_products', []));
 
     return $cart;
   }
@@ -132,6 +148,5 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
       $model->delete();
     }
   }
-
 
 }
