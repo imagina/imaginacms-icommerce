@@ -6,6 +6,7 @@ namespace Modules\Icommerce\Http\Controllers\Api;
 use Modules\Icommerce\Http\Requests\CartRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Icommerce\Http\Requests\CartProductRequest;
 
 // Base Api
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;

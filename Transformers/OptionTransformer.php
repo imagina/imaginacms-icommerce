@@ -16,7 +16,6 @@ class OptionTransformer extends Resource
       'options' => $this->options,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
-        'options_values' => $data["optionValues"] = OptionValueTransformer::collection($this->optionValues),
     ];
 
     // Option Values
