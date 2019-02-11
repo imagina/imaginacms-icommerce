@@ -11,20 +11,25 @@ class CartProduct extends Model
   protected $fillable = [
     'cart_id',
     'product_id',
-    'product_name',
     'quantity',
     'price',
     'options'
-  
+
   ];
   protected $fakeColumns = ['options'];
-  
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function cart()
   {
     return $this->belongsTo(Cart::class);
   }
+
+    public function options()
+    {
+        return $this->belongsToMany(ProductOption::class, 'icommerce__cart_product_options');
+    }
+
 }

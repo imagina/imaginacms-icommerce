@@ -12,4 +12,11 @@ class CartProductOption extends Model
     protected $table = 'icommerce__cart_product_options';
     public $translatedAttributes = [];
     protected $fillable = [];
+
+    public function product()
+    {
+        return $this->belongsTo(CartProduct::class);
+    }
+
+
 }
