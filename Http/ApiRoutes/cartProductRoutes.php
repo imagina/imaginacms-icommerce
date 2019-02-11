@@ -4,7 +4,7 @@ use Illuminate\Routing\Router;
 
 $router->group(['prefix' => '/cart-products'/*,'middleware' => ['auth:api']*/], function (Router $router) {
   $locale = \LaravelLocalization::setLocale() ? : \App::getLocale();
-  
+
   $router->post('/', [
     'as' => $locale . 'api.icommerce.cart-products.create',
     'uses' => 'CartProductApiController@create',
@@ -25,5 +25,5 @@ $router->group(['prefix' => '/cart-products'/*,'middleware' => ['auth:api']*/], 
     'as' => $locale . 'api.icommerce.cart-products.show',
     'uses' => 'CartProductApiController@show',
   ]);
-  
+
 });
