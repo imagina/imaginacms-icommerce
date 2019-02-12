@@ -32,6 +32,53 @@
 ## API
 
 
+[![](https://www.imaginacolombia.com/themes/imagina2017/img/logo.png)](https://www.imaginacolombia.com/)
+
+# End Points Cart
+
+### Get all carts
+N: filter optional = 
+```?filter={"ip":192.168.0.1}```
+```?filter={"user":1}```
+```
+GET: /api/icommerce/v3/carts
+```
+
+### Get a cart
+N: replace n for id`s cart 
+```
+GET: /api/icommerce/v3/carts/n
+```
+
+### Get all the products of all the cars
+N: filter optional = ```?filter={"cart":2}```
+```
+GET: /api/icommerce/v3/cart-products
+```
+
+### Add products to cart
+```
+POST: /api/icommerce/v3/carts
+```
+
+```{
+  "cart_id": 9, (optional, if it is not passed a new car is generated and its id is returned)
+  "user_id": 1, (optional, if it is not passed, the car is generated without associating a user)
+  "cart_products": {
+    "product_id":"4",
+    "quantity":"50",
+     "price":"5500"
+    },
+  "cart_product_option":{
+    "product_option_id":"1",
+    "product_option_value_id":"1"
+  }
+}
+```
+
+
+
+
 
 
 
