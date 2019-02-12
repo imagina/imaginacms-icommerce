@@ -95,23 +95,12 @@ class CartApiController extends BaseApiController
        DB::beginTransaction();
        //Validate Request
        $request['ip']=$request->ip();
-       $this->validateRequestApi(new CartProductRequest($request->all()));
-       //Get user autenticated
-       $user=Auth::guard('api')->user();
-       if($user){
-         //If user autenticated
-         $request['user_id']=$user->id;
-         $cart=Cart::where('user_id',$user->id)->first();
-         if(!$cart)
-         $cart = $this->cart->create($request->all());
-         //else
-         //throw new \Exception("This user already has a cart created",404);
-       }else{
-         //User not autenticated.
-         $cart = $this->cart->create($request->all());
-       }
+       $this->validateRequestApi(new CartRequest($request->all()));
+
+       $cart = $this->cart->create($request->all());
+
        DB::commit();
-       $response = ['data' => ['cart_id'=>$cart->id]];
+       $response = ['data' => ['cart'=>$cart->id]];
      } catch (\Exception $e) {
        DB::rollBack();
        $status = 500;

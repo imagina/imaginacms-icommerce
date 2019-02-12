@@ -72,7 +72,6 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
   }
 
   public function create($data){
-
     if (isset($data['cart_id'])){
         $cart = $this->model->find($data['cart_id']);
     }else {
@@ -83,14 +82,11 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     if ($cartProduct){
         $cartProduct->update($product);
         $cartProduct->options()->sync(array_get($data, 'cart_product_option', []));
-        //SyncOptons
     } else {
         $product['cart_id'] = $cart->id;
         $product = CartProduct::create($product);
         $product->options()->sync(array_get($data, 'cart_product_option', []));
-        //SyncOptons
     }
-
     return $cart;
   }
 
