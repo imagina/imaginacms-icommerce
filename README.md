@@ -57,9 +57,7 @@ GET: /api/icommerce/v3/cart-products
 ```
 
 ### Add products to cart
-```
-POST: /api/icommerce/v3/carts
-```
+```POST``` ```/api/icommerce/v3/carts```
 
 ```{
   "cart_id": 9, (optional, if it is not passed a new car is generated and its id is returned)
@@ -76,6 +74,62 @@ POST: /api/icommerce/v3/carts
 }
 ```
 
+
+# End Points Ordes 
+
+##### Create order
+```POST``` ```/api/icommerce/v3/orders```
+##### Success Response
+```
+```
+##### Error Response
+```
+```
+
+---
+
+##### Get all orders
+```GET``` ```/api/icommerce/v3/orders```
+##### Success Response
+```
+```
+##### Error Response
+```
+```
+
+---
+##### Get an order (n = order_id)
+```GET``` ```/api/icommerce/v3/orders/n```
+##### Success Response
+```
+```
+##### Error Response
+```
+```
+
+---
+
+##### Update an order
+```PUT``` ```/api/icommerce/v3/orders/n```
+##### Success Response
+```
+```
+##### Error Response
+```
+```
+
+---
+
+##### Delete an orders
+```DELETE``` ```/api/icommerce/v3/orders/n```
+##### Success Response
+```
+```
+##### Error Response
+```
+```
+
+---
 
 
 
