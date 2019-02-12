@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-  
+
   protected $table = 'icommerce__orders';
 
   protected $fillable = [
@@ -61,25 +61,25 @@ class Order extends Model
     'key',
     'options'
   ];
-  
+
   protected $fakeColumns = ['options'];
-  
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function customer()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User",'customer_id');
   }
-  
+
   public function addedBy()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User",'added_by_id');
   }
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__order_item')
@@ -89,48 +89,48 @@ class Order extends Model
       ->withTimestamps()
       ->using(OrderItem::class);
   }
-  
+
   public function orderItems()
   {
     return $this->hasMany(OrderItem::class, 'order_id');
   }
-  
+
   public function coupons()
   {
     return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
       ->withPivot('amount')
       ->withTimestamps();
   }
-  
+
   public function orderHistory()
   {
     return $this->hasMany(OrderStatusHistory::class);
   }
-  
-  
+
+
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
   }
-  
+
   public function status()
   {
     return $this->belongsTo(OrderStatus::class,'status_id');
   }
-  
+
   public function currency()
   {
     return $this->belongsTo(Currency::class);
   }
-  
+
   public function transactions()
   {
     return $this->hasMany(Transaction::class);
   }
-  
+
   public function shippings()
   {
     return $this->hasMany(Shipping::class);
   }
-  
+
 }
