@@ -22,6 +22,12 @@ class ProductOptionTransformer extends Resource
             'value' => $this->value,
             'required' => $this->required,
         ];
+
+        //productOptionValues
+        if(isset($this->productOptionValues)){
+            $data['productOptionValues']= ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues'));
+        }
+
         return $data;
     }
 }
