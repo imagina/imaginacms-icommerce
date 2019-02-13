@@ -25,7 +25,12 @@ class ProductOptionTransformer extends Resource
 
         //productOptionValues
         if(isset($this->productOptionValues)){
-            $data['productOptionValues']= ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues'));
+            $fiters = json_decode($request->input('filter'));
+            if (isset($fiters->parentOptionValueId)){
+                $data['productOptionValues']= ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues'))->where('parent_option_value_id', $fiters->parentOptionValueId);
+            } else {
+                $data['productOptionValues']= ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues'));
+            }
         }
 
         return $data;
