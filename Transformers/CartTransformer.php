@@ -16,16 +16,19 @@ class CartTransformer extends Resource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
-  
+
     // Products
     if(isset($this->products))
       $data['products'] = $this->products;
 
-    
+    // Products
+     if(isset($this->products))
+          $data['products_cant'] = count($this->products);
+
     // User
     if(isset($this->user))
       $data['user'] = $this->user;
-  
+
     return $data;
   }
 }

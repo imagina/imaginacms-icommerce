@@ -21,6 +21,7 @@ class ProductOptionTransformer extends Resource
             'parent_option_value_id' => $this->parent_option_value_id,
             'value' => $this->value,
             'required' => $this->required,
+            'selected' => '',
         ];
 
         //productOptionValues
