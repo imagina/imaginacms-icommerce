@@ -15,6 +15,7 @@ class PaymentMethodTransformer extends Resource
       'name' => $this->name,
       'status' => $this->status,
       'image' => $this->options->mainimage,
+      'init' => $this->options->init,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];

@@ -81,6 +81,9 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     else
       $data['status'] = "0"; 
 
+    // init
+    $options['init'] = $model->options->init;
+
     //Image
     $requestimage = $data['mainimage'];
     unset($data['mainimage']);
@@ -90,9 +93,10 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     }
     $options['mainimage'] = $requestimage;
     
+    
     // Extra Options
     foreach ($model->options as $key => $value) {
-        if($key!="mainimage"){
+        if($key!="mainimage" && $key!="init"){
           $options[$key] = $data[$key];
           unset($data[$key]);
         }
