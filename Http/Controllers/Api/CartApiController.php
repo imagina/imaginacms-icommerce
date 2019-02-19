@@ -100,7 +100,7 @@ class CartApiController extends BaseApiController
        $cart = $this->cart->create($request->all());
 
        DB::commit();
-       $response = ['data' => ['cart'=>$cart->id]];
+       $response = ['data' => ['cart'=> new CartTransformer($cart)]];
      } catch (\Exception $e) {
        DB::rollBack();
        $status = 500;

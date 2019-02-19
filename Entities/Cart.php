@@ -29,8 +29,7 @@ class Cart extends Model
 
   public function products()
   {
-     //return $this->belongsToMany(Product::class, 'icommerce__cart_products')->withPivot('id', 'product_name', 'quantity','price','options')->withTimestamps()->using(CartProduct::class);
-    return $this->belongsToMany(Product::class, 'icommerce__cart_product');
+    return $this->belongsToMany(Product::class, 'icommerce__cart_product')->withPivot('id', 'quantity','price');
   }
 
 }

@@ -10,7 +10,6 @@ class CartTransformer extends Resource
   {
     $data =  [
       'id' => $this->id,
-      'total' => $this->total,
       'ip' => $this->ip,
       'user_id' => $this->user_id,
       'created_at' => $this->created_at,
@@ -19,11 +18,9 @@ class CartTransformer extends Resource
 
     // Products
     if(isset($this->products))
-      $data['products'] = $this->products;
-
-    // Products
-     if(isset($this->products))
-          $data['products_cant'] = count($this->products);
+        $products = CartProductTransformer::collection($this->products);
+        $data['products'] = $products;
+        $data['products_cant'] = $products->count();
 
     // User
     if(isset($this->user))
