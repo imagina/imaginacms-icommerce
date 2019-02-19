@@ -1,5 +1,15 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+   "0.1.28":
+        added:
+          - Validation route /backend configuration of option values, so that the y do not delete and option value if it is associated with a product.
+          - Foreign key in relation order_option of entity order_product
+          - Value of product option in ProductOptionsTransformer
+         changed:
+          - Update of product options in general. Update of migrations (Import),
+          - Updated view show, for new functions in Vue for the selection of options and shipping to the cart.
+          - Updated view index, to not obtain product options when the variable category in vue has no value.
+          - Fixed problem in api add cart
    "0.1.27":
         added:
           - news import to categories,manufacturers and products with new version maatwebsite excel v3

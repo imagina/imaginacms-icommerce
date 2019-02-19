@@ -197,7 +197,7 @@ class BulkloadProducts implements ShouldQueue
                     $constraint->upsize();
                 });
                 if (config('asgard.iblog.config.watermark.activated')) {
-                    $image->insert(config('asgard.iblog.config.watermark.url'), config('asgard.iblog.config.watermark.position'), config('asgard.iblog.config.watermark.x'), config('asgard.iblog.config.watermark.y'));
+                    $image->insert(\Storage::disk('publicmedia')->url(config('asgard.iblog.config.watermark.url')), config('asgard.iblog.config.watermark.position'), config('asgard.iblog.config.watermark.x'), config('asgard.iblog.config.watermark.y'));
                 }
                 // 2. Store the image on disk.
                 \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '80'));
@@ -220,6 +220,8 @@ class BulkloadProducts implements ShouldQueue
         } catch (\Exception $e) {
             \Log::error($e);
         }
+
     }
+
 
 }
