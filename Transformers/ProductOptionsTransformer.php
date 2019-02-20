@@ -32,7 +32,7 @@ class ProductOptionsTransformer extends Resource
               $child_option_id=null;
               $child_option=null;
               $child_option_type=null;
-              if($option_value->children_option_value_id!=0){
+              if($option_value->children_option_value_id!=0 && $option_value->child_option_value){
                 $child_option_description = $option_value->child_option_value->option->description;
                 $child_option_id=$option_value->child_option_value->option->id;
                 $child_description=$option_value->child_option_value->description;
@@ -99,7 +99,7 @@ class ProductOptionsTransformer extends Resource
                     $child_option_id=null;
                     $child_option=null;
                     $child_option_type=null;
-                    if($option_value->children_option_value_id!=0){
+                    if($option_value->children_option_value_id!=0  && $option_value->child_option_value){
                       $child_option_type=$option_value->child_option_value->type;
                       $child_option_description=$option_value->child_option_value->option->description;
                       $child_option_id=$option_value->child_option_value->option->id;

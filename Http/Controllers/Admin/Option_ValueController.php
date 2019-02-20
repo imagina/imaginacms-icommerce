@@ -8,6 +8,7 @@ use Modules\Icommerce\Entities\Option_Value;
 use Modules\Icommerce\Entities\Option;
 use Modules\Icommerce\Http\Requests\CreateOption_ValueRequest;
 use Modules\Icommerce\Http\Requests\UpdateOption_ValueRequest;
+use Modules\Icommerce\Repositories\Product_Option_ValueRepository;
 use Modules\Icommerce\Repositories\Option_ValueRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Icommerce\Repositories\OptionRepository;
