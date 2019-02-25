@@ -9,12 +9,12 @@ class CartProductTransformer extends Resource
   public function toArray($request)
   {
     $data =  [
-      'id' => $this->pivot->id,
+        'id' => $this->id,
         'product_id' => $this->id,
-       'name' => $this->name,
-       'price' => $this->price,
-        'subtotal' => $this->price * $this->pivot->quantity,
-      'quantity' => $this->pivot->quantity,
+
+        'price' => $this->price,
+        'subtotal' => $this->SubTotal,
+        'quantity' => $this->quantity,
     ];
 
     return $data;

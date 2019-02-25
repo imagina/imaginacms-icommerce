@@ -32,4 +32,9 @@ class CartProduct extends Model
         return $this->belongsToMany(ProductOption::class, 'icommerce__cart_product_options');
     }
 
+    public function getSubTotalAttribute()
+    {
+        return $this->price * $this->quantity;
+    }
+
 }

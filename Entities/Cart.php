@@ -29,7 +29,12 @@ class Cart extends Model
 
   public function products()
   {
-    return $this->belongsToMany(Product::class, 'icommerce__cart_product')->withPivot('id', 'quantity','price');
+    return $this->hasMany(CartProduct::class);
   }
+
+    public function getTotalAttribute()
+    {
+        return $this->products->sum('subtotal');
+    }
 
 }
