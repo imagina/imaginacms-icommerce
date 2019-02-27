@@ -11,7 +11,7 @@ class CartProductTransformer extends Resource
     $data =  [
         'id' => $this->id,
         'product_id' => $this->id,
-
+        'name' => $this->name,
         'price' => $this->price,
         'subtotal' => $this->SubTotal,
         'quantity' => $this->quantity,
