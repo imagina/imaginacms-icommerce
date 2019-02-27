@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartProduct extends Model
 {
+    use PresentableTrait;
+
+    protected $presenter = 'CartproductPresenter';
+
   protected $table = 'icommerce__cart_product';
   protected $fillable = [
     'cart_id',
-    'product_id',
+    '
+    ',
     'quantity',
     'price',
     'options'
