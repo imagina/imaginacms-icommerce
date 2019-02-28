@@ -4,10 +4,12 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Icommerce\Entities\Product;
 
 class CartProduct extends Model
 {
   protected $table = 'icommerce__cart_product';
+
   protected $fillable = [
     'cart_id',
     'product_id',
@@ -27,14 +29,21 @@ class CartProduct extends Model
     return $this->belongsTo(Cart::class);
   }
 
-    public function options()
+    public function cartproductoption()
     {
-        return $this->belongsToMany(ProductOption::class, 'icommerce__cart_product_options');
+        return $this->hasMany(CartProductOption::class);
     }
 
     public function getSubTotalAttribute()
     {
-        return $this->price * $this->quantity;
+        $subtotal = $this->price * $this->quantity;
+        $subtotalOpciones = 0;
+        return $subtotal + $subtotalOpciones;
+    }
+
+    public function getNameproductAttribute()
+    {
+        return Product::find($this->product_id)->name;
     }
 
 }
