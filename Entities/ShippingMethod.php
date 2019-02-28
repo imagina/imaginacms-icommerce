@@ -40,5 +40,10 @@ class ShippingMethod extends Model
       
     }
 
+    public function geozones()
+    {
+        return $this->belongsToMany(ShippingMethodGeozone::class, 'icommerce__shipping_methods_geozones')->withTimestamps();
+    }
+
 
 }

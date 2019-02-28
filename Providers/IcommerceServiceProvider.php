@@ -66,7 +66,9 @@ class IcommerceServiceProvider extends ServiceProvider
             $event->load('paymentmethods', array_dot(trans('icommerce::paymentmethods')));
             $event->load('cartproductoptions', array_dot(trans('icommerce::cartproductoptions')));
             $event->load('shippingmethods', array_dot(trans('icommerce::shippingmethods')));
+            $event->load('shippingmethodgeozones', array_dot(trans('icommerce::shippingmethodgeozones')));
             // append translations
+
 
 
 
@@ -543,7 +545,20 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheShippingMethodDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentShippingMethodGeozoneRepository(new \Modules\Icommerce\Entities\ShippingMethodGeozone());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheShippingMethodGeozoneDecorator($repository);
+            }
+        );
 // add bindings
+
 
 
 
