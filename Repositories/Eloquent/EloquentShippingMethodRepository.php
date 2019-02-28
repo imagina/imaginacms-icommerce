@@ -122,10 +122,29 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      // REQUEST
      $model = $query->first();
    
-     if($model) {
-       $model->update($data);
+    if($model) {
+
+      $options['init'] = $model->options->init;
+      
+      // Extra Options
+      foreach ($model->options as $key => $value) {
+          if($key!="init"){
+            $options[$key] = $data[$key];
+            unset($data[$key]);
+          }
+      }
+      $data['options'] = $options;
+
+      // Update Model
+      $model->update($data);
+      
+      // Sync Data 
+      $model->geozones()->sync(array_get($data, 'geozones', []));
+     
      }
+
      return $model;
+
    }
    
    public function deleteBy($criteria, $params)

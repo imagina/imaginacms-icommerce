@@ -17,12 +17,12 @@ class CreateIcommerceShippingMethodGeozonesTable extends Migration
             $table->increments('id');
             // Your fields
 
-            $table->integer('shipping_method_id')->unsigned()->nullable();
+            $table->integer('shipping_method_id')->unsigned();
             $table->foreign('shipping_method_id')->references('id')->on('icommerce__shipping_methods')->onDelete('restrict');
       
             $table->integer('geozone_id')->unsigned();
             $table->foreign('geozone_id')->references('id')->on('ilocations__geozones')->onDelete('restrict');
-
+            
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ class CreateIcommerceShippingMethodGeozonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('icommerce__shipping_method_geozones');
+        Schema::dropIfExists('icommerce__shipping_methods_geozones');
     }
 }

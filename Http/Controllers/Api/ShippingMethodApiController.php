@@ -108,15 +108,23 @@ class ShippingMethodApiController extends BaseApiController
   {
     try {
 
-      $this->shippingMethod->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
+      //Request to Repository
+      $result = $this->shippingMethod->updateBy($criteria, $request->all(), $params);
 
-      $response = ['data' => ''];
+      $response = ['id' => $result->id];
 
     } catch (\Exception $e) {
-      $status = 500;
+
+      \Log::error('Module Icommerce: Message: '.$e->getMessage());
+
+      $status = $this->getStatusError($e->getCode());
       $response = [
         'errors' => $e->getMessage()
       ];
+
     }
     return response()->json($response, $status ?? 200);
   }
