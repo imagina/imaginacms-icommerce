@@ -14,7 +14,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     $query = $this->model->query();
 
     // RELATIONSHIP
-    $defaultInclude = [];
+    $defaultInclude = ['cartproductoption'];
     $query->with(array_merge($defaultInclude, $params->include));
 
     // FILTERS
@@ -56,7 +56,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     $query->where('id', $criteria);
 
     // RELATIONSHIPS
-    $includeDefault = [];
+    $includeDefault = ['cartproductoption'];
     $query->with(array_merge($includeDefault, $params->include));
 
     // FIELDS

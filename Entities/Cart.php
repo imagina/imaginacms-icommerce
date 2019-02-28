@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    use PresentableTrait;
-
-    protected $presenter = 'CartPresenter';
-
   protected $table = 'icommerce__carts';
 
   protected $fillable = [
@@ -36,9 +32,14 @@ class Cart extends Model
     return $this->hasMany(CartProduct::class);
   }
 
-    public function getTotalAttribute()
-    {
-        return $this->products->sum('subtotal');
-    }
+  public function getTotalAttribute()
+  {
+      return $this->products->sum('subtotal');
+  }
+
+  public function getTotalquantityAttribute()
+  {
+      return $this->products->sum('quantity');
+  }
 
 }
