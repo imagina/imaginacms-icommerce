@@ -24,5 +24,10 @@ class CartProductOption extends Model
         return $this->belongsTo(CartProduct::class);
     }
 
+    public function productoptionvalue()
+    {
+        return $this->belongsTo(ProductOptionValue::class);
+    }
+
 
 }

@@ -31,7 +31,14 @@ class CartProduct extends Model
 
     public function cartproductoption()
     {
-        return $this->hasMany(CartProductOption::class);
+        return $this->belongsToMany(ProductOption::class, 'icommerce__cart_product_options')
+            ->withPivot(
+                'id',
+                'cart_product_id',
+                'product_option_id',
+                'product_option_value_id'
+            )->withTimestamps();
+
     }
 
     public function getSubTotalAttribute()

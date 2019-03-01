@@ -8,12 +8,13 @@ class CartProductOptionTransformer extends Resource
 {
     public function toArray($request)
     {
-    $data =  [
-        'id' => $this->when($this->id, $this->id),
-        'cart_product_id' => $this->when($this->cart_product_id, $this->cart_product_id),
-        'product_option_id' => $this->when($this->product_option_id, $this->product_option_id),
-        'product_option_value_id' => $this->when($this->product_option_value_id, $this->product_option_value_id),
-    ];
-    return $data;
+        $data =  [
+            'id' => $this->when($this->pivot->id, $this->pivot->id),
+            'cart_product_id' => $this->when($this->pivot->cart_product_id, $this->pivot->cart_product_id),
+            'product_option_id' => $this->when($this->pivot->product_option_id, $this->pivot->product_option_id),
+            'product_option_value_id' => $this->when($this->pivot->product_option_value_id, $this->pivot->product_option_value_id),
+
+        ];
+        return $data;
     }
 }

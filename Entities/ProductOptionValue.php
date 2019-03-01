@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductOptionValue extends Model
 {
-  
+
   protected $table = 'icommerce__product_option_value';
-  
+
   protected $fillable = [
     'product_option_id',
     'product_id',
@@ -25,40 +25,46 @@ class ProductOptionValue extends Model
     'weight',
     'weight_prefix'
   ];
-  
+
+  // OK YA PROBADAS
+  public function cartproductoptions()
+  {
+    return $this->hasMany(CartProductOption::class);
+  }
+
   //************* OJO DUDAS PROBAR ********************
   public function product()
   {
     return $this->belongsTo(Product::class);
   }
-  
+
   //************* OJO DUDAS PROBAR ********************
   public function productOption()
   {
     return $this->belongsTo(ProductOption::class);
   }
-  
+
   //************* OJO DUDAS PROBAR ********************
   public function parent()
   {
     return $this->belongsTo('Modules\Icommerce\Entities\ProductOptionValue');
   }
-  
+
   //************* OJO DUDAS PROBAR ********************
   public function option()
   {
     return $this->belongsTo(Option::class);
   }
-  
+
   //************* OJO DUDAS PROBAR ********************
   public function optionValue()
   {
     return $this->belongsTo(OptionValue::class);
   }
-  
+
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
   }
-  
+
 }
