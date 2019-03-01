@@ -358,7 +358,26 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                         $this->auth->hasAccess('icommerce.shippingmethods.index')
                     );
                 });
+                $item->item(trans('icommerce::shippingmethodgeozones.title.shippingmethodgeozones'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.shippingmethodgeozone.create');
+                    $item->route('admin.icommerce.shippingmethodgeozone.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.shippingmethodgeozones.index')
+                    );
+                });
+                $item->item(trans('icommerce::paymentmethodgeozones.title.paymentmethodgeozones'), function (Item $item) {
+                    $item->icon('fa fa-copy');
+                    $item->weight(0);
+                    $item->append('admin.icommerce.paymentmethodgeozone.create');
+                    $item->route('admin.icommerce.paymentmethodgeozone.index');
+                    $item->authorize(
+                        $this->auth->hasAccess('icommerce.paymentmethodgeozones.index')
+                    );
+                });
 // append
+
 
 
 

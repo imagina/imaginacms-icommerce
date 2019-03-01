@@ -211,6 +211,12 @@ return [
         'edit' => 'icommerce::shippingmethods.edit resource',
         'destroy' => 'icommerce::shippingmethods.destroy resource',
     ],
+    'icommerce.shippingmethodgeozones' => [
+        'index' => 'icommerce::shippingmethodgeozones.list resource',
+        'create' => 'icommerce::shippingmethodgeozones.create resource',
+        'edit' => 'icommerce::shippingmethodgeozones.edit resource',
+        'destroy' => 'icommerce::shippingmethodgeozones.destroy resource',
+    ],
     'icommerce.paymentmethodgeozones' => [
         'index' => 'icommerce::paymentmethodgeozones.list resource',
         'create' => 'icommerce::paymentmethodgeozones.create resource',
