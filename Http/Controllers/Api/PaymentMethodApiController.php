@@ -107,12 +107,19 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
 
-      $this->paymentMethod->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
 
-      $response = ['data' => ''];
+      //Request to Repository
+      $result = $this->paymentMethod->updateBy($criteria, $request->all(), $params);
+
+      $response = ['id' => $result->id];
 
     } catch (\Exception $e) {
-      $status = 500;
+
+      \Log::error('Module Icommerce: Message: '.$e->getMessage());
+
+      $status = $this->getStatusError($e->getCode());
       $response = [
         'errors' => $e->getMessage()
       ];

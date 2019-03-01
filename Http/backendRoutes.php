@@ -1159,38 +1159,38 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'ShippingMethodController@destroy',
         'middleware' => 'can:icommerce.shippingmethods.destroy'
     ]);
-    $router->bind('shippingmethodgeozone', function ($id) {
-        return app('Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository')->find($id);
+    $router->bind('paymentmethodgeozone', function ($id) {
+        return app('Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository')->find($id);
     });
-    $router->get('shippingmethodgeozones', [
-        'as' => 'admin.icommerce.shippingmethodgeozone.index',
-        'uses' => 'ShippingMethodGeozoneController@index',
-        'middleware' => 'can:icommerce.shippingmethodgeozones.index'
+    $router->get('paymentmethodgeozones', [
+        'as' => 'admin.icommerce.paymentmethodgeozone.index',
+        'uses' => 'PaymentMethodGeozoneController@index',
+        'middleware' => 'can:icommerce.paymentmethodgeozones.index'
     ]);
-    $router->get('shippingmethodgeozones/create', [
-        'as' => 'admin.icommerce.shippingmethodgeozone.create',
-        'uses' => 'ShippingMethodGeozoneController@create',
-        'middleware' => 'can:icommerce.shippingmethodgeozones.create'
+    $router->get('paymentmethodgeozones/create', [
+        'as' => 'admin.icommerce.paymentmethodgeozone.create',
+        'uses' => 'PaymentMethodGeozoneController@create',
+        'middleware' => 'can:icommerce.paymentmethodgeozones.create'
     ]);
-    $router->post('shippingmethodgeozones', [
-        'as' => 'admin.icommerce.shippingmethodgeozone.store',
-        'uses' => 'ShippingMethodGeozoneController@store',
-        'middleware' => 'can:icommerce.shippingmethodgeozones.create'
+    $router->post('paymentmethodgeozones', [
+        'as' => 'admin.icommerce.paymentmethodgeozone.store',
+        'uses' => 'PaymentMethodGeozoneController@store',
+        'middleware' => 'can:icommerce.paymentmethodgeozones.create'
     ]);
-    $router->get('shippingmethodgeozones/{shippingmethodgeozone}/edit', [
-        'as' => 'admin.icommerce.shippingmethodgeozone.edit',
-        'uses' => 'ShippingMethodGeozoneController@edit',
-        'middleware' => 'can:icommerce.shippingmethodgeozones.edit'
+    $router->get('paymentmethodgeozones/{paymentmethodgeozone}/edit', [
+        'as' => 'admin.icommerce.paymentmethodgeozone.edit',
+        'uses' => 'PaymentMethodGeozoneController@edit',
+        'middleware' => 'can:icommerce.paymentmethodgeozones.edit'
     ]);
-    $router->put('shippingmethodgeozones/{shippingmethodgeozone}', [
-        'as' => 'admin.icommerce.shippingmethodgeozone.update',
-        'uses' => 'ShippingMethodGeozoneController@update',
-        'middleware' => 'can:icommerce.shippingmethodgeozones.edit'
+    $router->put('paymentmethodgeozones/{paymentmethodgeozone}', [
+        'as' => 'admin.icommerce.paymentmethodgeozone.update',
+        'uses' => 'PaymentMethodGeozoneController@update',
+        'middleware' => 'can:icommerce.paymentmethodgeozones.edit'
     ]);
-    $router->delete('shippingmethodgeozones/{shippingmethodgeozone}', [
-        'as' => 'admin.icommerce.shippingmethodgeozone.destroy',
-        'uses' => 'ShippingMethodGeozoneController@destroy',
-        'middleware' => 'can:icommerce.shippingmethodgeozones.destroy'
+    $router->delete('paymentmethodgeozones/{paymentmethodgeozone}', [
+        'as' => 'admin.icommerce.paymentmethodgeozone.destroy',
+        'uses' => 'PaymentMethodGeozoneController@destroy',
+        'middleware' => 'can:icommerce.paymentmethodgeozones.destroy'
     ]);
 // append
 

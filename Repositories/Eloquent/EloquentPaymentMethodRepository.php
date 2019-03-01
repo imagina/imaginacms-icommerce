@@ -114,6 +114,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     
     // INITIALIZE QUERY
     $query = $this->model->query();
+
     
     // FILTER
     if (isset($params->filter)) {
@@ -129,7 +130,35 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     $model = $query->first();
   
     if($model) {
+
+      // init
+      $options['init'] = $model->options->init;
+
+      //Image
+      $requestimage = $data['mainimage'];
+      unset($data['mainimage']);
+
+
+      if(($requestimage==NULL) || (!empty($requestimage)) ){
+        $requestimage = $this->saveImage($requestimage,"assets/{$model->name}/1.jpg");
+      }
+      $options['mainimage'] = $requestimage;
+
+      // Extra Options
+        foreach ($model->options as $key => $value) {
+          if($key!="mainimage" && $key!="init"){
+            $options[$key] = $data[$key];
+            unset($data[$key]);
+          }
+      }
+      $data['options'] = $options;
+      
+      // Update Model
       $model->update($data);
+
+      // Sync Data 
+      $model->geozones()->sync(array_get($data, 'geozones', []));
+
     }
     return $model;
   }
