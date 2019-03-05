@@ -58,7 +58,8 @@ class WishListController extends BasePublicController
 
             array_push($wishlist,[
                 'id' => $product->id,
-                'title' => $title->$locale,
+                // 'title' => $title->$locale,
+                'title' => $product->title,
                 'url' => url($product->slug),
                 'price' => $product->price,
                 'mainimage' => $image,

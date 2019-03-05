@@ -82,22 +82,31 @@ class ProductController extends BasePublicController
         try{
             $manufacturer = [];
             $currency = $this->currency->getActive();
-
             $filter = [
                 'order' => json_decode($_GET['order']),
                 'price' => $_GET['price'] ? json_decode($_GET['price']) : false,
                 'manufacturer' => $_GET['manufacturer'] ? json_decode($_GET['manufacturer']) : false
             ];
-
             if ($category !== '0') {// si consulta productos por categoria
                 $products = $this->product->whereCategoryFilter($category, $filter, 'paginate'); //consulta
                 $productsManufacturer = $this->product->whereCategoryFilter($category, $filter, 'get'); //consulta
             } else {// si consulta productos por busqueda
                 $criterion = $_GET['criterion'];
-                $products = $this->product->findByName($criterion, $filter, 'paginate'); //consulta
-                $productsManufacturer = $this->product->findByName($criterion, $filter, 'get'); //consulta
+                if(isset($_GET['criterionCategory']) && ($_GET['criterionCategory']=="true" || $_GET['criterionCategory']==true)){
+                    //Search id's of categories like title.
+                    //And return products of categories.
+                    $categoriesId=Category::where('title', 'like', "%$criterion%")->select('id')->get();
+                    $categories=[];
+                    foreach($categoriesId as $category)
+                      $categories[]=$category->id;
+                    $products = $this->product->whereCategoryFilter($categories, $filter, 'paginate'); //consulta
+                    $productsManufacturer = $this->product->whereCategoryFilter($categories, $filter, 'get'); //consulta
+                }else{
+                  //Search by criterion products.
+                  $products = $this->product->findByName($criterion, $filter, 'paginate'); //consulta
+                  $productsManufacturer = $this->product->findByName($criterion, $filter, 'get'); //consulta
+                }
             }
-
             /*obtiene los manufactures*/
             foreach ($productsManufacturer['data'] as $product) {
                 $data = $product->manufacturer;
@@ -130,7 +139,6 @@ class ProductController extends BasePublicController
             /*obtiene el precio mayor y menor de los productos selecionados*/
             $min_price = $products['range_price']['min_price'];
             $max_price = $products['range_price']['max_price'];
-
             return [
                 'products' => ProductTransformer::collection($products['data']),
                 'paginate' => $products['data'],
@@ -144,7 +152,7 @@ class ProductController extends BasePublicController
         }
         catch (\Exception $e){
             \Log::error($e);
-            return response()->json(['error' => 'Not authorized.'],403);
+            return response()->json(['error' => 'Not authorized.','msg'=>$e->getMessage()],403);
         }
     }
 

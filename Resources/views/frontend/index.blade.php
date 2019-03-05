@@ -206,6 +206,8 @@
                     rin: {{ isset($_GET["rin"])? $_GET["rin"] : 'null' }},
                     perfil: {{ isset($_GET["perfil"])? $_GET["perfil"] : 'null' }},
                 },
+                criterion: '{{ isset($criterion) ? $criterion : ''}}',
+                criterionCategory: '{{ isset($criterionCategory) ? $criterionCategory : ''}}'
             },
             created: function () {
                 this.$nextTick(function () {
@@ -232,6 +234,8 @@
                     var filters = {
                         categories: this.categories,
                         order: this.order,
+                        criterion: this.criterion,
+                        criterionCategory: this.criterionCategory,
                         paginate: this.paginate,
                         price: this.price,
                         options: this.options_values,
@@ -295,6 +299,7 @@
                     price: this.price,
                     manufacturer: this.manufacturer,
                     criterion: this.criterion,
+                    criterionCategory: this.criterionCategory,
                     categories:this.category.id
                   };
                   var option_values=[];
@@ -333,6 +338,7 @@
                 clearAll(){
                   this.options_selected=[];
                   this.criterion= '{{ isset($criterion) ? $criterion : ''}}';
+                  this.criterionCategory= '{{ isset($criterionCategory) ? $criterionCategory : false}}';
                   this.price= false;
                   this.manufacturer= false;
                   this.order= {

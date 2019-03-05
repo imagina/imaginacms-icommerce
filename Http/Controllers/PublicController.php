@@ -138,7 +138,7 @@ class PublicController extends BasePublicController
   public function search()
   {
     $criterion = isset($_GET['search']) ? $_GET['search'] : false;
-
+    $criterionCategory = isset($_GET['criterionCategory']) ? $_GET['criterionCategory'] : false;
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
 
@@ -150,8 +150,8 @@ class PublicController extends BasePublicController
     $user = $this->auth->user();
     (isset($user) && !empty($user)) ? $user = $user->id : $user = false;
 
-    return view($tpl, compact('productsFeatured', 'category', 'criterion', 'locale', 'user'));
-  }
+    return view($tpl, compact('productsFeatured', 'category', 'criterion','criterionCategory', 'locale', 'user'));
+  }//search()
 
   // Informacion de Producto
   public function show()
