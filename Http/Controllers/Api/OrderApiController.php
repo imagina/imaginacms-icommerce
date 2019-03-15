@@ -23,6 +23,7 @@ use Modules\Icommerce\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Icommerce\Repositories\ShippingMethodRepository;
+use Modules\Icommerce\Repositories\StoreRepository;
 
 use Modules\Iprofile\Repositories\UserRepository;
 use Modules\Iprofile\Repositories\AddressRepository;
@@ -49,6 +50,7 @@ class OrderApiController extends BaseApiController
   private $paymentMethod;
   private $shippingMethod;
   private $address;
+  private $store;
 
   public function __construct(
     OrderRepository $order,
@@ -58,7 +60,8 @@ class OrderApiController extends BaseApiController
     CurrencyRepository $currency,
     CartRepository $cart,
     PaymentMethodRepository $paymentMethod,
-    ShippingMethodRepository $shippingMethod
+    ShippingMethodRepository $shippingMethod,
+    StoreRepository $store
     )
   {
     $this->order = $order;
@@ -69,6 +72,7 @@ class OrderApiController extends BaseApiController
     $this->cart = $cart;
     $this->paymentMethod = $paymentMethod;
     $this->shippingMethod = $shippingMethod;
+    $this->store = $store;
   }
 
   /**
@@ -131,43 +135,43 @@ class OrderApiController extends BaseApiController
     //\DB::beginTransaction();
 
     try{
-      
-      $data = $request->input('attributes') ?? [];//Get data
-      $data = json_decode($data);
 
+      $data = $request['attributes'] ?? [];//Get data
+      
       // Get Car
-      $cart = $this->cart->find($data->cart_id);
+      $cart = $this->cart->find($data['cart_id']);
       $infor["cart"] = $cart;
-     
+
       //Get User
       //$user = Auth::user();
       //$userID = $user->id;
-      
+
       $userID = 1; //********************************  Ojo ID de prueba
       $profile = $this->profile->find($userID);
       $infor["profile"] = $profile;
 
+
       //Get Payment Address
-      $addressPayment = $this->address->find($data->address_payment_id);
-      $infor["addressPayment"] = $addressPayment; 
-     
+      $addressPayment = $this->address->find($data['address_payment_id']);
+      $infor["addressPayment"] = $addressPayment;
+
       //Get Payment Method
-      $payment = $this->paymentMethod->find($data->payment_id);
+      $payment = $this->paymentMethod->find($data['payment_id']);
       $infor["paymentMethod"] = $payment;
-      
+
       //Get Shipping Address
-      $addressShipping = $this->address->find($data->address_shipping_id);
-      $infor["addressShipping"] = $addressShipping; 
+      $addressShipping = $this->address->find($data['address_shipping_id']);
+      $infor["addressShipping"] = $addressShipping;
 
       //Get Shipping Method Name
-      $infor["shippingMethod"] = $data->shipping_name;
+      $infor["shippingMethod"] = $data['shipping_name'];
 
       //Get Currency
       $currency = $this->currency->findByAttributes(array("status" => 1));
       $infor["currency"] = $currency;
 
       // Fix Data to Send Shipping Methods
-      $areaMapId = isset($data->areamap_id) ? $data->areamap_id : "";
+      $areaMapId = isset($data['areamap_id']) ? $data['areamap_id'] : "";
       $supportShipping = new shippingMethodSupport();
       $dataMethods = $supportShipping->fixDataSend($cart,$addressShipping,$areaMapId);
 
@@ -175,13 +179,17 @@ class OrderApiController extends BaseApiController
       $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
 
       //Get Shipping Method Price
-      $shippingPrice = $supportShipping->searchPriceWithName($shippingMethods,$data->shipping_name);
+      $shippingPrice = $supportShipping->searchPriceWithName($shippingMethods,$data['shipping_name']);
       $infor["shippingPrice"] = $shippingPrice;
+
+      //Get Store
+      $store = $this->store->find($data['store_id']);
+      $infor["store"] = $store;
 
       // Fix Data Order
       $supportOrder = new orderSupport();
       $data = $supportOrder->fixData($request,$infor);
-
+      
       //Validate Request Order
       $this->validateRequestApi(new OrderRequest($data));
 
@@ -195,8 +203,7 @@ class OrderApiController extends BaseApiController
       $dataOrderItem = $supportOrderItem->fixData($cart->products);
       $data["orderItems"] = $dataOrderItem;
 
-     
-      //Create 
+      //Create
       $order = $this->order->create($data);
 
       //Response
@@ -228,7 +235,7 @@ class OrderApiController extends BaseApiController
       $order = $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
       event(new OrderWasUpdated($order));
-      
+
       $response = ['data' => ''];
 
     } catch (\Exception $e) {

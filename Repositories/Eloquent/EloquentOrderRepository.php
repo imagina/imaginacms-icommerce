@@ -84,12 +84,11 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     $order->orderHistory()->create($data['orderHistory']);
 
     // Create Order Items
-    $order->orderItems()->create($data['orderItems']);
+    //$order->orderItems()->createMany($data['orderItems']);
 
-    //event(new OrderWasCreated($order));
+    event(new OrderWasCreated($order,$data['orderItems']));
 
     return $order;
-
 
   }
   

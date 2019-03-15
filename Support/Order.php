@@ -60,6 +60,11 @@ class Order
         // Set Shipping Method infor
         $newData["shipping_method"] = $data["shippingMethod"];
         $newData["shipping_code"] = $data["shippingMethod"];
+
+        // Set Store
+        $newData["store_name"] = $data["store"]->name;
+        $newData["store_address"] = $data["store"]->address;
+        $newData["store_phone"] = $data["store"]->phone;
     
         // Set Currency
         $newData["currency_id"] = $data["currency"]->id;

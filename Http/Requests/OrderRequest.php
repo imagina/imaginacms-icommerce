@@ -33,7 +33,10 @@ class OrderRequest extends BaseFormRequest
           'currency_id' => 'required',
           'currency_code' => 'required',
           'currency_value' => 'required',
-          'ip' => 'required'
+          'ip' => 'required',
+          'store_name' => 'required',
+          'store_address' => 'required',
+          'store_phone' => 'required',
         ];
     }
 
@@ -127,6 +130,15 @@ class OrderRequest extends BaseFormRequest
   
           // Ip
           'ip.required' => trans('icommerce::common.messages.field required'),
+
+          // Store Name
+          'store_name.required' => trans('icommerce::common.messages.field required'),
+
+           // Store Address
+          'store_address.required' => trans('icommerce::common.messages.field required'),
+
+           // Store Phone
+          'store_phone.required' => trans('icommerce::common.messages.field required'),
         ];
     }
 
