@@ -29,6 +29,11 @@
 
         and so with the files that you want to edit.
 
+## Seeder
+
+    run php artisan module:seed Icommerce
+    
+
 ## API
 
 

@@ -168,6 +168,11 @@ class Product extends Model
     return $this->hasMany(Comment::class);
   }
 
+  public function carts()
+  {
+    return $this->hasMany(CartProduct::class);
+  }
+
   protected function setSlugAttribute($value)
   {
 

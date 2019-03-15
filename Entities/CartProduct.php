@@ -29,6 +29,11 @@ class CartProduct extends Model
     return $this->belongsTo(Cart::class);
   }
 
+  public function product()
+  {
+    return $this->belongsTo(Product::class);
+  }
+
     public function cartproductoption()
     {
         return $this->belongsToMany(ProductOption::class, 'icommerce__cart_product_options')

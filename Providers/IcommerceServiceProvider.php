@@ -86,6 +86,7 @@ class IcommerceServiceProvider extends ServiceProvider
   {
     $this->publishConfig('icommerce', 'permissions');
     $this->publishConfig('icommerce', 'settings');
+    $this->publishConfig('icommerce', 'config');
 
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
   }

@@ -9,6 +9,7 @@ class OrderRequest extends BaseFormRequest
     public function rules()
     {
         return [
+          'total' => 'required',
           'first_name' => 'required',
           'last_name' => 'required',
           'email' => 'required',
@@ -26,7 +27,6 @@ class OrderRequest extends BaseFormRequest
           'shipping_address_1' => 'required',
           'shipping_city' => 'required',
           'shipping_zip_code' => 'required',
-          'uses_total' => 'required',
           'shipping_country' => 'required',
           'shipping_method' => 'required',
           'shipping_code' => 'required',
@@ -50,6 +50,9 @@ class OrderRequest extends BaseFormRequest
     public function messages()
     {
         return [
+           // Total
+          'total.required' => trans('icommerce::common.messages.field required'),
+
           // First Name
           'first_name.required' => trans('icommerce::common.messages.field required'),
   

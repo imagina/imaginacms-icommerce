@@ -5,6 +5,10 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
+// Events
+use Modules\Icommerce\Events\OrderWasCreated;
+use Modules\Icommerce\Events\OrderWasUpdated;
+
 class EloquentOrderRepository extends EloquentBaseRepository implements OrderRepository
 {
   public function getItemsBy($params)
@@ -73,14 +77,20 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
   public function create($data)
   {
     
+    // Create Order
     $order = $this->model->create($data);
-  
-    // sync tables
-    $order->coupons()->sync(array_get($data, 'coupons', []));
-    //$order->orderOption()->sync(array_get($data, 'orderOption', []));
-    $order->products()->sync(array_get($data, 'products', []));
-    
+
+    // Create Order History
+    $order->orderHistory()->create($data['orderHistory']);
+
+    // Create Order Items
+    $order->orderItems()->create($data['orderItems']);
+
+    //event(new OrderWasCreated($order));
+
     return $order;
+
+
   }
   
   public function updateBy($criteria, $data, $params){
@@ -135,4 +145,5 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       $model->delete();
     }
   }
+  
 }

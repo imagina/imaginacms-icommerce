@@ -17,4 +17,10 @@ class OrderStatus extends Model
       'status',
       'parent_id'
     ];
+
+    public function orders()
+    {
+      return $this->hasMany(Order::class);
+    }
+
 }
