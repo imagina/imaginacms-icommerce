@@ -24,13 +24,14 @@ class SendOrder
     public function handle($event)
     {
         $order = $event->order;
-
+        
         $subject = trans("icommerce::common.email.subject")." ".$order->status->title." #".$order->id."-".time();
         $view = "icommerce::emails.Order";
 
-        $this->mail->to($order->email)->send(new Order($order,$subject,$view));
+        //$this->mail->to($order->email)->send(new Order($order,$subject,$view));
 
         $email_to = explode(',', $this->setting->get('icommerce::form-emails'));
+
         $this->mail->to($email_to[0])->send(new Order($order,$subject,$view));
 
     }

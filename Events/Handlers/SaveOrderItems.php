@@ -25,26 +25,22 @@ class SaveOrderItems
 
     		// Create Order Items
     		$orderItem = $order->orderItems()->create($item);
-
+			
     		if($cartProductOptions!=null){
-    			 foreach ($cartProductOptions as $option) {
+    			 foreach ($cartProductOptions as $productOption) {
 
-    			 	//dd($option);
+    			 	// Fix Data OrderOption
+      				$supportOrderOption = new orderOptionSupport();
+      				$dataOrderOption = $supportOrderOption->fixData($order->id,$orderItem->id,$productOption);
 
-    			 	 // Data OrderOption
-      				//$supportOrderOption = new orderOptionSupport();
-      				//$dataOrderOption = $supportOrderOption->fixData($order->id,$orderItem->id,$option);
-      				
+					// Create Order Option
+					$order->orderOption()->create($dataOrderOption);
 
-            		
-
-        		}
-    		}
+				}
+			}
+			
     		
-
-    	}
-
-    
+    	}// End Foreach
 
     }// If handle
 

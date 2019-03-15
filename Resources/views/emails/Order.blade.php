@@ -53,7 +53,7 @@
           <tr>
             <td>
               {{$order->created_at}}<br>
-              {{$order->payment_method}}<br>
+              {{$order->payment_method->code}}<br>
               {{$order->shipping_method}}
             </td>
             <td>
@@ -80,17 +80,17 @@
           <th bgcolor="f5f5f5">{{trans('icommerce::orders.table.unit price')}}</th>
           <th bgcolor="f5f5f5">Total</th>
           
-          @isset($order->products)
-            @foreach ($order->products as $product)
+          @isset($order->items)
+            @foreach ($order->items as $item)
               <tr class="product-order">
                 <td>
-                  {{$product["title"]}}<br>
+                  {{$item["title"]}}<br>
                   
                 </td>
-                <td>{{$product["sku"]}}</td>
-                <td>{{$product["quantity"]}}</td>
-                <td>{{$product["price"]}}</td>
-                <td>{{$product["total"]}}</td>
+                <td>{{$item["sku"]}}</td>
+                <td>{{$item["quantity"]}}</td>
+                <td>{{$item["price"]}}</td>
+                <td>{{$item["total"]}}</td>
               </tr>
             @endforeach
           @endisset

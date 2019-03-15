@@ -13,6 +13,7 @@ class Order
          * Total Shipping Method
         */
         $totalCart = $data["cart"]->getTotalAttribute();
+       
         $totalShipping = $data["shippingPrice"];
 
         $total = $totalCart+$totalShipping;
@@ -60,6 +61,8 @@ class Order
         // Set Shipping Method infor
         $newData["shipping_method"] = $data["shippingMethod"];
         $newData["shipping_code"] = $data["shippingMethod"];
+        if(!is_null($totalShipping))
+            $newData["shipping_amount"] = $totalShipping;
 
         // Set Store
         $newData["store_name"] = $data["store"]->name;

@@ -22,6 +22,7 @@ class OrderItem
         "reward" => 0,
         "cartProductOption" => (count($item->cartproductoption)>0) ? $item->cartproductoption : null
         ]);
+
     }
     
     return $products;
