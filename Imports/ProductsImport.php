@@ -54,7 +54,7 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
           $image=null;
           $options=null;
           if(isset($row->sku)){
-            $sku=(int)$row->sku;
+            $sku=$row->sku;
             $param['sku']=$sku;
           }
           if(isset($row->title)){
