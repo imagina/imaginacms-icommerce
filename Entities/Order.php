@@ -36,6 +36,7 @@ class Order extends Model
     'payment_custom_field',
     'payment_method',
     'payment_code',
+    'payment_name',
     'shipping_first_name',
     'shipping_last_name',
     'shipping_company',

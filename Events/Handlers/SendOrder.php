@@ -28,6 +28,7 @@ class SendOrder
         $subject = trans("icommerce::common.email.subject")." ".$order->status->title." #".$order->id."-".time();
         $view = "icommerce::emails.Order";
 
+        // OJO DESCOMENTAR LUEGO
         //$this->mail->to($order->email)->send(new Order($order,$subject,$view));
 
         $email_to = explode(',', $this->setting->get('icommerce::form-emails'));

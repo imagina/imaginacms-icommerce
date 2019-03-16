@@ -53,7 +53,7 @@
           <tr>
             <td>
               {{$order->created_at}}<br>
-              {{$order->payment_method->code}}<br>
+              {{$order->payment_name}}<br>
               {{$order->shipping_method}}
             </td>
             <td>
@@ -80,18 +80,38 @@
           <th bgcolor="f5f5f5">{{trans('icommerce::orders.table.unit price')}}</th>
           <th bgcolor="f5f5f5">Total</th>
           
-          @isset($order->items)
-            @foreach ($order->items as $item)
+          @isset($order->orderItems)
+            @foreach ($order->orderItems as $item)
+              
               <tr class="product-order">
-                <td>
-                  {{$item["title"]}}<br>
-                  
-                </td>
-                <td>{{$item["sku"]}}</td>
+                <td>{{$item["title"]}}</td>
+                <td>{{$item["reference"]}}</td>
                 <td>{{$item["quantity"]}}</td>
                 <td>{{$item["price"]}}</td>
                 <td>{{$item["total"]}}</td>
               </tr>
+
+              @if($item->orderOption)
+                @php
+                    $itemTotal = $item["total"];
+                    $itemQuantity = $item["quantity"];
+                @endphp
+                @foreach($item->orderOption as $option)
+                  <tr class="order-item-options">
+                  @if($option->value==null)
+                    <td colspan="2"> - {{$option->option_value}}</td>
+                    <td>{{$itemQuantity}}</td>
+                    <td>{{$option->price_prefix}} {{$option->price}}</td>
+                    <td>{{$option->price*$itemQuantity}}</td>
+
+                  @else
+                    <td colspan="4">{{$option->option_value}}</td>
+                    <td colspan="1">{{$option->value}}</td>
+                  @endif
+                  </tr>
+                @endforeach
+              @endif
+
             @endforeach
           @endisset
         

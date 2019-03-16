@@ -46,6 +46,7 @@ class Order
         // Set Payment Method infor
         $newData["payment_method"] = $data["paymentMethod"]->id;
         $newData["payment_code"] = $data["paymentMethod"]->name;
+        $newData["payment_name"] = $data["paymentMethod"]->title;
 
         // Set Shipping Address infor
         $newData["shipping_first_name"] = $data["addressShipping"]->first_name;

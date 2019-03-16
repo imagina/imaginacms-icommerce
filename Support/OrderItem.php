@@ -14,7 +14,7 @@ class OrderItem
       array_push($products, [
         "product_id" => (int)$item->product_id,
         "title" => $item->product->name,
-        "reference" => $item->product->reference,
+        "reference" => $item->product->sku,
         "quantity" => (int)$item->quantity,
         "price" => floatval($item->price),
         "total" => $item->getSubTotalAttribute(),

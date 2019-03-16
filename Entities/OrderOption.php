@@ -30,7 +30,7 @@ class OrderOption extends Model
     return $this->belongsTo(Order::class);
   }
   
-  public function orderProduct()
+  public function orderItem()
   {
     return $this->belongsTo(OrderItem::class);
   }

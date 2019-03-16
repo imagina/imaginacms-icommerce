@@ -33,6 +33,7 @@ class OrderTransformer extends Resource
       'payment_address_format' => $this->payment_address_format,
       'payment_custom_field' => $this->payment_custom_field,
       'payment_code' => $this->payment_code,
+      'payment_name' => $this->payment_name,
       'shipping_first_name' => $this->shipping_first_name,
       'shipping_last_name' => $this->shipping_last_name,
       'shipping_company' => $this->shipping_company,
@@ -47,6 +48,9 @@ class OrderTransformer extends Resource
       'shipping_method' => $this->shipping_method,
       'shipping_code' => $this->shipping_code,
       'shipping_amount' => $this->shipping_amount,
+      'store_name' => $this->store_name,
+      'store_address' => $this->store_address,
+      'store_phone' => $this->store_phone,
       'tax_amount' => $this->tax_amount,
       'comment' => $this->comment,
       'tracking' => $this->tracking,
@@ -62,36 +66,49 @@ class OrderTransformer extends Resource
     ];
   
     // Currency
+    /*
     if(isset($this->currency))
       $item['currency'] = $this->currency;
-    
+    */
     // added By
+    /*
     if(isset($this->addedBy))
       $item['addedBy'] = $this->addedBy;
-    
+    */
     // products
+    /*
     if(isset($this->products))
       $item['products'] = $this->products;
-    
+    */
     // order Products
+    /*
     if(isset($this->orderProducts))
       $item['orderProducts'] = $this->orderProducts;
+    */
     
     // coupons
+    /*
     if(isset($this->coupons))
       $item['coupons'] = $this->coupons;
+    */
     
     // order History
+    /*
     if(isset($this->orderHistory))
       $item['orderHistory'] = $this->orderHistory;
+    */
   
     // order Option
+    /*
     if(isset($this->orderOption))
       $item['orderOption'] = $this->orderOption;
+    */
   
     // transactions
+    /*
     if(isset($this->transactions))
       $item['transactions'] = $this->transactions;
+    */
   
     return $item;
   }

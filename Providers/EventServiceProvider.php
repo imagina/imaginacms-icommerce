@@ -14,11 +14,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         OrderWasCreated::class => [
             SaveOrderItems::class,
-            SendOrder::class,
+            SendOrder::class
         ],
         OrderWasUpdated::class => [
             SendOrder::class,
         ],
-      
+        
     ];
 }
