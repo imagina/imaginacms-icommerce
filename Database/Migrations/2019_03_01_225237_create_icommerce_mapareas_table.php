@@ -16,6 +16,10 @@ class CreateIcommerceMapareasTable extends Migration
         Schema::create('icommerce__mapareas', function (Blueprint $table) {
             $table->increments('id');
             $table->text('polygon');
+            
+            $table->double('price', 30, 2)->default(0);
+            $table->integer('minimum')->default(0);
+
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('icommerce__stores')->onDelete('restrict');
             $table->timestamps();

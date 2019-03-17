@@ -2,21 +2,18 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 class MapArea extends Model
 {
-    use Translatable;
 
     protected $table = 'icommerce__mapareas';
 
-    public $translatedAttributes = [
-
-    ];
     protected $fillable = [
         'polygon',
         'store_id',
+        'price',
+        'minimum',
     ];
 
     protected $fakeColumns = ['options'];

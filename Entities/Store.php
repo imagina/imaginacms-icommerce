@@ -2,21 +2,21 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Dimsav\Translatable\Translatable;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
-    use Translatable;
+
 
     protected $table = 'icommerce__stores';
 
-    public $translatedAttributes = [];
+
 
     protected $fillable = [
         'name',
         'address',
-        'phone'
+        'phone',
         // More data ...
     ];
 

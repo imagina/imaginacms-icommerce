@@ -9,8 +9,11 @@ class MapAreaTransformer extends Resource
     public function toArray($request)
     {
         $data = [
-            'polygon' => $this->when($this->id, $this->id),
-            'store' => StoreTransformer::collection($this->whenLoaded('store')),
+            'id' => $this->when($this->id, $this->id),
+            'price' => $this->when($this->price, $this->price),
+            'minimum' => $this->when($this->minimum, $this->minimum),
+            'store' =>  new StoreTransformer($this->whenLoaded('store')),
+            'polygon' => $this->when($this->polygon, json_decode($this->polygon)),
         ];
         return $data;
     }
