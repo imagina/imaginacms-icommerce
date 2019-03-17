@@ -9,10 +9,10 @@ class OrderStatusTransformer extends Resource
   public function toArray($request)
   {
     $item =  [
-      'id' => $this->id,
-      'title' => $this->title,
-      'parent_id' => $this->parent_id,
-      'status' => $this->status,
+      'id' => $this->when($this->id,$this->id),
+      'title' => $this->when($this->title,$this->title),
+      'parent_id' => $this->when($this->parent_id,$this->parent_id),
+      'status' => $this->when($this->status,$this->status)
   ];
     return $item;
   }

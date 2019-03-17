@@ -106,8 +106,8 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     // Event To create OrderItems, OrderOptions
     event(new OrderWasCreated($order,$data['orderItems']));
 
-    dd("fin create order");
-    //return $order;
+   
+    return $order;
 
   }
 

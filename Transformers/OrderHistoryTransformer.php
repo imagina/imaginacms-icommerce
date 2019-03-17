@@ -8,22 +8,19 @@ class OrderHistoryTransformer extends Resource
 {
   public function toArray($request)
   {
-    $item =  [
-      'id' => $this->id,
-      'order_id' => $this->order_id,
-      'status' => $this->status,
-      'notify' => $this->notify,
-      'comment' => $this->comment,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
 
+    $item =  [
+      'id' => $this->when($this->id,$this->id),
+      'order_id' => $this->when($this->order_id,$this->order_id),
+      'status_id' => $this->when($this->status,$this->status),
+      'status' => $this->when($this->orderStatus,$this->orderStatus),
+      'notify' => $this->when($this->notify,$this->notify),
+      'comment' => $this->when($this->comment,$this->comment),
+      'created_at' => $this->when($this->created_at,$this->created_at),
+      'updated_at' => $this->when($this->updated_at,$this->updated_at)
     ];
   
-    // Order
-    if(isset($this->order))
-      $item['order'] = $this->order;
-    
-  
     return $item;
+
   }
 }

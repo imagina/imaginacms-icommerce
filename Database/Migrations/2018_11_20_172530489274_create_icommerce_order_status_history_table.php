@@ -19,7 +19,7 @@ class CreateIcommerceOrderStatusHistoryTable extends Migration
           $table->integer('order_id')->unsigned();
           $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
   
-          $table->tinyInteger('status')->default(0)->unsigned();
+          $table->tinyInteger('status')->default(1)->unsigned();
           $table->integer('notify')->unsigned();
           $table->text('comment')->default('')->nullable();
 
