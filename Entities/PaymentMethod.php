@@ -41,6 +41,11 @@ class PaymentMethod extends Model
     
   }
 
+  public function transactions()
+  {
+    return $this->hasMany(Transaction::class);
+  }
+
   public function geozones()
   {
       return $this->belongsToMany('Modules\Ilocations\Entities\Geozones', 'icommerce__payment_methods_geozones','payment_method_id','geozone_id')->withTimestamps();

@@ -8,7 +8,8 @@ class ShippingMethod
     public function fixDataSend($cart,$addressShipping,$areaMapId){
 
         $products = [];
-      
+
+        /*
         foreach($cart->products as $product){
             array_push($products, [
             "title" => $product->product->title,
@@ -26,6 +27,12 @@ class ShippingMethod
             "items" => json_encode($products),
             "total" => $cart->getTotalAttribute()
         );
+        */
+
+        $dataMethods['products'] = array(
+          "cart_id" => $cart->id
+        );
+        
 
         $options = [];
 

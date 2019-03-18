@@ -34,6 +34,7 @@ class OrderRequest extends BaseFormRequest
           'currency_code' => 'required',
           'currency_value' => 'required',
           'ip' => 'required',
+          'store_id' => 'required',
           'store_name' => 'required',
           'store_address' => 'required',
           'store_phone' => 'required',
@@ -130,6 +131,9 @@ class OrderRequest extends BaseFormRequest
   
           // Ip
           'ip.required' => trans('icommerce::common.messages.field required'),
+
+          // Store Id
+          'store_id.required' => trans('icommerce::common.messages.field required'),
 
           // Store Name
           'store_name.required' => trans('icommerce::common.messages.field required'),

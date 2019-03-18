@@ -29,7 +29,7 @@ class Order
         $newData["first_name"] = $data["profile"]->first_name;
         $newData["last_name"] = $data["profile"]->last_name;
         $newData["email"] = $data["profile"]->email;
-        $newData["telephone"] = $data["profile"]->telephone ?? "123456"; // OJO DE PRUEBA
+        $newData["telephone"] = $data["profile"]->telephone ?? ""; // OJO DE PRUEBA
 
         // Set Payment Address infor
         $newData["payment_first_name"] = $data["addressPayment"]->first_name;
@@ -66,6 +66,7 @@ class Order
             $newData["shipping_amount"] = $totalShipping;
 
         // Set Store
+        $newData["store_id"] = $data["store"]->id;
         $newData["store_name"] = $data["store"]->name;
         $newData["store_address"] = $data["store"]->address;
         $newData["store_phone"] = $data["store"]->phone;

@@ -103,7 +103,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     // Create Order History
     $order->orderHistory()->create($data['orderHistory']);
 
-    // Event To create OrderItems, OrderOptions
+    // Event To create OrderItems, OrderOptions, next send email
     event(new OrderWasCreated($order,$data['orderItems']));
 
    
@@ -130,11 +130,14 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     $model = $query->first();
 
     if($model){
+
       $model->update($data);
-      // sync tables
-      $model->coupons()->sync(array_get($data, 'coupons', []));
-      //$model->optionValues()->sync(array_get($data, 'optionValues', []));
-      $model->products()->sync(array_get($data, 'products', []));
+
+      // Create Order History
+      $model->orderHistory()->create($data['orderHistory']);
+     
+      // Event to send Email
+      event(new OrderWasUpdated($model));
 
     }
 

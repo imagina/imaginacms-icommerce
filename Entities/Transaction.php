@@ -18,4 +18,15 @@ class Transaction extends Model
       'status',
       'external_status',
     ];
+
+  public function paymentMethod()
+  {
+    return $this->belongsTo(PaymentMethod::class);
+  }
+
+  public function orderStatus()
+  {
+    return $this->belongsTo(OrderStatus::class,"status");
+  }
+
 }

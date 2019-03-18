@@ -7,6 +7,9 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 use Illuminate\Http\Request;
 
+//Support
+use Modules\Icommerce\Support\Cart as cartSupport;
+
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {
 
@@ -173,7 +176,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
   /**
    * 
-   * @param  Request $products array (items,total)
+   * @param  Request $products array (cart_id)
    * @param  Request $options  array (countryCode,postCode,country)
    * @return Response
    */
@@ -188,9 +191,17 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
       if(isset($methods) && count($methods)>0){
 
+        
+        // Search Cart
+        $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
+        $cart = $cartRepository->find($request->products['cart_id']);
 
-        // Items mixtos with Freeshipping and not freeshipping
-        //if(!icommerce_checkAllItemsFreeshipping($products["items"],$options)){
+        // Fix data cart products
+        $supportCart = new cartSupport();
+        $dataCart = $supportCart->fixProductsAndTotal($cart);
+
+        // Add products to request
+        $data['products'] = $dataCart['products'];
 
         foreach ($methods as $key => $method) {
           
@@ -206,11 +217,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
           try {
             
-            $data['products'] = $request->products;
-            
             if(isset($request->options))
               $data['options'] =  $request->options;
-            
+
             $results = app($method->options->init)->init(new Request($data));
             $resultData = $results->getData();
 

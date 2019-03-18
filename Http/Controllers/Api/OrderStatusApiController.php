@@ -109,15 +109,25 @@ class OrderStatusApiController extends BaseApiController
   {
     try {
 
-      $this->orderStatus->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+      \DB::beginTransaction();
 
-      $response = ['data' => ''];
+      $params = $this->getParamsRequest($request);
+
+      $data = $request->all();
+
+      $orderStatus = $this->orderStatus->updateBy($criteria, $data,$params);
+
+      $response = ['data' => new OrderStatusTransformer($orderStatus)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
     return response()->json($response, $status ?? 200);
   }

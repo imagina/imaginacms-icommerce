@@ -65,6 +65,7 @@ class CreateIcommerceOrdersTable extends Migration
           $table->string('shipping_method');
           $table->string('shipping_code');
           $table->double('shipping_amount', 15, 8)->default(0);
+          $table->integer('store_id');
           $table->string('store_name');
           $table->text('store_address');
           $table->string('store_phone');

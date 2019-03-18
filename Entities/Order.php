@@ -51,6 +51,7 @@ class Order extends Model
     'shipping_method',
     'shipping_code',
     'shipping_amount',
+    'store_id',
     'store_name',
     'store_address',
     'store_phone',

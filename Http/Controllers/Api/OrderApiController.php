@@ -132,7 +132,7 @@ class OrderApiController extends BaseApiController
   public function create(Request $request)
   {
 
-    //\DB::beginTransaction();
+    \DB::beginTransaction();
 
     try{
 
@@ -143,10 +143,11 @@ class OrderApiController extends BaseApiController
       $infor["cart"] = $cart;
 
       //Get User
-      //$user = Auth::user();
-      //$userID = $user->id;
+      $user = Auth::user();
+      //dd($user);
+      $userID = $user->id;
 
-      $userID = 1; //********************************  Ojo ID de prueba
+      //$userID = 1; //***** Ojo ID de prueba
       $profile = $this->profile->find($userID);
       $infor["profile"] = $profile;
 
@@ -209,12 +210,12 @@ class OrderApiController extends BaseApiController
       //Response
       $response = ["data" => new OrderTransformer($order)];
 
-      //\DB::commit(); //Commit to Data Base
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
 
         \Log::error($e);
-        //\DB::rollback();//Rollback to Data Base
+        \DB::rollback();//Rollback to Data Base
         $status = $this->getStatusError($e->getCode());
         $response = ["errors" => $e->getMessage()];
     }
@@ -232,19 +233,35 @@ class OrderApiController extends BaseApiController
   {
     try {
 
-      $order = $this->order->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+      \DB::beginTransaction();
 
-      event(new OrderWasUpdated($order));
+      $params = $this->getParamsRequest($request);
 
-      $response = ['data' => ''];
+      $data = $request->all();
+
+      // Data Order History
+      $supportOrderHistory = new orderHistorySupport($data["status_id"],1);
+      $dataOrderHistory = $supportOrderHistory->getData();
+      $data["orderHistory"] = $dataOrderHistory;
+
+      $order = $this->order->updateBy($criteria,$data,$params);
+
+      $response = ['data' => new OrderTransformer($order)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+      
+
     }
+
     return response()->json($response, $status ?? 200);
+
   }
 
 

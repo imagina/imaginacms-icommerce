@@ -50,6 +50,7 @@ class OrderTransformer extends Resource
       'shipping_method' => $this->when($this->shipping_method,$this->shipping_method),
       'shipping_code' => $this->when($this->shipping_code,$this->shipping_code),
       'shipping_amount' => $this->when($this->shipping_amount,$this->shipping_amount),
+      'store_id' => $this->when($this->store_id,$this->store_id),
       'store_name' => $this->when($this->store_name,$this->store_name),
       'store_address' => $this->when($this->store_address,$this->store_address),
       'store_phone' => $this->when($this->store_phone,$this->store_phone),
@@ -71,7 +72,7 @@ class OrderTransformer extends Resource
     
     // transactions
     if(isset($this->transactions) && count($this->transactions)>0)
-      $item['transactions'] = $this->transactions;
+      $item['transactions'] = TransactionTransformer::collection($this->transactions);
    
   
     return $item;

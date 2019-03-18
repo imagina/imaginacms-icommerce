@@ -8,6 +8,7 @@ $router->group(['prefix' => '/orders'/*,'middleware' => ['auth:api']*/], functio
   $router->post('/', [
     'as' => $locale . 'api.icommerce.orders.create',
     'uses' => 'OrderApiController@create',
+    //'middleware' => ['auth:api']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.orders.index',
