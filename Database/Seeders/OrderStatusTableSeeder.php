@@ -20,9 +20,22 @@ class OrderStatusTableSeeder extends Seeder
         $statuses = config('asgard.icommerce.config.orderStatuses');
         
         foreach ($statuses as $status) {
-            $status['title'] = trans($status['title']);
-            OrderStatus::create($status);
-        }
+
+            $statusTrans = $status['title'];
+
+            foreach (['en', 'es'] as $locale) {
+
+                if($locale=='en'){
+                    $status['title'] = trans($statusTrans,[],$locale);
+                    $orderStatus = OrderStatus::create($status);
+                }else{
+                    $title = trans($statusTrans,[],$locale);
+                    $orderStatus->translateOrNew($locale)->title = $title;
+                    $orderStatus->save();
+                }
+                
+            }//End Foreach
+        }//End Foreach
         
     }
 }
