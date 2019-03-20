@@ -138,4 +138,12 @@ class Order extends Model
     return $this->hasMany(Shipping::class);
   }
 
+  public function getOptionsAttribute($value) {
+    return json_decode($value);
+  }
+
+  public function setOptionsAttribute($value) {
+      $this->attributes['options'] = json_encode($value);
+  }
+
 }

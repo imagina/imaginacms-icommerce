@@ -80,7 +80,7 @@ class CreateIcommerceOrdersTable extends Migration
           $table->text('user_agent')->nullable();
           $table->string('key')->nullable();
   
-          $table->text('options')->default('')->nullable();
+          $table->longText('options')->default('')->nullable();
           
             $table->timestamps();
         });

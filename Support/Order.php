@@ -36,9 +36,9 @@ class Order
         $newData["payment_last_name"] = $data["addressPayment"]->last_name;
         $newData["payment_company"] = $data["addressPayment"]->company ?? "";
         $newData["payment_nit"] = $data["addressPayment"]->nit ?? "";
-        $newData["payment_address_1"] = $data["addressPayment"]->address_1;
+        $newData["payment_address_1"] = json_decode($data["addressPayment"]->address_1)->address;
         $newData["payment_address_2"] = $data["addressPayment"]->address_2 ?? "";
-        $newData["payment_city"] = $data["addressPayment"]->city->translate('en')->name;
+        $newData["payment_city"] = $data["addressPayment"]->city ? $data["addressPayment"]->city->translate('en')->name : "";
         $newData["payment_zip_code"] = $data["addressPayment"]->zip_code;
         $newData["payment_country"] = $data["addressPayment"]->country->translate('en')->name;
         $newData["payment_zone"] = $data["addressPayment"]->province->translate('en')->name ?? "";
@@ -52,9 +52,9 @@ class Order
         $newData["shipping_first_name"] = $data["addressShipping"]->first_name;
         $newData["shipping_last_name"] = $data["addressShipping"]->last_name;
         $newData["shipping_company"] = $data["addressShipping"]->company ?? "";
-        $newData["shipping_address_1"] = $data["addressShipping"]->address_1;
+        $newData["shipping_address_1"] = json_decode($data["addressShipping"]->address_1)->address;
         $newData["shipping_address_2"] = $data["addressShipping"]->address_2 ?? "";
-        $newData["shipping_city"] = $data["addressShipping"]->city->translate('en')->name;
+        $newData["shipping_city"] = $data["addressShipping"]->city ? $data["addressShipping"]->city->translate('en')->name : "";
         $newData["shipping_zip_code"] = $data["addressShipping"]->zip_code;
         $newData["shipping_country"] = $data["addressShipping"]->country->translate('en')->name;
         $newData["shipping_zone"] = $data["addressShipping"]->province->translate('en')->name ?? "";

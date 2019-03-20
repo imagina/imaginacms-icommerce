@@ -137,45 +137,44 @@ class OrderApiController extends BaseApiController
     try{
 
       $data = $request['attributes'] ?? [];//Get data
-      
+
       // Get Car
       $cart = $this->cart->find($data['cart_id']);
       $infor["cart"] = $cart;
 
       //Get User
       $user = Auth::user();
-      //dd($user);
       $userID = $user->id;
 
       //$userID = 1; //***** Ojo ID de prueba
       $profile = $this->profile->find($userID);
       $infor["profile"] = $profile;
 
-
+      
       //Get Payment Address
       $addressPayment = $this->address->find($data['address_payment_id']);
       $infor["addressPayment"] = $addressPayment;
-
+      
       //Get Payment Method
       $payment = $this->paymentMethod->find($data['payment_id']);
       $infor["paymentMethod"] = $payment;
-
+      
       //Get Shipping Address
       $addressShipping = $this->address->find($data['address_shipping_id']);
       $infor["addressShipping"] = $addressShipping;
-
+      
       //Get Shipping Method Name
       $infor["shippingMethod"] = $data['shipping_name'];
-
+      
       //Get Currency
       $currency = $this->currency->findByAttributes(array("status" => 1));
       $infor["currency"] = $currency;
-
+      
       // Fix Data to Send Shipping Methods
       $areaMapId = isset($data['areamap_id']) ? $data['areamap_id'] : "";
       $supportShipping = new shippingMethodSupport();
       $dataMethods = $supportShipping->fixDataSend($cart,$addressShipping,$areaMapId);
-
+      
       //Get Shipping Methods with calculates
       $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
 
@@ -193,6 +192,11 @@ class OrderApiController extends BaseApiController
       
       //Validate Request Order
       $this->validateRequestApi(new OrderRequest($data));
+
+      //Get data Extra Options
+      $data['options'] = $request['options'] ?? [];
+     // $dataOptions = $request['options'] ?? [];
+      //$data['options'] = json_encode($dataOptions);
 
       // Data Order History
       $supportOrderHistory = new orderHistorySupport(1,1);

@@ -28,10 +28,21 @@ class OrderItem extends Model
   protected $casts = [
     'options' => 'array'
   ];
+
   public function orderOption(){
     return $this->hasMany(OrderOption::class);
   }
+
   public function type(){
     return $this->belongsTo(ItemType::class);
   }
+
+  public function order(){
+    return $this->belongsTo(Order::class,'order_id');
+  }
+
+  public function product(){
+    return $this->belongsTo(Product::class,'product_id');
+  }
+
 }
