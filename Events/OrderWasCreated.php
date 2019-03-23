@@ -2,8 +2,15 @@
 
 namespace Modules\Icommerce\Events;
 
-class OrderWasCreated
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class OrderWasCreated implements ShouldBroadcast
 {
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $order;
     public $items;
 
@@ -13,4 +20,15 @@ class OrderWasCreated
         $this->items = $items;
 
     }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
+    public function broadcastOn()
+    {
+        return ['order-was-created'];
+    }
+
 }
