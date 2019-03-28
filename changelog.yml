@@ -1,5 +1,12 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.1":
+    added:
+      - archive changelog
+      - Cart and Store Presenter
+      - Store Request
+
   "1.0.0":
     added:
       - Initial version 1.0.0
+  
