@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.2":
+        changed:
+          - version ihelpers module require
   "1.0.1":
     added:
       - archive changelog
