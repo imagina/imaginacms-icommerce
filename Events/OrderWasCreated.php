@@ -7,6 +7,9 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+// Transformers
+use Modules\Icommerce\Transformers\OrderTransformer;
+
 class OrderWasCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -19,6 +22,11 @@ class OrderWasCreated implements ShouldBroadcast
         $this->order = $order;
         $this->items = $items;
 
+    }
+
+    public function broadcastAs()
+    {
+        return 'newOrder';
     }
 
     /**

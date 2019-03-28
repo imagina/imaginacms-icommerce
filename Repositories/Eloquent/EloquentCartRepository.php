@@ -81,11 +81,11 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     $cartProduct = CartProduct::where('product_id', $product['product_id'])->where('cart_id', $cart->id)->first();
     if ($cartProduct){
         $cartProduct->update($product);
-        $cartProduct->cartproductoption()->sync(array_get($data, 'cart_product_option', []));
+        $cartProduct->cartproductoption()->sync(array_get($data, 'cart_product_option', [])); 
     } else {
         $product['cart_id'] = $cart->id;
         $product = CartProduct::create($product);
-        $product->cartproductoption()->sync(array_get($data, 'cart_product_option', []));
+        $product->cartproductoption()->sync(array_get($data, 'cart_product_option', [])); 
     }
     return $cart;
   }
