@@ -1,5 +1,9 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.4":
+    changed:
+      - Reupload Files Order
+      - Changes Event Pusher
   "1.0.3":
     changed:
       - name composer

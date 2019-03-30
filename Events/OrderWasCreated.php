@@ -29,6 +29,13 @@ class OrderWasCreated implements ShouldBroadcast
         return 'newOrder';
     }
 
+    public function broadcastWith()
+    {
+        return [
+            'id' => $this->order->id
+        ];
+    }
+
     /**
      * Get the channels the event should broadcast on.
      *

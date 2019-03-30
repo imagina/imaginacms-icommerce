@@ -26,5 +26,22 @@ $router->group(['prefix' => '/orders'/*,'middleware' => ['auth:api']*/], functio
     'as' => $locale . 'api.icommerce.orders.show',
     'uses' => 'OrderApiController@show',
   ]);
+
+  
+  // Ruta de Prueba 
+  $router->get('/test/pusher', function () {
+
+    $order = app('Modules\Icommerce\Repositories\OrderRepository')->find(6);
+    $cart = app('Modules\Icommerce\Repositories\CartRepository')->find(14);
+   
+    // Data Order Items
+    $supportOrderItem = new \Modules\Icommerce\Support\OrderItem();
+    $dataOrderItem = $supportOrderItem->fixData($cart->products);
+   
+    event(new Modules\Icommerce\Events\OrderWasCreated($order,$dataOrderItem));
+  
+    return "Event has been sent!";
+
+  });
   
 });

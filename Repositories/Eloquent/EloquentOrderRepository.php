@@ -9,9 +9,6 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Events\OrderWasCreated;
 use Modules\Icommerce\Events\OrderWasUpdated;
 
-// Transformers
-use Modules\Icommerce\Transformers\OrderTransformer;
-
 class EloquentOrderRepository extends EloquentBaseRepository implements OrderRepository
 {
   public function getItemsBy($params)
@@ -107,9 +104,9 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     $order->orderHistory()->create($data['orderHistory']);
 
     // Event To create OrderItems, OrderOptions, next send email
-    event(new OrderWasCreated($order));
+    event(new OrderWasCreated($order,$data['orderItems']));
 
-
+   
     return $order;
 
   }
