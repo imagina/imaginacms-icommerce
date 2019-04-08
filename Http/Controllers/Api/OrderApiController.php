@@ -142,6 +142,8 @@ class OrderApiController extends BaseApiController
       $cart = $this->cart->find($data['cart_id']);
       $infor["cart"] = $cart;
 
+      //dd($cart->getTotalAttribute());
+      
       //Get User
       $user = Auth::user();
       $userID = $user->id;

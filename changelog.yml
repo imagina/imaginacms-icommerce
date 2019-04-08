@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.5":
+    changed:
+      - Add cart total product options
   "1.0.4":
     changed:
       - Reupload Files Order
