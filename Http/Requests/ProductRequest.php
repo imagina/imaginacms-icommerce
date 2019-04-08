@@ -12,6 +12,7 @@ class ProductRequest extends \Modules\Bcrud\Http\Requests\CrudRequest
         return [
             'title' => 'required|min:2',
             'description' => 'required|min:2',
+            'slug' => 'required|unique:icommerce__products,slug',
         ];
     }
 
@@ -37,8 +38,9 @@ class ProductRequest extends \Modules\Bcrud\Http\Requests\CrudRequest
             'title.min:2'=> trans('icommerce::common.messages.title min 2 '),
             'description.required' => trans('icommerce::common.messages.description is required'),
             'description.min:2'=> trans('icommerce::common.messages.description min 2 '),
+            'slug.unique' => trans('icommerce::products.validation.slug used'),
         ];
     }
 
-   
+
 }

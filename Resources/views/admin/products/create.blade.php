@@ -18,9 +18,9 @@
 
             <div class="box">
                 <div class="box-header with-border">{{ trans('icommerce::products.title.create product') }}</div>
-                
+
                 @include('icommerce::admin.products.partials.create-fields')
-               
+
                 <div class="box-footer">
                     <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
                     <a class="btn btn-danger pull-right btn-flat" href="{{ route('admin.icommerce.product.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
@@ -31,7 +31,7 @@
 
         @php
             $field = array(
-                'name' => 'gallery' , 
+                'name' => 'gallery' ,
                 'label' => 'Gallery',
                 'label_drag' => trans('iblog::post.form.drag'),
                 'label_click' =>trans('iblog::post.form.click'),
@@ -46,8 +46,8 @@
             <?php $rand = str_random(5);?>
             <input type="hidden" id="{{$field['name']}}" name="{{$field['name']}}" value="{{$rand}}">
         @endif
-       
-        
+
+
     </div>
     {!! Form::close() !!}
 
@@ -73,11 +73,11 @@
     <div class="row">
         <div class="col-xs-12 column-gallery">
             @include('icommerce::admin.products.partials.gallery-img')
-        </div> 
+        </div>
     </div>
     --}}
-    
-    
+
+
 @stop
 
 @section('footer')

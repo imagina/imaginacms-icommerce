@@ -62,7 +62,7 @@ class OrderController extends BasePublicController
     $tpl = 'icommerce::frontend.orders.index';
     $ttpl = 'icommerce.orders.index';
 
-    //if (view()->exists($ttpl)) $tpl = $ttpl;
+    if (view()->exists($ttpl)) $tpl = $ttpl;
     $user = $this->auth->user();
     $orders = $this->order->whereUser($user->id);
 
