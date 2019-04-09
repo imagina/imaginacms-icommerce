@@ -88,6 +88,7 @@ return [
     ],
     'validation'        => [
         'error delete'              => 'Error: No se puede eliminar  este producto porque tiene elementos asociados',
+        'slug used'              => 'Este slug se encuentra en uso por otro producto',
     ],
     'gallery'           => [
         'title'         => 'Galeria del Producto',

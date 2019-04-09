@@ -8,7 +8,11 @@ class UpdateProductRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+      return [
+          'title' => 'required|min:2',
+          'description' => 'required|min:2',
+          'slug' => 'required',
+      ];
     }
 
     public function translationRules()

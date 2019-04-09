@@ -430,6 +430,32 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 if (isset($filter->skip)) { //si hay que filtrar por rango de precio
                     $query->skip($filter->skip ?? 0);
                 }
+
+                /* Filter strictOptionValues 
+                This filter was necessary since there are products in which you need to filter
+                 by a product that contains all the values ​​of sent options and not at least
+                  one of them (What the whereIn does)
+                ´*/
+                $articlesId=[];
+                if(isset($filter->strictOptionValues) && isset($filter->options_values)){
+                  $articles=$query->get();
+                  foreach($articles as $article){
+                    $countOptions=count($filter->options_values);
+                    foreach($filter->options_values as $optValue){
+                      foreach($article->product_option_values as $productOptValue){
+                        if((int)$productOptValue->option_value_id==(int)$optValue){
+                          $countOptions--;
+                          break;
+                        }
+                      }
+                    }
+                    if($countOptions==0)
+                    $articlesId[]=$article->id;
+                  }
+                  $query = $this->model->query();
+                  $query->whereIn('id',$articlesId);
+                }
+
                 $query->whereStatus(Status::ENABLED);
                 $query->where('date_available', '<=', date('Y-m-d'));
 
