@@ -88,6 +88,7 @@ class PublicController extends BasePublicController
 
     if (!empty($uri)) {
       $category = $this->category->findBySlug($uri);
+      $childrenCategory=CategoryTransformer::collection($category->children);
       $products = $this->product->whereCategory($category->id);
       //$productsFeatured = json_decode(json_encode(ProductTransformer::collection($products)));
       $currency = $this->currency->getActive();
@@ -100,8 +101,8 @@ class PublicController extends BasePublicController
       $ctpl = "icommerce.category.{$category->id}.index";
       if (view()->exists($ctpl)) $tpl = $ctpl;
     }
-
-    return view($tpl, compact('category', 'user', 'products', 'currency'));
+    
+    return view($tpl, compact('category','childrenCategory', 'user', 'products', 'currency'));
 
   }
 
