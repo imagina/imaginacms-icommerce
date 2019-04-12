@@ -9,12 +9,12 @@ class WishlistTransformer extends Resource
   public function toArray($request)
   {
     $item =  [
-      'id' => $this->id,
-      'user_id' => $this->user_id,
-      'product_id' => $this->product_id,
-      'product' => $this->product,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'id' => $this->when($this->id,$this->id),
+      'user_id' => $this->when($this->user_id,$this->user_id),
+      'product_id' => $this->when($this->product_id,$this->product_id),
+      'product' => new ProductTransformer($this->product),
+      'created_at' => $this->when($this->created_at,$this->created_at),
+      'updated_at' => $this->when($this->updated_at,$this->updated_at)
     ];
   
     // User
@@ -22,5 +22,6 @@ class WishlistTransformer extends Resource
       $item['user'] = $this->user;
   
     return $item;
+
   }
 }

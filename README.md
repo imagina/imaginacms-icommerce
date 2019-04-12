@@ -80,7 +80,7 @@ GET: /api/icommerce/v3/cart-products
 ```
 
 
-# End Points Ordes 
+# End Points Order 
 
 ##### Create order
 ```POST``` ```/api/icommerce/v3/orders```
@@ -105,6 +105,7 @@ All Orders with data
 ```
 
 ---
+
 ##### Get an order (n = order_id)
 ```GET``` ```/api/icommerce/v3/orders/n```
 ##### Success Response
@@ -136,4 +137,20 @@ Order updated
 
 
 
+
+
+# End Points Wishlists
+
+##### Get all Wishlists
+N: filter optional = 
+```?filter={"user":1}```
+```GET ``` ```/api/icommerce/v3/wishlists```
+##### Create Wishlists
+```POST``` ```/api/icommerce/v3/wishlists```
+##### Update Wishlists
+```PUT``` ```/api/icommerce/v3/wishlists/n```
+##### Delete Wishlists
+```DELETE``` ```/api/icommerce/v3/wishlists/n```
+
+# End Points XXXXX
 

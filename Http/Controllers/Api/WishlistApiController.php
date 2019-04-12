@@ -62,8 +62,11 @@ class WishlistApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
+
+      $params = $this->getParamsRequest($request);
+
       //Request to Repository
-      $wishlist = $this->wishlist->getItem($criteria,$this->getParamsRequest($request));
+      $wishlist = $this->wishlist->getItem($criteria,$params);
 
       $response = [
         'data' => $wishlist ? new WishlistTransformer($wishlist) : '',
@@ -84,17 +87,33 @@ class WishlistApiController extends BaseApiController
    */
   public function create(Request $request)
   {
-    try {
-      $this->wishlist->create($request->all());
 
-      $response = ['data' => ''];
+    \DB::beginTransaction();
+
+    try {
+
+      //Get data
+      $data = $request['attributes'] ?? [];
+
+      //Validate Request Order
+      $this->validateRequestApi(new WishlistRequest($data));
+
+      // Create
+      $wishlist = $this->wishlist->create($data);
+
+      $response = ['data' => new WishlistTransformer($wishlist)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
+
     return response()->json($response, $status ?? 200);
   }
 
@@ -106,16 +125,27 @@ class WishlistApiController extends BaseApiController
   public function update($criteria, Request $request)
   {
     try {
-      $this->wishlist->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
-      $response = ['data' => ''];
+      \DB::beginTransaction();
+
+      $params = $this->getParamsRequest($request);
+
+      $data = $request->all();
+
+      $wishlist = $this->wishlist->updateBy($criteria, $data ,$params);
+
+      $response = ['data' => new WishlistTransformer($wishlist)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+
     return response()->json($response, $status ?? 200);
   }
 
@@ -126,16 +156,25 @@ class WishlistApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->wishlist->deleteBy($criteria,$this->getParamsRequest($request));
+
+      \DB::beginTransaction();
+
+      $params = $this->getParamsRequest($request);
+
+      $this->wishlist->deleteBy($criteria,$params);
 
       $response = ['data' => ''];
 
+      \DB::commit(); //Commit to Data Base
+
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
     return response()->json($response, $status ?? 200);
   }
 }
