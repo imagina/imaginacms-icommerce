@@ -85,7 +85,8 @@ GET: /api/icommerce/v3/cart-products
 ##### Create order
 ```POST``` ```/api/icommerce/v3/orders```
 ##### Success Response
-```
+``` 
+Order created
 ```
 ##### Error Response
 ```
@@ -96,7 +97,8 @@ GET: /api/icommerce/v3/cart-products
 ##### Get all orders
 ```GET``` ```/api/icommerce/v3/orders```
 ##### Success Response
-```
+``` 
+All Orders with data
 ```
 ##### Error Response
 ```
@@ -107,6 +109,7 @@ GET: /api/icommerce/v3/cart-products
 ```GET``` ```/api/icommerce/v3/orders/n```
 ##### Success Response
 ```
+Order with data
 ```
 ##### Error Response
 ```
@@ -118,6 +121,7 @@ GET: /api/icommerce/v3/cart-products
 ```PUT``` ```/api/icommerce/v3/orders/n```
 ##### Success Response
 ```
+Order updated
 ```
 ##### Error Response
 ```
@@ -125,14 +129,6 @@ GET: /api/icommerce/v3/cart-products
 
 ---
 
-##### Delete an orders
-```DELETE``` ```/api/icommerce/v3/orders/n```
-##### Success Response
-```
-```
-##### Error Response
-```
-```
 
 ---
 
