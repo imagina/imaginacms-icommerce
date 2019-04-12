@@ -88,11 +88,7 @@ GET: /api/icommerce/v3/cart-products
 ``` 
 Order created
 ```
-##### Error Response
-```
-```
 
----
 
 ##### Get all orders
 ```GET``` ```/api/icommerce/v3/orders```
@@ -100,11 +96,7 @@ Order created
 ``` 
 All Orders with data
 ```
-##### Error Response
-```
-```
 
----
 
 ##### Get an order (n = order_id)
 ```GET``` ```/api/icommerce/v3/orders/n```
@@ -112,11 +104,6 @@ All Orders with data
 ```
 Order with data
 ```
-##### Error Response
-```
-```
-
----
 
 ##### Update an order
 ```PUT``` ```/api/icommerce/v3/orders/n```
@@ -124,14 +111,7 @@ Order with data
 ```
 Order updated
 ```
-##### Error Response
-```
-```
 
----
-
-
----
 
 
 
@@ -143,8 +123,8 @@ Order updated
 
 ##### Get all Wishlists
 N: filter optional = 
-```?filter={"user":1}```
 ```GET ``` ```/api/icommerce/v3/wishlists```
+```?filter={"user":1}```
 ##### Create Wishlists
 ```POST``` ```/api/icommerce/v3/wishlists```
 ##### Update Wishlists
