@@ -19,26 +19,8 @@ class Tag extends Model
   ];
   
   public function products()
-  
   {
-    
     return $this->belongsToMany(Product::class, 'icommerce__product_tag')->withTimestamps();
-    
   }
   
-  
-  protected function setSlugAttribute($value)
-  {
-    
-    if (!empty($value)) {
-      
-      $this->attributes['slug'] = str_slug($value, '-');
-      
-    } else {
-      
-      $this->attributes['slug'] = str_slug($this->title, '-');
-      
-    }
-    
-  }
 }

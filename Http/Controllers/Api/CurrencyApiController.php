@@ -84,16 +84,30 @@ class CurrencyApiController extends BaseApiController
    */
   public function create(Request $request)
   {
-    try {
-      $this->currency->create($request->all());
 
-      $response = ['data' => ''];
+    \DB::beginTransaction();
+
+    try {
+
+      //Get data
+      $data = $request['attributes'] ?? [];
+
+      //Validate Request
+      $this->validateRequestApi(new CurrencyRequest($data));
+
+      $currency = $this->currency->create($data);
+
+      $response = ['data' => new CurrencyTransformer($currency)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
     return response()->json($response, $status ?? 200);
   }
@@ -106,15 +120,29 @@ class CurrencyApiController extends BaseApiController
   public function update($criteria, Request $request)
   {
     try {
-      $this->currency->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
-      $response = ['data' => ''];
+      \DB::beginTransaction();
+
+      $params = $this->getParamsRequest($request);
+
+      $data = $request->all();
+
+      //Validate Request
+      $this->validateRequestApi(new CurrencyRequest($data));
+      
+      $currency = $this->currency->updateBy($criteria, $data,$params);
+
+      $response = ['data' => new CurrencyTransformer($currency)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
     return response()->json($response, $status ?? 200);
   }
@@ -126,15 +154,24 @@ class CurrencyApiController extends BaseApiController
   public function delete($criteria, Request $request)
   {
     try {
-      $this->currency->deleteBy($criteria,$this->getParamsRequest($request));
+
+      \DB::beginTransaction();
+
+      $params = $this->getParamsRequest($request);
+
+      $this->currency->deleteBy($criteria,$params);
 
       $response = ['data' => ''];
 
+      \DB::commit(); //Commit to Data Base
+
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+      
     }
     return response()->json($response, $status ?? 200);
   }

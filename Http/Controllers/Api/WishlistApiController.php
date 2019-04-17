@@ -132,6 +132,9 @@ class WishlistApiController extends BaseApiController
 
       $data = $request->all();
 
+      //Validate Request Order
+      $this->validateRequestApi(new WishlistRequest($data));
+
       $wishlist = $this->wishlist->updateBy($criteria, $data ,$params);
 
       $response = ['data' => new WishlistTransformer($wishlist)];

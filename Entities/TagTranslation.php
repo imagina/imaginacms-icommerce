@@ -12,4 +12,16 @@ class TagTranslation extends Model
       'slug'
     ];
     protected $table = 'icommerce__tag_translations';
+
+    protected function setSlugAttribute($value)
+    {
+      
+      if (!empty($value)) {
+        $this->attributes['slug'] = str_slug($value, '-');
+      } else {
+        $this->attributes['slug'] = str_slug($this->title, '-');
+      }
+      
+    }
+
 }

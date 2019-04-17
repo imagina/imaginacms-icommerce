@@ -45,23 +45,10 @@ class Category extends Model
   {
     return $this->belongsToMany('Modules\Icommerce\Entities\Product','icommerce__product_category')->withTimestamps();
   }
+
   public function coupons()
   {
     return $this->belongsToMany('Modules\Icommerce\Entities\Coupon','icommerce__coupon_category')->withTimestamps();
-  }
-  protected function setSlugAttribute($value){
-    
-    if($this->parent_id==0){
-      if(!empty($value)){
-        $this->attributes['slug'] = str_slug($value,'-');
-      }else{
-        $this->attributes['slug'] = str_slug($this->title,'-');
-      }
-    }else{
-      $this->attributes['slug'] = $this->parent->slug.'/'.str_slug($this->title,'-');
-    }
-    
-    
   }
   
   public function getUrlAttribute() {

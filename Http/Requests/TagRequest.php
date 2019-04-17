@@ -8,14 +8,17 @@ class TagRequest extends BaseFormRequest
 {
   public function rules()
   {
-    return [];
+    return [
+      'title' => 'required|min:2',
+      'slug' => 'required',
+    ];
   }
   
   public function translationRules()
   {
     return [
       'title' => 'required|min:2',
-      'slug' => 'required|min:2',
+      'slug' => 'required',
     ];
   }
   

@@ -89,16 +89,31 @@ class TagApiController extends BaseApiController
    */
   public function create(Request $request)
   {
-    try {
-      $this->tag->create($request->all());
 
-      $response = ['data' => ''];
+    \DB::beginTransaction();
+
+    try {
+
+      //Get data
+      $data = $request['attributes'] ?? [];
+
+      //Validate Request
+      $this->validateRequestApi(new TagRequest($data));
+
+      // Create
+      $tag = $this->tag->create($data);
+
+      $response = ['data' => new TagTransformer($tag) ];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+      
     }
     return response()->json($response, $status ?? 200);
   }
@@ -110,18 +125,33 @@ class TagApiController extends BaseApiController
    */
   public function update($criteria, Request $request)
   {
+
     try {
 
-      $this->tag->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      \DB::beginTransaction();
 
-      $response = ['data' => ''];
+      $params = $this->getParamsRequest($request);
+
+      $data = $request->all();
+
+      //Validate Request
+      $this->validateRequestApi(new TagRequest($data));
+
+      $tag = $this->tag->updateBy($criteria, $data, $params);
+
+      $response = ['data' => new TagTransformer($tag)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
+
     return response()->json($response, $status ?? 200);
   }
 
@@ -132,17 +162,29 @@ class TagApiController extends BaseApiController
    */
   public function delete($criteria, Request $request)
   {
+
     try {
-      $this->tag->deleteBy($criteria, $this->getParamsRequest($request));
+
+      \DB::beginTransaction();
+
+      $params = $this->getParamsRequest($request);
+
+      $this->tag->deleteBy($criteria, $params);
 
       $response = ['data' => ''];
 
+      \DB::commit(); //Commit to Data Base
+
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
+
     return response()->json($response, $status ?? 200);
+
   }
 }

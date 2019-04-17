@@ -122,15 +122,89 @@ Order updated
 # End Points Wishlists
 
 ##### Get all Wishlists
-N: filter optional = 
 ```GET ``` ```/api/icommerce/v3/wishlists```
-```?filter={"user":1}```
-##### Create Wishlists
+N: filter optional = ```?filter={"user":1}```
+##### Get a Wishlist
+```GET``` ```/api/icommerce/v3/wishlists/n```
+##### Create Wishlist (all data inside "attribute" array)
 ```POST``` ```/api/icommerce/v3/wishlists```
-##### Update Wishlists
+##### Update Wishlist
 ```PUT``` ```/api/icommerce/v3/wishlists/n```
-##### Delete Wishlists
+##### Delete Wishlist
 ```DELETE``` ```/api/icommerce/v3/wishlists/n```
+
+# End Points Tags
+
+##### Get all Tags
+```GET ``` ```/api/icommerce/v3/tags```
+##### Get a Tag 
+```GET``` ```/api/icommerce/v3/tags/n```
+##### Create Tag (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/tags```
+##### Update Tag
+```PUT``` ```/api/icommerce/v3/tags/n```
+##### Delete Tag
+```DELETE``` ```/api/icommerce/v3/tags/n```
+
+# End Points Categories
+
+##### Get all Categories
+```GET ``` ```/api/icommerce/v3/categories```
+N: include optional = 
+```?include=parent,children```
+
+##### Get a Category
+```GET``` ```/api/icommerce/v3/categories/n```
+##### Create Category (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/categories```
+##### Update Category
+```PUT``` ```/api/icommerce/v3/categories/n```
+##### Delete Category
+```DELETE``` ```/api/icommerce/v3/categories/n```
+
+# End Points Currencies
+
+##### Get all Currencies
+```GET ``` ```/api/icommerce/v3/currencies```
+##### Get a Currency
+```GET``` ```/api/icommerce/v3/currencies/n```
+##### Create Currency (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/currencies```
+##### Update Currency
+```PUT``` ```/api/icommerce/v3/currency/n```
+##### Delete Currency
+```DELETE``` ```/api/icommerce/v3/currency/n```
+
+
+# End Points Payment Methods
+
+##### Get all Payment Methods
+```GET ``` ```/api/icommerce/v3/payment-methods```
+##### Get a Payment Method
+```GET``` ```/api/icommerce/v3/payment-methods/n```
+##### Create Payment Method
+All payment methods have a Seeder to create
+##### Update Payment Method
+```PUT``` ```/api/icommerce/v3/payment-methods/n```
+
+# End Points Shipping Methods
+
+##### Get all Shipping Methods
+```GET ``` ```/api/icommerce/v3/shipping-methods```
+##### Get a Shipping Method
+```GET``` ```/api/icommerce/v3/shipping-methods/n```
+##### Get all Calculations from Shipping Methods
+
+Parameters
+  - Options (array) - countryCode,country,zone,postalCode ... anything else
+  - Products (array) - cart_id
+
+```GET ``` ```/api/icommerce/v3/shipping-methods/calculations/all```
+
+##### Create Shipping Method
+All shipping methods have a Seeder to create
+##### Update Shipping Method
+```PUT``` ```/api/icommerce/v3/shipping-methods/n```
 
 # End Points XXXXX
 

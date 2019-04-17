@@ -86,16 +86,30 @@ class CategoryApiController extends BaseApiController
    */
   public function create(Request $request)
   {
-    try {
-      $this->category->create($request->all());
 
-      $response = ['data' => ''];
+    \DB::beginTransaction();
+
+    try {
+
+      //Get data
+      $data = $request['attributes'] ?? [];
+
+      //Validate Request
+      $this->validateRequestApi(new CategoryRequest($data));
+
+      $category = $this->category->create($data);
+
+      $response = ['data' => new CategoryTransformer($category)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
     return response()->json($response, $status ?? 200);
   }
@@ -109,15 +123,28 @@ class CategoryApiController extends BaseApiController
   {
     try {
 
-      $this->category->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+      \DB::beginTransaction();
 
-      $response = ['data' => ''];
+      $params = $this->getParamsRequest($request);
+
+      $data = $request->all();
+
+      //Validate Request
+      $this->validateRequestApi(new CategoryRequest($data));
+
+      $category = $this->category->updateBy($criteria, $data,$params);
+
+      $response = ['data' => new CategoryTransformer($category)];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+      
     }
     return response()->json($response, $status ?? 200);
   }
@@ -131,15 +158,23 @@ class CategoryApiController extends BaseApiController
   {
     try {
 
-      $this->category->deleteBy($criteria,$this->getParamsRequest($request));
+      \DB::beginTransaction();
+
+      $params = $this->getParamsRequest($request);
+
+      $this->category->deleteBy($criteria,$params);
 
       $response = ['data' => ''];
 
+      \DB::commit(); //Commit to Data Base
+
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+
     }
     return response()->json($response, $status ?? 200);
   }

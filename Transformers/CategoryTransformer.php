@@ -9,19 +9,22 @@ class CategoryTransformer extends Resource
   public function toArray($request)
   {
     $data =  [
-      'id' => $this->id,
-      'title' => $this->title,
-      'url' => $this->url,
-      'parent_id' => $this->parent_id,
-       'show_menu' => $this->show_menu,
-      'description' => $this->description,
-      'slug' => $this->slug,
-      'meta_title' => $this->meta_title,
-      'meta_description' => $this->meta_description,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'id' => $this->when($this->id,$this->id),
+      'title' => $this->when($this->title,$this->title),
+      'slug' => $this->when($this->slug,$this->slug),
+      'description' => $this->when($this->description,$this->description),
+      'url' => $this->when($this->url,$this->url),
+      'parent_id' => $this->when($this->parent_id,$this->parent_id),
+      'show_menu' => $this->when($this->show_menu,$this->show_menu),
+      'meta_title' => $this->when($this->meta_title,$this->meta_title),
+      'meta_description' => $this->when($this->meta_description,$this->meta_description),
+      'options' => $this->when($this->options,$this->options),
+      'created_at' => $this->when($this->created_at,$this->created_at),
+      'updated_at' => $this->when($this->updated_at,$this->updated_at),
+      'parent' => new CategoryTransformer ($this->whenLoaded('parent')),
+      'childrens' => CategoryTransformer::collection($this->whenLoaded('children')),
     ];
-
+    
     $filter = json_decode($request->filter);
 
     // Return data with available translations
