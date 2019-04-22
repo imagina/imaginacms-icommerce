@@ -16,7 +16,8 @@ return [
         'create manufacturer'   => 'Create a manufacturer',
     ],
     'table'         => [
-        'name'                  => 'Name'
+        'name'                  => 'Name',
+        'description'           => 'Description',
     ],
     'form'          => [
     ],

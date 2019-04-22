@@ -18,7 +18,7 @@ class ManufacturerController extends BcrudController
     /**
      * @var ManufacturerRepository
      */
-   
+
     private $auth;
 
     public function __construct(Authentication $auth)
@@ -58,6 +58,10 @@ class ManufacturerController extends BcrudController
             'name' => 'name',
             'label' => trans('icommerce::manufacturers.table.name'),
         ]);
+        $this->crud->addColumn([
+            'name' => 'description',
+            'label' => trans('icommerce::manufacturers.table.description'),
+        ]);
 
         $this->crud->addColumn([
             'name' => 'status',
@@ -74,12 +78,17 @@ class ManufacturerController extends BcrudController
             'label' => trans('icommerce::common.created_at'),
         ]);
 
-        
+
 
         // ------ CRUD FIELDS
         $this->crud->addField([
             'name' => 'name',
             'label' => trans('icommerce::manufacturers.table.name'),
+            'viewposition' => 'left'
+        ]);
+        $this->crud->addField([
+            'name' => 'description',
+            'label' => trans('icommerce::manufacturers.table.description'),
             'viewposition' => 'left'
         ]);
 
@@ -117,7 +126,7 @@ class ManufacturerController extends BcrudController
             'viewposition' => 'right',
         ]);
 
-       
+
 
     }
 
@@ -136,7 +145,7 @@ class ManufacturerController extends BcrudController
     /**
      * StoreCRUD
      *
-     * @param  
+     * @param
      * @return Response
      */
     public function storeCrud(\Modules\Bcrud\Http\Requests\CrudRequest $request = null)
@@ -198,7 +207,7 @@ class ManufacturerController extends BcrudController
      */
     public function update(Manufacturer $manufacturer, ManufacturerRequest $request)
     {
-        
+
         if (!empty($request['mainimage']) && !empty($request['id'])) {
             $request['mainimage'] = $this->saveImage($request['mainimage'], "assets/icommerce/manufacturer/" . $request['id'] . ".jpg");
         }
@@ -209,11 +218,11 @@ class ManufacturerController extends BcrudController
      /**
      * Save Image.
      *
-     * @param  Value 
+     * @param  Value
      * @param  Destination
      * @return Response
      */
-     
+
     public function saveImage($value,$destination_path)
     {
 

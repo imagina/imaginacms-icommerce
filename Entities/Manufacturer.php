@@ -10,12 +10,12 @@ use Dimsav\Translatable\Translatable;
 
 class Manufacturer extends Model
 {
-   
+
     use CrudTrait;
-    
+
     protected $table = 'icommerce__manufacturers';
-   
-    protected $fillable = ['name','options','status'];
+
+    protected $fillable = ['name','options','status','description'];
 
     protected $fakeColumns = ['options'];
 
