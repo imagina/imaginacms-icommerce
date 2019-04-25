@@ -1,27 +1,22 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
-  "1.0.7":
-    changed:
-      - Added Api documentation Currencies
-      - Fixes currencies
-      - Added Api documentation Tags
-      - Fixes tags
-      - Added Api documentation Categories
-      - Fixes categories
-      - Added validate attributes Update Wishlists
-      - Fixes payment methods
-      - Added Api documentation Payment methods
-      - Fixes shipping methods
-      - Added Api documentation Shipping methods
-  "1.0.6":
-    changed:
-      - Add documentation Api Wishlists
-      - Fixes wishlists
-  "1.0.5":
-    changed:
-      - Add cart total product options
   "1.0.4":
+    added:
+      - Api documentation Shipping methods
+      - Documentation Api Wishlists
+      - Api documentation Payment methods
+      - Validate attributes Update Wishlists
+      - Api documentation Categories
+      - Api documentation Tagsç
+      - Api documentation Currencies
+      - Cart total product options
     changed:
+      - Fixes currencies
+      - Fixes tags
+      - Fixes categories
+      - Fixes payment methods
+      - Fixes shipping methods
+      - Fixes wishlists
       - Reupload Files Order
       - Changes Event Pusher
   "1.0.3":
