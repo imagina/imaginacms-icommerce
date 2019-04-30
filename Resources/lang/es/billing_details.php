@@ -3,6 +3,8 @@
 return [
     'title'             => 'Detalles de facturación',
     'form'              => [
+      'first_name' => 'Nombre',
+      'last_name' => 'Apellido',
     	'expand_form'      => 'Expandir Formulario',
     	'company'          => 'Compañia',
       'company_nit'      => 'N.I.T Compañia',
