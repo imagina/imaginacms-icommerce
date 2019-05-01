@@ -12,4 +12,6 @@ return [
     'freeshipping'  => 'nvío gratuito',
     'tax'           => 'IMPUESTO',
     'shipping_cero' => 'no seleccionado',
+    'shipping_not_selected' => 'No seleccionado',
+
 ];
