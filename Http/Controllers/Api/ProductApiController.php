@@ -22,9 +22,7 @@ use Modules\Icommerce\Repositories\ProductRepository;
 
 class ProductApiController extends BaseApiController
 {
-
   private $product;
-
 
   public function __construct(ProductRepository $product)
   {
@@ -32,181 +30,154 @@ class ProductApiController extends BaseApiController
   }
 
   /**
-   * Display a listing of the resource.
+   * Get List Products
    * @return Response
    */
   public function index(Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
       //Request to Repository
-      $products = $this->product->getItemsBy($this->getParamsRequest($request));
+      $products = $this->product->getItemsBy($params);
 
       //Response
       $response = ['data' => ProductTransformer::collection($products)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($products)] : false;
 
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($products)] : false;
     } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function show($criteria, Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
       //Request to Repository
-      $product = $this->product->getItem($criteria,$this->getParamsRequest($request));
+      $product = $this->product->getItem($criteria, $params);
 
-      $response = [
-        'data' => $product ? new ProductTransformer($product) : '',
-      ];
+      //Break if no found item
+      if (!$product) throw new \Exception('Item not found', 204);
 
+      //Response
+      $response = ["data" => new ProductTransformer($product)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
-   * Show the form for creating a new resource.
-   * @return Response
+   * CREATE A ITEM
+   *
+   * @param Request $request
+   * @return mixed
    */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
+      $data = $request->input('attributes') ?? [];//Get data
 
-        $request->merge(['added_by_id' => 1]);
+      //Validate Request
+      $this->validateRequestApi(new ProductRequest($data));
 
-      $product = $this->product->create($request->all());
+      //Create item
+      $product = $this->product->create($data);
 
-      // sync tables
-      if ($product) {
-
-
-        // Image
-        if (isset($request->mainimage) && !empty($request->mainimage)) {
-          $mainimage = $this->saveImage($request->mainimage, "assets/icommerce/product/" . $product->id . ".jpg");
-
-          $options = $product->options;
-          $options["mainImage"] = $mainimage;
-          $product->options = json_encode($options);
-
-        }
-
-        // File
-        if ($request->hasFile('pfile') && $request->file('pfile')->isValid()) {
-          $filePath = $this->saveFile($request->file('pfile'), $product->id);
-          if ($filePath != null) {
-            $options = (array)$product->options;
-            $options["mainFile"] = $filePath;
-            $product->options = json_encode($options);
-
-          }
-        }
-
-        // Metas
-        $this->saveMetas($request,$product);
-
-        $product->save();
-      }
-
-      $response = ['data' => $product->id];
-
+      //Response
+      $response = ["data" => new ProductTransformer($product)];
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
+   * UPDATE ITEM
+   *
+   * @param $criteria
+   * @param Request $request
+   * @return mixed
    */
   public function update($criteria, Request $request)
   {
+    \DB::beginTransaction(); //DB Transaction
     try {
+      //Get data
+      $data = $request->input('attributes') ?? [];//Get data
 
-      $product = $this->product->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
 
-      // sync tables
-      if ($product) {
+      //Request to Repository
+      $this->product->updateBy($criteria, $data, $params);
 
-        // Image
-        if (isset($request->mainimage) && !empty($request->mainimage)) {
-          $mainimage = $this->saveImage($request->mainimage, "assets/icommerce/product/" . $product->id . ".jpg");
-
-          $options = $product->options;
-          $options["mainImage"] = $mainimage;
-          $product->options = json_encode($options);
-
-        }
-
-        // File
-        if ($request->hasFile('pfile') && $request->file('pfile')->isValid()) {
-          $filePath = $this->saveFile($request->file('pfile'), $product->id);
-          if ($filePath != null) {
-            $options = (array)$product->options;
-            $options["mainFile"] = $filePath;
-            $product->options = json_encode($options);
-
-          }
-        }
-
-        // Metas
-        $this->saveMetas($request,$product);
-
-        $product->save();
-      }
-
-      $response = ['data' => ''];
-
+      //Response
+      $response = ["data" => 'Item Updated'];
+      \DB::commit();//Commit to DataBase
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
-
   /**
-   * Remove the specified resource from storage.
-   * @return Response
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function delete($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
+      //Get params
+      $params = $this->getParamsRequest($request);
 
-      $this->product->deleteBy($criteria, $this->getParamsRequest($request));
+      //call Method delete
+      $this->product->deleteBy($criteria, $params);
 
-      $response = ['data' => ''];
-
+      //Response
+      $response = ["data" => "Item deleted"];
+      \DB::commit();//Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
@@ -249,37 +220,5 @@ class ProductApiController extends BaseApiController
     //se modifica el valor tags enviado desde el form uniendolos visjos tags y los tags nuevos
     return array_merge($lasttagsid, $newtagsid);
 
-  }
-
-  /**
-   * Save Metas.
-   *
-   * @param  Request $request
-   * @param  Object $product
-   * @return nothing
-   */
-  public function saveMetas(Request $request, $product)
-  {
-    $options = (array)$product->options;
-
-    if (empty($request->meta_title))
-      $options["meta_title"] = $product->title;
-    else
-      $options["meta_title"] = $request->meta_title;
-
-
-    if (empty($request->meta_description))
-      $options["meta_description"] = substr(strip_tags($product->description), 0, 150);
-    else
-      $options["
-          meta_description"] = $request->meta_description;
-
-
-    if (empty($request->meta_keyword))
-      $options["meta_keyword"] = $product->meta_keyword;
-    else
-      $options["meta_keyword"] = $request->meta_keyword;
-
-    $product->options = json_encode($options);
   }
 }

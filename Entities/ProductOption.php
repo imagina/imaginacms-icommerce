@@ -19,16 +19,15 @@ class ProductOption extends Model
     'required'
   ];
 
-    public function option()
-    {
-        return $this->belongsTo(Option::class);
-    }
+  public function option()
+  {
+    return $this->belongsTo(Option::class);
+  }
 
-    public function parent()
-    {
-        return $this->belongsTo(Option::class, 'parent_id');
-    }
-
+  public function parent()
+  {
+    return $this->belongsTo(Option::class, 'parent_id');
+  }
 
   public function productOptionValues()
   {
@@ -39,5 +38,4 @@ class ProductOption extends Model
   {
     return $this->hasMany(OrderOption::class);
   }
-
 }

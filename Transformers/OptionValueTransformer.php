@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Icommerce\Transformers\OptionTransformer;
 
 class OptionValueTransformer extends Resource
 {
@@ -10,28 +11,28 @@ class OptionValueTransformer extends Resource
   {
     $data = [
       'id' => $this->id,
-      'option_id' => $this->option_id,
-      'sort_order' => $this->sort_order,
       'description' => $this->description,
-      'options' => $this->options,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'optionId' => $this->when($this->option_id,$this->option_id),
+      'sortOrder' => $this->when($this->sort_order,$this->sort_order),
+      'options' => $this->when($this->options,$this->options),
+      'createdAt' => $this->when($this->created_at,$this->created_at),
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at),
+      'option' => new OptionTransformer($this->whenLoaded($this->options)),
+      'mainImage' => $this->mainImage,
     ];
   
     $filter = json_decode($request->filter);
-  
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations){
-    
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-    
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
-        }
+      foreach ($languages as  $lang => $value){
+        $data[$lang]['description'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['description'] : '';
       }
     }
+
+    //Response
     return $data;
   }
 }

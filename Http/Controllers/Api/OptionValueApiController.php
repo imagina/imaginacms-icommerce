@@ -29,113 +29,157 @@ class OptionValueApiController extends BaseApiController
   }
 
   /**
-   * Display a listing of the resource.
-   * @return Response
+   * GET ITEMS
+   *
+   * @return mixed
    */
   public function index(Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
       //Request to Repository
-      $optionValues = $this->optionValue->getItemsBy($this->getParamsRequest($request));
+      $optionValues = $this->optionValue->getItemsBy($params);
 
       //Response
-      $response = ['data' => OptionValueTransformer::collection($optionValues)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($optionValues)] : false;
+      $response = ["data" => OptionValueTransformer::collection($optionValues)];
 
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($optionValues)] : false;
     } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function show($criteria, Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
       //Request to Repository
-      $optionValue = $this->optionValue->getItem($criteria,$this->getParamsRequest($request));
+      $optionValue = $this->optionValue->getItem($criteria, $params);
 
-      $response = [
-        'data' => $optionValue ? new OptionValueTransformer($optionValue) : '',
-      ];
+      //Break if no found item
+      if (!$optionValue) throw new \Exception('Item not found', 204);
 
+      //Response
+      $response = ["data" => new OptionValueTransformer($optionValue)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($optionValue)] : false;
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
-   * Show the form for creating a new resource.
-   * @return Response
+   * CREATE A ITEM
+   *
+   * @param Request $request
+   * @return mixed
    */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->optionValue->create($request->all());
+      $data = $request->input('attributes') ?? [];//Get data
+      //Validate Request
+      $this->validateRequestApi(new OptionValueRequest((array)$data));
 
-      $response = ['data' => ''];
+      //Create item
+      $this->optionValue->create($data);
 
+      //Response
+      $response = ["data" => ''];
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
+   * UPDATE ITEM
+   *
+   * @param $criteria
+   * @param Request $request
+   * @return mixed
    */
   public function update($criteria, Request $request)
   {
+    \DB::beginTransaction(); //DB Transaction
     try {
-      $this->optionValue->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+      //Get data
+      $data = $request->input('attributes') ?? [];//Get data
 
-      $response = ['data' => ''];
+      //Validate Request
+      $this->validateRequestApi(new OptionValueRequest((array)$data));
 
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
+      //Request to Repository
+      $this->optionValue->updateBy($criteria, $data, $params);
+
+      //Response
+      $response = ["data" => 'Item Updated'];
+      \DB::commit();//Commit to DataBase
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
-   * Remove the specified resource from storage.
-   * @return Response
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function delete($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->optionValue->deleteBy($criteria,$this->getParamsRequest($request));
+      //Get params
+      $params = $this->getParamsRequest($request);
 
-      $response = ['data' => ''];
+      //call Method delete
+      $this->optionValue->deleteBy($criteria, $params);
 
+      //Response
+      $response = ["data" => "Item deleted"];
+      \DB::commit();//Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
+
 }

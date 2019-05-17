@@ -17,127 +17,159 @@ use Modules\Icommerce\Repositories\ProductOptionRepository;
 
 class ProductOptionApiController extends BaseApiController
 {
+  private $productOption;
 
-    private $productOption;
+  public function __construct(ProductOptionRepository $productOption)
+  {
+    $this->productOption = $productOption;
+  }
 
+  /**
+   * GET ITEMS
+   *
+   * @return mixed
+   */
+  public function index(Request $request)
+  {
+    try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
 
-    public function __construct(ProductOptionRepository $productOption)
-    {
-        $this->productOption = $productOption;
+      //Request to Repository
+      $productOptions = $this->productOption->getItemsBy($params);
+
+      //Response
+      $response = ["data" => ProductOptionTransformer::collection($productOptions)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($productOptions)] : false;
+    } catch (\Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index(Request $request)
-    {
-        try {
-            //Request to Repository
-            $productOptions = $this->productOption->getItemsBy($this->getParamsRequest($request));
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            //Response
-            $response = ['data' => ProductOptionTransformer::collection($productOptions)];
-            //If request pagination add meta-page
-            $request->page ? $response['meta'] = ['page' => $this->pageTransformer($productOptions)] : false;
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
+   */
+  public function show($criteria, Request $request)
+  {
+    try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
 
-        } catch (\Exception $e) {
-            //Message Error
-            $status = 500;
-            $response = [
-                'errors' => $e->getMessage()
-            ];
-        }
-        return response()->json($response, $status ?? 200);
+      //Request to Repository
+      $productOption = $this->productOption->getItem($criteria, $params);
+
+      //Break if no found item
+      if (!$productOption) throw new \Exception('Item not found', 204);
+
+      //Response
+      $response = ["data" => new ProductOptionTransformer($productOption)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($productOption)] : false;
+    } catch (\Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /** SHOW
-     * @param Request $request
-     *  URL GET:
-     *  &fields = type string
-     *  &include = type string
-     */
-    public function show($criteria, Request $request)
-    {
-        try {
-            //Request to Repository
-            $productOption = $this->productOption->getItem($criteria,$this->getParamsRequest($request));
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            $response = [
-                'data' => $productOption ? new ProductOptionTransformer($productOption) : '',
-            ];
+  /**
+   * CREATE A ITEM
+   *
+   * @param Request $request
+   * @return mixed
+   */
+  public function create(Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      $data = $request->input('attributes') ?? [];//Get data
 
-        } catch (\Exception $e) {
-            $status = 500;
-            $response = [
-                'errors' => $e->getMessage()
-            ];
-        }
-        return response()->json($response, $status ?? 200);
+      //Create item
+      $productOption = $this->productOption->create($data);
+
+      //Response
+      $response = ["data" => ''];
+      \DB::commit(); //Commit to Data Base
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
+
+  /**
+   * UPDATE ITEM
+   *
+   * @param $criteria
+   * @param Request $request
+   * @return mixed
+   */
+  public function update($criteria, Request $request)
+  {
+    \DB::beginTransaction(); //DB Transaction
+    try {
+      //Get data
+      $data = $request->input('attributes') ?? [];//Get data
+
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
+      //Request to Repository
+      $this->productOption->updateBy($criteria, $data, $params);
+
+      //Response
+      $response = ["data" => 'Item Updated'];
+      \DB::commit();//Commit to DataBase
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create(Request $request)
-    {
-        try {
-            $data = $this->productOption->create($request->all());
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 
-            $response = ['data' => $data];
+  /**
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
+   */
+  public function delete($criteria, Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      //Get params
+      $params = $this->getParamsRequest($request);
 
-        } catch (\Exception $e) {
-            $status = 500;
-            $response = [
-                'errors' => $e->getMessage()
-            ];
-        }
-        return response()->json($response, $status ?? 200);
+      //call Method delete
+      $this->productOption->deleteBy($criteria, $params);
+
+      //Response
+      $response = ["data" => "Item deleted"];
+      \DB::commit();//Commit to Data Base
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update($criteria, Request $request)
-    {
-        try {
-
-            $this->productOption->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
-
-            $response = ['data' => ''];
-
-        } catch (\Exception $e) {
-            $status = 500;
-            $response = [
-                'errors' => $e->getMessage()
-            ];
-        }
-        return response()->json($response, $status ?? 200);
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function delete($criteria, Request $request)
-    {
-        try {
-
-            $this->productOption->deleteBy($criteria, $this->getParamsRequest($request));
-
-            $response = ['data' => ''];
-
-        } catch (\Exception $e) {
-            $status = 500;
-            $response = [
-                'errors' => $e->getMessage()
-            ];
-        }
-        return response()->json($response, $status ?? 200);
-    }
-
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
 }

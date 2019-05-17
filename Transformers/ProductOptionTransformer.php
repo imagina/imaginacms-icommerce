@@ -6,34 +6,23 @@ use Illuminate\Http\Resources\Json\Resource;
 
 class ProductOptionTransformer extends Resource
 {
-    public function toArray($request)
-    {
-        //Transformer only data base
-        $data =  [
-            'id' => $this->id,
-            'product_id' => $this->product_id,
-            'option_id' => $this->option_id,
-            'option_description' => $this->option->description,
-            'option_type' => $this->option->type,
-            'parent_id' => $this->parent_id,
-            'parent_description' =>  $this->parent ? $this->parent->description : null,
-            'parent_type' =>  $this->parent ? $this->parent->type : null,
-            'parent_option_value_id' => $this->parent_option_value_id,
-            'value' => $this->value,
-            'required' => $this->required,
-            'selected' => '',
-        ];
+  public function toArray($request)
+  {
+    //Transformer only data base
+    $data = [
+      'id' => $this->when($this->pivot->id, $this->pivot->id),
+      'type' => $this->when($this->type, $this->type),
+      'description' => $this->when($this->description, $this->description),
+      'productId' => $this->when($this->pivot->product_id, $this->pivot->product_id),
+      'optionId' => $this->when($this->pivot->option_id, $this->pivot->option_id),
+      'parentId' => $this->when($this->pivot->parent_id, $this->pivot->parent_id),
+      'parentOptionValueId' => $this->when($this->pivot->parent_option_value_id, $this->pivot->parent_option_value_id),
+      'value' => $this->when($this->pivot->value, $this->pivot->value),
+      'required' => $this->when($this->pivot->required, (int)$this->pivot->required ? true : false),
+      'option' => new ProductOptionTransformer($this->whenLoaded('option')),
+      'productOptionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues')),
+    ];
 
-        //productOptionValues
-        if(isset($this->productOptionValues)){
-            $fiters = json_decode($request->input('filter'));
-            if (isset($fiters->parentOptionValueId)){
-                $data['productOptionValues']= ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues'))->where('parent_option_value_id', $fiters->parentOptionValueId);
-            } else {
-                $data['productOptionValues']= ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues'));
-            }
-        }
-
-        return $data;
-    }
+    return $data;
+  }
 }

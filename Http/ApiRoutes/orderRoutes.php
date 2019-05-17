@@ -4,11 +4,11 @@ use Illuminate\Routing\Router;
 
 $router->group(['prefix' => '/orders'/*,'middleware' => ['auth:api']*/], function (Router $router) {
   $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
-  
+
   $router->post('/', [
     'as' => $locale . 'api.icommerce.orders.create',
     'uses' => 'OrderApiController@create',
-    //'middleware' => ['auth:api']
+    'middleware' => ['auth:api']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.orders.index',
@@ -27,21 +27,21 @@ $router->group(['prefix' => '/orders'/*,'middleware' => ['auth:api']*/], functio
     'uses' => 'OrderApiController@show',
   ]);
 
-  
-  // Ruta de Prueba 
+
+  // Ruta de Prueba
   $router->get('/test/pusher', function () {
 
     $order = app('Modules\Icommerce\Repositories\OrderRepository')->find(6);
     $cart = app('Modules\Icommerce\Repositories\CartRepository')->find(14);
-   
+
     // Data Order Items
     $supportOrderItem = new \Modules\Icommerce\Support\OrderItem();
     $dataOrderItem = $supportOrderItem->fixData($cart->products);
-   
+
     event(new Modules\Icommerce\Events\OrderWasCreated($order,$dataOrderItem));
-  
+
     return "Event has been sent!";
 
   });
-  
+
 });

@@ -4,23 +4,27 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Media\Entities\File;
+use Modules\Core\Traits\NamespacedEntity;
 
 class Product extends Model
 {
-  use Translatable;
+  use Translatable, NamespacedEntity, MediaRelation;
 
   protected $table = 'icommerce__products';
   public $translatedAttributes = [
     'name',
     'description',
     'summary',
-    'slug'
+    'slug',
+    'meta_title',
+    'meta_description'
   ];
   protected $fillable = [
     'added_by_id',
     'options',
     'status',
-    'user_id',
     'category_id',
     'parent_id',
     'tax_class_id',
@@ -44,7 +48,6 @@ class Product extends Model
     'order_weight'
   ];
   protected $fakeColumns = ['options'];
-
   protected $casts = [
     'options' => 'array'
   ];
@@ -52,24 +55,28 @@ class Product extends Model
   public function addedBy()
   {
     $driver = config('asgard.user.config.driver');
-    return $this->belongsTo('Modules\\User\\Entities\\{$driver}\\User','added_by_id');
+    return $this->belongsTo('Modules\\User\\Entities\\{$driver}\\User', 'added_by_id');
   }
-  
-  public function getStatus(){
+
+  public function getStatus()
+  {
     $status = new Status();
     return $status->get($this->status);
   }
-  
-  public function stockStatus(){
+
+  public function stockStatus()
+  {
     $stockStatus = new StockStatus();
     return $stockStatus->get($this->stock_status);
   }
+
   public function priceLists()
   {
-    return $this->belongsToMany(PriceList::class,'icommerce__product_lists')
+    return $this->belongsToMany(PriceList::class, 'icommerce__product_lists')
       ->withPivot('id', 'price')
       ->withTimestamps();
   }
+
   public function category()
   {
     return $this->belongsTo(Category::class);
@@ -92,12 +99,12 @@ class Product extends Model
 
   public function orderItems()
   {
-    return $this->hasMany(OrderItem::class,'product_id');
+    return $this->hasMany(OrderItem::class, 'product_id');
   }
 
   //public function featuredProducts()
   //{
-    //return $this->hasMany(OrderItem::class)->select('SUM(quantity) AS total_products')->groupBy('product_id');
+  //return $this->hasMany(OrderItem::class)->select('SUM(quantity) AS total_products')->groupBy('product_id');
   //}
 
   public function manufacturer()
@@ -113,24 +120,27 @@ class Product extends Model
   public function productOptions()
   {
     return $this->belongsToMany(Option::class, 'icommerce__product_option')
-      ->withPivot('id', 'value', 'required')
-      ->withTimestamps()
-      ->using(ProductOption::class);
+      ->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required')
+      ->withTimestamps();
   }
 
-    public function optionValues()
-    {
-        return $this->belongsToMany(OptionValue::class, 'icommerce__product_option_value')
-            ->withPivot(
-                'id', 'product_option_id', 'option_id',
-                'parent_option_value_id', 'quantity',
-                'subtract', 'price', 'weight'
-            )->withTimestamps();
-    }
+  public function optionValues()
+  {
+    return $this->belongsToMany(OptionValue::class, 'icommerce__product_option_value')
+      ->withPivot(
+        'id', 'product_option_id', 'option_id',
+        'parent_option_value_id', 'quantity',
+        'subtract', 'price', 'weight'
+      )->withTimestamps();
+  }
 
   public function relatedProducts()
   {
-    return $this->belongsToMany('Modules\Icommerce\Entities\Product', 'icommerce__related_product')->withTimestamps();
+    return $this->belongsToMany(
+      'Modules\Icommerce\Entities\Product',
+      'icommerce__related_product',
+      'product_id', 'related_id'
+    )->withTimestamps();
   }
 
   public function orders()
@@ -239,18 +249,18 @@ class Product extends Model
 
   }
 
-  public function getOptionsAttribute($value)
+  protected function setOptionsAttribute($value)
   {
-    if (!is_string(json_decode($value))) {
-      return json_decode($value);
-    }
-    return json_decode(json_decode($value));
+    $this->attributes['options'] = json_encode($value);
   }
 
+  public function getOptionsAttribute($value)
+  {
+    return json_decode($value);
+  }
 
   public function getUrlAttribute()
   {
-
     return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerceslug.' . $this->slug);
   }
 
@@ -265,7 +275,6 @@ class Product extends Model
 
   }
 
-  /* product discount return if discount is active */
   public function getDiscountAttribute()
   {
     $date = date_create(date("Y/m/d"));
@@ -279,10 +288,30 @@ class Product extends Model
     return $query ? $query->price : null;
   }
 
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+    if(!$thumbnail) return [
+      'mimeType' => 'image/jpeg',
+      'path' =>url('modules/iblog/img/post/default.jpg')
+    ];
+    return [
+      'mimeType' => $thumbnail->mimetype,
+      'path' => $thumbnail->path_string
+    ];
+  }
+
   public function getGalleryAttribute()
   {
-    $images = \Storage::disk('publicmedia')->files('assets/icommerce/product/gallery/' . $this->id);
-    return $images;
+    $gallery = $this->filesByZone('gallery')->get();
+    $response = [];
+    foreach ($gallery as $img){
+      array_push($response,[
+        'mimeType' => $img->mimetype,
+        'path' => $img->path_string
+      ]);
+    }
+    return $response;
   }
 
   /*

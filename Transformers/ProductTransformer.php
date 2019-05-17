@@ -10,59 +10,53 @@ class ProductTransformer extends BaseApiTransformer
 {
   public function toArray($request)
   {
-
-
-    $data =  [
+    $data = [
       'id' => $this->id,
-      'name' => $this->name,
-      'slug' => $this->slug,
-      'summary' => $this->summary,
-      'options' => $this->options,
-      'status' => $this->getStatus(),
-      'sku' => $this->sku,
-      'quantity' => $this->quantity,
-      'stock_status' => $this->stockStatus(),
-      'shipping' => $this->shipping,
-      'price' => $this->price,
-      'date_available' => $this->date_available,
-      'weight' => $this->weight,
-      'length' => $this->length,
-      'width' => $this->width,
-      'height' => $this->height,
-      'subtract' => $this->subtract,
-      'minimum' => $this->minimum,
-      'reference' => $this->reference,
-      'description' => $this->description,
-      'rating' => $this->rating,
-      'freeshipping' => $this->freeshipping,
-      'order_weight' => $this->order_weight,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
-
-     'status'=> $this->status,
-    'stock_status'=> $this->stock_status,
-    'category_id'=> $this->category_id,
-
+      'name' => $this->name ?? '',
+      'slug' => $this->slug ?? '',
+      'summary' => $this->summary ?? '',
+      'metaTitle' => $this->meta_title ?? '',
+      'metaDescription' => $this->meta_description ?? '',
+      'options' => $this->when($this->options, $this->options),
+      'sku' => $this->when($this->sku, $this->sku),
+      'quantity' => $this->when($this->quantity, $this->quantity),
+      'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
+      'price' => $this->when($this->price, $this->price),
+      'dateAvailable' => $this->when($this->date_available, $this->date_available),
+      'weight' => $this->when($this->weight, $this->weight),
+      'length' => $this->when($this->length, $this->length),
+      'width' => $this->when($this->width, $this->width),
+      'height' => $this->when($this->height, $this->height),
+      'subtract' => $this->when($this->subtract, ((int)$this->subtract ? true : false)),
+      'minimum' => $this->when($this->minimum, $this->minimum),
+      'reference' => $this->when($this->reference, $this->reference),
+      'description' => $this->when($this->description, $this->description),
+      'rating' => $this->when($this->rating, $this->rating),
+      'freeshipping' => $this->when($this->freeshipping, ((int)$this->freeshipping ? true : false)),
+      'orderWeight' => $this->when($this->order_weight, $this->order_weight),
+      'createdAt' => $this->when($this->created_at, $this->created_at),
+      'updatedAt' => $this->when($this->updated_at, $this->updated_at),
+      'status' => $this->when($this->status, $this->status),
+      'stockStatus' => $this->when($this->stock_status, $this->stock_status),
+      'parentId' => $this->when($this->parent_id, $this->parent_id),
+      'categoryId' => $this->when($this->category_id, $this->category_id),
+      'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
+      'category' => new CategoryTransformer($this->whenLoaded('category')),
+      'productOptions' => ProductOptionTransformer::collection($this->whenLoaded('productOptions')),
+      'optionValues' => OptionValueTransformer::collection($this->whenLoaded('optionValues')),
+      'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
+      'mainImage' => $this->mainImage,
+      'gallery' => $this->gallery,
     ];
 
     /*RELATIONSHIPS*/
-
     // Tax Class
     $this->ifRequestInclude('addedBy') ?
       $data['addedBy'] = ($this->added_by_id ? new TaxClassTransformer($this->addedBy) : false) : false;
 
-
     // Tax Class
     $this->ifRequestInclude('taxClass') ?
       $data['taxClass'] = ($this->tax_class_id ? new TaxClassTransformer($this->taxClass) : false) : false;
-
-    // Categories
-    $this->ifRequestInclude('categories') ?
-      $data['categories'] = ($this->categories ? CategoryTransformer::collection($this->categories) : false) : false;
-
-    // Category
-    $this->ifRequestInclude('category') ?
-      $data['category'] = ($this->category_id ? CategoryTransformer::collection($this->category) : false) : false;
 
     // Tags
     $this->ifRequestInclude('tags') ?
@@ -92,14 +86,6 @@ class ProductTransformer extends BaseApiTransformer
       $data['productOptions'] = ($this->productOptions ? $this->productOptions : false) : false;
   */
 
-    // Option Values
-    $this->ifRequestInclude('optionValues') ?
-      $data['optionValues'] = ($this->optionValues ? OptionValueTransformer::collection($this->optionValues) : false) : false;
-
-    // Related Products
-    $this->ifRequestInclude('relatedProducts') ?
-      $data['relatedProducts'] = ($this->relatedProducts ? ProductTransformer::collection($this->relatedProducts) : false) : false;
-
     // Wishlist
     $this->ifRequestInclude('wishlists') ?
       $data['wishlists'] = ($this->wishlists ? WishlistTransformer::collection($this->wishlists) : false) : false;
@@ -116,26 +102,28 @@ class ProductTransformer extends BaseApiTransformer
     $this->ifRequestInclude('children') ?
       $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
 
-    // Gallery
-    $this->ifRequestInclude('gallery') ?
-      $data['gallery'] = ($this->gallery ? $this->gallery : false) : false;
-
 
     // TRANSLATIONS
     $filter = json_decode($request->filter);
-
     // Return data with available translations
-    if (isset($filter->allTranslations) && $filter->allTranslations){
-
+    if (isset($filter->allTranslations) && $filter->allTranslations) {
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
 
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
-          $data['translates'][$key]['summary'] = $this->translate("$key")['summary'];
-            $data['translates'][$key]['slug'] = $this->translate("$key")['slug'];
+      foreach ($languages as $lang => $value) {
+        if ($this->hasTranslation($lang)) {
+          $data[$lang]['name'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['name'] : '';
+          $data[$lang]['description'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['description'] : '';
+          $data[$lang]['summary'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['summary'] : '';
+          $data[$lang]['slug'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['slug'] : '';
+          $data[$lang]['metaTitle'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['metaTitle'] : '';
+          $data[$lang]['metaDescription'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['metaDescription'] : '';
         }
       }
     }

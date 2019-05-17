@@ -10,32 +10,28 @@ class OptionTransformer extends Resource
   {
     $data = [
       'id' => $this->id,
-      'type' => $this->type,
-      'sort_order' => $this->sort_order,
       'description' => $this->description,
-      'options' => $this->options,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'type' => $this->when($this->type,$this->type),
+      'sortOrder' => $this->when($this->sort_order,$this->sort_order),
+      'options' => $this->when($this->options,$this->options),
+      'createdAt' => $this->when($this->created_at,$this->created_at),
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at),
+      'optionValues' => OptionValueTransformer::collection($this->whenLoaded('optionValues'))
     ];
 
-    // Option Values
-    if(count($this->optionValues))
-      $data["optionValues"] = OptionValueTransformer::collection($this->optionValues);;
-
     $filter = json_decode($request->filter);
-
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations){
-
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
 
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
-        }
+      foreach ($languages as  $lang => $value){
+        $data[$lang]['description'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['description'] : '';
       }
     }
+
+    //Response
     return $data;
   }
 }

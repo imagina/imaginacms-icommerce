@@ -6,21 +6,21 @@ class Order
 {
 
     public function fixData($request,$data){
-
+    return $data;
         // Set Total
-        /** 
+        /**
          * Total Cart
          * Total Shipping Method
         */
         $totalCart = $data["cart"]->getTotalAttribute();
-       
+
         $totalShipping = $data["shippingPrice"];
 
         $total = $totalCart+$totalShipping;
-        
+
         if(!is_null($totalShipping))
             $newData["total"] = $total;
-        
+
         // Set Order Status
         $newData["status_id"] = 1;
 
@@ -42,7 +42,7 @@ class Order
         $newData["payment_zip_code"] = $data["addressPayment"]->zip_code;
         $newData["payment_country"] = $data["addressPayment"]->country->translate('en')->name;
         $newData["payment_zone"] = $data["addressPayment"]->province->translate('en')->name ?? "";
-        
+
         // Set Payment Method infor
         $newData["payment_method"] = $data["paymentMethod"]->id;
         $newData["payment_code"] = $data["paymentMethod"]->name;
@@ -58,7 +58,7 @@ class Order
         $newData["shipping_zip_code"] = $data["addressShipping"]->zip_code;
         $newData["shipping_country"] = $data["addressShipping"]->country->translate('en')->name;
         $newData["shipping_zone"] = $data["addressShipping"]->province->translate('en')->name ?? "";
-        
+
         // Set Shipping Method infor
         $newData["shipping_method"] = $data["shippingMethod"];
         $newData["shipping_code"] = $data["shippingMethod"];
@@ -70,7 +70,7 @@ class Order
         $newData["store_name"] = $data["store"]->name;
         $newData["store_address"] = $data["store"]->address;
         $newData["store_phone"] = $data["store"]->phone;
-    
+
         // Set Currency
         $newData["currency_id"] = $data["currency"]->id;
         $newData["currency_code"] = $data["currency"]->code;
@@ -85,6 +85,6 @@ class Order
 
     }
 
-    
+
 
 }

@@ -10,35 +10,24 @@ class ProductOptionValueTransformer extends Resource
   {
     $data =  [
       'id' => $this->id,
-      'product_option_id' => $this->product_option_id,
-      'product_id' => $this->product_id,
-      'option_id' => $this->option_id,
-      'option_value_id' => $this->option_value_id,
-      'option_value' => $this->optionValue->description,
-      'parent_option_value_id' => $this->parent_option_value_id,
-      'quantity' => $this->quantity,
-      'substract' => $this->substract,
-      'price' => $this->price,
-      'weight' => $this->weight,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'productOptionId' => $this->when($this->product_option_id,$this->product_option_id),
+      'productId' => $this->when($this->product_id,$this->product_id),
+      'optionId' => $this->when($this->option_id,$this->option_id),
+      'optionValueId' => $this->when($this->option_value_id,$this->option_value_id),
+      'optionValue' => $this->when($this->optionValue->description,$this->optionValue->description),
+      'parentOptionValueId' => $this->when($this->parent_option_value_id,$this->parent_option_value_id),
+      'parentOptionValue' => $this->parentOptionValue ? $this->parentOptionValue->description : '-',
+      'quantity' => $this->when($this->quantity,$this->quantity),
+      'substract' => $this->when($this->subtract,$this->subtract),
+      'price' => $this->when($this->price,$this->price),
+      'pricePrefix' => $this->when($this->price_prefix,$this->price_prefix),
+      'points' => $this->when($this->points,$this->points),
+      'pointsPrefix' => $this->when($this->points_prefix,$this->points_prefix),
+      'weight' => $this->when($this->weight,$this->weight),
+      'weightPrefix' => $this->when($this->weight_prefix,$this->weight_prefix),
+      'createdAt' => $this->when($this->created_at,$this->created_at),
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at),
     ];
-
-    // TRANSLATIONS
-    $filter = json_decode($request->filter);
-
-    // Return data with available translations
-    if (isset($filter->allTranslations) && $filter->allTranslations){
-      // Get langs avaliables
-      $languages = \LaravelLocalization::getSupportedLocales();
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
-          $data['translates'][$key]['summary'] = $this->translate("$key")['summary'];
-        }
-      }
-    }
 
     return $data;
   }

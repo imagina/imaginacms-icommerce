@@ -143,40 +143,42 @@ class OrderApiController extends BaseApiController
       $infor["cart"] = $cart;
 
       //dd($cart->getTotalAttribute());
-      
+
       //Get User
       $user = Auth::user();
       $userID = $user->id;
 
+        //return response()->json($cart);
       //$userID = 1; //***** Ojo ID de prueba
       $profile = $this->profile->find($userID);
       $infor["profile"] = $profile;
 
-      
+
       //Get Payment Address
       $addressPayment = $this->address->find($data['address_payment_id']);
       $infor["addressPayment"] = $addressPayment;
-      
+
       //Get Payment Method
       $payment = $this->paymentMethod->find($data['payment_id']);
       $infor["paymentMethod"] = $payment;
-      
+
       //Get Shipping Address
       $addressShipping = $this->address->find($data['address_shipping_id']);
       $infor["addressShipping"] = $addressShipping;
-      
+
       //Get Shipping Method Name
       $infor["shippingMethod"] = $data['shipping_name'];
-      
+
       //Get Currency
       $currency = $this->currency->findByAttributes(array("status" => 1));
       $infor["currency"] = $currency;
-      
+
       // Fix Data to Send Shipping Methods
       $areaMapId = isset($data['areamap_id']) ? $data['areamap_id'] : "";
       $supportShipping = new shippingMethodSupport();
+
       $dataMethods = $supportShipping->fixDataSend($cart,$addressShipping,$areaMapId);
-      
+
       //Get Shipping Methods with calculates
       $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
 
@@ -185,13 +187,14 @@ class OrderApiController extends BaseApiController
       $infor["shippingPrice"] = $shippingPrice;
 
       //Get Store
-      $store = $this->store->find($data['store_id']);
-      $infor["store"] = $store;
+      //$store = $this->store->find($data['store_id']);
+      //$infor["store"] = $store;
 
       // Fix Data Order
       $supportOrder = new orderSupport();
       $data = $supportOrder->fixData($request,$infor);
-      
+return $data;
+
       //Validate Request Order
       $this->validateRequestApi(new OrderRequest($data));
 
@@ -262,7 +265,7 @@ class OrderApiController extends BaseApiController
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
-      
+
 
     }
 

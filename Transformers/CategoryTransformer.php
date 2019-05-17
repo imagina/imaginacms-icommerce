@@ -8,39 +8,42 @@ class CategoryTransformer extends Resource
 {
   public function toArray($request)
   {
-    $data =  [
-      'id' => $this->when($this->id,$this->id),
-      'title' => $this->when($this->title,$this->title),
-      'slug' => $this->when($this->slug,$this->slug),
-      'description' => $this->when($this->description,$this->description),
-      'url' => $this->when($this->url,$this->url),
-      'parent_id' => $this->when($this->parent_id,$this->parent_id),
-      'show_menu' => $this->when($this->show_menu,$this->show_menu),
-      'meta_title' => $this->when($this->meta_title,$this->meta_title),
-      'meta_description' => $this->when($this->meta_description,$this->meta_description),
-      'options' => $this->when($this->options,$this->options),
-      'created_at' => $this->when($this->created_at,$this->created_at),
-      'updated_at' => $this->when($this->updated_at,$this->updated_at),
+    $data = [
+      'id' => $this->id,
+      'title' => $this->title ?? '',
+      'slug' => $this->slug ?? '',
+      'description' => $this->description ?? '',
+      'url' => $this->when($this->url, $this->url),
+      'parentId' => $this->when($this->parent_id, (int)$this->parent_id),
+      'showMenu' => $this->when($this->show_menu, ((int)$this->show_menu ? true : false)),
+      'metaTitle' => $this->meta_title ?? '',
+      'metaDescription' => $this->meta_description ?? '',
+      'options' => $this->when($this->options, $this->options),
+      'createdAt' => $this->when($this->created_at, $this->created_at),
+      'updatedAt' => $this->when($this->updated_at, $this->updated_at),
       'parent' => new CategoryTransformer ($this->whenLoaded('parent')),
       'childrens' => CategoryTransformer::collection($this->whenLoaded('children')),
+      'mainImage' => $this->mainImage,
     ];
-    
+
     $filter = json_decode($request->filter);
 
     // Return data with available translations
-    if (isset($filter->allTranslations) && $filter->allTranslations){
-
+    if (isset($filter->allTranslations) && $filter->allTranslations) {
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
 
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
-          $data['translates'][$key]['slug'] = $this->translate("$key")['slug'];
-          $data['translates'][$key]['meta_title'] = $this->translate("$key")['meta_title'];
-          $data['translates'][$key]['meta_description'] = $this->translate("$key")['title'];
-        }
+      foreach ($languages as $lang => $value) {
+        $data[$lang]['title'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['title'] : '';
+        $data[$lang]['description'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['description'] ?? '' : '';
+        $data[$lang]['slug'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['slug'] : '';
+        $data[$lang]['metaTitle'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['meta_title'] : '';
+        $data[$lang]['metaDescription'] =$this->hasTranslation($lang) ?
+          $this->translate("$lang")['meta_tescription'] : '';
       }
     }
     return $data;

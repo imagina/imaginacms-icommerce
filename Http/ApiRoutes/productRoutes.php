@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' => '/products'/*,'middleware' => ['auth:api']*/], function (Router $router) {
+$router->group(['prefix' => '/products','middleware' => ['auth:api']], function (Router $router) {
   $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
   
   $router->post('/', [

@@ -7,148 +7,162 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentProductOptionRepository extends EloquentBaseRepository implements ProductOptionRepository
 {
-    public function getItemsBy($params)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+  public function getItemsBy($params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
 
-        // RELATIONSHIPS
-        $defaultInclude = [];
-        $query->with(array_merge($defaultInclude, $params->include));
-
-        // FILTERS
-        if ($params->filter) {
-            $filter = $params->filter;
-
-            // get language translation
-            $lang = \App::getLocale();
-
-
-            // add filter by search
-            if (isset($filter->search)) {
-                //find search in columns
-                $query->where(function ($query) use ($filter, $lang) {
-                    $query->whereHas('translations', function ($query) use ($filter, $lang) {
-                        $query->where('locale', $lang)
-                            ->where('description', 'like', '%' . $filter->search . '%');
-                    })->orWhere('id', 'like', '%' . $filter->search . '%')
-                        ->orWhere('price', 'like', '%' . $filter->search . '%')
-                        ->orWhere('quantity', 'like', '%' . $filter->search . '%')
-                        ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-                        ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-                });
-            }
-
-            // add filter by date
-            if (isset($filter->date)) {
-                $date = $filter->date;//Short filter date
-                $date->field = $date->field ?? 'created_at';
-                if (isset($date->from))//From a date
-                    $query->whereDate($date->field, '>=', $date->from);
-                if (isset($date->to))//to a date
-                    $query->whereDate($date->field, '<=', $date->to);
-            }
-
-        }
-        /*== FIELDS ==*/
-        if (isset($params->fields) && count($params->fields))
-            $query->select($params->fields);
-
-        /*== By product ==*/
-        if (isset($filter->product))
-            $query->where('product_id', $filter->product);
-
-        /*== By parent ==*/
-        if (isset($filter->parent))
-            $query->where('parent_id', $filter->parent);
-
-        /*== By parent Option Value ==*/
-        if (isset($filter->parentOptionValue))
-            $query->where('parent_option_value_id', $filter->parentOptionValue);
-
-        /*== REQUEST ==*/
-        if (isset($params->page) && $params->page) {
-            return $query->paginate($params->take);
-        } else {
-            $params->take ? $query->take($params->take) : false;//Take
-            return $query->get();
-        }
-
+    /*== RELATIONSHIPS ==*/
+    if (in_array('*', $params->include)) {//If Request all relationships
+      $query->with([]);
+    } else {//Especific relationships
+      $includeDefault = ['option,translations'];//Default relationships
+      if (isset($params->include))//merge relations with default relationships
+        $includeDefault = array_merge($includeDefault, $params->include);
+      $query->with($includeDefault);//Add Relationships to query
     }
 
-    public function getItem($criteria, $params)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+    /*== FILTERS ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;//Short filter
 
-        $query->where('id', $criteria);
+      // add filter by search
+      if (isset($filter->search)) {
+        //find search in columns
+        $query->where(function ($query) use ($filter) {
+          $query->whereHas('translations', function ($query) use ($filter) {
+            $query->where('locale', $filter->locale)
+              ->where('description', 'like', '%' . $filter->search . '%');
+          })->orWhere('id', 'like', '%' . $filter->search . '%')
+            ->orWhere('price', 'like', '%' . $filter->search . '%')
+            ->orWhere('quantity', 'like', '%' . $filter->search . '%')
+            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+        });
+      }
 
-        // RELATIONSHIPS
-        $includeDefault = [];
-        $query->with(array_merge($includeDefault, $params->include));
+      /*== By product ==*/
+      if (isset($filter->product))
+        $query->where('product_id', $filter->product);
 
-        // FIELDS
-        if ($params->fields) {
-            $query->select($params->fields);
-        }
-        return $query->first();
+      /*== By parent ==*/
+      if (isset($filter->parent))
+        $query->where('parent_id', $filter->parent);
 
+      /*== By parent Option Value ==*/
+      if (isset($filter->parentOptionValue))
+        $query->where('parent_option_value_id', $filter->parentOptionValue);
+
+      //Filter by date
+      if (isset($filter->date)) {
+        $date = $filter->date;//Short filter date
+        $date->field = $date->field ?? 'created_at';
+        if (isset($date->from))//From a date
+          $query->whereDate($date->field, '>=', $date->from);
+        if (isset($date->to))//to a date
+          $query->whereDate($date->field, '<=', $date->to);
+      }
+
+      //Order by
+      if (isset($filter->order)) {
+        $orderByField = $filter->order->field ?? 'created_at';//Default field
+        $orderWay = $filter->order->way ?? 'desc';//Default way
+        $query->orderBy($orderByField, $orderWay);//Add order to query
+      }
     }
 
-    public function create($data){
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
+      $query->select($params->fields);
 
-        $productOptionValue = $this->model->create($data);
+    /*== REQUEST ==*/
+    if (isset($params->page) && $params->page) {
+      return $query->paginate($params->take);
+    } else {
+      $params->take ? $query->take($params->take) : false;//Take
+      return $query->get();
+    }
+  }
 
-        return $productOptionValue;
+  public function getItem($criteria, $params = false)
+  {
+    //Initialize query
+    $query = $this->model->query();
+
+    /*== RELATIONSHIPS ==*/
+    if (in_array('*', $params->include)) {//If Request all relationships
+      $query->with([]);
+    } else {//Especific relationships
+      $includeDefault = ['option,translations'];//Default relationships
+      if (isset($params->include))//merge relations with default relationships
+        $includeDefault = array_merge($includeDefault, $params->include);
+      $query->with($includeDefault);//Add Relationships to query
     }
 
-    public function updateBy($criteria, $data, $params){
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
 
-        // INITIALIZE QUERY
-        $query = $this->model->query();
-
-        // FILTER
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field))//Where field
-                $query->where($filter->field, $criteria);
-            else//where id
-                $query->where('id', $criteria);
-        }
-
-        // REQUEST
-        $model = $query->first();
-
-        if($model){
-            $model->update($data);
-
-        }
-
-        return $model;
-
+      if (isset($filter->field))//Filter by specific field
+        $field = $filter->field;
     }
 
-    public function deleteBy($criteria, $params)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
+      $query->select($params->fields);
 
-        // FILTER
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+    /*== REQUEST ==*/
+    return $query->where($field ?? 'id', $criteria)->first();
+  }
 
-            if (isset($filter->field)) //Where field
-                $query->where($filter->field, $criteria);
-            else //where id
-                $query->where('id', $criteria);
-        }
+  public function create($data)
+  {
+    $productOptionValue = $this->model->create($data);
 
-        // REQUEST
-        $model = $query->first();
+    return $productOptionValue;
+  }
 
-        if($model) {
-            $model->delete();
-        }
+  public function updateBy($criteria, $data, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      //Update by field
+      if (isset($filter->field))
+        $field = $filter->field;
     }
+
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+
+    //If parent id change, set null all product parent option Values
+    if ($model->parent_id != $data['parent_id']) {
+      \DB::table('icommerce__product_option_value')->where('product_option_id', $criteria)
+        ->update(['parent_option_value_id' => null]);
+    };
+
+    return $model ? $model->update((array)$data) : false;//Response
+  }
+
+  public function deleteBy($criteria, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field))//Where field
+        $field = $filter->field;
+    }
+
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    $model ? $model->delete() : false;
+  }
 }
