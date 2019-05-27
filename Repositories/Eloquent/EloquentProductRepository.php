@@ -47,6 +47,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->categoryId) && $filter->categoryId) {
         $query->where('category_id', $filter->categoryId);
       }
+
+      // Filter by catgeory SLUG
+      if (isset($filter->categorySlug) && $filter->categorySlug) {
+        $query->whereHas('categories', function ($query) use ($filter) {
+          $query->whereHas('translations', function ($query) use ($filter) {
+            $query
+              ->where('icommerce__category_translations.locale', $filter->locale)
+              ->where('icommerce__category_translations.slug', $filter->categorySlug);
+          });
+        });
+      }
       
       //Filter by catgeory SLUG
       if (isset($filter->categorySlug) && $filter->categorySlug) {
