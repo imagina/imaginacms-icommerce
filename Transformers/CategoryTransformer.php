@@ -43,7 +43,7 @@ class CategoryTransformer extends Resource
         $data[$lang]['metaTitle'] = $this->hasTranslation($lang) ?
           $this->translate("$lang")['meta_title'] : '';
         $data[$lang]['metaDescription'] =$this->hasTranslation($lang) ?
-          $this->translate("$lang")['meta_tescription'] : '';
+          $this->translate("$lang")['meta_description'] : '';
       }
     }
     return $data;

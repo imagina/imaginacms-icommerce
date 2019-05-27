@@ -2,16 +2,21 @@
     "name": "Icommerce",
     "alias": "icommerce",
     "description": "completely customizable eCommerce platform for entrepreneurs worldwide",
-    "keywords": ["ecommerce", "module", "asgardCMS","imagina"],
-    "version": "1.0.4",
-	"active": 1,
+    "keywords": [
+        "ecommerce",
+        "module",
+        "asgardCMS",
+        "imagina"
+    ],
+    "version": "1.0.6",
+    "active": 1,
     "order": 1,
     "providers": [
         "Modules\\Icommerce\\Providers\\EventServiceProvider",
         "Modules\\Icommerce\\Providers\\IcommerceServiceProvider",
         "Modules\\Icommerce\\Providers\\RouteServiceProvider"
     ],
-    "aliases": {},
+    "aliases": [],
     "files": [
         "helpers.php"
     ],

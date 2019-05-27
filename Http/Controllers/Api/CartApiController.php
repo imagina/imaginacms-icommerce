@@ -35,120 +35,162 @@ class CartApiController extends BaseApiController
     $this->auth = app(Authentication::class);
   }
 
+  
   /**
-   * Display a listing of the resource.
-   * @return Response
-   */
-  public function index(Request $request)
-  {
-    try {
-      //Request to Repository
-      $carts = $this->cart->getItemsBy($this->getParamsRequest($request));
-
-      //Response
-      $response = ['data' => CartTransformer::collection($carts)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($carts)] : false;
-
-    } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+     * GET ITEMS
+     *
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
+      try {
+        //Get Parameters from URL.
+        $params = $this->getParamsRequest($request);
+  
+        //Request to Repository
+        $dataEntity = $this->cart->getItemsBy($params);
+  
+        //Response
+        $response = [
+          "data" => CartTransformer::collection($dataEntity)
+        ];
+  
+        //If request pagination add meta-page
+        $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+      } catch (\Exception $e) {
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
+      }
+  
+      //Return response
+      return response()->json($response, $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
-
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
-   */
-  public function show($id, Request $request)
-  {
-    try {
-      //Request to Repository
-      $cart = $this->cart->getItem($id, $this->getParamsRequest($request));
-
-      $response = [
-        'data' => $cart ? new CartTransformer($cart) : '',
-      ];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+    
+  /**
+     * GET A ITEM
+     *
+     * @param $criteria
+     * @return mixed
+     */
+    public function show($criteria,Request $request)
+    {
+      try {
+        //Get Parameters from URL.
+        $params = $this->getParamsRequest($request);
+  
+        //Request to Repository
+        $dataEntity = $this->cart->getItem($criteria, $params);
+  
+        //Break if no found item
+        if(!$dataEntity) throw new \Exception('Item not found',404);
+        
+        //Response
+        $response = ["data" => new CartTransformer($dataEntity)];
+  
+      } catch (\Exception $e) {
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
+      }
+  
+      //Return response
+      return response()->json($response, $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
+
+    /**
+       * CREATE A ITEM
+       *
+       * @param Request $request
+       * @return mixed
+       */
+      public function create(Request $request)
+      {
+        \DB::beginTransaction();
+        try {
+         //Get data
+          $data = $request->input('attributes');
+          
+          //Validate Request
+          $this->validateRequestApi(new CartRequest((array)$data));
+    
+          //Create item
+          $cart = $this->cart->create($data);
+    
+          //Response
+          $response = ["data" => $cart];
+          \DB::commit(); //Commit to Data Base
+        } catch (\Exception $e) {
+          \DB::rollback();//Rollback to Data Base
+          $status = $this->getStatusError($e->getCode());
+          $response = ["errors" => $e->getMessage()];
+        }
+        //Return response
+        return response()->json($response, $status ?? 200);
+      }
 
   /**
-   * Create a new resource.
-   * @return Response
-   */
-   public function create(Request $request)
-   {
-     try {
-       DB::beginTransaction();
-       //Validate Request
-       $request['ip']=$request->ip();
-       $this->validateRequestApi(new CartRequest($request->all()));
-
-       $cart = $this->cart->create($request->all());
-
-       DB::commit();
-       $response = ['data' => ['cart'=> new CartTransformer($cart)]];
-     } catch (\Exception $e) {
-       DB::rollBack();
-       $status = 500;
-       $response = [
-         'errors' => $e->getMessage()
-       ];
+     * UPDATE ITEM
+     *
+     * @param $criteria
+     * @param Request $request
+     * @return mixed
+     */
+    public function update($criteria, Request $request)
+    {
+      \DB::beginTransaction(); //DB Transaction
+      try {
+        //Get data
+        $data = $request->input('attributes');
+  
+        //Validate Request
+        $this->validateRequestApi(new CartRequest((array)$data));
+  
+        //Get Parameters from URL.
+        $params = $this->getParamsRequest($request);
+  
+        //Request to Repository
+        $this->cart->updateBy($criteria, $data, $params);
+  
+        //Response
+        $response = ["data" => 'Item Updated'];
+        \DB::commit();//Commit to DataBase
+      } catch (\Exception $e) {
+        \DB::rollback();//Rollback to Data Base
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
+      }
+      
+      //Return response
+      return response()->json($response, $status ?? 200);
+    }
+    
+   /**
+      * DELETE A ITEM
+      *
+      * @param $criteria
+      * @return mixed
+      */
+     public function delete($criteria, Request $request)
+     {
+       \DB::beginTransaction();
+       try {
+         //Get params
+         $params = $this->getParamsRequest($request);
+   
+         //call Method delete
+         $this->cart->deleteBy($criteria, $params);
+   
+         //Response
+         $response = ["data" => ""];
+         \DB::commit();//Commit to Data Base
+       } catch (\Exception $e) {
+         \DB::rollback();//Rollback to Data Base
+         $status = $this->getStatusError($e->getCode());
+         $response = ["errors" => $e->getMessage()];
+       }
+   
+       //Return response
+       return response()->json($response, $status ?? 200);
      }
-     return response()->json($response, $status ?? 200);
-   }
 
-  /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
-   */
-  public function update($criteria, Request $request)
-  {
-    try {
-      $this->cart->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
 
-      $response = ['data' => ''];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
-    }
-    return response()->json($response, $status ?? 200);
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   * @return Response
-   */
-  public function delete($criteria, Request $request)
-  {
-    try {
-      $this->cart->deleteBy($criteria,$this->getParamsRequest($request));
-
-      $response = ['data' => ''];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
-    }
-    return response()->json($response, $status ?? 200);
-  }
 }

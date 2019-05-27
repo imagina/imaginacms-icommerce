@@ -1,7 +1,9 @@
 <?php
 
 namespace Modules\Icommerce\Http\Controllers\Api;
+
 //Auth
+use Modules\Icommerce\Repositories\CartRepository;
 use Modules\User\Contracts\Authentication;
 // Requests & Response
 use Modules\Icommerce\Http\Requests\CartProductRequest;
@@ -26,137 +28,189 @@ use DB;
 class CartProductApiController extends BaseApiController
 {
   private $cartProduct;
+  private $cart;
   protected $auth;
-
-  public function __construct(CartProductRepository $cartProduct)
+  
+  public function __construct(CartProductRepository $cartProduct, CartRepository $cart)
   {
     $this->cartProduct = $cartProduct;
+    $this->cart = $cart;
     $this->auth = app(Authentication::class);
   }
-
+  
   /**
-   * Display a listing of the resource.
-   * @return Response
+   * GET ITEMS
+   *
+   * @return mixed
    */
   public function index(Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
       //Request to Repository
-      $cartProducts = $this->cartProduct->getItemsBy($this->getParamsRequest($request));
-
+      $dataEntity = $this->cartProduct->getItemsBy($params);
+      
       //Response
-      $response = ['data' => CartProductTransformer::collection($cartProducts)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($cartProducts)] : false;
-
-    } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
       $response = [
-        'errors' => $e->getMessage()
+        "data" => CartProductTransformer::collection($dataEntity)
       ];
+      
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+    } catch (\Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
+  
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
-  public function show($id, Request $request)
+  public function show($criteria, Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
       //Request to Repository
-      $cartProduct = $this->cartProduct->getItem($id,$this->getParamsRequest($request));
-
-      $response = [
-        'data' => $cartProduct ? new CartProductTransformer($cartProduct) : '',
-      ];
-
+      $dataEntity = $this->cartProduct->getItem($criteria, $params);
+      
+      //Break if no found item
+      if (!$dataEntity) throw new \Exception('Item not found', 404);
+      
+      //Response
+      $response = ["data" => new CartProductTransformer($dataEntity)];
+      
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
+    return response()->json($response, $status ?? 200);
+  }
+  
+  /**
+   * CREATE A ITEM
+   *
+   * @param Request $request
+   * @return mixed
+   */
+  public function create(Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      //Get data
+      $data = $request->input('attributes');
+
+      //Validate Request
+      $this->validateRequestApi(new CartProductRequest((array)$data));
+
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
+        //If user autenticated
+        //Validate if cart belongs to user autenticated
+        $cart = $this->cart->findByAttributes(['id' => $data['cart_id']]);
+        if ($cart) {
+            //Create Product Api
+            $cartProduct = $this->cartProduct->findByAttributes(['cart_id' => $data['cart_id'],'product_id' => $data['product_id']]);
+
+            if(!$cartProduct)
+                $this->cartProduct->create($data);
+            else
+              $this->cartProduct->updateBy($cartProduct->id,$data,$params);
+
+        } else
+          throw new \Exception("This cart id doesn't exist", 403);
+      
+
+
+      //Response
+      $response = ["data" => ""];
+      \DB::commit(); //Commit to Data Base
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    //Return response
     return response()->json($response, $status ?? 200);
   }
 
-  /**
-   * Show the form for creating a new resource.
-   * @return Response
-   */
-   public function create(Request $request)
-   {
-     try {
-       DB::beginTransaction();
-       //Validate Request
-       $this->validateRequestApi(new CartProductRequest($request->all()));
-       //Get user autenticated
-       $user=Auth::guard('api')->user();
-       if($user){
-         //If user autenticated
-         //Validate if cart belongs to user autenticated
-         $cart=Cart::where('id',$request->cart_id)->where('user_id',$user->id)->first();
-         if($cart){
-           //Create Product Api
-           $this->cartProduct->create($request->all());
-         }else
-         throw new \Exception("This cart id doesn't belongs to user autenticated",404);
-       }else
-         $this->cartProduct->create($request->all());
-       DB::commit();
-       $response = ['data' => ''];
-     } catch (\Exception $e) {
-       DB::rollBack();
-       $status = 500;
-       $response = [
-         'errors' => $e->getMessage()
-       ];
-     }
-     return response()->json($response, $status ?? 200);
-   }
 
   /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
+   * UPDATE ITEM
+   *
+   * @param $criteria
+   * @param Request $request
+   * @return mixed
    */
   public function update($criteria, Request $request)
   {
+    \DB::beginTransaction(); //DB Transaction
     try {
-      $this->cartProduct->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
-
-      $response = ['data' => ''];
-
+      //Get data
+      $data = $request->input('attributes');
+      
+      //Validate Request
+      $this->validateRequestApi(new CartProductRequest((array)$data));
+      
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
+      //Request to Repository
+      $this->cartProduct->updateBy($criteria, $data, $params);
+      
+      //Response
+      $response = ["data" => 'Item Updated'];
+      \DB::commit();//Commit to DataBase
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
+  
+  
   /**
-   * Remove the specified resource from storage.
-   * @return Response
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function delete($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->cartProduct->deleteBy($criteria,$this->getParamsRequest($request));
-
-      $response = ['data' => ''];
-
+      //Get params
+      $params = $this->getParamsRequest($request);
+      
+      //call Method delete
+      $this->cartProduct->deleteBy($criteria, $params);
+      
+      //Response
+      $response = ["data" => ""];
+      \DB::commit();//Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
+  
 }
