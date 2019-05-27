@@ -47,6 +47,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->categoryId) && $filter->categoryId) {
         $query->where('category_id', $filter->categoryId);
       }
+      
+      //Filter by catgeory SLUG
+      if (isset($filter->categorySlug) && $filter->categorySlug) {
+        $query->whereHas('categories', function ($query) use ($filter) {
+          $query->whereHas('translations', function ($query) use ($filter) {
+            $query->where('slug', $filter->categorySlug);
+          });
+        });
+      }
 
       //Filter by stock status
       if (isset($filter->stockStatus)) {
@@ -60,7 +69,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       // add filter by Categories 1 or more than 1, in array
       if (isset($filter->categories)) {
-        $query->where("category_id", $filter->categories);
+        $query->whereIn("category_id", $filter->categories);
       }
 
       //add filter by Manufacturers 1 or more than 1, in array
@@ -121,6 +130,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     }
   }
 
+  
   public function getItem($criteria, $params = false)
   {
     //Initialize query
@@ -139,17 +149,23 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-
-      if (isset($filter->field))//Filter by specific field
-        $field = $filter->field;
+  
+      // find translatable attributes
+      $translatedAttributes = $this->model->translatedAttributes;
+      $field = $filter->field;
+      // filter by translatable attributes
+      if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
+        $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
+          $query->where('locale', $filter->locale)
+            ->where($field, $criteria);
+        });
+      else
+        // find by specific attribute or by id
+        $query->where($field ?? 'id', $criteria);
+  
     }
-
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-
     /*== REQUEST ==*/
-    return $query->where($field ?? 'id', $criteria)->first();
+    return $query->first();
   }
 
   public function create($data)

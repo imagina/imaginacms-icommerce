@@ -4,13 +4,10 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Media\Support\Traits\MediaRelation;
-use Modules\Media\Entities\File;
-use Modules\Core\Traits\NamespacedEntity;
 
 class OptionValue extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation;
+  use Translatable;
 
   protected $table = 'icommerce__option_values';
   public $translatedAttributes = [
@@ -37,26 +34,13 @@ class OptionValue extends Model
     return json_decode(json_decode($value));
   }
 
-  public function optionValues()
-  {
-    return $this->belongsToMany(Product::class, 'icommerce__product_option_value')
-      ->withPivot(
-        'id', 'product_option_id', 'option_id',
-        'parent_option_value_id', 'quantity',
-        'subtract', 'price', 'weight'
-      )->withTimestamps();
-  }
-
-  public function getMainImageAttribute()
-  {
-    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
-    if(!$thumbnail) return [
-      'mimeType' => 'image/jpeg',
-      'path' =>url('modules/iblog/img/post/default.jpg')
-    ];
-    return [
-      'mimeType' => $thumbnail->mimetype,
-      'path' => $thumbnail->path_string
-    ];
-  }
+    public function optionValues()
+    {
+        return $this->belongsToMany(Product::class, 'icommerce__product_option_value')
+            ->withPivot(
+                'id', 'product_option_id', 'option_id',
+                'parent_option_value_id', 'quantity',
+                'subtract', 'price', 'weight'
+            )->withTimestamps();
+    }
 }

@@ -12,8 +12,6 @@ class ProductTranslation extends Model
       'description',
       'summary',
       'slug',
-      'meta_title',
-      'meta_description'
     ];
     protected $table = 'icommerce__product_translations';
   

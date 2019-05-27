@@ -17,10 +17,10 @@ class CreateIcommerceRelatedProductTable extends Migration
       $table->increments('id');
       // Your fields
       $table->integer('product_id')->unsigned()->nullable();
-      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
+      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
       
       $table->integer('related_id')->unsigned()->nullable();
-      $table->foreign('related_id')->references('id')->on('icommerce__products')->onDelete('cascade');
+      $table->foreign('related_id')->references('id')->on('icommerce__products')->onDelete('restrict');
       
       $table->timestamps();
     });

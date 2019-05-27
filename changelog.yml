@@ -1,9 +1,5 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
-  "1.0.6":
-    changed:
-      - CartApiController, Cert Entity, an migration.
-       - Middleware Routes products
   "1.0.4":
     added:
       - Api documentation Shipping methods

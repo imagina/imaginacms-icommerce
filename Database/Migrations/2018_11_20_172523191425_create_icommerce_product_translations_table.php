@@ -21,8 +21,6 @@ class CreateIcommerceProductTranslationsTable extends Migration
       $table->string('slug');
       $table->text('description');
       $table->text('summary');
-      $table->text('meta_title')->nullable();
-      $table->text('meta_description')->nullable();
       
       $table->integer('product_id')->unsigned();
       $table->string('locale')->index();
