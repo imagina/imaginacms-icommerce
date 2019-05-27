@@ -58,15 +58,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
           });
         });
       }
-      
-      //Filter by catgeory SLUG
-      if (isset($filter->categorySlug) && $filter->categorySlug) {
-        $query->whereHas('categories', function ($query) use ($filter) {
-          $query->whereHas('translations', function ($query) use ($filter) {
-            $query->where('slug', $filter->categorySlug);
-          });
-        });
-      }
 
       //Filter by stock status
       if (isset($filter->stockStatus)) {
@@ -141,7 +132,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     }
   }
 
-  
+
   public function getItem($criteria, $params = false)
   {
     //Initialize query
@@ -160,7 +151,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-  
+
       // find translatable attributes
       $translatedAttributes = $this->model->translatedAttributes;
       $field = $filter->field;
@@ -173,7 +164,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       else
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
-  
+
     }
     /*== REQUEST ==*/
     return $query->first();
