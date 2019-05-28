@@ -259,10 +259,10 @@ class Product extends Model
     return json_decode($value);
   }
 
-  public function getUrlAttribute()
+  /*public function getUrlAttribute()
   {
     return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerceslug.' . $this->slug);
-  }
+  }*/
 
   protected function setRatingAttribute($value)
   {
