@@ -62,9 +62,13 @@ class ProductOptionValue extends Model
     return $this->belongsTo(OptionValue::class);
   }
 
+  public function parentOptionValue()
+  {
+    return $this->belongsTo(OptionValue::class, 'parent_option_value_id');
+  }
+
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
   }
-
 }

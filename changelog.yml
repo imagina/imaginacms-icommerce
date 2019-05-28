@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.8":
+    changed:
+      - OptionValue Entity Restore media
   "1.0.7":
     changed:
       - Minimun version ihelpers

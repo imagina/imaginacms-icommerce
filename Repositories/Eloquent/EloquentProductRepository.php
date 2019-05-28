@@ -154,7 +154,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       // find translatable attributes
       $translatedAttributes = $this->model->translatedAttributes;
-      $field = $filter->field;
+
+      if(isset($filter->field))
+        $field = $filter->field;
+
       // filter by translatable attributes
       if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
         $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {

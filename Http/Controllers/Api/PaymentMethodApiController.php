@@ -85,9 +85,9 @@ class PaymentMethodApiController extends BaseApiController
   public function create(Request $request)
   {
     try {
-      $this->paymentMethod->create($request->all());
+      $data = $this->paymentMethod->create($request->all());
 
-      $response = ['data' => ''];
+      $response = ['data' => $data];
 
     } catch (\Exception $e) {
       $status = 500;
