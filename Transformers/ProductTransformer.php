@@ -43,7 +43,7 @@ class ProductTransformer extends BaseApiTransformer
       'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
       'category' => new CategoryTransformer($this->whenLoaded('category')),
       'productOptions' => ProductOptionTransformer::collection($this->whenLoaded('productOptions')),
-      'optionValues' => OptionValueTransformer::collection($this->whenLoaded('optionValues')),
+      'optionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('optionValues')),
       'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
       'mainImage' => $this->mainImage,
       'gallery' => $this->gallery,

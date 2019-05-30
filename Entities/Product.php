@@ -126,12 +126,8 @@ class Product extends Model
 
   public function optionValues()
   {
-    return $this->belongsToMany(OptionValue::class, 'icommerce__product_option_value')
-      ->withPivot(
-        'id', 'product_option_id', 'option_id',
-        'parent_option_value_id', 'quantity',
-        'subtract', 'price', 'weight'
-      )->withTimestamps();
+    return $this->hasMany(ProductOptionValue::class);
+
   }
 
   public function relatedProducts()
