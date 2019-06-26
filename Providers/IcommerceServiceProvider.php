@@ -8,6 +8,7 @@ use Modules\Core\Events\BuildingSidebar;
 use Modules\Core\Events\LoadingBackendTranslations;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 
+
 class IcommerceServiceProvider extends ServiceProvider
 {
   use CanPublishConfiguration;
@@ -64,7 +65,6 @@ class IcommerceServiceProvider extends ServiceProvider
             $event->load('lists', array_dot(trans('icommerce::lists')));
             $event->load('productlists', array_dot(trans('icommerce::productlists')));
             $event->load('paymentmethods', array_dot(trans('icommerce::paymentmethods')));
-            $event->load('cartproductoptions', array_dot(trans('icommerce::cartproductoptions')));
             $event->load('shippingmethods', array_dot(trans('icommerce::shippingmethods')));
             $event->load('shippingmethodgeozones', array_dot(trans('icommerce::shippingmethodgeozones')));
             $event->load('paymentmethodgeozones', array_dot(trans('icommerce::paymentmethodgeozones')));
@@ -89,6 +89,7 @@ class IcommerceServiceProvider extends ServiceProvider
     $this->publishConfig('icommerce', 'config');
 
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+    
   }
 
   /**
@@ -523,18 +524,7 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CachePaymentMethodDecorator($repository);
             }
         );
-        $this->app->bind(
-            'Modules\Icommerce\Repositories\CartProductOptionRepository',
-            function () {
-                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCartProductOptionRepository(new \Modules\Icommerce\Entities\CartProductOption());
-
-                if (! config('app.cache')) {
-                    return $repository;
-                }
-
-                return new \Modules\Icommerce\Repositories\Cache\CacheCartProductOptionDecorator($repository);
-            }
-        );
+      
         $this->app->bind(
             'Modules\Icommerce\Repositories\ShippingMethodRepository',
             function () {
@@ -584,20 +574,7 @@ class IcommerceServiceProvider extends ServiceProvider
               return new \Modules\Icommerce\Repositories\Cache\CacheStoreDecorator($repository);
           }
       );
-
-      $this->app->bind(
-          'Modules\Icommerce\Repositories\MapAreaRepository',
-          function () {
-              $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentMapAreaRepository(new \Modules\Icommerce\Entities\MapArea());
-
-              if (! config('app.cache')) {
-                  return $repository;
-              }
-
-              return new \Modules\Icommerce\Repositories\Cache\CacheMapAreaDecorator($repository);
-          }
-      );
-
+      
 
 // add bindings
 

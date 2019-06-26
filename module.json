@@ -8,13 +8,14 @@
         "asgardCMS",
         "imagina"
     ],
-    "version": "1.0.4",
+    "version": "1.0.8",
     "active": 1,
     "order": 1,
     "providers": [
         "Modules\\Icommerce\\Providers\\EventServiceProvider",
         "Modules\\Icommerce\\Providers\\IcommerceServiceProvider",
-        "Modules\\Icommerce\\Providers\\RouteServiceProvider"
+        "Modules\\Icommerce\\Providers\\RouteServiceProvider",
+        "Modules\\Icommerce\\Providers\\BroadcastServiceProvider"
     ],
     "aliases": [],
     "files": [

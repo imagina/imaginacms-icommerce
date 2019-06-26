@@ -74,8 +74,6 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
 
   //======  STORES
   require('ApiRoutes/storeRoutes.php');
-
-  //======  MAP_AREAS
-  require('ApiRoutes/mapAreaRoutes.php');
+  
 
 });

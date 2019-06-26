@@ -16,7 +16,7 @@ class EloquentProductOptionRepository extends EloquentBaseRepository implements 
     if (in_array('*', $params->include)) {//If Request all relationships
       $query->with([]);
     } else {//Especific relationships
-      $includeDefault = ['option,translations'];//Default relationships
+      $includeDefault = ['option'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query
@@ -42,8 +42,8 @@ class EloquentProductOptionRepository extends EloquentBaseRepository implements 
       }
 
       /*== By product ==*/
-      if (isset($filter->product))
-        $query->where('product_id', $filter->product);
+      if (isset($filter->productId))
+        $query->where('product_id', $filter->productId);
 
       /*== By parent ==*/
       if (isset($filter->parent))
@@ -93,7 +93,7 @@ class EloquentProductOptionRepository extends EloquentBaseRepository implements 
     if (in_array('*', $params->include)) {//If Request all relationships
       $query->with([]);
     } else {//Especific relationships
-      $includeDefault = ['option,translations'];//Default relationships
+      $includeDefault = ['option'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query

@@ -4,33 +4,35 @@ namespace Modules\Icommerce\Support;
 
 class Cart
 {
-
-    public function fixProductsAndTotal($cart){
-
-        $products = [];
-
-        foreach($cart->products as $product){
-            array_push($products, [
-            "title" => $product->product->title,
-            "price" => $product->price,
-            "weight" => $product->product->weight,
-            "length" => $product->product->lenght,
-            "width" => $product->product->width,
-            "height" => $product->product->height,
-            "freeshipping" => $product->product->freeshipping,
-            "quantity" => $product->quantity
-            ]);
-        }
-
-        $dataMethods['products'] = array(
-            "items" => json_encode($products),
-            "total" => $cart->getTotalAttribute()
-        );
-
-        return $dataMethods;
-
-    }
-
+  
+  public function fixProductsAndTotal($cart)
+  {
     
-
+    $products = [];
+    
+    foreach ($cart->products as $cartProduct) {
+      array_push($products, [
+        "title" => $cartProduct->product->name,
+        "price" => $cartProduct->product->price,
+        "product_id" => $cartProduct->product_id,
+        "total" => $cartProduct->product->price * $cartProduct->quantity,
+        "reference" => $cartProduct->product->reference,
+        "length" => $cartProduct->product->lenght,
+        "width" => $cartProduct->product->width,
+        "height" => $cartProduct->product->height,
+        "freeshipping" => $cartProduct->product->freeshipping,
+        "quantity" => $cartProduct->quantity
+      ]);
+    }
+    
+    $dataMethods['products'] = array(
+      "items" => json_encode($products),
+      "total" => $cart->total
+    );
+    
+    return $dataMethods;
+    
+  }
+  
+  
 }

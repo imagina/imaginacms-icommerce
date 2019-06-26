@@ -18,14 +18,12 @@ class CreateIcommerceCartProductTable extends Migration
       
       // Your fields
       $table->integer('cart_id')->unsigned()->nullable();
-      $table->foreign('cart_id')->references('id')->on('icommerce__carts')->onDelete('restrict');
+      $table->foreign('cart_id')->references('id')->on('icommerce__carts')->onDelete('cascade');
       
       $table->integer('product_id')->unsigned();
-      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
       
-      $table->text('product_name');
       $table->integer('quantity')->default(1);
-      $table->float('price', 50, 2)->default(0);
       $table->text('options')->default('')->nullable();
       
       $table->timestamps();

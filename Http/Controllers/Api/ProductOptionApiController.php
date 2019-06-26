@@ -47,7 +47,6 @@ class ProductOptionApiController extends BaseApiController
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
-
     //Return response
     return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
@@ -66,7 +65,7 @@ class ProductOptionApiController extends BaseApiController
 
       //Request to Repository
       $productOption = $this->productOption->getItem($criteria, $params);
-
+      
       //Break if no found item
       if (!$productOption) throw new \Exception('Item not found', 204);
 

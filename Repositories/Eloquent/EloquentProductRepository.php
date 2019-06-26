@@ -47,12 +47,14 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->categoryId) && $filter->categoryId) {
         $query->where('category_id', $filter->categoryId);
       }
-      
-      //Filter by catgeory SLUG
+
+      // Filter by category SLUG
       if (isset($filter->categorySlug) && $filter->categorySlug) {
         $query->whereHas('categories', function ($query) use ($filter) {
           $query->whereHas('translations', function ($query) use ($filter) {
-            $query->where('slug', $filter->categorySlug);
+            $query
+              ->where('icommerce__category_translations.locale', $filter->locale)
+              ->where('icommerce__category_translations.slug', $filter->categorySlug);
           });
         });
       }
@@ -130,7 +132,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     }
   }
 
-  
+
   public function getItem($criteria, $params = false)
   {
     //Initialize query
@@ -149,10 +151,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-  
+
       // find translatable attributes
       $translatedAttributes = $this->model->translatedAttributes;
-      $field = $filter->field;
+
+      if(isset($filter->field))
+        $field = $filter->field;
+
       // filter by translatable attributes
       if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
         $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
@@ -162,7 +167,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       else
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
-  
+
     }
     /*== REQUEST ==*/
     return $query->first();
@@ -176,9 +181,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $product->categories()->sync(array_get($data, 'categories', []));
 
-      $product->productOptions()->sync(array_get($data, 'product_options', []));
+      //$product->productOptions()->sync(array_get($data, 'product_options', []));
 
-      $product->optionValues()->sync(array_get($data, 'option_values', []));
+      //$product->optionValues()->sync(array_get($data, 'option_values', []));
 
       $product->relatedProducts()->sync(array_get($data, 'related_products', []));
 

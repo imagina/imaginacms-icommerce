@@ -20,18 +20,18 @@ class SaveOrderItems
 
     	foreach ($items as $item) {
 
-    		$cartProductOptions = $item["cartProductOption"];
-    		unset($item["cartProductOption"]);
+    		$cartProductOptionsValues = $item["productOptionValues"];
+    		unset($item["productOptionValues"]);
 
     		// Create Order Items
     		$orderItem = $order->orderItems()->create($item);
 			
-    		if($cartProductOptions!=null){
-    			 foreach ($cartProductOptions as $productOption) {
+    		if($cartProductOptionsValues!=null){
+    			 foreach ($cartProductOptionsValues as $productOptionValue) {
 
     			 	// Fix Data OrderOption
       				$supportOrderOption = new orderOptionSupport();
-      				$dataOrderOption = $supportOrderOption->fixData($order->id,$orderItem->id,$productOption);
+      				$dataOrderOption = $supportOrderOption->fixData($order->id,$orderItem->id,$productOptionValue);
 
 					// Create Order Option
 					$order->orderOption()->create($dataOrderOption);

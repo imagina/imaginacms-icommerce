@@ -13,9 +13,7 @@ class CartProduct extends Model
   protected $fillable = [
     'cart_id',
     'product_id',
-    'product_name',
     'quantity',
-    'price',
     'options'
 
   ];
@@ -35,41 +33,31 @@ class CartProduct extends Model
     return $this->belongsTo(Product::class);
   }
 
-    public function cartproductoption()
+    public function productOptionValues()
     {
-        return $this->belongsToMany(ProductOption::class, 'icommerce__cart_product_options')
-            ->withPivot(
-                'id',
-                'cart_product_id',
-                'product_option_id',
-                'product_option_value_id'
-            )->withTimestamps();
+        return $this->belongsToMany(ProductOptionValue::class, 'icommerce__cart_product_options')->withTimestamps();
 
     }
 
-    public function getSubTotalAttribute()
+    public function getTotalAttribute()
     {
-        $subtotal = $this->price * $this->quantity;
-        $subtotalOpciones = 0;
-      
-        if(isset($this->cartproductoption) && count($this->cartproductoption)>0){
+        $subtotal = floatval($this->product->price) * intval($this->quantity);
+        $totalOptions = 0;
 
-          foreach($this->cartproductoption as $productOption){
-            $price = 0;
-            if($productOption->pivot->product_option_value_id!=null){
-              $productOptionValue = $productOption->productOptionValues->find($productOption->pivot->product_option_value_id);
-              $price = $productOptionValue->price * $this->quantity;
-              $subtotalOpciones += $price;
-            }
-          }
-
+        foreach($this->productOptionValues as $productOptionValue){
+          $price = 0;
+          $price = floatval($productOptionValue->price) * intval($this->quantity);
+          
+          if($productOptionValue->price_prefix == '+')
+            $totalOptions += $price;
+          else
+            $totalOptions -= $price;
         }
 
-
-        return $subtotal + $subtotalOpciones;
+        return $subtotal + $totalOptions;
     }
 
-    public function getNameproductAttribute()
+    public function getNameProductAttribute()
     {
         return Product::find($this->product_id)->name;
     }

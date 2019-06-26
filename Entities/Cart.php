@@ -11,7 +11,6 @@ class Cart extends Model
 
   protected $fillable = [
     'user_id',
-    'total',
     'ip',
     'options'
   ];
@@ -34,12 +33,12 @@ class Cart extends Model
 
   public function getTotalAttribute()
   {
-      return $this->products->sum('subtotal');
+      return $this->products->sum('total');
   }
 
-  public function getTotalquantityAttribute()
+  public function getQuantityAttribute()
   {
-      return $this->products->sum('quantity');
+      return $this->products->count();
   }
 
 }

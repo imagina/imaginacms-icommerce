@@ -135,7 +135,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
   }
 
   public function getActive(){
-    return $this->model->whereStatus(Status::ENABLED)->first();
+    return $this->model->where("default_currency",1)->first();
   }
 
 

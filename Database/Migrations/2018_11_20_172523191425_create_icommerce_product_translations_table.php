@@ -24,6 +24,8 @@ class CreateIcommerceProductTranslationsTable extends Migration
       
       $table->integer('product_id')->unsigned();
       $table->string('locale')->index();
+      $table->string('meta_title')->nullable();
+      $table->string('meta_description')->nullable();
       $table->unique(['product_id', 'locale']);
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
     });

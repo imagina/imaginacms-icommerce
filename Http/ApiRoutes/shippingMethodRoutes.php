@@ -16,10 +16,12 @@ $router->group(['prefix' => '/shipping-methods'/*,'middleware' => ['auth:api']*/
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.shipping-methods.update',
     'uses' => 'ShippingMethodApiController@update',
+    'middleware' => ['auth:api']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.shipping-methods.delete',
     'uses' => 'ShippingMethodApiController@delete',
+    'middleware' => ['auth:api']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.shipping-methods.show',

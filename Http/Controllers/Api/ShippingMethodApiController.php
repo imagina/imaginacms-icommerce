@@ -22,162 +22,200 @@ use Modules\Icommerce\Repositories\ShippingMethodRepository;
 class ShippingMethodApiController extends BaseApiController
 {
   private $shippingMethod;
-
+  
   public function __construct(ShippingMethodRepository $shippingMethod)
   {
     $this->shippingMethod = $shippingMethod;
   }
-
+  
+  
   /**
-   * Display a listing of the resource.
-   * @return Response
+   * GET ITEMS
+   *
+   * @return mixed
    */
   public function index(Request $request)
   {
     try {
-      //Request to Repository
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
       
-      $shippingMethods = $this->shippingMethod->getItemsBy($this->getParamsRequest($request));
-
+      //Request to Repository
+      $dataEntity = $this->shippingMethod->getItemsBy($params);
+      
       //Response
-      $response = ['data' => ShippingMethodTransformer::collection($shippingMethods)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($shippingMethods)] : false;
-
-    } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
       $response = [
-        'errors' => $e->getMessage()
+        "data" => ShippingMethodTransformer::collection($dataEntity)
       ];
+      
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+    } catch (\Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
+  
+  
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function show($criteria, Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
       //Request to Repository
-      $shippingMethod = $this->shippingMethod->getItem($criteria, $this->getParamsRequest($request));
-
-      $response = [
-        'data' => $shippingMethod ? new ShippingMethodTransformer($shippingMethod) : '',
-      ];
-
+      $dataEntity = $this->shippingMethod->getItem($criteria, $params);
+      
+      //Break if no found item
+      if (!$dataEntity) throw new Exception('Item not found', 404);
+      
+      //Response
+      $response = ["data" => new ShippingMethodTransformer($dataEntity)];
+      
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
+  
+  
   /**
-   * Show the form for creating a new resource.
-   * @return Response
+   * CREATE A ITEM
+   *
+   * @param Request $request
+   * @return mixed
    */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->shippingMethod->create($request->all());
-
-      $response = ['data' => ''];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
-    }
-    return response()->json($response, $status ?? 200);
-  }
-
-  /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
-   */
-  public function update($criteria, Request $request)
-  {
-    try {
-
-      \DB::beginTransaction();
-
-      //Get Parameters from URL.
-      $params = $this->getParamsRequest($request);
-
-      $data = $request->all();
+      //Get data
+      $data = $request->input('attributes');
       
-      //Request to Repository
-      $result = $this->shippingMethod->updateBy($criteria, $data, $params);
-
-      $response = ['id' => $result->id];
-
+      //Validate Request
+      //$this->validateRequestApi(new CustomRequest((array)$data));
+      
+      //Create item
+      $this->shippingMethod->create($data);
+      
+      //Response
+      $response = ["data" => ""];
       \DB::commit(); //Commit to Data Base
-
     } catch (\Exception $e) {
-
-      \Log::error($e);
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
-
     }
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
+  
+  
   /**
-   * Remove the specified resource from storage.
-   * @return Response
+   * UPDATE ITEM
+   *
+   * @param $criteria
+   * @param Request $request
+   * @return mixed
+   */
+  public function update($criteria, Request $request)
+  {
+    \DB::beginTransaction(); //DB Transaction
+    try {
+      //Get data
+      $data = $request->input('attributes');
+
+      //Validate Request
+      //$this->validateRequestApi(new CustomRequest((array)$data));
+      
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
+      //Request to Repository
+      $this->shippingMethod->updateBy($criteria, $data, $params);
+      
+      //Response
+      $response = ["data" => 'Item Updated'];
+      \DB::commit();//Commit to DataBase
+    } catch (\Exception $e) {
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    
+    //Return response
+    return response()->json($response, $status ?? 200);
+  }
+  
+  
+  /**
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function delete($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
-
-      $this->shippingMethod->deleteBy($criteria, $this->getParamsRequest($request));
-
-      $response = ['data' => ''];
-
+      //Get params
+      $params = $this->getParamsRequest($request);
+      
+      //call Method delete
+      $this->shippingMethod->deleteBy($criteria, $params);
+      
+      //Response
+      $response = ["data" => ""];
+      \DB::commit();//Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
+  
+  
   /**
    * Display a listing of the resource.
    * @return Response
    */
   public function calculations(Request $request)
   {
-    try {
-      //Request to Repository
-      
-      $shippingMethods = $this->shippingMethod->getCalculations($request);
-
-      //Response
-      $response = ['data' => ShippingMethodTransformer::collection($shippingMethods)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($shippingMethods)] : false;
-
-    } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
-    }
+     try {
+    //Request to Repository
+    //Get Parameters from URL.
+    $params = $this->getParamsRequest($request);
+    
+    $shippingMethods = $this->shippingMethod->getCalculations($params, $request);
+    
+    //Response
+    $response = ['data' => ShippingMethodTransformer::collection($shippingMethods)];
+    //If request pagination add meta-page
+    $request->page ? $response['meta'] = ['page' => $this->pageTransformer($shippingMethods)] : false;
+    
+      } catch (\Exception $e) {
+        //Message Error
+        $status = 500;
+        $response = [
+          'errors' => $e->getMessage()
+        ];
+      }
     return response()->json($response, $status ?? 200);
   }
-
+  
 }

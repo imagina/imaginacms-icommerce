@@ -19,7 +19,6 @@ class CreateIcommerceCartsTable extends Migration
       // Your fields
       $table->integer('user_id')->unsigned()->nullable();
       $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
-      $table->float('total', 50, 2)->default(0);
       $table->string('ip')->nullable();
       $table->tinyInteger('status')->default(1)->unsigned();
       $table->timestamps();

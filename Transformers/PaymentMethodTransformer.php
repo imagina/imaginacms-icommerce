@@ -8,17 +8,57 @@ class PaymentMethodTransformer extends Resource
 {
   public function toArray($request)
   {
-    $item =  [
+    $data =  [
       'id' => $this->when($this->id,$this->id),
       'title' => $this->when($this->title,$this->title),
       'description' => $this->when($this->description,$this->description),
       'name' => $this->when($this->name,$this->name),
-      'status' => $this->when($this->status,$this->status),
-      'image' => $this->when($this->options->mainimage,$this->options->mainimage),
-      'created_at' => $this->when($this->created_at,$this->created_at),
-      'updated_at' => $this->when($this->updated_at,$this->updated_at)
+      'status' => $this->status == "1" ? true : false,
+      //'image' => $this->when($this->options->mainimage,$this->options->mainimage),
+      'init' => $this->when($this->options,$this->options->init),
+      'mainImage' => $this->mainImage,
+      'createdAt' => $this->when($this->created_at,$this->created_at),
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at)
     ];
   
-    return $item;
+    switch($this->name){
+      case 'icommercepaypal':
+        $data= array_merge($data, [
+          'clientid' => $this->when($this->options,$this->options->clientid),
+          'clientsecret' => $this->when($this->options,$this->options->clientsecret),
+          'mode' => $this->when($this->options,$this->options->mode)
+        ]);
+    
+        break;
+  
+      case 'icommercepayu':
+        $data= array_merge($data, [
+          'merchantid' => $this->when($this->options,$this->options->merchantid),
+          'apilogin' => $this->when($this->options,$this->options->apilogin),
+          'apikey' => $this->when($this->options,$this->options->apikey),
+          'accountid' => $this->when($this->options,$this->options->accountid),
+          'test' => $this->when($this->options,$this->options->test),
+          'mode' => $this->when($this->options,$this->options->mode)
+        ]);
+  
+     
+  
+    }
+    $filter = json_decode($request->filter);
+  
+    // Return data with available translations
+    if (isset($filter->allTranslations) && $filter->allTranslations) {
+      // Get langs avaliables
+      $languages = \LaravelLocalization::getSupportedLocales();
+    
+      foreach ($languages as $lang => $value) {
+        $data[$lang]['title'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['title'] : '';
+        $data[$lang]['description'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['description'] ?? '' : '';
+
+      }
+    }
+    return $data;
   }
 }

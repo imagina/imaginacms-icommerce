@@ -16,9 +16,6 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\CartProductTransformer;
 
-// Entities
-use Modules\Icommerce\Entities\CartProduct;
-
 // Repositories
 use Modules\Icommerce\Repositories\CartProductRepository;
 
@@ -110,30 +107,27 @@ class CartProductApiController extends BaseApiController
     try {
       //Get data
       $data = $request->input('attributes');
-
+      
+      // validate if quantity is <= 0
+      if (intval($data['quantity']) <= 0)
+        throw new \Exception("There some errors in data", 400);
+      
       //Validate Request
       $this->validateRequestApi(new CartProductRequest((array)$data));
-
+      
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
       
-        //If user autenticated
-        //Validate if cart belongs to user autenticated
-        $cart = $this->cart->findByAttributes(['id' => $data['cart_id']]);
-        if ($cart) {
-            //Create Product Api
-            $cartProduct = $this->cartProduct->findByAttributes(['cart_id' => $data['cart_id'],'product_id' => $data['product_id']]);
-
-            if(!$cartProduct)
-                $this->cartProduct->create($data);
-            else
-              $this->cartProduct->updateBy($cartProduct->id,$data,$params);
-
-        } else
-          throw new \Exception("This cart id doesn't exist", 403);
+      // find cart by attributes
+      $cart = $this->cart->findByAttributes(['id' => $data['cart_id']]);
       
-
-
+      if ($cart) {
+        $this->cartProduct->create($data);
+        
+      } else
+        throw new \Exception("This cart id doesn't exist", 400);
+      
+      
       //Response
       $response = ["data" => ""];
       \DB::commit(); //Commit to Data Base
@@ -145,8 +139,8 @@ class CartProductApiController extends BaseApiController
     //Return response
     return response()->json($response, $status ?? 200);
   }
-
-
+  
+  
   /**
    * UPDATE ITEM
    *
@@ -161,6 +155,10 @@ class CartProductApiController extends BaseApiController
       //Get data
       $data = $request->input('attributes');
       
+      // validate if quantity is <= 0
+      if (intval($data['quantity']) <= 0)
+        throw new \Exception("There some errors in data", 400);
+      
       //Validate Request
       $this->validateRequestApi(new CartProductRequest((array)$data));
       
@@ -168,7 +166,8 @@ class CartProductApiController extends BaseApiController
       $params = $this->getParamsRequest($request);
       
       //Request to Repository
-      $this->cartProduct->updateBy($criteria, $data, $params);
+      $result = $this->cartProduct->updateBy($criteria, $data, $params);
+      
       
       //Response
       $response = ["data" => 'Item Updated'];

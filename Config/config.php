@@ -59,5 +59,19 @@ return [
             'id' => 14,
             'title' => 'icommerce::orderstatuses.statuses.expired',
         ],
-    ]
+    ],
+  'itemTypes' => [
+    '1' => [
+      'id' => 1,
+      'title' => 'icommerce::itemtypes.types.product',
+    ],
+    '2' => [
+      'id' => 2,
+      'title' => 'icommerce::itemtypes.types.service',
+    ],
+    '3' => [
+      'id' => 3,
+      'title' => 'icommerce::itemtypes.types.other',
+    ],
+  ]
 ];

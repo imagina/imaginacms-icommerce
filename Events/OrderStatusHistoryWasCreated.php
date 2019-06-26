@@ -11,23 +11,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 // Transformers
 use Modules\Icommerce\Transformers\OrderTransformer;
 
-class OrderWasCreated implements ShouldBroadcast
+class OrderStatusHistoryWasCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
-    public $items;
 
-    public function __construct($order,$items)
+
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->items = $items;
+
 
     }
 
     public function broadcastAs()
     {
-        return 'newOrder';
+        return 'orderStatusCreated';
     }
 
     public function broadcastWith()

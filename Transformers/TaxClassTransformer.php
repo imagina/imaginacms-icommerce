@@ -12,8 +12,8 @@ class TaxClassTransformer extends Resource
       'id' => $this->id,
       'name' => $this->name,
       'description' => $this->description,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
     ];
     
     // Rates

@@ -16,11 +16,11 @@ class OrderItem
         "title" => $item->product->name,
         "reference" => $item->product->sku,
         "quantity" => (int)$item->quantity,
-        "price" => floatval($item->price),
-        "total" => $item->getSubTotalAttribute(),
+        "price" => floatval($item->product->price),
+        "total" => $item->total,
         "tax" => 0,
         "reward" => 0,
-        "cartProductOption" => (count($item->cartproductoption)>0) ? $item->cartproductoption : null
+        "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null
         ]);
 
     }

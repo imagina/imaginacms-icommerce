@@ -15,8 +15,8 @@ class CartTransformer extends Resource
         'createdAt' => $this->when($this->created_at, $this->created_at),
         'updatedAt' => $this->when($this->updated_at, $this->updated_at),
         'total' => $this->when($this->total, $this->total),
-        'totalQuantity' => $this->when($this->totalquantity, $this->totalquantity),
-         //Relationshps Data
+        'quantity' => $this->when($this->quantity, $this->quantity),
+         //Relationships Data
         'products' => CartProductTransformer::collection($this->whenLoaded('products')),
     ];
 

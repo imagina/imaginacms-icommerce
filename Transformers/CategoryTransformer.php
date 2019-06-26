@@ -14,7 +14,7 @@ class CategoryTransformer extends Resource
       'slug' => $this->slug ?? '',
       'description' => $this->description ?? '',
       'url' => $this->when($this->url, $this->url),
-      'parentId' => $this->when($this->parent_id, (int)$this->parent_id),
+      'parentId' => (int)$this->parent_id,
       'showMenu' => $this->when($this->show_menu, ((int)$this->show_menu ? true : false)),
       'metaTitle' => $this->meta_title ?? '',
       'metaDescription' => $this->meta_description ?? '',

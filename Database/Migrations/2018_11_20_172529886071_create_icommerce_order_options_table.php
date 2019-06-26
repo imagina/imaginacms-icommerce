@@ -23,6 +23,8 @@ class CreateIcommerceOrderOptionsTable extends Migration
       $table->foreign('order_item_id')->references('id')->on('icommerce__order_item')->onDelete('restrict');
   
       //-- ProductOptionValue values
+      $table->string('option_value_description')->nullable();
+      $table->string('option_description')->nullable();
       $table->string('parent_option_value')->nullable();
       $table->string('option_value')->nullable();
       $table->float('price', 50, 2)->nullable();

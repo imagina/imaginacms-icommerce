@@ -13,8 +13,8 @@ class OrderOption extends Model
   protected $fillable = [
     'order_id',
     'order_item_id',
-    'parent_option_value',
-    'option_value',
+    'option_description',
+    'option_value_description',
     'price',
     'price_prefix',
     'points',

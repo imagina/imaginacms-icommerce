@@ -26,9 +26,6 @@ class Store extends Model
         'options' => 'array'
     ];
 
-    public function mapareas()
-    {
-        return $this->hasMany(MapArea::class);
-    }
+  
 
 }

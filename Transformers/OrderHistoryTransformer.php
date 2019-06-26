@@ -11,8 +11,6 @@ class OrderHistoryTransformer extends Resource
 
     $item =  [
       'id' => $this->when($this->id,$this->id),
-      'order_id' => $this->when($this->order_id,$this->order_id),
-      'status_id' => $this->when($this->status,$this->status),
       'status' => $this->when($this->orderStatus,$this->orderStatus),
       'notify' => $this->when($this->notify,$this->notify),
       'comment' => $this->when($this->comment,$this->comment),

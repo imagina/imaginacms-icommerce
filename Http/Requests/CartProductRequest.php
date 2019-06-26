@@ -11,8 +11,7 @@ class CartProductRequest extends BaseFormRequest
       return [
         'cart_id' => 'required|exists:icommerce__carts,id',
         'product_id' => 'required|exists:icommerce__products,id',
-        'product_name' => 'required',
-        'price' => 'required',
+
       ];
     }
 
@@ -34,13 +33,7 @@ class CartProductRequest extends BaseFormRequest
 
         // product id
         'product_id.required' => trans('icommerce::common.messages.field required'),
-
-        // product name
-        'product_name.required' => trans('icommerce::common.messages.field required'),
-
-        // product id
-        'price.required' => trans('icommerce::common.messages.field required'),
-
+        
       ];
     }
 

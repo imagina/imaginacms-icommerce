@@ -5,7 +5,7 @@ namespace Modules\Icommerce\Support;
 class ShippingMethod
 {
 
-    public function fixDataSend($cart,$addressShipping,$areaMapId){
+    public function fixDataSend($data){
 
         $products = [];
 
@@ -30,40 +30,42 @@ class ShippingMethod
         */
 
         $dataMethods['products'] = array(
-          "cart_id" => $cart->id
+          "cart_id" => $data->cart->id
         );
         
+        
 
-        $options = [];
-
-        if($addressShipping->country){
-          $options['countryCode'] = $addressShipping->country->iso_2;
-          $options['country'] = $addressShipping->country->translate('en')->name;
+        if(isset($data->addressShipping->country)){
+          $data['countryCode'] = $data->addressShipping->country->iso_2;
+          $data['country'] = $data->addressShipping->country->translate('en')->name;
         }
             
-        if($addressShipping->zip_code)
-          $options['postalCode'] = $addressShipping->zip_code; 
+        if(isset($data->addressShipping->zip_code))
+          $data['postalCode'] = $data->addressShipping->zip_code;
 
-        if($addressShipping->city){
-          $options['city'] = $addressShipping->city->translate('en')->name;
-          $options['cityCode'] = $addressShipping->city->code; //Optional
+        if(isset($data->addressShipping->city)){
+          $data['city'] = $data->addressShipping->city->translate('en')->name;
+          $data['cityCode'] = $data->addressShipping->city->code; //Optional
         }
 
-        if($addressShipping->province){
-          $options['zone'] = $addressShipping->province->translate('en')->name; 
-          $options['zoneCode'] = $addressShipping->province->iso_2; //Optional
+        if(isset($data->addressShipping->province)){
+          $data['zone'] = $data->addressShipping->province->translate('en')->name;
+          $data['zoneCode'] = $data->addressShipping->province->iso_2; //Optional
         }
         
-        if(!empty($areaMapId))
-          $options['areaMapId'] = $areaMapId;
+        if(!empty($data->areaMapId))
+          $data['areaMapId'] = $areaMapId;
 
-        $dataMethods['options'] = $options;
+        if(!empty($data->shippingValue))
+          $data['shippingValue'] = $shippingValue;
+
+        $dataMethods['options'] = $data;
 
         return $dataMethods;
 
     }
 
-    public function searchPriceWithName($shippingMethods,$dataName){
+    public function searchPriceByName($shippingMethods,$dataName){
         
         foreach ($shippingMethods as $shipping) {
 

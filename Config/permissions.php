@@ -62,7 +62,9 @@ return [
         'destroy' => 'icommerce::currencies.destroy resource',
     ],
     'icommerce.orders' => [
-        'index' => 'icommerce::orders.list resource',
+      'index' => 'icommerce::orders.list resource',
+      'show' => 'icommerce::orders.show resource',
+      'show-others' => 'icommerce::orders.show-others resource',
         'create' => 'icommerce::orders.create resource',
         'edit' => 'icommerce::orders.edit resource',
         'destroy' => 'icommerce::orders.destroy resource',
@@ -193,7 +195,8 @@ return [
         'edit' => 'icommerce::productlists.edit resource',
         'destroy' => 'icommerce::productlists.destroy resource',
     ],
-    'icommerce.paymentmethods' => [
+    'icommerce.payment-methods' => [
+        'manage' => 'icommerce::paymentmethods.manage resource',
         'index' => 'icommerce::paymentmethods.list resource',
         'create' => 'icommerce::paymentmethods.create resource',
         'edit' => 'icommerce::paymentmethods.edit resource',
@@ -205,7 +208,8 @@ return [
         'edit' => 'icommerce::cartproductoptions.edit resource',
         'destroy' => 'icommerce::cartproductoptions.destroy resource',
     ],
-    'icommerce.shippingmethods' => [
+    'icommerce.shipping-methods' => [
+        'manage' => 'icommerce::shippingmethods.manage resource',
         'index' => 'icommerce::shippingmethods.list resource',
         'create' => 'icommerce::shippingmethods.create resource',
         'edit' => 'icommerce::shippingmethods.edit resource',

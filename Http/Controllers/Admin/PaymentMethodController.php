@@ -79,8 +79,33 @@ class PaymentMethodController extends AdminBaseController
      */
     public function update(PaymentMethod $paymentmethod, UpdatePaymentMethodRequest $request)
     {
+  
+  
+      // init
+      $options['init'] = $paymentmethod->options->init;
+  
+      //Image
+      if(isset($request['mainimage'])){
+        $requestimage = $request['mainimage'];
+        unset($request['mainimage']);
+    
+        if(($requestimage==NULL) || (!empty($requestimage)) ){
+          $requestimage = $this->saveImage($requestimage,"assets/{$paymentmethod->name}/1.jpg");
+        }
+        $options['mainimage'] = $requestimage;
+    
+      }
+      // Extra Options
+      foreach ($paymentmethod->options as $key => $value) {
+        if($key!="mainimage" && $key!="init"){
+          $options[$key] = $request[$key];
+          unset($request[$key]);
+        }
+      }
+      $request['options'] = $options;
 
-        $this->paymentmethod->update($paymentmethod, $request->all());
+      
+      $this->paymentmethod->update($paymentmethod, $request->all());
 
         return redirect()->route('admin.icommerce.paymentmethod.index')
             ->withSuccess(trans('core::core.messages.resource updated', ['name' => $paymentmethod->title]));

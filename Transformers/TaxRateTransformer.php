@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Iprofile\Transformers\UserTransformer;
 
 class TaxRateTransformer extends Resource
 {
@@ -13,10 +14,10 @@ class TaxRateTransformer extends Resource
       'name' => $this->name,
       'rate' => $this->rate,
       'type' => $this->type,
-      'geozone_id' => $this->geozone_id,
-      'customer' => $this->customer,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'geozoneId' => $this->geozone_id,
+      'customer' => new UserTransformer($this->customer),
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
     ];
     
     // Geozone

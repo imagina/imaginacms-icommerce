@@ -7,7 +7,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 // Events
 use Modules\Icommerce\Events\OrderWasCreated;
-use Modules\Icommerce\Events\OrderWasUpdated;
+
 
 class EloquentOrderRepository extends EloquentBaseRepository implements OrderRepository
 {
@@ -17,7 +17,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     $query = $this->model->query();
 
     // RELATIONSHIPS
-    $defaultInclude = [];
+    $defaultInclude = ['customer','addedBy'];
     $query->with(array_merge($defaultInclude, $params->include));
 
     // FILTERS
@@ -55,11 +55,26 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       if (isset($filter->store)){
         $query->where('store_id', $filter->store);
       }
-
+  
       if (isset($filter->user)){
         $query->where('added_by_id', $filter->user);
       }
-
+      if (isset($filter->customer)){
+        // if has permission
+        $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
+        $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
+        $user = $params->user;
+        
+        if($showOthersPermission || ($filter->customer == $user->id && $indexPermission)){
+          $query->where('customer_id', $filter->customer);
+        }
+      }
+      //Order by
+      if (isset($filter->order)) {
+        $orderByField = $filter->order->field ?? 'created_at';//Default field
+        $orderWay = $filter->order->way ?? 'desc';//Default way
+        $query->orderBy($orderByField, $orderWay);//Add order to query
+      }
     }
 
     /*== FIELDS ==*/
@@ -75,24 +90,44 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     }
   }
 
-  public function getItem($criteria, $params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+  public function getItem($criteria, $params = false)
+      {
+        //Initialize query
+        $query = $this->model->query();
+  
+      /*== RELATIONSHIPS ==*/
+      if(in_array('*',$params->include)){//If Request all relationships
+        $query->with([]);
+      }else{//Especific relationships
+        $includeDefault = ['customer','addedBy'];//Default relationships
+        if (isset($params->include))//merge relations with default relationships
+          $includeDefault = array_merge($includeDefault, $params->include);
+        $query->with($includeDefault);//Add Relationships to query
+      }
+  
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+          $filter = $params->filter;
+  
+          if (isset($filter->field))//Filter by specific field
+            $field = $filter->field;
+        }
+        
+        $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
+        $user = $params->user;
+  
+        if(!$showOthersPermission){
+          $query->where('customer_id', $user->id);
+        }
+        
+        /*== FIELDS ==*/
+        if (isset($params->fields) && count($params->fields))
+          $query->select($params->fields);
+  
+        /*== REQUEST ==*/
+        return $query->where($field ?? 'id', $criteria)->first();
+      }
 
-    $query->where('id', $criteria);
-
-    // RELATIONSHIPS
-    $includeDefault = [];
-    $query->with(array_merge($includeDefault, $params->include));
-
-    // FIELDS
-    if ($params->fields) {
-      $query->select($params->fields);
-    }
-    return $query->first();
-
-  }
 
   public function create($data)
   {
@@ -103,8 +138,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     // Create Order History
     $order->orderHistory()->create($data['orderHistory']);
 
-    // Event To create OrderItems, OrderOptions, next send email
-    event(new OrderWasCreated($order,$data['orderItems']));
+
 
    
     return $order;
@@ -136,8 +170,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       // Create Order History
       $model->orderHistory()->create($data['orderHistory']);
      
-      // Event to send Email
-      event(new OrderWasUpdated($model));
+     
 
     }
 

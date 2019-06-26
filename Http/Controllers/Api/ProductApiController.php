@@ -110,6 +110,7 @@ class ProductApiController extends BaseApiController
       $response = ["data" => new ProductTransformer($product)];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
+      \Log::error($e);
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];

@@ -48,7 +48,7 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
         $query->where('option_id', $filter->option);
       }
 
-      /*== By Product Option ==*/
+      /*== By Product ID ==*/
       if (isset($filter->productOptionId)) {
         $query->where('product_option_id', $filter->productOptionId);
       }

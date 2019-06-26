@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 //Support
 use Modules\Icommerce\Support\Cart as cartSupport;
+use Modules\Ihelpers\Events\CreateMedia;
+use Modules\Ihelpers\Events\UpdateMedia;
 
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {
@@ -49,7 +51,6 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      }
    }
    
-   
    public function getItem($criteria, $params)
    {
      // INITIALIZE QUERY
@@ -73,11 +74,10 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
    {
      
      $shippingMethod = $this->model->create($data);
-     
+     event(new CreateMedia($shippingMethod,$data));
      return $shippingMethod;
      
    }
-   
 
    public function update($model, $data){
 
@@ -99,13 +99,12 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     }
 
     $data['options'] = $options;
-
+    
     $model->update($data);
 
     return $model;
 
 }
-
 
    public function updateBy($criteria, $data, $params){
      
@@ -127,20 +126,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
    
     if($model) {
 
-      $options['init'] = $model->options->init;
-      
-      // Extra Options
-      foreach ($model->options as $key => $value) {
-          if($key!="init"){
-            $options[$key] = $data[$key];
-            unset($data[$key]);
-          }
-      }
-      $data['options'] = $options;
-
       // Update Model
       $model->update($data);
-      
+      event(new UpdateMedia($model,$data));
       // Sync Data 
       $model->geozones()->sync(array_get($data, 'geozones', []));
      
@@ -181,7 +169,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
    * @return Response
    */
 
-   public function getCalculations($request){
+   public function getCalculations($params,$request){
 
       // INITIALIZE QUERY
       $query = $this->model->query();
@@ -194,14 +182,18 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         
         // Search Cart
         $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-        $cart = $cartRepository->find($request->products['cart_id']);
-
-        // Fix data cart products
-        $supportCart = new cartSupport();
-        $dataCart = $supportCart->fixProductsAndTotal($cart);
-
-        // Add products to request
-        $data['products'] = $dataCart['products'];
+        
+        if(isset($data->products['cart_id'])){
+          $cart = $cartRepository->find($data->products['cart_id']);
+  
+          // Fix data cart products
+          $supportCart = new cartSupport();
+          $dataCart = $supportCart->fixProductsAndTotal($cart);
+  
+          // Add products to request
+          $data['products'] = $dataCart['products'];
+        }
+        
 
         foreach ($methods as $key => $method) {
           
@@ -216,11 +208,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
 
           try {
-            
-            if(isset($request->options))
-              $data['options'] =  $request->options;
+      
 
-            $results = app($method->options->init)->init(new Request($data));
+            $results = app($method->options->init)->init($request);
             $resultData = $results->getData();
 
             $method->calculations = $resultData;

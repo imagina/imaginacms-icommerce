@@ -34,6 +34,7 @@ class CreateIcommerceOrdersTable extends Migration
           $table->string('last_name');
           $table->string('email');
           $table->string('telephone');
+          
           $table->string('payment_first_name');
           $table->string('payment_last_name');
           $table->string('payment_company')->nullable();
@@ -47,9 +48,8 @@ class CreateIcommerceOrdersTable extends Migration
           $table->text('payment_address_format')->default('')->nullable();
           $table->text('payment_custom_field')->default('')->nullable();
     
-          $table->integer('payment_method');
+          $table->string('payment_method');
           $table->string('payment_code');
-          $table->string('payment_name');
 
           $table->string('shipping_first_name');
           $table->string('shipping_last_name');
@@ -65,17 +65,23 @@ class CreateIcommerceOrdersTable extends Migration
           $table->string('shipping_method');
           $table->string('shipping_code');
           $table->double('shipping_amount', 15, 8)->default(0);
+          
           $table->integer('store_id');
           $table->string('store_name');
           $table->text('store_address');
           $table->string('store_phone');
+          
           $table->double('tax_amount', 15, 8)->nullable();
+          
           $table->text('comment')->nullable();
+          
           $table->text('tracking')->nullable();
-          $table->integer('currency_id')->unsigned();
+          
+          $table->integer('currency_id')->unsigned()->nullable();
           $table->foreign('currency_id')->references('id')->on('icommerce__currencies')->onDelete('restrict');
           $table->string('currency_code');
           $table->double('currency_value', 15, 8);
+          
           $table->string('ip');
           $table->text('user_agent')->nullable();
           $table->string('key')->nullable();

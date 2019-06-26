@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
+use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 use Modules\Icommerce\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -25,8 +26,9 @@ use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Icommerce\Repositories\ShippingMethodRepository;
 use Modules\Icommerce\Repositories\StoreRepository;
 
-use Modules\Iprofile\Repositories\UserRepository;
+use Modules\Iprofile\Repositories\UserApiRepository;
 use Modules\Iprofile\Repositories\AddressRepository;
+use Illuminate\Support\Arr;
 
 // Events
 use Modules\Icommerce\Events\OrderWasCreated;
@@ -41,32 +43,32 @@ use Modules\Icommerce\Support\OrderItem as orderItemSupport;
 
 class OrderApiController extends BaseApiController
 {
-
+  
   private $order;
   private $orderStatusHistory;
-  private $profile;
+  private $user;
   private $currency;
   private $cart;
   private $paymentMethod;
   private $shippingMethod;
   private $address;
   private $store;
-
+  
   public function __construct(
     OrderRepository $order,
     OrderHistoryRepository $orderStatusHistory,
-    UserRepository $profile,
+    UserApiRepository $user,
     AddressRepository $address,
     CurrencyRepository $currency,
     CartRepository $cart,
     PaymentMethodRepository $paymentMethod,
     ShippingMethodRepository $shippingMethod,
     StoreRepository $store
-    )
+  )
   {
     $this->order = $order;
     $this->orderStatusHistory = $orderStatusHistory;
-    $this->profile = $profile;
+    $this->user = $user;
     $this->address = $address;
     $this->currency = $currency;
     $this->cart = $cart;
@@ -74,165 +76,194 @@ class OrderApiController extends BaseApiController
     $this->shippingMethod = $shippingMethod;
     $this->store = $store;
   }
-
+  
   /**
-   * Display a listing of the resource.
-   * @return Response
+   * GET ITEMS
+   *
+   * @return mixed
    */
   public function index(Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
       //Request to Repository
-      $orders = $this->order->getItemsBy($this->getParamsRequest($request));
-
+      $dataEntity = $this->order->getItemsBy($params);
+      
       //Response
-      $response = ['data' => OrderTransformer::collection($orders)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($orders)] : false;
-
-    } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
       $response = [
-        'errors' => $e->getMessage()
+        "data" => OrderTransformer::collection($dataEntity)
       ];
+      
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+    } catch (\Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
+  
+  
+  /**
+   * GET A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function show($criteria, Request $request)
   {
     try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+      
       //Request to Repository
-      $order = $this->order->getItem($criteria,$this->getParamsRequest($request));
-
-      $response = [
-        'data' => $order ? new OrderTransformer($order) : '',
-      ];
-
+      $dataEntity = $this->order->getItem($criteria, $params);
+      
+      //Break if no found item
+      if (!$dataEntity) throw new \Exception('Item not found', 404);
+      
+      //Response
+      $response = ["data" => new OrderTransformer($dataEntity)];
+      
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
+  
+  
   /**
    * Show the form for creating a new resource.
    * @return Response
    */
   public function create(Request $request)
   {
-
+    
     \DB::beginTransaction();
+    
+  //   try{
+    //Get Parameters from URL.
+    $params = $this->getParamsRequest($request);
+    
+    $data = $request['attributes'] ?? [];//Get data
 
-    try{
-
-      $data = $request['attributes'] ?? [];//Get data
-
-      // Get Car
-      $cart = $this->cart->find($data['cart_id']);
-      $infor["cart"] = $cart;
-
-      //dd($cart->getTotalAttribute());
-
-      //Get User
-      $user = Auth::user();
-      $userID = $user->id;
-
-        //return response()->json($cart);
-      //$userID = 1; //***** Ojo ID de prueba
-      $profile = $this->profile->find($userID);
-      $infor["profile"] = $profile;
-
-
-      //Get Payment Address
-      $addressPayment = $this->address->find($data['address_payment_id']);
-      $infor["addressPayment"] = $addressPayment;
-
-      //Get Payment Method
-      $payment = $this->paymentMethod->find($data['payment_id']);
-      $infor["paymentMethod"] = $payment;
-
-      //Get Shipping Address
-      $addressShipping = $this->address->find($data['address_shipping_id']);
-      $infor["addressShipping"] = $addressShipping;
-
-      //Get Shipping Method Name
-      $infor["shippingMethod"] = $data['shipping_name'];
-
-      //Get Currency
-      $currency = $this->currency->findByAttributes(array("status" => 1));
-      $infor["currency"] = $currency;
-
-      // Fix Data to Send Shipping Methods
-      $areaMapId = isset($data['areamap_id']) ? $data['areamap_id'] : "";
-      $supportShipping = new shippingMethodSupport();
-
-      $dataMethods = $supportShipping->fixDataSend($cart,$addressShipping,$areaMapId);
-
-      //Get Shipping Methods with calculates
-      $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
-
-      //Get Shipping Method Price
-      $shippingPrice = $supportShipping->searchPriceWithName($shippingMethods,$data['shipping_name']);
-      $infor["shippingPrice"] = $shippingPrice;
-
-      //Get Store
-      //$store = $this->store->find($data['store_id']);
-      //$infor["store"] = $store;
-
-      // Fix Data Order
-      $supportOrder = new orderSupport();
-      $data = $supportOrder->fixData($request,$infor);
-return $data;
-
-      //Validate Request Order
-      $this->validateRequestApi(new OrderRequest($data));
-
-      //Get data Extra Options
-      $data['options'] = $request['options'] ?? [];
-     // $dataOptions = $request['options'] ?? [];
-      //$data['options'] = json_encode($dataOptions);
-
-      // Data Order History
-      $supportOrderHistory = new orderHistorySupport(1,1);
-      $dataOrderHistory = $supportOrderHistory->getData();
-      $data["orderHistory"] = $dataOrderHistory;
-
-      // Data Order Items
-      $supportOrderItem = new orderItemSupport();
-      $dataOrderItem = $supportOrderItem->fixData($cart->products);
-      $data["orderItems"] = $dataOrderItem;
-
-      //Create
-      $order = $this->order->create($data);
-
-      //Response
-      $response = ["data" => new OrderTransformer($order)];
-
-      \DB::commit(); //Commit to Data Base
-
-    } catch (\Exception $e) {
-
-        \Log::error($e);
-        \DB::rollback();//Rollback to Data Base
-        $status = $this->getStatusError($e->getCode());
-        $response = ["errors" => $e->getMessage()];
+    //Break if the data is empty
+    if (!count($data)) throw new \Exception('The some errors in the data sent', 400);
+    
+    // Get Cart
+    $cart = $this->cart->find($data['cart_id']);
+    
+    //Break if cart no found
+    if (!$cart) throw new \Exception('The cart selected doesn\'t exist', 400);
+    
+    $data["cart"] = $cart;
+    
+    //Get Added by id
+    $user = $params->user;
+    $data["addedBy"] = $user;
+  
+    //Get Customer Id
+    if(isset($data["customer_id"]))
+    {
+      $customer = $this->user->find($data["customer_id"]);
+      $data["customer"] = $customer;
     }
+    
+    //Get Payment Method
+    $payment = $this->paymentMethod->find($data['payment_method_id']);
+    $data["paymentMethod"] = $payment;
+    
+    //Get Shipping Method Name
+    $data["shippingMethod"] = $this->shippingMethod->find($data['shipping_method_id']);
+    
+    //Get Store
+    $data["store"] = $this->store->find($data['store_id']);
+    
+    
+    //Get Currency
+    if (!isset($data["currency_id"])) {
+      $currency = $this->currency->findByAttributes(["default_currency" => 1]);
+      if (!$currency) {
+        $data["currency_id"] = null;
+      } else {
+        $data["currency_id"] = $currency;
+      }
+    }
+    $data["currency"] = $currency;
+    
+    
+    $supportShipping = new shippingMethodSupport();
+    
+    $dataMethods = $supportShipping->fixDataSend((object)$data);
+    
+    //Get Shipping Methods with calculates
+    $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
+   
+    //Get Shipping Method Price
+    $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
+    $data["shippingPrice"] = $shippingPrice;
+    
+    // Fix Data Order
+    $supportOrder = new orderSupport();
+    $data = $supportOrder->fixData($data, $request);
+    
+    
+    //Validate Request Order
+    $this->validateRequestApi(new OrderRequest($data));
+    
+    //Get data Extra Options
+    $data['options'] = $data['options'] ?? [];
+    
+    // Data Order History
+    $supportOrderHistory = new orderHistorySupport(1, 1);
+    $dataOrderHistory = $supportOrderHistory->getData();
+    $data["orderHistory"] = $dataOrderHistory;
+    
+    // Data Order Items
+    $supportOrderItem = new orderItemSupport();
+    $dataOrderItem = $supportOrderItem->fixData($cart->products);
+    $data["orderItems"] = $dataOrderItem;
+ 
 
+    //Create
+    $order = $this->order->create($data);
+    
+    $data["orderID"] = $order->id;
+    $paymentData = $this->validateResponseApi(
+    app($payment->options->init)->init(new Request($data))
+  );
+    //Response
+    $response = ["data" => [
+      "orderId" => $order->id,
+      "paymentData" => $paymentData
+      ]
+    ];
+    
+    \DB::commit(); //Commit to Data Base
+     
+     // Event To create OrderItems, OrderOptions, next send email
+     event(new OrderWasCreated($order,$data['orderItems']));
+     event(new OrderStatusHistoryWasCreated($order));
+     
+  /*   } catch (\Exception $e) {
+ 
+         \Log::error($e);
+         \DB::rollback();//Rollback to Data Base
+         $status = $this->getStatusError($e->getCode());
+         $response = ["errors" => $e->getMessage()];
+     }*/
+    
     return response()->json($response, $status ?? 200);
-
+    
   }
-
+  
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -241,58 +272,74 @@ return $data;
   public function update($criteria, Request $request)
   {
     try {
-
+      
       \DB::beginTransaction();
-
+      
       $params = $this->getParamsRequest($request);
-
-      $data = $request->all();
-
+      
+      $data = $request->input('attributes');
+      
       // Data Order History
-      $supportOrderHistory = new orderHistorySupport($data["status_id"],1);
+      $supportOrderHistory = new orderHistorySupport($data["status_id"], 1);
       $dataOrderHistory = $supportOrderHistory->getData();
       $data["orderHistory"] = $dataOrderHistory;
-
-      $order = $this->order->updateBy($criteria,$data,$params);
-
+      
+      $data = Arr::only($data, ['status_id', 'options', 'orderHistory']);
+      $order = $this->order->updateBy($criteria, $data, $params);
+      
       $response = ['data' => new OrderTransformer($order)];
-
+      
       \DB::commit(); //Commit to Data Base
-
+      // Event to send Email
+      event(new OrderWasUpdated($order));
+  
+      if(isset($data["orderHistory"])){
+        event(new OrderStatusHistoryWasCreated($order));
+      }
+      
     } catch (\Exception $e) {
-
+      
       \Log::error($e);
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
-
-
+      
+      
     }
-
+    
     return response()->json($response, $status ?? 200);
-
+    
   }
-
-
+  
+  
   /**
-   * Remove the specified resource from storage.
-   * @return Response
+   * DELETE A ITEM
+   *
+   * @param $criteria
+   * @return mixed
    */
   public function delete($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
-
-      $this->order->deleteBy($criteria,$this->getParamsRequest($request));
-
-      $response = ['data' => ''];
-
+      //Get params
+      $params = $this->getParamsRequest($request);
+      
+      //call Method delete
+      $this->repoEntity->deleteBy($criteria, $params);
+      
+      //Response
+      $response = ["data" => ""];
+      \DB::commit();//Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
+    
+    //Return response
     return response()->json($response, $status ?? 200);
   }
-
+  
+  
 }

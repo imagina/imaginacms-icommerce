@@ -13,7 +13,6 @@ class OrderRequest extends BaseFormRequest
           'first_name' => 'required',
           'last_name' => 'required',
           'email' => 'required',
-          'telephone' => 'required',
           'payment_first_name' => 'required',
           'payment_last_name' => 'required',
           'payment_address_1' => 'required',
@@ -30,9 +29,6 @@ class OrderRequest extends BaseFormRequest
           'shipping_country' => 'required',
           'shipping_method' => 'required',
           'shipping_code' => 'required',
-          'currency_id' => 'required',
-          'currency_code' => 'required',
-          'currency_value' => 'required',
           'ip' => 'required',
           'store_id' => 'required',
           'store_name' => 'required',
@@ -65,10 +61,7 @@ class OrderRequest extends BaseFormRequest
   
           // Email
           'email.required' => trans('icommerce::common.messages.field required'),
-  
-          // Telephone
-          'telephone.required' => trans('icommerce::common.messages.field required'),
-  
+          
           // Payment First Name
           'payment_first_name.required' => trans('icommerce::common.messages.field required'),
   
@@ -120,15 +113,7 @@ class OrderRequest extends BaseFormRequest
           // Shipping Code
           'shipping_code.required' => trans('icommerce::common.messages.field required'),
   
-          // Currency Id
-          'currency_id.required' => trans('icommerce::common.messages.field required'),
-  
-          // Currency Code
-          'currency_code.required' => trans('icommerce::common.messages.field required'),
-  
-          // Currency Value
-          'currency_value.required' => trans('icommerce::common.messages.field required'),
-  
+        
           // Ip
           'ip.required' => trans('icommerce::common.messages.field required'),
 

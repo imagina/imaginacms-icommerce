@@ -13,8 +13,8 @@ class TagTransformer extends Resource
       'id' => $this->when($this->id,$this->id),
       'title' => $this->when($this->title,$this->title),
       'slug' => $this->when($this->slug,$this->slug),
-      'created_at' => $this->when($this->created_at,$this->created_at),
-      'updated_at' => $this->when($this->updated_at,$this->updated_at)
+      'createdAt' => $this->when($this->created_at,$this->created_at),
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at)
     ];
   
     // TRANSLATIONS

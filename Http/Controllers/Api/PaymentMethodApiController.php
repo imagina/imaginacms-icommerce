@@ -78,58 +78,73 @@ class PaymentMethodApiController extends BaseApiController
     return response()->json($response, $status ?? 200);
   }
 
+    /**
+       * CREATE A ITEM
+       *
+       * @param Request $request
+       * @return mixed
+       */
+      public function create(Request $request)
+      {
+        \DB::beginTransaction();
+        try {
+         //Get data
+          $data = $request->input('attributes');
+          
+          //Validate Request
+          //$this->validateRequestApi(new CustomRequest((array)$data));
+    
+          //Create item
+          $this->paymentMethod->create($data);
+    
+          //Response
+          $response = ["data" => ""];
+          \DB::commit(); //Commit to Data Base
+        } catch (\Exception $e) {
+          \DB::rollback();//Rollback to Data Base
+          $status = $this->getStatusError($e->getCode());
+          $response = ["errors" => $e->getMessage()];
+        }
+        //Return response
+        return response()->json($response, $status ?? 200);
+      }
+
   /**
-   * Show the form for creating a new resource.
-   * @return Response
-   */
-  public function create(Request $request)
-  {
-    try {
-      $this->paymentMethod->create($request->all());
-
-      $response = ['data' => ''];
-
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+     * UPDATE ITEM
+     *
+     * @param $criteria
+     * @param Request $request
+     * @return mixed
+     */
+    public function update($criteria, Request $request)
+    {
+      \DB::beginTransaction(); //DB Transaction
+     // try {
+        //Get data
+        $data = $request->input('attributes');
+  
+        //Validate Request
+        //$this->validateRequestApi(new CustomRequest((array)$data));
+  
+        //Get Parameters from URL.
+        $params = $this->getParamsRequest($request);
+  
+        //Request to Repository
+        $result = $this->paymentMethod->updateBy($criteria, $data, $params);
+  
+        //Response
+        $response = ["data" => $result->id];
+        \DB::commit();//Commit to DataBase
+    /*  } catch (\Exception $e) {
+        \DB::rollback();//Rollback to Data Base
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
+      }*/
+      
+      //Return response
+      return response()->json($response, $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
 
-  /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
-   */
-  public function update($criteria, Request $request)
-  {
-    try {
-
-      \DB::beginTransaction();
-
-      //Get Parameters from URL.
-      $params = $this->getParamsRequest($request);
-
-      $data = $request->all();
-
-      //Request to Repository
-      $result = $this->paymentMethod->updateBy($criteria, $data, $params);
-
-      $response = ['id' => $result->id];
-
-      \DB::commit(); //Commit to Data Base
-
-    } catch (\Exception $e) {
-
-      \Log::error($e);
-      \DB::rollback();//Rollback to Data Base
-      $status = $this->getStatusError($e->getCode());
-      $response = ["errors" => $e->getMessage()];
-    }
-    return response()->json($response, $status ?? 200);
-  }
 
   /**
    * Remove the specified resource from storage.

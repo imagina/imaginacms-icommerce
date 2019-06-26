@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Icommerce\Entities\ItemType;
 use Modules\Icommerce\Entities\OrderStatus;
 
-class OrderStatusTableSeeder extends Seeder
+class ItemTypeTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.
@@ -18,26 +18,25 @@ class OrderStatusTableSeeder extends Seeder
   {
     Model::unguard();
     
-    $statuses = config('asgard.icommerce.config.orderStatuses');
+    $itemTypes = config('asgard.icommerce.config.itemTypes');
     
-    foreach ($statuses as $status) {
+    foreach ($itemTypes as $type) {
       
-      $statusTrans = $status['title'];
+      $statusTrans = $type['title'];
       
       foreach (['en', 'es'] as $locale) {
         
         if ($locale == 'en') {
-          $status['title'] = trans($statusTrans, [], $locale);
-          $orderStatus = OrderStatus::create($status);
+          $type['title'] = trans($statusTrans, [], $locale);
+          $itemType = ItemType::create($type);
         } else {
           $title = trans($statusTrans, [], $locale);
-          $orderStatus->translateOrNew($locale)->title = $title;
-          $orderStatus->save();
+          $itemType->translateOrNew($locale)->title = $title;
+          $itemType->save();
         }
         
       }//End Foreach
     }//End Foreach
-    
     
   }
 }

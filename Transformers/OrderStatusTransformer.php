@@ -11,7 +11,7 @@ class OrderStatusTransformer extends Resource
     $item =  [
       'id' => $this->when($this->id,$this->id),
       'title' => $this->when($this->title,$this->title),
-      'parent_id' => $this->when($this->parent_id,$this->parent_id),
+      'parentId' => $this->when($this->parent_id,$this->parent_id),
       'status' => $this->when($this->status,$this->status)
   ];
     return $item;

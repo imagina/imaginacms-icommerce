@@ -4,10 +4,11 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Media\Support\Traits\MediaRelation;
 
 class PaymentMethod extends Model
 {
-  use Translatable;
+  use Translatable, MediaRelation;
   
   public $translatedAttributes = [
     'title',
@@ -50,5 +51,17 @@ class PaymentMethod extends Model
   {
       return $this->belongsToMany('Modules\Ilocations\Entities\Geozones', 'icommerce__payment_methods_geozones','payment_method_id','geozone_id')->withTimestamps();
   }
-
+  
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+    if(!$thumbnail) return [
+      'mimeType' => 'image/jpeg',
+      'path' =>url('modules/iblog/img/post/default.jpg')
+    ];
+    return [
+      'mimeType' => $thumbnail->mimetype,
+      'path' => $thumbnail->path_string
+    ];
+  }
 }

@@ -13,8 +13,8 @@ class PriceListTransformer extends Resource
       'name' => $this->name,
       'status' => $this->status,
       'criteria' => $this->criteria,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
     ];
   
     $this->ifRequestInclude('products') ?
