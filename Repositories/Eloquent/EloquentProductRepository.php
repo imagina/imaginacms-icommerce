@@ -132,7 +132,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     }
   }
 
-
+  
   public function getItem($criteria, $params = false)
   {
     //Initialize query
@@ -151,7 +151,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-
+  
       // find translatable attributes
       $translatedAttributes = $this->model->translatedAttributes;
 
@@ -167,7 +167,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       else
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
-
+  
     }
     /*== REQUEST ==*/
     return $query->first();
@@ -181,9 +181,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $product->categories()->sync(array_get($data, 'categories', []));
 
-      //$product->productOptions()->sync(array_get($data, 'product_options', []));
+      $product->productOptions()->sync(array_get($data, 'product_options', []));
 
-      //$product->optionValues()->sync(array_get($data, 'option_values', []));
+      $product->optionValues()->sync(array_get($data, 'option_values', []));
 
       $product->relatedProducts()->sync(array_get($data, 'related_products', []));
 

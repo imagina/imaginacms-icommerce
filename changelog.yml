@@ -1,5 +1,16 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.9":
+    deleted: all map areas resources
+    deleted: all cartProductOptions resources
+    changed: orders, payment methods and shipping methods permissions
+    added: defailt_currency column in currencies migration
+    added: currency seeder
+    added: itemType seeder
+    changed: all cart functionality
+    changed: all payment methods and shipping methods resources
+    changed: order api controller (create and update)
+    changed: all transformers to camelCase standard
   "1.0.8":
     changed:
       - OptionValue Entity Restore media
