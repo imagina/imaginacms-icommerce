@@ -148,7 +148,7 @@ class OrderApiController extends BaseApiController
     
     \DB::beginTransaction();
     
-  //   try{
+    try{
     //Get Parameters from URL.
     $params = $this->getParamsRequest($request);
     
@@ -252,13 +252,13 @@ class OrderApiController extends BaseApiController
      event(new OrderWasCreated($order,$data['orderItems']));
      event(new OrderStatusHistoryWasCreated($order));
      
-  /*   } catch (\Exception $e) {
+     } catch (\Exception $e) {
  
          \Log::error($e);
          \DB::rollback();//Rollback to Data Base
          $status = $this->getStatusError($e->getCode());
          $response = ["errors" => $e->getMessage()];
-     }*/
+     }
     
     return response()->json($response, $status ?? 200);
     

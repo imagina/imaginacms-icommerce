@@ -44,7 +44,7 @@ class Order extends Model
     'shipping_address_2',
     'shipping_city',
     'shipping_zip_code',
-    'shipping_country',
+    'shipping_country_code',
     'shipping_zone',
     'shipping_address_format',
     'shipping_custom_field',

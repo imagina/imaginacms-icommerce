@@ -83,9 +83,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
     // validate status
     if(isset($data['status']))
-      $data['status'] = "1";   
+      $data['status'] = "1";
     else
-      $data['status'] = "0"; 
+      $data['status'] = "0";
 
     // init
     $options['init'] = $model->options->init;
@@ -129,7 +129,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
       // Update Model
       $model->update($data);
       event(new UpdateMedia($model,$data));
-      // Sync Data 
+      // Sync Data
       $model->geozones()->sync(array_get($data, 'geozones', []));
      
      }
@@ -163,74 +163,71 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
 
   /**
-   * 
+   *
    * @param  Request $products array (cart_id)
    * @param  Request $options  array (countryCode,postCode,country)
    * @return Response
    */
 
-   public function getCalculations($params,$request){
-
-      // INITIALIZE QUERY
-      $query = $this->model->query();
-
-      // Check actives
-      $methods = $query->where("status",1)->get();
-
-      if(isset($methods) && count($methods)>0){
-
-        
-        // Search Cart
-        $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-        
-        if(isset($data->products['cart_id'])){
-          $cart = $cartRepository->find($data->products['cart_id']);
+   public function getCalculations($request){
   
-          // Fix data cart products
-          $supportCart = new cartSupport();
-          $dataCart = $supportCart->fixProductsAndTotal($cart);
+     // INITIALIZE QUERY
+     $query = $this->model->query();
   
-          // Add products to request
-          $data['products'] = $dataCart['products'];
-        }
-        
-
-        foreach ($methods as $key => $method) {
-          
-          /*
-                if status is "success" and 'items' is not null
-                    - Items has a list (array)
-
-                if status is "success" and items is null:
-                    - Price will be defined (Number 0,1,2,3,4,5)
-                    - PriceShow will be defined (true or false)
-          */
-
-
-          try {
+     // Check actives
+     $methods = $query->where("status",1)->get();
+  
+     if(isset($methods) && count($methods)>0){
+    
+    
+       // Search Cart
+       $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
+       $cart = $cartRepository->find($request->products['cart_id']);
+    
+       // Fix data cart products
+       $supportCart = new cartSupport();
+       $dataCart = $supportCart->fixProductsAndTotal($cart);
+    
+       // Add products to request
+       $data['products'] = $dataCart['products'];
+    
+       foreach ($methods as $key => $method) {
       
+         /*
+               if status is "success" and 'items' is not null
+                   - Items has a list (array)
 
-            $results = app($method->options->init)->init($request);
-            $resultData = $results->getData();
-
-            $method->calculations = $resultData;
-            
-          } catch (\Exception $e) {
-
-            $resultData["msj"] = "error";
-            $resultData["items"] = $e->getMessage();
-           
-            $method->calculations = $resultData;
-
-          }// Try catch
-
-         
-
-        }// Foreach
-
-      }// If actives
-
-      return $methods;
+               if status is "success" and items is null:
+                   - Price will be defined (Number 0,1,2,3,4,5)
+                   - PriceShow will be defined (true or false)
+         */
+      
+         try {
+        
+           if(isset($request->options))
+             $data['options'] =  $request->options;
+        
+           $results = app($method->options->init)->init(new Request($data));
+           $resultData = $results->getData();
+        
+           $method->calculations = $resultData;
+        
+         } catch (\Exception $e) {
+        
+           $resultData["msj"] = "error";
+           $resultData["items"] = $e->getMessage();
+        
+           $method->calculations = $resultData;
+        
+         }// Try catch
+      
+      
+      
+       }// Foreach
+    
+     }// If actives
+  
+     return $methods;
 
 
    }
