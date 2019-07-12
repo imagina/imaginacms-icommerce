@@ -200,10 +200,8 @@ class ShippingMethodApiController extends BaseApiController
     //Request to Repository
     //Get Parameters from URL.
     $params = $this->getParamsRequest($request);
-
-    $data = $request->input("attributes");
     
-    $shippingMethods = $this->shippingMethod->getCalculations(new Request($data));
+    $shippingMethods = $this->shippingMethod->getCalculations($request);
     
     //Response
     $response = ['data' => ShippingMethodTransformer::collection($shippingMethods)];

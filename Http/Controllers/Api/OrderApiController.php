@@ -201,11 +201,12 @@ class OrderApiController extends BaseApiController
     
     $supportShipping = new shippingMethodSupport();
     
-    $dataMethods = $supportShipping->fixDataSend((object)$data);
+    //$dataMethods = $supportShipping->fixDataSend((object)$data);
     
     //Get Shipping Methods with calculates
-    $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
-   
+    $shippingMethods = $this->shippingMethod->getCalculations(new Request($data));
+    //$shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
+    
     //Get Shipping Method Price
     $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
     $data["shippingPrice"] = $shippingPrice;
@@ -213,7 +214,6 @@ class OrderApiController extends BaseApiController
     // Fix Data Order
     $supportOrder = new orderSupport();
     $data = $supportOrder->fixData($data, $request);
-    
     
     //Validate Request Order
     $this->validateRequestApi(new OrderRequest($data));
