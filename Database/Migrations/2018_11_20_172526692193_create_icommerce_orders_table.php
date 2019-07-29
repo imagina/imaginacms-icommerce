@@ -58,7 +58,7 @@ class CreateIcommerceOrdersTable extends Migration
           $table->text('shipping_address_2')->nullable();
           $table->string('shipping_city');
           $table->string('shipping_zip_code');
-          $table->string('shipping_country_code');
+          $table->string('shipping_country');
           $table->string('shipping_zone')->nullable();
           $table->text('shipping_address_format')->default('')->nullable();
           $table->text('shipping_custom_field')->default('')->nullable();

@@ -9,9 +9,7 @@ class OptionRequest extends BaseFormRequest
     public function rules()
     {
         return [
-          'type' => 'required',
-          'sort_order' => 'required',
-
+          'type' => 'required'
         ];
     }
 
@@ -32,7 +30,7 @@ class OptionRequest extends BaseFormRequest
         return [
           // type
           'type.required' => trans('icommerce::common.messages.field required'),
-  
+
           // sort_order
           'sort_order.required' => trans('icommerce::common.messages.field required'),
 

@@ -30,10 +30,10 @@ class OrderRequest extends BaseFormRequest
           'shipping_method' => 'required',
           'shipping_code' => 'required',
           'ip' => 'required',
-          /*'store_id' => 'required',
+          'store_id' => 'required',
           'store_name' => 'required',
           'store_address' => 'required',
-          'store_phone' => 'required',*/
+          'store_phone' => 'required',
         ];
     }
 

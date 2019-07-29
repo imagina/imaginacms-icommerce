@@ -12,9 +12,9 @@ use Modules\Core\Traits\NamespacedEntity;
 class Category extends Model
 {
   use Translatable, NamespacedEntity, MediaRelation;
-  
+
   protected $table = 'icommerce__categories';
-  
+
   public $translatedAttributes = [
     'title',
     'slug',
@@ -27,23 +27,23 @@ class Category extends Model
     'options',
     'show_menu'
   ];
-  
+
   protected $fakeColumns = ['options'];
-  
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function parent()
   {
     return $this->belongsTo('Modules\Icommerce\Entities\Category', 'parent_id');
   }
-  
+
   public function children()
   {
     return $this->hasMany('Modules\Icommerce\Entities\Category', 'parent_id');
   }
-  
+
   public function products()
   {
     return $this->belongsToMany('Modules\Icommerce\Entities\Product','icommerce__product_category')->withTimestamps();
@@ -55,13 +55,18 @@ class Category extends Model
   }
 
   public function getUrlAttribute() {
-    
+
     return url(\LaravelLocalization::getCurrentLocale() . '/'.$this->slug);
-    
+
   }
 
-  public function getOptionsAttribute($value) {
-    return json_decode(json_decode($value));
+  public function getOptionsAttribute($value)
+  {
+    try {
+      return json_decode(json_decode($value));
+    } catch (\Exception $e) {
+      return json_decode($value);
+    }
   }
 
   public function getMainImageAttribute()

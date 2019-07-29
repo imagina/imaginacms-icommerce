@@ -76,7 +76,7 @@ class ShippingMethod
                 }
               }else{
                 foreach($shipping->calculations->items as $item){
-                  if($item->configName==$dataName){
+                  if($item->name==$dataName){
                     return $item->price;
                   }
                 }

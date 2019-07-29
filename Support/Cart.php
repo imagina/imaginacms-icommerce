@@ -21,8 +21,7 @@ class Cart
         "width" => $cartProduct->product->width,
         "height" => $cartProduct->product->height,
         "freeshipping" => $cartProduct->product->freeshipping,
-        "quantity" => $cartProduct->quantity,
-        "weight" => $cartProduct->product->weight
+        "quantity" => $cartProduct->quantity
       ]);
     }
     

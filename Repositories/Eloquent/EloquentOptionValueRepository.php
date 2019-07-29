@@ -55,7 +55,7 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
       }
 
       //add filter by search
-      if (isset($filter->optionId)) {
+      if (isset($filter->optionId) && (int)$filter->optionId) {
         //find search in columns
         $query->where('option_id', $filter->optionId);
       }

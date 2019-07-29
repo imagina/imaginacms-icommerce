@@ -34,7 +34,11 @@ class OptionValue extends Model
 
   public function getOptionsAttribute($value)
   {
-    return json_decode(json_decode($value));
+    try {
+      return json_decode(json_decode($value));
+    } catch (\Exception $e) {
+      return json_decode($value);
+    }
   }
 
   public function optionValues()
@@ -50,9 +54,9 @@ class OptionValue extends Model
   public function getMainImageAttribute()
   {
     $thumbnail = $this->files()->where('zone', 'mainimage')->first();
-    if(!$thumbnail) return [
+    if (!$thumbnail) return [
       'mimeType' => 'image/jpeg',
-      'path' =>url('modules/iblog/img/post/default.jpg')
+      'path' => url('modules/iblog/img/post/default.jpg')
     ];
     return [
       'mimeType' => $thumbnail->mimetype,

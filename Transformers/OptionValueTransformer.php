@@ -17,10 +17,10 @@ class OptionValueTransformer extends Resource
       'options' => $this->when($this->options,$this->options),
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
-      'option' => new OptionTransformer($this->whenLoaded($this->options)),
+      'option' => new OptionTransformer($this->whenLoaded('option')),
       'mainImage' => $this->mainImage,
     ];
-  
+
     $filter = json_decode($request->filter);
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations){
