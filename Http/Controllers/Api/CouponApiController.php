@@ -84,18 +84,36 @@ class CouponApiController extends BaseApiController
    */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
-     $this->coupon->create($request->all());
+      $data = $request->input('attributes') ?? [];//Get data
 
-      $response = ['data' => ''];
+      //Validate Request
+      $this->validateRequestApi(new CouponRequest($data));
 
+      //Create item
+      $coupon= $this->coupon->create($data);
+
+      //Response
+      $response = ["data" => new CouponTransformer($coupon)];
+
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+
+
+
+
+
+
+
+
   }
 
   /**
