@@ -1,9 +1,7 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
-  "1.0.10":
+  "1.0.11":
     added:
-      - Fix get field image in ProductsImport
-      - Settings traslations
       - Config Formatmoney,
       - Permission to bulkload product
       - Import category,manufacturers and products to api product
@@ -13,12 +11,17 @@ versions:
       - Import Class Jobs
       - Field image in ProductsImport
       - Routes Order, views and Controller
+    chagend:
+      - OptionsValueTrasformer and ProductOptionsValueTrasformer
+      - Fix filter categories from getiItemsBy in EloquentProductRepository
+  "1.0.10":
+    added:
+      - Fix get field image in ProductsImport
+      - Settings traslations
     changed:
       - fix filter categories in product repository
       - shipping_country by shipping_country_code
       - Fixes on shipping methods
-      - OptionsValueTrasformer and ProductOptionsValueTrasformer
-      - Fix filter categories from getiItemsBy in EloquentProductRepository
   "1.0.9":
     deleted:
       - All map areas resources
