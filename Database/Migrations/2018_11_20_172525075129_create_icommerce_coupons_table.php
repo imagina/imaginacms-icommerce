@@ -15,26 +15,39 @@ class CreateIcommerceCouponsTable extends Migration
     Schema::create('icommerce__coupons', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
-      // Your fields
+
       $table->string('code');
-      $table->char('type', 1);
-      $table->float('discount', 8, 2);
-      $table->tinyInteger('logged')->unsigned();
-      $table->tinyInteger('shipping')->unsigned();
-      $table->float('total', 8, 2);
-      $table->date('date_start');
-      $table->date('date_end');
-      $table->integer('uses_total')->unsigned();
-      $table->tinyInteger('status')->default(0)->unsigned();
-  
+      $table->integer('type');
+
+      $table->integer('category_id')->unsigned()->nullable();
+      $table->foreign('category_id')->references('id')->on('icommerce__categories')->onDelete('restrict');
+
+      $table->integer('product_id')->unsigned()->nullable();
+      $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
+
       $table->integer('customer_id')->unsigned()->nullable();
       $table->foreign('customer_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
-      
+
+      $table->float('discount', 8, 2);
+      $table->integer('type_discount');
+
+      $table->boolean('logged')->default(false)->unsigned();
+      $table->boolean('shipping')->default(false)->unsigned();
+
+      $table->date('date_start');
+      $table->date('date_end');
+
+      $table->integer('quantity_total')->default(1)->unsigned();
+      $table->integer('quantity_total_customer')->default(1)->unsigned();
+
+      $table->integer('status')->default(0)->unsigned();
+
       $table->text('options')->default('')->nullable();
+
       $table->timestamps();
     });
   }
-  
+
   /**
    * Reverse the migrations.
    *
