@@ -7,43 +7,45 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-  use Translatable;
-  
+
   protected $table = 'icommerce__coupons';
-  public $translatedAttributes = [
-    'name'
-  ];
+
   protected $fillable = [
     'code',
     'type',
+    'category_id',
+    'product_id',
+    'customer_id',
     'discount',
+    'type_discount',
     'logged',
     'shipping',
-    'total',
     'date_start',
     'date_end',
-    'uses_total',
+    'quantity_total',
+    'quantity_total_customer',
     'status',
-    'added_by_id',
-    'options'
+    'options',
   ];
   protected $fakeColumns = ['options'];
-  
+
   protected $casts = [
     'options' => 'array'
   ];
-  
-  public function products(){
-    return $this->belongsToMany(Product::class,'icommerce__coupon_product')->withTimestamps();
+
+  public function product(){
+    return $this->belongsTo(Product::class);
   }
-  
-  public function categories()
+
+  public function category()
   {
-    return $this->belongsToMany(Category::class,'icommerce__coupon_category')->withTimestamps();
+    return $this->belongsTo(Category::class);
   }
-  
-  public function orders(){
-    return $this->belongsToMany(Order::class, 'icommerce__coupon_history')->withPivot('amount')->withTimestamps();
+
+  public function customer()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User",'customer_id');
   }
-  
+
 }
