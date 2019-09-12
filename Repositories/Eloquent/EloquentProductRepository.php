@@ -71,7 +71,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       // add filter by Categories 1 or more than 1, in array
       if (isset($filter->categories)) {
-        $query->whereIn("category_id", $filter->categories);
+        is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+        $query->whereIn('icommerce__products.id', function($query) use($filter){
+          $query->select('product_id')
+          ->from('icommerce__product_category')
+          ->whereIn('category_id',$filter->categories);
+        });
       }
 
       //add filter by Manufacturers 1 or more than 1, in array

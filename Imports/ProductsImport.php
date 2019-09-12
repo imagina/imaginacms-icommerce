@@ -35,10 +35,9 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
         {
             try {
               if(isset($row->id)){
-                // if(!Product::find($row->id))
-                //   throw new Exception('Product with id: '.$row->id.' not exist');
+
                 $product_id=(int)$row->id;
-                $sku=(int)$row->sku;
+                $sku=$row->sku;
                 $title=(string)$row->name;
                 $description=(string)$row->description;
                 $summary=(string)$row->summary;
@@ -54,8 +53,8 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
                 $width=(int)$row->width;
                 $height=(int)$row->height;
                 $minimum=(int)$row->minimum;
-                $reference=(int)$row->reference;
-                $image=(int)$row->image;
+                $reference=$row->reference;
+                $image=$row->image;
                 $tax_class_id=isset($row->tax_class_id) ?(int)$row->tax_class_id : null;
                 $options=null;
                 // Search by id
@@ -69,14 +68,13 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
                         }else{
                             $img='modules/icommerce/img/product/default.jpg';
                         }
-                        $options["mainimage"] = $img;
+                        $options["mainImage"] = $img;
                     }//isset image
                 }//folderpath
                 else {
                    if($product)
                    $options = $product->options;
                 }
-                $options=json_encode($options);
                 $param = [
                   'id'=>$product_id,
                   'name'=>$title,
