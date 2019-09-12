@@ -11,21 +11,21 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // RELATIONSHIPS
-    $defaultInclude = ['translations'];
+    $defaultInclude = [];
     $query->with(array_merge($defaultInclude, $params->include));
-    
+
     // FILTERS
     if ($params->filter) {
       $filter = $params->filter;
-      
+
       //get language translation
       $lang = \App::getLocale();
-      
+
       //add filter by search
       if (isset($filter->search)) {
-        
+
         //find search in columns
         $query->where(function ($query) use ($filter, $lang) {
           $query->whereHas('translations', function ($query) use ($filter, $lang) {
@@ -45,11 +45,11 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
         $query->where('status', $filter->status);
       }
     }
-  
+
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
+
     /*== REQUEST ==*/
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
@@ -58,56 +58,51 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
       return $query->get();
     }
   }
-  
+
   public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     $query->where('id', $criteria);
-    
+
     // RELATIONSHIPS
-    $includeDefault = ['translations'];
+    $includeDefault = [];
     $query->with(array_merge($includeDefault, $params->include));
-    
+
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
     }
     return $query->first();
-    
+
   }
-  
+
   public function create($data){
-  
+
     $coupon = $this->model->create($data);
-  
-    // sync tables
-    $coupon->categories()->sync(array_get($data, 'categories', []));
-    $coupon->products()->sync(array_get($data, 'products', []));
-  
     return $coupon;
   }
-  
-  
+
+
   public function updateBy($criteria, $data, $params){
-    
+
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // FILTER
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field))//Where field
         $query->where($filter->field, $criteria);
       else//where id
         $query->where('id', $criteria);
     }
-    
+
     // REQUEST
     $model = $query->first();
-  
+
     if($model){
       $query->update($data);
       // sync tables
@@ -116,29 +111,29 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     }
     return $model;
   }
-  
+
   public function deleteBy($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // FILTER
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field)) //Where field
         $query->where($filter->field, $criteria);
       else //where id
         $query->where('id', $criteria);
     }
-  
-  
+
+
     // REQUEST
     $model = $query->first();
-  
+
     if($model) {
       $model->delete();
     }
   }
-  
+
 }
