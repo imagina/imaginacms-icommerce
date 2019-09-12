@@ -10,37 +10,24 @@ class CouponTransformer extends Resource
   {
     $data =  [
       'id' => $this->id,
-      'name' => $this->name,
-      'code' => $this->code,
-      'type' => $this->type,
-      'discount' => $this->discount,
-      'logged' => $this->logged,
-      'shipping' => $this->shipping,
-      'total' => $this->total,
-      'date_start' => $this->date_start,
-      'date_end' => $this->date_end,
-      'uses_total' => $this->uses_total,
-      'status' => $this->status,
-      'options' => $this->options,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
-      
+      'code' => $this->when($this->code, $this->code),
+      'type' => $this->when($this->type, $this->type),
+      'categoryId' => $this->when($this->category_id, $this->category_id),
+      'productId' => $this->when($this->product_id, $this->product_id),
+      'customerId' => $this->when($this->customer_id, $this->customer_id),
+      'discount' => $this->when($this->discount, $this->discount),
+      'typeDiscount' => $this->when($this->type_discount, $this->type_discount),
+      'logged' => $this->when($this->logged, $this->logged),
+      'shipping' => $this->when($this->shipping, $this->shipping),
+      'dateStart' => $this->when($this->date_start, $this->date_start),
+      'dateEnd' => $this->when($this->date_end, $this->date_end),
+      'quantityTotal' => $this->when($this->quantity_total, $this->quantity_total),
+      'quantityTotalCustomer' => $this->when($this->quantity_total_customer, $this->quantity_total_customer),
+      'status' => $this->when($this->status, $this->status),
+      'product' => $this->when($this->product_id, new ProductTransformer($this->whenLoaded('product'))),
+      'category' => $this->when($this->category_id, new CategoryTransformer($this->whenLoaded('category'))),
     ];
-  
-    $filter = json_decode($request->filter);
-  
-    // Return data with available translations
-    if (isset($filter->allTranslations) && $filter->allTranslations){
-    
-      // Get langs avaliables
-      $languages = \LaravelLocalization::getSupportedLocales();
-    
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
-        }
-      }
-    }
+
     return $data;
   }
 }
