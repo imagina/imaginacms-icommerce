@@ -148,7 +148,7 @@ class OrderApiController extends BaseApiController
     
     \DB::beginTransaction();
     
-  //   try{
+    try{
     //Get Parameters from URL.
     $params = $this->getParamsRequest($request);
     
@@ -205,7 +205,7 @@ class OrderApiController extends BaseApiController
     
     //Get Shipping Methods with calculates
     $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
-   
+
     //Get Shipping Method Price
     $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
     $data["shippingPrice"] = $shippingPrice;
@@ -213,8 +213,8 @@ class OrderApiController extends BaseApiController
     // Fix Data Order
     $supportOrder = new orderSupport();
     $data = $supportOrder->fixData($data, $request);
-    
-    
+
+
     //Validate Request Order
     $this->validateRequestApi(new OrderRequest($data));
     
@@ -252,13 +252,13 @@ class OrderApiController extends BaseApiController
      event(new OrderWasCreated($order,$data['orderItems']));
      event(new OrderStatusHistoryWasCreated($order));
      
-  /*   } catch (\Exception $e) {
+     } catch (\Exception $e) {
  
          \Log::error($e);
          \DB::rollback();//Rollback to Data Base
          $status = $this->getStatusError($e->getCode());
          $response = ["errors" => $e->getMessage()];
-     }*/
+     }
     
     return response()->json($response, $status ?? 200);
     

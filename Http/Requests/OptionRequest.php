@@ -9,7 +9,9 @@ class OptionRequest extends BaseFormRequest
     public function rules()
     {
         return [
-          'type' => 'required'
+          'type' => 'required',
+          'sort_order' => 'required',
+
         ];
     }
 

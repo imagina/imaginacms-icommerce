@@ -8,7 +8,7 @@
         "asgardCMS",
         "imagina"
     ],
-    "version": "1.0.9",
+    "version": "1.0.11",
     "active": 1,
     "order": 1,
     "providers": [
