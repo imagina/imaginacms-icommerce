@@ -1,16 +1,38 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.10":
+    added:
+      - Fix get field image in ProductsImport
+      - Settings traslations
+      - Config Formatmoney,
+      - Permission to bulkload product
+      - Import category,manufacturers and products to api product
+      - Frontend routes and frontend views
+      - frontendRoutes in RouteServiceProvider
+      - new translates
+      - Import Class Jobs
+      - Field image in ProductsImport
+      - Routes Order, views and Controller
+    changed:
+      - fix filter categories in product repository
+      - shipping_country by shipping_country_code
+      - Fixes on shipping methods
+      - OptionsValueTrasformer and ProductOptionsValueTrasformer
+      - Fix filter categories from getiItemsBy in EloquentProductRepository
   "1.0.9":
-    deleted: all map areas resources
-    deleted: all cartProductOptions resources
-    changed: orders, payment methods and shipping methods permissions
-    added: defailt_currency column in currencies migration
-    added: currency seeder
-    added: itemType seeder
-    changed: all cart functionality
-    changed: all payment methods and shipping methods resources
-    changed: order api controller (create and update)
-    changed: all transformers to camelCase standard
+    deleted:
+      - All map areas resources
+      - All cartProductOptions resources
+    added:
+      - Defailt_currency column in currencies migration
+      - Currency seeder
+      - ItemType seeder
+    changed:
+      - Orders, payment methods and shipping methods permissions
+      - All cart functionality
+      - All payment methods and shipping methods resources
+      - Order api controller (create and update)
+      - All transformers to camelCase standard
   "1.0.8":
     changed:
       - OptionValue Entity Restore media

@@ -7,8 +7,11 @@ return [
         'view'         => 'text',
         'translatable' => false,
     ],
-   
-   
+
+    'product-per-page' => [
+        'description' => 'icommerce::common.settings.product-per-page',
+        'view' => 'number',
+    ],
 
     
 ];
