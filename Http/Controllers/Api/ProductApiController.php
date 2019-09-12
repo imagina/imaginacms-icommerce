@@ -4,8 +4,11 @@ namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
 use Modules\Icommerce\Http\Requests\ProductRequest;
+use Modules\Icommerce\Http\Requests\ProductImportRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Icommerce\Imports\IcommerceImport;
+
 
 // Base Api
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
@@ -19,14 +22,27 @@ use Modules\Icommerce\Entities\Product;
 
 // Repositories
 use Modules\Icommerce\Repositories\ProductRepository;
+use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Icommerce\Repositories\ManufacturerRepository;
+
+//External libraries
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductApiController extends BaseApiController
 {
   private $product;
+  private $category;
+  private $manufacturer;
 
-  public function __construct(ProductRepository $product)
-  {
+  public function __construct(
+    ProductRepository $product,
+    CategoryRepository $category,
+    ManufacturerRepository $manufacturer
+  ){
     $this->product = $product;
+    $this->category = $category;
+    $this->manufacturer = $manufacturer;
+
   }
 
   /**
@@ -222,4 +238,25 @@ class ProductApiController extends BaseApiController
     return array_merge($lasttagsid, $newtagsid);
 
   }
+
+  public function importProducts(Request $request){
+    $msg="";
+    try {
+      $data=$request->all();
+      //Validate Request
+      $this->validateRequestApi(new ProductImportRequest($data));
+      $user=\Auth::guard('api')->user() ?? \Auth::user();
+      $data = ['folderpaht' => $request->folderpaht ?? "", 'user_id' => $user->id, 'Locale'=>\LaravelLocalization::setLocale() ?: \App::getLocale()];
+      $data_excel = Excel::import(new IcommerceImport($this->product,$this->category,$this->manufacturer,$data), $request->file);
+      $msg=trans('icommerce::products.bulkload.success migrate from product');
+      //Response
+      $response = ["data" => $msg];
+    } catch (Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+
+  }//importProducts()
+
 }

@@ -55,7 +55,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       if (isset($filter->store)){
         $query->where('store_id', $filter->store);
       }
-  
+
       if (isset($filter->user)){
         $query->where('added_by_id', $filter->user);
       }
@@ -64,7 +64,6 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
         $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
         $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
         $user = $params->user;
-        
         if($showOthersPermission || ($filter->customer == $user->id && $indexPermission)){
           $query->where('customer_id', $filter->customer);
         }
@@ -85,7 +84,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
     } else {
-      $params->take ? $query->take($params->take) : false;//Take
+      // $params->take ?? $query->take($params->take);//Take
       return $query->get();
     }
   }
@@ -94,7 +93,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       {
         //Initialize query
         $query = $this->model->query();
-  
+
       /*== RELATIONSHIPS ==*/
       if(in_array('*',$params->include)){//If Request all relationships
         $query->with([]);
@@ -104,26 +103,30 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
           $includeDefault = array_merge($includeDefault, $params->include);
         $query->with($includeDefault);//Add Relationships to query
       }
-  
+
         /*== FILTER ==*/
         if (isset($params->filter)) {
           $filter = $params->filter;
-  
+
           if (isset($filter->field))//Filter by specific field
             $field = $filter->field;
         }
-        
+
         $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
         $user = $params->user;
-  
+
         if(!$showOthersPermission){
           $query->where('customer_id', $user->id);
         }
-        
+        //By key
+        if (isset($filter->key)){
+          $query->where('key', $filter->key);
+        }
+
         /*== FIELDS ==*/
         if (isset($params->fields) && count($params->fields))
           $query->select($params->fields);
-  
+
         /*== REQUEST ==*/
         return $query->where($field ?? 'id', $criteria)->first();
       }
@@ -140,7 +143,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
 
 
-   
+
     return $order;
 
   }
@@ -169,8 +172,8 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
       // Create Order History
       $model->orderHistory()->create($data['orderHistory']);
-     
-     
+
+
 
     }
 

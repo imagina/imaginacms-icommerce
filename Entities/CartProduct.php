@@ -47,7 +47,25 @@ class CartProduct extends Model
         foreach($this->productOptionValues as $productOptionValue){
           $price = 0;
           $price = floatval($productOptionValue->price) * intval($this->quantity);
-          
+
+          if($productOptionValue->price_prefix == '+')
+            $totalOptions += $price;
+          else
+            $totalOptions -= $price;
+        }
+
+        return $subtotal + $totalOptions;
+    }
+
+    public function getPriceUnitAttribute()
+    {
+        $subtotal = floatval($this->product->price);
+        $totalOptions = 0;
+
+        foreach($this->productOptionValues as $productOptionValue){
+          $price = 0;
+          $price = floatval($productOptionValue->price);
+
           if($productOptionValue->price_prefix == '+')
             $totalOptions += $price;
           else

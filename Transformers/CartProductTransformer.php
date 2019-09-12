@@ -15,6 +15,7 @@ class CartProductTransformer extends Resource
       'productId' => $this->when($this->product_id, $this->product_id),
       'name' => $this->when($this->name_product, $this->name_product),
       'total' => $this->when($this->total, $this->total),
+      'priceUnit' => $this->when($this->priceUnit, $this->priceUnit),
       'quantity' => $this->when($this->quantity, $this->quantity),
       'mainImage' => $product->main_image,
       //Relationships Data

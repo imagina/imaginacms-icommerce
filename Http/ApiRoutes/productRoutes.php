@@ -26,5 +26,10 @@ $router->group(['prefix' => '/products'], function (Router $router) {
         'as' => 'api.icommerce.products.show',
         'uses' => 'ProductApiController@show',
     ]);
+    $router->post('import',[
+        'as'=>'api.icommerce.products.import',
+        'uses'=>'ProductApiController@importProducts',
+         'middleware'=>['auth:api'],
+    ]);
 
 });

@@ -1,5 +1,6 @@
 <?php
 
+use Modules\Icommerce\Entities\Currency;
 
 /**
  * Get Total Weight for All items validing freeshipping
@@ -75,6 +76,36 @@ if (!function_exists('icommerce_totalDimensions')) {
         $dimensions = array($tWidth, $tHeight, $tLength);
 
         return $dimensions;
+
+    }
+
+}
+
+if (!function_exists('localesymbol')) {
+
+    function localesymbol($code = 'USD')
+    {
+        $currency = Currency::where('code', $code)->whereStatus(Status::ENABLED)->first();
+        if (!isset($currency)) {
+            $currency = (object)[
+                'symbol_left' => '$',
+                'symbol_right' => '',
+                'code'=>'USD',
+                'value'=>1
+            ];
+        }
+        return $currency;
+    }
+
+}
+
+if (!function_exists('formatMoney')) {
+
+    function formatMoney($value)
+    {
+        $format =(object) Config::get('asgard.icommerce.config.formatmoney');
+
+        return number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
 
     }
 

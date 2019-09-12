@@ -11,15 +11,15 @@ class RouteServiceProvider extends CoreRoutingServiceProvider
    * @var string
    */
   protected $namespace = 'Modules\Icommerce\Http\Controllers';
-  
+
   /**
    * @return string
    */
   protected function getFrontendRoute()
   {
-    return false;
+    return __DIR__ . '/../Http/frontendRoutes.php';
   }
-  
+
   /**
    * @return string
    */
@@ -27,7 +27,7 @@ class RouteServiceProvider extends CoreRoutingServiceProvider
   {
     return __DIR__ . '/../Http/backendRoutes.php';
   }
-  
+
   /**
    * @return string
    */

@@ -24,6 +24,7 @@ return [
         'create' => 'icommerce::products.create resource',
         'edit' => 'icommerce::products.edit resource',
         'destroy' => 'icommerce::products.destroy resource',
+        'bulkload' => 'icommerce::products.bulkload import',
     ],
     'icommerce.producttags' => [
         'index' => 'icommerce::producttags.list resource',
