@@ -206,5 +206,47 @@ All shipping methods have a Seeder to create
 ##### Update Shipping Method
 ```PUT``` ```/api/icommerce/v3/shipping-methods/n```
 
+#### Coupons
+##### Get discount of the coupon in cart
+
+This route require authentication 
+
+Request:
+
+```GET``` ```/api/icommerce/v3/coupons/coupons-validate```
+
+```js
+filter = {
+  "couponCode":"code_coupon",
+  "cartId":1
+}
+```
+
+Response:
+
+```js
+{
+    "message": "coupon whit discount for product",
+    "discount": 3000
+}
+```
+| MESSAGE  | |
+| ------------- | ------------- |
+| coupon not exists  |   |
+| coupon inactive  |   |
+| coupon no started  |   |
+| coupon expired  |   |
+| maximum used coupons  |   |
+| maximum coupons per user used  |  |
+| cart not exists  | |
+| cart without items  |  |
+| coupon whit discount for order  |  |
+| coupon whit discount for product  |  |
+| coupon whit discount for category  |  |
+
+
+
+
+
 # End Points XXXXX
 
