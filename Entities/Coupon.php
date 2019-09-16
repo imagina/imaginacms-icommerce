@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Coupon extends Model
 {
@@ -29,6 +30,11 @@ class Coupon extends Model
   ];
   protected $fakeColumns = ['options'];
 
+  protected $dates = [
+    'date_start',
+    'date_end',
+  ];
+
   protected $casts = [
     'options' => 'array'
   ];
@@ -45,7 +51,28 @@ class Coupon extends Model
   public function customer()
   {
     $driver = config('asgard.user.config.driver');
-    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User",'customer_id');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
+  }
+
+  public function orders()
+  {
+    return $this->belongsToMany(Order::class, 'icommerce__coupon_order_history');
+  }
+
+
+  public function getUsesTotalAttribute()
+  {
+    return $this->has('orders')->count();
+  }
+
+  public function getUsesTotalPerUserAttribute()
+  {
+    if (Auth::id() == null ){
+      return 0;
+    }
+    return $this->whereHas('orders', function ($query) {
+      $query->where('icommerce__coupon_order_history.customer_id', Auth::id());
+    })->count();
   }
 
 }
