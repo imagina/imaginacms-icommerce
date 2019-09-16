@@ -23,7 +23,7 @@ class CouponTransformer extends Resource
       'dateEnd' => $this->when($this->date_end, $this->date_end),
       'quantityTotal' => $this->when($this->quantity_total, $this->quantity_total),
       'quantityTotalCustomer' => $this->when($this->quantity_total_customer, $this->quantity_total_customer),
-      'status' => $this->when($this->status, $this->status),
+      'status' => $this->status,
       'product' => $this->when($this->product_id, new ProductTransformer($this->whenLoaded('product'))),
       'category' => $this->when($this->category_id, new CategoryTransformer($this->whenLoaded('category'))),
     ];

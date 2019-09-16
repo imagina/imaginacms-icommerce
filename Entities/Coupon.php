@@ -30,10 +30,6 @@ class Coupon extends Model
   ];
   protected $fakeColumns = ['options'];
 
-  protected $dates = [
-    'date_start',
-    'date_end',
-  ];
 
   protected $casts = [
     'options' => 'array'
