@@ -85,31 +85,20 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
   }
 
 
-  public function updateBy($criteria, $data, $params){
-
-    // INITIALIZE QUERY
+  public function updateBy($criteria, $data, $params = false)
+  {
+    /*== initialize query ==*/
     $query = $this->model->query();
-
-    // FILTER
+    /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-
-      if (isset($filter->field))//Where field
-        $query->where($filter->field, $criteria);
-      else//where id
-        $query->where('id', $criteria);
+      //Update by field
+      if (isset($filter->field))
+        $field = $filter->field;
     }
-
-    // REQUEST
-    $model = $query->first();
-
-    if($model){
-      $query->update($data);
-      // sync tables
-      $model->categories()->sync(array_get($data, 'categories', []));
-      $model->products()->sync(array_get($data, 'products', []));
-    }
-    return $model;
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    return $model ? $model->update((array)$data) : false;
   }
 
   public function deleteBy($criteria, $params)
