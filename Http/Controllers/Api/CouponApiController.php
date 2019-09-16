@@ -19,6 +19,9 @@ use Modules\Icommerce\Entities\Coupon;
 // Repositories
 use Modules\Icommerce\Repositories\CouponRepository;
 
+// Support
+use Modules\Icommerce\Support\validateCoupons;
+
 class CouponApiController extends BaseApiController
 {
   private $coupon;
@@ -107,13 +110,6 @@ class CouponApiController extends BaseApiController
     //Return response
     return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
 
-
-
-
-
-
-
-
   }
 
   /**
@@ -123,16 +119,21 @@ class CouponApiController extends BaseApiController
    */
   public function update($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->coupon->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
-
-      $response = ['data' => ''];
-
+      $params = $this->getParamsRequest($request);
+      $data = $request->input('attributes');
+      //Validate Request
+      $this->validateRequestApi(new CouponRequest($data));
+      //Update data
+      $category = $this->coupon->updateBy($criteria, $data, $params);
+      //Response
+      $response = ['data' => 'Item Updated'];
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
     return response()->json($response, $status ?? 200);
   }
@@ -156,4 +157,20 @@ class CouponApiController extends BaseApiController
     }
     return response()->json($response, $status ?? 200);
   }
+
+  public function validateCoupon (Request $request)
+  {
+    try {
+      $params =  $this->getParamsRequest($request);
+      $validateCoupons = new validateCoupons();
+      $response = $validateCoupons->validateCode( $params->filter->couponCode, $params->filter->cartId );
+    } catch ( \Exception $exception ) {
+      $status = 500;
+      $response = [
+        'errors' => $exception->getMessage()
+      ];
+    }
+    return response()->json($response, $status ?? 200);
+  }
+
 }
