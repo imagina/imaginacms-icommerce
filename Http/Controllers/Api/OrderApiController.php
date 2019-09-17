@@ -40,10 +40,11 @@ use Modules\Icommerce\Support\Order as orderSupport;
 use Modules\Icommerce\Support\ShippingMethod as shippingMethodSupport;
 use Modules\Icommerce\Support\OrderHistory as orderHistorySupport;
 use Modules\Icommerce\Support\OrderItem as orderItemSupport;
+use Modules\Icommerce\Support\validateCoupons;
 
 class OrderApiController extends BaseApiController
 {
-  
+
   private $order;
   private $orderStatusHistory;
   private $user;
@@ -53,7 +54,7 @@ class OrderApiController extends BaseApiController
   private $shippingMethod;
   private $address;
   private $store;
-  
+
   public function __construct(
     OrderRepository $order,
     OrderHistoryRepository $orderStatusHistory,
@@ -76,7 +77,7 @@ class OrderApiController extends BaseApiController
     $this->shippingMethod = $shippingMethod;
     $this->store = $store;
   }
-  
+
   /**
    * GET ITEMS
    *
@@ -87,27 +88,27 @@ class OrderApiController extends BaseApiController
     try {
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
-      
+
       //Request to Repository
       $dataEntity = $this->order->getItemsBy($params);
-      
+
       //Response
       $response = [
         "data" => OrderTransformer::collection($dataEntity)
       ];
-      
+
       //If request pagination add meta-page
       $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
     } catch (\Exception $e) {
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
-    
+
     //Return response
     return response()->json($response, $status ?? 200);
   }
-  
-  
+
+
   /**
    * GET A ITEM
    *
@@ -119,74 +120,74 @@ class OrderApiController extends BaseApiController
     try {
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
-      
+
       //Request to Repository
       $dataEntity = $this->order->getItem($criteria, $params);
-      
+
       //Break if no found item
       if (!$dataEntity) throw new \Exception('Item not found', 404);
-      
+
       //Response
       $response = ["data" => new OrderTransformer($dataEntity)];
-      
+
     } catch (\Exception $e) {
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
-    
+
     //Return response
     return response()->json($response, $status ?? 200);
   }
-  
-  
+
+
   /**
    * Show the form for creating a new resource.
    * @return Response
    */
   public function create(Request $request)
   {
-    
+
     \DB::beginTransaction();
-    
+
     try{
     //Get Parameters from URL.
     $params = $this->getParamsRequest($request);
-    
+
     $data = $request['attributes'] ?? [];//Get data
 
     //Break if the data is empty
     if (!count($data)) throw new \Exception('The some errors in the data sent', 400);
-    
+
     // Get Cart
     $cart = $this->cart->find($data['cart_id']);
-    
+
     //Break if cart no found
     if (!$cart) throw new \Exception('The cart selected doesn\'t exist', 400);
-    
+
     $data["cart"] = $cart;
-    
+
     //Get Added by id
     $user = $params->user;
     $data["addedBy"] = $user;
-  
+
     //Get Customer Id
     if(isset($data["customer_id"]))
     {
       $customer = $this->user->find($data["customer_id"]);
       $data["customer"] = $customer;
     }
-    
+
     //Get Payment Method
     $payment = $this->paymentMethod->find($data['payment_method_id']);
     $data["paymentMethod"] = $payment;
-    
+
     //Get Shipping Method Name
     $data["shippingMethod"] = $this->shippingMethod->find($data['shipping_method_id']);
-    
+
     //Get Store
     $data["store"] = $this->store->find($data['store_id']);
-    
-    
+
+
     //Get Currency
     if (!isset($data["currency_id"])) {
       $currency = $this->currency->findByAttributes(["default_currency" => 1]);
@@ -197,19 +198,25 @@ class OrderApiController extends BaseApiController
       }
     }
     $data["currency"] = $currency;
-    
-    
+
+
     $supportShipping = new shippingMethodSupport();
-    
+
     $dataMethods = $supportShipping->fixDataSend((object)$data);
-    
+
     //Get Shipping Methods with calculates
     $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
 
     //Get Shipping Method Price
     $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
     $data["shippingPrice"] = $shippingPrice;
-    
+
+    // Coupons
+    $validateCoupons = new validateCoupons();
+    $discount = $validateCoupons->validateCode($data['coupon_code'], $data['cart_id']);
+    $data["discount"] = $discount['discount'];
+
+
     // Fix Data Order
     $supportOrder = new orderSupport();
     $data = $supportOrder->fixData($data, $request);
@@ -217,24 +224,29 @@ class OrderApiController extends BaseApiController
 
     //Validate Request Order
     $this->validateRequestApi(new OrderRequest($data));
-    
+
     //Get data Extra Options
     $data['options'] = $data['options'] ?? [];
-    
+
     // Data Order History
     $supportOrderHistory = new orderHistorySupport(1, 1);
     $dataOrderHistory = $supportOrderHistory->getData();
     $data["orderHistory"] = $dataOrderHistory;
-    
+
     // Data Order Items
     $supportOrderItem = new orderItemSupport();
     $dataOrderItem = $supportOrderItem->fixData($cart->products);
     $data["orderItems"] = $dataOrderItem;
- 
+
 
     //Create
     $order = $this->order->create($data);
-    
+
+    if ($discount['status'] == 1){
+      $coupon = $validateCoupons->getCouponByCode($data['coupon_code']);
+      $validateCoupons->redeemCoupon($coupon->id, $order->id, $customer->id, $order->total);
+    }
+
     $data["orderID"] = $order->id;
     $paymentData = $this->validateResponseApi(
     app($payment->options->init)->init(new Request($data))
@@ -245,25 +257,25 @@ class OrderApiController extends BaseApiController
       "paymentData" => $paymentData
       ]
     ];
-    
+
     \DB::commit(); //Commit to Data Base
-     
+
      // Event To create OrderItems, OrderOptions, next send email
      event(new OrderWasCreated($order,$data['orderItems']));
      event(new OrderStatusHistoryWasCreated($order));
-     
+
      } catch (\Exception $e) {
- 
+
          \Log::error($e);
          \DB::rollback();//Rollback to Data Base
          $status = $this->getStatusError($e->getCode());
          $response = ["errors" => $e->getMessage()];
      }
-    
+
     return response()->json($response, $status ?? 200);
-    
+
   }
-  
+
   /**
    * Update the specified resource in storage.
    * @param  Request $request
@@ -272,46 +284,46 @@ class OrderApiController extends BaseApiController
   public function update($criteria, Request $request)
   {
     try {
-      
+
       \DB::beginTransaction();
-      
+
       $params = $this->getParamsRequest($request);
-      
+
       $data = $request->input('attributes');
-      
+
       // Data Order History
       $supportOrderHistory = new orderHistorySupport($data["status_id"], 1);
       $dataOrderHistory = $supportOrderHistory->getData();
       $data["orderHistory"] = $dataOrderHistory;
-      
+
       $data = Arr::only($data, ['status_id', 'options', 'orderHistory']);
       $order = $this->order->updateBy($criteria, $data, $params);
-      
+
       $response = ['data' => new OrderTransformer($order)];
-      
+
       \DB::commit(); //Commit to Data Base
       // Event to send Email
       event(new OrderWasUpdated($order));
-  
+
       if(isset($data["orderHistory"])){
         event(new OrderStatusHistoryWasCreated($order));
       }
-      
+
     } catch (\Exception $e) {
-      
+
       \Log::error($e);
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
-      
-      
+
+
     }
-    
+
     return response()->json($response, $status ?? 200);
-    
+
   }
-  
-  
+
+
   /**
    * DELETE A ITEM
    *
@@ -324,10 +336,10 @@ class OrderApiController extends BaseApiController
     try {
       //Get params
       $params = $this->getParamsRequest($request);
-      
+
       //call Method delete
       $this->repoEntity->deleteBy($criteria, $params);
-      
+
       //Response
       $response = ["data" => ""];
       \DB::commit();//Commit to Data Base
@@ -336,10 +348,10 @@ class OrderApiController extends BaseApiController
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
-    
+
     //Return response
     return response()->json($response, $status ?? 200);
   }
-  
-  
+
+
 }
