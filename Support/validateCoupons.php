@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Support;
 // Entities
 use Modules\Icommerce\Entities\Coupon;
 use Modules\Icommerce\Entities\Cart;
+use Modules\Icommerce\Entities\CouponOrderHistory;
 
 class validateCoupons
 {
@@ -64,21 +65,21 @@ class validateCoupons
     // Coupon for order (1 coupon for all items of the order)
     if ( $coupon->type == 1 ){
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cart->total);
-      return $this->setResponseMessages('coupon whit discount for order', $discount);
+      return $this->setResponseMessages('coupon whit discount for order', $discount, 1);
     }
 
     // Coupon for product (2: coupon for specific product)
     if ( $coupon->type == 2 && $coupon->product_id ){
       $total = $this->calcTotal($coupon, $cart, 'product');
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
-      return $this->setResponseMessages('coupon whit discount for product', $discount);
+      return $this->setResponseMessages('coupon whit discount for product', $discount, 1);
     }
 
     // Coupon for category (3: coupon for product in a category specific)
     if ( $coupon->type == 3 && $coupon->category_id ){
       $total = $this->calcTotal($coupon, $cart, 'category');
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
-      return $this->setResponseMessages('coupon whit discount for category', $discount);
+      return $this->setResponseMessages('coupon whit discount for category', $discount, 1);
     }
 
     // Default response
@@ -131,10 +132,39 @@ class validateCoupons
    * @param $discount
    * @return []
    */
-  private function setResponseMessages ( $message = 'Error', $discount = 0 ) {
+  private function setResponseMessages ( $message = 'Error', $discount = 0, $status = 0) {
     return [
+      'status' => $status,
       'message' => $message,
       'discount' => $discount
     ];
   }
+
+  /**
+   * redeem Coupon
+   * @param $couponId
+   * @param $orderId
+   * @param $customerId
+   * @param $amount
+   * @return $coupon
+   */
+  public function  redeemCoupon ($couponId, $orderId, $customerId, $amount) {
+    $coupon = CouponOrderHistory::create([
+      'coupon_id' => $couponId,
+      'order_id' => $orderId,
+      'customer_id' => $customerId,
+      'amount' => $amount,
+    ]);
+    return $coupon;
+  }
+
+  /**
+   * get CouponBy Code
+   * @param
+   * @return
+   */
+  public function getCouponByCode ($code) {
+    return Coupon::where( 'code', $code )->first();
+  }
+
 }
