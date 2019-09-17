@@ -4,39 +4,39 @@ namespace Modules\Icommerce\Support;
 
 class Order
 {
-  
+
   public function fixData($data, $request)
   {
-    
+
     // Set Total
     /**
      * Total Cart
      * Total Shipping Method
      */
     $totalCart = $data["cart"]->total;
-    
+
     $totalShipping = $data["shippingPrice"];
-    
-    $total = $totalCart + $totalShipping;
-    
+
+    $total = $totalCart + $totalShipping - $data["discount"];
+
     $newData["total"] = $total;
-    
+
     // Set Order Status
     $newData["status_id"] = 1;
-    
+
     // Set Data User
     $newData["added_by_id"] = $data["addedBy"]->id;
-    
+
     if(!isset($data["customer"])){
       $data["customer"] = $data["addedBy"];
     }
-    
+
     $newData["customer_id"] = $data["customer"]->id;
     $newData["first_name"] = $data["customer"]->first_name;
     $newData["last_name"] = $data["customer"]->last_name;
     $newData["email"] = $data["customer"]->email;
-    
-    
+
+
     // Set Payment Address infor
     $newData["payment_first_name"] = $data["payment_first_name"];
     $newData["payment_last_name"] = $data["payment_last_name"];
@@ -48,11 +48,11 @@ class Order
     $newData["payment_zip_code"] = $data["payment_zip_code"];
     $newData["payment_country"] = $data["payment_country"];
     $newData["payment_zone"] = $data["payment_zone"] ?? "";
-    
+
     // Set Payment Method infor
     $newData["payment_code"] = $data["paymentMethod"]->id;
     $newData["payment_method"] = $data["paymentMethod"]->title;
-    
+
     // Set Shipping Address infor
     $newData["shipping_first_name"] = $data["shipping_first_name"];
     $newData["shipping_last_name"] = $data["shipping_last_name"];
@@ -63,20 +63,20 @@ class Order
     $newData["shipping_zip_code"] = $data["shipping_zip_code"];
     $newData["shipping_country"] = $data["shipping_country"];
     $newData["shipping_zone"] = $data["shipping_zone"] ?? "";
-    
+
     // Set Shipping Method infor
     $newData["shipping_method"] = $data["shippingMethod"]->title;
     $newData["shipping_code"] = $data["shipping_method_id"];
-    
+
     $newData["shipping_amount"] = $totalShipping ?? 0;
-    
+
     // Set Store
     $newData["store_id"] = $data["store"]->id;
     $newData["store_name"] = $data["store"]->name;
     $newData["store_address"] = $data["store"]->address;
     $newData["store_phone"] = $data["store"]->phone;
     $newData["options"] = $data["options"];
-    
+
     //if isset currency
     if ($data["currency"]) {
       // Set Currency
@@ -84,15 +84,15 @@ class Order
       $newData["currency_code"] = $data["currency"]->code;
       $newData["currency_value"] = $data["currency"]->value;
     }
-    
+
     // Set Others
     $newData["user_agent"] = $request->header('User-Agent');
     $newData["ip"] = $request->ip();//Set Ip from request
     $newData['key'] = substr(md5(date("Y-m-d H:i:s") . $request->ip()), 0, 20);
-    
+
     return $newData;
-    
+
   }
-  
-  
+
+
 }
