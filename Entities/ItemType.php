@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItemType extends Model
 {
-  use Translatable;
-  
-  protected $table = 'icommerce__item_types';
-  public $translatedAttributes = [
-    'title'
-  ];
-  protected $fillable = [
-    'options'
-  ];
-  protected $fakeColumns = ['options'];
-  
-  protected $casts = [
-    'options' => 'array'
-  ];
+    use Translatable;
+
+    protected $table = 'icommerce__item_types';
+    public $translatedAttributes = [
+        'title'
+    ];
+    protected $fillable = [
+        'options'
+    ];
+    protected $fakeColumns = ['options'];
+
+    protected $casts = [
+        'options' => 'array'
+    ];
 }

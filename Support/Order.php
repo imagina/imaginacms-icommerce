@@ -17,7 +17,7 @@ class Order
 
     $totalShipping = $data["shippingPrice"];
 
-    $total = $totalCart + $totalShipping - $data["discount"];
+    $total = ($totalCart + $totalShipping) - $data["discount"];
 
     $newData["total"] = $total;
 

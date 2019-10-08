@@ -18,7 +18,6 @@ class CreateIcommerceProductCategoryTable extends Migration
       // Your fields
       $table->integer('product_id')->unsigned();
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
-      
       $table->integer('category_id')->unsigned();
       $table->foreign('category_id')->references('id')->on('icommerce__categories')->onDelete('cascade');
       $table->timestamps();

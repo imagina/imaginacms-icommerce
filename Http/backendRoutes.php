@@ -136,72 +136,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'ProductController@destroy',
         'middleware' => 'can:icommerce.products.destroy'
     ]);
-    $router->bind('producttag', function ($id) {
-        return app('Modules\Icommerce\Repositories\ProductTagRepository')->find($id);
-    });
-    $router->get('producttags', [
-        'as' => 'admin.icommerce.producttag.index',
-        'uses' => 'ProductTagController@index',
-        'middleware' => 'can:icommerce.producttags.index'
-    ]);
-    $router->get('producttags/create', [
-        'as' => 'admin.icommerce.producttag.create',
-        'uses' => 'ProductTagController@create',
-        'middleware' => 'can:icommerce.producttags.create'
-    ]);
-    $router->post('producttags', [
-        'as' => 'admin.icommerce.producttag.store',
-        'uses' => 'ProductTagController@store',
-        'middleware' => 'can:icommerce.producttags.create'
-    ]);
-    $router->get('producttags/{producttag}/edit', [
-        'as' => 'admin.icommerce.producttag.edit',
-        'uses' => 'ProductTagController@edit',
-        'middleware' => 'can:icommerce.producttags.edit'
-    ]);
-    $router->put('producttags/{producttag}', [
-        'as' => 'admin.icommerce.producttag.update',
-        'uses' => 'ProductTagController@update',
-        'middleware' => 'can:icommerce.producttags.edit'
-    ]);
-    $router->delete('producttags/{producttag}', [
-        'as' => 'admin.icommerce.producttag.destroy',
-        'uses' => 'ProductTagController@destroy',
-        'middleware' => 'can:icommerce.producttags.destroy'
-    ]);
-    $router->bind('productcategory', function ($id) {
-        return app('Modules\Icommerce\Repositories\ProductCategoryRepository')->find($id);
-    });
-    $router->get('productcategories', [
-        'as' => 'admin.icommerce.productcategory.index',
-        'uses' => 'ProductCategoryController@index',
-        'middleware' => 'can:icommerce.productcategories.index'
-    ]);
-    $router->get('productcategories/create', [
-        'as' => 'admin.icommerce.productcategory.create',
-        'uses' => 'ProductCategoryController@create',
-        'middleware' => 'can:icommerce.productcategories.create'
-    ]);
-    $router->post('productcategories', [
-        'as' => 'admin.icommerce.productcategory.store',
-        'uses' => 'ProductCategoryController@store',
-        'middleware' => 'can:icommerce.productcategories.create'
-    ]);
-    $router->get('productcategories/{productcategory}/edit', [
-        'as' => 'admin.icommerce.productcategory.edit',
-        'uses' => 'ProductCategoryController@edit',
-        'middleware' => 'can:icommerce.productcategories.edit'
-    ]);
-    $router->put('productcategories/{productcategory}', [
-        'as' => 'admin.icommerce.productcategory.update',
-        'uses' => 'ProductCategoryController@update',
-        'middleware' => 'can:icommerce.productcategories.edit'
-    ]);
-    $router->delete('productcategories/{productcategory}', [
-        'as' => 'admin.icommerce.productcategory.destroy',
-        'uses' => 'ProductCategoryController@destroy',
-        'middleware' => 'can:icommerce.productcategories.destroy'
-    ]);
+
     $router->bind('option', function ($id) {
         return app('Modules\Icommerce\Repositories\OptionRepository')->find($id);
     });
@@ -268,39 +203,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'CouponController@destroy',
         'middleware' => 'can:icommerce.coupons.destroy'
     ]);
-    $router->bind('shippingcourier', function ($id) {
-        return app('Modules\Icommerce\Repositories\ShippingCourierRepository')->find($id);
-    });
-    $router->get('shippingcouriers', [
-        'as' => 'admin.icommerce.shippingcourier.index',
-        'uses' => 'ShippingCourierController@index',
-        'middleware' => 'can:icommerce.shippingcouriers.index'
-    ]);
-    $router->get('shippingcouriers/create', [
-        'as' => 'admin.icommerce.shippingcourier.create',
-        'uses' => 'ShippingCourierController@create',
-        'middleware' => 'can:icommerce.shippingcouriers.create'
-    ]);
-    $router->post('shippingcouriers', [
-        'as' => 'admin.icommerce.shippingcourier.store',
-        'uses' => 'ShippingCourierController@store',
-        'middleware' => 'can:icommerce.shippingcouriers.create'
-    ]);
-    $router->get('shippingcouriers/{shippingcourier}/edit', [
-        'as' => 'admin.icommerce.shippingcourier.edit',
-        'uses' => 'ShippingCourierController@edit',
-        'middleware' => 'can:icommerce.shippingcouriers.edit'
-    ]);
-    $router->put('shippingcouriers/{shippingcourier}', [
-        'as' => 'admin.icommerce.shippingcourier.update',
-        'uses' => 'ShippingCourierController@update',
-        'middleware' => 'can:icommerce.shippingcouriers.edit'
-    ]);
-    $router->delete('shippingcouriers/{shippingcourier}', [
-        'as' => 'admin.icommerce.shippingcourier.destroy',
-        'uses' => 'ShippingCourierController@destroy',
-        'middleware' => 'can:icommerce.shippingcouriers.destroy'
-    ]);
+
     $router->bind('currency', function ($id) {
         return app('Modules\Icommerce\Repositories\CurrencyRepository')->find($id);
     });
@@ -499,39 +402,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'ProductOptionValueController@destroy',
         'middleware' => 'can:icommerce.productoptionvalues.destroy'
     ]);
-    $router->bind('orderproduct', function ($id) {
-        return app('Modules\Icommerce\Repositories\OrderProductRepository')->find($id);
-    });
-    $router->get('orderproducts', [
-        'as' => 'admin.icommerce.orderproduct.index',
-        'uses' => 'OrderProductController@index',
-        'middleware' => 'can:icommerce.orderproducts.index'
-    ]);
-    $router->get('orderproducts/create', [
-        'as' => 'admin.icommerce.orderproduct.create',
-        'uses' => 'OrderProductController@create',
-        'middleware' => 'can:icommerce.orderproducts.create'
-    ]);
-    $router->post('orderproducts', [
-        'as' => 'admin.icommerce.orderproduct.store',
-        'uses' => 'OrderProductController@store',
-        'middleware' => 'can:icommerce.orderproducts.create'
-    ]);
-    $router->get('orderproducts/{orderproduct}/edit', [
-        'as' => 'admin.icommerce.orderproduct.edit',
-        'uses' => 'OrderProductController@edit',
-        'middleware' => 'can:icommerce.orderproducts.edit'
-    ]);
-    $router->put('orderproducts/{orderproduct}', [
-        'as' => 'admin.icommerce.orderproduct.update',
-        'uses' => 'OrderProductController@update',
-        'middleware' => 'can:icommerce.orderproducts.edit'
-    ]);
-    $router->delete('orderproducts/{orderproduct}', [
-        'as' => 'admin.icommerce.orderproduct.destroy',
-        'uses' => 'OrderProductController@destroy',
-        'middleware' => 'can:icommerce.orderproducts.destroy'
-    ]);
+
     $router->bind('orderoption', function ($id) {
         return app('Modules\Icommerce\Repositories\OrderOptionRepository')->find($id);
     });
@@ -598,105 +469,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'OrderHistoryController@destroy',
         'middleware' => 'can:icommerce.orderhistories.destroy'
     ]);
-    $router->bind('ordershipment', function ($id) {
-        return app('Modules\Icommerce\Repositories\OrderShipmentRepository')->find($id);
-    });
-    $router->get('ordershipments', [
-        'as' => 'admin.icommerce.ordershipment.index',
-        'uses' => 'OrderShipmentController@index',
-        'middleware' => 'can:icommerce.ordershipments.index'
-    ]);
-    $router->get('ordershipments/create', [
-        'as' => 'admin.icommerce.ordershipment.create',
-        'uses' => 'OrderShipmentController@create',
-        'middleware' => 'can:icommerce.ordershipments.create'
-    ]);
-    $router->post('ordershipments', [
-        'as' => 'admin.icommerce.ordershipment.store',
-        'uses' => 'OrderShipmentController@store',
-        'middleware' => 'can:icommerce.ordershipments.create'
-    ]);
-    $router->get('ordershipments/{ordershipment}/edit', [
-        'as' => 'admin.icommerce.ordershipment.edit',
-        'uses' => 'OrderShipmentController@edit',
-        'middleware' => 'can:icommerce.ordershipments.edit'
-    ]);
-    $router->put('ordershipments/{ordershipment}', [
-        'as' => 'admin.icommerce.ordershipment.update',
-        'uses' => 'OrderShipmentController@update',
-        'middleware' => 'can:icommerce.ordershipments.edit'
-    ]);
-    $router->delete('ordershipments/{ordershipment}', [
-        'as' => 'admin.icommerce.ordershipment.destroy',
-        'uses' => 'OrderShipmentController@destroy',
-        'middleware' => 'can:icommerce.ordershipments.destroy'
-    ]);
-    $router->bind('couponcategory', function ($id) {
-        return app('Modules\Icommerce\Repositories\CouponCategoryRepository')->find($id);
-    });
-    $router->get('couponcategories', [
-        'as' => 'admin.icommerce.couponcategory.index',
-        'uses' => 'CouponCategoryController@index',
-        'middleware' => 'can:icommerce.couponcategories.index'
-    ]);
-    $router->get('couponcategories/create', [
-        'as' => 'admin.icommerce.couponcategory.create',
-        'uses' => 'CouponCategoryController@create',
-        'middleware' => 'can:icommerce.couponcategories.create'
-    ]);
-    $router->post('couponcategories', [
-        'as' => 'admin.icommerce.couponcategory.store',
-        'uses' => 'CouponCategoryController@store',
-        'middleware' => 'can:icommerce.couponcategories.create'
-    ]);
-    $router->get('couponcategories/{couponcategory}/edit', [
-        'as' => 'admin.icommerce.couponcategory.edit',
-        'uses' => 'CouponCategoryController@edit',
-        'middleware' => 'can:icommerce.couponcategories.edit'
-    ]);
-    $router->put('couponcategories/{couponcategory}', [
-        'as' => 'admin.icommerce.couponcategory.update',
-        'uses' => 'CouponCategoryController@update',
-        'middleware' => 'can:icommerce.couponcategories.edit'
-    ]);
-    $router->delete('couponcategories/{couponcategory}', [
-        'as' => 'admin.icommerce.couponcategory.destroy',
-        'uses' => 'CouponCategoryController@destroy',
-        'middleware' => 'can:icommerce.couponcategories.destroy'
-    ]);
-    $router->bind('couponproduct', function ($id) {
-        return app('Modules\Icommerce\Repositories\CouponProductRepository')->find($id);
-    });
-    $router->get('couponproducts', [
-        'as' => 'admin.icommerce.couponproduct.index',
-        'uses' => 'CouponProductController@index',
-        'middleware' => 'can:icommerce.couponproducts.index'
-    ]);
-    $router->get('couponproducts/create', [
-        'as' => 'admin.icommerce.couponproduct.create',
-        'uses' => 'CouponProductController@create',
-        'middleware' => 'can:icommerce.couponproducts.create'
-    ]);
-    $router->post('couponproducts', [
-        'as' => 'admin.icommerce.couponproduct.store',
-        'uses' => 'CouponProductController@store',
-        'middleware' => 'can:icommerce.couponproducts.create'
-    ]);
-    $router->get('couponproducts/{couponproduct}/edit', [
-        'as' => 'admin.icommerce.couponproduct.edit',
-        'uses' => 'CouponProductController@edit',
-        'middleware' => 'can:icommerce.couponproducts.edit'
-    ]);
-    $router->put('couponproducts/{couponproduct}', [
-        'as' => 'admin.icommerce.couponproduct.update',
-        'uses' => 'CouponProductController@update',
-        'middleware' => 'can:icommerce.couponproducts.edit'
-    ]);
-    $router->delete('couponproducts/{couponproduct}', [
-        'as' => 'admin.icommerce.couponproduct.destroy',
-        'uses' => 'CouponProductController@destroy',
-        'middleware' => 'can:icommerce.couponproducts.destroy'
-    ]);
+
     $router->bind('couponhistory', function ($id) {
         return app('Modules\Icommerce\Repositories\CouponHistoryRepository')->find($id);
     });
@@ -763,72 +536,8 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'WishlistController@destroy',
         'middleware' => 'can:icommerce.wishlists.destroy'
     ]);
-    $router->bind('payment', function ($id) {
-        return app('Modules\Icommerce\Repositories\TransactionRepository')->find($id);
-    });
-    $router->get('payments', [
-        'as' => 'admin.icommerce.payment.index',
-        'uses' => 'PaymentController@index',
-        'middleware' => 'can:icommerce.payments.index'
-    ]);
-    $router->get('payments/create', [
-        'as' => 'admin.icommerce.payment.create',
-        'uses' => 'PaymentController@create',
-        'middleware' => 'can:icommerce.payments.create'
-    ]);
-    $router->post('payments', [
-        'as' => 'admin.icommerce.payment.store',
-        'uses' => 'PaymentController@store',
-        'middleware' => 'can:icommerce.payments.create'
-    ]);
-    $router->get('payments/{payment}/edit', [
-        'as' => 'admin.icommerce.payment.edit',
-        'uses' => 'PaymentController@edit',
-        'middleware' => 'can:icommerce.payments.edit'
-    ]);
-    $router->put('payments/{payment}', [
-        'as' => 'admin.icommerce.payment.update',
-        'uses' => 'PaymentController@update',
-        'middleware' => 'can:icommerce.payments.edit'
-    ]);
-    $router->delete('payments/{payment}', [
-        'as' => 'admin.icommerce.payment.destroy',
-        'uses' => 'PaymentController@destroy',
-        'middleware' => 'can:icommerce.payments.destroy'
-    ]);
-    $router->bind('shipping', function ($id) {
-        return app('Modules\Icommerce\Repositories\ShippingRepository')->find($id);
-    });
-    $router->get('shippings', [
-        'as' => 'admin.icommerce.shipping.index',
-        'uses' => 'ShippingController@index',
-        'middleware' => 'can:icommerce.shippings.index'
-    ]);
-    $router->get('shippings/create', [
-        'as' => 'admin.icommerce.shipping.create',
-        'uses' => 'ShippingController@create',
-        'middleware' => 'can:icommerce.shippings.create'
-    ]);
-    $router->post('shippings', [
-        'as' => 'admin.icommerce.shipping.store',
-        'uses' => 'ShippingController@store',
-        'middleware' => 'can:icommerce.shippings.create'
-    ]);
-    $router->get('shippings/{shipping}/edit', [
-        'as' => 'admin.icommerce.shipping.edit',
-        'uses' => 'ShippingController@edit',
-        'middleware' => 'can:icommerce.shippings.edit'
-    ]);
-    $router->put('shippings/{shipping}', [
-        'as' => 'admin.icommerce.shipping.update',
-        'uses' => 'ShippingController@update',
-        'middleware' => 'can:icommerce.shippings.edit'
-    ]);
-    $router->delete('shippings/{shipping}', [
-        'as' => 'admin.icommerce.shipping.destroy',
-        'uses' => 'ShippingController@destroy',
-        'middleware' => 'can:icommerce.shippings.destroy'
-    ]);
+
+
     $router->bind('taxrate', function ($id) {
         return app('Modules\Icommerce\Repositories\TaxRateRepository')->find($id);
     });
@@ -961,72 +670,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'ItemTypeController@destroy',
         'middleware' => 'can:icommerce.itemtypes.destroy'
     ]);
-    $router->bind('relatedproduct', function ($id) {
-        return app('Modules\Icommerce\Repositories\RelatedProductRepository')->find($id);
-    });
-    $router->get('relatedproducts', [
-        'as' => 'admin.icommerce.relatedproduct.index',
-        'uses' => 'RelatedProductController@index',
-        'middleware' => 'can:icommerce.relatedproducts.index'
-    ]);
-    $router->get('relatedproducts/create', [
-        'as' => 'admin.icommerce.relatedproduct.create',
-        'uses' => 'RelatedProductController@create',
-        'middleware' => 'can:icommerce.relatedproducts.create'
-    ]);
-    $router->post('relatedproducts', [
-        'as' => 'admin.icommerce.relatedproduct.store',
-        'uses' => 'RelatedProductController@store',
-        'middleware' => 'can:icommerce.relatedproducts.create'
-    ]);
-    $router->get('relatedproducts/{relatedproduct}/edit', [
-        'as' => 'admin.icommerce.relatedproduct.edit',
-        'uses' => 'RelatedProductController@edit',
-        'middleware' => 'can:icommerce.relatedproducts.edit'
-    ]);
-    $router->put('relatedproducts/{relatedproduct}', [
-        'as' => 'admin.icommerce.relatedproduct.update',
-        'uses' => 'RelatedProductController@update',
-        'middleware' => 'can:icommerce.relatedproducts.edit'
-    ]);
-    $router->delete('relatedproducts/{relatedproduct}', [
-        'as' => 'admin.icommerce.relatedproduct.destroy',
-        'uses' => 'RelatedProductController@destroy',
-        'middleware' => 'can:icommerce.relatedproducts.destroy'
-    ]);
-    $router->bind('list', function ($id) {
-        return app('Modules\Icommerce\Repositories\ListRepository')->find($id);
-    });
-    $router->get('lists', [
-        'as' => 'admin.icommerce.list.index',
-        'uses' => 'ListController@index',
-        'middleware' => 'can:icommerce.lists.index'
-    ]);
-    $router->get('lists/create', [
-        'as' => 'admin.icommerce.list.create',
-        'uses' => 'ListController@create',
-        'middleware' => 'can:icommerce.lists.create'
-    ]);
-    $router->post('lists', [
-        'as' => 'admin.icommerce.list.store',
-        'uses' => 'ListController@store',
-        'middleware' => 'can:icommerce.lists.create'
-    ]);
-    $router->get('lists/{list}/edit', [
-        'as' => 'admin.icommerce.list.edit',
-        'uses' => 'ListController@edit',
-        'middleware' => 'can:icommerce.lists.edit'
-    ]);
-    $router->put('lists/{list}', [
-        'as' => 'admin.icommerce.list.update',
-        'uses' => 'ListController@update',
-        'middleware' => 'can:icommerce.lists.edit'
-    ]);
-    $router->delete('lists/{list}', [
-        'as' => 'admin.icommerce.list.destroy',
-        'uses' => 'ListController@destroy',
-        'middleware' => 'can:icommerce.lists.destroy'
-    ]);
+
     $router->bind('productlist', function ($id) {
         return app('Modules\Icommerce\Repositories\ProductListRepository')->find($id);
     });
@@ -1093,39 +737,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
         'uses' => 'PaymentMethodController@destroy',
         'middleware' => 'can:icommerce.paymentmethods.destroy'
     ]);
-    $router->bind('cartproductoption', function ($id) {
-        return app('Modules\Icommerce\Repositories\CartProductOptionRepository')->find($id);
-    });
-    $router->get('cartproductoptions', [
-        'as' => 'admin.icommerce.cartproductoption.index',
-        'uses' => 'CartProductOptionController@index',
-        'middleware' => 'can:icommerce.cartproductoptions.index'
-    ]);
-    $router->get('cartproductoptions/create', [
-        'as' => 'admin.icommerce.cartproductoption.create',
-        'uses' => 'CartProductOptionController@create',
-        'middleware' => 'can:icommerce.cartproductoptions.create'
-    ]);
-    $router->post('cartproductoptions', [
-        'as' => 'admin.icommerce.cartproductoption.store',
-        'uses' => 'CartProductOptionController@store',
-        'middleware' => 'can:icommerce.cartproductoptions.create'
-    ]);
-    $router->get('cartproductoptions/{cartproductoption}/edit', [
-        'as' => 'admin.icommerce.cartproductoption.edit',
-        'uses' => 'CartProductOptionController@edit',
-        'middleware' => 'can:icommerce.cartproductoptions.edit'
-    ]);
-    $router->put('cartproductoptions/{cartproductoption}', [
-        'as' => 'admin.icommerce.cartproductoption.update',
-        'uses' => 'CartProductOptionController@update',
-        'middleware' => 'can:icommerce.cartproductoptions.edit'
-    ]);
-    $router->delete('cartproductoptions/{cartproductoption}', [
-        'as' => 'admin.icommerce.cartproductoption.destroy',
-        'uses' => 'CartProductOptionController@destroy',
-        'middleware' => 'can:icommerce.cartproductoptions.destroy'
-    ]);
+    
     $router->bind('shippingmethod', function ($id) {
         return app('Modules\Icommerce\Repositories\ShippingMethodRepository')->find($id);
     });

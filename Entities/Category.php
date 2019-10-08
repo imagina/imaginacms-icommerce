@@ -4,81 +4,116 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Media\Support\Traits\MediaRelation;
-use Modules\Media\Entities\File;
 use Modules\Core\Traits\NamespacedEntity;
+use Modules\Media\Entities\File;
+use Modules\Media\Support\Traits\MediaRelation;
 
 
 class Category extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation;
+    use Translatable, NamespacedEntity, MediaRelation;
 
-  protected $table = 'icommerce__categories';
+    protected $table = 'icommerce__categories';
+    protected static $entityNamespace = 'asgardcms/icommerceCategory';
+    public $translatedAttributes = [
+        'title',
+        'slug',
+        'description',
+        'meta_title',
+        'meta_description',
+        'translatable_options'
+    ];
+    protected $fillable = [
+        'parent_id',
+        'options',
+        'show_menu',
+        'store_id'
+    ];
 
-  public $translatedAttributes = [
-    'title',
-    'slug',
-    'description',
-    'meta_title',
-    'meta_description'
-  ];
-  protected $fillable = [
-    'parent_id',
-    'options',
-    'show_menu'
-  ];
+    protected $fakeColumns = ['options'];
 
-  protected $fakeColumns = ['options'];
+    protected $casts = [
+        'options' => 'array'
+    ];
 
-  protected $casts = [
-    'options' => 'array'
-  ];
-
-  public function parent()
-  {
-    return $this->belongsTo('Modules\Icommerce\Entities\Category', 'parent_id');
-  }
-
-  public function children()
-  {
-    return $this->hasMany('Modules\Icommerce\Entities\Category', 'parent_id');
-  }
-
-  public function products()
-  {
-    return $this->belongsToMany('Modules\Icommerce\Entities\Product','icommerce__product_category')->withTimestamps();
-  }
-
-  public function coupons()
-  {
-    return $this->belongsToMany('Modules\Icommerce\Entities\Coupon','icommerce__coupon_category')->withTimestamps();
-  }
-
-  public function getUrlAttribute() {
-
-    return url(\LaravelLocalization::getCurrentLocale() . '/'.$this->slug);
-
-  }
-
-  public function getOptionsAttribute($value)
-  {
-    try {
-      return json_decode(json_decode($value));
-    } catch (\Exception $e) {
-      return json_decode($value);
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
-  }
 
-  public function getMainImageAttribute()
-  {
-    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
-    if(!$thumbnail) return [
-      'mimeType' => 'image/jpeg',
-      'path' =>url('modules/iblog/img/post/default.jpg')
-    ];
-    return [
-      'mimeType' => $thumbnail->mimetype,
-      'path' => $thumbnail->path_string
-    ];
-  }
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'icommerce__product_category')->withTimestamps();
+    }
+
+
+    public function store()
+    {
+        if (is_module_enabled('Marketplace')) {
+            return $this->belongsTo('Modules\Marketplace\Entities\Store');
+        }
+        return $this->belongsTo(Store::class);
+    }
+
+    public function getUrlAttribute()
+    {
+
+        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category', $this->slug);
+
+    }
+
+    public function getOptionsAttribute($value)
+    {
+        try {
+            return json_decode(json_decode($value));
+        } catch (\Exception $e) {
+            return json_decode($value);
+        }
+    }
+
+    public function getMainImageAttribute()
+    {
+        $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+        if (!$thumbnail) {
+            if (isset($this->options->mainimage)) {
+                $image = [
+                    'mimeType' => 'image/jpeg',
+                    'path' => url($this->options->mainimage)
+                ];
+            } else {
+                $image = [
+                    'mimeType' => 'image/jpeg',
+                    'path' => url('modules/iblog/img/post/default.jpg')
+                ];
+            }
+        } else {
+            $image = [
+                'mimeType' => $thumbnail->mimetype,
+                'path' => $thumbnail->path_string
+            ];
+        }
+        return json_decode(json_encode($image));
+    }
+
+    public function getSecondaryImageAttribute()
+    {
+        $thumbnail = $this->files()->where('zone', 'secondaryimage')->first();
+        if (!$thumbnail) {
+            $image = [
+                'mimeType' => 'image/jpeg',
+                'path' => url('modules/iblog/img/post/default.jpg')
+            ];
+        } else {
+            $image = [
+                'mimeType' => $thumbnail->mimetype,
+                'path' => $thumbnail->path_string
+            ];
+        }
+        return json_decode(json_encode($image));
+    }
 }

@@ -4,22 +4,21 @@ use Illuminate\Routing\Router;
 
 $locale = LaravelLocalization::setLocale() ?: App::getLocale();
 /** @var Router $router */
+if(Request::path()!='backend') {
+    $router->get('{icommerceCategory}', [
+        'as' => $locale . '.icommerce.category',
+        'uses' => 'PublicController@index',
+    ]);;
 
-$router->get('{icommerceCategory}', [
-    'as' => $locale . '.icommerce.category',
-    'uses' => 'PublicController@index',
-]);;
-
-$router->get('{icommerceProduct}', [
-    'as' => $locale . '.icommerceslug.product',
-    'uses' => 'PublicController@show',
-]);
-
-
+    $router->get('{icommerceProduct}', [
+        'as' => $locale . '.icommerceslug.product',
+        'uses' => 'PublicController@show',
+    ]);
+}
 
 /** @var Router $router */
-$router->group(['prefix' => '/checkout'], function (Router $router) {
-    $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+$router->group(['prefix' => '/checkout'], function (Router $router) use ($locale){
+
 
     $router->get('/', [
         'as' => $locale . 'icommerce.checkout',
@@ -28,8 +27,8 @@ $router->group(['prefix' => '/checkout'], function (Router $router) {
 
 });
 
-$router->group(['prefix' => '/orders'], function (Router $router) {
-    $locale = LaravelLocalization::setLocale() ?: App::getLocale();
+$router->group(['prefix' => '/orders'], function (Router $router) use ($locale) {
+
     $router->get('/', [
         'as' => $locale .'.icommerce.orders.index',
         'uses' => $locale .'.OrderController@index',

@@ -1,5 +1,23 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  "1.0.12":
+    added:
+      - ProductPresenter
+      - CartStatus const PROCESSED and translate
+      - CartPresenter to entity Cart
+      - Methods status and statusClass in CartPresenter
+      - Get secondaryImage in Category Entity
+      - Field translatable_options in CategoryTranslation
+      - Method's Relations in CouponOrderHistory
+      - Field translatable_options, description and slug in ManufarturerTranslation
+      - Get MainImage and secondaryImage in Manufarturer Entity
+    changed:
+      - Methods retations of Icommerce entity class
+      - Rename column status by active in icommerce__manufarturer
+      - Rename column status by active in icommerce__payment_methods
+    deleted:
+      - Method relation coupon in Category Entity
+
   "1.0.11":
     added:
       - Config Formatmoney,

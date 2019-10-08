@@ -15,8 +15,6 @@ class CreateIcommerceOrderStatusesTable extends Migration
     Schema::create('icommerce__order_statuses', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
-      // Your fields
-      
       $table->integer('parent_id')->default(0);
       $table->integer('status')->unsigned()->default(1);
       

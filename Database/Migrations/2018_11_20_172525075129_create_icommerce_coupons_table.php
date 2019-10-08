@@ -15,33 +15,23 @@ class CreateIcommerceCouponsTable extends Migration
     Schema::create('icommerce__coupons', function (Blueprint $table) {
       $table->engine = 'InnoDB';
       $table->increments('id');
-
       $table->string('code');
       $table->integer('type');
-
       $table->integer('category_id')->unsigned()->nullable();
       $table->foreign('category_id')->references('id')->on('icommerce__categories')->onDelete('restrict');
-
       $table->integer('product_id')->unsigned()->nullable();
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
-
       $table->integer('customer_id')->unsigned()->nullable();
       $table->foreign('customer_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
-
       $table->float('discount', 8, 2);
       $table->integer('type_discount');
-
       $table->boolean('logged')->default(false)->unsigned();
       $table->boolean('shipping')->default(false)->unsigned();
-
       $table->timestamp('date_start');
       $table->timestamp('date_end');
-
       $table->integer('quantity_total')->default(1)->unsigned();
       $table->integer('quantity_total_customer')->default(1)->unsigned();
-
       $table->integer('status')->default(0)->unsigned();
-
       $table->text('options')->default('')->nullable();
 
       $table->timestamps();

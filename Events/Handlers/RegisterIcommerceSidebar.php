@@ -37,11 +37,11 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     public function extendWith(Menu $menu)
     {
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
-            $group->item(trans('icommerce::icommerces.title.icommerces'), function (Item $item) {
+       /*     $group->item(trans('icommerce::icommerces.title.icommerces'), function (Item $item) {
                 $item->icon('fa fa-copy');
                 $item->weight(10);
                 $item->authorize(
-                     /* append */
+
                 );
                 $item->item(trans('icommerce::tags.title.tags'), function (Item $item) {
                     $item->icon('fa fa-copy');
@@ -413,7 +413,7 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
 
 
 
-            });
+            });*/
         });
 
         return $menu;

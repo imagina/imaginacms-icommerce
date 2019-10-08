@@ -4,41 +4,45 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Laracasts\Presenter\PresentableTrait;
+use Modules\Icommerce\Presenters\CartPresenter;
 
 class Cart extends Model
 {
-  protected $table = 'icommerce__carts';
+    use PresentableTrait;
+    protected $table = 'icommerce__carts';
 
-  protected $fillable = [
-    'user_id',
-    'ip',
-    'options'
-  ];
-  protected $fakeColumns = ['options'];
+    protected $fillable = [
+        'user_id',
+        'ip',
+        'options',
+        'status'
+    ];
 
-  protected $casts = [
-    'options' => 'array'
-  ];
+    protected $presenter = CartPresenter::class;
+    protected $casts = [
+        'options' => 'array'
+    ];
 
-  public function user()
-  {
-    $driver = config('asgard.user.config.driver');
-    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
-  }
+    public function user()
+    {
+        $driver = config('asgard.user.config.driver');
+        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+    }
 
-  public function products()
-  {
-    return $this->hasMany(CartProduct::class);
-  }
+    public function products()
+    {
+        return $this->hasMany(CartProduct::class);
+    }
 
-  public function getTotalAttribute()
-  {
-      return $this->products->sum('total');
-  }
+    public function getTotalAttribute()
+    {
+        return $this->products->sum('total');
+    }
 
-  public function getQuantityAttribute()
-  {
-      return $this->products->count();
-  }
+    public function getQuantityAttribute()
+    {
+        return $this->products->count();
+    }
 
 }

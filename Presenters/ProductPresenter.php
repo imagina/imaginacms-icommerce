@@ -3,26 +3,25 @@
 namespace Modules\Icommerce\Presenters;
 
 use Laracasts\Presenter\Presenter;
-use Modules\Icommerce\Entities\CartStatus;
+use Modules\Icommerce\Entities\OrderItem;
+use Modules\Icommerce\Entities\Status;
 
-
-class CartPresenter extends Presenter
+class ProductPresenter extends Presenter
 {
     /**
-     * @var \Modules\Icommerce\Entities\CartStatus
+     * @var \Modules\Icommerce\Entities\Status
      */
     protected $status;
-
+    /**
+     * @var \Modules\Icommerce\Repositories\ProductRepository
+     */
+    private $post;
 
     public function __construct($entity)
     {
         parent::__construct($entity);
-        $this->status = app('Modules\Icommerce\Entities\CartStatus');
-    }
-
-    public function total()
-    {
-        return $this->sum('subtotal');
+        $this->post = app('Modules\Icommerce\Repositories\ProductRepository');
+        $this->status = app('Modules\Icommerce\Entities\Status');
     }
 
     /**
@@ -41,17 +40,14 @@ class CartPresenter extends Presenter
     public function statusLabelClass()
     {
         switch ($this->entity->status) {
-            case CartStatus::ABANDONED:
-                return 'bg-red';
+            case Status::DISABLED:
+                return 'red';
                 break;
-            case CartStatus::ACTIVE:
-                return 'bg-orange';
-                break;
-            case CartStatus::PROCESSED:
-                return 'bg-green';
+            case Status::ENABLED:
+                return 'green';
                 break;
             default:
-                return 'bg-red';
+                return 'red';
                 break;
         }
     }
