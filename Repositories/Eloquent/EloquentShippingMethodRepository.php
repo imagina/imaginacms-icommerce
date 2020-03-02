@@ -19,15 +19,15 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     {
      // INITIALIZE QUERY
      $query = $this->model->query();
-     
+
      // RELATIONSHIPS
      $defaultInclude = [];
      $query->with(array_merge($defaultInclude,$params->include));
-     
+
      // FILTERS
      if($params->filter) {
        $filter = $params->filter;
-       
+
        //add filter by search
        if (isset($filter->search)) {
          //find search in columns
@@ -36,11 +36,16 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
        }
-       
+
      }
      /*== FIELDS ==*/
      if (isset($params->fields) && count($params->fields))
        $query->select($params->fields);
+
+       /*== status ==*/
+       if(isset($filter->status)) {
+         $query->where('status',$filter->status);
+       }
 
      /*== REQUEST ==*/
      if (isset($params->page) && $params->page) {
@@ -50,42 +55,42 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
        return $query->get();
      }
    }
-   
+
    public function getItem($criteria, $params)
    {
      // INITIALIZE QUERY
      $query = $this->model->query();
-     
+
      $query->where('id', $criteria);
-     
+
      // RELATIONSHIPS
      $includeDefault = [];
      $query->with(array_merge($includeDefault, $params->include));
-     
+
      // FIELDS
      if ($params->fields) {
        $query->select($params->fields);
      }
      return $query->first();
-     
+
    }
-   
+
    public function create($data)
    {
-     
+
      $shippingMethod = $this->model->create($data);
      event(new CreateMedia($shippingMethod,$data));
      return $shippingMethod;
-     
+
    }
 
    public function update($model, $data){
 
     // validate status
     if(isset($data['status']))
-      $data['status'] = "1";   
+      $data['status'] = "1";
     else
-      $data['status'] = "0"; 
+      $data['status'] = "0";
 
     // init
     $options['init'] = $model->options->init;
@@ -99,7 +104,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     }
 
     $data['options'] = $options;
-    
+
     $model->update($data);
 
     return $model;
@@ -107,55 +112,55 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 }
 
    public function updateBy($criteria, $data, $params){
-     
+
      // INITIALIZE QUERY
      $query = $this->model->query();
-     
+
      // FILTER
      if (isset($params->filter)) {
        $filter = $params->filter;
-       
+
        if (isset($filter->field))//Where field
          $query->where($filter->field, $criteria);
        else//where id
          $query->where('id', $criteria);
      }
-   
+
      // REQUEST
      $model = $query->first();
-   
+
     if($model) {
 
       // Update Model
       $model->update($data);
       event(new UpdateMedia($model,$data));
-      // Sync Data 
+      // Sync Data
       $model->geozones()->sync(array_get($data, 'geozones', []));
-     
+
      }
 
      return $model;
 
    }
-   
+
    public function deleteBy($criteria, $params)
    {
      // INITIALIZE QUERY
      $query = $this->model->query();
-     
+
      // FILTER
      if (isset($params->filter)) {
        $filter = $params->filter;
-       
+
        if (isset($filter->field)) //Where field
          $query->where($filter->field, $criteria);
        else //where id
          $query->where('id', $criteria);
      }
-   
+
      // REQUEST
      $model = $query->first();
-   
+
      if($model) {
        $model->delete();
      }
@@ -163,7 +168,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
 
   /**
-   * 
+   *
    * @param  Request $products array (cart_id)
    * @param  Request $options  array (countryCode,postCode,country)
    * @return Response
@@ -179,24 +184,24 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
       if(isset($methods) && count($methods)>0){
 
-        
+
         // Search Cart
         $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-        
+
         if(isset($data->products['cart_id'])){
           $cart = $cartRepository->find($data->products['cart_id']);
-  
+
           // Fix data cart products
           $supportCart = new cartSupport();
           $dataCart = $supportCart->fixProductsAndTotal($cart);
-  
+
           // Add products to request
           $data['products'] = $dataCart['products'];
         }
-        
+
 
         foreach ($methods as $key => $method) {
-          
+
           /*
                 if status is "success" and 'items' is not null
                     - Items has a list (array)
@@ -208,23 +213,23 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
 
           try {
-      
+
 
             $results = app($method->options->init)->init($request);
             $resultData = $results->getData();
 
             $method->calculations = $resultData;
-            
+
           } catch (\Exception $e) {
 
             $resultData["msj"] = "error";
             $resultData["items"] = $e->getMessage();
-           
+
             $method->calculations = $resultData;
 
           }// Try catch
 
-         
+
 
         }// Foreach
 

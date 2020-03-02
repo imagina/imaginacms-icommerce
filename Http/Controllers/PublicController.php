@@ -96,27 +96,31 @@ class PublicController extends BasePublicController
 
     public function checkout()
     {
-        $tpl = 'icommerce::frontend.checkout.index';
-        $ttpl = 'icommerce.checkout.index';
-        $payments = $this->payments->getItemsBy((object)['filter' => [], 'fields' => [], 'include' => [], 'take' => 4]);
-        $payments = \Modules\Icommerce\Transformers\PaymentMethodTransformer::collection($payments);
-        //dd($payments);
-        $currency = $this->currency->getActive();
-        $user = $this->auth->user();
-        if ($user) {
-            $user = $this->user->getItem($user->id, (object)['include' => ['addresses', 'fields'], 'filter' => [], 'fields' => []]);
-            $user = new \Modules\Iprofile\Transformers\UserTransformer($user);
-        }
-        $shippings = $this->shippings->getItemsBy((object)['filter' => [], 'fields' => [], 'include' => [], 'take' => 4]);
-        $shippings = \Modules\Icommerce\Transformers\ShippingMethodTransformer::collection($shippings);
+      $tpl = 'icommerce::frontend.checkout.index';
+      $ttpl = 'icommerce.checkout.index';
+      $params=['filter'=>["status"=>1],'fields'=>[],'include'=>[],'take'=>4];
+      $params=json_decode(json_encode($params));
+      $payments = $this->payments->getItemsBy($params);
+      $payments=\Modules\Icommerce\Transformers\PaymentMethodTransformer::collection($payments);
+      $currency = $this->currency->getActive();
+      $user = $this->auth->user();
+      if($user){
+        $user=$this->user->getItem($user->id,(object)['include'=>['addresses','fields'],'filter'=>[],'fields'=>[]]);
+        $user=new \Modules\Iprofile\Transformers\UserTransformer($user);
+      }
+      $params=['filter'=>["status"=>1],'fields'=>[],'include'=>[],'take'=>4];
+      $params=json_decode(json_encode($params));
+      $shippings = $this->shippings->getItemsBy($params);
+      $shippings=\Modules\Icommerce\Transformers\ShippingMethodTransformer::collection($shippings);
 
-        if (view()->exists($ttpl)) $tpl = $ttpl;
-        return view($tpl, [
-            "payments" => $payments,
-            "shipping" => $shippings,
-            "user" => $user,
-            "currency" => $currency
-        ]);
-    }
+
+      if(view()->exists($ttpl)) $tpl = $ttpl;
+      return view($tpl,[
+        "payments"=>$payments,
+        "shipping"=>$shippings,
+        "user"=>$user,
+        "currency"=>$currency
+      ]);
+    }//checkout()
 
 }
