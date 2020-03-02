@@ -7,8 +7,10 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Modules\Icommerce\Events\Handlers\SendOrder;
 use Modules\Icommerce\Events\Handlers\SaveOrderItems;
 use Modules\Icommerce\Events\Handlers\DiscountStockProducts;
+use Modules\Icommerce\Events\Handlers\UpdateOrderStatus;
 use Modules\Icommerce\Events\OrderWasCreated;
 use Modules\Icommerce\Events\OrderWasUpdated;
+use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
             SendOrder::class,
             DiscountStockProducts::class
         ],
-        
+        OrderStatusHistoryWasCreated::class => [
+            UpdateOrderStatus::class,
+        ],
+
     ];
 }

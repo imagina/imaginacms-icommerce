@@ -33,12 +33,12 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
             $query->where('locale', $lang)
               ->where('title', 'like', '%' . $filter->search . '%');
           })->orWhere('id', 'like', '%' . $filter->search . '%')
-            ->orWhere('code', 'like', '%' . $filter->search . '%')
-            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+            ->orWhere('code', 'like', '%' . $filter->search . '%');
         });
       }
-      
+        if (isset($filter->store)) {
+            $query->where('store_id', $filter->store);
+        }
       //add filter by status
       if (!empty($filter->status)) {
         $query->where('status', $filter->status);

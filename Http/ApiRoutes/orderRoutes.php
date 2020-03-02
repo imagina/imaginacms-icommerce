@@ -28,7 +28,7 @@ $router->group(['prefix' => '/orders'/*,'middleware' => ['auth:api']*/], functio
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.orders.show',
     'uses' => 'OrderApiController@show',
-    'middleware' => ['auth:api']
+    //'middleware' => ['auth:api']
   ]);
 
 

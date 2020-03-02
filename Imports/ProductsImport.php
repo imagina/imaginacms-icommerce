@@ -39,13 +39,9 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
                 $product_id=(int)$row->id;
                 $sku=$row->sku;
                 $title=(string)$row->name;
-                $slug=str_slug($title);
                 $description=(string)$row->description;
                 $summary=(string)$row->summary;
                 $category_id=(int)$row->category_id;
-                if($category_id==0){
-                  $category_id=null;
-                }
                 $quantity=(int)$row->quantity;
                 $stock_status=(int)$row->stock_status;
                 $manufacturer_id=null;
@@ -60,15 +56,9 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
                 $reference=$row->reference;
                 $image=$row->image;
                 $tax_class_id=isset($row->tax_class_id) ?(int)$row->tax_class_id : null;
-                $options=["masterRecord"=>0];
+                $options=null;
                 // Search by id
                 $product=$this->product->find($product_id);
-                // Search by slug
-                if(!$product){
-                  $product=Product::whereHas('translations', function ($query) use ($slug) {
-                    $query->where('slug', 'like', '%' . $slug . '%');
-                  })->first();
-                }
                 if (isset($this->info['folderpaht'])  && $this->info['folderpaht']) {
                     if (isset($image) && !empty($image)) {
                         $picture = $this->info['folderpaht'] . 'products/' . str_replace(' ', '', $image);
@@ -88,7 +78,7 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
                 $param = [
                   'id'=>$product_id,
                   'name'=>$title,
-                   'slug'=>$slug,
+                   'slug'=>str_slug($title),
                    'description'=>$description,
                    'summary'=>$summary,
                    'options'=>$options,
@@ -111,19 +101,13 @@ class ProductsImport implements ToCollection,WithChunkReading,WithHeadingRow,Sho
                 if($product){
                   //Update
                   $this->product->update($product,  $param);
-                  if (isset($row->categories)) {
-                      $cats = explode('.', $row->categories);
-                      $product->categories()->sync($cats);
-                  }
                   \Log::info('Update Product: '.$product->id.', Title: '.$product->name);
                 }else{
                   //Create
                   $newProduct = $this->product->create($param);
                   // Take id from excel
-                  if (isset($row->categories)) {
-                      $cats = explode('.', $row->categories);
-                      $newProduct->categories()->sync($cats);
-                  }
+                  $newProduct->id = $param["id"];
+                  $newProduct->save();
                   \Log::info('Create a Product: '.$param['title']);
                 }
               }//if row!=name

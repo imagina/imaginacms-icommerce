@@ -41,7 +41,7 @@ class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,S
                   $description=(string)$row->description;
                   $parent_id=(int)$row->parent_id;
                   $image=(string)$row->image;
-                  $options=["masterRecord"=>0];
+                  $options=null;
                   $slug="";
                   // Search by id
                   $category = $this->category->find($category_id);
@@ -50,22 +50,19 @@ class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,S
                           $picture = $this->info['folderpaht'] . 'categories/' . $image;
                           $destination_path = 'assets/icommerce/category/' . $category_id . '.jpg';
                           $img = $this->saveimage($destination_path, $picture);
-                          $options['mainImage'] = $img;
-                      }else{
-                        if($category)
-                          $options = $category->options;
+                          $options = ["mainimage" => $img];
                       }
                   }else {
                     if($category)
                       $options = $category->options;
                   }//else
-                  // $options=json_encode($options);
+                  $options=json_encode($options);
                   // Parent_id - make slug
                   if ($parent_id == 0) {
                       $slug = str_slug($title, '-');
                   } else {
                       $parent = $this->category->find($parent_id);
-                      $slug = $parent->slug."/".str_slug($title, '-');
+                      $slug = $parent->slug . '/' . str_slug($title, '-');
                   }
                   //data
                   $param = [

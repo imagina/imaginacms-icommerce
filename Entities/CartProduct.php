@@ -17,7 +17,7 @@ class CartProduct extends Model
     'options'
 
   ];
-  protected $fakeColumns = ['options'];
+
 
   protected $casts = [
     'options' => 'array'

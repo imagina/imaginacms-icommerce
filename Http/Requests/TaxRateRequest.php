@@ -11,7 +11,8 @@ class TaxRateRequest extends BaseFormRequest
         return [
           'rate' => 'required',
           'type' => 'required',
-          'geozone_id' => 'required'
+          'geozone_id' => 'required',
+          'tax_class_id' => 'required'
         ];
     }
 
@@ -32,12 +33,15 @@ class TaxRateRequest extends BaseFormRequest
         return [
           // rate
           'rate.required' => trans('icommerce::common.messages.field required'),
-  
+
           // type
           'type.required' => trans('icommerce::common.messages.field required'),
-  
+
           // geozone id
           'geozone_id.required' => trans('icommerce::common.messages.field required'),
+
+          // tax_class_id
+          'tax_class_id.required' => trans('icommerce::common.messages.field required'),
         ];
     }
 

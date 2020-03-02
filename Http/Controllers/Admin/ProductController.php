@@ -5,9 +5,16 @@ namespace Modules\Icommerce\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Icommerce\Entities\Product;
+use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Http\Requests\ProductRequest;
+use Modules\Icommerce\Imports\IcommerceImport;
+use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Icommerce\Repositories\ManufacturerRepository;
+use Modules\Icommerce\Repositories\OptionRepository;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
+use Modules\User\Contracts\Authentication;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends AdminBaseController
 {
@@ -15,12 +22,25 @@ class ProductController extends AdminBaseController
      * @var ProductRepository
      */
     private $product;
+    private $auth;
+    private $status;
+    private $entity;
+    private $category;
+    private $manufacturer;
+    private $option;
 
-    public function __construct(ProductRepository $product)
+
+    public function __construct(ProductRepository $product,Product $entity, Status $status, CategoryRepository $category,  ManufacturerRepository $manufacturer, OptionRepository $option)
     {
         parent::__construct();
 
         $this->product = $product;
+        $this->auth = app(Authentication::class);
+        $this->entity = $entity;
+        $this->status = $status;
+        $this->category = $category;
+        $this->manufacturer = $manufacturer;
+        $this->option = $option;
     }
 
     /**
@@ -30,72 +50,27 @@ class ProductController extends AdminBaseController
      */
     public function index()
     {
-        //$products = $this->product->all();
-
-        return view('icommerce::admin.products.index', compact(''));
+        return view('icommerce::admin.products.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
+    public function indeximport()
     {
-        return view('icommerce::admin.products.create');
+        return view('icommerce::admin.products.bulkload.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CreateProductRequest $request
-     * @return Response
-     */
-    public function store(ProductRequest $request)
-    {
-        $this->product->create($request->all());
+    public function importProducts(Request $request){
+        $msg="";
+        try {
+            $data = ['folderpaht' => $request->folderpaht, 'user_id' => $this->auth->user()->id, 'Locale'=>$request->Locale];
+            $data_excel = Excel::import(new IcommerceImport($this->product,$this->category,$this->manufacturer,$data), $request->importfile);
+            $msg=trans('icommerce::products.bulkload.success migrate from product');
+            return redirect()->route('admin.icommerce.store.index')
+                ->withSuccess($msg);
+        } catch (Exception $e) {
+            $msg  =  trans('icommerce::products.bulkload.error in migrate from page');
+            return redirect()->route('admin.icommerce.store.index')
+                ->withError($msg);
+        }
+    }//importProducts()
 
-        return redirect()->route('admin.icommerce.product.index')
-            ->withSuccess(trans('core::core.messages.resource created', ['name' => trans('icommerce::products.title.products')]));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Product $product
-     * @return Response
-     */
-    public function edit(Product $product)
-    {
-        return view('icommerce::admin.products.edit', compact('product'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Product $product
-     * @param  UpdateProductRequest $request
-     * @return Response
-     */
-    public function update(Product $product, ProductRequest $request)
-    {
-        $this->product->update($product, $request->all());
-
-        return redirect()->route('admin.icommerce.product.index')
-            ->withSuccess(trans('core::core.messages.resource updated', ['name' => trans('icommerce::products.title.products')]));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Product $product
-     * @return Response
-     */
-    public function destroy(Product $product)
-    {
-        $this->product->destroy($product);
-
-        return redirect()->route('admin.icommerce.product.index')
-            ->withSuccess(trans('core::core.messages.resource deleted', ['name' => trans('icommerce::products.title.products')]));
-    }
 }

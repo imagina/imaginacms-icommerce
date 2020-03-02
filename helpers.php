@@ -1,6 +1,8 @@
 <?php
 
 use Modules\Icommerce\Entities\Currency;
+use Modules\Icommerce\Entities\Status;
+use Modules\Icommerce\Entities\Category;
 
 /**
  * Get Total Weight for All items validing freeshipping

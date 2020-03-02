@@ -271,29 +271,20 @@ Vue.use(VueMask.VueMaskPlugin);
         checkout.newUser.password="";
       },
       registerUser(){
-        axios.post("{{url('/')}}"+"/api/profile/v1/users/register", {
+        axios.post("{{url('/')}}"+"/api/profile/v1/users", {
           attributes:{
             first_name:checkout.newUser.name,
             last_name:checkout.newUser.lastName,
             email:checkout.newUser.email,
             password:checkout.newUser.password,
-            password_confirmation:checkout.newUser.password,
-            fields:[
-              {
-                name:"cellularPhone",
-                value:checkout.newUser.owner_cellphone,
-              }
-            ],
+            owner_cellphone:checkout.newUser.owner_cellphone,
             activated:1,
             roles:['User']
           }
-
         })
         .then(function (response) {
           toastr.success("Usuario creado exitosamente.");
-          checkout.email=checkout.newUser.email;
-          checkout.password=checkout.newUser.password;
-          checkout.loginUser();
+          checkout.user=response.data.data;
           checkout.clearFieldsUser();
         })
         .catch(function (error) {
@@ -367,8 +358,7 @@ Vue.use(VueMask.VueMaskPlugin);
                 payment_city:checkout.user.addresses[indexAddress].city,
                 payment_zip_code:checkout.user.addresses[indexAddress].zipCode,
                 payment_country:checkout.user.addresses[indexAddress].country,
-
-
+                code_coupon:null,
                 payment_id:checkout.paymentSelected,
                 payment_method_id:checkout.paymentSelected,
                 address_shipping_id:checkout.selectedBillingAddress,

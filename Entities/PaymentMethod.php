@@ -20,7 +20,8 @@ class PaymentMethod extends Model
     protected $fillable = [
         'active',
         'name',
-        'options'
+        'options',
+        'store_id'
 
     ];
 
@@ -28,7 +29,13 @@ class PaymentMethod extends Model
         'options' => 'array'
     ];
 
-
+    public function store()
+    {
+        if (is_module_enabled('Marketplace')) {
+            return $this->belongsTo('Modules\Marketplace\Entities\Store');
+        }
+        return $this->belongsTo(Store::class);
+    }
     public function getOptionsAttribute($value)
     {
         return json_decode($value);

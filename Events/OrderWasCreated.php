@@ -44,7 +44,7 @@ class OrderWasCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-  
+
       return new Channel('global');
     }
 

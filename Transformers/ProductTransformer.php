@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Transformers;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Icommerce\Entities\Status;
 use Modules\Ihelpers\Transformers\BaseApiTransformer;
+use Modules\Marketplace\Transformers\StoreTransformer as MarketplaceStoreTransformer;
 
 class ProductTransformer extends BaseApiTransformer
 {
@@ -31,7 +32,7 @@ class ProductTransformer extends BaseApiTransformer
       'minimum' => $this->when($this->minimum, $this->minimum),
       'reference' => $this->when($this->reference, $this->reference),
       'description' => $this->when($this->description, $this->description),
-      'rating' => $this->when($this->rating, $this->rating),
+      'rating' => (int)$this->when($this->rating, $this->rating),
       'freeshipping' => $this->when($this->freeshipping, ((int)$this->freeshipping ? true : false)),
       'orderWeight' => $this->when($this->order_weight, $this->order_weight),
       'createdAt' => $this->when($this->created_at, $this->created_at),
@@ -47,6 +48,9 @@ class ProductTransformer extends BaseApiTransformer
       'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
       'mainImage' => $this->mainImage,
       'gallery' => $this->gallery,
+      'storeId'=>$this->store_id,
+      'averageRating'=> (float)$this->averageRating ?? 0,
+      'visible' => $this->visible,
     ];
 
     /*RELATIONSHIPS*/
@@ -102,6 +106,11 @@ class ProductTransformer extends BaseApiTransformer
     $this->ifRequestInclude('children') ?
       $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
 
+      if (is_module_enabled('Marketplace')) {
+          $data['store']= new MarketplaceStoreTransformer($this->whenLoaded('store'));
+      }else{
+          $data['store']= new StoreTransformer($this->whenLoaded('store'));
+      }
 
     // TRANSLATIONS
     $filter = json_decode($request->filter);

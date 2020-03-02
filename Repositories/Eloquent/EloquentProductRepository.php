@@ -3,10 +3,12 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
+use Illuminate\Database\Eloquent\Builder;
 
 //Events media
 
@@ -19,9 +21,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         /*== RELATIONSHIPS ==*/
         if (in_array('*', $params->include)) {//If Request all relationships
-            $query->with([]);
+            $query->with(['translations','store']);
         } else {//Especific relationships
-            $includeDefault = ['translations'];//Default relationships
+            $includeDefault = ['translations','store'];//Default relationships
             if (isset($params->include))//merge relations with default relationships
                 $includeDefault = array_merge($includeDefault, $params->include);
             $query->with($includeDefault);//Add Relationships to query
@@ -37,7 +39,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $query->where(function ($query) use ($filter) {
                     $query->whereHas('translations', function ($query) use ($filter) {
                         $query->where('locale', $filter->locale)
-                            ->where('name', 'like', '%' . $filter->search . '%');
+                            ->where('name', 'like', '%' . $filter->search . '%')
+                            ->orWhere('description', 'like', '%' . $filter->search . '%');
                     })->orWhere('id', 'like', '%' . $filter->search . '%')
                         ->orWhere('price', 'like', '%' . $filter->search . '%')
                         ->orWhere('sku', 'like', '%' . $filter->search . '%');
@@ -50,7 +53,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             // Filter by category SLUG
-            if (isset($filter->categorySlug) && $filter->categorySlug) {
+            if (isset($filter->categorySlug)) {
                 $query->whereHas('categories', function ($query) use ($filter) {
                     $query->whereHas('translations', function ($query) use ($filter) {
                         $query
@@ -59,7 +62,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     });
                 });
             }
-
+            if (isset($filter->storeSlug) && is_module_enabled('Marketplace')) {
+                $query->whereHas('store', function ($query) use ($filter) {
+                    $query->whereHas('translations', function ($query) use ($filter) {
+                        $query
+                            ->where('marketplace__store_translations.locale', $filter->locale)
+                            ->where('marketplace__store_translations.slug', $filter->storeSlug);
+                    });
+                });
+            }
             //Filter by stock status
             if (isset($filter->stockStatus)) {
                 $query->where('stock_status', $filter->stockStatus);
@@ -67,6 +78,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
             //Filter by stock status
             if (isset($filter->status)) {
+              if($filter->status!=null)
                 $query->where('status', $filter->status);
             }
 
@@ -80,6 +92,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 });
             }
 
+
+            if (isset($filter->store)) {
+                $query->where('store_id', $filter->store);
+            }
             //add filter by Manufacturers 1 or more than 1, in array
             if (isset($filter->manufacturers)) {
                 $query->whereIn("manufacturer_id", $filter->manufacturers);
@@ -97,7 +113,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             // add filter by Rating
-            if (isset($filter->priceRange)) {
+            if (isset($filter->rating)) {
                 $query->where("rating", '>=', $filter->rating->from);
                 $query->where("rating", '<=', $filter->rating->to);
             }
@@ -123,6 +139,22 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $orderWay = $filter->order->way ?? 'desc';//Default way
                 $query->orderBy($orderByField, $orderWay);//Add order to query
             }
+
+            if (isset($filter->visible)) {
+                $query->where("visible", $filter->visible);
+            }
+
+            if(isset($filter->rating)){
+                $rating=$filter->rating;
+                if($rating==='top'){
+                    $query->orderBy('sum_rating','desc');
+                }
+                if($rating==='worst'){
+                    $query->orderBy('sum_rating','asc');
+                }
+            }
+
+
         }
 
         /*== FIELDS ==*/
@@ -187,15 +219,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             // sync tables
             $product->categories()->sync(array_get($data, 'categories', []));
 
-            //$product->productOptions()->sync(array_get($data, 'product_options', []));
+            $product->productOptions()->sync(array_get($data, 'product_options', []));
 
-            //$product->optionValues()->sync(array_get($data, 'option_values', []));
-
+            if(isset($data['option_values']))
+            $product->optionValues()->sync(array_get($data, 'option_values', []));
+            if(isset($data['related_products']))
             $product->relatedProducts()->sync(array_get($data, 'related_products', []));
 
-            //$product->discounts()->sync(array_get($data, 'discounts', []));
+            if(isset($data['discounts']))
+            $product->discounts()->sync(array_get($data, 'discounts', []));
 
-            $product->tags()->sync(array_get($data, 'tags', []));
+            if(isset($data['tags']))
+            $product->setTags(array_get($data, 'tags', []));
         }
 
         //Event to ADD media
@@ -231,10 +266,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
             //$model->optionValues()->sync(array_get($data, 'optionValues', []));
 
+            if(isset($data['related_products']))
             $model->relatedProducts()->sync(array_get($data, 'related_products', []));
 
             //$model->discounts()->sync(array_get($data, 'discounts', []));
 
+            if(isset($data['tags']))
             $model->tags()->sync(array_get($data, 'tags', []));
         }
 
@@ -273,17 +310,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if (method_exists($this->model, 'translations')) {
             return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
                 $q->where('slug', $slug);
-            })->with('translations', 'category', 'categories', 'tags', 'user')->whereStatus(Status::PUBLISHED)->firstOrFail();
+            })->with('translations', 'category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();
         }
 
-        return $this->model->where('slug', $slug)->with('category', 'categories', 'tags', 'user')->whereStatus(Status::PUBLISHED)->firstOrFail();;
+        return $this->model->where('slug', $slug)->with('category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();;
     }
     public function whereCategory($id)
     {
-        $query = $this->model->with('categories','category',  'tags', 'user', 'translations');
+        $query = $this->model->with('categories','category',  'tags', 'addedBy', 'translations');
         $query->whereHas('categories', function ($q) use ($id) {
             $q->where('category_id', $id);
-        })->whereStatus(Status::PUBLISHED)->where('created_at', '<', date('Y-m-d H:i:s'))->orderBy('created_at', 'DESC');
+        })->whereStatus(Status::ENABLED)->where('created_at', '<', date('Y-m-d H:i:s'))->orderBy('created_at', 'DESC');
 
         return $query->paginate(setting('icommerce::product-per-page'));
     }

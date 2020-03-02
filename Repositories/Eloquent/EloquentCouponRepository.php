@@ -2,127 +2,97 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Icommerce\Repositories\CouponRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Icommerce\Repositories\CouponRepository;
 
 class EloquentCouponRepository extends EloquentBaseRepository implements CouponRepository
 {
-  public function getItemsBy($params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+    public function getItemsBy($params)
+    {
+        // INITIALIZE QUERY
+        $query = $this->model->query();
 
-    // RELATIONSHIPS
-    $defaultInclude = [];
-    $query->with(array_merge($defaultInclude, $params->include));
+        // RELATIONSHIPS
+        $defaultInclude = [];
+        $query->with(array_merge($defaultInclude, $params->include));
 
-    // FILTERS
-    if ($params->filter) {
-      $filter = $params->filter;
+        // FILTERS
+        if ($params->filter) {
+            $filter = $params->filter;
 
-      //get language translation
-      $lang = \App::getLocale();
+            //get language translation
+            $lang = \App::getLocale();
 
-      //add filter by search
-      if (isset($filter->search)) {
+            //add filter by search
+            if (isset($filter->search)) {
 
-        //find search in columns
-        $query->where(function ($query) use ($filter, $lang) {
-          $query->whereHas('translations', function ($query) use ($filter, $lang) {
-            $query->where('locale', $lang)
-              ->where('name', 'like', '%' . $filter->search . '%');
-          })->orWhere('id', 'like', '%' . $filter->search . '%')
-            ->orWhere('code', 'like', '%' . $filter->search . '%')
-            ->orWhere('type', 'like', '%' . $filter->search . '%')
-            ->orWhere('date_start', 'like', '%' . $filter->search . '%')
-            ->orWhere('date_end', 'like', '%' . $filter->search . '%')
-            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-        });
-      }
-      //add filter by status
-      if (!empty($filter->status)) {
-        $query->where('status', $filter->status);
-      }
+                //find search in columns
+                $query->where(function ($query) use ($filter, $lang) {
+                    $query->whereHas('translations', function ($query) use ($filter, $lang) {
+                        $query->where('locale', $lang)
+                            ->where('name', 'like', '%' . $filter->search . '%');
+                    })->orWhere('id', 'like', '%' . $filter->search . '%')
+                        ->orWhere('code', 'like', '%' . $filter->search . '%')
+                        ->orWhere('type', 'like', '%' . $filter->search . '%');
+                });
+            }
+            if (isset($filter->store)) {
+                $query->where('store_id', $filter->store);
+            }
+            //add filter by status
+            if (!empty($filter->status)) {
+                $query->where('status', $filter->status);
+            }
+        }
+
+        /*== FIELDS ==*/
+        if (isset($params->fields) && count($params->fields))
+            $query->select($params->fields);
+
+        /*== REQUEST ==*/
+        if (isset($params->page) && $params->page) {
+            return $query->paginate($params->take);
+        } else {
+            $params->take ? $query->take($params->take) : false;//Take
+            return $query->get();
+        }
     }
 
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
+    public function getItem($criteria, $params)
+    {
+        //Initialize query
+        $query = $this->model->query();
 
-    /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
-  }
+        /*== RELATIONSHIPS ==*/
+        if (in_array('*', $params->include)) {//If Request all relationships
+            $query->with(['store','product','category','customer','orders','couponHistories']);
+        } else {//Especific relationships
+            $includeDefault = [];//Default relationships
+            if (isset($params->include))//merge relations with default relationships
+                $includeDefault = array_merge($includeDefault, $params->include);
+            $query->with($includeDefault);//Add Relationships to query
+        }
 
-  public function getItem($criteria, $params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+            $filter = $params->filter;
 
-    $query->where('id', $criteria);
-
-    // RELATIONSHIPS
-    $includeDefault = [];
-    $query->with(array_merge($includeDefault, $params->include));
-
-    // FIELDS
-    if ($params->fields) {
-      $query->select($params->fields);
-    }
-    return $query->first();
-
-  }
-
-  public function create($data){
-
-    $coupon = $this->model->create($data);
-    return $coupon;
-  }
+            if (isset($filter->field))//Filter by specific field
+                $field = $filter->field;
 
 
-  public function updateBy($criteria, $data, $params = false)
-  {
-    /*== initialize query ==*/
-    $query = $this->model->query();
-    /*== FILTER ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      //Update by field
-      if (isset($filter->field))
-        $field = $filter->field;
-    }
-    /*== REQUEST ==*/
-    $model = $query->where($field ?? 'id', $criteria)->first();
-    return $model ? $model->update((array)$data) : false;
-  }
+            // find by specific attribute or by id
+            $query->where($field ?? 'id', $criteria);
+        }
 
-  public function deleteBy($criteria, $params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+        /*== FIELDS ==*/
+        if (isset($params->fields) && count($params->fields))
+            $query->select($params->fields);
 
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
+        /*== REQUEST ==*/
+        return $query->first();
 
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
     }
 
-
-    // REQUEST
-    $model = $query->first();
-
-    if($model) {
-      $model->delete();
-    }
-  }
 
 }

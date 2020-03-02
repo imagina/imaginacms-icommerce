@@ -16,7 +16,8 @@ class Cart extends Model
         'user_id',
         'ip',
         'options',
-        'status'
+        'status',
+        'store_id',
     ];
 
     protected $presenter = CartPresenter::class;

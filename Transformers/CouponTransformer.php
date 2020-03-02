@@ -26,6 +26,8 @@ class CouponTransformer extends Resource
       'status' => $this->status,
       'product' => $this->when($this->product_id, new ProductTransformer($this->whenLoaded('product'))),
       'category' => $this->when($this->category_id, new CategoryTransformer($this->whenLoaded('category'))),
+      'minimumAmount' => (float)$this->minimum_amount,
+      'minimumQuantityProducts' => (int)$this->minimum_quantity_products,
     ];
 
     return $data;

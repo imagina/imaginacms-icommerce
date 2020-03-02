@@ -30,7 +30,7 @@ class Category extends Model
         'store_id'
     ];
 
-    protected $fakeColumns = ['options'];
+
 
     protected $casts = [
         'options' => 'array'
@@ -60,10 +60,9 @@ class Category extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function getUrlAttribute()
-    {
+    public function getUrlAttribute() {
 
-        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category', $this->slug);
+        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
 
     }
 

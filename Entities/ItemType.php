@@ -16,7 +16,7 @@ class ItemType extends Model
     protected $fillable = [
         'options'
     ];
-    protected $fakeColumns = ['options'];
+
 
     protected $casts = [
         'options' => 'array'

@@ -87,7 +87,7 @@
                         <a class="nav-link2"  v-bind:href="prev"  aria-label="Previous">
                             <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
                         </a>
-                        
+
                       </div>
 
                     </li>
@@ -97,7 +97,7 @@
                           <a class="nav-link2" v-bind:href="next"  aria-label="Next"  >
                             <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                         </a>
-                        
+
                         </div>
 
                     </li>
@@ -138,11 +138,11 @@
                                  @include('icommerce.widgets.information')
                                  @include('icommerce.products.share')
                             </div>
-                        
+
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <div class="bg-gris content-descrip">
                 <div class="container">
@@ -242,7 +242,7 @@
                 /*wishlist*/
                 wishList:false,
                 products_wishlist: [],
-                user: {!! $user !!},
+                user: {!! $currentUser??null !!},
                 product_comments: [],
                 count_comments: 0,
                 product_parent: false,
@@ -283,10 +283,10 @@
                     }).then(response=> {
                       vue_show_commerce.products = response.data.data;
                       vue_show_commerce.products.forEach( function(valor, indice, array) {
-                        
+
 
                         if(vue_show_commerce.product.id==valor.id){
-                       
+
                             if ((indice-1)>0) {
                               vue_show_commerce.prev=vue_show_commerce.url+'/'+vue_show_commerce.products[indice-1].slug;
                             }
@@ -442,7 +442,7 @@
                     var response = false;
                     $.each(this.products_wishlist, function (index, item) {
                         if ( id==item.product_id) {
-                            response = true; 
+                            response = true;
                         }
                     });
                     return response;

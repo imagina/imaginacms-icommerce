@@ -17,6 +17,7 @@ class Order
 
     $totalShipping = $data["shippingPrice"];
 
+      $data["store"]=(object)$data["store"];
     $total = ($totalCart + $totalShipping) - $data["discount"];
 
     $newData["total"] = $total;
@@ -71,11 +72,12 @@ class Order
     $newData["shipping_amount"] = $totalShipping ?? 0;
 
     // Set Store
-    $newData["store_id"] = $data["store"]->id;
-    $newData["store_name"] = $data["store"]->name;
-    $newData["store_address"] = $data["store"]->address;
-    $newData["store_phone"] = $data["store"]->phone;
-    $newData["options"] = $data["options"];
+      $newData["store_id"] = isset($data["store"]) ? $data["store"]->id : '';
+      $newData["store_name"] = isset($data["store"]) ? $data["store"]->name : '';
+      $newData["store_address"] = isset($data["store"]) ? $data["store"]->address : '';
+      $newData["store_phone"] = '';
+      // $newData["store_phone"] = isset($data["store"]) ? $data["store"]->phone : '';
+      $newData["options"] = isset($data["options"]) ? $data["options"] : '';
 
     //if isset currency
     if ($data["currency"]) {

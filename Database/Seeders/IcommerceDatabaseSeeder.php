@@ -19,6 +19,6 @@ class IcommerceDatabaseSeeder extends Seeder
         $this->call(OrderStatusTableSeeder::class);
         $this->call(ItemTypeTableSeeder::class);
         $this->call(CurrencyTableSeeder::class);
-
+        $this->call(StoreTableSeeder::class);
     }
 }

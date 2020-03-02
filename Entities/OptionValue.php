@@ -21,7 +21,7 @@ class OptionValue extends Model
     'sort_order',
     'options'
   ];
-  protected $fakeColumns = ['options'];
+
 
   protected $casts = [
     'options' => 'array'

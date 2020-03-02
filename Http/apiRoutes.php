@@ -36,8 +36,6 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
   //======  TAX RATES
   require('ApiRoutes/taxRateRoutes.php');
 
-//======  TAGS
-  require('ApiRoutes/tagRoutes.php');
 
   //======  PRODUCTS
   require('ApiRoutes/productRoutes.php');

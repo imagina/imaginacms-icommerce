@@ -13,7 +13,7 @@ class CacheOrderHistoryDecorator extends BaseCacheDecorator implements OrderHist
     $this->entityName = 'icommerce.orderhistories';
     $this->repository = $orderhistory;
   }
-  
+
   /**
    * List or resources
    *
@@ -25,7 +25,7 @@ class CacheOrderHistoryDecorator extends BaseCacheDecorator implements OrderHist
       return $this->repository->getItemsBy($params);
     });
   }
-  
+
   /**
    * find a resource by id or slug
    *
@@ -37,42 +37,7 @@ class CacheOrderHistoryDecorator extends BaseCacheDecorator implements OrderHist
       return $this->repository->getItem($criteria, $params);
     });
   }
-  
-  /**
-   * create a resource
-   *
-   * @return mixed
-   */
-  public function create($data)
-  {
-    $this->clearCache();
-    
-    return $this->repository->create($data);
-  }
-  
-  /**
-   * update a resource
-   *
-   * @return mixed
-   */
-  public function updateBy($criteria, $data, $params)
-  {
-    $this->clearCache();
-    
-    return $this->repository->updateBy($criteria, $data, $params);
-  }
-  
-  /**
-   * destroy a resource
-   *
-   * @return mixed
-   */
-  public function deleteBy($criteria, $params)
-  {
-    $this->clearCache();
-    
-    return $this->repository->deleteBy($criteria, $params);
-  }
-  
-  
+
+
+
 }

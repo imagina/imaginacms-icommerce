@@ -13,6 +13,11 @@ $router->group(['prefix' => '/products'], function (Router $router) {
         'uses' => 'ProductApiController@update',
         'middleware' => ['auth:api']
     ]);
+    $router->post('/rating/{criteria}', [
+        'as' => 'api.icommerce.products.rating',
+        'uses' => 'ProductApiController@rating',
+        'middleware' => ['auth:api']
+    ]);
     $router->delete('/{criteria}', [
         'as' =>'api.icommerce.products.delete',
         'uses' => 'ProductApiController@delete',

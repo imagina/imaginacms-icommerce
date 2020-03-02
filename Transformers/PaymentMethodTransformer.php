@@ -20,7 +20,8 @@ class PaymentMethodTransformer extends Resource
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at)
     ];
-  
+
+
     switch($this->name){
       case 'icommercepaypal':
         $data= array_merge($data, [
@@ -33,12 +34,12 @@ class PaymentMethodTransformer extends Resource
   
       case 'icommercepayu':
         $data= array_merge($data, [
-          'merchantid' => $this->when($this->options,$this->options->merchantid),
-          'apilogin' => $this->when($this->options,$this->options->apilogin),
-          'apikey' => $this->when($this->options,$this->options->apikey),
-          'accountid' => $this->when($this->options,$this->options->accountid),
-          'test' => $this->when($this->options,$this->options->test),
-          'mode' => $this->when($this->options,$this->options->mode)
+          'merchantid' => $this->when($this->options,$this->options->merchantid??null),
+          'apilogin' => $this->when($this->options,$this->options->apilogin??null),
+          'apikey' => $this->when($this->options,$this->options->apikey??null),
+          'accountid' => $this->when($this->options,$this->options->accountid??null),
+          'test' => $this->when($this->options,$this->options->test??null),
+          'mode' => $this->when($this->options,$this->options->mode??null)
         ]);
   
      

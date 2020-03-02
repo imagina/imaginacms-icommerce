@@ -3,9 +3,11 @@
 namespace Modules\Icommerce\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class ProductTranslation extends Model
 {
+    use Sluggable;
     public $timestamps = false;
     protected $fillable = [
       'name',
@@ -16,19 +18,18 @@ class ProductTranslation extends Model
       'meta_description'
     ];
     protected $table = 'icommerce__product_translations';
-  
-  protected function setSlugAttribute($value){
-    
-    if($this->parent_id==0){
-      if(!empty($value)){
-        $this->attributes['slug'] = str_slug($value,'-');
-      }else{
-        $this->attributes['slug'] = str_slug($this->title,'-');
-      }
-    }else{
-      $this->attributes['slug'] = $this->parent->slug.'/'.str_slug($this->title,'-');
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
-    
-    
-  }
 }

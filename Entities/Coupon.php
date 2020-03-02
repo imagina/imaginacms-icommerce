@@ -17,6 +17,7 @@ class Coupon extends Model
         'category_id',
         'product_id',
         'customer_id',
+        'store_id',
         'discount',
         'type_discount',
         'logged',
@@ -27,13 +28,23 @@ class Coupon extends Model
         'quantity_total_customer',
         'status',
         'options',
+        'minimum_amount',
+        'minimum_quantity_products',
     ];
-    protected $fakeColumns = ['options'];
+
 
 
     protected $casts = [
         'options' => 'array'
     ];
+
+    public function store()
+    {
+        if (is_module_enabled('Marketplace')) {
+            return $this->belongsTo('Modules\Marketplace\Entities\Store');
+        }
+        return $this->belongsTo(Store::class);
+    }
 
     public function product()
     {

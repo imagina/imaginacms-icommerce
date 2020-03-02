@@ -18,13 +18,22 @@ class Manufacturer extends Model
     ];
     protected $fillable = [
         'active',
-        'options'
+        'options',
+        'store_id'
     ];
 
     protected $casts = [
         'options' => 'array',
-        'active'=>'boolean'
+        'active' => 'boolean'
     ];
+
+    public function store()
+    {
+        if (is_module_enabled('Marketplace')) {
+            return $this->belongsTo('Modules\Marketplace\Entities\Store');
+        }
+        return $this->belongsTo(Store::class);
+    }
 
     public function products()
     {

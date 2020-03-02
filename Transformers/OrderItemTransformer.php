@@ -28,7 +28,7 @@ class OrderItemTransformer extends Resource
 
     if(isset($this->orderOption) && count($this->orderOption)>0)
       $item['options'] = OrderOptionTransformer::collection($this->orderOption);
-  
+
     return $item;
 
   }

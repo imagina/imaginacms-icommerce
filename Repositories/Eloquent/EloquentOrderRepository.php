@@ -111,12 +111,8 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
           if (isset($filter->field))//Filter by specific field
             $field = $filter->field;
         }
-
-        $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
-        $user = $params->user;
-
-        if(!$showOthersPermission){
-          $query->where('customer_id', $user->id);
+        if(isset($filter->customer)){
+          $query->where('customer_id', $filter->customer);
         }
         //By key
         if (isset($filter->key)){
@@ -146,61 +142,6 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
     return $order;
 
-  }
-
-  public function updateBy($criteria, $data, $params){
-
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field))//Where field
-        $query->where($filter->field, $criteria);
-      else//where id
-        $query->where('id', $criteria);
-    }
-
-    // REQUEST
-    $model = $query->first();
-
-    if($model){
-
-      $model->update($data);
-
-      // Create Order History
-      $model->orderHistory()->create($data['orderHistory']);
-
-
-
-    }
-
-    return $model;
-  }
-
-  public function deleteBy($criteria, $params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
-    }
-
-    // REQUEST
-    $model = $query->first();
-
-    if($model) {
-      $model->delete();
-    }
   }
 
 }

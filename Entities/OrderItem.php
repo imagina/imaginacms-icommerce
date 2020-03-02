@@ -23,7 +23,7 @@ class OrderItem extends Model
     'reward',
     'options'
   ];
-  protected $fakeColumns = ['options'];
+
   
   protected $casts = [
     'options' => 'array'

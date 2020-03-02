@@ -20,7 +20,7 @@ class Store extends Model
         // More data ...
     ];
 
-    protected $fakeColumns = ['options'];
+
 
     protected $casts = [
         'options' => 'array'

@@ -119,27 +119,27 @@ class PaymentMethodApiController extends BaseApiController
     public function update($criteria, Request $request)
     {
       \DB::beginTransaction(); //DB Transaction
-     // try {
-        //Get data
-        $data = $request->input('attributes');
-  
-        //Validate Request
-        //$this->validateRequestApi(new CustomRequest((array)$data));
-  
-        //Get Parameters from URL.
-        $params = $this->getParamsRequest($request);
-  
-        //Request to Repository
-        $result = $this->paymentMethod->updateBy($criteria, $data, $params);
-  
+      try {
+          //Get data
+          $data = $request->input('attributes');
+          //Validate Request
+          //$this->validateRequestApi(new CustomRequest((array)$data));
+
+          //Get Parameters from URL.
+          $params = $this->getParamsRequest($request);
+          $entity = $this->paymentMethod->getItem($criteria, $params);
+
+
+          //Request to Repository
+          $result = $this->paymentMethod->update($entity, $data);
         //Response
         $response = ["data" => $result->id];
         \DB::commit();//Commit to DataBase
-    /*  } catch (\Exception $e) {
+      } catch (\Exception $e) {
         \DB::rollback();//Rollback to Data Base
         $status = $this->getStatusError($e->getCode());
         $response = ["errors" => $e->getMessage()];
-      }*/
+      }
       
       //Return response
       return response()->json($response, $status ?? 200);
@@ -154,9 +154,11 @@ class PaymentMethodApiController extends BaseApiController
   {
     try {
 
-      $this->paymentMethod->deleteBy($criteria, $this->getParamsRequest($request));
+        $params = $this->getParamsRequest($request);
+        $entity = $this->paymentMethod->getItem($criteria, $params);
+        $this->paymentMethod->delete($entity);
 
-      $response = ['data' => ''];
+        $response = ['data' => ''];
 
     } catch (\Exception $e) {
       $status = 500;

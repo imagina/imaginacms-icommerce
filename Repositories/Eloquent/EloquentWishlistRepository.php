@@ -9,60 +9,100 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
 {
   public function getItemsBy($params)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    // RELATIONSHIPS
-    $defaultInclude = ['product'];
-    $query->with(array_merge($defaultInclude, $params->include));
-    
-    // FILTERS
-    if ($params->filter) {
-      $filter = $params->filter;
-      
-      //add filter by search
-      if (isset($filter->search)) {
-        //find search in columns
-        $query->where('id', 'like', '%' . $filter->search . '%')
-          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+
+      /*== initialize query ==*/
+      $query = $this->model->query();
+
+      /*== RELATIONSHIPS ==*/
+      if (in_array('*', $params->include)) {//If Request all relationships
+          $query->with([]);
+      } else {//Especific relationships
+          $includeDefault = [];//Default relationships
+          if (isset($params->include))//merge relations with default relationships
+              $includeDefault = array_merge($includeDefault, $params->include);
+          $query->with($includeDefault);//Add Relationships to query
       }
-      
-      //add filter by user
-      if (isset($filter->user)) {
-        $query->where('user_id', $filter->user);
+
+      /*== FILTERS ==*/
+      if (isset($params->filter)) {
+          $filter = $params->filter;//Short filter
+
+          //Filter by date
+          if (isset($filter->date)) {
+              $date = $filter->date;//Short filter date
+              $date->field = $date->field ?? 'created_at';
+              if (isset($date->from))//From a date
+                  $query->whereDate($date->field, '>=', $date->from);
+              if (isset($date->to))//to a date
+                  $query->whereDate($date->field, '<=', $date->to);
+          }
+
+          //add filter by search
+          if (isset($filter->search)) {
+              //find search in columns
+              $query->where('id', 'like', '%' . $filter->search . '%')
+                  ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+                  ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+          }
+          //add filter by user
+          if (isset($filter->user)) {
+              $query->where('user_id', $filter->user);
+          }
+
+          if (isset($filter->store)) {
+              $query->where('store_id', $filter->store);
+          }
+          //Order by
+          if (isset($filter->order)) {
+              $orderByField = $filter->order->field ?? 'created_at';//Default field
+              $orderWay = $filter->order->way ?? 'desc';//Default way
+              $query->orderBy($orderByField, $orderWay);//Add order to query
+          }
       }
-    }
-  
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-  
-    /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
+
+      /*== FIELDS ==*/
+      if (isset($params->fields) && count($params->fields))
+          $query->select($params->fields);
+
+      /*== REQUEST ==*/
+      if (isset($params->page) && $params->page) {
+          return $query->paginate($params->take);
+      } else {
+          $params->take ? $query->take($params->take) : false;//Take
+          return $query->get();
+      }
   }
   
   public function getItem($criteria, $params)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    $query->where('id', $criteria);
-    
-    // RELATIONSHIPS
-    $includeDefault = ['products'];
-    $query->with(array_merge($includeDefault, $params->include));
-    
-    // FIELDS
-    if ($params->fields) {
-      $query->select($params->fields);
-    }
-    return $query->first();
+      //Initialize query
+      $query = $this->model->query();
+
+      /*== RELATIONSHIPS ==*/
+      if (in_array('*', $params->include)) {//If Request all relationships
+          $query->with([]);
+      } else {//Especific relationships
+          $includeDefault = [];//Default relationships
+          if (isset($params->include))//merge relations with default relationships
+              $includeDefault = array_merge($includeDefault, $params->include);
+          $query->with($includeDefault);//Add Relationships to query
+      }
+
+      /*== FILTER ==*/
+      if (isset($params->filter)) {
+          $filter = $params->filter;
+
+          if (isset($filter->field))//Filter by specific field
+              $field = $filter->field;
+      }
+
+      /*== FIELDS ==*/
+      if (isset($params->fields) && count($params->fields))
+          $query->select($params->fields);
+
+      /*== REQUEST ==*/
+      return $query->where($field ?? 'id', $criteria)->first();
+
     
   }
   
@@ -73,51 +113,5 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
     
     return $wishlist;
   }
-  
-  public function updateBy($criteria, $data, $params){
-    
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      
-      if (isset($filter->field))//Where field
-        $query->where($filter->field, $criteria);
-      else//where id
-        $query->where('id', $criteria);
-    }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->update($data);
-    }
-    return $model;
-  }
-  
-  public function deleteBy($criteria, $params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
-    }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
-  }
+
 }

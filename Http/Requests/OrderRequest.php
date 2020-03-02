@@ -31,9 +31,9 @@ class OrderRequest extends BaseFormRequest
           'shipping_code' => 'required',
           'ip' => 'required',
           'store_id' => 'required',
-          'store_name' => 'required',
-          'store_address' => 'required',
-          'store_phone' => 'required',
+          // 'store_name' => 'required',
+          // 'store_address' => 'required',
+          // 'store_phone' => 'required',
         ];
     }
 
@@ -55,65 +55,65 @@ class OrderRequest extends BaseFormRequest
 
           // First Name
           'first_name.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Last Name
           'last_name.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Email
           'email.required' => trans('icommerce::common.messages.field required'),
-          
+
           // Payment First Name
           'payment_first_name.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment Last Name
           'payment_last_name.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment Address 1
           'payment_address_1.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment City
           'payment_city.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment Zip Code
           'payment_zip_code.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment Country
           'payment_country.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment Method
           'payment_method.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Payment Code
           'payment_code.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping First Name
           'shipping_first_name.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping Last Name
           'shipping_last_name.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping Address 1
           'shipping_address_1.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping City
           'shipping_city.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping Zip Code
           'shipping_zip_code.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Uses Total
           'uses_total.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping Country
           'shipping_country.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping Method
           'shipping_method.required' => trans('icommerce::common.messages.field required'),
-  
+
           // Shipping Code
           'shipping_code.required' => trans('icommerce::common.messages.field required'),
-  
-        
+
+
           // Ip
           'ip.required' => trans('icommerce::common.messages.field required'),
 

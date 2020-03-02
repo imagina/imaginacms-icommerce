@@ -9,12 +9,17 @@ use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Tag\Contracts\TaggableInterface;
+use Modules\Tag\Traits\TaggableTrait;
+use willvincent\Rateable\Rateable;
 
-class Product extends Model
+class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, MediaRelation, PresentableTrait;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,Rateable;
 
     protected $table = 'icommerce__products';
+    protected static $entityNamespace = 'asgardcms/product';
+
     public $translatedAttributes = [
         'name',
         'description',
@@ -47,17 +52,30 @@ class Product extends Model
         'reference',
         'rating',
         'freeshipping',
-        'order_weight'
+        'order_weight',
+        'store_id',
+        'visible',
+        'sum_rating',
     ];
     protected $presenter = ProductPresenter::class;
     protected $casts = [
         'options' => 'array'
     ];
 
+
+    public function store()
+    {
+        if (is_module_enabled('Marketplace')) {
+            return $this->belongsTo('Modules\Marketplace\Entities\Store');
+        }
+        return $this->belongsTo(Store::class);
+    }
+
     public function addedBy()
     {
         $driver = config('asgard.user.config.driver');
-        return $this->belongsTo('Modules\\User\\Entities\\{$driver}\\User', 'added_by_id');
+
+        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'added_by_id');
     }
 
     public function stockStatus()
@@ -86,11 +104,6 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'icommerce__product_category')->withTimestamps();
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'icommerce__product_tag')->withTimestamps();
     }
 
     public function orderItems()
@@ -271,15 +284,37 @@ class Product extends Model
         return $response;
     }
 
-    /*
-    public function getRelatedIdsAttribute($value)
+    /**
+     * URL product
+     * @return string
+     */
+    public function getUrlAttribute()
     {
 
-      if (!empty($value)) {
-        $ids = json_decode($value);
-        $productsRelated = Product::whereIn("id", $ids)->take(20)->get();
-        return $productsRelated;
-      }
+        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
 
-    }*/
+    }
+
+    /**
+     * Magic Method modification to allow dynamic relations to other entities.
+     * @var $value
+     * @var $destination_path
+     * @return string
+     */
+    public function __call($method, $parameters)
+    {
+        #i: Convert array to dot notation
+        $config = implode('.', ['asgard.iblog.config.relations', $method]);
+
+        #i: Relation method resolver
+        if (config()->has($config)) {
+            $function = config()->get($config);
+
+            return $function($this);
+        }
+
+        #i: No relation found, return the call to parent (Eloquent) to handle it.
+        return parent::__call($method, $parameters);
+    }
+
 }

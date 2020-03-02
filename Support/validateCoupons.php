@@ -15,38 +15,42 @@ class validateCoupons
    * @param $cart
    * @return $discount
    */
-  public function validateCode ( $couponCode, $cartId ) {
+  public function validateCode ($couponCode, $cartId,$storeId) {
 
     // Get coupon
-    $coupon = Coupon::where( 'code', $couponCode )->first();
+    $coupon = Coupon::where( 'code', $couponCode)->where('store_id',$storeId)->orWhere('store_id',null)->first();
 
     // Validate if code exists on DB table coupons
     if ( $coupon == null ){
-      return $this->setResponseMessages('coupon not exists' );
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon not exist'));
     }
 
     // Validate if coupon active (0 is ID for inactive coupons)
     if ( $coupon->status == 0 ){
-      return $this->setResponseMessages('coupon inactive' );
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon inactive'));
     }
 
     // validate if the coupon is valid (Dates)
     $now = date('Y-m-d');
     if ( !( $now >= $coupon->date_start ) ){
-      return $this->setResponseMessages('coupon no started');
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon not started'));
     }
     if ( !( $now <= $coupon->date_end ) ){
-      return $this->setResponseMessages('coupon expired');
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon expired'));
     }
 
     // Validate the number of times the coupon has been used
-    if ( $coupon->usesTotal >= $coupon->quantity_total ){
-      return $this->setResponseMessages('maximum used coupons');
+    if($coupon->quantity_total>0){//If quantity total == 0 is infinite
+      if ( $coupon->usesTotal >= $coupon->quantity_total ){
+        return $this->setResponseMessages(trans('icommerce::coupons.messages.maximum used coupons'));
+      }
     }
 
     // Validate the number of times the coupon has been used by the logged in user
-    if ( $coupon->usesTotalPerUser >= $coupon->quantity_total_customer ){
-      return $this->setResponseMessages('maximum coupons per user used');
+    if($coupon->quantity_total_customer>0){
+      if ( $coupon->usesTotalPerUser >= $coupon->quantity_total_customer ){
+        return $this->setResponseMessages(trans('icommerce::coupons.messages.maximum coupons per user used'));
+      }
     }
 
     // Get Cart data
@@ -54,32 +58,32 @@ class validateCoupons
 
     // Validate if cart exists
     if ( $cart == null ){
-      return $this->setResponseMessages('cart not exists');
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.cart not exists'));
     }
 
     // Validate if cart has items
     if ( count($cart->products ) < 1){
-      return $this->setResponseMessages('cart without items');
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.cart without items'));
     }
 
     // Coupon for order (1 coupon for all items of the order)
     if ( $coupon->type == 1 ){
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cart->total);
-      return $this->setResponseMessages('coupon whit discount for order', $discount, 1);
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for order'), $discount, 1);
     }
 
     // Coupon for product (2: coupon for specific product)
     if ( $coupon->type == 2 && $coupon->product_id ){
       $total = $this->calcTotal($coupon, $cart, 'product');
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
-      return $this->setResponseMessages('coupon whit discount for product', $discount, 1);
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for product'), $discount, 1);
     }
 
     // Coupon for category (3: coupon for product in a category specific)
     if ( $coupon->type == 3 && $coupon->category_id ){
       $total = $this->calcTotal($coupon, $cart, 'category');
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
-      return $this->setResponseMessages('coupon whit discount for category', $discount, 1);
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for category'), $discount, 1);
     }
 
     // Default response
@@ -133,7 +137,7 @@ class validateCoupons
    * @return []
    */
   private function setResponseMessages ( $message = 'Error', $discount = 0, $status = 0) {
-    return [
+    return (object)[
       'status' => $status,
       'message' => $message,
       'discount' => $discount

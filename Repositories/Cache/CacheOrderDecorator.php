@@ -37,7 +37,5 @@ class CacheOrderDecorator extends BaseCacheDecorator implements OrderRepository
       return $this->repository->getItem($criteria, $params);
     });
   }
-  
- 
-  
+
 }
