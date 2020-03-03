@@ -1,5 +1,20 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  1.1.0:
+    added:
+      - SoreSender, and store_id relation an fiel in entities
+      - View order status notification
+      - Handle UpdateOrderStatus
+      - Module Notification Require
+    changed:
+      - tax_rate an added field migrations,
+      - view forntend index chekout and product show
+    deleted:
+      - Tag Entity,
+      - updateBy and deleteBy in Repositories,
+      - views, routes and Controllers Admin
+      - addedTag in ProductApiContorller
+
   "1.0.12":
     added:
       - ProductPresenter

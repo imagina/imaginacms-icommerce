@@ -3,7 +3,7 @@
     "alias": "icommerce",
     "description": "completely customizable eCommerce platform for entrepreneurs worldwide",
     "keywords": ["ecommerce", "module", "asgardCMS", "imagina"],
-    "version": "1.0.12",
+    "version": "1.1.0",
     "active": 1,
     "order": 1,
     "providers": [

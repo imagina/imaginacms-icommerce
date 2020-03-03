@@ -154,8 +154,13 @@ class CartApiController extends BaseApiController
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
+            $dataEntity = $this->cart->getItem($criteria, $params);
+
+            if (!$dataEntity) throw new Exception('Item not found', 404);
+
+
             //Request to Repository
-            $this->cart->updateBy($criteria, $data, $params);
+            $this->cart->update($criteria, $dataEntity);
 
             //Response
             $response = ["data" => 'Item Updated'];
@@ -184,8 +189,13 @@ class CartApiController extends BaseApiController
             //Get params
             $params = $this->getParamsRequest($request);
 
+
+            $dataEntity = $this->cart->getItem($criteria, $params);
+
+            if (!$dataEntity) throw new Exception('Item not found', 400);
+
             //call Method delete
-            $this->cart->deleteBy($criteria, $params);
+            $this->cart->destroy($dataEntity);
 
             //Response
             $response = ["data" => ""];

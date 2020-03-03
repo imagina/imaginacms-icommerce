@@ -2,8 +2,7 @@
 
 @section('content')
 <!-- preloader -->
-@include('partials.header')
-<div class="container-fluid bg-top"></div>
+
 
 <div id="content_preloader">
   <div id="preloader"></div>
@@ -106,7 +105,7 @@
 </div>
 @stop
 @section('scripts')
-@include('icommerce::frontend.partials.variables')
+
 
 @parent
 
@@ -191,6 +190,7 @@ Vue.use(VueMask.VueMaskPlugin);
       shipping: 0,
       discount: 0.0,
       orderTotal: 0,
+      coupon_code:null,
       newUser:{
         name:'',
         lastName:'',
@@ -271,20 +271,29 @@ Vue.use(VueMask.VueMaskPlugin);
         checkout.newUser.password="";
       },
       registerUser(){
-        axios.post("{{url('/')}}"+"/api/profile/v1/users", {
+        axios.post("{{url('/')}}"+"/api/profile/v1/users/register", {
           attributes:{
             first_name:checkout.newUser.name,
             last_name:checkout.newUser.lastName,
             email:checkout.newUser.email,
             password:checkout.newUser.password,
-            owner_cellphone:checkout.newUser.owner_cellphone,
+            password_confirmation:checkout.newUser.password,
+            fields:[
+              {
+                name:"cellularPhone",
+                value:checkout.newUser.owner_cellphone,
+              }
+            ],
             activated:1,
             roles:['User']
           }
+
         })
         .then(function (response) {
           toastr.success("Usuario creado exitosamente.");
-          checkout.user=response.data.data;
+          checkout.email=checkout.newUser.email;
+          checkout.password=checkout.newUser.password;
+          checkout.loginUser();
           checkout.clearFieldsUser();
         })
         .catch(function (error) {
@@ -345,6 +354,13 @@ Vue.use(VueMask.VueMaskPlugin);
                 break;
               }
             }
+            /*console.log('user addresses');
+            console.log(checkout.user.addresses);
+
+            console.log('index addresses');
+            console.log(indexAddress);
+
+            console.log(checkout.user.addresses[indexAddress].firstName);*/
 
 
             axios.post("{{url('/')}}"+"/api/icommerce/v3/orders", {
@@ -358,7 +374,8 @@ Vue.use(VueMask.VueMaskPlugin);
                 payment_city:checkout.user.addresses[indexAddress].city,
                 payment_zip_code:checkout.user.addresses[indexAddress].zipCode,
                 payment_country:checkout.user.addresses[indexAddress].country,
-                code_coupon:null,
+
+
                 payment_id:checkout.paymentSelected,
                 payment_method_id:checkout.paymentSelected,
                 address_shipping_id:checkout.selectedBillingAddress,
@@ -368,12 +385,13 @@ Vue.use(VueMask.VueMaskPlugin);
                 shipping_city:checkout.user.addresses[indexAddress].city,
                 shipping_zip_code:checkout.user.addresses[indexAddress].zipCode,
                 shipping_country:checkout.user.addresses[indexAddress].country,
-
+                coupon_code:null,
 
                 shipping_name:checkout.shipping_name,
                 shipping_method:checkout.shipping_name,
                 shipping_method_id:shippingMethodId,
                 store_id:1,
+
                 options:[]
               }
             },{
@@ -383,8 +401,12 @@ Vue.use(VueMask.VueMaskPlugin);
             })
             .then(function (response) {
               toastr.success("Tu pedido se ha realizado con éxito, por favor verifica tu correo electrónico.");
-              localStorage.clear();
-              window.setTimeout(function(){location.reload()},4000)
+              localStorage.clear()
+              if(response.data.data.paymentData.redirectRoute){
+                window.open(response.data.data.paymentData.redirectRoute)
+              }else{
+                window.setTimeout(function(){location.reload()},4000)
+              }
             })
             .catch(function (error) {
               // console.log(error);

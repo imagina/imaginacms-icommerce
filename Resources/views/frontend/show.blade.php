@@ -2,42 +2,40 @@
 @extends('layouts.master')
 
 @section('meta')
-    <meta name="title"
-          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}">
-    <meta name="keywords" content="{!!isset($product->options->meta_keyword) ? $product->options->meta_keyword : ''!!}">
-    <meta name="description"
-          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary!!}">
+    <meta name="title"  content="{{$product->meta_title??$product->title}}">
+    <meta name="keywords" content="{{$product->meta_keyword ?? ''}}">
+    <meta name="description"  content="{{$product->meta_description??$product->summary}}">
     <meta name="robots"
-          content="{{isset($product->options->meta_robots)?$product->options->meta_robots : 'INDEX,FOLLOW'}}">
+          content="{{$product->options->meta_robots??'INDEX,FOLLOW'}}">
     <!-- Schema.org para Google+ -->
     <meta itemprop="name"
-          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}">
+          content="{{$product->meta_title??$product->title}}">
     <meta itemprop="description"
-          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary !!}">
+          content="{{$product->meta_description??$product->summary}}">
     <meta itemprop="image"
-          content=" {{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg') }}">
+          content=" {{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
     <!-- Open Graph para Facebook-->
 
     <meta property="og:title"
-          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}"/>
+          content="{{$product->meta_title??$product->title}}"/>
     <meta property="og:type" content="article"/>
     <meta property="og:url" content="{{url($product->slug)}}"/>
     <meta property="og:image"
-          content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg')}}"/>
+          content="{{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}"/>
     <meta property="og:description"
-          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary !!}"/>
+          content="{{$product->meta_description??$product->summary}}"/>
     <meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
     <meta property="og:locale" content="{{config('asgard.iblog.config.oglocal')}}">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="{{ Setting::get('core::site-name') }}">
     <meta name="twitter:title"
-          content="{{isset($product->options->meta_title)?$product->options->meta_title :$product->title}}">
+          content="{{$product->meta_title??$product->title}}">
     <meta name="twitter:description"
-          content="{!!isset($product->options->meta_description) ? $product->options->meta_description : $product->summary !!}">
+          content="{{$product->meta_description??$product->summary}}">
     <meta name="twitter:creator" content="">
     <meta name="twitter:image:src"
-          content="{{url($product->options->mainimage ?? 'modules/icommerce/img/product/default.jpg')}}">
+          content="{{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
 
 @stop
 
@@ -242,7 +240,7 @@
                 /*wishlist*/
                 wishList:false,
                 products_wishlist: [],
-                user: {!! $currentUser??null !!},
+                user: {!! $currentUser->id??null !!},
                 product_comments: [],
                 count_comments: 0,
                 product_parent: false,

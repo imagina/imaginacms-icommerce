@@ -1,4 +1,5 @@
-# asgardcms-icommerce
+# Icommerce Imagina 
+Icommerce is an e-commerce module for Asgard CMS open source fully customizable for entrepreneurs around the world. Go beyond the limits of traditional e-commerce solutions and be limited only by your own imagination.
 
 ### Email Configurations Backend
 

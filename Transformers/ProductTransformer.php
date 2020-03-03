@@ -51,6 +51,7 @@ class ProductTransformer extends BaseApiTransformer
       'storeId'=>$this->store_id,
       'averageRating'=> (float)$this->averageRating ?? 0,
       'visible' => $this->visible,
+      'url'=>$this->url??'#'
     ];
 
     /*RELATIONSHIPS*/

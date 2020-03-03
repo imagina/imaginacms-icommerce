@@ -90,13 +90,13 @@ class PaymentMethodApiController extends BaseApiController
         try {
          //Get data
           $data = $request->input('attributes');
-          
+
           //Validate Request
           //$this->validateRequestApi(new CustomRequest((array)$data));
-    
+
           //Create item
           $this->paymentMethod->create($data);
-    
+
           //Response
           $response = ["data" => ""];
           \DB::commit(); //Commit to Data Base
@@ -120,8 +120,10 @@ class PaymentMethodApiController extends BaseApiController
     {
       \DB::beginTransaction(); //DB Transaction
       try {
+
           //Get data
           $data = $request->input('attributes');
+          \Log::info($data);
           //Validate Request
           //$this->validateRequestApi(new CustomRequest((array)$data));
 
@@ -140,7 +142,7 @@ class PaymentMethodApiController extends BaseApiController
         $status = $this->getStatusError($e->getCode());
         $response = ["errors" => $e->getMessage()];
       }
-      
+
       //Return response
       return response()->json($response, $status ?? 200);
     }

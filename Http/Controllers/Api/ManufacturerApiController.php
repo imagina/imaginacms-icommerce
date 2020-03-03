@@ -13,9 +13,6 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 // Transformers
 use Modules\Icommerce\Transformers\ManufacturerTransformer;
 
-// Entities
-use Modules\Icommerce\Entities\Manufacturer;
-
 // Repositories
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 
@@ -28,114 +25,168 @@ class ManufacturerApiController extends BaseApiController
     $this->manufacturer = $manufacturer;
   }
 
-  /**
-   * Display a listing of the resource.
-   * @return Response
-   */
-  public function index(Request $request)
-  {
-    try {
-      //Request to Repository
-      $manufacturers = $this->manufacturer->getItemsBy($this->getParamsRequest($request));
 
-      //Response
-      $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
-      //If request pagination add meta-page
-      $request->page ? $response['meta'] = ['page' => $this->pageTransformer($manufacturers)] : false;
+    /**
+     * Get List Products
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        try {
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
 
-    } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+            //Request to Repository
+            $manufacturers = $this->manufacturer->getItemsBy($params);
+
+            //Response
+            $response = ['data' => ManufacturerTransformer::collection($manufacturers)];
+
+            //If request pagination add meta-page
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($manufacturers)] : false;
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
 
-  /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
-   */
-  public function show($criteria, Request $request)
-  {
-    try {
-      //Request to Repository
-      $manufacturer = $this->manufacturer->getItem($criteria,$this->getParamsRequest($request));
+    /**
+     * GET A ITEM
+     *
+     * @param $criteria
+     * @return mixed
+     */
+    public function show($criteria, Request $request)
+    {
+        try {
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
 
-      $response = [
-        'data' => $manufacturer ? new ManufacturerTransformer($manufacturer) : '',
-      ];
+            //Request to Repository
+            $dataEntity = $this->manufacturer->getItem($criteria, $params);
 
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+            //Break if no found item
+            if (!$dataEntity) throw new \Exception('Item not found', 204);
+
+            //Response
+            $response = ["data" => new ManufacturerTransformer($dataEntity)];
+
+            //If request pagination add meta-page
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
 
-  /**
-   * Show the form for creating a new resource.
-   * @return Response
-   */
-  public function create(Request $request)
-  {
-    try {
-      $this->manufacturer->create($request->all());
+    /**
+     * CREATE A ITEM
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function create(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            $data = $request->input('attributes') ?? [];//Get data
 
-      $response = ['data' => ''];
+            //Validate Request
+            $this->validateRequestApi(new ProductRequest($data));
 
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+            //Create item
+            $manufacturer = $this->manufacturer->create($data);
+
+            //Response
+            $response = ["data" => new ManufacturerTransformer($manufacturer)];
+            \DB::commit(); //Commit to Data Base
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
 
-  /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
-   */
-  public function update($criteria, Request $request)
-  {
-    try {
-      $this->manufacturer->updateBy($criteria, $request->all(),$this->getParamsRequest($request));
+    /**
+     * UPDATE ITEM
+     *
+     * @param $criteria
+     * @param Request $request
+     * @return mixed
+     */
+    public function update($criteria, Request $request)
+    {
+        \DB::beginTransaction(); //DB Transaction
+        try {
+            //Get data
+            $data = $request->input('attributes') ?? [];//Get data
 
-      $response = ['data' => ''];
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
 
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+            $dataEntity = $this->manufacturer->getItem($criteria, $params);
+
+            if (!$dataEntity) throw new Exception('Item not found', 204);
+
+            //Request to Repository
+            $this->manufacturer->update($dataEntity, $data);
+            //Response
+            $response = ["data" => 'Item Updated'];
+            \DB::commit();//Commit to DataBase
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
 
-  /**
-   * Remove the specified resource from storage.
-   * @return Response
-   */
-  public function delete($criteria, Request $request)
-  {
-    try {
-      $this->manufacturer->deleteBy($criteria,$this->getParamsRequest($request));
+    /**
+     * DELETE A ITEM
+     *
+     * @param $criteria
+     * @return mixed
+     */
+    public function delete($criteria, Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            //Get params
+            $params = $this->getParamsRequest($request);
 
-      $response = ['data' => ''];
 
-    } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+            $dataEntity = $this->manufacturer->getItem($criteria, $params);
+
+            if (!$dataEntity) throw new Exception('Item not found', 204);
+
+            //call Method delete
+            $this->category->destroy($dataEntity);
+
+            //Response
+            $response = ["data" => "Item deleted"];
+            \DB::commit();//Commit to Data Base
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
-    return response()->json($response, $status ?? 200);
-  }
 }

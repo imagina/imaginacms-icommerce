@@ -72,16 +72,16 @@ class OptionApiController extends BaseApiController
       $params = $this->getParamsRequest($request);
 
       //Request to Repository
-      $option = $this->option->getItem($criteria, $params);
+        $dataEntity = $this->option->getItem($criteria, $params);
 
       //Break if no found item
-      if (!$option) throw new \Exception('Item not found', 204);
+      if (!$dataEntity) throw new \Exception('Item not found', 404);
 
       //Response
-      $response = ["data" => new OptionTransformer($option)];
+      $response = ["data" => new OptionTransformer($dataEntity)];
 
       //If request pagination add meta-page
-      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($option)] : false;
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
     } catch (\Exception $e) {
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
@@ -140,8 +140,14 @@ class OptionApiController extends BaseApiController
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
 
+        //Request to Repository
+        $dataEntity = $this->option->getItem($criteria, $params);
+
+        //Break if no found item
+        if (!$dataEntity) throw new \Exception('Item not found', 404);
+
       //Request to Repository
-      $this->option->updateBy($criteria, $data, $params);
+      $this->option->update($dataEntity, $data);
 
       //Response
       $response = ["data" => 'Item Updated'];
@@ -169,8 +175,14 @@ class OptionApiController extends BaseApiController
       //Get params
       $params = $this->getParamsRequest($request);
 
+        //Request to Repository
+        $dataEntity = $this->option->getItem($criteria, $params);
+
+        //Break if no found item
+        if (!$dataEntity) throw new \Exception('Item not found', 404);
+
       //call Method delete
-      $this->option->deleteBy($criteria, $params);
+      $this->option->destroy($dataEntity);
 
       //Response
       $response = ["data" => "Item deleted"];

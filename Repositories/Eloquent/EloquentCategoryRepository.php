@@ -159,43 +159,23 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         return $category;
     }
 
-    public function updateBy($criteria, $data, $params = false)
+    public function update($model, $data)
     {
-        /*== initialize query ==*/
-        $query = $this->model->query();
-
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            //Update by field
-            if (isset($filter->field))
-                $field = $filter->field;
-        }
-
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
+        $model->update($data);
         event(new UpdateMedia($model, $data));//Event to Update media
-        return $model ? $model->update((array)$data) : false;
+        return $model;
+
     }
 
-    public function deleteBy($criteria, $params = false)
+
+    /**
+     * @inheritdoc
+     */
+    public function destroy($model)
     {
-        /*== initialize query ==*/
-        $query = $this->model->query();
-
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field))//Where field
-                $field = $filter->field;
-        }
-
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
         event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
-        $model ? $model->delete() : false;
+        return $model->delete();
     }
+
 }
 
