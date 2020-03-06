@@ -1,5 +1,13 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  1.1.1:
+    added:
+      - Spanish language files
+      - English Lenguage files update
+      - view bulkload
+      - OrderNotification view Email
+    changed:
+      - fix repositorie name rateable
   1.1.0:
     added:
       - SoreSender, and store_id relation an fiel in entities
