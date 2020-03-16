@@ -8,7 +8,7 @@
         "composer/installers": "~1.0",
         "idavoll/core-module": "~3.0",
         "imagina/ihelpers-module": "~3.0",
-        "imagina/inotification": "~3.1",
+        "imagina/notification-module": "~3.1",
         "willvincent/laravel-rateable": "~1.0"
     },
     "require-dev": {
