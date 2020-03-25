@@ -16,157 +16,101 @@
 
 
 @section('content')
-    
- @include('partials.header')
+
+
     <!-- preloader -->
     <div id="content_preloader">
         <div id="preloader"></div>
     </div>
 
-    <div class="container-fluid    bg-top"></div>
+
 
     <div id="content_index_commerce" class="page">
-    <!-- ======== Breadcrumb and title ======== -->      
-      @if(isset($category) && !empty($category))      
-        <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-6 d-flex align-items-center">
-               @component('partials.widgets.breadcrumb')
-                  @if(isset($category->parent) && !empty($category->parent))
-                    <li class="breadcrumb-item">
-                          <a href="{{ $category->parent->url }}">
-                              {{ $category->parent->title }}
-                          </a>
-                      </li>
-                  @endif
-                    <li class="breadcrumb-item active" aria-current="page">{{$category->title}}</li>
-                  @endcomponent
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="row d-flex justify-content-end">
-                  <div class="titulo-separador col-12 col-md-6 "></div>
-                  <div class=" col-12 col-md-6 col-lg-auto titulo3 font-weight-bold">
-                          {{$category->title}}
-                  </div>
 
+        @if(isset($category) && !empty($category))
+
+             <div class="banner-general py-5"  v-bind:style="{ backgroundImage: 'url(' + categoryimg + ')' }">
+                <div class="container">
+                    <div class="row justify-content-center align-items-end">
+                        <div class="col-12 text-center text-white">
+                            <h1 class="mb-0 font-weight-bold d-inline-block bg-primary px-3 py-2">@{{category.title}}</h1>
+                        </div>
+                        <div class="col-auto text-center">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-transparent text-white mb-0">
+                                    <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Inicio</a></li>
+                                    @if(isset($category->parent) && !empty($category->parent))
+                                        <li class="breadcrumb-item">
+                                            <a href="{{ $category->parent->url }}">
+                                                {{ $category->parent->title }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    <li class="breadcrumb-item active"
+                                        aria-current="page">
+                                        {{$category->title}}
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
 
-          @else
 
-          <div class="container">
+        @else
+
+            @component('partials.widgets.breadcrumb-img',array('url'=>'', 'title'=>'Resultado de la busqueda'))
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{trans('icommerce::common.search.search_result')}}
+                    <span class="font-weight-bold">
+                        "{{ isset($criterion) ? $criterion : ''}}"
+                    </span>
+                </li>
+            @endcomponent
+
+
+
+        @endif
+
+        <div class="container pt-5">
             <div class="row">
-              <div class="col-12 col-md-6 d-flex align-items-center">
-               @component('partials.widgets.breadcrumb')
-                    <li class="breadcrumb-item active" aria-current="page">
-                     {{trans('icommerce::common.search.search_result')}} "{{ isset($criterion) ? $criterion : ''}}"
-                    </li>
-                  @endcomponent
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="row d-flex justify-content-end">
-                  <div class="titulo-separador col-12 col-md-6 "></div>
-                  <div class=" col-12 col-md-6 col-lg-auto titulo3 font-weight-bold">
-                    {{trans('icommerce::common.search.search_result')}}    "{{ isset($criterion) ? $criterion : ''}}"
-                    
-                  </div>
 
+                <div class="col-12 text-right pb-5 d-none d-lg-block" v-if="articles.length >= 1">
+                    | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span> | @include('icommerce.widgets.order_by') |
                 </div>
-              </div>
-            </div>
-          </div>        
 
-      @endif
-    <!-- ======== End Breadcrumb and title ======== -->
-<!-- ======== #content ======== -->
-        <div class="filters">
-          <div class="content container"> 
-            <div class="row">
-              <!-- Search -->
 
-              <div class="col-12 col-md-6">
-                                  @include('icommerce.widgets.searcher')
-
-              </div>
-               
-              <!-- #content-page -->
-              
-       
-              <div class="col-12 col-md-6 ">
-                <ul class="nav nav-tabs d-flex justify-content-md-end justify-content-center" role="tablist">
-                  <li class="nav-item"  v-if="queryExternalCategory">
-                    <a class="nav-link" @click="clearAll()">Volver a la Categorìa principal </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#categorias" role="tab">Categoría </a>
-                  </li>
-       
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#filtros" role="tab">Filtros </a>
-                  </li>           
-                </ul>         
-              </div>
-            </div>
-            <!-- Tab panes -->
-            <div class="row filter">
-               
-                <div class="tab-content col-12">
-                  <div class="tab-pane" id="categorias" role="tabpanel">
+                <div class="col-lg-3 pb-5">
                     @include('icommerce.widgets.categories')
-                  </div>
-                  <div class="tab-pane row" id="filtros" role="tabpanel">
-                   <div class="container">
-                     <div class="row">
-                      
-                              @include('icommerce.widgets.range_price')
-                              @include('icommerce.widgets.order_by')
-                   
-                     </div>
-                   </div>
-                  </div>
+
+                    <hr class="border-primary">
+
+                    <div class="d-none d-lg-block">
+                        @include('icommerce.widgets.destacados')
+                    </div>
+
                 </div>
-            </div>
-           
-           <!-- Total Results -->
-            <div class="row total-results">
-                 
-       
-                <div class="col-12 title">
-                  <div class="row contenedor-titulo d-flex justify-content-between">
-                        <div class="col-12 col-md-auto titulo4 " v-if="queryExternalCategory">
-                           @{{categorititle}}
-                        </div>
-                        <div class="col-12 col-md-auto titulo4 " v-else>
-                               @{{category.title}}
-                        </div>
-                          <div class="titulo-separador col-12 col-md-9  d-flex justify-content-md-end"></div>
-                      </div>
-                </div>
-       
-                <div class="col-12 d-flex justify-content-md-end ">
-                  <span>Mostrando los @{{totalArticles}} Resultados</span>
-                </div> 
-            </div>
-            
-          </div>
-        </div>
-      <!-- End Filters -->
-          
-            <div class="container">
-                
+                <div class="col-lg-9 border-left pb-5">
                     <!-- ===== CONTENT ===== -->
+
+                    <div class="text-right pb-5 d-block d-lg-none" v-if="articles.length >= 1">
+                        | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span> | @include('icommerce.widgets.order_by') |
+                    </div>
+
                     <div id="content">
-                      <!-- PRODUCTS -->
+                        <!-- PRODUCTS -->
+                        <h3 class="d-inline-block bg-secondary text-white px-3 py-2"> @{{categorititle}}</h3>
+
+
                         <div id="cont_products" class="mt-4">
                             @include('icommerce.widgets.products')
                         </div>
                     </div>
-               
+                </div>
             </div>
         </div>
+
     </div>
 
 @stop
@@ -194,7 +138,7 @@
                 },
                 /*dates*/
                 articles: [],
-                categorititle:'',
+                categorititle: ' {{$category->title}} ',
                 currency: '$',
                 /*order*/
                 order: {
@@ -210,6 +154,7 @@
                 category:{!! $category ? json_encode($category) : "''"  !!},
                 category_parent: {{$category->id}}, /*CATEGORIA PADRE*/
                 categories: [], /*SUBCATEGORIAS*/
+                categoryimg: [],
                 queryExternalCategory:false,
                 indexCategory:0,
                 price: {
@@ -217,22 +162,24 @@
                     to: 999999
                 },
                 /*order*/
-                order_check: 'all',
+                order_check: 'Organizar Por',
                 /*rango de precio*/
                 min_price: 0,
                 max_price: 999999,
                 v_max: false,
                 v_min: false,
                 /*wishlist*/
-                user: {!! !empty($user)? $user :0 !!},
+                user: {!! $currentUser->id??null !!},
                 /*currency*/
                 currency: '$',
                 preloader: true,
+                loadProduct: false,
             },
             mounted: function () {
                 this.preloaded = false;
                 this.getProducts();
                 this.getCategoryChildrens();
+                this.getCategory();
                 $('#content_preloader').fadeOut(1000, function () {
                     $('#content_index_commerce').animate({'opacity': 1}, 500);
                 });
@@ -261,7 +208,6 @@
                         })
                     }
                 },
-
 
                 /* product add wishlist */
                 addWishList: function (item) {
@@ -294,7 +240,7 @@
                     var response = false;
                     $.each(this.products_wishlist, function (index, item) {
                         if ( id==item.product_id) {
-                            response = true; 
+                            response = true;
                         }
                     });
                     return response;
@@ -324,19 +270,7 @@
 
                 this.indexCategory=indexCategory;
                 this.queryExternalCategory=true;
-                /*Load Categories children*/
-                // axios({
-                //   method: 'Get',
-                //   responseType: 'json',
-                //   url: "{{ route('api.icommerce.categories.index') }}",
-                //   params: {
-                //     filter:{
-                //       parentId:this.categories[indexCategory].id
-                //     }
-                //   }
-                // }).then(response=> {
-                //   this.categories=response.data.data;
-                // });
+                vue_index_commerce.loadProduct = true;
                 /*Load Products */
                 axios({
                   method: 'Get',
@@ -355,16 +289,15 @@
                 }).then(response=> {
                   vue_index_commerce.order_response(response);
                   vue_index_commerce.categorititle=indexCategory.title;
+                  vue_index_commerce.loadProduct = false;
                 });
               },
-              
               getProducts() {
                 var filter={
                   order: this.order,
                   categoryId:this.category.id,
-                 priceRange: this.price,
-                  }
-
+                  priceRange: this.price,
+                };
                 axios({
                   method: 'Get',
                   responseType: 'json',
@@ -379,6 +312,16 @@
                   vue_index_commerce.order_response(response);
                 });
               },
+              getCategory() {
+                axios({
+                    method: 'Get',
+                    responseType: 'json',
+                    url: icommerce.url+'/api/icommerce/v3/categories/{{$category->id??''}}'
+                }).then(response=> {
+                    this.categoryimg=response.data.data.mainImage.path;
+                    console.log('asd');
+                });
+              },
               getCategoryChildrens() {
                 axios({
                   method: 'Get',
@@ -386,7 +329,7 @@
                   url: "{{ route('api.icommerce.categories.index') }}",
                   params: {
                     filter:{
-                      parentId:this.category.id
+                      parentId:0
                     },
                     include: 'children',
                   }
@@ -451,8 +394,7 @@
               },
 
               /* configura la consulta por order by */
-              order_by: function (order) {
-                this.order_check=order;
+              order_by: function  () {
                 switch (this.order_check) {
                   case 'all' :
                   this.order.field = 'created_at';
@@ -490,7 +432,7 @@
 
               /* configuar la consulta por rango de precio */
               filter_price: function (values) {
-  
+
                 this.price = {
                   from: values[0],
                   to: values[1]

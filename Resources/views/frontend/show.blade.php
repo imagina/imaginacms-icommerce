@@ -240,7 +240,7 @@
                 /*wishlist*/
                 wishList:false,
                 products_wishlist: [],
-                user: {!! $currentUser->id??null !!},
+                user: {{$currentUser->id??0}},
                 product_comments: [],
                 count_comments: 0,
                 product_parent: false,
@@ -326,7 +326,7 @@
                         responseType: 'json',
                         url: this.path,
                         params: {
-                            include: 'categories,productOptions,optionValues,category,wishlists',
+                            include: 'categories,productOptions,optionValues,category,wishlists,relatedProducts',
                         }
                     }).then(function (response) {
 
@@ -334,6 +334,7 @@
                         vue_show_commerce.categories = response.data.data.categories;
                         vue_show_commerce.product_gallery = response.data.data.gallery;
                         vue_show_commerce.currency = "$";
+                        vue_show_commerce.relatedProducts=response.data.data.relatedProducts;
                     });
 
                 },
@@ -382,10 +383,10 @@
 
                 /*agrega el producto al carro de compras*/
                 addCart: function (data) {
-                  vue_show_commerce.sending_data = true;
-                  vue_carting.addItemCart(data.id,data.name,data.price,this.quantity,this.productOptValueSelected);
-                  vue_show_commerce.quantity = 1;
-                  vue_show_commerce.sending_data = false;
+                    vue_show_commerce.sending_data = true;
+                    vue_carting.addItemCart(data.id,data.name,data.price,this.quantity,this.productOptValueSelected);
+                    vue_show_commerce.quantity = 1;
+                    vue_show_commerce.sending_data = false;
 
                 },
 
