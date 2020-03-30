@@ -21,9 +21,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         /*== RELATIONSHIPS ==*/
         if (in_array('*', $params->include)) {//If Request all relationships
-            $query->with(['translations','store']);
+            $query->with(['translations', 'store']);
         } else {//Especific relationships
-            $includeDefault = ['translations','store'];//Default relationships
+            $includeDefault = ['translations', 'store'];//Default relationships
             if (isset($params->include))//merge relations with default relationships
                 $includeDefault = array_merge($includeDefault, $params->include);
             $query->with($includeDefault);//Add Relationships to query
@@ -78,8 +78,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
             //Filter by stock status
             if (isset($filter->status)) {
-              if($filter->status!=null)
-                $query->where('status', $filter->status);
+                if ($filter->status != null)
+                    $query->where('status', $filter->status);
             }
 
             // add filter by Categories 1 or more than 1, in array
@@ -144,13 +144,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $query->where("visible", $filter->visible);
             }
 
-            if(isset($filter->rating)){
-                $rating=$filter->rating;
-                if($rating==='top'){
-                    $query->orderBy('sum_rating','desc');
+            if (isset($filter->rating)) {
+                $rating = $filter->rating;
+                if ($rating === 'top') {
+                    $query->orderBy('sum_rating', 'desc');
                 }
-                if($rating==='worst'){
-                    $query->orderBy('sum_rating','asc');
+                if ($rating === 'worst') {
+                    $query->orderBy('sum_rating', 'asc');
                 }
             }
 
@@ -221,16 +221,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
             $product->productOptions()->sync(array_get($data, 'product_options', []));
 
-            if(isset($data['option_values']))
-            $product->optionValues()->sync(array_get($data, 'option_values', []));
-            if(isset($data['related_products']))
-            $product->relatedProducts()->sync(array_get($data, 'related_products', []));
+            if (isset($data['option_values']))
+                $product->optionValues()->sync(array_get($data, 'option_values', []));
+            if (isset($data['related_products']))
+                $product->relatedProducts()->sync(array_get($data, 'related_products', []));
 
-            if(isset($data['discounts']))
-            $product->discounts()->sync(array_get($data, 'discounts', []));
+            if (isset($data['discounts']))
+                $product->discounts()->sync(array_get($data, 'discounts', []));
 
-            if(isset($data['tags']))
-            $product->setTags(array_get($data, 'tags', []));
+            if (isset($data['tags']))
+                $product->setTags(array_get($data, 'tags', []));
         }
 
         //Event to ADD media
@@ -239,67 +239,42 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $product;
     }
 
-    public function updateBy($criteria, $data, $params = false)
+    public function update($model, $data)
     {
-        /*== initialize query ==*/
-        $query = $this->model->query();
 
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+        $model->update($data);
 
-            //Update by field
-            if (isset($filter->field))
-                $field = $filter->field;
-        }
+        // sync tables
+        $model->categories()->sync(array_get($data, 'categories', []));
 
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
+        if (isset($data['product_options']))
+        $model->productOptions()->sync(array_get($data, 'product_options', []));
 
-        if ($model) {
-            $model->update($data);
-
-            // sync tables
-            $model->categories()->sync(array_get($data, 'categories', []));
-
-            //$model->productOptions()->sync(array_get($data, 'productOptions', []));
-
-            //$model->optionValues()->sync(array_get($data, 'optionValues', []));
-
-            if(isset($data['related_products']))
+        if (isset($data['option_values']))
+            $model->optionValues()->sync(array_get($data, 'option_values', []));
+        if (isset($data['related_products']))
             $model->relatedProducts()->sync(array_get($data, 'related_products', []));
 
-            //$model->discounts()->sync(array_get($data, 'discounts', []));
+        if (isset($data['discounts']))
+            $model->discounts()->sync(array_get($data, 'discounts', []));
 
-            if(isset($data['tags']))
-            $model->tags()->sync(array_get($data, 'tags', []));
-        }
+        if (isset($data['tags']))
+            $model->setTags(array_get($data, 'tags', []));
 
         //Event to Update media
         event(new UpdateMedia($model, $data));
 
-        return $model ?? false;
+        return $model;
     }
 
-    public function deleteBy($criteria, $params = false)
+    public function destroy($model)
     {
-        /*== initialize query ==*/
-        $query = $this->model->query();
-
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field))//Where field
-                $field = $filter->field;
-        }
-
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
-        $model ? $model->delete() : false;
 
         //Event to Delete media
         event(new DeleteMedia($model->id, get_class($model)));
+
+        return  $model->delete();
+
     }
 
     /**
@@ -315,9 +290,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         return $this->model->where('slug', $slug)->with('category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();;
     }
+
     public function whereCategory($id)
     {
-        $query = $this->model->with('categories','category',  'tags', 'addedBy', 'translations');
+        $query = $this->model->with('categories', 'category', 'tags', 'addedBy', 'translations');
         $query->whereHas('categories', function ($q) use ($id) {
             $q->where('category_id', $id);
         })->whereStatus(Status::ENABLED)->where('created_at', '<', date('Y-m-d H:i:s'))->orderBy('created_at', 'DESC');
