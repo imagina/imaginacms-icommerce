@@ -24,7 +24,7 @@ class IcommerceAddedFields extends Migration
             $table->renameColumn('status', 'active');
         });
         Schema::table('icommerce__manufacturer_trans', function (Blueprint $table) {
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->integer('translatable_options')->unsigned()->nullable();
         });
         Schema::table('icommerce__tax_rates', function (Blueprint $table) {
