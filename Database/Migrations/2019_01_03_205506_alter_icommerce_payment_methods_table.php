@@ -16,7 +16,7 @@ class AlterIcommercePaymentMethodsTable extends Migration
       Schema::table('icommerce__payment_methods', function($table)
       {
         $table->dropColumn('payment_code');
-        $table->text('options');
+        $table->text('options')->nullable();
       });
     }
 
