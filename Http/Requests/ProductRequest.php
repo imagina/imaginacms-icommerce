@@ -9,6 +9,8 @@ class ProductRequest extends BaseFormRequest
   public function rules()
   {
     return [
+      'slug' => 'required',
+      'category_id' => 'required',
     ];
   }
   
