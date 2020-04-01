@@ -100,7 +100,7 @@ class ManufacturerApiController extends BaseApiController
             $data = $request->input('attributes') ?? [];//Get data
 
             //Validate Request
-            $this->validateRequestApi(new ProductRequest($data));
+            $this->validateRequestApi(new ManufacturerRequest($data));
 
             //Create item
             $manufacturer = $this->manufacturer->create($data);
@@ -174,7 +174,7 @@ class ManufacturerApiController extends BaseApiController
             if (!$dataEntity) throw new Exception('Item not found', 204);
 
             //call Method delete
-            $this->category->destroy($dataEntity);
+            $this->manufacturer->destroy($dataEntity);
 
             //Response
             $response = ["data" => "Item deleted"];
