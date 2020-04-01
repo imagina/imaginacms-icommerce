@@ -32,7 +32,7 @@ class ProductTransformer extends BaseApiTransformer
       'minimum' => $this->when($this->minimum, $this->minimum),
       'reference' => $this->when($this->reference, $this->reference),
       'description' => $this->when($this->description, $this->description),
-      'rating' => (int)$this->when($this->rating, $this->rating),
+      'rating' => (int) !is_null($this->rating) ? $this->rating : 0,
       'freeshipping' => $this->when($this->freeshipping, ((int)$this->freeshipping ? true : false)),
       'orderWeight' => $this->when($this->order_weight, $this->order_weight),
       'createdAt' => $this->when($this->created_at, $this->created_at),
@@ -49,9 +49,9 @@ class ProductTransformer extends BaseApiTransformer
       'mainImage' => $this->mainImage,
       'gallery' => $this->gallery,
       'storeId'=>$this->store_id,
-      'averageRating'=> (float)$this->averageRating ?? 0,
+      'averageRating' => (float) !is_null($this->averageRating) ? $this->averageRating : 0,
       'visible' => $this->visible,
-      'url'=>$this->url??'#'
+      'url'=> $this->url??'#'
     ];
 
     /*RELATIONSHIPS*/
