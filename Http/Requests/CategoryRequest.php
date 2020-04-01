@@ -9,6 +9,7 @@ class CategoryRequest extends BaseFormRequest
   public function rules()
   {
     return [
+      'title' => 'required',
     ];
   }
   
