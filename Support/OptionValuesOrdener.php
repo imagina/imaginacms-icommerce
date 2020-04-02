@@ -28,22 +28,24 @@ class OptionValuesOrdener
    */
   public function handle($data)
   {
-    $data = $this->convertToArray(json_decode($data));
+    $data = $this->convertToArray(($data));
 
     foreach ($data as $position => $item) {
       $this->order($position, $item);
     }
+
+    return true;
   }
 
   /**
-   * Order recursively the menu items
+   * Order recursively the value
    * @param int   $position
    * @param array $item
    */
   private function order($position, $item)
   {
     $optionValue = $this->optionValueRepository->find($item['id']);
-    if (0 === $position && false === $optionValue->isRoot()) {
+    if (0 === $position && false === true/*$optionValue->isRoot()*/) {
       return;
     }
     $this->savePosition($optionValue, $position);
@@ -72,17 +74,20 @@ class OptionValuesOrdener
   }
 
   /**
-   * Save the given position on the menu item
+   * Save the given position on the value
    * @param object $optionValue
    * @param int    $position
    */
   private function savePosition($optionValue, $position)
   {
-    $this->optionValueRepository->update($optionValue, compact('position'));
+    $data = [
+      'sort_order' => $position
+    ];
+    $this->optionValueRepository->update($optionValue, $data);
   }
 
   /**
-   * Check if the item has children
+   * Check if the value has children
    *
    * @param  array $item
    * @return bool
@@ -93,7 +98,7 @@ class OptionValuesOrdener
   }
 
   /**
-   * Set the given parent id on the given menu item
+   * Set the given parent id on the given value
    *
    * @param object $item
    * @param int    $parent_id
