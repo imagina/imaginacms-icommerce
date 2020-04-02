@@ -11,7 +11,8 @@ abstract class BaseIcommerceTestCase extends TestCase
 {
 
   protected $category;
-  protected $product; 
+  protected $product;
+  protected $option;
 
   public function setUp()
   {
@@ -19,8 +20,8 @@ abstract class BaseIcommerceTestCase extends TestCase
     $this->resetDatabase();
     $this->category = app('Modules\Icommerce\Repositories\CategoryRepository');
     $this->product = app('Modules\Icommerce\Repositories\ProductRepository');
+    $this->option = app('Modules\Icommerce\Repositories\OptionRepository');
   }
-
 
   protected function getPackageProviders($app)
   {
@@ -88,6 +89,18 @@ abstract class BaseIcommerceTestCase extends TestCase
     ];
 
     return $this->category->create($data);
+  }
+
+  public function createOption(){
+    $data = [
+      'type' => 'select',
+      'sort_order' => 0,
+      'options'=> null,
+      'es' => [
+        'description' => 'Select size'
+      ]
+    ];
+    return $this->option->create($data);
   }
 
 }
