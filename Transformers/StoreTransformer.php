@@ -10,10 +10,11 @@ class StoreTransformer extends Resource
     {
 
         $data = [
-            'id' => $this->when($this->id, $this->id),
+            'id' => $this->id,
             'name' => $this->when($this->name, $this->name),
             'address' => $this->when($this->address, $this->address),
             'shipping' => $this->when($this->shipping, $this->shipping),
+            'phone' => $this->when($this->phone, $this->phone),
            
         ];
         
