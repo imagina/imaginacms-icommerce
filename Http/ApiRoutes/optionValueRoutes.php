@@ -25,5 +25,10 @@ $router->group(['prefix' => '/option-values'/*,'middleware' => ['auth:api']*/], 
     'as' => $locale . 'api.icommerce.option-values.show',
     'uses' => 'OptionValueApiController@show',
   ]);
+
+  $router->post('/order', [
+    'as' => $locale . 'api.icommerce.option-values.order',
+    'uses' => 'OptionValueApiController@updateOrder',
+  ]);
   
 });
