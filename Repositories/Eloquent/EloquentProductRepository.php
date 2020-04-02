@@ -216,6 +216,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $product = $this->model->create($data);
 
         if ($product) {
+
             // sync tables
             $product->categories()->sync(array_get($data, 'categories', []));
 
