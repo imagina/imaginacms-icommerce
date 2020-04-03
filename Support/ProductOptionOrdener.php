@@ -3,25 +3,24 @@
 
 namespace Modules\Icommerce\Support;
 
-use Modules\Icommerce\Entities\Option;
-use Modules\Icommerce\Repositories\OptionRepository;
+use Modules\Icommerce\Entities\ProductOption;
+use Modules\Icommerce\Repositories\ProductOptionRepository;
 
-class OptionOrdener
+class ProductOptionOrdener
 {
 
   /**
-   * @var OptionRepository
+   * @var ProductOptionRepository
    */
-  private $optionRepository;
+  private $productOptionRepository;
 
   /**
-   * @param OptionRepository $option
+   * @param MenuItemRepository $productOptionRepository
    */
-  public function __construct(OptionRepository $option)
+  public function __construct(ProductOptionRepository $productOptionRepository)
   {
-    $this->optionRepository = $option;
+    $this->productOptionRepository = $productOptionRepository;
   }
-
 
   /**
    * @param $data
@@ -29,21 +28,23 @@ class OptionOrdener
   public function handle($data)
   {
     $data = $this->convertToArray(($data));
-
     foreach ($data as $position => $item) {
       $this->order($position, $item);
     }
+
+    return true;
   }
 
   /**
-   * Order recursively the option items
+   * Order recursively the menu items
    * @param int   $position
    * @param array $item
    */
   private function order($position, $item)
   {
-    $menuItem = $this->optionRepository->find($item['id']);
-    if (0 === $position && false === $menuItem->isRoot()) {
+    $menuItem = $this->productOptionRepository->find($item['id']);
+
+    if (0 === $position && false === true/*$optionValue->isRoot()*/) {
       return;
     }
     $this->savePosition($menuItem, $position);
@@ -54,15 +55,14 @@ class OptionOrdener
     }
   }
 
-
   /**
-   * @param Option $parent
-   * @param array  $children
+   * @param Menuitem $parent
+   * @param array    $children
    */
-  private function handleChildrenForParent(Option $parent, array $children)
+  private function handleChildrenForParent(Menuitem $parent, array $children)
   {
     foreach ($children as $position => $item) {
-      $menuItem = $this->optionRepository->find($item['id']);
+      $menuItem = $this->productOptionRepository->find($item['id']);
       $this->savePosition($menuItem, $position);
       $this->makeItemChildOf($menuItem, $parent->id);
 
@@ -79,11 +79,15 @@ class OptionOrdener
    */
   private function savePosition($menuItem, $position)
   {
-    $this->optionRepository->update($menuItem, compact('position'));
+    $data = [
+      'sort_order' => $position
+    ];
+
+    $this->productOptionRepository->update($menuItem, $data);
   }
 
   /**
-   * Check if the item has children
+   * Check if the product option has children
    *
    * @param  array $item
    * @return bool
@@ -94,14 +98,14 @@ class OptionOrdener
   }
 
   /**
-   * Set the given parent id on the given menu item
+   * Set the given parent id on the given product option
    *
    * @param object $item
    * @param int    $parent_id
    */
   private function makeItemChildOf($item, $parent_id)
   {
-    $this->optionRepository->update($item, compact('parent_id'));
+    $this->productOptionRepository->update($item, compact('parent_id'));
   }
 
   /**
