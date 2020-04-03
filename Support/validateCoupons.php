@@ -15,7 +15,7 @@ class validateCoupons
    * @param $cart
    * @return $discount
    */
-  public function validateCode ($couponCode, $cartId,$storeId) {
+  public function validateCode ($couponCode, $cartId, $storeId) {
 
     // Get coupon
     $coupon = Coupon::where( 'code', $couponCode)->where('store_id',$storeId)->orWhere('store_id',null)->first();
