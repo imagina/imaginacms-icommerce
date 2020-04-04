@@ -26,4 +26,9 @@ $router->group(['prefix' => '/product-option'/*,'middleware' => ['auth:api']*/],
         'uses' => 'ProductOptionApiController@show',
     ]);
 
+    $router->post('/order', [
+      'as' => $locale . 'api.icommerce.product-option.order',
+      'uses' => 'ProductOptionApiController@updateOrder',
+    ]);
+
 });
