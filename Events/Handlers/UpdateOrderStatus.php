@@ -26,7 +26,7 @@ class UpdateOrderStatus
 
     public function handle($event)
     {
-        $data = $event->data;
+        $data = $event->order;
         if (isset($data['order_id']) && isset($data['status'])){
             $order = Order::where('id', $data['order_id']);
             $order->update(['status_id' => $data['status']]);
