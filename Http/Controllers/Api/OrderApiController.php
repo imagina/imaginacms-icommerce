@@ -41,6 +41,8 @@ use Modules\Icommerce\Support\OrderHistory as orderHistorySupport;
 use Modules\Icommerce\Support\OrderItem as orderItemSupport;
 use Modules\Icommerce\Support\validateCoupons;
 
+use Exception;
+
 class OrderApiController extends BaseApiController
 {
 
@@ -154,134 +156,135 @@ class OrderApiController extends BaseApiController
      */
     public function create(Request $request)
     {
+      \DB::beginTransaction();
 
-        \DB::beginTransaction();
+      try {
+        //Get Parameters from URL.
+        $params = $this->getParamsRequest($request);
 
-        try {
-            //Get Parameters from URL.
-            $params = $this->getParamsRequest($request);
+        $data = $request['attributes'] ?? [];//Get data
 
-            $data = $request['attributes'] ?? [];//Get data
-            $couponCode=$data['coupon_code'];
-            //Break if the data is empty
-            if (!count($data)) throw new \Exception('The some errors in the data sent', 400);
+        //Break if the data is empty
+        if (!count($data)) throw new \Exception('The some errors in the data sent', 400);
 
-            // Get Cart
-            $cart = $this->cart->find($data['cart_id']);
+        // Get Cart
+        $cart = $this->cart->find($data['cart_id']);
 
-            //Break if cart no found
-            if (!$cart) throw new \Exception('The cart selected doesn\'t exist', 400);
+        //Break if cart no found
+        if (!$cart) throw new \Exception('The cart selected doesn\'t exist', 400);
 
-            $data["cart"] = $cart;
+        $data["cart"] = $cart;
 
-            //Get Added by id
-            $user = $params->user;
-            $data["addedBy"] = $user;
+        //Get Added by id
+        $user = $params->user;
+        $data["addedBy"] = $user;
 
-            //Get Customer Id
-            if (isset($data["customer_id"])) {
-                $customer = $this->user->find($data["customer_id"]);
-                $data["customer"] = $customer;
-            }
-
-            //Get Payment Method
-            $payment = $this->paymentMethod->find($data['payment_method_id']);
-            $data["paymentMethod"] = $payment;
-
-            //Get Shipping Method Name
-            $data["shippingMethod"] = $this->shippingMethod->find($data['shipping_method_id']);
-
-            //Get Store
-            $data["store"] = $this->store->find($data['store_id']);
-
-
-            //Get Currency
-            if (!isset($data["currency_id"])) {
-                $currency = $this->currency->findByAttributes(["default_currency" => 1]);
-                if (!$currency) {
-                    $data["currency_id"] = null;
-                } else {
-                    $data["currency_id"] = $currency;
-                }
-            }
-            $data["currency"] = $currency;
-
-
-            $supportShipping = new shippingMethodSupport();
-
-            $dataMethods = $supportShipping->fixDataSend((object)$data);
-
-            //Get Shipping Methods with calculates
-            $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
-
-            //Get Shipping Method Price
-            $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
-            $data["shippingPrice"] = $shippingPrice;
-
-            // Coupons
-            $validateCoupons = new validateCoupons();
-            $discount = $validateCoupons->validateCode($data['coupon_code'], $data['cart_id'],$data['store_id']);
-            $data["discount"] = $discount->discount;
-
-
-            // Fix Data Order
-            $supportOrder = new orderSupport();
-            $data = $supportOrder->fixData($data, $request);
-
-
-            //Validate Request Order
-            $this->validateRequestApi(new OrderRequest($data));
-
-            //Get data Extra Options
-            $data['options'] = $data['options'] ?? [];
-
-            // Data Order History
-            $supportOrderHistory = new orderHistorySupport(1, 1);
-            $dataOrderHistory = $supportOrderHistory->getData();
-            $data["orderHistory"] = $dataOrderHistory;
-
-            // Data Order Items
-            $supportOrderItem = new orderItemSupport();
-            $dataOrderItem = $supportOrderItem->fixData($cart->products);
-            $data["orderItems"] = $dataOrderItem;
-
-            //Create
-            $order = $this->order->create($data);
-
-            if ($discount->status == 1) {
-                $coupon = $validateCoupons->getCouponByCode($couponCode);
-                $validateCoupons->redeemCoupon($coupon->id, $order->id, $customer->id, $order->total);
-            }
-
-            $data["orderID"] = $order->id;
-
-            $paymentData = $this->validateResponseApi(
-                app($payment->options->init)->init(new Request($data))
-            );
-            $updateCart=$this->cart->update($cart,['status'=>2]);
-            //Response
-            $response = ["data" => [
-                "orderId" => $order->id,
-                "paymentData" => $paymentData
-            ]
-            ];
-
-            \DB::commit(); //Commit to Data Base
-
-            // Event To create OrderItems, OrderOptions, next send email
-            event(new OrderWasCreated($order, $data['orderItems']));
-            event(new OrderStatusHistoryWasCreated($order));
-
-        } catch (\Exception $e) {
-
-            \Log::error($e);
-            \DB::rollback();//Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage(), 'line' => $e->getLine(), 'trace' => $e->getTrace()];
+        //Get Customer Id
+        if (isset($data["customer_id"])) {
+          $customer = $this->user->find($data["customer_id"]);
+          $data["customer"] = $customer;
         }
 
-        return response()->json($response, $status ?? 200);
+        //Get Payment Method
+        $payment = $this->paymentMethod->find($data['payment_method_id']);
+        $data["paymentMethod"] = $payment;
 
+        //Get Shipping Method Name
+        $data["shippingMethod"] = $this->shippingMethod->find($data['shipping_method_id']);
+
+        //Get Store
+        $data["store"] = $this->store->find($data['store_id']);
+
+
+        //Get Currency
+        if (!isset($data["currency_id"])) {
+          $currency = $this->currency->findByAttributes(["default_currency" => 1]);
+          if (!  $currency  ) {
+            $data["currency_id"] = null;
+          } else {
+            $data["currency_id"] = $currency;
+          }
+        }
+        $data["currency"] = isset($currency) ? $currency : null;
+
+
+        $supportShipping = new shippingMethodSupport();
+
+        $dataMethods = $supportShipping->fixDataSend((object)$data);
+
+        //Get Shipping Methods with calculates
+        $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
+
+        //Get Shipping Method Price
+        $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
+        $data["shippingPrice"] = $shippingPrice;
+
+        // Coupons
+        $data["discount"] = 0;
+        if ( isset($data['coupon_code']))
+        {
+          $validateCoupons = new validateCoupons();
+          $discount = $validateCoupons->validateCode($data['coupon_code'], $data['cart_id'],$data['store_id']);
+          $data["discount"] = $discount->discount;
+        }
+
+        // Fix Data Order
+        $supportOrder = new orderSupport();
+        $data = $supportOrder->fixData($data, $request);
+
+
+        //Validate Request Order
+        $this->validateRequestApi(new OrderRequest($data));
+
+        //Get data Extra Options
+        $data['options'] = $data['options'] ?? [];
+
+        // Data Order History
+        $supportOrderHistory = new orderHistorySupport(1, 1);
+        $dataOrderHistory = $supportOrderHistory->getData();
+        $data["orderHistory"] = $dataOrderHistory;
+
+        // Data Order Items
+        $supportOrderItem = new orderItemSupport();
+        $dataOrderItem = $supportOrderItem->fixData($cart->products);
+        $data["orderItems"] = $dataOrderItem;
+
+        //Create
+        $order = $this->order->create($data);
+
+        if (isset($discount->status) && $discount->status == 1) {
+          $coupon = $validateCoupons->getCouponByCode($couponCode);
+          $validateCoupons->redeemCoupon($coupon->id, $order->id, $customer->id, $order->total);
+        }
+
+        $data["orderID"] = $order->id;
+
+        $paymentData = $this->validateResponseApi(
+          app($payment->options->init)->init(new Request($data))
+        );
+        $updateCart=$this->cart->update($cart,['status'=>2]);
+        //Response
+        $response = ["data" => [
+          "orderId" => $order->id,
+          "paymentData" => $paymentData
+        ]
+        ];
+
+        \DB::commit(); //Commit to Data Base
+
+        // Event To create OrderItems, OrderOptions, next send email
+        event(new OrderWasCreated($order, $data['orderItems']));
+        event(new OrderStatusHistoryWasCreated($order));
+
+      } catch (\Exception $e) {
+
+        \Log::error($e);
+        \DB::rollback();//Rollback to Data Base
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage(), 'line' => $e->getLine(), 'trace' => $e->getTrace()];
+      }
+
+      return response()->json($response, $status ?? 200);
     }
 
     /**
