@@ -20,15 +20,20 @@ use Modules\Icommerce\Entities\Option;
 use Modules\Icommerce\Repositories\OptionRepository;
 use Modules\Icommerce\Repositories\OptionValueRepository;
 
+// Supports
+use Modules\Icommerce\Support\ProductOptionOrdener;
+
 class OptionApiController extends BaseApiController
 {
   private $option;
   private $optionValue;
+  private $optionOrdener;
 
-  public function __construct(OptionRepository $option, OptionValueRepository $optionValue)
+  public function __construct(OptionRepository $option, OptionValueRepository $optionValue, ProductOptionOrdener $optionOrdener)
   {
     $this->option = $option;
     $this->optionValue = $optionValue;
+    $this->optionOrdener = $optionOrdener;
   }
 
   /**
@@ -195,6 +200,32 @@ class OptionApiController extends BaseApiController
 
     //Return response
     return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+  }
+
+  /**
+   * UPDATE ORDER
+   *
+   * @param Request $request
+   * @return mixed
+   */
+  public function updateOrderOptions (Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      $data = $request->input('attributes') ?? [];
+
+      $options = $this->optionOrdener->handle($data['options']);
+      $response = [
+        "data" => 'order Updated'
+      ];
+      $status = 200;
+      \DB::commit();
+    } catch (\Exception $e) {
+      \DB::rollback();
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    return response()->json($response, 200);
   }
 
 }
