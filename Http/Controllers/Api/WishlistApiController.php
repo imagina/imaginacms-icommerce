@@ -136,7 +136,7 @@ class WishlistApiController extends BaseApiController
 
             $params = $this->getParamsRequest($request);
 
-            $data = $request->all();
+            $data = $request['attributes'] ?? [];
 
             //Validate Request Order
             $this->validateRequestApi(new WishlistRequest($data));
@@ -146,7 +146,7 @@ class WishlistApiController extends BaseApiController
             if (!$entity) throw new \Exception('Item not found', 404);
             $wishlist = $this->wishlist->update($entity, $data);
 
-            $response = ['data' => 'wishlist Update'];
+            $response = ['data' => new WishlistTransformer($wishlist)];
 
             \DB::commit(); //Commit to Data Base
 
