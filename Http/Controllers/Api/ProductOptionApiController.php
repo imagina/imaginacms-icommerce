@@ -15,13 +15,18 @@ use Modules\Icommerce\Transformers\ProductOptionTransformer;
 // Repositories
 use Modules\Icommerce\Repositories\ProductOptionRepository;
 
+// Support
+use Modules\Icommerce\Support\ProductOptionOrdener;
+
 class ProductOptionApiController extends BaseApiController
 {
   private $productOption;
+  private $productOptionOrdener;
 
-  public function __construct(ProductOptionRepository $productOption)
+  public function __construct(ProductOptionRepository $productOption, ProductOptionOrdener $productOptionOrdener)
   {
     $this->productOption = $productOption;
+    $this->productOptionOrdener = $productOptionOrdener;
   }
 
   /**
@@ -171,4 +176,26 @@ class ProductOptionApiController extends BaseApiController
     //Return response
     return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
+
+
+
+  public function updateOrder (Request $request)
+  {
+    try {
+      $data = $request->input('attributes');
+      $response = [
+        'data' => $this->productOptionOrdener->handle($data['options'])
+      ];
+      $status = 200;
+    } catch (\Exception $e) {
+      $status = $this->getStatusError($e->getCode());
+      $response = [
+        "errors" => $e->getMessage()
+      ];
+    }
+    return response()->json($response, $status);
+
+  }
+
+
 }
