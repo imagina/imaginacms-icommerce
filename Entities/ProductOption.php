@@ -16,7 +16,8 @@ class ProductOption extends Model
     'parent_id',
     'parent_option_value_id',
     'value',
-    'required'
+    'required',
+    'sort_order'
   ];
 
     public function option()
