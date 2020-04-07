@@ -7,6 +7,7 @@ use Modules\Icommerce\Entities\OrderStatus;
 use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 use Modules\Icommerce\Transformers\OrderItemTransformer;
 use Modules\Iprofile\Transformers\UserTransformer;
+use Modules\Icurrency\Support\Facades\Currency;
 
 class OrderTransformer extends Resource
 {
@@ -16,7 +17,7 @@ class OrderTransformer extends Resource
       'id' => $this->when($this->id,$this->id),
       'invoiceNro' => $this->when($this->invoice_nro,$this->invoice_nro),
       'invoicePrefix' => $this->when($this->invoice_prefix,$this->invoice_prefix),
-      'total' => $this->when($this->total,$this->total),
+      'total' => $this->when($this->total, Currency::convert($this->total)),
       'statusId' => $this->when($this->status_id,$this->status_id),
       'statusName' => OrderStatus::find($this->when($this->status_id,$this->status_id))->title,
       'customer' => new UserTransformer($this->whenLoaded('customer')),

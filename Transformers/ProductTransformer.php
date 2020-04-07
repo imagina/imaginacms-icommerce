@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\Resource;
 use Modules\Icommerce\Entities\Status;
 use Modules\Ihelpers\Transformers\BaseApiTransformer;
 use Modules\Marketplace\Transformers\StoreTransformer as MarketplaceStoreTransformer;
+use Modules\Icurrency\Support\Facades\Currency;
 
 class ProductTransformer extends BaseApiTransformer
 {
@@ -22,7 +23,7 @@ class ProductTransformer extends BaseApiTransformer
       'sku' => $this->when($this->sku, $this->sku),
       'quantity' => $this->when($this->quantity, $this->quantity),
       'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
-      'price' => $this->price ?? 0,
+      'price' => Currency::convert($this->price),
       'dateAvailable' => $this->when($this->date_available, $this->date_available),
       'weight' => $this->when($this->weight, $this->weight),
       'length' => $this->when($this->length, $this->length),

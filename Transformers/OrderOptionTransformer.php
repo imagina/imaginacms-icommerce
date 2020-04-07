@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Icurrency\Support\Facades\Currency;
 
 class OrderOptionTransformer extends Resource
 {
@@ -16,7 +17,7 @@ class OrderOptionTransformer extends Resource
       'orderItemId' => $this->when($this->order_item_id,$this->order_item_id),
       'optionDescription' => $this->when($this->option_description,$this->option_description),
       'optionValueDescription' => $this->when($this->option_value_description,$this->option_value_description),
-      'price' => $this->when($this->price,$this->price),
+      'price' => $this->when($this->price, Currency::convert($this->price)),
       'pricePrefix' => $this->when($this->price_prefix,$this->price_prefix),
       'points' => $this->when($this->points,$this->points),
       'pointsPrefix' => $this->when($this->points_prefix,$this->points_prefix),
