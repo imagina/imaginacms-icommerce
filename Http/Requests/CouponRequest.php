@@ -13,6 +13,8 @@ class CouponRequest extends BaseFormRequest
           'discount' => 'required|min:2',
           'date_start' => 'required',
           'date_end' => 'required',
+          'type' => 'required',
+          'status' => 'required'
         ];
     }
 
