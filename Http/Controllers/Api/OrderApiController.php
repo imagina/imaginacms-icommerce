@@ -221,6 +221,7 @@ class OrderApiController extends BaseApiController
 
         // Coupons
         $data["discount"] = 0;
+        $couponCode = $data['coupon_code'];
         if ( isset($data['coupon_code']))
         {
           $validateCoupons = new validateCoupons();
