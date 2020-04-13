@@ -75,57 +75,10 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
     
     $taxRate = $this->model->create($data);
   
-    $taxRate->rates()->sync(array_get($data, 'rates', []));
+    //$taxRate->rates()->sync(array_get($data, 'rates', []));
 
     
     return $taxRate;
   }
-  
-  public function updateBy($criteria, $data, $params){
-    
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      
-      if (isset($filter->field))//Where field
-        $query->where($filter->field, $criteria);
-      else//where id
-        $query->where('id', $criteria);
-    }
-    
-    // REQUEST
-    $model = $query->first();
-    
-    if($model){
-      $model->update($data);
-      $model->rates()->sync(array_get($data, 'rates', []));
-    }
-    return $model;
-  }
-  
-  public function deleteBy($criteria, $params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
-    }
-  
-    // REQUEST
-    $model = $query->first();
-  
-    if($model) {
-      $model->delete();
-    }
-  }
+
 }
