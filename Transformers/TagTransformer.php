@@ -25,11 +25,12 @@ class TagTransformer extends Resource
     
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-    
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
-          $data['translates'][$key]['slug'] = $this->translate("$key")['slug'];
+
+      foreach ($languages as $lang => $value) {
+        if ($this->hasTranslation($lang)) {
+          $data[$lang]['title'] = $this->hasTranslation($lang) ? $this->translate("$lang")['title'] : '';
+          $data[$lang]['slug'] = $this->hasTranslation($lang) ? $this->translate("$lang")['slug'] : '';
+
         }
       }
     }
