@@ -12,7 +12,7 @@ class TaxRateRequest extends BaseFormRequest
           'rate' => 'required',
           'type' => 'required',
           'geozone_id' => 'required',
-          'tax_class_id' => 'required'
+
         ];
     }
 
