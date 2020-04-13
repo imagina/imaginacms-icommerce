@@ -36,7 +36,7 @@ class TaxRateTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data[$key]['name'] = $this->translate("$key")['name'];
+          $data[$key]['name'] = $this->hasTranslation($key) ? $this->translate("$key")['name'] : '';
         }
       }
     }
