@@ -15,7 +15,7 @@ class TaxRateTransformer extends Resource
       'rate' => $this->rate,
       'type' => $this->type,
       'geozoneId' => $this->geozone_id,
-      'customer' => new UserTransformer($this->customer),
+      //'customer' => new UserTransformer($this->customer),
       'createdAt' => $this->created_at,
       'updatedAt' => $this->updated_at,
     ];
@@ -36,7 +36,7 @@ class TaxRateTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
+          $data[$key]['name'] = $this->translate("$key")['name'];
         }
       }
     }

@@ -32,8 +32,8 @@ class TaxClassTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
-          $data['translates'][$key]['description'] = $this->translate("$key")['description'];
+          $data[$key]['name'] = $this->translate("$key")['name'];
+          $data[$key]['description'] = $this->translate("$key")['description'];
         }
       }
     }
