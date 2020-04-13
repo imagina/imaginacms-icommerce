@@ -13,8 +13,8 @@ class ManufacturerTransformer extends Resource
       'name' => $this->name,
       'status' => $this->status,
       'options' => $this->options,
-      'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at,
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
     ];
   
     $filter = json_decode($request->filter);
@@ -27,7 +27,7 @@ class ManufacturerTransformer extends Resource
     
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data[$key]['name'] = $this->translate("$key")['name'];
+          $data[$key]['name'] = $this->hasTranslation($key) ? $this->translate("$key")['name'] : '';
         }
       }
     }
