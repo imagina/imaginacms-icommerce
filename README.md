@@ -397,6 +397,9 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+        * name: String
+        * description: Text
+    
     * Create
     
         * Method: `POST`
