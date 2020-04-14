@@ -59,9 +59,25 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
         * translatable_options: Text (Translatable)
     
     * Create
+    
+        * Method: `POST`
+        * URI: `/categories`
+    
     * Read
+    
+         * Method: `GET`
+         * URI: `/stores/:id`
+         * URI: `/categories`
+         
     * Update
+    
+         * Method: `PUT`
+         * URI: `/categories/:id`
+         
     * Delete
+    
+         * Method: `DELETE`
+         * URI: `/categories/:id`
     
 * #### Products
 
