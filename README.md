@@ -260,6 +260,11 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+        * type: String
+        * sort_order: String
+        * options: Text
+        * description: Text (Translate)
+    
     * Create
     
         * Method: `POST`
