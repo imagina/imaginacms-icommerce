@@ -185,6 +185,25 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+        * code: String
+        * type: String
+        * category_id: Integer
+        * product_id: Integer
+        * customer_id: Integer
+        * store_id: Integer
+        * discount: Float
+        * type_discount: String
+        * logged: String
+        * shipping: String
+        * date_start: Date
+        * date_end: Date
+        * quantity_total: Integer
+        * quantity_total_customer: Integer
+        * status: String
+        * options: Text
+        * minimum_amount: Integer
+        * minimum_quantity_products: Integer
+    
     * Create
     
         * Method: `POST`
