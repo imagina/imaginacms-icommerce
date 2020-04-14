@@ -125,6 +125,12 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+         * user_id: Integer
+         * ip: Ip
+         * options: Text
+         * status: String
+         * store_id: Integer
+    
     * Create
     
         * Method: `POST`
