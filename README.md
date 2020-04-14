@@ -318,6 +318,61 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+         * invoice_nro: Integer
+         * invoice_prefix: String
+         * total: String
+         * status_id: Integer
+         * customer_id: Integer
+         * added_by_id: Integer
+         * first_name: String
+         * last_name: String
+         * email: String
+         * telephone: String
+         * payment_first_name: String
+         * payment_last_name: String
+         * payment_company: String
+         * payment_nit: String
+         * payment_email: String
+         * payment_address_1: String
+         * payment_address_2: String
+         * payment_city: String
+         * payment_zip_code: String
+         * payment_country: String
+         * payment_zone: String
+         * payment_address_format: String
+         * payment_custom_field: String
+         * payment_method: String
+         * payment_code: String
+         * payment_name: String
+         * shipping_first_name: String
+         * shipping_last_name: String
+         * shipping_company: String
+         * shipping_address_1: String
+         * shipping_address_2: String
+         * shipping_city: String
+         * shipping_zip_code: String
+         * shipping_country_code: String
+         * shipping_zone: String
+         * shipping_address_format: String
+         * shipping_custom_field: String
+         * shipping_method: String
+         * shipping_code: String
+         * shipping_amount: String
+         * store_id: Integer
+         * store_name: String
+         * store_address: String
+         * store_phone: String
+         * tax_amount: String
+         * comment: String
+         * tracking: String
+         * currency_id: Integer
+         * currency_code: Integer
+         * currency_value: Integer
+         * ip: Ip
+         * user_agent: Integer
+         * key: String
+         * options: Text
+    
     * Create
     
         * Method: `POST`
