@@ -289,6 +289,11 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+        * option_id: Integer
+        * sort_order: Integer
+        * options: String
+        * description: String (Translatable)
+    
     * Create
     
         * Method: `POST`
