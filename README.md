@@ -228,6 +228,14 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+        * active: String
+        * options: String
+        * store_id: Integer
+        * name: String (Translatable)
+        * slug: String (Translatable)
+        * description: String (Translatable)
+        * translatable_options: String (Translatable)
+    
     * Create
     
         * Method: `POST`
