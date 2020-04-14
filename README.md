@@ -481,27 +481,67 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
         * Method: `DELETE`
         * URI: `/wishlists`
 
-
-
-
-
-
 * #### Shipping Methods
 
     * Attributes
     
+        * active: String
+        * name: String
+        * options: String
+        * store_id: Integer
+        * title: String (Translatable)
+        * description: String (Translatable)
+    
     * Create
+    
+        * Method: `POST`
+        * URI: `/shipping-methods`
+
     * Read
+    
+        * Method: `GET`
+        * URI: `/shipping-methods`
+
     * Update
+    
+        * Method: `PUT`
+        * URI: `/shipping-methods`
+
     * Delete
+    
+        * Method: `DELETE`
+        * URI: `/shipping-methods`
     
 * #### Payment Methods
 
     * Attributes
+    
+        * active: String
+        * name: String
+        * options: String
+        * store_id: Integer
+        * title: String (Translatable)
+        * description: String (Translatable)
+    
     * Create
+    
+        * Method: `POST`
+        * URI: `/payment-methods`
+
     * Read
+    
+        * Method: `GET`
+        * URI: `/payment-methods`
+
     * Update
+    
+        * Method: `PUT`
+        * URI: `/payment-methods`
+
     * Delete
+    
+        * Method: `DELETE`
+        * URI: `/payment-methods`
 
 
 
