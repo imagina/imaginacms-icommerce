@@ -424,6 +424,14 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+         * rate: String
+         * type: String
+         * geozone_id: Integer
+         * customer: String
+         * tax_class_id: Integer
+         * store_id: Integer
+         * name: String (Translatable)
+    
     * Create
     
         * Method: `POST`
