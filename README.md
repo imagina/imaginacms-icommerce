@@ -17,6 +17,11 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 * #### Stores
 
     * Attributes
+    
+        * name: string
+        * address: string
+        * phone: string
+   
     * Create
     * Read
     * Update
@@ -25,6 +30,18 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 * #### Categories
 
     * Attributes
+    
+        * parent_id: Integer
+        * options: Text
+        * show_menu: Boolean
+        * store_id: Integer
+        * title: String (Translatable)
+        * slug: String (Translatable)
+        * description: Text (Translatable)
+        * meta_title: Text (Translatable)
+        * meta_description: Text (Translatable)
+        * translatable_options: Text (Translatable)
+    
     * Create
     * Read
     * Update
