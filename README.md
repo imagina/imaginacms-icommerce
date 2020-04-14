@@ -155,6 +155,11 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
     * Attributes
     
+        * cart_id: Integer
+        * product_id: Integer
+        * quantity: Integer
+        * options: Text
+    
     * Create
     
         * Method: `POST`
