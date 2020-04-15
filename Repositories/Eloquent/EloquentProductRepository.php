@@ -62,6 +62,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     });
                 });
             }
+
             if (isset($filter->storeSlug) && is_module_enabled('Marketplace')) {
                 $query->whereHas('store', function ($query) use ($filter) {
                     $query->whereHas('translations', function ($query) use ($filter) {
@@ -71,6 +72,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                     });
                 });
             }
+
             //Filter by stock status
             if (isset($filter->stockStatus)) {
                 $query->where('stock_status', $filter->stockStatus);
@@ -92,10 +94,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 });
             }
 
-
             if (isset($filter->store)) {
                 $query->where('store_id', $filter->store);
             }
+
             //add filter by Manufacturers 1 or more than 1, in array
             if (isset($filter->manufacturers)) {
                 $query->whereIn("manufacturer_id", $filter->manufacturers);
@@ -154,7 +156,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 }
             }
 
-
+            if( isset($filter->discount) && $filter->discount){
+              $query->whereHas('discounts', function ($query) use ($filter)  {
+                $now = date('Y-m-d');
+                $query->whereDate('date_start', '>=', $now)
+                  ->whereDate('date_end', '<=', $now);
+              });
+            }
         }
 
         /*== FIELDS ==*/
