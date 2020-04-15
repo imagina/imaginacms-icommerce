@@ -220,7 +220,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             // sync tables
             $product->categories()->sync(array_get($data, 'categories', []));
 
-            $product->productOptions()->sync(array_get($data, 'product_options', []));
+            if (isset($data['product_options']))
+              $product->productOptions()->sync(array_get($data, 'product_options', []));
 
             if (isset($data['option_values']))
                 $product->optionValues()->sync(array_get($data, 'option_values', []));
