@@ -52,15 +52,17 @@ class ProductPresenter extends Presenter
         }
     }
 
-    public function priceAfterDiscounts () {
+    public function priceAfterDiscounts ()
+    {
 
       $now = date('Y-m-d');
 
       $discounts = $this->entity->discounts()
-        ->whereDate('date_start', '>=', $now)
-        ->whereDate('date_end', '<=', $now)
+
         ->orderBy('priority')
         ->get();
+
+      return $discounts;
 
       $basePrice = $this->entity->price;
       $totalDiscounts = 0;
@@ -68,6 +70,7 @@ class ProductPresenter extends Presenter
       foreach ($discounts as $discount){
         $totalDiscounts = $totalDiscounts + $discount;
       }
+
 
       return $basePrice - $totalDiscounts;
 

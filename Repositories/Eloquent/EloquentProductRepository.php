@@ -236,8 +236,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if (isset($data['related_products']))
                 $product->relatedProducts()->sync(array_get($data, 'related_products', []));
 
-            if (isset($data['discounts']))
-                $product->discounts()->sync(array_get($data, 'discounts', []));
 
             if (isset($data['tags']))
                 $product->setTags(array_get($data, 'tags', []));
@@ -265,8 +263,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if (isset($data['related_products']))
             $model->relatedProducts()->sync(array_get($data, 'related_products', []));
 
-        if (isset($data['discounts']))
-            $model->discounts()->sync(array_get($data, 'discounts', []));
 
         if (isset($data['tags']))
             $model->setTags(array_get($data, 'tags', []));
