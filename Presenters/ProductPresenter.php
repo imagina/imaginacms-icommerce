@@ -52,28 +52,58 @@ class ProductPresenter extends Presenter
         }
     }
 
-    public function priceAfterDiscounts ()
-    {
+    public function priceAfterDiscounts () {
 
       $now = date('Y-m-d');
 
+      $basePrice = $this->entity->price;
+      $newPrice = $basePrice;
+      $totalDiscounts = [];
       $discounts = $this->entity->discounts()
-
-        ->orderBy('priority')
+        ->orderBy('priority', 'asc')
         ->get();
 
-      return $discounts;
+      foreach ($discounts as $key => $discount){
+        $valueDiscount = $this->calcDiscount($discount, $newPrice);
+        if ( isset($discounts[$key+1]) && $discounts[$key+1]->priority == $discounts[$key]->priority ){
+          $newPrice = $newPrice;
+        } else {
+          $newPrice = $this->updatePrice($basePrice, $totalDiscounts)/*$newPrice - $valueDiscount*/;
+        }
+        $totalDiscounts[]= $valueDiscount;
 
-      $basePrice = $this->entity->price;
-      $totalDiscounts = 0;
+      }
 
-      foreach ($discounts as $discount){
-        $totalDiscounts = $totalDiscounts + $discount;
+      $response = 0;
+      for ($i = 0; $i < count($totalDiscounts); $i++){
+        $response += floatval($totalDiscounts[$i]);
       }
 
 
-      return $basePrice - $totalDiscounts;
+      return $response;
+    }
 
+
+    public function taxes () {
+      return 0;
+    }
+
+    private function calcDiscount ($discount, $value) {
+      if($discount->criteria == 'fixed'){
+        return intval ($discount->discount);
+      }
+
+      if($discount->criteria == 'percentage'){
+        return floatval (($value * $discount->discount) / 100 );
+      }
+    }
+
+    private function updatePrice ($price, $discounts) {
+      $response = $price;
+      for ($i = 0; $i < count($discounts); $i++){
+        $response -= $discounts[$i];
+      }
+      return $response;
     }
 
 }
