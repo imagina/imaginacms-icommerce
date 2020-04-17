@@ -18,7 +18,7 @@ class TaxClass extends Model
   
   public function rates()
   {
-    return $this->belongsToMany(TaxRate::class, 'icommerce__tax_class_rate')->withPivot('id', 'based', 'priority')->withTimestamps()->using(TaxClassRate::class);
+    return $this->belongsToMany(TaxRate::class, 'icommerce__tax_class_rate')/*->withPivot('id', 'based', 'priority')->withTimestamps()*/;
   }
   
 }
