@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Iprofile\Entities\Department;
 
 class ProductDiscount extends Model
 {
@@ -19,7 +20,8 @@ class ProductDiscount extends Model
     'discount',
     'criteria',
     'date_start',
-    'date_end'
+    'date_end',
+    'department_id',
   ];
   
   public function product()
@@ -34,5 +36,10 @@ class ProductDiscount extends Model
   public function productOption()
   {
     return $this->belongsTo(ProductOption::class);
+  }
+
+  public function department()
+  {
+    return $this->belongsTo(Department::class);
   }
 }
