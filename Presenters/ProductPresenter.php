@@ -5,6 +5,8 @@ namespace Modules\Icommerce\Presenters;
 use Laracasts\Presenter\Presenter;
 use Modules\Icommerce\Entities\OrderItem;
 use Modules\Icommerce\Entities\Status;
+use Illuminate\Support\Facades\Auth;
+use Modules\Iprofile\Entities\Department;
 
 class ProductPresenter extends Presenter
 {
@@ -17,11 +19,14 @@ class ProductPresenter extends Presenter
      */
     private $post;
 
+    private $department;
+
     public function __construct($entity)
     {
         parent::__construct($entity);
         $this->post = app('Modules\Icommerce\Repositories\ProductRepository');
         $this->status = app('Modules\Icommerce\Entities\Status');
+        $this->department = app('Modules\Iprofile\Repositories\DepartmentRepository');
     }
 
     /**
@@ -52,16 +57,31 @@ class ProductPresenter extends Presenter
         }
     }
 
-    public function priceAfterDiscounts () {
+    public function totalDiscounts ( ) {
 
       $now = date('Y-m-d');
 
       $basePrice = $this->entity->price;
       $newPrice = $basePrice;
       $totalDiscounts = [];
+      $departments = [];
+      $userId = Auth::guard('api')->user() ? Auth::guard('api')->user()->id : null;
+
+      if ( $userId ) {
+        $departments = Department::whereHas('users', function ($q) use ($userId){
+          $q->where('iprofile__user_department.user_id', $userId);
+        })->pluck('id');
+      }
+
+      $departments[] = null;
+
       $discounts = $this->entity->discounts()
         ->orderBy('priority', 'asc')
+        ->whereDate('date_end', '>=', $now)
+        ->whereDate('date_start', '<=', $now)
         ->get();
+
+      $discounts = $discounts->whereIn('department_id', $departments);
 
       foreach ($discounts as $key => $discount){
         $valueDiscount = $this->calcDiscount($discount, $newPrice);
@@ -83,11 +103,6 @@ class ProductPresenter extends Presenter
       return $response;
     }
 
-
-    public function taxes () {
-      return 0;
-    }
-
     private function calcDiscount ($discount, $value) {
       if($discount->criteria == 'fixed'){
         return intval ($discount->discount);
@@ -106,4 +121,13 @@ class ProductPresenter extends Presenter
       return $response;
     }
 
+    public function totalTaxes () {
+      $basePrice = $this->entity->price ? $this->entity->price : 0;
+      $taxes = isset($this->entity->taxClass) && isset($this->entity->taxClass->rates) ? $this->entity->taxClass->rates : [];
+      $totalTaxes = 0;
+      foreach ($taxes as $tax){
+        $totalTaxes += floatval( ($basePrice * $tax->rate) / 100) ;
+      }
+      return $totalTaxes;
+    }
 }
