@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Icommerce\Entities\Status;
+use Modules\Iprofile\Transformers\UserTransformer;
 use Modules\Ihelpers\Transformers\BaseApiTransformer;
 use Modules\Marketplace\Transformers\StoreTransformer as MarketplaceStoreTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
@@ -54,13 +55,16 @@ class ProductTransformer extends BaseApiTransformer
       'averageRating' => (float) !is_null($this->averageRating) ? $this->averageRating : 0,
       'visible' => $this->visible,
       'url'=> $this->url??'#',
-      'priceAfterDiscounts' => $this->present()->priceAfterDiscounts,
+      'totalDiscounts' => $this->present()->totalDiscounts,
+      'totalTaxes' => $this->present()->totalTaxes,
+      'manufacturerId' => $this->when($this->manufacturer_id, $this->manufacturer_id),
+      'taxClassId' => $this->when($this->tax_class_id, $this->tax_class_id),
     ];
 
     /*RELATIONSHIPS*/
     // Tax Class
     $this->ifRequestInclude('addedBy') ?
-      $data['addedBy'] = ($this->added_by_id ? new TaxClassTransformer($this->addedBy) : false) : false;
+      $data['addedBy'] = ($this->added_by_id ? new UserTransformer($this->addedBy) : false) : false;
 
     // Tax Class
     $this->ifRequestInclude('taxClass') ?
@@ -80,7 +84,7 @@ class ProductTransformer extends BaseApiTransformer
 
     // Manufacturer
     $this->ifRequestInclude('manufacturer') ?
-      $data['manufacturer'] = ($this->manufacturer_id ? OrderTransformer::collection($this->manufacturer) : false) : false;
+      $data['manufacturer'] = ($this->manufacturer_id ? new ManufacturerTransformer($this->manufacturer) : false) : false;
 
     /* OJO PROBAR
     // Discounts
@@ -110,11 +114,11 @@ class ProductTransformer extends BaseApiTransformer
     $this->ifRequestInclude('children') ?
       $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
 
-      if (is_module_enabled('Marketplace')) {
-          $data['store']= new MarketplaceStoreTransformer($this->whenLoaded('store'));
-      }else{
-          $data['store']= new StoreTransformer($this->whenLoaded('store'));
-      }
+    if (is_module_enabled('Marketplace')) {
+      $data['store']= new MarketplaceStoreTransformer($this->whenLoaded('store'));
+    }else{
+      $data['store']= new StoreTransformer($this->whenLoaded('store'));
+    }
 
     // TRANSLATIONS
     $filter = json_decode($request->filter);
