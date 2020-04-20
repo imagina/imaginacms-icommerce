@@ -21,7 +21,7 @@ class CreateIcommerceProductsTable extends Migration
       $table->text('options')->default('')->nullable();
       $table->tinyInteger('status')->default(0)->unsigned();
 
-      $table->integer('added_by_id')->unsigned();
+      $table->integer('added_by_id')->unsigned()->nullable();
       $table->foreign('added_by_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
 
       $table->integer('category_id')->unsigned()->nullable();

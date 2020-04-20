@@ -18,7 +18,7 @@ class ProductDiscountTransformer extends Resource
         'priority' => $this->when($this->priority, $this->priority),
         'discount' => $this->when($this->discount, $this->discount),
         'criteria' => $this->when($this->criteria, $this->criteria),
-        'department_id' => $this->when($this->department_id, $this->department_id),
+        'departmentId' => $this->when($this->department_id, $this->department_id),
         'dateStart' => $this->when($this->date_start, $this->date_start),
         'dateEnd' => $this->when($this->date_end, $this->date_end),
         'createdAt' => $this->when($this->created_at, $this->created_at),

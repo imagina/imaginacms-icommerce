@@ -2,6 +2,7 @@
 
 return [
     'name' => 'Icommerce',
+    'frontendModuleName' => 'qcommerce',
     'orderStatuses' => [
         '1' => [
             'id' => 1,

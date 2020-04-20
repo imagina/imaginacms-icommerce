@@ -17,8 +17,8 @@ class CreateIcommerceCategoryTranslationsTable extends Migration
       $table->increments('id');
       
       // Your translatable fields
-      $table->text('title');
-      $table->string('slug');
+      $table->text('title')->nullable();
+      $table->string('slug')->nullable();
       $table->text('description')->nullable();
       $table->text('meta_title')->nullable();
       $table->text('meta_description')->nullable();
