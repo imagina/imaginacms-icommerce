@@ -10,13 +10,14 @@ class TaxClassRateTransformer extends Resource
   {
     $data =  [
       'id' => $this->id,
-      'taxClassId' => $this->when($this->created_at),
-      'taxRateId'=> $this->when($this->created_at),
-      'based' => $this->when($this->created_at),
-      'priority' => $this->when($this->created_at),
-      'createdAt' => $this->when($this->created_at),
-      'updatedAt' => $this->when($this->updated_at),
+      'taxClassId' => $this->when($this->tax_class_id, $this->tax_class_id),
+      'taxRateId' => $this->when($this->tax_rate_id, $this->tax_rate_id),
+      'based' => $this->when($this->based, $this->based),
+      'priority' => $this->when($this->priority, $this->priority),
+      'createdAt' => $this->when($this->created_at, $this->created_at),
+      'updatedAt' => $this->when($this->updated_at, $this->updated_at),
     ];
+
 
     return $data;
   }

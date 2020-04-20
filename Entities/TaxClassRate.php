@@ -17,7 +17,7 @@ class TaxClassRate extends Model
       'tax_class_id',
       'tax_rate_id',
       'based',
-      'priority'
+      'priority',
     ];
 
 }
