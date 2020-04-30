@@ -42,7 +42,7 @@ class ProductTransformer extends BaseApiTransformer
       'status' => $this->when($this->status, $this->status),
       'stockStatus' => $this->when($this->stock_status, $this->stock_status),
       'parentId' => $this->when($this->parent_id, $this->parent_id),
-      'categoryId' => $this->when($this->category_id, $this->category_id),
+      'categoryId' => $this->when($this->category_id, intval($this->category_id)),
       'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
       'discounts' => ProductDiscountTransformer::collection($this->whenLoaded('discounts')),
       'category' => new CategoryTransformer($this->whenLoaded('category')),
@@ -57,8 +57,8 @@ class ProductTransformer extends BaseApiTransformer
       'url'=> $this->url??'#',
       'totalDiscounts' => $this->present()->totalDiscounts,
       'totalTaxes' => $this->present()->totalTaxes,
-      'manufacturerId' => $this->when($this->manufacturer_id, $this->manufacturer_id),
-      'taxClassId' => $this->when($this->tax_class_id, $this->tax_class_id),
+      'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
+      'taxClassId' => $this->when($this->tax_class_id, intval($this->tax_class_id)),
     ];
 
     /*RELATIONSHIPS*/
