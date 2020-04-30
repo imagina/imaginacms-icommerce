@@ -21,8 +21,8 @@ class PaymentMethod extends Model
         'active',
         'name',
         'options',
-        'store_id'
-
+        'store_id',
+        'geozone_id',
     ];
 
     protected $casts = [
