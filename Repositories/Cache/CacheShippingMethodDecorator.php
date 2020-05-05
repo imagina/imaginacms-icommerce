@@ -39,10 +39,10 @@ class CacheShippingMethodDecorator extends BaseCacheDecorator implements Shippin
     });
   }
 
-    public function getCalculations($request)
+    public function getCalculations($request, $params)
     {
-        return $this->remember(function () use ($request) {
-            return $this->repository->getCalculations($request);
+        return $this->remember(function () use ($request, $params) {
+            return $this->repository->getCalculations($request, $params);
         });
     }
 }
