@@ -34,6 +34,13 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
                 $query->where('store_id', $filter->store);
             }
 
+            if (isset($filter->geozones)) {
+              $query->whereIn('geozone_id', $filter->geozones);
+            }
+
+            if (isset($filter->active)) {
+              $query->where('active', $filter->active);
+            }
 
         }
         /*== FIELDS ==*/
