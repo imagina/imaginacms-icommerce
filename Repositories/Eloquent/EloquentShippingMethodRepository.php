@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Modules\Icommerce\Support\Cart as cartSupport;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
+use Illuminate\Support\Facades\Auth;
 
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {
@@ -117,57 +118,51 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      * @return Response
      */
 
-    public function getCalculations($request)
+    public function getCalculations($request, $params)
     {
 
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+      /* Init query */
+      $query = $this->model->query();
 
-        // Check actives
-        $methods = $query->where("status", 1)->get();
+      /* Check actives */
+      $query->where("status", 1);
 
-        if (isset($methods) && count($methods) > 0) {
+      /* Filters */
+      if ($params->filter) {
+        $filter = $params->filter;
 
+        if (isset($filter->geozones)) {
+          $query->whereIn("geozone_id", $filter->geozones);
+        }
+      }
 
-            // Search Cart
-            $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
+      /* Run query*/
+      $methods = $query->get();
 
-            if (isset($data->products['cart_id'])) {
-                $cart = $cartRepository->find($request->products['cart_id']);
-
-                // Fix data cart products
-                $supportCart = new cartSupport();
-                $dataCart = $supportCart->fixProductsAndTotal($cart);
-
-                // Add products to request
-                $data['products'] = $dataCart['products'];
-            }
-
-
-            foreach ($methods as $key => $method) {
-
-                try {
-                    $results = app($method->options->init)->init($request);
-                    $resultData = $results->getData();
-
-                    $method->calculations = $resultData;
-
-                } catch (\Exception $e) {
-
-                    $resultData["msj"] = "error";
-                    $resultData["items"] = $e->getMessage();
-
-                    $method->calculations = $resultData;
-
-                }// Try catch
-
-            }// Foreach
-
-        }// If actives
-
-        return $methods;
-
-
+      if (isset($methods) && count($methods) > 0) {
+        // Search Cart
+        $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
+        if (isset($data->products['cart_id'])) {
+            $cart = $cartRepository->find($request->products['cart_id']);
+            // Fix data cart products
+            $supportCart = new cartSupport();
+            $dataCart = $supportCart->fixProductsAndTotal($cart);
+            // Add products to request
+            $data['products'] = $dataCart['products'];
+        }
+        foreach ($methods as $key => $method) {
+          try {
+            $results = app($method->options->init)->init($request);
+            $resultData = $results->getData();
+            $method->calculations = $resultData;
+          } catch (\Exception $e) {
+            $resultData["msj"] = "error";
+            $resultData["items"] = $e->getMessage();
+            $method->calculations = $resultData;
+          }
+        }
+      }
+      return $methods;
     }
 
 }

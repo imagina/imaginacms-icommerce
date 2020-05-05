@@ -11,6 +11,6 @@ interface ShippingMethodRepository extends BaseRepository
   
   public function getItem($criteria, $params);
 
-  public function getCalculations($request);
+  public function getCalculations($request, $params);
 
 }

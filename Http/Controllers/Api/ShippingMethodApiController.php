@@ -212,7 +212,7 @@ class ShippingMethodApiController extends BaseApiController
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
-            $shippingMethods = $this->shippingMethod->getCalculations($request);
+            $shippingMethods = $this->shippingMethod->getCalculations($request, $params);
 
             //Response
             $response = ['data' => ShippingMethodTransformer::collection($shippingMethods)];
