@@ -13,6 +13,8 @@ class ProductTransformer extends BaseApiTransformer
 {
   public function toArray($request)
   {
+    $filter = json_decode($request->filter);
+
     $data = [
       'id' => $this->id,
       'name' => $this->name ?? '',
@@ -56,7 +58,7 @@ class ProductTransformer extends BaseApiTransformer
       'visible' => $this->visible,
       'url'=> $this->url??'#',
       'totalDiscounts' => $this->present()->totalDiscounts,
-      'totalTaxes' => $this->present()->totalTaxes,
+      'totalTaxes' => $this->getTotalTaxes($filter),
       'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
       'taxClassId' => $this->when($this->tax_class_id, intval($this->tax_class_id)),
     ];
@@ -146,5 +148,21 @@ class ProductTransformer extends BaseApiTransformer
     }
 
     return $data;
+  }
+
+  private function getTotalTaxes ($filter){
+    $basePrice = $this->price ? $this->price : 0;
+    $taxes = [];
+    if(isset($this->taxClass) && isset($this->taxClass->rates)){
+      $taxes = $this->taxClass->rates;
+      if(isset($filter->geozone)){
+        $taxes = $taxes->where('geozone_id', $filter->geozone);
+      }
+    }
+    $totalTaxes = 0;
+    foreach ($taxes as $tax){
+      $totalTaxes += floatval( ($basePrice * $tax->rate) / 100) ;
+    }
+    return $totalTaxes;
   }
 }
