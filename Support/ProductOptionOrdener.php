@@ -59,7 +59,7 @@ class ProductOptionOrdener
    * @param Menuitem $parent
    * @param array    $children
    */
-  private function handleChildrenForParent(Menuitem $parent, array $children)
+  private function handleChildrenForParent(/*Menuitem*/ $parent, array $children)
   {
     foreach ($children as $position => $item) {
       $menuItem = $this->productOptionRepository->find($item['id']);
