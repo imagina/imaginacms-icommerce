@@ -87,9 +87,11 @@ class OrderStatusHistoryApiController extends BaseApiController
   public function create(Request $request)
   {
     try {
-      $orderHistory = $this->orderHistory->create($request->input('attributes'));
+      $data = $request->input('attributes');
 
-      $response = ['data' => ''];
+      $orderHistory = $this->orderHistory->create($data);
+
+      $response = ['data' => $orderHistory];
 
     } catch (\Exception $e) {
       $status = 500;
