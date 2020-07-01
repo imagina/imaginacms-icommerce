@@ -37,5 +37,5 @@ class CacheStoreDecorator extends BaseCacheDecorator implements StoreRepository
             return $this->repository->getItem($criteria, $params);
         });
     }
-
+    
 }

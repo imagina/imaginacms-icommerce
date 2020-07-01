@@ -33,7 +33,6 @@ class EloquenProductRepositoryTest extends BaseIcommerceTestCase
       $categories[] = $this->createCategory()->id;
     }
 
-    // Create 10 fake options
     $options = [];
     for ($i = 0; $i < 10; $i++){
       $options[] = [

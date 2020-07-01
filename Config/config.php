@@ -74,10 +74,5 @@ return [
       'id' => 3,
       'title' => 'icommerce::itemtypes.types.other',
     ],
-  ],
-  'formatmoney' => [
-      'decimals' => 2,
-      'dec_point' => '.',
-      'housands_sep' => ','
-  ],
+  ]
 ];

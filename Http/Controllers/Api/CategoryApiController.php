@@ -100,7 +100,9 @@ class CategoryApiController extends BaseApiController
         try {
             $data = $request->input('attributes') ?? [];//Get data
             //Validate Request
-            $this->validateRequestApi(new CategoryRequest($data));
+            $this->validateRequestApi(new CategoryRequest($data), [
+              'title' => 'required',
+            ]);
 
             //Create item
             $category = $this->category->create($data);

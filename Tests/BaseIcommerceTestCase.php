@@ -22,7 +22,7 @@ abstract class BaseIcommerceTestCase extends TestCase
     $this->product = app('Modules\Icommerce\Repositories\ProductRepository');
     $this->option = app('Modules\Icommerce\Repositories\OptionRepository');
   }
-
+  
   protected function getPackageProviders($app)
   {
     return [

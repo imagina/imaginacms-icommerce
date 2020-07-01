@@ -50,7 +50,7 @@ class CacheTaxRateDecorator extends BaseCacheDecorator implements TaxRateReposit
     return $this->repository->create($data);
   }
   
-
+  
   
   
 }
