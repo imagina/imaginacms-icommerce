@@ -327,7 +327,7 @@ class Product extends Model implements TaggableInterface
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
 
     }
-
+    
     /**
      * Magic Method modification to allow dynamic relations to other entities.
      * @return string

@@ -33,7 +33,7 @@ class OrderStatusHistoryWasCreated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'id' => $this->order->id
+            'id' => $this->order['order_id']
         ];
     }
 

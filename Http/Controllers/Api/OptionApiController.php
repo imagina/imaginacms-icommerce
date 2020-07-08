@@ -21,7 +21,7 @@ use Modules\Icommerce\Repositories\OptionRepository;
 use Modules\Icommerce\Repositories\OptionValueRepository;
 
 // Supports
-use Modules\Icommerce\Support\ProductOptionOrdener;
+use Modules\Icommerce\Support\OptionOrdener;
 
 class OptionApiController extends BaseApiController
 {
@@ -29,7 +29,7 @@ class OptionApiController extends BaseApiController
   private $optionValue;
   private $optionOrdener;
 
-  public function __construct(OptionRepository $option, OptionValueRepository $optionValue, ProductOptionOrdener $optionOrdener)
+  public function __construct(OptionRepository $option, OptionValueRepository $optionValue, OptionOrdener $optionOrdener)
   {
     $this->option = $option;
     $this->optionValue = $optionValue;

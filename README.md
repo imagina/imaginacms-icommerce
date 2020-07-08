@@ -1,563 +1,118 @@
-# Asgardcms-icommerce
-
+# Icommerce Imagina 
 Icommerce is an e-commerce module for Asgard CMS open source fully customizable for entrepreneurs around the world. Go beyond the limits of traditional e-commerce solutions and be limited only by your own imagination.
 
-## Installation
+### Email Configurations Backend
 
-* `composer require imagina/icommerce-module`
-* `php artisan module:migrate Icommerce`
-* `php artisan module:migrate Icurrency`
-* `php artisan module:seed Icommerce`
-* `php artisan module:seed Icurrency`
+	1. Go to Settings
+	2. Click on Icommerce
+	3. Add "Webmaster Email"
 
-## End Points
+### Email Configurations Frontend (Theme)
 
-Route Base: `https://yourhost.com/api/icommerce/v3/`
+	You can modify the header,footer and style
 
-* #### Stores
+	Instructions: 
 
-    * Attributes
-    
-        * name: string
-        * address: string
-        * phone: string
-   
-    * Create
-    
-        * Method: `POST`
-        * URI: `/stores`
-    
-    * Read
-    
-         * Method: `GET`
-         * URI: `/stores/:id`
-         * URI: `/stores`
-         
-    * Update
-    
-         * Method: `PUT`
-         * URI: `/stores/:id`
-         
-    * Delete
-    
-         * Method: `DELETE`
-         * URI: `/stores/:id`
-
-* #### Categories
-
-    * Attributes
-    
-        * parent_id: Integer
-        * options: Text
-        * show_menu: Boolean
-        * store_id: Integer
-        * title: String (Translatable)
-        * slug: String (Translatable)
-        * description: Text (Translatable)
-        * meta_title: Text (Translatable)
-        * meta_description: Text (Translatable)
-        * translatable_options: Text (Translatable)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/categories`
-    
-    * Read
-    
-         * Method: `GET`
-         * URI: `/stores/:id`
-         * URI: `/categories`
-         
-    * Update
-    
-         * Method: `PUT`
-         * URI: `/categories/:id`
-         
-    * Delete
-    
-         * Method: `DELETE`
-         * URI: `/categories/:id`
-    
-* #### Products
-
-    * Attributes
-    
-        * added_by_id: Integer
-        * options: String
-        * status: String
-        * category_id: Integer
-        * parent_id: Integer
-        * tax_class_id: Integer
-        * sku: String
-        * quantity: Integer
-        * stock_status: String
-        * manufacturer_id: Integer
-        * shipping: String
-        * price: Float
-        * points: String
-        * date_available: String
-        * weight: String
-        * length: String
-        * width: String
-        * height: String
-        * subtract: String
-        * minimum: String
-        * reference: String
-        * rating: String
-        * freeshipping: String
-        * order_weight: String
-        * store_id: Integer
-        * visible: String
-        * sum_rating: String
-        * name: String (Translatable)
-        * description: String (Translatable)
-        * summary: String (Translatable)
-        * slug: String (Translatable)
-        * meta_title: String (Translatable)
-        * meta_description: String (Translatable)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/products`
-        
-    * Read
-    
-        * Method: `GET`
-        * URI: `/products`
-    
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/products`
-        
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/products`
-    
-* #### Carts
-
-    * Attributes
-    
-         * user_id: Integer
-         * ip: Ip
-         * options: Text
-         * status: String
-         * store_id: Integer
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/carts`
-            
-    * Read
-    
-        * Method: `GET`
-        * URI: `/carts`
-            
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/carts`
-            
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/carts`
-    
-* #### Cart Products
-
-    * Attributes
-    
-        * cart_id: Integer
-        * product_id: Integer
-        * quantity: Integer
-        * options: Text
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/cart-products`
-
-    * Read
-    
-        * Method: `GET`
-        * URI: `/cart-products`
-
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/cart-products`
-
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/cart-products`
-
-    
-* #### Coupons
-
-    * Attributes
-    
-        * code: String
-        * type: String
-        * category_id: Integer
-        * product_id: Integer
-        * customer_id: Integer
-        * store_id: Integer
-        * discount: Float
-        * type_discount: String
-        * logged: String
-        * shipping: String
-        * date_start: Date
-        * date_end: Date
-        * quantity_total: Integer
-        * quantity_total_customer: Integer
-        * status: String
-        * options: Text
-        * minimum_amount: Integer
-        * minimum_quantity_products: Integer
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/coupons`
-
-    * Read
-    
-        * Method: `GET`
-        * URI: `/coupons`
-
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/coupons`
-
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/coupons`
-
-* #### Manufacturers
-
-    * Attributes
-    
-        * active: String
-        * options: String
-        * store_id: Integer
-        * name: String (Translatable)
-        * slug: String (Translatable)
-        * description: String (Translatable)
-        * translatable_options: String (Translatable)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/manufacturers`
-
-    * Read
-    
-        * Method: `GET`
-        * URI: `/manufacturers`
-
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/manufacturers`
-
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/manufacturers`
-
-* #### Options
-
-    * Attributes
-    
-        * type: String
-        * sort_order: String
-        * options: Text
-        * description: Text (Translate)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/options`
-
-    * Read
-    
-        * Method: `GET`
-        * URI: `/options`
-
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/options`
-
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/options`
-
-* #### Option Values
-
-    * Attributes
-    
-        * option_id: Integer
-        * sort_order: Integer
-        * options: String
-        * description: String (Translatable)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/option-values`
-
-    * Read
-    
-        * Method: `GET`
-        * URI: `/option-values`
-
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/option-values`
-
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/option-values`
-
-* #### Orders
-
-    * Attributes
-    
-         * invoice_nro: Integer
-         * invoice_prefix: String
-         * total: String
-         * status_id: Integer
-         * customer_id: Integer
-         * added_by_id: Integer
-         * first_name: String
-         * last_name: String
-         * email: String
-         * telephone: String
-         * payment_first_name: String
-         * payment_last_name: String
-         * payment_company: String
-         * payment_nit: String
-         * payment_email: String
-         * payment_address_1: String
-         * payment_address_2: String
-         * payment_city: String
-         * payment_zip_code: String
-         * payment_country: String
-         * payment_zone: String
-         * payment_address_format: String
-         * payment_custom_field: String
-         * payment_method: String
-         * payment_code: String
-         * payment_name: String
-         * shipping_first_name: String
-         * shipping_last_name: String
-         * shipping_company: String
-         * shipping_address_1: String
-         * shipping_address_2: String
-         * shipping_city: String
-         * shipping_zip_code: String
-         * shipping_country_code: String
-         * shipping_zone: String
-         * shipping_address_format: String
-         * shipping_custom_field: String
-         * shipping_method: String
-         * shipping_code: String
-         * shipping_amount: String
-         * store_id: Integer
-         * store_name: String
-         * store_address: String
-         * store_phone: String
-         * tax_amount: String
-         * comment: String
-         * tracking: String
-         * currency_id: Integer
-         * currency_code: Integer
-         * currency_value: Integer
-         * ip: Ip
-         * user_agent: Integer
-         * key: String
-         * options: Text
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/orders`
-
-    * Read
-    
-        * Method: `GET`
-        * URI: `/orders`
-
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/orders`
-
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/orders`
-
-* #### Tax Class
-
-    * Attributes
-    
-        * name: String
-        * description: Text
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/tax-classes`
+		1. Create a folder in your theme with the name "icommerce". 
+            Example: YourTheme/views/icommerce/
 
-    * Read
-    
-        * Method: `GET`
-        * URI: `/tax-classes`
+		2. Create a folder inside of "icommerce" with the name "emails". 
+            Example: YourTheme/views/icommerce/emails
 
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/tax-classes`
+		3. If you want just edit the header, so copy only the header file
+        from the module in your folder in the theme: 
+			
+			(copy this file)
+			Example: Module/Icommerce/Resources/views/emails/base/header.blade.php 
+			
+			(Paste it here)
+			Example: YourTheme/views/icommerce/emails/header.blade.php
 
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/tax-classes`
+        and so with the files that you want to edit.
 
-* #### Tax Rates
+## Seeder
 
-    * Attributes
-    
-         * rate: String
-         * type: String
-         * geozone_id: Integer
-         * customer: String
-         * tax_class_id: Integer
-         * store_id: Integer
-         * name: String (Translatable)
+    run php artisan module:seed Icommerce
     
-    * Create
-    
-        * Method: `POST`
-        * URI: `/tax-rates`
 
-    * Read
-    
-        * Method: `GET`
-        * URI: `/tax-rates`
+## API
 
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/tax-rates`
 
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/tax-rates`
+[![](https://www.imaginacolombia.com/themes/imagina2017/img/logo.png)](https://www.imaginacolombia.com/)
 
-* #### WishList
+# End Points Cart
 
-    * Attributes
-    
-         * user_id: Integer
-         * product_id: Integer
-         * store_id: Integer
-         * options: Text
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/wishlists`
+### Get all carts
+N: filter optional = 
+```?filter={"ip":192.168.0.1}```
+```?filter={"user":1}```
+```
+GET: /api/icommerce/v3/carts
+```
 
-    * Read
-    
-        * Method: `GET`
-        * URI: `/wishlists`
+### Get a cart
+N: replace n for id`s cart 
+```
+GET: /api/icommerce/v3/carts/n
+```
 
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/wishlists`
+### Get all the products of all the cars
+N: filter optional = ```?filter={"cart":2}```
+```
+GET: /api/icommerce/v3/cart-products
+```
 
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/wishlists`
+### Add products to cart
+```POST``` ```/api/icommerce/v3/carts```
 
-* #### Shipping Methods
+```{
+  "cart_id": 9, (optional, if it is not passed a new car is generated and its id is returned)
+  "user_id": 1, (optional, if it is not passed, the car is generated without associating a user)
+  "cart_products": {
+    "product_id":"4",
+    "quantity":"50",
+     "price":"5500"
+    },
+  "cart_product_option":{
+    "product_option_id":"1",
+    "product_option_value_id":"1"
+  }
+}
+```
 
-    * Attributes
-    
-        * active: String
-        * name: String
-        * options: String
-        * store_id: Integer
-        * title: String (Translatable)
-        * description: String (Translatable)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/shipping-methods`
 
-    * Read
-    
-        * Method: `GET`
-        * URI: `/shipping-methods`
+# End Points Order 
 
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/shipping-methods`
+##### Create order
+```POST``` ```/api/icommerce/v3/orders```
+##### Success Response
+``` 
+Order created
+```
 
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/shipping-methods`
-    
-* #### Payment Methods
 
-    * Attributes
-    
-        * active: String
-        * name: String
-        * options: String
-        * store_id: Integer
-        * title: String (Translatable)
-        * description: String (Translatable)
-    
-    * Create
-    
-        * Method: `POST`
-        * URI: `/payment-methods`
+##### Get all orders
+```GET``` ```/api/icommerce/v3/orders```
+##### Success Response
+``` 
+All Orders with data
+```
 
-    * Read
-    
-        * Method: `GET`
-        * URI: `/payment-methods`
 
-    * Update
-    
-        * Method: `PUT`
-        * URI: `/payment-methods`
+##### Get an order (n = order_id)
+```GET``` ```/api/icommerce/v3/orders/n```
+##### Success Response
+```
+Order with data
+```
+
+##### Update an order
+```PUT``` ```/api/icommerce/v3/orders/n```
+##### Success Response
+```
+Order updated
+```
 
-    * Delete
-    
-        * Method: `DELETE`
-        * URI: `/payment-methods`
 
 
 
@@ -565,5 +120,134 @@ Route Base: `https://yourhost.com/api/icommerce/v3/`
 
 
 
+# End Points Wishlists
 
+##### Get all Wishlists
+```GET ``` ```/api/icommerce/v3/wishlists```
+N: filter optional = ```?filter={"user":1}```
+##### Get a Wishlist
+```GET``` ```/api/icommerce/v3/wishlists/n```
+##### Create Wishlist (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/wishlists```
+##### Update Wishlist
+```PUT``` ```/api/icommerce/v3/wishlists/n```
+##### Delete Wishlist
+```DELETE``` ```/api/icommerce/v3/wishlists/n```
+
+# End Points Tags
+
+##### Get all Tags
+```GET ``` ```/api/icommerce/v3/tags```
+##### Get a Tag 
+```GET``` ```/api/icommerce/v3/tags/n```
+##### Create Tag (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/tags```
+##### Update Tag
+```PUT``` ```/api/icommerce/v3/tags/n```
+##### Delete Tag
+```DELETE``` ```/api/icommerce/v3/tags/n```
+
+# End Points Categories
+
+##### Get all Categories
+```GET ``` ```/api/icommerce/v3/categories```
+N: include optional = 
+```?include=parent,children```
+
+##### Get a Category
+```GET``` ```/api/icommerce/v3/categories/n```
+##### Create Category (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/categories```
+##### Update Category
+```PUT``` ```/api/icommerce/v3/categories/n```
+##### Delete Category
+```DELETE``` ```/api/icommerce/v3/categories/n```
+
+# End Points Currencies
+
+##### Get all Currencies
+```GET ``` ```/api/icommerce/v3/currencies```
+##### Get a Currency
+```GET``` ```/api/icommerce/v3/currencies/n```
+##### Create Currency (all data inside "attribute" array)
+```POST``` ```/api/icommerce/v3/currencies```
+##### Update Currency
+```PUT``` ```/api/icommerce/v3/currency/n```
+##### Delete Currency
+```DELETE``` ```/api/icommerce/v3/currency/n```
+
+
+# End Points Payment Methods
+
+##### Get all Payment Methods
+```GET ``` ```/api/icommerce/v3/payment-methods```
+##### Get a Payment Method
+```GET``` ```/api/icommerce/v3/payment-methods/n```
+##### Create Payment Method
+All payment methods have a Seeder to create
+##### Update Payment Method
+```PUT``` ```/api/icommerce/v3/payment-methods/n```
+
+# End Points Shipping Methods
+
+##### Get all Shipping Methods
+```GET ``` ```/api/icommerce/v3/shipping-methods```
+##### Get a Shipping Method
+```GET``` ```/api/icommerce/v3/shipping-methods/n```
+##### Get all Calculations from Shipping Methods
+
+Parameters
+  - Options (array) - countryCode,country,zone,postalCode ... anything else
+  - Products (array) - cart_id
+
+```GET ``` ```/api/icommerce/v3/shipping-methods/calculations/all```
+
+##### Create Shipping Method
+All shipping methods have a Seeder to create
+##### Update Shipping Method
+```PUT``` ```/api/icommerce/v3/shipping-methods/n```
+
+#### Coupons
+##### Get discount of the coupon in cart
+
+This route require authentication 
+
+Request:
+
+```GET``` ```/api/icommerce/v3/coupons/coupons-validate```
+
+```js
+filter = {
+  "couponCode":"code_coupon",
+  "cartId":1
+}
+```
+
+Response:
+
+```js
+{
+    "message": "coupon whit discount for product",
+    "discount": 3000
+}
+```
+| MESSAGE  | |
+| ------------- | ------------- |
+| coupon not exists  |   |
+| coupon inactive  |   |
+| coupon no started  |   |
+| coupon expired  |   |
+| maximum used coupons  |   |
+| maximum coupons per user used  |  |
+| cart not exists  | |
+| cart without items  |  |
+| coupon whit discount for order  |  |
+| coupon whit discount for product  |  |
+| coupon whit discount for category  |  |
+
+
+
+
+
+# End Points XXXXX
 
