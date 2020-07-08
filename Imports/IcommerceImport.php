@@ -32,8 +32,8 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
     public function sheets(): array
     {
         return [
-            'Categories' => new CategoriesImport($this->category,$this->info),
-            'manufactures' => new ManufacturersImport($this->manufacturer,$this->info),
+           //'Categories' => new CategoriesImport($this->category,$this->info),
+            //'manufactures' => new ManufacturersImport($this->manufacturer,$this->info),
             'Products'=>new ProductsImport($this->product,$this->info)
         ];
     }

@@ -76,7 +76,7 @@ class OrderController extends BasePublicController
             return view($tpl, compact('order', 'user','subtotal'));
 
         } else
-            return redirect()->route('home')->withError(trans('icommerce::orders.order_not_found'));
+            return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));
 
 
 

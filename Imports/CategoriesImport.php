@@ -4,17 +4,20 @@ namespace Modules\Icommerce\Imports;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Entities\Category;
 
-class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
+// class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
+class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
 {
 
     private $category;
     private $info;
+
     public function __construct(
         CategoryRepository $category,
         $info
@@ -24,67 +27,62 @@ class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,S
         $this->info = $info;
     }
 
-     /**
+    /**
      * Data from Excel
      */
     public function collection(Collection $rows)
     {
         \App::setLocale($this->info['Locale']);
-        $rows=json_decode(json_encode($rows));
-        //dd($rows);
-        foreach ($rows as $row)
-        {
+        $rows = json_decode(json_encode($rows));
+        // dd($rows);
+        foreach ($rows as $row) {
             try {
-                if(isset($row->id)){
-                  $category_id=(int)$row->id;
-                  $title=(string)$row->title;
-                  $description=(string)$row->description;
-                  $parent_id=(int)$row->parent_id;
-                  $image=(string)$row->image;
-                  $options=null;
-                  $slug="";
-                  // Search by id
-                  $category = $this->category->find($category_id);
-                  if (isset($this->info['folderpaht']) && $this->info['folderpaht']) {
-                      if (isset($image) && !empty($image)) {
-                          $picture = $this->info['folderpaht'] . 'categories/' . $image;
-                          $destination_path = 'assets/icommerce/category/' . $category_id . '.jpg';
-                          $img = $this->saveimage($destination_path, $picture);
-                          $options = ["mainimage" => $img];
-                      }
-                  }else {
-                    if($category)
-                      $options = $category->options;
-                  }//else
-                  $options=json_encode($options);
-                  // Parent_id - make slug
-                  if ($parent_id == 0) {
-                      $slug = str_slug($title, '-');
-                  } else {
-                      $parent = $this->category->find($parent_id);
-                      $slug = $parent->slug . '/' . str_slug($title, '-');
-                  }
-                  //data
-                  $param = [
-                    'id' => $category_id,
-                    'slug' => $slug,
-                    'title' => $title,
-                    'description'=>$description,
-                    'options'=>$options
-                  ];
+                if (isset($row->id)) {
+                    $category_id = (int)$row->id;
+                    $title = (string)$row->title;
+                    $description = (string)$row->description;
+                    $parent_id = (int)$row->parent_id;
+                    $image = (string)$row->image;
+                    $slug = "";
+                    // Search by id
+                    $category = $this->category->find($category_id);
+                    $slug = str_slug($title, '-');
 
-                  if(isset($category->slug) && !empty($category->slug)){
-                    // Update
-                    $this->category->update($category,  $param);
-                    \Log::info('Update Category: '.$category->slug);
-                  }else{
-                    // Create
-                    $newCategory = $this->category->create($param);
-                    // Take id from excel
-                    $newCategory->id = $param["id"];
-                    $newCategory->save();
-                    \Log::info('Create a Category: '.$param['slug']);
-                  }//if exist
+                    //data
+                    $param = [
+                        'id' => $category_id,
+                        'slug' => $slug,
+                        'title' => $title,
+                        'description' => $description,
+                        'parent_id'=>$parent_id,
+                    ];
+
+                    if (isset($category->id) && !empty($category->id)) {
+                        // Update
+                        $this->category->update($category, $param);
+                        \Log::info('Update Category: '.$category->id.' title: ' . $category->title);
+                    } else {
+                        // Create
+                        $category = $this->category->create($param);
+                        \Log::info('Create a Category: '.$category->id.' title: ' .  $category->title);
+                    }//if exist
+
+                    if (isset($image) && !empty($image)) {
+
+                        $item = DB::table('media__files')->select('id')->where('filename', $image)->first();
+                        if (isset($item->id)) {
+                            $imageselec = DB::table('media__imageables')->select('id')->where('file_id', $item->id)->where('imageable_id', $category->id)->where('imageable_type', 'Modules\Icommerce\Entities\Category')->where('zone', 'mainimage')->first();
+                            if (!isset($imageselec->id)) {
+                                DB::insert('insert into media__imageables (file_id, imageable_id, imageable_type, zone) values (?, ?, ?, ?)', [$item->id, $category->id, 'Modules\Icommerce\Entities\Category', 'mainimage']);
+                            }
+
+
+                        }
+
+                    }
+
+
+
                 }//if isset title
             } catch (\Exception $e) {
                 \Log::error($e);

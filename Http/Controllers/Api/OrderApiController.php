@@ -213,7 +213,7 @@ class OrderApiController extends BaseApiController
         $dataMethods = $supportShipping->fixDataSend((object)$data);
 
         //Get Shipping Methods with calculates
-        $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods));
+        $shippingMethods = $this->shippingMethod->getCalculations([],new Request($dataMethods));
 
         //Get Shipping Method Price
         $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);

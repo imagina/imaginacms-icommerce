@@ -7,12 +7,14 @@ use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Repositories\CategoryRepository;
-use Modules\Icommerce\Repositories\CurrencyRepository;
+use Modules\Icurrency\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Icommerce\Repositories\ShippingMethodRepository;
 use Modules\Iprofile\Repositories\UserApiRepository;
-use Modules\User\Contracts\Authentication;
+use Modules\Icommerce\Transformers\PaymentMethodTransformer;
+use Modules\Icommerce\Transformers\ShippingMethodTransformer;
+use Modules\Icommerce\Transformers\ProductTransformer;
 use Route;
 
 class PublicController extends BasePublicController
@@ -23,34 +25,28 @@ class PublicController extends BasePublicController
     private $currency;
     private $payments;
     private $shippings;
-    private $user;
 
     public function __construct(
         ProductRepository $product,
         CategoryRepository $category,
         CurrencyRepository $currency,
         PaymentMethodRepository $payments,
-        UserApiRepository $user,
         ShippingMethodRepository $shippings
     )
     {
         parent::__construct();
-        $this->auth = app(Authentication::class);
         $this->product = $product;
         $this->category = $category;
         $this->currency = $currency;
         $this->payments = $payments;
         $this->shippings = $shippings;
-        $this->user = $user;
-
     }
 
     // view products by category
-    public function index()
+    public function index(Request $request)
     {
 
         $slug = \Request::path();
-
         $tpl = 'icommerce::frontend.index';
         $ttpl = 'icommerce.index';
 
@@ -58,15 +54,23 @@ class PublicController extends BasePublicController
 
         $category = $this->category->findBySlug($slug);
 
-        $currency = $this->currency->getActive();
-        $user = $this->auth->user();
-        (isset($user) && !empty($user)) ? $user = $user->id : $user = 0;
+        $params=$this->_paramsRequest($request,$category->id);
+
+        $products = $this->product->getItemsBy($params);
 
         $ctpl = "icommerce.category.{$category->id}.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
 
+        $paginate=(object)[
+          "total" => $products->total(),
+          "lastPage" => $products->lastPage(),
+          "perPage" => $products->perPage(),
+          "currentPage" => $products->currentPage()
+        ];
 
-        return view($tpl, compact('category', 'user', 'currency'));
+        $products=ProductTransformer::collection($products);
+
+        return view($tpl, compact('category','products','paginate'));
 
 
     }
@@ -74,12 +78,13 @@ class PublicController extends BasePublicController
     // Informacion de Producto
     public function show($slug)
     {
+
         $tpl = 'icommerce::frontend.show';
         $ttpl = 'icommerce.show';
         if (view()->exists($ttpl)) $tpl = $ttpl;
         $product = $this->product->findBySlug($slug);
-
-        return view($tpl, compact('product'));
+        $category= $product->category;
+        return view($tpl, compact('product','category'));
 
     }
 
@@ -87,25 +92,33 @@ class PublicController extends BasePublicController
     {
         $tpl = 'icommerce::frontend.checkout.index';
         $ttpl = 'icommerce.checkout.index';
-        $payments = $this->payments->getItemsBy((object)['filter' => [], 'fields' => [], 'include' => [], 'take' => 4]);
-        $payments = \Modules\Icommerce\Transformers\PaymentMethodTransformer::collection($payments);
-        //dd($payments);
-        $currency = $this->currency->getActive();
-        $user = $this->auth->user();
-        if ($user) {
-            $user = $this->user->getItem($user->id, (object)['include' => ['addresses', 'fields'], 'filter' => [], 'fields' => []]);
-            $user = new \Modules\Iprofile\Transformers\UserTransformer($user);
-        }
-        $shippings = $this->shippings->getItemsBy((object)['filter' => [], 'fields' => [], 'include' => [], 'take' => 4]);
-        $shippings = \Modules\Icommerce\Transformers\ShippingMethodTransformer::collection($shippings);
 
         if (view()->exists($ttpl)) $tpl = $ttpl;
-        return view($tpl, [
-            "payments" => $payments,
-            "shipping" => $shippings,
-            "user" => $user,
-            "currency" => $currency
-        ]);
+        return view($tpl);
     }
+
+    private function _paramsRequest($request,$category)
+{
+
+    $maxPrice=$request->input('maxPrice')??100000000000000000000000000000;
+    $minPrice=$request->input('minPrice')??0;
+    $options=$request->input('options')??null;
+    $manufacturer=$request->input('manufacturer')??null;
+    $search=$request->input('search')??null;
+    $currency=$request->input('currency')??null;
+    $order=["field"=>$request->input('orderField')??"created_at","way"=>$request->input('orderWay')??"desc"];
+
+        //Return params
+    $params = (object)[
+        "page" => is_numeric($request->input('page')) ? $request->input('page') : 1,
+        "take" => is_numeric($request->input('take')) ? $request->input('take') :
+            ($request->input('page') ? 12 : null),
+        "include" =>[],
+        "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order])),
+    ];
+    //Set locale to filter
+    $params->filter->locale = \App::getLocale();
+    return $params;//Response
+}
 
 }

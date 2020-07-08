@@ -3,7 +3,6 @@
 @section('content')
 <!-- preloader -->
 
-
 <div id="content_preloader">
   <div id="preloader"></div>
 </div>
@@ -31,27 +30,27 @@
         </div>
         <form id="checkoutForm" method="POST" url="{{url('/checkout')}}">
           <div class="currency">
-            <input type="hidden" name="currency_id" value="{{$currency->id}}">
-            <input type="hidden" name="currency_code" value="{{$currency->code}}">
-            <input type="hidden" name="currency_value" value="{{$currency->value}}">
+            <input v-if="currency" type="hidden" name="currency_id" :value="currency.id">
+            <input v-if="currency" type="hidden" name="currency_code" :value="currency.code">
+            <input v-if="currency" type="hidden" name="currency_value" :value="currency.value">
           </div>
           <div class="row">
+
             <div class="col-12 col-md-6 col-lg-4">
-              @include('icommerce.checkout.customer')
+              @includeFirst('icommerce.checkout.customer','icommerce::frontend.checkout.customer')
 
             </div>
             <div class="col-12 col-md-6 col-lg-4">
-              @include('icommerce.checkout.billing_details')
-
-              @include('icommerce.checkout.delivery_details')
+              @includeFirst('icommerce.checkout.billing_details','icommerce::frontend.checkout.billing_details')
+              @includeFirst('icommerce.checkout.delivery_details','icommerce::frontend.checkout.delivery_details')
 
             </div>
             <div class="col-12 col-md-12 col-lg-4">
 
-              @include('icommerce.checkout.shipping_methods')
+              @includeFirst('icommerce.checkout.shipping_methods','icommerce::frontend.checkout.shipping_methods')
+              @includeFirst('icommerce.checkout.payment','icommerce::frontend.checkout.payment')
+              @includeFirst('icommerce.checkout.order_summary','icommerce::frontend.checkout.order_summary')
 
-              @include('icommerce.checkout.payment')
-              @include('icommerce.checkout.order_summary')
             </div>
 
           </div>
@@ -124,7 +123,32 @@ Vue.use(VueMask.VueMaskPlugin);
     el: '#content',
     created: function () {
       this.$nextTick(function () {
-        this.getCart();
+        this.getCurrency();
+        this.getPaymentMethods();
+        this.getShippingMethods();
+        this.userId=0;
+        this.userId= {!! $currentUser ? $currentUser->id : 0 !!};
+        if(this.userId!=0){
+          let token="Bearer "+"{!! Auth::user() ? Auth::user()->createToken('Laravel Password Grant Client')->accessToken : "0" !!}";
+          axios.get("{{url('/')}}"+"/api/profile/v1/users/"+this.userId,{
+            params:{
+              filter:{
+
+              },
+              include:'addresses'
+            },headers:{
+              'Authorization':token
+            }
+          }).then(response=> {
+            this.user=response.data.data;
+            this.addresses=response.data.data.addresses;
+          }).catch(error=> {
+          });
+        }
+        let _this=this;
+        setTimeout(function(){
+          _this.getCart();
+         }, 3000);
         if(this.user){
           if(this.addresses.length==0){
             checkout.useExistingOrNewPaymentAddress=2;
@@ -150,10 +174,10 @@ Vue.use(VueMask.VueMaskPlugin);
     data: {
       //Vars
       cart:[],
-      currency: {!! $currency ? $currency : "''" !!},
-      payments: {!! json_encode($payments) ? json_encode($payments) : "''" !!},
-      shippingMethods: {!! json_encode($shipping) ? json_encode($shipping) : "''" !!},
-      user: {!! json_encode($user) ? json_encode($user) : "''" !!},
+      currency: "",
+      payments: [],
+      shippingMethods: [],
+      user: null,
       paymentSelected: "",
       billingData: {
         firstname: '',
@@ -183,7 +207,7 @@ Vue.use(VueMask.VueMaskPlugin);
         country: '',
         zone: '',
       },
-      addresses: {!! $user ? $user->addresses ? : $user->addresses : "[]" !!},
+      addresses: [],
       quantity: 0,
       subTotal: 0,
       selectAddresses:[],
@@ -196,15 +220,14 @@ Vue.use(VueMask.VueMaskPlugin);
         lastName:'',
         email:'',
         owner_cellphone:'',
-        password:''
+        password:'',
+        password_confirmation:''
       },
       email:'',
       password:'',
-      customerType: {!! $user ? 2 : 1 !!},
+      customerType: {!! $currentUser ? 2 : 1 !!},
       tokenUser:null,
       shipping_name:'',
-
-
       shipping_method: '',
       shipping_amount: 0,
       guestOrCustomer1: true,
@@ -256,19 +279,57 @@ Vue.use(VueMask.VueMaskPlugin);
         return value.charAt(0).toUpperCase() + value.slice(1)
       },
       numberFormat: function (value) {
-        if (value != '')
-          return checkout.currency.symbol_left + " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')) + " " + checkout.currency.symbol_right;
+        if (value != ''){
+          //return checkout.currency.symbol_left+ " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')) + " " + checkout.currency.symbol_right;
+          if(checkout.currency.symbol_left)
+            value=checkout.currency.symbol_left+ " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+          if(checkout.currency.symbol_right){
+            value+=" " + checkout.currency.symbol_right
+          }
+          return value
+        }
         else
           return value;
       }
     },
     methods: {
+      getCurrency(){
+        axios.get("{{url('/')}}"+"/api/icommerce/v3/currencies/1",{
+          params:{
+            filter:{
+              field:"default_currency"
+            }
+          }
+        })
+        .then(response=> {
+          this.currency=response.data.data;
+        })
+        .catch(function (error) {
+        });
+      },
+      getPaymentMethods(){
+        axios.get("{{url('/')}}"+"/api/icommerce/v3/payment-methods")
+        .then(response=> {
+          this.payments=response.data.data;
+        })
+        .catch(function (error) {
+        });
+      },
+      getShippingMethods(){
+        axios.get("{{url('/')}}"+"/api/icommerce/v3/shipping-methods")
+        .then(response=> {
+          this.shippingMethods=response.data.data;
+        })
+        .catch(function (error) {
+        });
+      },
       clearFieldsUser(){
         checkout.newUser.name="";
         checkout.newUser.lastName="";
         checkout.newUser.email="";
         checkout.newUser.owner_cellphone="";
         checkout.newUser.password="";
+        checkout.newUser.password_confirmation="";
       },
       registerUser(){
         axios.post("{{url('/')}}"+"/api/profile/v1/users/register", {
@@ -277,7 +338,7 @@ Vue.use(VueMask.VueMaskPlugin);
             last_name:checkout.newUser.lastName,
             email:checkout.newUser.email,
             password:checkout.newUser.password,
-            password_confirmation:checkout.newUser.password,
+            password_confirmation:checkout.newUser.password_confirmation,
             fields:[
               {
                 name:"cellularPhone",
@@ -297,6 +358,24 @@ Vue.use(VueMask.VueMaskPlugin);
           checkout.clearFieldsUser();
         })
         .catch(function (error) {
+          console.log('error:');
+          console.log(error.response.data);
+          let errors=[];
+          if('errors' in error.response.data){
+            errors=JSON.parse(error.response.data.errors);
+            console.log('errors asdad');
+            console.log(errors);
+          }
+          for (var i in errors) {
+              alert(errors[i]);
+              toastr.error(errors[i]);
+            console.log(i);
+          }
+          // for(var i=0;i<errors.length;i++){
+          //   alert(errors[i]);
+          //   toastr.error(errors[i]);
+          // }//for
+
           console.log(error);
         });
       },
@@ -418,18 +497,9 @@ Vue.use(VueMask.VueMaskPlugin);
 
       },
       getCart(){
-        var cart_id=localStorage.getItem("cart_id");
-        if(cart_id){
-          axios.get("{{url('/')}}"+"/api/icommerce/v3/carts/"+cart_id)
-          .then(function (response) {
-            checkout.cart=response.data.data;
-            if(response.data.data){
-              checkout.quantity=response.data.data.quantity;
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        checkout.cart=vue_carting.cart;
+        if(checkout.cart){
+          checkout.quantity=checkout.cart.quantity;
         }
       },
       addAddress(type="billing"){

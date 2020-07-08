@@ -1,5 +1,84 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  1.2.0:
+    changed:
+      - Readme for Category docs, Shipping and payment methods docs, wishlist docs, Tax Rate docs, Tax Class docs, Orders docs, Option Values docs, Options docs, Manufacturers docs, Coupons docs, Cart Products docs, Carts docs, Products docs,adding sub items, basic schema
+      - ProductTransformer, adding intval in categoryId attribute
+      - TaxClassRate Transformer
+      - ProductDiscount Transformer
+      - ProductDiscount Entity
+      - ProductDiscount entity, adding field department_id nullable
+      - TaxClassRate Entity
+      - Taxclass Entity
+      - Presenter for calc discounts
+      - Remove discounts of sync entities in product repository
+      - TagTransformer to new standard
+      - TaxRateApiController and Update TaxRateRequest with validations for TaxRate.
+      - Clean taxrate repository
+      - Transformers (Manufacturer, TaxClass, taxRate) to new standard
+      - TaxRateApiController.php
+      - TaxClassApiController with new standar.
+      - Wishlist routes, added auth:api middleware
+      - And fix WishlistApiController
+      - Clean methods of repository in eloquent wish list.
+      - Eloquent shipping method.
+      - Product option controller.
+      - Order api controller.
+      - Class controller, adding ProductOptionOrdener file support
+      - Handler UpdateOrderStatus YeisonTapia 4/04/2020 3:37 p. m.
+      - Verify validateCoupons file, with store id in a last update.
+      - Clean support file for ShippingMethod
+      - EloquentProductRepository
+      - Refactor for ProductApiController
+      - Fix bug, Manufacturer controller api.
+      - Fix bug, with ratings attributes in product transformer
+      - Store api controller, deleting call to methods updateBy and deleteBy
+      - Clean repository - deleting methos updateBy and deleteBy
+      - Product request with data min required
+      - Category request with data min required
+      - Migration for unit test
+      - Migration for unit test
+    added:
+      - permissions bulkload
+      - Filter by geozone in shipping methods
+      - Taxes by geozone in products Entity
+      - Filter by geozone in payment Methods
+      - Filter by geozone in shipping Methods .
+      - Fields from ilocations in store Entity
+      - Geozone_id in PaymentMethod and ShippingMethod Entity
+      - Field geozone_id in shipping methods and payment methods.
+      - Discounts and taxes in cart products.
+      - Fix tax class rate Transformer
+      - Fixes for calcs in discounts
+      - Sync Updates
+      - Calcs for discounts and taxes in product
+      - Include discounts in products and adding transformer for this entity.
+      - Presenter for calc price after discounts, this presenter is used in ProductTransformer
+      - Filter discount, this filter return all products with discount valid.
+      - Sync in product_options for EloquentProductRepository in create methods
+      - Attributes in readme for Store and category Entities. Y
+      - Validation in transformer if not exist translation.
+      - Validation in transformer if not exist translation.
+      - Validation in transformer if not exist translation.
+      - Save var coupon code in store method controller for use in other part on proccess.
+      - Type and status in coupon request.
+      - Facade currency in fields price and total in all transformers
+      - Imagina/icurrency-module like require in composer.json
+      - Migrations for alter  table  icommerce__product_option adding field sort_order
+      - Route for order options of a product.
+      - And update ProductOptionOrdener file support for apply order in options of a product.
+      - Order route in option-values routes
+      - Method in controller for order data. Fix handler method in support file option values order.
+      - Support class for update order in values option.
+      - Comment for Create 10 fake options in testing
+      - Test case for products * test it_work, this case verifies that a product can be created with the basic information * Cases have been added manually where it is verified that the data related to the product is being associated correctly. YeisonTapia 2/04/2020 2:50 p. m.
+      - BaseIcommerceTestCase with initial config for test in this module.
+      - Unit testing for Product repo
+      - First set of test for category repo
+      - Abstract class BaseIcommerceTestCase with config base for unit testing
+      - Phone and id in store transformer
+      - Add option ordener, this is a clas support for updaet order in a set of options.
+
   1.1.3:
     added:
       - Upgate and destroy methos in EloquentProductRepository

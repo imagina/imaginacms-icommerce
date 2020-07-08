@@ -48,9 +48,11 @@ class IcommerceAddedFields extends Migration
         });
         Schema::table('icommerce__shipping_methods', function (Blueprint $table) {
             $table->integer('store_id')->unsigned()->nullable();
+            $table->renameColumn('status', 'active');
         });
         Schema::table('icommerce__wishlists', function (Blueprint $table) {
             $table->integer('store_id')->unsigned()->nullable();
         });
+
     }
 }

@@ -37,13 +37,14 @@
                                     </a>
                                 </div>
                                 <div class="col-9">
+
                                     <a class="close cart-remove text-primary float-right"
                                        v-on:click="deleteProductOfCart(item)"> <i
                                                 class="fa fa-times"></i> </a>
                                     <h5 class="mb-0 text-center">
                                         @{{ item.name }}
                                     </h5>
-                                    <p class="mb-0 text-center">
+                                    <p class="mb-0 text-center" v-if="item.productOptionValues.length > 0">
                                       <label v-for="opt in item.productOptionValues">
                                         <strong>@{{opt.optionValue}}</strong>
                                       </label>

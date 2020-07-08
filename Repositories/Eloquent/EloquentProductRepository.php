@@ -34,7 +34,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             $filter = $params->filter;//Short filter
 
             // add filter by search
-            if (isset($filter->search)) {
+            if (isset($filter->search) && !empty($filter->search)) {
                 //find search in columns
                 $query->where(function ($query) use ($filter) {
                     $query->whereHas('translations', function ($query) use ($filter) {
@@ -48,12 +48,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             //Filter by catgeory ID
-            if (isset($filter->categoryId) && $filter->categoryId) {
+            if (isset($filter->categoryId) && !empty($filter->categoryId)) {
                 $query->where('category_id', $filter->categoryId);
             }
 
             // Filter by category SLUG
-            if (isset($filter->categorySlug)) {
+            if (isset($filter->categorySlug) && !empty($filter->categorySlug)) {
                 $query->whereHas('categories', function ($query) use ($filter) {
                     $query->whereHas('translations', function ($query) use ($filter) {
                         $query
@@ -74,18 +74,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             //Filter by stock status
-            if (isset($filter->stockStatus)) {
+            if (isset($filter->stockStatus) && !empty($filter->stockStatus)) {
                 $query->where('stock_status', $filter->stockStatus);
             }
 
             //Filter by stock status
-            if (isset($filter->status)) {
+            if (isset($filter->status) && !empty($filter->status)) {
                 if ($filter->status != null)
                     $query->where('status', $filter->status);
             }
 
             // add filter by Categories 1 or more than 1, in array
-            if (isset($filter->categories)) {
+            if (isset($filter->categories) && !empty($filter->categories)) {
                 is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
                 $query->whereIn('icommerce__products.id', function ($query) use ($filter) {
                     $query->select('product_id')
@@ -94,39 +94,39 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 });
             }
 
-            if (isset($filter->store)) {
+            if (isset($filter->store) && !empty($filter->store)) {
                 $query->where('store_id', $filter->store);
             }
 
             //add filter by Manufacturers 1 or more than 1, in array
-            if (isset($filter->manufacturers)) {
+            if (isset($filter->manufacturers) && !empty($filter->manufacturers)) {
                 $query->whereIn("manufacturer_id", $filter->manufacturers);
             }
 
             // add filter by Tax Class 1 or more than 1, in array
-            if (isset($filter->taxClass)) {
+            if (isset($filter->taxClass) && !empty($filter->taxClass)) {
                 $query->whereIn("tax_class_id", $filter->taxClass);
             }
 
             // add filter by Price Range
-            if (isset($filter->priceRange)) {
+            if (isset($filter->priceRange) && !empty($filter->priceRange)) {
                 $query->where("price", '>=', $filter->priceRange->from);
                 $query->where("price", '<=', $filter->priceRange->to);
             }
 
             // add filter by Rating
-            if (isset($filter->rating)) {
+            if (isset($filter->rating) && !empty($filter->rating)) {
                 $query->where("rating", '>=', $filter->rating->from);
                 $query->where("rating", '<=', $filter->rating->to);
             }
 
             // add filter by Freeshipping
-            if (isset($filter->freeshipping)) {
+            if (isset($filter->freeshipping) && !empty($filter->freeshipping)) {
                 $query->where("freeshipping", $filter->freeshipping);
             }
 
             //Filter by date
-            if (isset($filter->date)) {
+            if (isset($filter->date) && !empty($filter->date)) {
                 $date = $filter->date;//Short filter date
                 $date->field = $date->field ?? 'created_at';
                 if (isset($date->from))//From a date
@@ -136,17 +136,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             //Order by
-            if (isset($filter->order)) {
+            if (isset($filter->order) && !empty($filter->order)) {
                 $orderByField = $filter->order->field ?? 'created_at';//Default field
                 $orderWay = $filter->order->way ?? 'desc';//Default way
                 $query->orderBy($orderByField, $orderWay);//Add order to query
             }
 
-            if (isset($filter->visible)) {
+            if (isset($filter->visible)&& !empty($filter->visible)) {
                 $query->where("visible", $filter->visible);
             }
 
-            if (isset($filter->rating)) {
+            if (isset($filter->rating) && !empty($filter->rating)) {
                 $rating = $filter->rating;
                 if ($rating === 'top') {
                     $query->orderBy('sum_rating', 'desc');
@@ -156,7 +156,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 }
             }
 
-            if( isset($filter->discount) && $filter->discount){
+            if( isset($filter->discount) && !empty($filter->discount)){
               $query->whereHas('discounts', function ($query) use ($filter)  {
                 $now = date('Y-m-d');
                 $query->whereDate('date_start', '>=', $now)

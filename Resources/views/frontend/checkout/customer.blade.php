@@ -63,7 +63,12 @@
                                 <div class="form-group">
                                     <label for="password">{{ trans('icommerce::customer.form.paswd') }}</label>
                                     <input type="password" class="form-control ignore" id="password_register"
-                                           v-model="newUser.password" name="password" placeholder="Password">
+                                           v-model="newUser.password" name="password" placeholder="Clave">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">{{ trans('icommerce::customer.form.paswd') }}</label>
+                                    <input type="password" class="form-control ignore" id="password_confirmation_register"
+                                           v-model="newUser.password_confirmation" name="password_confirmation" placeholder="Confirmación de clave">
                                 </div>
                                 <div class="form-group text-center">
                                     <button type="button" class="btn btn-primary" @click="registerUser" name="button">

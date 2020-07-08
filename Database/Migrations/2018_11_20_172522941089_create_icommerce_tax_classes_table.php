@@ -16,8 +16,12 @@ class CreateIcommerceTaxClassesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             // Your fields
-          
+
             $table->timestamps();
+        });
+
+        Schema::table('icommerce__tax_rates', function (Blueprint $table) {
+            $table->foreign('tax_class_id')->references('id')->on('icommerce__tax_classes');
         });
     }
 

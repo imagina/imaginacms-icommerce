@@ -37,7 +37,6 @@ return [
         'additional'        => 'Additional',
         'date added'        => 'Date added',
         'comment'           => 'Comment',
-        'status'            => 'Status',
         'customer notified' => 'Customer notified',
         'add order history' => 'Add an order history',
         'yes'               => 'Yes',
@@ -47,6 +46,14 @@ return [
     'form' => [
     ],
     'messages' => [
+        'thank'=>'Thank You For Your Order!',
+        'purchase order'=>'Purchase order',
+        'link'=>'If you want to see the status of your order at any time, please see the following link:',
+        'shipping address'=>'Shipping Address',
+        'user details'=>'User details',
+        'shipping method'=>'Shipping method: ',
+        'order status'=>'Order Status: ',
+        'rights'=>'All Rights Reserved by '
     ],
     'validation' => [
     ],

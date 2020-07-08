@@ -74,7 +74,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         }
 
         /*== FIELDS ==*/
-        if (isset($params->fields) && count($params->fields))
+        if (isset($params->fields) && !empty($params->fields))
             $query->select($params->fields);
 
         /*== REQUEST ==*/

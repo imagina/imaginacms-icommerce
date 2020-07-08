@@ -15,7 +15,7 @@ use willvincent\Rateable\Rateable;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,Rateable;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';
@@ -258,30 +258,63 @@ class Product extends Model implements TaggableInterface
         return $query ? $query->price : null;
     }
 
+    public function getSecondaryImageAttribute()
+    {
+        $thumbnail = $this->files()->where('zone', 'secondaryimage')->first();
+        if (!$thumbnail) {
+            $image = [
+                'mimeType' => 'image/jpeg',
+                'path' => url('modules/iblog/img/post/default.jpg')
+            ];
+        } else {
+            $image = [
+                'mimeType' => $thumbnail->mimetype,
+                'path' => $thumbnail->path_string
+            ];
+        }
+        return json_decode(json_encode($image));
+    }
+
     public function getMainImageAttribute()
     {
         $thumbnail = $this->files()->where('zone', 'mainimage')->first();
-        if (!$thumbnail) return [
-            'mimeType' => 'image/jpeg',
-            'path' => url('modules/iblog/img/post/default.jpg')
-        ];
-        return [
-            'mimeType' => $thumbnail->mimetype,
-            'path' => $thumbnail->path_string
-        ];
+
+        if (!$thumbnail) {
+            if (isset($this->options->mainimage)) {
+                $image = [
+                    'mimeType' => 'image/jpeg',
+                    'path' => url($this->options->mainimage)
+                ];
+            } else {
+                $image = [
+                    'mimeType' => 'image/jpeg',
+                    'path' => url('modules/iblog/img/post/default.jpg')
+                ];
+            }
+        } else {
+            $image = [
+                'mimeType' => $thumbnail->mimetype,
+                'path' => $thumbnail->path_string
+            ];
+        }
+        return json_decode(json_encode($image));
+
     }
 
     public function getGalleryAttribute()
     {
+
         $gallery = $this->filesByZone('gallery')->get();
         $response = [];
         foreach ($gallery as $img) {
             array_push($response, [
                 'mimeType' => $img->mimetype,
-                'path' => $img->path_string
+                'path' => $img->path_string,
+                'alt'=>$img->alt??null
             ]);
         }
-        return $response;
+
+        return json_decode(json_encode($response));
     }
 
     /**
@@ -297,9 +330,9 @@ class Product extends Model implements TaggableInterface
 
     /**
      * Magic Method modification to allow dynamic relations to other entities.
-     * @var $value
-     * @var $destination_path
      * @return string
+     * @var $destination_path
+     * @var $value
      */
     public function __call($method, $parameters)
     {

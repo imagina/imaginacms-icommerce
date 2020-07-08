@@ -9,7 +9,7 @@ use Modules\Notification\Services\Notification;
 
 class SendOrder
 {
-   
+
     /**
      * @var Mailer
      */
@@ -27,13 +27,13 @@ class SendOrder
     public function handle($event)
     {
         $order = $event->order;
-        
+
         $subject = trans("icommerce::common.email.subject")." ".$order->status->title." #".$order->id."-".time();
         $view = "icommerce::emails.Order";
 
         // OJO DESCOMENTAR LUEGO
         $this->mail->to($order->email)->send(new Order($order,$subject,$view));
-        $this->notification->to($order->store->user_id)->push('Nueva Orden de compra', $subject,'fas fa-store', '/admin/stores/my-store/order/'.$order->id);
+        $this->notification->push('Nueva Orden de compra', $subject,'fas fa-store', '/admin/stores/my-store/order/'.$order->id);
 
         $email_to = explode(',', $this->setting->get('icommerce::form-emails'));
 
@@ -41,6 +41,6 @@ class SendOrder
 
     }
 
-    
+
 
 }

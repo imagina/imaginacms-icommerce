@@ -23,7 +23,7 @@
       </div>
 
       <div>
-        <h1 class="title">Thank You For Your Order!</h1>
+        <h1 class="title">{{trans('icommerce::orders.messages.thank')}}</h1>
       </div>
 
       <div class="header-contend text-center py-3">
@@ -39,10 +39,11 @@
     <div class="container email p-3">
       <div class="container">
         {{-- ***** Title  ***** --}}
-        <h3 class="text-center text-uppercase">Orden de compra</h3>
+        <h3 class="text-center text-uppercase">{{trans('icommerce::orders.messages.purchase order')}}</h3>
 
         {{-- ***** URL  ***** --}}
         <p>
+          {{trans('icommerce::orders.messages.link')}}
           Si desea ver el estado de su orden en cualquier momento, por favor ve siguiente link:
           <a href="{{url('/orders/'.$order->id.'/'.$order->key)}}"
              target="_blank">{{url('/orders/'.$order->id.'/'.$order->key)}}</a>
@@ -137,21 +138,21 @@
         <div>
           <table width="100%" style="margin-bottom: 15px">
             <tr align="left">
-              <th bgcolor="f5f5f5">Dirección de Envío</th>
-              <th bgcolor="f5f5f5">User details</th>
+              <th bgcolor="f5f5f5">{{trans('icommerce::orders.messages.shipping address')}}</th>
+              <th bgcolor="f5f5f5">{{trans('icommerce::orders.messages.user details')}}User details</th>
             </tr>
             <tr>
               <td>{{$order->shipping_address_1}}</td>
               {{-- <p>{{$order->city->name}}</p>
                <p>{{$order->province->name}}</p>
                <p>{{$order->country->name}}</p>--}}
-              <td>Metodo de envio:{{$order->shipping_method}}</td>
+              <td>{{trans('icommerce::orders.messages.shipping method')}}{{$order->shipping_method}}</td>
             </tr>
             <tr>
               <td>{{$order->first_name}} {{$order->last_name}}<br></td>
               <td>{{$order->email}}</td>
               <td>{{$order->telephone}}</td>
-              <td>Estado de la orden: {{$order->status->title}} </td>
+              <td>{{trans('icommerce::orders.messages.order status')}} {{$order->status->title}} </td>
             </tr>
           </table>
         </div>
@@ -180,7 +181,7 @@
       </div>
 
       <span class="copyright">
-          Copyrights © {{date('Y')}} All Rights Reserved by {{ setting('core::site-name') }}.
+          Copyrights © {{date('Y')}} {{trans('icommerce::orders.messages.rights')}}{{ setting('core::site-name') }}.
       </span>
     </footer>
 

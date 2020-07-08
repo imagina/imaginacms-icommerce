@@ -28,8 +28,6 @@ use Modules\Icommerce\Repositories\ManufacturerRepository;
 //External libraries
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Setting\Contracts\Setting;
-use Log;
-use DB;
 
 class ProductApiController extends BaseApiController
 {
@@ -39,16 +37,17 @@ class ProductApiController extends BaseApiController
     private $setting;
 
     public function __construct(
-      ProductRepository $product,
-      CategoryRepository $category,
-      Setting $setting,
-      ManufacturerRepository $manufacturer
+        ProductRepository $product,
+        CategoryRepository $category,
+        Setting $setting,
+        ManufacturerRepository $manufacturer
     )
     {
-      $this->product = $product;
-      $this->category = $category;
-      $this->setting = $setting;
-      $this->manufacturer = $manufacturer;
+        $this->product = $product;
+        $this->category = $category;
+        $this->setting = $setting;
+        $this->manufacturer = $manufacturer;
+
     }
 
     /**
@@ -57,27 +56,29 @@ class ProductApiController extends BaseApiController
      */
     public function index(Request $request)
     {
-      try {
-        $params = $this->getParamsRequest($request);
-        $products = $this->product->getItemsBy($params);
-        $response = [
-          'data' => ProductTransformer::collection($products)
-        ];
-        if($params->page) {
-          $page = $this->pageTransformer($products);
-          $response["meta"] = [
-            "page" => $page
-          ];
+        try {
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
+
+            //Request to Repository
+            $dataEntity = $this->product->getItemsBy($params);
+
+            //Response
+            $response = ['data' => ProductTransformer::collection($dataEntity)];
+
+            //If request pagination add meta-page
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = $this->getStatusError($e->getCode());
+            $response = [
+                "errors" => $e->getMessage()
+            ];
         }
-        $status = 200;
-      } catch (Exception $e) {
-        Log::error($e);
-        $status = $this->getStatusError($e->getCode());
-        $response = [
-          "errors" => $e->getMessage()
-        ];
-      }
-      return response()->json($response, $status);
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
     /**
@@ -88,22 +89,31 @@ class ProductApiController extends BaseApiController
      */
     public function show($criteria, Request $request)
     {
-      try {
-        $params = $this->getParamsRequest($request);
-        $dataEntity = $this->product->getItem($criteria, $params);
-        if (!$dataEntity) throw new Exception('Item not found', 204);
-        $response = [
-          "data" => new ProductTransformer($dataEntity)
-        ];
-        $status = 200;
-      } catch (Exception $e) {
-        Log::error($e);
-        $status = $this->getStatusError($e->getCode());
-        $response = [
-          "errors" => $e->getMessage()
-        ];
-      }
-      return response()->json($response, $status);
+        try {
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
+
+            //Request to Repository
+            $dataEntity = $this->product->getItem($criteria, $params);
+
+            //Break if no found item
+            if (!$dataEntity) throw new \Exception('Item not found', 404);
+
+            //Response
+            $response = ["data" => new ProductTransformer($dataEntity)];
+
+            //If request pagination add meta-page
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+        } catch (\Exception $e) {
+            \Log::error($e);
+            $status = $this->getStatusError($e->getCode());
+            $response = [
+                "errors" => $e->getMessage()
+            ];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
     /**
@@ -114,25 +124,29 @@ class ProductApiController extends BaseApiController
      */
     public function create(Request $request)
     {
-      DB::beginTransaction();
-      try {
-        $data = $request->input('attributes') ?? [];//Get data
-        $this->validateRequestApi(new ProductRequest($data));
-        $product = $this->product->create($data);
-        $response = [
-          "data" => new ProductTransformer($product)
-        ];
-        $status = 200;
-        DB::commit();
-      } catch (Exception $e) {
-        Log::error($e);
-        DB::rollback();
-        $status = $this->getStatusError($e->getCode());
-        $response = [
-          "errors" => $e->getMessage()
-        ];
-      }
-      return response()->json($response, $status);
+        \DB::beginTransaction();
+        try {
+            $data = $request->input('attributes') ?? [];//Get data
+
+            //Validate Request
+            $this->validateRequestApi(new ProductRequest($data));
+
+            //Create item
+            $product = $this->product->create($data);
+
+            //Response
+            $response = [
+                "data" =>  "Request successful"
+            ];
+            \DB::commit(); //Commit to Data Base
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
     /**
@@ -144,25 +158,32 @@ class ProductApiController extends BaseApiController
      */
     public function update($criteria, Request $request)
     {
-      DB::beginTransaction();
-      try {
-        $data = $request->input('attributes') ?? [];
-        $params = $this->getParamsRequest($request);
-        $dataEntity = $this->product->getItem($criteria, $params);
-        if (!$dataEntity) throw new Exception('Item not found', 204);
-        $product = $this->product->update($dataEntity, $data);
-        $response = [
-          "data" => new ProductTransformer($product)
-        ];
-        $status = 200;
-        DB::commit();
-      } catch (Exception $e) {
-        Log::error($e);
-        DB::rollback();
-        $status = $this->getStatusError($e->getCode());
-        $response = ["errors" => $e->getMessage()];
-      }
-      return response()->json($response, $status);
+        \DB::beginTransaction(); //DB Transaction
+        try {
+            //Get data
+            $data = $request->input('attributes') ?? [];//Get data
+
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
+
+            $dataEntity = $this->product->getItem($criteria, $params);
+
+            if (!$dataEntity) throw new Exception('Item not found', 204);
+
+            //Request to Repository
+            $this->product->update($dataEntity, $data);
+            //Response
+            $response = ["data" => 'Item Updated'];
+            \DB::commit();//Commit to DataBase
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
     /**
@@ -173,85 +194,101 @@ class ProductApiController extends BaseApiController
      */
     public function delete($criteria, Request $request)
     {
-      DB::beginTransaction();
-      try {
-        $params = $this->getParamsRequest($request);
-        $dataEntity = $this->product->getItem($criteria, $params);
-        if (!$dataEntity) throw new Exception('Item not found', 204);
-        $product = $this->product->destroy($dataEntity);
-        $response = [
-          "data" => $product
-        ];
-        DB::commit();
-      } catch (Exception $e) {
-        Log::error($e);
-        DB::rollback();
-        $status = $this->getStatusError($e->getCode());
-        $response = ["errors" => $e->getMessage()];
-      }
-      return response()->json($response, $status ?? 200);
-    }
+        \DB::beginTransaction();
+        try {
+            //Get params
+            $params = $this->getParamsRequest($request);
 
-    public function rating($criteria, Request $request)
-    {
-      \DB::beginTransaction(); //DB Transaction
-      try {
-        //Get data
-        $data = $request->input('attributes') ?? [];//Get data
 
-        //Get Parameters from URL.
-        $params = $this->getParamsRequest($request);
+            $dataEntity = $this->product->getItem($criteria, $params);
 
-        //Request to Repository
-        $product = $this->product->getItem($criteria, $params);
+            if (!$dataEntity) throw new Exception('Item not found', 204);
 
-        $oldRating = $product->sumRating();
+            //call Method delete
+            $this->category->destroy($dataEntity);
 
-        //Break if no found item
-        if (!$product) throw new \Exception('Item not found', 500);
-
-        $rating = \willvincent\Rateable\Rating::where('user_id', \Auth::id())
-            ->where('rateable_id', $criteria)
-            ->where('rateable_type', \Modules\Icommerce\Entities\Product::class)
-            ->first();
-
-        if ($rating) throw new Exception('Ya has calificado este producto.', 500);
-
-        $rating = new \willvincent\Rateable\Rating;
-        $rating->rating = $data['rating'];
-        $rating->user_id = \Auth::id();
-
-        $product->ratings()->save($rating);
-        $product->update(['sum_rating' => $oldRating + $data['rating']]);
-
-        $checkbox = $this->setting->get('points-per-rating-product-checkbox');
-        if ($checkbox) {
-          $points = $this->setting->get('iredeems::points-per-rating-product');
-
-          //Points by rating product
-          iredeems_StorePointUser([
-              "user_id" => \Auth::id(),
-              "pointable_id" => $criteria,
-              "pointable_type" => "product",
-              "description" => "Puntos por calificar un producto",
-              "points" => $points
-          ]);
-
-        }//Checkbox
-
-        //Response
-        $response = ["data" => 'Item Updated', 'store' => 'asd'];
-        \DB::commit();//Commit to DataBase
+            //Response
+            $response = ["data" => "Item deleted"];
+            \DB::commit();//Commit to Data Base
         } catch (\Exception $e) {
-          \Log::error($e);
-          \DB::rollback();//Rollback to Data Base
-          $status = $this->getStatusError($e->getCode());
-          $response = ["errors" => $e->getMessage()];
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
         }
 
         //Return response
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
+
+    /**
+     * UPDATE ITEM
+     *
+     * @param $criteria
+     * @param Request $request
+     * @return mixed
+     */
+    public function rating($criteria, Request $request)
+    {
+        \DB::beginTransaction(); //DB Transaction
+        try {
+            //Get data
+            $data = $request->input('attributes') ?? [];//Get data
+
+            //Get Parameters from URL.
+            $params = $this->getParamsRequest($request);
+
+            //Request to Repository
+            $product = $this->product->getItem($criteria, $params);
+
+            $oldRating = $product->sumRating();
+
+            //Break if no found item
+            if (!$product) throw new \Exception('Item not found', 500);
+
+            $rating = \willvincent\Rateable\Rating::where('user_id', \Auth::id())
+                ->where('rateable_id', $criteria)
+                ->where('rateable_type', \Modules\Icommerce\Entities\Product::class)
+                ->first();
+
+            if ($rating) throw new Exception('Ya has calificado este producto.', 500);
+
+            $rating = new \willvincent\Rateable\Rating;
+            $rating->rating = $data['rating'];
+            $rating->user_id = \Auth::id();
+
+            $product->ratings()->save($rating);
+            $product->update(['sum_rating' => $oldRating + $data['rating']]);
+
+            $checkbox = $this->setting->get('points-per-rating-product-checkbox');
+            if ($checkbox) {
+                $points = $this->setting->get('iredeems::points-per-rating-product');
+
+                //Points by rating product
+                iredeems_StorePointUser([
+                    "user_id" => \Auth::id(),
+                    "pointable_id" => $criteria,
+                    "pointable_type" => "product",
+                    "description" => "Puntos por calificar un producto",
+                    "points" => $points
+                ]);
+
+            }//Checkbox
+
+            //Response
+            $response = ["data" => 'Item Updated', 'store' => 'asd'];
+            \DB::commit();//Commit to DataBase
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();//Rollback to Data Base
+            $status = $this->getStatusError($e->getCode());
+            $response = ["errors" => $e->getMessage()];
+        }
+
+        //Return response
+        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+    }
+
 
     public function importProducts(Request $request)
     {
@@ -272,6 +309,6 @@ class ProductApiController extends BaseApiController
         }
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
 
-    }
+    }//importProducts()
 
 }

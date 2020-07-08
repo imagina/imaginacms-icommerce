@@ -1,4 +1,4 @@
-@include('icommerce::frontend.partials.variables')
+@includeFirst(['icommerce.partials.variables', 'icommerce::frontend.partials.variables'])
 
 <span id="content_carting" class="d-inline-block pl-2 mr-2">
   <!-- BUTTOM -->
@@ -103,10 +103,44 @@ var vue_carting = new Vue({
     quantity: 0,
     currencySymbolLeft: icommerce.currencySymbolLeft,
     currencySymbolRight: icommerce.currencySymbolRight,
+    userId:0,
+  },
+  mounted: function () {
+    this.$nextTick(function () {
+      this.userId=0;
+      this.userId= {!! $currentUser ? $currentUser->id : 0 !!};
+      console.log('UserId: '+this.userId);
+      this.getCart();
+    });
   },
   methods: {
     getCart(){
-      var cart_id=localStorage.getItem("cart_id");
+      console.log('get Cart');
+      var carts=localStorage.getItem("carts");
+      console.log(carts);
+      var cart_id=null;
+      var posCartNotAuth=null;
+      var cart_idNotAuth=null;
+      if(carts==null){
+        carts=[];
+      }else{
+        carts=JSON.parse(carts);
+      }
+      for(var i=0;i<carts.length;i++){
+        if(carts[i].userId==0){
+          cart_idNotAuth=carts[i].cart_id;
+          posCartNotAuth=i;
+        }
+        if(carts[i].userId==this.userId){
+          cart_id=carts[i].cart_id;
+          break;
+        }
+      }
+      if((cart_id==null && cart_idNotAuth!=null) && this.userId!=0){
+        cart_id=cart_idNotAuth;
+        carts[posCartNotAuth].userId=this.userId;
+        localStorage.setItem("carts", JSON.stringify(carts));
+      }
       if(cart_id){
         axios.get("{{url('/')}}"+"/api/icommerce/v3/carts/"+cart_id)
         .then(function (response) {
@@ -118,6 +152,7 @@ var vue_carting = new Vue({
           vue_carting.quantity=0;
           if(!vue_carting.total)
           vue_carting.total=0;
+          return response.data.data;
         })
         .catch(function (error) {
           localStorage.clear();
@@ -128,13 +163,24 @@ var vue_carting = new Vue({
     },
     createCart(){
       var id=0;
+      console.log('create cart');
       axios.post("{{url('/')}}"+"/api/icommerce/v3/carts", {
         attributes:{
           total:0
         }
       }).then(response=> {
         id=response.data.data.id;
-        localStorage.setItem("cart_id", id);
+        var carts=localStorage.getItem("carts");
+        if(carts==null){
+          carts=[];
+        }else{
+          carts=JSON.parse(carts);
+        }
+        carts.push({
+          "cart_id":id,
+          "userId":this.userId
+        });
+        localStorage.setItem("carts", JSON.stringify(carts));
         this.getCart();
       })
       .catch(function (error) {
@@ -153,18 +199,18 @@ var vue_carting = new Vue({
           });
         }//for articles
         this.getCart();
-        toastr.success("Productos del carrito eliminados correctamente.");
+        toastr.success(" {{trans('icommerce::cart.message.delete')}}");
       }//if articles length >0
     },
     addItemCart(productId,productName,price,quantity=1,productOptValue=[]){
-      var cart_id=localStorage.getItem("cart_id");
-      if(!cart_id){
-        vue_carting.createCart();
-        cart_id=localStorage.getItem("cart_id");
-      }
+      // var cart_id=localStorage.getItem("cart_id");
+      // if(!cart_id){
+      //   vue_carting.createCart();
+      //   cart_id=localStorage.getItem("cart_id");
+      // }
       axios.post("{{url('/')}}"+"/api/icommerce/v3/cart-products", {
         attributes:{
-          cart_id:cart_id,
+          cart_id:this.cart.id,
           product_id:productId,
           product_name:productName,
           price:price,
@@ -173,7 +219,7 @@ var vue_carting = new Vue({
         }
       })
       .then(function (response) {
-        toastr.success("Producto agregado al carrito exitosamente.");
+        toastr.success(" {{trans('icommerce::cart.message.add')}}")
         vue_carting.getCart();
         return true;
       })
