@@ -1,5 +1,10 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  1.2.1:
+    changed:
+      -Fix catch messages in checkout
+      -Fix includeFirst views in checkout
+      -Added new wishlist api with token user in show icommerce
   1.2.0:
     changed:
       - Readme for Category docs, Shipping and payment methods docs, wishlist docs, Tax Rate docs, Tax Class docs, Orders docs, Option Values docs, Options docs, Manufacturers docs, Coupons docs, Cart Products docs, Carts docs, Products docs,adding sub items, basic schema
