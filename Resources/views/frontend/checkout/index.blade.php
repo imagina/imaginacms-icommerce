@@ -37,19 +37,19 @@
           <div class="row">
 
             <div class="col-12 col-md-6 col-lg-4">
-              @includeFirst('icommerce.checkout.customer','icommerce::frontend.checkout.customer')
+              @includeFirst(['icommerce.checkout.customer','icommerce::frontend.checkout.customer'])
 
             </div>
             <div class="col-12 col-md-6 col-lg-4">
-              @includeFirst('icommerce.checkout.billing_details','icommerce::frontend.checkout.billing_details')
-              @includeFirst('icommerce.checkout.delivery_details','icommerce::frontend.checkout.delivery_details')
+              @includeFirst(['icommerce.checkout.billing_details','icommerce::frontend.checkout.billing_details'])
+              @includeFirst(['icommerce.checkout.delivery_details','icommerce::frontend.checkout.delivery_details'])
 
             </div>
             <div class="col-12 col-md-12 col-lg-4">
 
-              @includeFirst('icommerce.checkout.shipping_methods','icommerce::frontend.checkout.shipping_methods')
-              @includeFirst('icommerce.checkout.payment','icommerce::frontend.checkout.payment')
-              @includeFirst('icommerce.checkout.order_summary','icommerce::frontend.checkout.order_summary')
+              @includeFirst(['icommerce.checkout.shipping_methods','icommerce::frontend.checkout.shipping_methods'])
+              @includeFirst(['icommerce.checkout.payment','icommerce::frontend.checkout.payment'])
+              @includeFirst(['icommerce.checkout.order_summary','icommerce::frontend.checkout.order_summary'])
 
             </div>
 
@@ -332,7 +332,7 @@ Vue.use(VueMask.VueMaskPlugin);
         checkout.newUser.password_confirmation="";
       },
       registerUser(){
-        axios.post("{{url('/')}}"+"/api/profile/v1/users/register", {
+        axios.post("{{url('/')}}"+"/api/profile/v1/auth/register", {
           attributes:{
             first_name:checkout.newUser.name,
             last_name:checkout.newUser.lastName,
@@ -356,27 +356,20 @@ Vue.use(VueMask.VueMaskPlugin);
           checkout.password=checkout.newUser.password;
           checkout.loginUser();
           checkout.clearFieldsUser();
-        })
-        .catch(function (error) {
-          console.log('error:');
-          console.log(error.response.data);
+        }).catch(function (error) {
+          console.log(error);
+          // console.log('error:');
+          // console.log(error.response.data);
           let errors=[];
           if('errors' in error.response.data){
             errors=JSON.parse(error.response.data.errors);
-            console.log('errors asdad');
-            console.log(errors);
+            // console.log('errors');
+            // console.log(errors);
           }
           for (var i in errors) {
-              alert(errors[i]);
+              // alert(errors[i]);
               toastr.error(errors[i]);
-            console.log(i);
           }
-          // for(var i=0;i<errors.length;i++){
-          //   alert(errors[i]);
-          //   toastr.error(errors[i]);
-          // }//for
-
-          console.log(error);
         });
       },
       loginUser(){
@@ -390,6 +383,9 @@ Vue.use(VueMask.VueMaskPlugin);
         })
         .catch(function (error) {
           console.log(error);
+          if('errors' in error.response.data){
+            toastr.error(error.response.data.errors);
+          }
         });
       },
       submitOrder(){

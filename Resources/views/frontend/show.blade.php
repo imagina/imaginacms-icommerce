@@ -391,49 +391,61 @@
                 },
 
                 /* products wishlist */
-                 get_wishlist: function () {
-                    if (this.user) {
-                        axios({
-                            method: 'get',
-                            responseType: 'json',
-                            url: Laravel.routes.wishlist.get+'?filter={' + this.user+'}'
-                        }).then(response => {
-                            this.products_wishlist = response.data.data;
-                            $.each(this.products_wishlist, function (index, item) {
-                                if ( vue_show_commerce.product.id==item.product_id) {
-                                    button = $('.btn-wishlist').prop( "disabled", false );
-                                      button.find("i").addClass('fa-heart').removeClass('fa-heart-o');
-                                }
-                    });
-                        })
-                    }
+                get_wishlist: function () {
+                  let url="{{url('api/icommerce/v3/wishlists')}}";
+                  if (this.user) {
+                    let token="Bearer "+"{!! $currentUser ? $currentUser->createToken('Laravel Password Grant Client')->accessToken : "0" !!}";
+                    axios({
+                      method: 'get',
+                      responseType: 'json',
+                      url: url+'?filter={' + this.user+'}',
+                      headers:{
+                        'Authorization':token
+                      }
+                    }).then(response => {
+                      this.products_wishlist = response.data.data;
+                      $.each(this.products_wishlist, function (index, item) {
+                        if ( vue_show_commerce.product.id==item.product_id) {
+                          button = $('.btn-wishlist').prop( "disabled", false );
+                          button.find("i").addClass('fa-heart').removeClass('fa-heart-o');
+                        }
+                      });
+                    })
+                  }
                 },
 
 
                 /* product add wishlist */
                 addWishList: function (item) {
-                    if (this.user) {
-                         button = $('.btn-wishlist');
-                        button.find("i").addClass('fa-spinner fa-spin').removeClass('fa-heart');
-                        if (!this.check_wisht_list(item.id)) {
-                            axios.post("{{url('/')}}"+"/api/icommerce/v3/wishlists", {
-                                attributes:{
-                                    user_id: this.user,
-                                    product_id: item.id
-                                }
-                            }).then(response => {
-                                this.get_wishlist();
-                                 this.alerta("producto agregado a la lista", "success");
-                                 button.find("i").addClass('fa-heart').removeClass('fa-spinner fa-spin');
-                            })
-                        } else {
-                            button.find("i").addClass('fa-heart-o').removeClass('fa-spinner fa-spin');
-                            this.alerta("Producto en la lista", "warning");
+                  if (this.user) {
+                    let token="Bearer "+"{!! $currentUser ? $currentUser->createToken('Laravel Password Grant Client')->accessToken : "0" !!}";
+                    button = $('.btn-wishlist');
+                    button.find("i").addClass('fa-spinner fa-spin').removeClass('fa-heart');
+                    if (!this.check_wisht_list(item.id)) {
+                      let data={
+                        attributes:{
+                          user_id: this.user,
+                          product_id: item.id
                         }
+                      };
+
+                      axios.post("{{url('/')}}"+"/api/icommerce/v3/wishlists", data,{
+                        headers:{
+                          'Authorization':token
+                        }
+                      }).then(response => {
+                        this.get_wishlist();
+                        this.alerta("producto agregado a la lista", "success");
+                        button.find("i").addClass('fa-heart').removeClass('fa-spinner fa-spin');
+                      })
+                    } else {
+                      button.find("i").addClass('fa-heart-o').removeClass('fa-spinner fa-spin');
+                      this.alerta("Producto en la lista", "warning");
                     }
-                    else {
-                        this.alerta("Por Favor, Inicie Sesion", "warning");
-                    }
+                  }
+                  else {
+                    this.alerta("Por Favor, Inicie Sesion", "warning");
+                  }
                 },
 
                 /*check if exist product in wisthlist*/
