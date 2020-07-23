@@ -136,9 +136,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             //Order by
-            if (isset($filter->order) && !empty($filter->order)) {
+            if (isset($filter->order)) {
                 $orderByField = $filter->order->field ?? 'created_at';//Default field
                 $orderWay = $filter->order->way ?? 'desc';//Default way
+                if($orderByField=="slug"){
+                  $query->join('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
+                  $query->orderBy('translations.slug',$orderWay);
+                }else
                 $query->orderBy($orderByField, $orderWay);//Add order to query
             }
 

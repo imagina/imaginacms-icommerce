@@ -1,5 +1,8 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  1.2.2:
+    added:
+      -In api get items by of products, added order by slug
   1.2.1:
     changed:
       -Fix catch messages in checkout
