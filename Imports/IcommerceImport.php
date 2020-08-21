@@ -10,8 +10,9 @@ use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
-class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue {
+class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue, SkipsUnknownSheets {
 
     private $category;
     private $manufacturer;
@@ -31,9 +32,10 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
 
     public function sheets(): array
     {
+
         return [
-           //'Categories' => new CategoriesImport($this->category,$this->info),
-            //'manufactures' => new ManufacturersImport($this->manufacturer,$this->info),
+           'Categories' => new CategoriesImport($this->category,$this->info),
+           'manufactures' => new ManufacturersImport($this->manufacturer,$this->info),
             'Products'=>new ProductsImport($this->product,$this->info)
         ];
     }
@@ -44,7 +46,7 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
     */
     public function batchSize(): int
     {
-        return 1000;
+        return 100;
     }
 
     /*
@@ -52,6 +54,11 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
     */
     public function chunkSize(): int
     {
-        return 1000;
+        return 100;
+    }
+    public function onUnknownSheet($sheetName)
+    {
+        // E.g. you can log that a sheet was not found.
+        \Log::info("Sheet {$sheetName} was skipped");
     }
 }

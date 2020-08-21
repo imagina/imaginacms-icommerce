@@ -159,7 +159,7 @@
                 <hr class="my-4 hr-lg">
                 <div class="col-12 text-right mt-3 mt-md-0">
                     <a href="{{ url('/orders') }}"
-                       class="btn btn-outline-primary btn-rounded btn-lg my-2">{{trans('icommerce::orders.button.Back_to_order_list')}}</a>
+                       class="btn btn-outline-primary btn-rounded btn-lg my-2">Salir</a>
                 </div>
             </div>
         </div>

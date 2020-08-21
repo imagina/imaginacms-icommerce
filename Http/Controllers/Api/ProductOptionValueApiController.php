@@ -70,16 +70,16 @@ class ProductOptionValueApiController extends BaseApiController
       $params = $this->getParamsRequest($request);
 
       //Request to Repository
-      $productOptionValue = $this->productOptionValue->getItem($criteria, $params);
+      $entity = $this->productOptionValue->getItem($criteria, $params);
 
       //Break if no found item
-      if (!$productOptionValue) throw new \Exception('Item not found', 204);
+      if (!$entity) throw new \Exception('Item not found', 404);
 
       //Response
-      $response = ["data" => new ProductOptionValueTransformer($productOptionValue)];
+      $response = ["data" => new ProductOptionValueTransformer($entity)];
 
       //If request pagination add meta-page
-      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($productOptionValue)] : false;
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($entity)] : false;
     } catch (\Exception $e) {
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
@@ -133,8 +133,14 @@ class ProductOptionValueApiController extends BaseApiController
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
 
+        //Request to Repository
+        $entity = $this->productOptionValue->getItem($criteria, $params);
+
+        //Break if no found item
+        if (!$entity) throw new \Exception('Item not found', 404);
+
       //Request to Repository
-      $this->productOptionValue->updateBy($criteria, $data, $params);
+      $this->productOptionValue->update($entity, $data);
 
       //Response
       $response = ["data" => 'Item Updated'];
@@ -161,9 +167,14 @@ class ProductOptionValueApiController extends BaseApiController
     try {
       //Get params
       $params = $this->getParamsRequest($request);
+        //Request to Repository
+        $entity = $this->productOptionValue->getItem($criteria, $params);
+
+        //Break if no found item
+        if (!$entity) throw new \Exception('Item not found', 404);
 
       //call Method delete
-      $this->productOptionValue->deleteBy($criteria, $params);
+      $this->productOptionValue->destroy($entity);
 
       //Response
       $response = ["data" => "Item deleted"];

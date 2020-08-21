@@ -46,7 +46,8 @@ class OrderStatusHistoryApiController extends BaseApiController
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($orderHistories)] : false;
 
     } catch (\Exception $e) {
-      //Message Error
+        \Log::error($e);
+        //Message Error
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -72,6 +73,7 @@ class OrderStatusHistoryApiController extends BaseApiController
       ];
 
     } catch (\Exception $e) {
+        \Log::error($e);
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -94,6 +96,7 @@ class OrderStatusHistoryApiController extends BaseApiController
       $response = ['data' => $orderHistory];
 
     } catch (\Exception $e) {
+        \Log::error($e);
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -116,6 +119,7 @@ class OrderStatusHistoryApiController extends BaseApiController
       $response = ['data' => ''];
 
     } catch (\Exception $e) {
+        \Log::error($e);
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -137,7 +141,8 @@ class OrderStatusHistoryApiController extends BaseApiController
       $response = ['data' => ''];
 
     } catch (\Exception $e) {
-      $status = 500;
+        \Log::error($e);
+        $status = 500;
       $response = [
         'errors' => $e->getMessage()
       ];

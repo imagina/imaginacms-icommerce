@@ -24,6 +24,18 @@ if (!App::runningInConsole()) {
         });
     }
 }
+
+/** @var Router $router */
+$router->group(['prefix' => 'store/search'], function (Router $router) use ($locale) {
+
+
+    $router->get('/', [
+        'as' => $locale . 'icommerce.search',
+        'uses' => 'PublicController@search',
+    ]);
+
+});
+
 /** @var Router $router */
 $router->group(['prefix' => '/checkout'], function (Router $router) use ($locale) {
 

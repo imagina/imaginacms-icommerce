@@ -74,14 +74,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             //Filter by stock status
-            if (isset($filter->stockStatus) && !empty($filter->stockStatus)) {
+            if (isset($filter->stockStatus)) {
+                if ($filter->stockStatus != null)
                 $query->where('stock_status', $filter->stockStatus);
             }
 
             //Filter by stock status
-            if (isset($filter->status) && !empty($filter->status)) {
+            if (isset($filter->status)) {
                 if ($filter->status != null)
-                    $query->where('status', $filter->status);
+                    $query->where('status', (int)$filter->status);
             }
 
             // add filter by Categories 1 or more than 1, in array

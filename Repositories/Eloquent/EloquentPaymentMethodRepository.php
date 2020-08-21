@@ -17,7 +17,6 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
         // RELATIONSHIPS
         $defaultInclude = [];
         $query->with(array_merge($defaultInclude, $params->include));
-
         // FILTERS
         if ($params->filter) {
             $filter = $params->filter;
@@ -39,6 +38,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
             }
 
             if (isset($filter->active)) {
+
               $query->where('active', $filter->active);
             }
 

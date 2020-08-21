@@ -2,14 +2,17 @@ url: https://github.com/imagina/asgardcms-icommerce
 versions:
   1.2.2:
     added:
-      -In api get items by of products, added order by slug
+      -
   1.2.1:
     changed:
-      -Fix catch messages in checkout
-      -Fix includeFirst views in checkout
-      -Added new wishlist api with token user in show icommerce
+      - import prodcut controler
+    remove:
+      - UpdateBy and DeleteBy in OptionsValue,
   1.2.0:
     changed:
+      - Fix catch messages in checkout
+      - Fix includeFirst views in checkout
+      - Added new wishlist api with token user in show icommerce
       - Readme for Category docs, Shipping and payment methods docs, wishlist docs, Tax Rate docs, Tax Class docs, Orders docs, Option Values docs, Options docs, Manufacturers docs, Coupons docs, Cart Products docs, Carts docs, Products docs,adding sub items, basic schema
       - ProductTransformer, adding intval in categoryId attribute
       - TaxClassRate Transformer
@@ -48,6 +51,7 @@ versions:
       - Migration for unit test
     added:
       - permissions bulkload
+      - In api get items by of products, added order by slug
       - Filter by geozone in shipping methods
       - Taxes by geozone in products Entity
       - Filter by geozone in payment Methods

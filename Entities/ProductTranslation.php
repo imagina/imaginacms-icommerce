@@ -32,4 +32,27 @@ class ProductTranslation extends Model
             ]
         ];
     }
+
+    public function setMetaDescriptionAttribute($value){
+
+        if(empty($value)){
+            $this->attributes['meta_description'] = substr(strip_tags($this->summary??''),0,150);
+        }else{
+            $this->attributes['meta_description'] = $value;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function setMetaTitleAttribute($value){
+
+        if(empty($value)){
+            $this->attributes['meta_title'] = $this->name??'';
+        }else{
+            $this->attributes['meta_title'] = $value;
+        }
+    }
+
+
 }

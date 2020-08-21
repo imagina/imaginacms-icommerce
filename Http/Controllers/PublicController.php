@@ -58,6 +58,11 @@ class PublicController extends BasePublicController
 
         $products = $this->product->getItemsBy($params);
 
+        $ptpl = "iblog.category.{$category->parent_id}.index";
+        if ($category->parent_id != 0 && view()->exists($ptpl)) {
+            $tpl = $ptpl;
+        }
+
         $ctpl = "icommerce.category.{$category->id}.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
 
@@ -92,9 +97,28 @@ class PublicController extends BasePublicController
     {
         $tpl = 'icommerce::frontend.checkout.index';
         $ttpl = 'icommerce.checkout.index';
-
         if (view()->exists($ttpl)) $tpl = $ttpl;
         return view($tpl);
+    }
+
+    // view products by category
+    public function search(Request $request)
+    {
+
+        $tpl = 'icommerce::frontend.search';
+        $ttpl = 'icommerce.search';
+
+        if (view()->exists($ttpl)) $tpl = $ttpl;
+        $category=$request->input('category')??null;
+        $params=$this->_paramsRequest($request,$category);
+
+        $products = $this->product->getItemsBy($params);
+
+        $products=ProductTransformer::collection($products);
+
+        return view($tpl, compact('products'));
+
+
     }
 
     private function _paramsRequest($request,$category)
@@ -104,7 +128,7 @@ class PublicController extends BasePublicController
     $minPrice=$request->input('minPrice')??0;
     $options=$request->input('options')??null;
     $manufacturer=$request->input('manufacturer')??null;
-    $search=$request->input('search')??null;
+    $search=$request->input('search')??$request->input('q')??null;
     $currency=$request->input('currency')??null;
     $order=["field"=>$request->input('orderField')??"created_at","way"=>$request->input('orderWay')??"desc"];
 
@@ -114,7 +138,7 @@ class PublicController extends BasePublicController
         "take" => is_numeric($request->input('take')) ? $request->input('take') :
             ($request->input('page') ? 12 : null),
         "include" =>[],
-        "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order])),
+        "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order,'status'=>1])),
     ];
     //Set locale to filter
     $params->filter->locale = \App::getLocale();

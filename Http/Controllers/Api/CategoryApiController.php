@@ -72,7 +72,7 @@ class CategoryApiController extends BaseApiController
             $category = $this->category->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$category) throw new Exception('Item not found', 404);
+            if (!$category) throw new \Exception('Item not found', 404);
 
             //Response
             $response = ["data" => new CategoryTransformer($category)];
@@ -138,7 +138,7 @@ class CategoryApiController extends BaseApiController
             $category = $this->category->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$category) throw new Exception('Item not found', 404);
+            if (!$category) throw new \Exception('Item not found', 404);
 
             //Update data
             $category = $this->category->update($category, $data);
@@ -169,7 +169,7 @@ class CategoryApiController extends BaseApiController
             $category = $this->category->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$category) throw new Exception('Item not found', 404);
+            if (!$category) throw new \Exception('Item not found', 404);
 
             //Delete data
             $this->category->destroy($category);

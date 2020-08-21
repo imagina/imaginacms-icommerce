@@ -9,9 +9,17 @@ return [
         'orders' => 'Order',
         'create order' => 'Crear un pedido',
         'edit order' => 'Editar un pedido',
+        'single_order_title'=>'Orden de Servicio',
+        'detail order'=> 'Detalle de  la Orden'
+    ],
+    'breadcrumb'=>[
+        'single_order'=>'Orden de servicio',
+        'title'=>'Ordenes'
     ],
     'button' => [
         'create order' => 'Crear un pedido',
+        'Back_to_order_list'=>'Salir',
+        'Back_to_profile'=>'Volver al perfil'
     ],
     'table' => [
         'id' => 'ID',

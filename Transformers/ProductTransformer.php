@@ -27,7 +27,7 @@ class ProductTransformer extends BaseApiTransformer
             'quantity' => $this->when($this->quantity, $this->quantity),
             'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
             'price' => $price,
-            'formatted_price' => formatMoney($price),
+            'formattedPrice' => formatMoney($price),
             'dateAvailable' => $this->when($this->date_available, $this->date_available),
             'weight' => $this->when($this->weight, $this->weight),
             'length' => $this->when($this->length, $this->length),

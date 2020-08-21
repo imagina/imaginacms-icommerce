@@ -39,7 +39,7 @@ class UpdateOrderStatus
             $view = "icommerce::emails.order-notifications";
             $this->notification->to($order->customer_id)->push('Notificaciòn Orden de compra', $subject, 'fas fa-store', 'account/orders/' . $order->id);
 
-            $this->mail->to($order->email)->send(new \Modules\Icommerce\Emails\OrderNotification($order, $subject, $view, $dataSend));
+            $this->mail->to($order->email)->send(new \Modules\Icommerce\Emails\OrderNotification($order, $subject, $view, json_decode(json_encode($dataSend))));
 
         }
     }

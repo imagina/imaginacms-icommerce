@@ -403,7 +403,7 @@
             </p>
             <h4>Comentarios:</h4>
             <p class="px-3" style="padding: 1rem !important">
-                {{$dataSend['comment']}}
+                {{$dataSend->comment}}
             </p>
             <div align="left">
                 <p>{{setting('core::site-name') }}</p>

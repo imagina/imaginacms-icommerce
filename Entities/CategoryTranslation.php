@@ -35,9 +35,25 @@ class CategoryTranslation extends Model
             ]
         ];
     }
-    public function getMetaDescriptionAttribute(){
+    public function setMetaDescriptionAttribute($value){
 
-        return $this->meta_description ?? substr(strip_tags($this->description??''),0,150);
+        if(empty($value)){
+            $this->attributes['meta_description'] = substr(strip_tags($this->description??''),0,150);
+        }else{
+            $this->attributes['meta_description'] = $value;
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function setMetaTitleAttribute($value){
+
+        if(empty($value)){
+            $this->attributes['meta_title'] = $this->title??'';
+        }else{
+            $this->attributes['meta_title'] = $value;
+        }
     }
     public function getTranslatableOptionAttribute($value) {
 
@@ -47,12 +63,6 @@ class CategoryTranslation extends Model
 
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMetaTitleAttribute(){
 
-        return $this->meta_title ?? $this->title;
-    }
 
 }

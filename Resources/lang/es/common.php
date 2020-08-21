@@ -118,6 +118,7 @@ return [
         'recommended' => 'RECOMENDADO',
     ],
     'search' => [
+        'title'=>'Busqueda de productos',
         'go' => 'IR',
         'no_results' => 'No hay resultados',
         'see_all' => 'Ver todos los resultados...',
