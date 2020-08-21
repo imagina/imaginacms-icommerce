@@ -1,5 +1,9 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  1.1.4:
+    added:
+      - product discount Rutes
+      - migration rating module
   1.1.3:
     added:
       - Upgate and destroy methos in EloquentProductRepository
