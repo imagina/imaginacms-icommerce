@@ -64,8 +64,8 @@ class ProductPresenter extends Presenter
     $basePrice = $this->entity->price;
     $newPrice = $basePrice;
     $totalDiscounts = [];
-    $userId = Auth::guard('api')->user() ? Auth::guard('api')->user()->id : 0;
-
+    $userId = Auth::user() ? Auth::user()->id : 0;
+ 
     if ($userId){
       $departments = Department::whereHas('users', function ($q) use ($userId){
         $q->where('iprofile__user_department.user_id', $userId);
@@ -84,6 +84,8 @@ class ProductPresenter extends Presenter
 
     foreach ($discounts as $key => $discount){
       $valueDiscount = $this->calcDiscount($discount, $newPrice);
+      
+      
       if ( isset($discounts[$key+1]) && $discounts[$key+1]->priority == $discounts[$key]->priority ){
         $newPrice = $newPrice;
       } else {

@@ -10,6 +10,7 @@ return [
       'company_nit'      => 'N.I.T Compañia',
     	'address1'         => 'Dirección 1',
     	'address2'         => 'Dirección 2',
+    	'telephone'         => 'Teléfono',
     	'city'             => 'Ciudad',
     	'post_code'        => 'Codigo Postal',
     	'country'          => 'Pais',

@@ -45,6 +45,7 @@ class Order
     $newData["payment_nit"] = $data["payment_nit"] ?? "";
     $newData["payment_address_1"] = $data["payment_address_1"];
     $newData["payment_address_2"] = $data["payment_address_2"] ?? "";
+    $newData["telephone"] = $data["telephone"] ?? "";
     $newData["payment_city"] = $data["payment_city"];
     $newData["payment_zip_code"] = $data["payment_zip_code"]??'N/A';
     $newData["payment_country"] = $data["payment_country"];
@@ -62,7 +63,7 @@ class Order
     $newData["shipping_address_2"] = $data["shipping_address_2"] ?? "";
     $newData["shipping_city"] = $data["shipping_city"];
     $newData["shipping_zip_code"] = $data["shipping_zip_code"]??'N/A';
-    $newData["shipping_country"] = $data["shipping_country"];
+    $newData["shipping_country_code"] = $data["shipping_country_code"];
     $newData["shipping_zone"] = $data["shipping_zone"] ?? "";
 
     // Set Shipping Method infor

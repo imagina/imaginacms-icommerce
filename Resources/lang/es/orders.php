@@ -6,10 +6,10 @@ return [
     'edit resource' => 'Editar pedidos',
     'destroy resource' => 'Destruye órdenes',
     'title' => [
-        'orders' => 'Order',
+        'orders' => 'Ordenes',
         'create order' => 'Crear un pedido',
         'edit order' => 'Editar un pedido',
-        'single_order_title'=>'Orden de Servicio',
+        'single_order_title'=>'Orden de Compra',
         'detail order'=> 'Detalle de  la Orden'
     ],
     'breadcrumb'=>[
@@ -30,10 +30,10 @@ return [
         'status' => 'Estado',
         'created_at' => 'Creado en',
         'details' => 'Detalles del pedido',
-        'customer details' => 'Customer Details',
+        'customer details' => 'Datos del Cliente',
         'others details' => 'Otros detalles',
         'order' => 'Order',
-        'payment address' => 'Dirección de pago',
+        'payment address' => 'Dirección de facturación',
         'shipping address' => 'Dirección de envío',
         'product' => 'Producto',
         'reference' => 'Referencia',
@@ -50,6 +50,7 @@ return [
         'yes' => 'Sí',
         'customer notify' => 'Notificar al cliente',
         'shipping_method' => 'Método de envío',
+        'payment_method' => 'Método de pago',
     ],
     'form' => [
     ],
@@ -61,7 +62,8 @@ return [
         'user details' => 'Detalles del usuario',
         'shipping method' => 'Método de envío:',
         'order status' => 'Estado del pedido:',
-        'rights' => 'Todos los derechos reservados por'
+        'rights' => 'Todos los derechos reservados por',
+        'notificationOrder' => 'Notificación Orden de compra',
     ],
     'validation' => [
     ],

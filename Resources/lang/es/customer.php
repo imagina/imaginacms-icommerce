@@ -14,6 +14,7 @@ return [
     	'email'                => 'Correo Electrónico',
     	'phone'                => 'Teléfono',
     	'paswd'                => 'Clave',
+    	'confirmPolytics'        => 'He leído y acepto la <a rel="nofollow" href=":url">Política de Privacidad</a>.',
     	'paswd_confirm'        => 'Confirmación Clave',
       'person_legal'         => '¿Eres personal jurídico?',
       'no'              => 'No',

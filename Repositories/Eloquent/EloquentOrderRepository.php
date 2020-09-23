@@ -59,10 +59,13 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       if (isset($filter->user)){
         $query->where('added_by_id', $filter->user);
       }
+  
       if (isset($filter->customer)){
+  
         // if has permission
         $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
         $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
+  
         $user = $params->user;
         if($showOthersPermission || ($filter->customer == $user->id && $indexPermission)){
           $query->where('customer_id', $filter->customer);
@@ -75,7 +78,20 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
         $query->orderBy($orderByField, $orderWay);//Add order to query
       }
     }
-
+    if(!isset($params->filter->order)){
+      $query->orderBy("created_at", "desc");//Add order to query
+      
+    }
+  
+    // if has permission
+    $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
+    $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
+  
+    if(!$showOthersPermission){
+      $query->where('customer_id', $params->user->id);
+    }
+  
+  
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);

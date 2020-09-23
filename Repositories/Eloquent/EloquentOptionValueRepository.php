@@ -113,25 +113,51 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
 
     return $model;
   }
-    public function update($model, $data)
-    {
 
-        $model->update($data);
+  public function updateBy($criteria, $data, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
 
-        //Event to Update media
-        event(new UpdateMedia($model, $data));
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
 
-        return $model;
+      //Update by field
+      if (isset($filter->field))
+        $field = $filter->field;
     }
 
-    public function destroy($model)
-    {
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    if($model){
+      event(new UpdateMedia($model, $data));//Event to Update media
+      $model=  $model->update((array)$data);
+      return $model;
+    }else{
+      return false;
+    }
+    
+  }
 
-        //Event to Delete media
-        event(new DeleteMedia($model->id, get_class($model)));
+  public function deleteBy($criteria, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
 
-        return  $model->delete();
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
 
+      if (isset($filter->field))//Where field
+        $field = $filter->field;
     }
 
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    $model ? $model->delete() : false;
+
+    //Event to Delete media
+    event(new DeleteMedia($model->id, get_class($model)));
+  }
 }

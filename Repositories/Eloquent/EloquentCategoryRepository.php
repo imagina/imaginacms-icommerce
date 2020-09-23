@@ -48,6 +48,10 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
                 $query->where('store_id', $filter->store);
             }
 
+            if (isset($filter->showMenu)) {
+                $query->where('show_menu', $filter->showMenu);
+            }
+
             //Filter by date
             if (isset($filter->date)) {
                 $date = $filter->date;//Short filter date
@@ -74,7 +78,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         }
 
         /*== FIELDS ==*/
-        if (isset($params->fields) && !empty($params->fields))
+        if (isset($params->fields) && is_array($params->fields) && count($params->fields) && $params->fields)
             $query->select($params->fields);
 
         /*== REQUEST ==*/

@@ -189,6 +189,14 @@
                     return parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
                 }
             },
+            computed:{
+              configPagination(){
+                let lastPage = this.r_pages.latest
+                let currentPage = this.p_current
+                console.warn('>>>>>>>>>>>>Pagination',currentPage, lastPage)
+                return 'Testtttt Computed'
+              }
+            },
             methods: {
               /* products wishlist */
                  get_wishlist: function () {
@@ -297,6 +305,8 @@
                   order: this.order,
                   categoryId:this.category.id,
                   priceRange: this.price,
+                  status:1,
+                  stockStatus:1,
                 };
                 axios({
                   method: 'Get',

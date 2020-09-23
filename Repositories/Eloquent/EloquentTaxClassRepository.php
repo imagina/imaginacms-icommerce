@@ -89,6 +89,36 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     return $tagClass;
   }
 
+    public function updateBy($criteria, $data, $params){
+
+        // INITIALIZE QUERY
+        $query = $this->model->query();
+
+        // FILTER
+        if (isset($params->filter)) {
+            $filter = $params->filter;
+
+            if (isset($filter->field))//Where field
+                $query->where($filter->field, $criteria);
+            else//where id
+                $query->where('id', $criteria);
+        }
+
+        // REQUEST
+        $model = $query->first();
+
+        if($model) {
+            $rates = array_get($data, 'rates', []);
+            unset($data['rates']);
+            $model->update($data);
+            // sync tables
+            if($rates)
+                //$model->rates()->detach();
+                $model->rates()->sync($rates);
+        }
+        return $model;
+    }
+
   
  
 }

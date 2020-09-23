@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('meta')
-        <meta name="description" content="{{trans('icommerce.common.search.title')}} ">
+        <meta name="description" content="{{trans('icommerce.common.search.titlettt')}} ">
         <!-- Schema.org para Google+ -->
         <meta itemprop="name" content="{{trans('icommerce.common.search.title')}}">
         <meta itemprop="description" content="{{trans('icommerce.common.search.title')}}">
@@ -9,47 +9,78 @@
               content="{{url('/')}}">
 @stop
 @section('title')
-    {{trans('icommerce.common.search.title')}}  | @parent
+    Busqueda de Productos  | @parent
 @stop
 
 
 @section('content')
 
-
-    {{--   <!-- preloader -->
-       <div id="content_preloader">
-           <div id="preloader"></div>
-       </div>
-   --}}
-
+    <!-- preloader -->
+    <div id="content_preloader">
+        <div id="preloader"></div>
+    </div>
 
     <div id="content_index_commerce" class="page">
 
-        <div class="container pt-5">
-            <div class="row">
+        @component('partials.widgets.breadcrumb')
+            <li class="breadcrumb-item active" aria-current="page">
+                Resultado de la Busqueda
+            </li>
+        @endcomponent
 
-                {{--<div class="col-12 text-right pb-5 d-none d-lg-block" v-if="articles.length >= 1">
-                    | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span>
-                    | @include('icommerce.widgets.order_by') |
-                </div>--}}
+        <div class="container">
+            <div class="row">
 
 
                 <div class="col-lg-3 pb-5">
-                    {{--  @include('icommerce.widgets.categories')
-  --}}
-                    <hr class="border-primary">
 
-                    <div class="d-none d-lg-block">
-                        {{-- @include('icommerce.widgets.destacados')--}}
+                    <div class="categories-children pb-4">
+
+                        <h3 class="text-main  text-uppercase mb-4">
+                            Categorias Principales
+                        </h3>
+                        <div v-if="categories && categories.length>0">
+                            <div class="filter-order mb-3 " v-for="(category,index) in categories">
+
+                                <a class="item" data-toggle="collapse" v-if="category.childrens && category.childrens.length>0 "
+                                   v-bind:href="'#category-'+category.id" role="button" aria-expanded="false"
+                                   v-bind:aria-controls="'category-'+category.id">
+                                    <h5 class="p-3 bg-light d-block cursor-pointer mb-0" style="border-radius: 0 20px 0 0;">
+                                        <i class="fa angle mr-1" aria-hidden="true"></i>
+                                        @{{category.title}}
+                                    </h5>
+
+                                </a>
+
+                                <a :href="url+'/'+category.slug" class="item p-3 bg-light d-block cursor-pointer"
+                                   style="border-radius: 0 20px 0 0;" v-else-if="category.slug!='destacados'">
+                                    <h5 class="mb-0">@{{category.title}}</h5>
+                                </a>
+
+                                <div class="collapse multi-collapse mb-2" v-bind:id="'category-'+category.id">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" v-for='i in category.childrens'>
+                                            <a class="d-block w-100 cursor-pointer" data-sab="2" :href="'{{url('/')}}/'+i.slug">
+                                                <span class="text-primary mr-2">•</span>
+                                                @{{i.title}} </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        </div>
+
                     </div>
 
+
+
                 </div>
-                <div class="col-lg-9 border-left pb-5">
+                <div class="col-lg-9">
                     <!-- ===== CONTENT ===== -->
 
-                    <div class="text-right pb-5 d-block d-lg-none">
+                    <div class="text-right">
                         <span class="mx-2 total-filter"> {{$products->total()}} Articulos</span>
-                        {{--@include('icommerce.widgets.order_by') |--}}
                     </div>
 
                     <div id="content">
@@ -78,11 +109,12 @@
 
                                                     <div class="price mt-3">
                                                         <i class="fa fa-shopping-cart icon"></i>
-                                                        {{$product->price}}
+                                                        {{formatMoney($product->price)}}
                                                     </div>
                                                     <a class="cart-no">&nbsp;</a>
                                                     @if($product->price)
                                                    {{-- <add-cart product="{{$product}}"/>--}}
+                                                        <a class="cart text-primary cursor-pointer">&nbsp;</a>
                                                     @else
                                                     <a href="{{ URL::to('/contacto') }}"
                                                        class="cart text-primary cursor-pointer">
@@ -97,7 +129,7 @@
                             @else
                             <!-- si no hay productos -->
                                 <div class="row products-index mb-5">
-                                    <div>
+                                    <div class="col">
                                         No se encontraron productos...
                                     </div>
                                 </div>
@@ -135,6 +167,12 @@
             },
             mounted: function () {
                 this.preloaded = false;
+                this.$nextTick(function () {
+                    this.getCategory();
+                });
+                $('#content_preloader').fadeOut(1000, function () {
+                    $('#content_index_commerce').animate({'opacity': 1}, 500);
+                });
             },
             filters: {
                 numberFormat: function (value) {
@@ -142,7 +180,7 @@
                 }
             },
             methods: {
-                getCategoryChildrens() {
+                getCategory() {
                     axios({
                         method: 'Get',
                         responseType: 'json',

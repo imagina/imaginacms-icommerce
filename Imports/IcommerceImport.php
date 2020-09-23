@@ -33,9 +33,11 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
     public function sheets(): array
     {
 
+
+
         return [
            'Categories' => new CategoriesImport($this->category,$this->info),
-           'manufactures' => new ManufacturersImport($this->manufacturer,$this->info),
+            'manufactures' => new ManufacturersImport($this->manufacturer,$this->info),
             'Products'=>new ProductsImport($this->product,$this->info)
         ];
     }
@@ -46,7 +48,7 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
     */
     public function batchSize(): int
     {
-        return 100;
+        return 1000;
     }
 
     /*
@@ -54,7 +56,7 @@ class IcommerceImport implements WithMultipleSheets,WithChunkReading,ShouldQueue
     */
     public function chunkSize(): int
     {
-        return 100;
+        return 1000;
     }
     public function onUnknownSheet($sheetName)
     {

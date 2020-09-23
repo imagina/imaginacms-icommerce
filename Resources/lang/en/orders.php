@@ -37,6 +37,7 @@ return [
         'additional'        => 'Additional',
         'date added'        => 'Date added',
         'comment'           => 'Comment',
+        'status'            => 'Status',
         'customer notified' => 'Customer notified',
         'add order history' => 'Add an order history',
         'yes'               => 'Yes',

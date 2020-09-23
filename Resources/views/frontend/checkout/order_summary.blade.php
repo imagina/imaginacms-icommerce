@@ -45,7 +45,7 @@
                                         @{{ item.name }}
                                     </h5>
                                     <p class="mb-0 text-center" v-if="item.productOptionValues.length > 0">
-                                      <label v-for="opt in item.productOptionValues">
+                                      <label v-for="opt in item.productOptionValues" class="mr-3">
                                         <strong>@{{opt.optionValue}}</strong>
                                       </label>
                                     </p>
@@ -60,7 +60,7 @@
                                                 <input type="button" value="-"
                                                        class="btn btn-outline-primary border-right-0 quantity-down"
                                                        field="quantity"
-                                                       v-on:click="item.quantity > 0 ? update_quantity(item, '-') : alert('the quantity can not be less than 0', 'error')">
+                                                       v-on:click="item.quantity > 0 ? update_quantity(item, '-') : alert('La cantidad no puede ser menor a 1', 'error')">
                                             </div>
                                             <input type="text"
                                                    name="quantity"
@@ -73,7 +73,7 @@
                                                 <input type="button" value="+"
                                                        class="btn btn-outline-primary border-left-0 quantity-up"
                                                        field="quantity"
-                                                       v-on:click="update_quantity(item, '+')">
+                                                       v-on:click="(item.quantity < item.product.quantity) ? update_quantity(item, '+') : false">
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,6 @@
                                 <div class="col-8 text-right">
                                     <p>
                                     <div v-if="!updatingData">
-
                                         @{{ orderTotal | numberFormat }}
                                         {{--@{{ subTotal | numberFormat }}--}}
 
@@ -117,7 +116,7 @@
 
                                         </div>
                                         <div v-else>
-                                            @{{shipping_name }}
+                                            @{{shipping_title }}
                                             <br>
                                             @{{ shipping!=0 ? shipping : '' | numberFormat }}
 

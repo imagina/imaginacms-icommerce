@@ -13,11 +13,12 @@ class PaymentMethodTransformer extends Resource
             'title' => $this->when($this->title, $this->title),
             'description' => $this->when($this->description, $this->description),
             'name' => $this->when($this->name, $this->name),
-            'active' => boolval($this->active),
+            'status' => boolval($this->status),
             'mainImage' => $this->mainImage,
             'options' => $this->when($this->options, $this->options),
             'createdAt' => $this->when($this->created_at, $this->created_at),
-            'updatedAt' => $this->when($this->updated_at, $this->updated_at)
+            'updatedAt' => $this->when($this->updated_at, $this->updated_at),
+            'activevalue'=>$this->active
         ];
 
 

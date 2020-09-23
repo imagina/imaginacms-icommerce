@@ -18,7 +18,7 @@ class PaymentMethod extends Model
     protected $table = 'icommerce__payment_methods';
 
     protected $fillable = [
-        'active',
+        'status',
         'name',
         'options',
         'store_id',

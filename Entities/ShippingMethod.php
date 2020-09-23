@@ -18,7 +18,7 @@ class ShippingMethod extends Model
     ];
 
     protected $fillable = [
-        'active',
+        'status',
         'name',
         'options',
         'store_id',

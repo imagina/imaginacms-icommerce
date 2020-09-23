@@ -115,4 +115,21 @@ class Category extends Model
         }
         return json_decode(json_encode($image));
     }
+
+  public function getTertiaryImageAttribute()
+  {
+    $thumbnail = $this->files()->where('zone', 'tertiaryimage')->first();
+    if (!$thumbnail) {
+      $image = [
+        'mimeType' => 'image/jpeg',
+        'path' => url('modules/iblog/img/post/default.jpg')
+      ];
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
 }

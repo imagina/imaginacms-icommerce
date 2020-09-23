@@ -6,11 +6,13 @@
     "require": {
         "php": ">=7.0.0",
         "composer/installers": "~1.0",
-        "idavoll/core-module": "~3.0",
-        "imagina/ihelpers-module": "~3.0",
-        "imagina/notification-module": "~3.1",
+        "imagina/core-module": "4.0.x-dev",
+        "imagina/ihelpers-module": "4.0.x-dev",
+        "imagina/notification-module": "4.0.x-dev",
         "willvincent/laravel-rateable": "~1.0",
-        "imagina/icurrency-module": "~1.0"
+        "imagina/icurrency-module": "4.0.x-dev",
+        "imagina/icommercecheckmo-module": "4.0.x-dev",
+        "imagina/icommerceagree-module": "4.0.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",
@@ -22,7 +24,7 @@
             "Modules\\": "Modules/"
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [
         {
@@ -38,6 +40,9 @@
             "aliases": {
 
             }
+        },
+        "branch-alias": {
+            "dev-master": "4.0.x-dev"
         }
     },
     "autoload": {

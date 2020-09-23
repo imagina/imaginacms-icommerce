@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Icurrency\Support\Facades\Currency;
+use Modules\Icommerce\Transformers\OptionValueTransformer;
 
 class ProductOptionValueTransformer extends Resource
 {
@@ -30,6 +31,7 @@ class ProductOptionValueTransformer extends Resource
       'weightPrefix' => $this->when($this->weight_prefix, $this->weight_prefix),
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
+      'optionValueEntity' => new OptionValueTransformer($this->whenLoaded('optionValue'))
     ];
 
     return $data;

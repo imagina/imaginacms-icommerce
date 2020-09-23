@@ -10,7 +10,6 @@ class OptionRequest extends BaseFormRequest
     {
         return [
           'type' => 'required',
-          'sort_order' => 'required',
 
         ];
     }

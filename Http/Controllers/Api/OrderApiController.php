@@ -41,7 +41,6 @@ use Modules\Icommerce\Support\OrderHistory as orderHistorySupport;
 use Modules\Icommerce\Support\OrderItem as orderItemSupport;
 use Modules\Icommerce\Support\validateCoupons;
 
-use Exception;
 
 class OrderApiController extends BaseApiController
 {
@@ -55,6 +54,7 @@ class OrderApiController extends BaseApiController
     private $shippingMethod;
     private $address;
     private $store;
+    private $setting;
 
     public function __construct(
         OrderRepository $order,
@@ -75,6 +75,7 @@ class OrderApiController extends BaseApiController
         $this->cart = $cart;
         $this->paymentMethod = $paymentMethod;
         $this->shippingMethod = $shippingMethod;
+         $this->setting = app('Modules\Setting\Contracts\Setting');
         if(is_module_enabled('Marketplace')){
             $this->store =app('Modules\Marketplace\Repositories\StoreRepository');
         }else{
@@ -267,6 +268,7 @@ class OrderApiController extends BaseApiController
         //Response
         $response = ["data" => [
           "orderId" => $order->id,
+          "key" => $order->key,
           "paymentData" => $paymentData
         ]
         ];

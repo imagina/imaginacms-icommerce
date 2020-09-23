@@ -1,4 +1,4 @@
-@section('scripts')
+@section('scripts-owl')
     @php
         $currency=localesymbol(isset($code ) ? $code : 'USD');
     @endphp
@@ -16,4 +16,4 @@
     </script>
     @parent
 
-@endsection
+@stop

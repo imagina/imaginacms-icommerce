@@ -15,7 +15,7 @@ use willvincent\Rateable\Rateable;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,Rateable;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';
@@ -244,19 +244,21 @@ class Product extends Model implements TaggableInterface
         }
 
     }
-
+    
     public function getDiscountAttribute()
     {
-        $date = date_create(date("Y/m/d"));
-
-        $query = $this->product_discounts()
-            ->select('price')
-            ->whereDate('date_start', '<=', $date)
-            ->whereDate('date_end', '>=', $date)
-            ->first();
-
-        return $query ? $query->price : null;
+      $date = date_create(date("Y/m/d"));
+      
+      $query = $this->product_discounts()
+        ->select('price')
+        ->whereDate('date_start', '<=', $date)
+        ->whereDate('date_end', '>=', $date)
+        ->first();
+      
+      return $query ? $query->price : null;
     }
+  
+
 
     public function getSecondaryImageAttribute()
     {
@@ -327,7 +329,7 @@ class Product extends Model implements TaggableInterface
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
 
     }
-    
+
     /**
      * Magic Method modification to allow dynamic relations to other entities.
      * @return string

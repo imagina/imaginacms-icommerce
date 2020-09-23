@@ -3,10 +3,12 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
+use Modules\Icommerce\Http\Requests\CreateProductRequest;
 use Modules\Icommerce\Http\Requests\ProductRequest;
 use Modules\Icommerce\Http\Requests\ProductImportRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Icommerce\Http\Requests\UpdateProductRequest;
 use Modules\Icommerce\Imports\IcommerceImport;
 
 
@@ -29,6 +31,7 @@ use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Setting\Contracts\Setting;
 
+
 class ProductApiController extends BaseApiController
 {
     private $product;
@@ -47,7 +50,6 @@ class ProductApiController extends BaseApiController
         $this->category = $category;
         $this->setting = $setting;
         $this->manufacturer = $manufacturer;
-
     }
 
     /**
@@ -129,8 +131,8 @@ class ProductApiController extends BaseApiController
             $data = $request->input('attributes') ?? [];//Get data
 
             //Validate Request
-            $this->validateRequestApi(new ProductRequest($data));
-
+            $this->validateRequestApi(new CreateProductRequest($data));
+  
             //Create item
             $product = $this->product->create($data);
 
@@ -160,24 +162,28 @@ class ProductApiController extends BaseApiController
     {
         \DB::beginTransaction(); //DB Transaction
         try {
-            //Get data
-            $data = $request->input('attributes') ?? [];//Get data
-
-            //Get Parameters from URL.
+          //Get data
+            $data = $request->input('attributes') ?? [];
+            
+            $this->validateRequestApi(new UpdateProductRequest($data));
+  
+          //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
             $dataEntity = $this->product->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 204);
-
-            //Request to Repository
-            $this->product->update($dataEntity, $data);
-            //Response
-            $response = ["data" => 'Item Updated'];
-            \DB::commit();//Commit to DataBase
+            
+            if (!$dataEntity) throw new \Exception('Item not found', 404);
+            
+            $product = $this->product->update($dataEntity, $data);
+            
+            $response = [
+                "data" => new ProductTransformer($product)
+            ];
+            $status = 200;
+            \DB::commit();
         } catch (\Exception $e) {
             \Log::error($e);
-            \DB::rollback();//Rollback to Data Base
+            \DB::rollback();
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -202,17 +208,15 @@ class ProductApiController extends BaseApiController
 
             $dataEntity = $this->product->getItem($criteria, $params);
 
-            if (!$dataEntity) throw new Exception('Item not found', 204);
-
-            //call Method delete
-            $this->category->destroy($dataEntity);
-
-            //Response
-            $response = ["data" => "Item deleted"];
-            \DB::commit();//Commit to Data Base
+            if (!$dataEntity) throw new \Exception('Item not found', 204);
+            $product = $this->product->destroy($dataEntity);
+            $response = [
+                "data" => $product
+            ];
+            \DB::commit();
         } catch (\Exception $e) {
             \Log::error($e);
-            \DB::rollback();//Rollback to Data Base
+            \DB::rollback();
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -221,13 +225,6 @@ class ProductApiController extends BaseApiController
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
-    /**
-     * UPDATE ITEM
-     *
-     * @param $criteria
-     * @param Request $request
-     * @return mixed
-     */
     public function rating($criteria, Request $request)
     {
         \DB::beginTransaction(); //DB Transaction
@@ -251,7 +248,7 @@ class ProductApiController extends BaseApiController
                 ->where('rateable_type', \Modules\Icommerce\Entities\Product::class)
                 ->first();
 
-            if ($rating) throw new Exception('Ya has calificado este producto.', 500);
+            if ($rating) throw new \Exception('Ya has calificado este producto.', 401);
 
             $rating = new \willvincent\Rateable\Rating;
             $rating->rating = $data['rating'];
@@ -289,7 +286,6 @@ class ProductApiController extends BaseApiController
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
 
-
     public function importProducts(Request $request)
     {
         $msg = "";
@@ -303,12 +299,12 @@ class ProductApiController extends BaseApiController
             $msg = trans('icommerce::products.bulkload.success migrate from product');
             //Response
             $response = ["data" => $msg];
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
 
-    }//importProducts()
+    }
 
 }

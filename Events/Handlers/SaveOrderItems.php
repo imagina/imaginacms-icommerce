@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Events\Handlers;
 
 //Support
+use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Support\OrderOption as orderOptionSupport;
 
 class SaveOrderItems
@@ -25,6 +26,12 @@ class SaveOrderItems
 
     		// Create Order Items
     		$orderItem = $order->orderItems()->create($item);
+    		$product = Product::find($item["product_id"]);
+    		
+    		if(isset($product->id) && $product->subtract){
+          $product->quantity = $product->quantity - $item["quantity"];
+          $product->save();
+        }
 			
     		if($cartProductOptionsValues!=null){
     			 foreach ($cartProductOptionsValues as $productOptionValue) {

@@ -2,7 +2,7 @@
 
 namespace Modules\Icommerce\Http\Controllers\Api;
 
-
+// Requests & Response
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -15,14 +15,15 @@ use Modules\Icommerce\Transformers\ProductDiscountTransformer;
 // Repositories
 use Modules\Icommerce\Repositories\ProductDiscountRepository;
 
-
+// Support
+//use Modules\Icommerce\Support\ProductOptionOrdener;
 
 class ProductDiscountApiController extends BaseApiController
 {
   private $productDiscount;
 
 
-  public function __construct(ProductDiscountRepository $productDiscount/*, ProductOptionOrdener $productDiscountOrdener*/)
+  public function __construct(ProductDiscountRepository $productDiscount)
   {
     $this->productDiscount = $productDiscount;
 
@@ -48,7 +49,6 @@ class ProductDiscountApiController extends BaseApiController
       //If request pagination add meta-page
       $params->page ? $response["meta"] = ["page" => $this->pageTransformer($productDiscounts)] : false;
     } catch (\Exception $e) {
-        \Log::error($e);
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
@@ -70,7 +70,7 @@ class ProductDiscountApiController extends BaseApiController
 
       //Request to Repository
       $productDiscount = $this->productDiscount->getItem($criteria, $params);
-
+      
       //Break if no found item
       if (!$productDiscount) throw new \Exception('Item not found', 204);
 
@@ -80,7 +80,6 @@ class ProductDiscountApiController extends BaseApiController
       //If request pagination add meta-page
       $params->page ? $response["meta"] = ["page" => $this->pageTransformer($productDiscount)] : false;
     } catch (\Exception $e) {
-        \Log::error($e);
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
@@ -108,7 +107,6 @@ class ProductDiscountApiController extends BaseApiController
       $response = ["data" => ''];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-        \Log::error($e);
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
@@ -141,8 +139,7 @@ class ProductDiscountApiController extends BaseApiController
       $response = ["data" => 'Item Updated'];
       \DB::commit();//Commit to DataBase
     } catch (\Exception $e) {
-        \Log::error($e);
-        \DB::rollback();//Rollback to Data Base
+      \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
@@ -171,7 +168,6 @@ class ProductDiscountApiController extends BaseApiController
       $response = ["data" => "Item deleted"];
       \DB::commit();//Commit to Data Base
     } catch (\Exception $e) {
-        \Log::error($e);
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];

@@ -32,26 +32,39 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         /*== FILTERS ==*/
         if (isset($params->filter)) {
             $filter = $params->filter;//Short filter
-
-            // add filter by search
-            if (isset($filter->search) && !empty($filter->search)) {
-                //find search in columns
-                $query->where(function ($query) use ($filter) {
-                    $query->whereHas('translations', function ($query) use ($filter) {
-                        $query->where('locale', $filter->locale)
-                            ->where('name', 'like', '%' . $filter->search . '%')
-                            ->orWhere('description', 'like', '%' . $filter->search . '%');
-                    })->orWhere('id', 'like', '%' . $filter->search . '%')
-                        ->orWhere('price', 'like', '%' . $filter->search . '%')
-                        ->orWhere('sku', 'like', '%' . $filter->search . '%');
-                });
+  
+          // add filter by search
+          if (isset($filter->search) && !empty($filter->search)) {
+            // removing symbols used by MySQL
+            $reservedSymbols = ['-', '+', '<', '>', '@', '(', ')', '~'];
+            $filter->search = str_replace($reservedSymbols, " ", $filter->search);
+            $words = explode(" ",$filter->search);//Explode
+    
+            //Validate words of minum 3 length
+            foreach($words as $key => $word) {
+              if(strlen($word) >= 3) {
+                $words[$key] = '+' . $word . '*';
+              }
             }
-
+    
+            //Search query
+            $query->leftJoin(\DB::raw(
+              "(SELECT MATCH (name) AGAINST ('(".implode(" ",$words).") (".$filter->search.")' IN BOOLEAN MODE) scoreSearch, product_id, name ".
+              "from icommerce__product_translations ".
+              "where `locale` = '{$filter->locale}') as ptrans"
+            ),'ptrans.product_id','icommerce__products.id')
+              ->where('scoreSearch','>', 0)
+              ->orderBy('scoreSearch','desc');
+    
+            //Remove order by
+            unset($filter->order);
+          }
             //Filter by catgeory ID
+          /*
             if (isset($filter->categoryId) && !empty($filter->categoryId)) {
                 $query->where('category_id', $filter->categoryId);
             }
-
+          */
             // Filter by category SLUG
             if (isset($filter->categorySlug) && !empty($filter->categorySlug)) {
                 $query->whereHas('categories', function ($query) use ($filter) {
@@ -75,14 +88,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
             //Filter by stock status
             if (isset($filter->stockStatus)) {
-                if ($filter->stockStatus != null)
-                $query->where('stock_status', $filter->stockStatus);
+              if($filter->stockStatus)
+                $query->where('quantity', ">", 0);
+              else{
+                $query->where('quantity', "=", 0);
+              }
             }
 
             //Filter by stock status
-            if (isset($filter->status)) {
+            if (isset($filter->status) && !empty($filter->status)) {
                 if ($filter->status != null)
-                    $query->where('status', (int)$filter->status);
+                    $query->where('status', $filter->status);
             }
 
             // add filter by Categories 1 or more than 1, in array
@@ -94,6 +110,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                         ->whereIn('category_id', $filter->categories);
                 });
             }
+
+            // add filter by Categories 1 or more than 1, in array
+            if (isset($filter->optionValues) && !empty($filter->optionValues)) {
+                is_array($filter->optionValues) ? true : $filter->optionValues = [$filter->optionValues];
+                if(count($filter->optionValues)>0){
+                    $query->whereHas('optionValues', function ($query) use ($filter) {
+                        $query->whereIn("option_value_id",$filter->optionValues);
+                    });
+                }
+            }//filter->optionValues
 
             if (isset($filter->store) && !empty($filter->store)) {
                 $query->where('store_id', $filter->store);
@@ -137,7 +163,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             }
 
             //Order by
-            if (isset($filter->order)) {
+            if (isset($filter->order) && !empty($filter->order)) {
                 $orderByField = $filter->order->field ?? 'created_at';//Default field
                 $orderWay = $filter->order->way ?? 'desc';//Default way
                 if($orderByField=="slug"){
@@ -150,7 +176,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if (isset($filter->visible)&& !empty($filter->visible)) {
                 $query->where("visible", $filter->visible);
             }
-
+            
+          if (isset($filter->featured)&& is_numeric($filter->featured)) {
+            $query->where("featured", $filter->featured);
+          }
             if (isset($filter->rating) && !empty($filter->rating)) {
                 $rating = $filter->rating;
                 if ($rating === 'top') {
@@ -169,11 +198,21 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
               });
             }
         }
+        
+          if(isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin){
+          
+          }else{
+          
+            $query->where("date_available", "<=", date("Y-m-d",strtotime(now())));
+          }
+          
+        
 
         /*== FIELDS ==*/
         if (isset($params->fields) && count($params->fields))
             $query->select($params->fields);
 
+        //dd($query->toSql());
         /*== REQUEST ==*/
         if (isset($params->page) && $params->page) {
             return $query->paginate($params->take);
@@ -190,12 +229,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query = $this->model->query();
 
         /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include)) {//If Request all relationships
+        if (in_array('*', $params->include ?? [])) {//If Request all relationships
             $query->with([]);
         } else {//Especific relationships
             $includeDefault = ['translations'];//Default relationships
             if (isset($params->include))//merge relations with default relationships
-                $includeDefault = array_merge($includeDefault, $params->include);
+                $includeDefault = array_merge($includeDefault, $params->include ?? []);
             $query->with($includeDefault);//Add Relationships to query
         }
 
@@ -209,10 +248,29 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if (isset($filter->field))
                 $field = $filter->field;
 
+          //Filter by catgeory ID
+          if (isset($filter->categoryId) && $filter->categoryId) {
+            $query->where('category_id', $filter->categoryId);
+          }
+  
+          // Filter by category SLUG
+          if (isset($filter->categorySlug)) {
+            $query->whereHas('categories', function ($query) use ($filter) {
+              $query->whereHas('translations', function ($query) use ($filter) {
+                $query
+                  ->where('icommerce__category_translations.slug', $filter->categorySlug);
+              });
+            });
+          }
+          
+          if (isset($filter->store)) {
+            $query->where('store_id', $filter->store);
+          }
+
             // filter by translatable attributes
             if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
                 $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
-                    $query->where('locale', $filter->locale)
+                    $query->where('locale', $filter->locale ?? \App::getLocale())
                         ->where($field, $criteria);
                 });
             else
@@ -220,7 +278,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $query->where($field ?? 'id', $criteria);
 
         }
-        /*== REQUEST ==*/
+  
+      if(isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin){
+    
+      }else{
+    
+        $query->where("date_available", "<=", date("Y-m-d",strtotime(now())));
+      }
+  
+      
+      /*== REQUEST ==*/
         return $query->first();
     }
 
@@ -231,7 +298,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if ($product) {
 
             // sync tables
-            $product->categories()->sync(array_get($data, 'categories', []));
+            $product->categories()->sync(array_merge(array_get($data, 'categories', []), [$product->category_id]));
 
             if (isset($data['product_options']))
               $product->productOptions()->sync(array_get($data, 'product_options', []));
@@ -241,7 +308,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if (isset($data['related_products']))
                 $product->relatedProducts()->sync(array_get($data, 'related_products', []));
 
-
+            /*
+            if(isset($data['discounts']))
+            $product->discounts()->sync(array_get($data, 'discounts', []));
+*/
             if (isset($data['tags']))
                 $product->setTags(array_get($data, 'tags', []));
         }
@@ -256,15 +326,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     {
 
         $model->update($data);
-
-        // sync tables
-        $model->categories()->sync(array_get($data, 'categories', []));
-
+  
+      // sync tables
+      $model->categories()->sync(array_merge(array_get($data, 'categories', []), [$model->category_id]));
+        /*
         if (isset($data['product_options']))
         $model->productOptions()->sync(array_get($data, 'product_options', []));
 
         if (isset($data['option_values']))
             $model->optionValues()->sync(array_get($data, 'option_values', []));
+        */
         if (isset($data['related_products']))
             $model->relatedProducts()->sync(array_get($data, 'related_products', []));
 

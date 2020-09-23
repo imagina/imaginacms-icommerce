@@ -6,28 +6,28 @@ $router->group(['prefix' => '/product-option'/*,'middleware' => ['auth:api']*/],
     $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
 
     $router->post('/', [
-        'as' => $locale . 'api.icommerce.product-option.create',
+        'as' => 'api.icommerce.product-option.create',
         'uses' => 'ProductOptionApiController@create',
     ]);
     $router->get('/', [
-        'as' => $locale . 'api.icommerce.product-option.index',
+        'as' => 'api.icommerce.product-option.index',
         'uses' => 'ProductOptionApiController@index',
     ]);
     $router->put('/{criteria}', [
-        'as' => $locale . 'api.icommerce.product-option.update',
+        'as' => 'api.icommerce.product-option.update',
         'uses' => 'ProductOptionApiController@update',
     ]);
     $router->delete('/{criteria}', [
-        'as' => $locale . 'api.icommerce.product-option.delete',
+        'as' => 'api.icommerce.product-option.delete',
         'uses' => 'ProductOptionApiController@delete',
     ]);
     $router->get('/{criteria}', [
-        'as' => $locale . 'api.icommerce.product-option.show',
+        'as' => 'api.icommerce.product-option.show',
         'uses' => 'ProductOptionApiController@show',
     ]);
 
     $router->post('/order', [
-      'as' => $locale . 'api.icommerce.product-option.order',
+      'as' => 'api.icommerce.product-option.order',
       'uses' => 'ProductOptionApiController@updateOrder',
     ]);
 

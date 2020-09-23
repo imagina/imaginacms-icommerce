@@ -53,7 +53,7 @@
     }
 
     .footer {
-        background-color:{{Setting::get('site::color-secondary')}};
+        background-color:{{Setting::get('isite::brandSecondary')}};
         color: white;
     }
 
@@ -75,7 +75,7 @@
     }
 
     .stripe {
-        background-color: {{Setting::get('site::color-secondary')}};
+        background-color: {{Setting::get('isite::brandSecondary')}};
         padding: 10px 20px;
     }
 
@@ -86,7 +86,7 @@
 
     .btn-requirement a {
         text-decoration: none;
-        background-color:{{Setting::get('site::color-primary')}};
+        background-color:{{Setting::get('isite::brandPrimary')}};
         padding: 10px;
         margin: 10px 0;
         color: white;
@@ -107,7 +107,7 @@
     }
 
     .contacto {
-        background-color:{{Setting::get('site::color-primary')}};
+        background-color:{{Setting::get('isite::brandPrimary')}};
         color: #e2e2e2;
         padding: 15px;
     }
@@ -359,11 +359,12 @@
     <div id="template-mail" style="background-color: #ffffff;
         width: 70%;
         margin: auto;">
-        <div class="header" style="background-color: #841CBB;
+        <div class="header" style="background-color: {{Setting::get('isite::brandPrimary')}};
         color: #ffffff;
-        height: 360px;">
+        height: 210px;">
             <!-- header contend -->
-            <div class="stripe" style=" background-color: {{Setting::get('site::color-secondary')}};
+            <div class="stripe" style="
+              background-color: {{Setting::get('isite::brandSecondary')}};
                     padding: 10px 20px;">
                 <div class="text-right text-capitalize" style="text-align: right !important; text-transform: capitalize;">
                     {{strftime("%B %d, %G")}}
@@ -373,13 +374,13 @@
             <div>
                 <h1 class="title" style="text-align: center;
         width: 80%;
-        font-size: 40px;
-        margin: 74px auto;">
+        font-size: 30px;
+        margin: 12px auto;">
                     {{trans('icommerce::common.emailMsg.order-notification')}}
                 </h1>
             </div>
 
-            <div class="header-contend text-center py-3" style="padding: 1rem 0 !important; ">
+            <div class="header-contend text-center py-3" style="text-align: center !important; padding: 1rem 0 !important; ">
                 <div class="bg-image" style=" border-radius: 50%;
         max-width: 150px;
         height: 150px;
@@ -387,44 +388,45 @@
         margin: auto;
         padding: 10px;
         overflow: hidden;
-        border: #841CBB solid;
+                  border: {{Setting::get('isite::brandPrimary')}} solid;
         z-index: 10000;">
-                    <img src="{{Setting::get('isite::logo1')}}" alt="" style="max-width: 150px; margin-top: 20px;">
+                    <img src="{{Setting::get('isite::logo1')}}" alt="" style="max-width: 90px; margin-top: 20px;">
                 </div>
             </div>
 
         </div>
 
-        <div class="container" align="center" style="margin: 120px auto 70px;
-            box-shadow: 0px 0px 20px #a99b9b; width: 70%; padding: 30px; border: 1px solid #ccc;">
+        <div align="center" style="margin: 120px auto 70px; width: 70%; padding: 30px; border: 1px solid #ccc; box-shadow: 0px 0px 20px #a99b9b; ">
             <p><strong> {{$order->first_name}}, {{$order->last_name}}</strong></p>
             <p>
                 su orden #{{$order->id}} fue actualizada a estado: <strong>{{$order->status->title}}</strong>
             </p>
             <h4>Comentarios:</h4>
             <p class="px-3" style="padding: 1rem !important">
-                {{$dataSend->comment}}
+                <!--//TODO este $dataSend en algunos icommerce esta esperando un Array y en otros un Object por ahora se corrigió validando el dato-->
+                {{is_array($dataSend) ? $dataSend["comment"] : $dataSend->comment}}
             </p>
-            <div align="left">
-                <p>{{setting('core::site-name') }}</p>
-            </div>
+            <p align="center">
+                <a href='{{url('/orders/'.$order->id)}}'
+                   style="text-decoration: none;
+                     background-color: {{Setting::get('isite::brandSecondary')}};
+                     padding: 10px;
+                     margin: 10px 0;
+                     color: white;"
+                   target="_blank">Ir a ver la orden: #{{$order->id}}</a>
+            </p>
+          
         </div>
 
-        <hr style="border:none;
-        height: 46px;
-        width: 90%;
-        box-shadow: 0 20px 20px -20px #333;
-        margin: -50px auto 10px;">
 
-        <div class="footer p-3 text-center" style="background-color:{{Setting::get('site::color-secondary')}};
-                color: white;">
-
+        <div class="footer p-3 text-center" style="text-align: center !important; color: white; padding: 12px;">
+    
             <div class="social" style="margin-bottom: 20px;">
                 @if(Setting::has('isite::SocialNetworks'))
                     @php
                         $socials = json_decode(Setting::get('isite::SocialNetworks'));
                     @endphp
-
+            
                     @if(count($socials))
                         @foreach($socials as $index => $item)
                             <a href="{{ $item->value }}" style="word-break: break-all;
@@ -438,10 +440,10 @@
                     @endif
                 @endif
             </div>
-
+    
             <span class="copyright" style="color: #555;
         font-size: 14px;">
-                Copyrights © {{date('Y')}} All Rights Reserved by {{ setting('core::site-name') }}.
+                Copyrights © {{date('Y')}} {{trans('icommerce::orders.messages.rights')}} {{ setting('core::site-name') }}.
             </span>
         </div>
     </div>

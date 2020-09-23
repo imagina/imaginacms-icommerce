@@ -142,15 +142,12 @@ class OptionValueApiController extends BaseApiController
 
         //Get Parameters from URL.
         $params = $this->getParamsRequest($request);
-
+        
         //Request to Repository
-        $dataEntity = $this->optionValue->getItem($criteria, $params);
+        $dataEntity= $this->optionValue->updateBy($criteria, $data,$params);
 
         //Break if no found item
         if (!$dataEntity) throw new \Exception('Item not found', 404);
-
-        //Request to Repository
-        $this->optionValue->update($dataEntity, $data);
 
         //Response
         $response = ["data" => 'Item Updated'];

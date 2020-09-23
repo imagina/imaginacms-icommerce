@@ -105,5 +105,5 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
 
     
   }
-  
+
 }

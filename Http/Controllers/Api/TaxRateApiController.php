@@ -34,6 +34,7 @@ class TaxRateApiController extends BaseApiController
    */
   public function index(Request $request)
   {
+    //return $request;
     try {
       //Request to Repository
       $taxRates = $this->taxRate->getItemsBy($this->getParamsRequest($request));
@@ -44,13 +45,12 @@ class TaxRateApiController extends BaseApiController
       $request->page ? $response['meta'] = ['page' => $this->pageTransformer($taxRates)] : false;
 
     } catch (\Exception $e) {
-      //Message Error
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /** SHOW
@@ -65,17 +65,21 @@ class TaxRateApiController extends BaseApiController
       //Request to Repository
       $taxRate = $this->taxRate->getItem($criteria,$this->getParamsRequest($request));
 
-      $response = [
-        'data' => $taxRate ? new TaxRateTransformer($taxRate) : '',
-      ];
+      //Break if no found item
+      if (!$tax) throw new \Exception('Item not found', 404);
 
+      //Response
+      $response = ["data" => new TaxRateTransformer($tax)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($tax)] : false;
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
@@ -84,21 +88,24 @@ class TaxRateApiController extends BaseApiController
    */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
-
       $data = $request->input('attributes') ?? [];//Get data
+      //Validate Request
+      $this->validateRequestApi(new TaxRateRequest($data));
 
       $taxRate = $this->taxRate->create($data);
 
-      $response = ['data' => $taxRate];
-
+      //Response
+      $response = ["data" => new TaxRateTransformer($category)];
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
@@ -142,17 +149,27 @@ class TaxRateApiController extends BaseApiController
    */
   public function delete($criteria, Request $request)
   {
+    \DB::beginTransaction();
     try {
+      //Get params
+      $params = $this->getParamsRequest($request);
 
-      $this->taxRate->deleteBy($criteria, $this->getParamsRequest($request));
+      //Request to Repository
+      $tax = $this->taxRate->getItem($criteria, $params);
 
+      //Break if no found item
+      if (!$tax) throw new Exception('Item not found', 404);
+
+      //Delete data
+      $this->taxRate->destroy($tax);
+
+      //Response
       $response = ['data' => ''];
-
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
     return response()->json($response, $status ?? 200);
   }

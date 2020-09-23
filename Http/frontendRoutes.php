@@ -25,6 +25,12 @@ if (!App::runningInConsole()) {
     }
 }
 
+$router->get('/wishlist', [
+  'as' => 'icommerce.wishlists.index',
+  'uses' => 'PublicController@wishlist',
+  'middleware' => 'logged.in'
+]);
+
 /** @var Router $router */
 $router->group(['prefix' => 'store/search'], function (Router $router) use ($locale) {
 
@@ -59,14 +65,18 @@ $router->group(['prefix' => '/orders'], function (Router $router) use ($locale) 
         'uses' => 'OrderController@email',
         'middleware' => 'logged.in'
     ]);
+  
     $router->get('/{id}', [
         'as' => $locale . '.icommerce.orders.show',
         'uses' => 'OrderController@show',
         'middleware' => 'logged.in'
     ]);
+    
+    /*
     $router->get('/{id}/{key}', [
         'as' => $locale . '.icommerce.order.showorder',
         'uses' => 'OrderController@show',
-        'middleware' => 'auth.guest',
+        'middleware' => 'logged.in',
     ]);
+    */
 });

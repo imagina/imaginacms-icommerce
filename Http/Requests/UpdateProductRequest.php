@@ -3,8 +3,9 @@
 namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
+use Modules\Ihelpers\Rules\UniqueSlugRule;
 
-class ProductRequest extends BaseFormRequest
+class UpdateProductRequest extends BaseFormRequest
 {
   public function rules()
   {
@@ -17,7 +18,7 @@ class ProductRequest extends BaseFormRequest
   {
     return [
       'name' => 'required|min:2',
-      'slug' => 'required|min:2',
+      'slug' => ["required",new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2"],
       'description' => 'required|min:2'
     ];
   }

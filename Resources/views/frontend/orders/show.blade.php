@@ -1,31 +1,28 @@
 @extends('layouts.master')
 @section('content')
     @php
-        $currency=localesymbol($code??'USD')
+        $currency= isset($order->currency) ? $order->currency : localesymbol($code ?? 'USD');
     @endphp
-    <div>
-        <div class="container">
+
+    <div id="orderDetails" class="pb-5">
+        @component('partials.widgets.breadcrumb')
+            <li class="breadcrumb-item">
+                <a href="{{ URL::to('/orders') }}">{{trans('icommerce::orders.title.orders')}}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}}</li>
+        @endcomponent
+
+        <div class="container" v-if="order">
             <div class="row">
                 <div class="col">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb mt-4 text-uppercase">
-                            <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a>
-                            </li>
-                            <li class="breadcrumb-item"><a
-                                        href="{{ URL::to('/orders') }}">{{trans('icommerce::orders.breadcrumb.title')}}</a></li>
-                            <li class="breadcrumb-item active"
-                                aria-current="page">{{trans('icommerce::orders.breadcrumb.single_order')}}</li>
-                        </ol>
-                    </nav>
-                    <h2 class="text-center mt-0 mb-5">{{trans('icommerce::orders.title.single_order_title')}}</h2>
+                    <div class="title-arrow text-center mb-5">
+                        <h1 class="px-5 bg-white font-weight-bold text-uppercase">{{trans('icommerce::orders.title.detail order')}}</h1>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="orderDetails" class="pb-5">
-        <div class="container" v-if="order">
+
             <div class="row">
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-sm-4 mb-3">
                     <div class="card">
                         <div class="card-header bg-secondary text-white bg-secondary text-white">
                             <i style="margin-right: 5px;" class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -37,7 +34,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-sm-4 mb-3">
                     <div class="card">
                         <div class="card-header bg-secondary text-white">
                             <i style="margin-right: 5px;" class="fa fa-user" aria-hidden="true"></i>
@@ -52,7 +49,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-sm-4 mb-3">
                     <div class="card ">
                         <div class="card-header bg-secondary text-white">
                             <i style="margin-right: 5px;" class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -93,10 +90,9 @@
                                             @if(!empty ($order->payment_address_2))
                                                 {{$order->payment_address_2}}<br>
                                             @endif
-                                            {{$order->payment_zip_code ?? ''}}<br>
                                             {{$order->payment_city}}<br>
-                                            {{$order->payment_zone ?? ''}}<br>
-                                            {{$order->payment_country}}
+                                            {{$order->paymentDepartment ? $order->paymentDepartment->translations[0]->name : ''}}<br>
+                                            {{$order->paymentCountry ? $order->paymentCountry->translations[0]->name : ''}}
                                         </td>
                                         <td>
                                             {{$order->shipping_first_name}}<br>
@@ -105,10 +101,9 @@
                                             @if(!empty ($order->shipping_address_2))
                                                 {{$order->shipping_address_2}}<br>
                                             @endif
-                                            {{$order->shipping_zip_code ?? ''}}<br>
                                             {{$order->shipping_city}}<br>
-                                            {{$order->shipping_zone ?? ''}}<br>
-                                            {{$order->shipping_country}}
+                                            {{$order->shippingDepartment ? $order->shippingDepartment->translations[0]->name : ''}}<br>
+                                            {{$order->shippingCountry ? $order->shippingCountry->translations[0]->name : ''}}
                                         </td>
                                     </tr>
                                 </table>
@@ -120,10 +115,21 @@
                                     <th>{{trans('icommerce::orders.table.quantity')}}</th>
                                     <th>{{trans('icommerce::orders.table.unit price')}}</th>
                                     <th class="text-right">{{trans('icommerce::orders.table.total')}}</th>
+                                    @php $orderOptions = $order->orderOption @endphp
                                     @foreach($order->orderItems as $product)
+                                        @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
                                         <tr class="product-order" >
-                                            <td>
-                                                {{$product->title}}<br>
+                                            <td style="min-width: 250px">
+                                                {{$product->title}}
+                                                <!--Show item options-->
+                                                @if($productOptionText->count())
+                                                    <div class="text-muted" style="font-size: 13px">({{
+                                                        $productOptionText->map(function ($item){
+                                                        return $item->option_description .": ".$item->option_value_description;
+                                                        })->implode(', ')
+                                                    }})
+                                                    </div>
+                                                @endif
                                             </td>
                                             <td>
                                                 {{$product->product->sku}}<br>
@@ -159,7 +165,17 @@
                 <hr class="my-4 hr-lg">
                 <div class="col-12 text-right mt-3 mt-md-0">
                     <a href="{{ url('/orders') }}"
-                       class="btn btn-outline-primary btn-rounded btn-lg my-2">Salir</a>
+                       class="btn btn-outline-primary btn-rounded btn-lg my-2">
+                       Ver Ordenes
+                       {{--{{trans('icommerce::orders.button.Back_to_order_list')}}--}}
+                    </a>
+                    @if($order->payment_method=='Credibanco')
+                        <a href="{{ route("icommercecredibanco.voucher.show",$order->id) }}"
+                            class="btn btn-outline-primary btn-rounded btn-lg my-2">
+                            Voucher Credibanco
+                            {{--{{trans('icommerce::orders.button.Back_to_order_list')}}--}}
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

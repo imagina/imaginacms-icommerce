@@ -84,7 +84,7 @@ class CartApiController extends BaseApiController
             $dataEntity = $this->cart->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$dataEntity) throw new Exception('Item not found', 404);
+            if (!$dataEntity) throw new \Exception('Item not found', 404);
 
             //Response
             $response = ["data" => new CartTransformer($dataEntity)];

@@ -13,7 +13,7 @@ class ShippingMethodTransformer extends Resource
       'title' => $this->when($this->title,$this->title),
       'description' => $this->when($this->description,$this->description),
       'name' => $this->when($this->name,$this->name),
-      'active' => boolval($this->active),
+      'status' => boolval($this->status),
       'options' => $this->when($this->options,$this->options),
       'init' => $this->when($this->options,$this->options->init),
       'mainImage' => $this->mainImage,

@@ -18,7 +18,7 @@ class TaxClassTransformer extends Resource
     
     // Rates
     if(isset($this->rates))
-      $data['rates'] = $this->rates;
+      $data['rates'] = TaxClassRateTransformer::collection($this->rates);
   
   
     // TRANSLATIONS

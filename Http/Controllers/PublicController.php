@@ -58,7 +58,7 @@ class PublicController extends BasePublicController
 
         $products = $this->product->getItemsBy($params);
 
-        $ptpl = "iblog.category.{$category->parent_id}.index";
+        $ptpl = "icommerce.category.{$category->parent_id}.index";
         if ($category->parent_id != 0 && view()->exists($ptpl)) {
             $tpl = $ptpl;
         }
@@ -87,10 +87,24 @@ class PublicController extends BasePublicController
         $tpl = 'icommerce::frontend.show';
         $ttpl = 'icommerce.show';
         if (view()->exists($ttpl)) $tpl = $ttpl;
-        $product = $this->product->findBySlug($slug);
-        $category= $product->category;
-        return view($tpl, compact('product','category'));
-
+        $params = json_decode(json_encode(
+          [
+            "include" => explode(",","translations,category,categories,tags,addedBy"),
+            "filter" => [
+              "field" => "slug"
+            ]
+          ]
+        ));
+        $product = $this->product->getItem($slug,$params);
+        
+        if($product){
+          $category= $product->category;
+          return view($tpl, compact('product','category'));
+  
+        }else{
+          return response()->view('errors.404', [], 404);
+        }
+        
     }
 
     public function checkout()
@@ -100,7 +114,16 @@ class PublicController extends BasePublicController
         if (view()->exists($ttpl)) $tpl = $ttpl;
         return view($tpl);
     }
-
+  
+  public function wishlist()
+  {
+    $tpl = 'icommerce::frontend.wishlist.index';
+    $ttpl = 'icommerce.wishlist.index';
+    
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    return view($tpl);
+  }
+  
     // view products by category
     public function search(Request $request)
     {

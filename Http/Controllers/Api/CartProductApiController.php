@@ -157,7 +157,8 @@ class CartProductApiController extends BaseApiController
         try {
             //Get data
             $data = $request->input('attributes');
-
+  
+          //TODO ARREGLAR ESTA CHAMBONADA ALGUN DIA
             // validate if quantity is <= 0
             if (intval($data['quantity']) <= 0)
                 throw new \Exception("There some errors in data", 400);

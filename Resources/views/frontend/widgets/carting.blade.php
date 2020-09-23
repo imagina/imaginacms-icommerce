@@ -1,17 +1,10 @@
-@includeFirst(['icommerce.partials.variables', 'icommerce::frontend.partials.variables'])
+@include('icommerce::frontend.partials.variables')
 
 <span id="content_carting" class="d-inline-block pl-2 mr-2">
   <!-- BUTTOM -->
-  <a class="dropdown-toggle shopping-cart"
-  id="dropdownCart"
-  data-toggle="dropdown"
-  aria-haspopup="true"
-  aria-expanded="false">
-  <i class="fa fa-shopping-cart"></i>
-
-    <span class="" >(@{{ quantity }})</span>
-
-
+  <a class="shopping-cart" id="dropdownCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <img id="cart" class="img-fluid" src="{{Theme::url('img/header/carrito.jpg')}}" alt="">
+    <span id="cart-count">@{{ quantity }}</span>
 </a>
 
 <!--Shopping cart-->
@@ -91,11 +84,7 @@
 var vue_carting = new Vue({
 
   el: '#content_carting',
-  mounted: function () {
-    this.$nextTick(function () {
-      this.getCart();
-    });
-  },
+ 
   data: {
     articles: [],
     total: 0,
@@ -105,8 +94,8 @@ var vue_carting = new Vue({
     currencySymbolRight: icommerce.currencySymbolRight,
     userId:0,
   },
-  mounted: function () {
-    this.$nextTick(function () {
+  mounted: () => {
+    this.$nextTick( () => {
       this.userId=0;
       this.userId= {!! $currentUser ? $currentUser->id : 0 !!};
       console.log('UserId: '+this.userId);
@@ -114,10 +103,10 @@ var vue_carting = new Vue({
     });
   },
   methods: {
+    // NEW CART
     getCart(){
-      console.log('get Cart');
       var carts=localStorage.getItem("carts");
-      console.log(carts);
+  
       var cart_id=null;
       var posCartNotAuth=null;
       var cart_idNotAuth=null;
@@ -163,7 +152,6 @@ var vue_carting = new Vue({
     },
     createCart(){
       var id=0;
-      console.log('create cart');
       axios.post("{{url('/')}}"+"/api/icommerce/v3/carts", {
         attributes:{
           total:0
@@ -203,11 +191,11 @@ var vue_carting = new Vue({
       }//if articles length >0
     },
     addItemCart(productId,productName,price,quantity=1,productOptValue=[]){
-      // var cart_id=localStorage.getItem("cart_id");
-      // if(!cart_id){
-      //   vue_carting.createCart();
-      //   cart_id=localStorage.getItem("cart_id");
-      // }
+      var cart_id=localStorage.getItem("cart_id");
+      if(!cart_id){
+        vue_carting.createCart();
+        cart_id=localStorage.getItem("cart_id");
+      }
       axios.post("{{url('/')}}"+"/api/icommerce/v3/cart-products", {
         attributes:{
           cart_id:this.cart.id,

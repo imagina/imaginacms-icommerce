@@ -13,7 +13,7 @@ class OrderHistory
 
     $this->status = $status;
     $this->notify = $notify;
-
+    $this->comment = $comment;
   }
 
    

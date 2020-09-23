@@ -82,13 +82,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
     public function update($model, $data)
     {
-
-        // validate status
-        if (isset($data['status']))
-            $data['status'] = "1";
-        else
-            $data['status'] = "0";
-
+      
         // init
         $options['init'] = $model->options->init;
 
@@ -128,7 +122,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
       $query->where("status", 1);
 
       /* Filters */
-      if ($params->filter) {
+      if (isset($params->filter) && $params->filter) {
         $filter = $params->filter;
 
         if (isset($filter->geozones)) {

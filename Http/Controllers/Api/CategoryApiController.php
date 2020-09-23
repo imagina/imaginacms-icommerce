@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 // Base Api
+use Modules\Icommerce\Http\Requests\CreateCategoryRequest;
+use Modules\Icommerce\Http\Requests\UpdateCategoryRequest;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 // Transformers
@@ -100,9 +102,8 @@ class CategoryApiController extends BaseApiController
         try {
             $data = $request->input('attributes') ?? [];//Get data
             //Validate Request
-            $this->validateRequestApi(new CategoryRequest($data), [
-              'title' => 'required',
-            ]);
+          
+            $this->validateRequestApi(new CreateCategoryRequest($data));
 
             //Create item
             $category = $this->category->create($data);
@@ -126,13 +127,15 @@ class CategoryApiController extends BaseApiController
      */
     public function update($criteria, Request $request)
     {
+      
+      
         \DB::beginTransaction();
         try {
             $params = $this->getParamsRequest($request);
             $data = $request->input('attributes');
 
             //Validate Request
-            $this->validateRequestApi(new CategoryRequest($data));
+            $this->validateRequestApi(new UpdateCategoryRequest($data));
 
             //Request to Repository
             $category = $this->category->getItem($criteria, $params);

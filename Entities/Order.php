@@ -4,6 +4,8 @@ namespace Modules\Icommerce\Entities;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Ilocations\Entities\Country;
+use Modules\Ilocations\Entities\Province;
 
 class Order extends Model
 {
@@ -155,4 +157,23 @@ class Order extends Model
         $this->attributes['options'] = json_encode($value);
     }
 
+    public function paymentCountry()
+    {
+      return $this->belongsTo(Country::class, 'payment_country', 'iso_2')->with('translations');
+    }
+
+    public function shippingCountry()
+    {
+      return $this->belongsTo(Country::class, 'shipping_country_code','iso_2')->with('translations');
+    }
+
+    public function paymentDepartment()
+    {
+      return $this->belongsTo(Province::class, 'payment_zone','iso_2')->with('translations');
+    }
+
+    public function shippingDepartment()
+    {
+      return $this->belongsTo(Province::class, 'shipping_zone','iso_2')->with('translations');
+    }
 }

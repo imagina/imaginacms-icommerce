@@ -47,7 +47,7 @@ class CouponApiController extends BaseApiController
             $request->page ? $response['meta'] = ['page' => $this->pageTransformer($coupons)] : false;
 
         } catch (\Exception $e) {
-            \Log::error($e);
+            //Message Error
             $status = 500;
             $response = [
                 'errors' => $e->getMessage()

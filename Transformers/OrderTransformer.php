@@ -8,6 +8,8 @@ use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 use Modules\Icommerce\Transformers\OrderItemTransformer;
 use Modules\Iprofile\Transformers\UserTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
+use Modules\Ilocations\Transformers\CountryTransformer;
+use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class OrderTransformer extends Resource
 {
@@ -43,6 +45,7 @@ class OrderTransformer extends Resource
       'shippingCompany' => $this->when($this->shipping_company,$this->shipping_company),
       'shippingAddress1' => $this->when($this->shipping_address_1,$this->shipping_address_1),
       'shippingAddress2' => $this->when($this->shipping_address_2,$this->shipping_address_2),
+      'telephone' => $this->when($this->telephone,$this->telephone),
       'shippingCity' => $this->when($this->shipping_city,$this->shipping_city),
       'shippingZipCode' => $this->when($this->shipping_zip_code,$this->shipping_zip_code),
       'shippingCountry' => $this->when($this->shipping_country,$this->shipping_country),
@@ -51,7 +54,7 @@ class OrderTransformer extends Resource
       'shippingCustomField' => $this->when($this->shipping_custom_field,$this->shipping_custom_field),
       'shippingMethod' => $this->when($this->shipping_method,$this->shipping_method),
       'shippingCode' => $this->when($this->shipping_code,$this->shipping_code),
-      'shippingAmount' => $this->when($this->shipping_amount,$this->shipping_amount),
+      'shippingAmount' => $this->when(isset($this->shipping_amount),$this->shipping_amount),
       'storeName' => $this->when($this->store_name,$this->store_name),
       'storeAddress' => $this->when($this->store_address,$this->store_address),
       'storePhone' => $this->when($this->store_phone,$this->store_phone),
@@ -67,14 +70,18 @@ class OrderTransformer extends Resource
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
       'histories' => OrderHistoryTransformer::collection($this->orderHistory),
-      'items' => OrderItemTransformer::collection($this->orderItems)
+      'items' => OrderItemTransformer::collection($this->orderItems),
+      'paymentCountry' => new CountryTransformer($this->whenLoaded('paymentCountry')),
+      'shippingCountry' => new CountryTransformer($this->whenLoaded('shippingCountry')),
+      'shippingDepartment' => new ProvinceTransformer($this->whenLoaded('shippingDepartment')),
+      'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
     ];
-    
+
     // transactions
     if(isset($this->transactions) && count($this->transactions)>0)
       $item['transactions'] = TransactionTransformer::collection($this->transactions);
-   
-  
+
+
     return $item;
   }
 }
