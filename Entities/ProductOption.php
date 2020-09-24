@@ -33,7 +33,7 @@ class ProductOption extends Model
 
   public function productOptionValues()
   {
-    return $this->hasMany(ProductOptionValue::class);
+    return $this->hasMany(ProductOptionValue::class)->with('optionValue');
   }
 
   public function orderOptions()

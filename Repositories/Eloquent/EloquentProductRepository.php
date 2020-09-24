@@ -32,21 +32,20 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         /*== FILTERS ==*/
         if (isset($params->filter)) {
             $filter = $params->filter;//Short filter
-  
+
           // add filter by search
           if (isset($filter->search) && !empty($filter->search)) {
             // removing symbols used by MySQL
-            $reservedSymbols = ['-', '+', '<', '>', '@', '(', ')', '~'];
-            $filter->search = str_replace($reservedSymbols, " ", $filter->search);
+            $filter->search = preg_replace("/[^a-zA-Z0-9]+/", " ", $filter->search);
             $words = explode(" ",$filter->search);//Explode
-    
+
             //Validate words of minum 3 length
             foreach($words as $key => $word) {
               if(strlen($word) >= 3) {
                 $words[$key] = '+' . $word . '*';
               }
             }
-    
+
             //Search query
             $query->leftJoin(\DB::raw(
               "(SELECT MATCH (name) AGAINST ('(".implode(" ",$words).") (".$filter->search.")' IN BOOLEAN MODE) scoreSearch, product_id, name ".
@@ -55,7 +54,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             ),'ptrans.product_id','icommerce__products.id')
               ->where('scoreSearch','>', 0)
               ->orderBy('scoreSearch','desc');
-    
+
             //Remove order by
             unset($filter->order);
           }
@@ -176,7 +175,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             if (isset($filter->visible)&& !empty($filter->visible)) {
                 $query->where("visible", $filter->visible);
             }
-            
+
           if (isset($filter->featured)&& is_numeric($filter->featured)) {
             $query->where("featured", $filter->featured);
           }
@@ -198,15 +197,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
               });
             }
         }
-        
+
           if(isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin){
-          
+
           }else{
-          
+
             $query->where("date_available", "<=", date("Y-m-d",strtotime(now())));
           }
-          
-        
+
+
 
         /*== FIELDS ==*/
         if (isset($params->fields) && count($params->fields))
@@ -252,7 +251,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
           if (isset($filter->categoryId) && $filter->categoryId) {
             $query->where('category_id', $filter->categoryId);
           }
-  
+
           // Filter by category SLUG
           if (isset($filter->categorySlug)) {
             $query->whereHas('categories', function ($query) use ($filter) {
@@ -262,7 +261,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
               });
             });
           }
-          
+
           if (isset($filter->store)) {
             $query->where('store_id', $filter->store);
           }
@@ -278,15 +277,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $query->where($field ?? 'id', $criteria);
 
         }
-  
+
       if(isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin){
-    
+
       }else{
-    
+
         $query->where("date_available", "<=", date("Y-m-d",strtotime(now())));
       }
-  
-      
+
+
       /*== REQUEST ==*/
         return $query->first();
     }
@@ -326,7 +325,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     {
 
         $model->update($data);
-  
+
       // sync tables
       $model->categories()->sync(array_merge(array_get($data, 'categories', []), [$model->category_id]));
         /*

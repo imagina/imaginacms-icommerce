@@ -1,1 +1,1 @@
-Vue.component('selectProductOptions', require('./components/selectProductOptions.vue'));
+Vue.component('selectProductOptions', require('./components/icommerce/selectProductOptions.vue'));
