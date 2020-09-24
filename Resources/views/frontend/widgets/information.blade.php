@@ -23,7 +23,7 @@
   </div>
   <!-- END PRICE -->
   <!-- OPCIONES DE PRODUCTO -->
-  <selectoptionsproduct v-model="productOptionsSelected" v-bind:options="productOptions"></selectoptionsproduct>
+  <select-product-options v-model="productOptionsSelected" v-bind:options="productOptions"></select-product-options>
 
   <div class=" align-items-center mb-4" v-if="product.pdf">
     <a v-bind:href="product.pdf"
