@@ -19,101 +19,104 @@ use Route;
 
 class PublicController extends BasePublicController
 {
-    protected $auth;
-    private $product;
-    private $category;
-    private $currency;
-    private $payments;
-    private $shippings;
+  protected $auth;
+  private $product;
+  private $category;
+  private $currency;
+  private $payments;
+  private $shippings;
 
-    public function __construct(
-        ProductRepository $product,
-        CategoryRepository $category,
-        CurrencyRepository $currency,
-        PaymentMethodRepository $payments,
-        ShippingMethodRepository $shippings
-    )
-    {
-        parent::__construct();
-        $this->product = $product;
-        $this->category = $category;
-        $this->currency = $currency;
-        $this->payments = $payments;
-        $this->shippings = $shippings;
+  public function __construct(
+    ProductRepository $product,
+    CategoryRepository $category,
+    CurrencyRepository $currency,
+    PaymentMethodRepository $payments,
+    ShippingMethodRepository $shippings
+  )
+  {
+    parent::__construct();
+    $this->product = $product;
+    $this->category = $category;
+    $this->currency = $currency;
+    $this->payments = $payments;
+    $this->shippings = $shippings;
+  }
+
+  // view products by category
+  public function index(Request $request)
+  {
+
+    $slug = \Request::path();
+    $tpl = 'icommerce::frontend.index';
+    $ttpl = 'icommerce.index';
+
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+
+    $category = $this->category->findBySlug($slug);
+
+    $params=$this->_paramsRequest($request,$category->id);
+
+    $products = $this->product->getItemsBy($params);
+
+    $ptpl = "icommerce.category.{$category->parent_id}%.index";
+    if ($category->parent_id != 0 && view()->exists($ptpl)) {
+      $tpl = $ptpl;
     }
 
-    // view products by category
-    public function index(Request $request)
-    {
+    $ctpl = "icommerce.category.{$category->id}.index";
+    if (view()->exists($ctpl)) $tpl = $ctpl;
 
-        $slug = \Request::path();
-        $tpl = 'icommerce::frontend.index';
-        $ttpl = 'icommerce.index';
+    $ctpl = "icommerce.category.{$category->id}%.index";
+    if (view()->exists($ctpl)) $tpl = $ctpl;
 
-        if (view()->exists($ttpl)) $tpl = $ttpl;
+    $paginate=(object)[
+      "total" => $products->total(),
+      "lastPage" => $products->lastPage(),
+      "perPage" => $products->perPage(),
+      "currentPage" => $products->currentPage()
+    ];
 
-        $category = $this->category->findBySlug($slug);
+    $products=ProductTransformer::collection($products);
 
-        $params=$this->_paramsRequest($request,$category->id);
-
-        $products = $this->product->getItemsBy($params);
-
-        $ptpl = "icommerce.category.{$category->parent_id}%.index";
-        if ($category->parent_id != 0 && view()->exists($ptpl)) {
-            $tpl = $ptpl;
-        }
-
-        $ctpl = "icommerce.category.{$category->id}.index";
-        if (view()->exists($ctpl)) $tpl = $ctpl;
-
-        $paginate=(object)[
-          "total" => $products->total(),
-          "lastPage" => $products->lastPage(),
-          "perPage" => $products->perPage(),
-          "currentPage" => $products->currentPage()
-        ];
-
-        $products=ProductTransformer::collection($products);
-
-        return view($tpl, compact('category','products','paginate'));
+    return view($tpl, compact('category','products','paginate'));
 
 
+  }
+
+  // Informacion de Producto
+  public function show($slug)
+  {
+
+    $tpl = 'icommerce::frontend.show';
+    $ttpl = 'icommerce.show';
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    $params = json_decode(json_encode(
+      [
+        "include" => explode(",","translations,category,categories,tags,addedBy"),
+        "filter" => [
+          "field" => "slug"
+        ]
+      ]
+    ));
+    $product = $this->product->getItem($slug,$params);
+
+    if($product){
+      $category= $product->category;
+      return view($tpl, compact('product','category'));
+
+    }else{
+      return response()->view('errors.404', [], 404);
     }
 
-    // Informacion de Producto
-    public function show($slug)
-    {
+  }
 
-        $tpl = 'icommerce::frontend.show';
-        $ttpl = 'icommerce.show';
-        if (view()->exists($ttpl)) $tpl = $ttpl;
-        $params = json_decode(json_encode(
-          [
-            "include" => explode(",","translations,category,categories,tags,addedBy"),
-            "filter" => [
-              "field" => "slug"
-            ]
-          ]
-        ));
-        $product = $this->product->getItem($slug,$params);
-
-        if($product){
-          $category= $product->category;
-          return view($tpl, compact('product','category'));
-
-        }else{
-          return response()->view('errors.404', [], 404);
-        }
-
-    }
-
-    public function checkout()
-    {
-        $tpl = 'icommerce::frontend.checkout.index';
-        $ttpl = 'icommerce.checkout.index';
-        if (view()->exists($ttpl)) $tpl = $ttpl;
-        return view($tpl);
-    }
+  public function checkout()
+  {
+    $tpl = 'icommerce::frontend.checkout.index';
+    $ttpl = 'icommerce.checkout.index';
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    return view($tpl);
+  }
 
   public function wishlist()
   {
@@ -124,28 +127,28 @@ class PublicController extends BasePublicController
     return view($tpl);
   }
 
-    // view products by category
-    public function search(Request $request)
-    {
+  // view products by category
+  public function search(Request $request)
+  {
 
-        $tpl = 'icommerce::frontend.search';
-        $ttpl = 'icommerce.search';
+    $tpl = 'icommerce::frontend.search';
+    $ttpl = 'icommerce.search';
 
-        if (view()->exists($ttpl)) $tpl = $ttpl;
-        $category=$request->input('category')??null;
-        $params=$this->_paramsRequest($request,$category);
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    $category=$request->input('category')??null;
+    $params=$this->_paramsRequest($request,$category);
 
-        $products = $this->product->getItemsBy($params);
+    $products = $this->product->getItemsBy($params);
 
-        $products=ProductTransformer::collection($products);
+    $products=ProductTransformer::collection($products);
 
-        return view($tpl, compact('products'));
+    return view($tpl, compact('products'));
 
 
-    }
+  }
 
-    private function _paramsRequest($request,$category)
-{
+  private function _paramsRequest($request,$category)
+  {
 
     $maxPrice=$request->input('maxPrice')??100000000000000000000000000000;
     $minPrice=$request->input('minPrice')??0;
@@ -155,17 +158,17 @@ class PublicController extends BasePublicController
     $currency=$request->input('currency')??null;
     $order=["field"=>$request->input('orderField')??"created_at","way"=>$request->input('orderWay')??"desc"];
 
-        //Return params
+    //Return params
     $params = (object)[
-        "page" => is_numeric($request->input('page')) ? $request->input('page') : 1,
-        "take" => is_numeric($request->input('take')) ? $request->input('take') :
-            ($request->input('page') ? 12 : null),
-        "include" =>[],
-        "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order,'status'=>1])),
+      "page" => is_numeric($request->input('page')) ? $request->input('page') : 1,
+      "take" => is_numeric($request->input('take')) ? $request->input('take') :
+        ($request->input('page') ? 12 : null),
+      "include" =>[],
+      "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order,'status'=>1])),
     ];
     //Set locale to filter
     $params->filter->locale = \App::getLocale();
     return $params;//Response
-}
+  }
 
 }
