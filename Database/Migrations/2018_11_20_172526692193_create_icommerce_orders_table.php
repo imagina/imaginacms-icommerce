@@ -45,8 +45,8 @@ class CreateIcommerceOrdersTable extends Migration
           $table->string('payment_zip_code');
           $table->string('payment_country');
           $table->string('payment_zone')->nullable();
-          $table->text('payment_address_format')->default('')->nullable();
-          $table->text('payment_custom_field')->default('')->nullable();
+          $table->text('payment_address_format')->nullable();
+          $table->text('payment_custom_field')->nullable();
     
           $table->string('payment_method');
           $table->string('payment_code');
@@ -60,8 +60,8 @@ class CreateIcommerceOrdersTable extends Migration
           $table->string('shipping_zip_code');
           $table->string('shipping_country_code');
           $table->string('shipping_zone')->nullable();
-          $table->text('shipping_address_format')->default('')->nullable();
-          $table->text('shipping_custom_field')->default('')->nullable();
+          $table->text('shipping_address_format')->nullable();
+          $table->text('shipping_custom_field')->nullable();
           $table->string('shipping_method');
           $table->string('shipping_code');
           $table->double('shipping_amount', 15, 8)->default(0);
@@ -86,7 +86,7 @@ class CreateIcommerceOrdersTable extends Migration
           $table->text('user_agent')->nullable();
           $table->string('key')->nullable();
   
-          $table->longText('options')->default('')->nullable();
+          $table->longText('options')->nullable();
           
             $table->timestamps();
         });

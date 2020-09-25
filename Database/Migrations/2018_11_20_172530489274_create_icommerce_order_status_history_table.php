@@ -21,7 +21,7 @@ class CreateIcommerceOrderStatusHistoryTable extends Migration
   
           $table->tinyInteger('status')->default(1)->unsigned();
           $table->integer('notify')->unsigned();
-          $table->text('comment')->default('')->nullable();
+          $table->text('comment')->nullable();
 
           $table->timestamps();
         });

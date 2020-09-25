@@ -16,7 +16,7 @@ class CreateIcommerceItemTypesTable extends Migration
       $table->engine = 'InnoDB';
       $table->increments('id');
       // Your fields
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->timestamps();
     });
   }

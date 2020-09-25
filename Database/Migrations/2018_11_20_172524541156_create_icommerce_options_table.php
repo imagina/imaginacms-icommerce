@@ -18,7 +18,7 @@ class CreateIcommerceOptionsTable extends Migration
       // Your fields
       $table->string('type');
       $table->integer('sort_order')->default(0);
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->timestamps();
     });
   }

@@ -32,7 +32,7 @@ class CreateIcommerceOrderItemTable extends Migration
       $table->float('total', 30, 2);
       $table->float('tax', 30, 2);
       $table->integer('reward')->unsigned();
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->timestamps();
     });
   }

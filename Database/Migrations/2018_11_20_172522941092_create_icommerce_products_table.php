@@ -18,7 +18,7 @@ class CreateIcommerceProductsTable extends Migration
       // Your fields
 
 
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->tinyInteger('status')->default(0)->unsigned();
 
       $table->integer('added_by_id')->unsigned()->nullable();
@@ -30,7 +30,7 @@ class CreateIcommerceProductsTable extends Migration
 
       $table->integer('parent_id')->default(0)->unsigned();
 
-      $table->text('related_ids')->default('')->nullable();
+      $table->text('related_ids')->nullable();
 
       $table->integer('tax_class_id')->unsigned()->nullable();
       $table->foreign('tax_class_id')->references('id')->on('icommerce__tax_classes')->onDelete('restrict');
@@ -52,7 +52,7 @@ class CreateIcommerceProductsTable extends Migration
       $table->tinyInteger('subtract')->default(1)->unsigned();
       $table->integer('minimum')->default(1)->unsigned();
       $table->string('reference')->nullable();
-      $table->text('rating')->default('')->nullable();
+      $table->text('rating')->nullable();
       $table->integer('sum_rating')->default(0);
       $table->integer('order_weight')->nullable();
       $table->boolean('freeshipping')->default(false)->unsigned();

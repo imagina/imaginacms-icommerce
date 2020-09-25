@@ -24,7 +24,7 @@ class CreateIcommerceCartProductTable extends Migration
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('cascade');
       
       $table->integer('quantity')->default(1);
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       
       $table->timestamps();
     });

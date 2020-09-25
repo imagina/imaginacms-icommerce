@@ -32,7 +32,7 @@ class CreateIcommerceCouponsTable extends Migration
       $table->integer('quantity_total')->default(1)->unsigned();
       $table->integer('quantity_total_customer')->default(1)->unsigned();
       $table->integer('status')->default(0)->unsigned();
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
 
       $table->timestamps();
     });

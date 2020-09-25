@@ -20,7 +20,7 @@ class CreateIcommerceOptionValuesTable extends Migration
       $table->foreign('option_id')->references('id')->on('icommerce__options')->onDelete('cascade');
       
       $table->integer('sort_order')->default(0);
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->timestamps();
     });
   }

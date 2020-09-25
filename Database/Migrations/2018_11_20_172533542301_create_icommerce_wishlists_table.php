@@ -21,7 +21,7 @@ class CreateIcommerceWishlistsTable extends Migration
       
       $table->integer('product_id')->unsigned()->nullable();
       $table->foreign('product_id')->references('id')->on('icommerce__products')->onDelete('restrict');
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->timestamps();
     });
   }

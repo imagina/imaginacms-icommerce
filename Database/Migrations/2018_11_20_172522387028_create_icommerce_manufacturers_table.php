@@ -16,7 +16,7 @@ class CreateIcommerceManufacturersTable extends Migration
       $table->engine = 'InnoDB';
       $table->increments('id');
       // Your fields
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->tinyInteger('status')->default(0)->unsigned();
       
       $table->timestamps();

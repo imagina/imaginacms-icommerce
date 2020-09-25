@@ -23,7 +23,7 @@ class CreateIcommerceCurrenciesTable extends Migration
       $table->double('value', 15, 8);
       $table->tinyInteger('status')->default(0)->unsigned();
       $table->boolean('default_currency')->default(false);
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
       $table->timestamps();
     });
   }

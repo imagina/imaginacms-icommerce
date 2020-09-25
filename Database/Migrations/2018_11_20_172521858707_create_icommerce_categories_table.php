@@ -17,7 +17,7 @@ class CreateIcommerceCategoriesTable extends Migration
       $table->increments('id');
       // Your fields
       
-      $table->text('options')->default('')->nullable();
+      $table->text('options')->nullable();
   
       $table->integer('parent_id')->default(0);
       $table->integer('lft')->unsigned()->nullable();
