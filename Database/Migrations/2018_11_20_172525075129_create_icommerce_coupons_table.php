@@ -27,8 +27,8 @@ class CreateIcommerceCouponsTable extends Migration
       $table->integer('type_discount');
       $table->boolean('logged')->default(false)->unsigned();
       $table->boolean('shipping')->default(false)->unsigned();
-      $table->timestamp('date_start');
-      $table->timestamp('date_end');
+      $table->timestamp('date_start')->nullable();
+      $table->timestamp('date_end')->nullable();
       $table->integer('quantity_total')->default(1)->unsigned();
       $table->integer('quantity_total_customer')->default(1)->unsigned();
       $table->integer('status')->default(0)->unsigned();
