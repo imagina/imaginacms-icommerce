@@ -98,6 +98,7 @@ class PublicController extends BasePublicController
         ]
       ]
     ));
+    
     $product = $this->product->getItem($slug,$params);
     
     if($product){
@@ -149,7 +150,7 @@ class PublicController extends BasePublicController
       "currentPage" => $products->currentPage()
     ];
     
-    return view($tpl, compact('products','paginate'));
+    return view($tpl, compact('products','paginate', 'category'));
     
     
   }
