@@ -290,8 +290,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
     } else {
-      
-      $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
+      $query->where(function ($query) use ($filter) {
+        $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
+        $query->orWhereNull("date_available");
+      });
     }
     
     

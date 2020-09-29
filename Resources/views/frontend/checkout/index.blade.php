@@ -125,10 +125,10 @@
             }).then(response => {
               this.user = response.data.data;
               this.addresses = response.data.data.addresses;
-            
+              
               this.form.selectedBillingAddress = this.getDefaultBillingAddress()
               this.form.selectedShippingAddress = this.getDefaultShippingAddress()
-          
+              
               
             }).catch(error => {
             });
@@ -489,7 +489,7 @@
               this.tokenUser = response.data.data.userToken;
             })
             .catch((error) => {
-     
+              
               if ('errors' in error.response.data) {
                 toastr.error(error.response.data.errors);
               }
@@ -500,8 +500,8 @@
           
           this.$v.form.$reset()
           this.$v.form.$touch()
-  
-  
+          
+          
           if(this.useExistingOrNewShippingAddress == '2'){
             toastr.error('Por favor agrega una dirección de envío para la orden');
             return;
@@ -514,7 +514,7 @@
             toastr.error('Por favor completa los campos obligatorios');
             return;
           }
-       
+          
           //Validations:
           var user_id = 0;
           if (this.user)
@@ -549,7 +549,7 @@
                 break;
               }
             }
-       
+            
             let addressBilling =  this.user.addresses.find(address => address.id == this.form.selectedBillingAddress)
             let addressShipping =  this.user.addresses.find(address => address.id == this.form.selectedShippingAddress)
             
@@ -620,6 +620,20 @@
         getCart() {
           
           var cart_id = localStorage.getItem("cart_id");
+          
+          if(!cart_id){
+            var carts = JSON.parse(localStorage.getItem("carts"));
+            if(carts && this.user){
+              var cart = carts.find(cart => cart.userId == this.user.id)
+              if(cart)
+                cart_id = cart.cart_id
+            }else
+            if(carts && !this.user){
+              var cart = carts.find(cart => cart.userId == 0)
+              if(cart)
+                cart_id = cart.cart_id
+            }
+          }
           
           if (cart_id) {
             axios.get("{{url('/')}}" + "/api/icommerce/v3/carts/" + cart_id)
@@ -739,7 +753,7 @@
               }
               
               this.user.addresses.push(response.data.data);
-            
+              
               if(type == 'billing'){
                 this.$v.billingData.$reset()
                 this.getDefaultBillingAddress()
@@ -863,7 +877,7 @@
               return true;
             })
             .catch((error) => {
-          
+            
             });
           return false;
         },
@@ -919,16 +933,16 @@
             dirty: validation.$dirty
           }
         },
-  
-     
-  
+        
+        
+        
         getDefaultBillingAddress(){
-    
+          
           let address = null
           if (this.user) {
             if (this.user.addresses && this.user.addresses.length > 0) {
               let defaultBillingAddress = this.user.addresses.find(address => address.default && address.type == "billing")
-             
+              
               if(defaultBillingAddress){
                 address = defaultBillingAddress.id
               }else{
@@ -940,7 +954,7 @@
         },
         
         getDefaultShippingAddress(){
-    
+          
           let address = null
           if (this.user) {
             if (this.user.addresses && this.user.addresses.length > 0) {
