@@ -77,17 +77,19 @@
             <div class="row">
 
                 <div class="col-12 text-right pb-5 d-none d-lg-block" v-if="articles.length >= 1">
-                    | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span> | @include('icommerce.widgets.order_by') |
+                    | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span> | @includeFirst(['icommerce.widgets.order_by','icommerce::frontend.widgets.order_by']) |
                 </div>
 
 
                 <div class="col-lg-3 pb-5">
-                    @include('icommerce.widgets.categories')
+                    @includeFirst(['icommerce.widgets.categories','icommerce::frontend.widgets.categories'])
 
                     <hr class="border-primary">
 
                     <div class="d-none d-lg-block">
-                        @include('icommerce.widgets.destacados')
+                      {{--
+                        @includeFirst(['icommerce.widgets.destacados','icommerce::frontend.widgets.destacados'])
+                      --}}
                     </div>
 
                 </div>
@@ -95,7 +97,7 @@
                     <!-- ===== CONTENT ===== -->
 
                     <div class="text-right pb-5 d-block d-lg-none" v-if="articles.length >= 1">
-                        | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span> | @include('icommerce.widgets.order_by') |
+                        | <span class="mx-2 total-filter"> @{{ totalArticles }} Articulos</span> | @includeFirst(['icommerce.widgets.order_by','icommerce::frontend.widgets.order_by']) |
                     </div>
 
                     <div id="content">
@@ -104,7 +106,7 @@
 
 
                         <div id="cont_products" class="mt-4">
-                            @include('icommerce.widgets.products')
+                            @includeFirst(['icommerce.widgets.products','icommerce::frontend.widgets.products'])
                         </div>
                     </div>
                 </div>
