@@ -18,6 +18,7 @@ class OrderItem
         "quantity" => (int)$item->quantity,
         "price" => floatval($item->product->price),
         "total" => $item->total,
+        "discount" => $item->discount ?? null,
         "tax" => 0,
         "reward" => 0,
         "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null

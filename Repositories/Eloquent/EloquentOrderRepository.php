@@ -82,7 +82,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       $query->orderBy("created_at", "desc");//Add order to query
       
     }
-    
+  
     // if has permission
     $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
     $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others

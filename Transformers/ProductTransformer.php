@@ -14,7 +14,8 @@ class ProductTransformer extends BaseApiTransformer
   public function toArray($request)
   {
     $filter = json_decode($request->filter);
-        $price = Currency::convert($this->price);
+    $price = Currency::convert($this->price);
+
     $data = [
       'id' => $this->id,
       'name' => $this->name ?? '',
@@ -27,7 +28,6 @@ class ProductTransformer extends BaseApiTransformer
       'quantity' => $this->when(isset($this->quantity), $this->quantity),
       'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
       'price' => $price,
-      'priceDiscount' => $this->when($this->price_discount, $this->price_discount),
       'formattedPrice' => formatMoney($price),
       'dateAvailable' => $this->when($this->date_available, $this->date_available),
       'weight' => $this->when($this->weight, $this->weight),
@@ -38,7 +38,7 @@ class ProductTransformer extends BaseApiTransformer
       'minimum' => $this->when($this->minimum, $this->minimum),
       'reference' => $this->when($this->reference, $this->reference),
       'description' => $this->when($this->description, $this->description),
-      'rating' => (int) !is_null($this->rating) ? $this->rating : 0,
+      'rating' => (int)!is_null($this->rating) ? $this->rating : 0,
       'freeshipping' => $this->when($this->freeshipping, ((int)$this->freeshipping ? true : false)),
       'orderWeight' => $this->when($this->order_weight, $this->order_weight),
       'createdAt' => $this->when($this->created_at, $this->created_at),
@@ -55,117 +55,124 @@ class ProductTransformer extends BaseApiTransformer
       'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
       'mainImage' => $this->mainImage,
       'gallery' => $this->gallery,
-      'storeId'=>$this->store_id,
-      'averageRating' => (float) !is_null($this->averageRating) ? $this->averageRating : 0,
+      'storeId' => $this->store_id,
+      'averageRating' => (float)!is_null($this->averageRating) ? $this->averageRating : 0,
       'visible' => $this->visible,
-      'url'=> $this->url??'#',
+      'url' => $this->url ?? '#',
+      // totalDiscounts deprecated, bad way to calculate discounts
       'totalDiscounts' => $this->present()->totalDiscounts,
+      
       'totalTaxes' => $this->getTotalTaxes($filter),
       'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
       'taxClassId' => $this->when($this->tax_class_id, intval($this->tax_class_id)),
     ];
-
-        /*RELATIONSHIPS*/
-        // Tax Class
-        $this->ifRequestInclude('addedBy') ?
-            $data['addedBy'] = ($this->added_by_id ? new UserTransformer($this->addedBy) : false) : false;
-
-        // Tax Class
-        $this->ifRequestInclude('taxClass') ?
-            $data['taxClass'] = ($this->tax_class_id ? new TaxClassTransformer($this->taxClass) : false) : false;
-
-        // Tags
-        $this->ifRequestInclude('tags') ?
-            $data['tags'] = ($this->tags ? TagTransformer::collection($this->tags) : false) : false;
-
-        // Orders
-        $this->ifRequestInclude('orders') ?
-            $data['orders'] = ($this->orders ? OrderTransformer::collection($this->orders) : false) : false;
-
-        // Featured Products
-        $this->ifRequestInclude('featuredProducts') ?
-            $data['featuredProducts'] = ($this->featuredProducts ? ProductTransformer::collection($this->featuredProducts) : false) : false;
-
-        // Manufacturer
-        $this->ifRequestInclude('manufacturer') ?
-            $data['manufacturer'] = ($this->manufacturer_id ? new ManufacturerTransformer($this->manufacturer) : false) : false;
-
-        /* OJO PROBAR
-        // Discounts
-        $this->ifRequestInclude('discounts') ?
-          $data['discounts'] = ($this->discounts ? OrderTransformer::collection($this->discounts) : false) : false;
-      */
-
-        /* OJO FALTA TRANSFORMER
-        // Product Options
-        $this->ifRequestInclude('productOptions') ?
-          $data['productOptions'] = ($this->productOptions ? $this->productOptions : false) : false;
-      */
-
-        // Wishlist
-        $this->ifRequestInclude('wishlists') ?
-            $data['wishlists'] = ($this->wishlists ? WishlistTransformer::collection($this->wishlists) : false) : false;
-
-        // Coupons
-        $this->ifRequestInclude('coupons') ?
-            $data['coupons'] = ($this->coupons ? CouponTransformer::collection($this->coupons) : false) : false;
-
-        // Parent
-        $this->ifRequestInclude('parent') ?
-            $data['parent'] = ($this->parent_id ? new ProductTransformer($this->parent) : false) : false;
-
-        // Children
-        $this->ifRequestInclude('children') ?
-            $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
-
-        if (is_module_enabled('Marketplace')) {
-            $data['store'] = new MarketplaceStoreTransformer($this->whenLoaded('store'));
-        } else {
-            $data['store'] = new StoreTransformer($this->whenLoaded('store'));
-        }
-
-        // TRANSLATIONS
-        $filter = json_decode($request->filter);
-        // Return data with available translations
-        if (isset($filter->allTranslations) && $filter->allTranslations) {
-            // Get langs avaliables
-            $languages = \LaravelLocalization::getSupportedLocales();
-
-            foreach ($languages as $lang => $value) {
-                if ($this->hasTranslation($lang)) {
-                    $data[$lang]['name'] = $this->hasTranslation($lang) ?
-                        $this->translate("$lang")['name'] : '';
-                    $data[$lang]['description'] = $this->hasTranslation($lang) ?
-                        $this->translate("$lang")['description'] : '';
-                    $data[$lang]['summary'] = $this->hasTranslation($lang) ?
-                        $this->translate("$lang")['summary'] : '';
-                    $data[$lang]['slug'] = $this->hasTranslation($lang) ?
-                        $this->translate("$lang")['slug'] : '';
-                    $data[$lang]['metaTitle'] = $this->hasTranslation($lang) ?
-                        $this->translate("$lang")['metaTitle'] : '';
-                    $data[$lang]['metaDescription'] = $this->hasTranslation($lang) ?
-                        $this->translate("$lang")['metaDescription'] : '';
-                }
-            }
-        }
-
-        return $data;
+  
+    $discount = $this->discount;
+    if(isset($discount->id)){
+      $data["discount"] = new ProductDiscountTransformer($discount);
     }
-
-    private function getTotalTaxes($filter)
-    {
-        $basePrice = $this->price ? $this->price : 0;
-        $taxes = [];
-        if (isset($this->taxClass) && isset($this->taxClass->rates)) {
-            $taxes = $this->taxClass->rates;
-            if (isset($filter->geozone)) {
-                $taxes = $taxes->where('geozone_id', $filter->geozone);
-            }
-        }
-        $totalTaxes = 0;
-        foreach ($taxes as $tax) {
-            $totalTaxes += floatval(($basePrice * $tax->rate) / 100);
-        }
-        return $totalTaxes;
+    
+    /*RELATIONSHIPS*/
+    // Tax Class
+    $this->ifRequestInclude('addedBy') ?
+      $data['addedBy'] = ($this->added_by_id ? new UserTransformer($this->addedBy) : false) : false;
+    
+    // Tax Class
+    $this->ifRequestInclude('taxClass') ?
+      $data['taxClass'] = ($this->tax_class_id ? new TaxClassTransformer($this->taxClass) : false) : false;
+    
+    // Tags
+    $this->ifRequestInclude('tags') ?
+      $data['tags'] = ($this->tags ? TagTransformer::collection($this->tags) : false) : false;
+    
+    // Orders
+    $this->ifRequestInclude('orders') ?
+      $data['orders'] = ($this->orders ? OrderTransformer::collection($this->orders) : false) : false;
+    
+    // Featured Products
+    $this->ifRequestInclude('featuredProducts') ?
+      $data['featuredProducts'] = ($this->featuredProducts ? ProductTransformer::collection($this->featuredProducts) : false) : false;
+    
+    // Manufacturer
+    $this->ifRequestInclude('manufacturer') ?
+      $data['manufacturer'] = ($this->manufacturer_id ? new ManufacturerTransformer($this->manufacturer) : false) : false;
+    
+    /* OJO PROBAR
+    // Discounts
+    $this->ifRequestInclude('discounts') ?
+      $data['discounts'] = ($this->discounts ? OrderTransformer::collection($this->discounts) : false) : false;
+  */
+    
+    /* OJO FALTA TRANSFORMER
+    // Product Options
+    $this->ifRequestInclude('productOptions') ?
+      $data['productOptions'] = ($this->productOptions ? $this->productOptions : false) : false;
+  */
+    
+    // Wishlist
+    $this->ifRequestInclude('wishlists') ?
+      $data['wishlists'] = ($this->wishlists ? WishlistTransformer::collection($this->wishlists) : false) : false;
+    
+    // Coupons
+    $this->ifRequestInclude('coupons') ?
+      $data['coupons'] = ($this->coupons ? CouponTransformer::collection($this->coupons) : false) : false;
+    
+    // Parent
+    $this->ifRequestInclude('parent') ?
+      $data['parent'] = ($this->parent_id ? new ProductTransformer($this->parent) : false) : false;
+    
+    // Children
+    $this->ifRequestInclude('children') ?
+      $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
+    
+    if (is_module_enabled('Marketplace')) {
+      $data['store'] = new MarketplaceStoreTransformer($this->whenLoaded('store'));
+    } else {
+      $data['store'] = new StoreTransformer($this->whenLoaded('store'));
     }
+    
+    // TRANSLATIONS
+    $filter = json_decode($request->filter);
+    // Return data with available translations
+    if (isset($filter->allTranslations) && $filter->allTranslations) {
+      // Get langs avaliables
+      $languages = \LaravelLocalization::getSupportedLocales();
+      
+      foreach ($languages as $lang => $value) {
+        if ($this->hasTranslation($lang)) {
+          $data[$lang]['name'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['name'] : '';
+          $data[$lang]['description'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['description'] : '';
+          $data[$lang]['summary'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['summary'] : '';
+          $data[$lang]['slug'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['slug'] : '';
+          $data[$lang]['metaTitle'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['metaTitle'] : '';
+          $data[$lang]['metaDescription'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['metaDescription'] : '';
+        }
+      }
+    }
+    
+    return $data;
+  }
+  
+  private function getTotalTaxes($filter)
+  {
+    $basePrice = $this->price ? $this->price : 0;
+    $taxes = [];
+    if (isset($this->taxClass) && isset($this->taxClass->rates)) {
+      $taxes = $this->taxClass->rates;
+      if (isset($filter->geozone)) {
+        $taxes = $taxes->where('geozone_id', $filter->geozone);
+      }
+    }
+    $totalTaxes = 0;
+    foreach ($taxes as $tax) {
+      $totalTaxes += floatval(($basePrice * $tax->rate) / 100);
+    }
+    return $totalTaxes;
+  }
 }

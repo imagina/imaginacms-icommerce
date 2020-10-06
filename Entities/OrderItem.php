@@ -21,12 +21,14 @@ class OrderItem extends Model
     'total',
     'tax',
     'reward',
-    'options'
+    'options',
+    'discount'
   ];
 
   
   protected $casts = [
-    'options' => 'array'
+    'options' => 'array',
+    'discount' => 'array',
   ];
 
   public function orderOption(){

@@ -12,6 +12,7 @@ use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
 use willvincent\Rateable\Rateable;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model implements TaggableInterface
 {
@@ -247,17 +248,37 @@ class Product extends Model implements TaggableInterface
     
     public function getDiscountAttribute()
     {
-      $date = date_create(date("Y/m/d"));
-      
-      $query = $this->product_discounts()
-        ->select('price')
-        ->whereDate('date_start', '<=', $date)
-        ->whereDate('date_end', '>=', $date)
-        ->first();
-      
-      return $query ? $query->price : null;
-    }
+      $now = date('Y-m-d');
   
+      $userId = Auth::user() ? Auth::user()->id : 0;
+      $departments = [];
+      if ($userId){
+        $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
+          ->table('iprofile__user_department')->select("department_id")
+          ->where('user_id', $userId)
+          ->pluck('department_id');
+    
+      }
+  
+      $discount = $this->discounts()
+        ->orderBy('priority', 'desc')
+        ->orderBy('created_at', 'asc')
+        ->where('date_end', '>=', $now)
+        ->where('date_start', '<=', $now)
+        ->where(function ($query) use ($departments){
+          $query->whereIn('department_id', $departments)
+            ->orWhereNull('department_id');
+        })
+        ->first();
+  
+  
+      if(isset($discount->id)){
+        return $discount;
+    
+      }else{
+        return null;
+      }
+    }
 
 
     public function getSecondaryImageAttribute()

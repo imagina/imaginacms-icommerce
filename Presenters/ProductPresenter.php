@@ -56,32 +56,32 @@ class ProductPresenter extends Presenter
         break;
     }
   }
-
+  
   public function totalDiscounts ( ) {
-
+    
     $now = date('Y-m-d');
-
+    
     $basePrice = $this->entity->price;
     $newPrice = $basePrice;
     $totalDiscounts = [];
     $userId = Auth::user() ? Auth::user()->id : 0;
- 
+    
     if ($userId){
       $departments = Department::whereHas('users', function ($q) use ($userId){
         $q->where('iprofile__user_department.user_id', $userId);
       })->pluck('id');
     }
-
+    
     $departments[] = null;
-
+    
     $discounts = $this->entity->discounts()
       ->orderBy('priority', 'asc')
       ->whereDate('date_end', '>=', $now)
       ->whereDate('date_start', '<=', $now)
       ->get();
-
+    
     $discounts = $discounts->whereIn('department_id', $departments);
-
+    
     foreach ($discounts as $key => $discount){
       $valueDiscount = $this->calcDiscount($discount, $newPrice);
       
@@ -92,21 +92,60 @@ class ProductPresenter extends Presenter
         $newPrice = $this->updatePrice($basePrice, $totalDiscounts)/*$newPrice - $valueDiscount*/;
       }
       $totalDiscounts[]= $valueDiscount;
-
+      
     }
-
+    
     $response = 0;
     for ($i = 0; $i < count($totalDiscounts); $i++){
       $response += floatval($totalDiscounts[$i]);
     }
-
-
+    
+    
     return $response;
+  }
+
+  public function discount ( ) {
+
+    $now = date('Y-m-d');
+
+    $basePrice = $this->entity->price;
+    $newPrice = $basePrice;
+    $totalDiscounts = [];
+    $userId = Auth::user() ? Auth::user()->id : 0;
+    $departments = [];
+    if ($userId){
+      $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
+        ->table('iprofile__user_department')->select("department_id")
+        ->where('user_id', $userId)
+        ->pluck('department_id');
+
+    }
+
+    $discount = $this->entity->discounts()
+      ->orderBy('priority', 'desc')
+      ->orderBy('created_at', 'asc')
+      ->where('date_end', '>=', $now)
+      ->where('date_start', '<=', $now)
+      ->where(function ($query) use ($departments){
+        $query->whereIn('department_id', $departments)
+          ->orWhereNull('department_id');
+      })
+      ->first();
+  
+    
+    if(isset($discount->id)){
+    return $discount;
+ 
+    }else{
+      
+      return null;
+    }
+    
   }
 
   private function calcDiscount ($discount, $value) {
     if($discount->criteria == 'fixed'){
-      return intval ($discount->discount);
+      return  ($value - $discount->discount);
     }
 
     if($discount->criteria == 'percentage'){

@@ -37,9 +37,37 @@ class ProductDiscount extends Model
   {
     return $this->belongsTo(ProductOption::class);
   }
+  public function getPriceAttribute()
+  {
+    
+    $basePrice = $this->product->price;
+    $valueDiscount = $this->calcDiscount( $basePrice);
+
+    return  floatval($basePrice) - floatval($valueDiscount);
+  
+  }
+  public function getTotalDiscountAttribute()
+  {
+    
+    $basePrice = $this->product->price;
+    $valueDiscount = $this->calcDiscount( $basePrice);
+
+    return  $valueDiscount;
+  
+  }
 
   public function department()
   {
     return $this->belongsTo(Department::class);
+  }
+  
+  private function calcDiscount ( $value) {
+    if($this->criteria == 'fixed'){
+      return  ($value - $this->discount);
+    }
+    
+    if($this->criteria == 'percentage'){
+      return floatval (($value * $this->discount) / 100 );
+    }
   }
 }

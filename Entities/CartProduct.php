@@ -41,7 +41,7 @@ class CartProduct extends Model
 
     public function getTotalAttribute()
     {
-        $priceBase = $this->product->price - $this->product->present()->totalDiscounts + $this->product->present()->totalTaxes;
+        $priceBase = $this->product->price - ($this->product->discount->totalDiscount ?? 0 ) + $this->product->present()->totalTaxes;
         $subtotal = floatval($priceBase) * intval($this->quantity);
         $totalOptions = 0;
 
@@ -60,7 +60,7 @@ class CartProduct extends Model
 
     public function getPriceUnitAttribute()
     {
-        $priceBase = $this->product->price - $this->product->present()->totalDiscounts + $this->product->present()->totalTaxes;
+        $priceBase = $this->product->price - ($this->product->discount->totalDiscount ?? 0 ) + $this->product->present()->totalTaxes;
         $subtotal = floatval($priceBase);
         $totalOptions = 0;
 
