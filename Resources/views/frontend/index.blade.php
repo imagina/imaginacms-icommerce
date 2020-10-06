@@ -16,7 +16,7 @@
 
 
 @section('content')
-
+  
 
     <!-- preloader -->
     <div id="content_preloader">
@@ -116,7 +116,11 @@
     </div>
 
 @stop
+
+
 @section('scripts')
+  
+
     @parent
     <script>
         /* =========== VUE ========== */
@@ -171,7 +175,7 @@
                 v_max: false,
                 v_min: false,
                 /*wishlist*/
-                user: {!! $currentUser->id??null !!},
+                user: {!! $currentUser->id?? "''" !!},
                 /*currency*/
                 currency: '$',
                 preloader: true,
