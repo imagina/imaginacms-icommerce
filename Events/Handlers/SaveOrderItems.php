@@ -30,6 +30,8 @@ class SaveOrderItems
     		
     		if(isset($product->id) && $product->subtract){
           $product->quantity = $product->quantity - $item["quantity"];
+          $product->quantity < 0 ? $product->quantity = 0 : false;
+          //TODO aquí toca agregar una notificacion al correo del icommerce cuando el quantity se haga 0 y cuando el quantity se vuelva negativo
           $product->save();
         }
 			
