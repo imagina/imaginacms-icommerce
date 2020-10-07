@@ -263,6 +263,7 @@ class Product extends Model implements TaggableInterface
       $discount = $this->discounts()
         ->orderBy('priority', 'desc')
         ->orderBy('created_at', 'asc')
+        ->whereRaw('quantity > quantity_sold')
         ->where('date_end', '>=', $now)
         ->where('date_start', '<=', $now)
         ->where(function ($query) use ($departments){
@@ -270,8 +271,7 @@ class Product extends Model implements TaggableInterface
             ->orWhereNull('department_id');
         })
         ->first();
-  
-  
+
       if(isset($discount->id)){
         return $discount;
     

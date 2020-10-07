@@ -46,5 +46,33 @@ class OrderItem extends Model
   public function product(){
     return $this->belongsTo(Product::class,'product_id');
   }
+  
+  public function getOptionsAttribute($value)
+  {
+    
+    return json_decode($value);
+    
+  }
+  
+  public function setOptionsAttribute($value)
+  {
+    
+    $this->attributes['options'] = json_encode($value);
+    
+  }
+  
+  public function getDiscountAttribute($value)
+  {
+    
+    return json_decode($value);
+    
+  }
+  
+  public function setDiscountAttribute($value)
+  {
+    
+    $this->attributes['discount'] = json_encode($value);
+    
+  }
 
 }

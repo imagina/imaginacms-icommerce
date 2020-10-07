@@ -16,6 +16,7 @@ class ProductDiscount extends Model
     'product_option_id',
     'product_option_value_id',
     'quantity',
+    'quantity_sold',
     'priority',
     'discount',
     'criteria',
@@ -37,6 +38,24 @@ class ProductDiscount extends Model
   {
     return $this->belongsTo(ProductOption::class);
   }
+  
+  public function getFinishedAttribute(){
+    $now = date('Y-m-d');
+
+    $endDate = date('Y-m-d',strtotime($this->date_end));
+  
+    return $this->quantity_sold >= $this->quantity
+    || ($now > $endDate);
+  }
+  public function getRunningAttribute(){
+    $now = date('Y-m-d');
+    $startDate = date('Y-m-d',strtotime($this->date_start));
+    $endDate = date('Y-m-d',strtotime($this->date_end));
+    
+    return $this->quantity_sold < $this->quantity
+    && (($now >= $startDate) && ($now <= $endDate));
+  }
+  
   public function getPriceAttribute()
   {
     
@@ -63,7 +82,7 @@ class ProductDiscount extends Model
   
   private function calcDiscount ( $value) {
     if($this->criteria == 'fixed'){
-      return  ($value - $this->discount);
+      return  ($this->discount);
     }
     
     if($this->criteria == 'percentage'){

@@ -16,7 +16,7 @@
 
 
 @section('content')
-  
+
 
     <!-- preloader -->
     <div id="content_preloader">
@@ -116,11 +116,7 @@
     </div>
 
 @stop
-
-
 @section('scripts')
-  
-
     @parent
     <script>
         /* =========== VUE ========== */
