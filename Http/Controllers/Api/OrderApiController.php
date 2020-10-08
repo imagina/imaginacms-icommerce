@@ -57,25 +57,24 @@ class OrderApiController extends BaseApiController
     private $setting;
 
     public function __construct(
-        OrderRepository $order,
-        OrderHistoryRepository $orderStatusHistory,
-        UserApiRepository $user,
-        AddressRepository $address,
-        CurrencyRepository $currency,
-        CartRepository $cart,
-        PaymentMethodRepository $paymentMethod,
-        ShippingMethodRepository $shippingMethod
+        OrderRepository $order
+       // OrderHistoryRepository $orderStatusHistory,
+       // UserApiRepository $user,
+       // AddressRepository $address,
+       // CurrencyRepository $currency
+      //  CartRepository $cart,
+       // PaymentMethodRepository $paymentMethod,
+      //  ShippingMethodRepository $shippingMethod
     )
     {
         $this->order = $order;
-        $this->orderStatusHistory = $orderStatusHistory;
-        $this->user = $user;
-        $this->address = $address;
-        $this->currency = $currency;
-        $this->cart = $cart;
-        $this->paymentMethod = $paymentMethod;
-        $this->shippingMethod = $shippingMethod;
-         $this->setting = app('Modules\Setting\Contracts\Setting');
+     //   $this->orderStatusHistory = $orderStatusHistory;
+     //   $this->user = $user;
+      //  $this->address = $address;
+       // $this->currency = $currency;
+      //  $this->cart = $cart;
+      //  $this->paymentMethod = $paymentMethod;
+     //   $this->shippingMethod = $shippingMethod;
         if(is_module_enabled('Marketplace')){
             $this->store =app('Modules\Marketplace\Repositories\StoreRepository');
         }else{
@@ -157,6 +156,11 @@ class OrderApiController extends BaseApiController
      */
     public function create(Request $request)
     {
+        $this->user = app('Modules\Iprofile\Repositories\UserApiRepository');
+        $this->cart = app('Modules\Icommerce\Repositories\CartRepository');
+        $this->paymentMethod = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
+        $this->shippingMethod = app('Modules\Icommerce\Repositories\ShippingMethodRepository');
+        $this->currency = app('Modules\Icommerce\Repositories\CurrencyRepository');
       \DB::beginTransaction();
 
       try {
@@ -165,6 +169,7 @@ class OrderApiController extends BaseApiController
 
         $data = $request['attributes'] ?? [];//Get data
 
+        
         //Break if the data is empty
         if (!count($data)) throw new \Exception('The some errors in the data sent', 400);
 
@@ -222,7 +227,7 @@ class OrderApiController extends BaseApiController
 
         // Coupons
         $data["discount"] = 0;
-        $couponCode = $data['coupon_code'];
+        $couponCode = $data['coupon_code'] ?? null;
         if ( isset($data['coupon_code']))
         {
           $validateCoupons = new validateCoupons();
@@ -328,6 +333,10 @@ class OrderApiController extends BaseApiController
             event(new OrderWasUpdated($order));
 
             if (isset($data["orderHistory"])) {
+              OrderStatusHistory::create([
+                "order_id" => $order->id,
+                "status" => $data["status_id"]
+              ]);
                 event(new OrderStatusHistoryWasCreated($order));
             }
 

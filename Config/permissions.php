@@ -67,6 +67,7 @@ return [
     ],
     'icommerce.orders' => [
       'index' => 'icommerce::orders.list resource',
+      'index-all' => 'icommerce::orders.list-all resource',
       'show' => 'icommerce::orders.show resource',
       'show-others' => 'icommerce::orders.show-others resource',
         'create' => 'icommerce::orders.create resource',

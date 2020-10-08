@@ -115,11 +115,14 @@ class CartApiController extends BaseApiController
             //Validate Request
             $this->validateRequestApi(new CartRequest((array)$data));
 
+            $data["ip"] = $request->ip();
+            $data["session_id"] = session('key');
+            
             //Create item
             $cart = $this->cart->create($data);
 
             //Response
-            $response = ["data" => $cart];
+            $response = ["data" =>  new CartTransformer($cart)];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
             \Log::error($e);
@@ -151,13 +154,8 @@ class CartApiController extends BaseApiController
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
-            $dataEntity = $this->cart->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 404);
-
-
             //Request to Repository
-            $this->cart->update($criteria, $dataEntity);
+            $this->cart->updateBy($criteria, $data, $params);
 
             //Response
             $response = ["data" => 'Item Updated'];
@@ -186,13 +184,8 @@ class CartApiController extends BaseApiController
             //Get params
             $params = $this->getParamsRequest($request);
 
-
-            $dataEntity = $this->cart->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 400);
-
             //call Method delete
-            $this->cart->destroy($dataEntity);
+            $this->cart->deleteBy($criteria, $params);
 
             //Response
             $response = ["data" => ""];

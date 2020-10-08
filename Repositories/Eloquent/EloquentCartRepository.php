@@ -130,11 +130,83 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
 
     public function create($data)
     {
-        $model = $this->model->create($data);
+    //Search by userñ
+    if (isset($data['user_id'])) {
+      $userCart = $this->model->where('user_id', $data['user_id'])
+        ->where('store_id', $data['store_id'])
+        ->where('status', 1)->first();
+    }
+    
+    //Create cart
+    if (isset($userCart) && $userCart) return $userCart;
+    else return $this->model->create($data);
+  }
+  
 
-        //$model->products()->sync(array_get($data, 'products', []));
+  
+  public function updateBy($criteria, $data, $params = false)
+  {
+    //Get only data permit to update
+    $cartData = [];
+    if (isset($data['status'])) $cartData['status'] = $data['status'];
+    if (isset($data['user_id'])) $cartData['user_id'] = $data['user_id'];
+    if (isset($data['products'])) $cartData['products'] = $data['products'];
+    
+    //Get cart by criteria
+    $field = isset($params->filter) && isset($params->filter->field) ? $params->filter->field : 'id';
+    $cart = $this->model->where($field, $criteria)->first();
 
+    //Search cart by user
+    $userCart = !$data['user_id'] ? false :
+      $this->model->where('user_id', $data['user_id'])
+        ->where('store_id', $data['store_id'])
+        ->where('status', 1)->first();
+    
+    //Validate cart
+    if ($cart) {
+      //Move cart to user cart
+      if (!$cart->user_id && $userCart) {
+        //move products to user cart
+        \DB::table('icommerce__cart_product')->where('cart_id', $cart->id)->update(['cart_id' => $userCart->id]);
+        $cart->delete();//Drop cart
+        $model = $userCart;//Set user cart as model
+      } else {
+        //Set cart as model
+        $model = $cart;
+        //No permit change user id of cart
+        if (isset($cartData["user_id"]) && $model->user_id) unset($cartData["user_id"]);
+      }
+
+      //Update data
+      $model->update((array)$cartData);
+      //sync products
+      if (count(array_get($cartData, 'products', []))) {
+        $model->products()->sync(array_get($cartData, 'products', []));
+      }
+    }
+    
+    //Response
         return $model;
     }
 
+  
+  public function deleteBy($criteria, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+    
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $field = $filter->field;
+    }
+    
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    $model ? $model->delete() : false;
+  }
+  
+  
 }

@@ -106,4 +106,12 @@ class EloquentWishlistRepository extends EloquentBaseRepository implements Wishl
     
   }
 
+  public function create($data)
+  {
+    
+    $wishlist = $this->model->create($data);
+    
+    return $wishlist;
+  }
+
 }

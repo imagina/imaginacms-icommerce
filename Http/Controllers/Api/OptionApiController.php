@@ -146,13 +146,7 @@ class OptionApiController extends BaseApiController
       $params = $this->getParamsRequest($request);
 
         //Request to Repository
-        $dataEntity = $this->option->getItem($criteria, $params);
-
-        //Break if no found item
-        if (!$dataEntity) throw new \Exception('Item not found', 404);
-
-      //Request to Repository
-      $this->option->update($dataEntity, $data);
+      $this->option->updateBy($criteria, $data, $params);
 
       //Response
       $response = ["data" => 'Item Updated'];
@@ -180,14 +174,8 @@ class OptionApiController extends BaseApiController
       //Get params
       $params = $this->getParamsRequest($request);
 
-        //Request to Repository
-        $dataEntity = $this->option->getItem($criteria, $params);
-
-        //Break if no found item
-        if (!$dataEntity) throw new \Exception('Item not found', 404);
-
       //call Method delete
-      $this->option->destroy($dataEntity);
+      $this->option->deleteBy($criteria, $params);
 
       //Response
       $response = ["data" => "Item deleted"];

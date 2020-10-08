@@ -15,18 +15,19 @@ class PaymentMethodTransformer extends Resource
             'name' => $this->when($this->name, $this->name),
             'status' => boolval($this->status),
             'mainImage' => $this->mainImage,
+            'init' => $this->when(isset($this->options),$this->options->init),
             'options' => $this->when($this->options, $this->options),
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
             'activevalue'=>$this->active
         ];
 
-
-       /* switch ($this->name) {
+  //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
+    switch($this->name){
             case 'icommercepaypal':
                 $data = array_merge($data, [
-                    'clientId' => $this->when($this->options, $this->options->clientid),
-                    'clientSecret' => $this->when($this->options, $this->options->clientsecret),
+          'clientid' => $this->when($this->options,$this->options->clientid),
+          'clientsecret' => $this->when($this->options,$this->options->clientsecret),
                     'mode' => $this->when($this->options, $this->options->mode)
                 ]);
 
@@ -34,16 +35,17 @@ class PaymentMethodTransformer extends Resource
 
             case 'icommercepayu':
                 $data = array_merge($data, [
-                    'merchantId' => $this->when($this->options, $this->options->merchant_id ?? null),
-                    'apiLogin' => $this->when($this->options, $this->options->api_login ?? null),
-                    'apiKey' => $this->when($this->options, $this->options->api_key ?? null),
-                    'accountId' => $this->when($this->options, $this->options->account_id ?? null),
+          'merchantId' => $this->when($this->options,$this->options->merchantId??null),
+          'apiLogin' => $this->when($this->options,$this->options->apiLogin??null),
+          'apiKey' => $this->when($this->options,$this->options->apiKey??null),
+          'accountId' => $this->when($this->options,$this->options->accountId??null),
                     'test' => $this->when($this->options, $this->options->test ?? null),
                     'mode' => $this->when($this->options, $this->options->mode ?? null)
                 ]);
 
 
-        }*/
+  
+    }
         $filter = json_decode($request->filter);
 
         // Return data with available translations

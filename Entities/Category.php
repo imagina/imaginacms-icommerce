@@ -27,6 +27,7 @@ class Category extends Model
         'parent_id',
         'options',
         'show_menu',
+        'featured',
         'store_id'
     ];
 

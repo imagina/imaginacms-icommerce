@@ -23,6 +23,7 @@ class CreateIcommerceTaxRatesTable extends Migration
       $table->foreign('geozone_id')->references('id')->on('ilocations__geozones');
       $table->boolean('customer')->default(0);
       $table->integer('tax_class_id')->unsigned();
+      $table->foreign('tax_class_id')->references('id')->on('icommerce__tax_classes');
       $table->timestamps();
     });
   }

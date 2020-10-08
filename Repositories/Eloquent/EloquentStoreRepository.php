@@ -89,4 +89,46 @@ class EloquentStoreRepository extends EloquentBaseRepository implements StoreRep
         /*== REQUEST ==*/
         return $query->first();
     }
+
+    public function create($data){
+        $category = $this->model->create($data);
+        return $category;
+    }
+
+    public function updateBy($criteria, $data, $params = false)
+    {
+        /*== initialize query ==*/
+        $query = $this->model->query();
+
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+            $filter = $params->filter;
+
+            //Update by field
+            if (isset($filter->field))
+                $field = $filter->field;
+        }
+
+        /*== REQUEST ==*/
+        $model = $query->where($field ?? 'id', $criteria)->first();
+        return $model ? $model->update((array)$data) : false;
+    }
+
+    public function deleteBy($criteria, $params = false)
+    {
+        /*== initialize query ==*/
+        $query = $this->model->query();
+
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+            $filter = $params->filter;
+
+            if (isset($filter->field))//Where field
+                $field = $filter->field;
+        }
+
+        /*== REQUEST ==*/
+        $model = $query->where($field ?? 'id', $criteria)->first();
+        $model ? $model->delete() : false;
+    }
 }

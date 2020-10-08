@@ -75,12 +75,8 @@ class OrderTransformer extends Resource
       'shippingCountry' => new CountryTransformer($this->whenLoaded('shippingCountry')),
       'shippingDepartment' => new ProvinceTransformer($this->whenLoaded('shippingDepartment')),
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
+      'transactions' =>  TransactionTransformer::collection($this->whenLoaded('transactions'))
     ];
-
-    // transactions
-    if(isset($this->transactions) && count($this->transactions)>0)
-      $item['transactions'] = TransactionTransformer::collection($this->transactions);
-
 
     return $item;
   }

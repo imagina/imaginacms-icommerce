@@ -170,14 +170,7 @@ class CartProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
-            $dataEntity = $this->cartProduct->getItem($criteria, $params);
-
-            //Break if no found item
-            if (!$dataEntity) throw new \Exception('Item not found', 404);
-
-
-            //Request to Repository
-            $result = $this->cartProduct->update($dataEntity, $data);
+      $result = $this->cartProduct->updateBy($criteria, $data, $params);
 
 
             //Response
@@ -208,14 +201,8 @@ class CartProductApiController extends BaseApiController
             //Get params
             $params = $this->getParamsRequest($request);
 
-            //Request to Repository
-            $dataEntity = $this->cartProduct->getItem($criteria, $params);
-
-            //Break if no found item
-            if (!$dataEntity) throw new \Exception('Item not found', 404);
-
             //call Method delete
-            $this->cartProduct->destroy($dataEntity);
+      $this->cartProduct->deleteBy($criteria, $params);
 
             //Response
             $response = ["data" => ""];

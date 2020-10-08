@@ -16,7 +16,7 @@ class EloquentProductOptionRepository extends EloquentBaseRepository implements 
     if (in_array('*', $params->include)) {//If Request all relationships
       $query->with([]);
     } else {//Especific relationships
-      $includeDefault = ['option'];//Default relationships
+      $includeDefault = ['option','productOptionValues'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query

@@ -117,11 +117,8 @@ class TaxRateApiController extends BaseApiController
   {
     \DB::beginTransaction(); //DB Transaction
     try {
-      //Get data
-      $data = $request->input('attributes') ?? [];//Get data
 
-      //Get Parameters from URL.
-      $params = $this->getParamsRequest($request);
+      $this->taxRate->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
 
       $dataEntity = $this->taxRate->getItem($criteria, $params);
 
@@ -151,19 +148,9 @@ class TaxRateApiController extends BaseApiController
   {
     \DB::beginTransaction();
     try {
-      //Get params
-      $params = $this->getParamsRequest($request);
 
-      //Request to Repository
-      $tax = $this->taxRate->getItem($criteria, $params);
+      $this->taxRate->deleteBy($criteria, $this->getParamsRequest($request));
 
-      //Break if no found item
-      if (!$tax) throw new Exception('Item not found', 404);
-
-      //Delete data
-      $this->taxRate->destroy($tax);
-
-      //Response
       $response = ['data' => ''];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {

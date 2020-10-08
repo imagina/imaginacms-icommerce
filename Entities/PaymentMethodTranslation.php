@@ -11,7 +11,9 @@ class PaymentMethodTranslation extends Model
   
     protected $fillable = [
       'title',
-      'description'
+      'description',
+      'payment_method_id',
+      'locale',
     ];
     protected $table = 'icommerce__payment_method_translations';
 }

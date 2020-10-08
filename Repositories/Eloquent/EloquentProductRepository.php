@@ -176,7 +176,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
       
       if (isset($filter->visible) && !empty($filter->visible)) {
-        $query->where("visible", $filter->visible);
+        $query->where("featured", $filter->visible);
       }
       
       if (isset($filter->featured) && is_numeric($filter->featured)) {
@@ -332,9 +332,24 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     return $product;
   }
   
-  public function update($model, $data)
+    public function updateBy($criteria, $data, $params = false)
   {
+        /*== initialize query ==*/
+        $query = $this->model->query();
+
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+            $filter = $params->filter;
     
+            //Update by field
+            if (isset($filter->field))
+                $field = $filter->field;
+        }
+
+        /*== REQUEST ==*/
+        $model = $query->where($field ?? 'id', $criteria)->first();
+
+        if ($model) {
     $model->update($data);
     
     // sync tables
@@ -351,22 +366,36 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     
     if (isset($data['tags']))
-      $model->setTags(array_get($data, 'tags', []));
+            $model->tags()->sync(array_get($data, 'tags', []));
+  
+          //Event to Update media
+          event(new UpdateMedia($model, $data));
+  
+          return $model;
+        }
     
-    //Event to Update media
-    event(new UpdateMedia($model, $data));
-    
-    return $model;
+        return false;
   }
   
-  public function destroy($model)
+  public function deleteBy($criteria, $params = false)
   {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+    
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+      
+      if (isset($filter->field))//Where field
+        $field = $filter->field;
+    }
+    
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    $model ? $model->delete() : false;
     
     //Event to Delete media
     event(new DeleteMedia($model->id, get_class($model)));
-    
-    return $model->delete();
-    
   }
   
   /**

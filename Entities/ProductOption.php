@@ -10,6 +10,8 @@ class ProductOption extends Model
 
   protected $table = 'icommerce__product_option';
 
+  protected $with = ["productOptionValues"];
+  
   protected $fillable = [
     'product_id',
     'option_id',
@@ -30,10 +32,15 @@ class ProductOption extends Model
         return $this->belongsTo(Option::class, 'parent_id');
     }
 
+  public function product()
+  {
+    return $this->belongsTo(Product::class);
+  }
+
 
   public function productOptionValues()
   {
-    return $this->hasMany(ProductOptionValue::class)->with('optionValue');
+    return $this->hasMany(ProductOptionValue::class);
   }
 
   public function orderOptions()

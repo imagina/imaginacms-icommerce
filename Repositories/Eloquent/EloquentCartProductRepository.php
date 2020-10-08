@@ -132,6 +132,58 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     return $cartProduct;
   }
 
+  public function updateBy($criteria, $data, $params){
+
+    // INITIALIZE QUERY
+    $cartProduct = $this->findByAttributesOrOptions($data);
+    
+    if($cartProduct) {
+  
+      // get product options
+      $productOptionValues = $cartProduct->productOptionValues;
+  
+      // get options from front
+      $productOptionValuesFront = array_get($data, 'product_option_values', []);
+  
+      $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
+      $productOptionValuesIdsFront = array_column($productOptionValuesFront,'id');
+      // if is the same option values ids
+      if( array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)){
+        $cartProduct->update($data);
+        
+      }else{ // if not the same options create cart product
+        $cartProduct = $this->model->create($data);
+      }
+      
+      
+    }
+    return $cartProduct;
+  }
+
+  public function deleteBy($criteria, $params)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+
+
+    // REQUEST
+    $model = $query->first();
+
+    if($model) {
+      $model->delete();
+    }
+  }
+  
   public function findByAttributesOrOptions($data){
     // if the request has product without options
     if(!count(array_get($data, 'product_option_values', []))) {

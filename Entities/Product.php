@@ -55,7 +55,7 @@ class Product extends Model implements TaggableInterface
         'freeshipping',
         'order_weight',
         'store_id',
-        'visible',
+        'featured',
         'sum_rating',
     ];
     protected $presenter = ProductPresenter::class;

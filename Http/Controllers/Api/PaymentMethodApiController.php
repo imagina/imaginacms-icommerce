@@ -123,7 +123,6 @@ class PaymentMethodApiController extends BaseApiController
 
           //Get data
           $data = $request->input('attributes');
-          \Log::info($data);
           //Validate Request
           //$this->validateRequestApi(new CustomRequest((array)$data));
 

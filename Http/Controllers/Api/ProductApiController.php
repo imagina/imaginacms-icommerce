@@ -63,14 +63,13 @@ class ProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
-            $dataEntity = $this->product->getItemsBy($params);
+            $products = $this->product->getItemsBy($params);
 
             //Response
-            $response = ['data' => ProductTransformer::collection($dataEntity)];
+            $response = ['data' => ProductTransformer::collection($products)];
 
             //If request pagination add meta-page
-            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
-
+            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($products)] : false;
         } catch (\Exception $e) {
             \Log::error($e);
             $status = $this->getStatusError($e->getCode());
@@ -96,13 +95,13 @@ class ProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
-            $dataEntity = $this->product->getItem($criteria, $params);
+            $product = $this->product->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$dataEntity) throw new \Exception('Item not found', 404);
+            if (!$product) throw new \Exception('Item not found', 404);
 
             //Response
-            $response = ["data" => new ProductTransformer($dataEntity)];
+            $response = ["data" => new ProductTransformer($product)];
 
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
@@ -137,9 +136,7 @@ class ProductApiController extends BaseApiController
             $product = $this->product->create($data);
 
             //Response
-            $response = [
-                "data" =>  "Request successful"
-            ];
+            $response = ["data" => new ProductTransformer($product)];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
             \Log::error($e);
@@ -170,20 +167,15 @@ class ProductApiController extends BaseApiController
           //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
-            $dataEntity = $this->product->getItem($criteria, $params);
+            //Request to Repository
+            $this->product->updateBy($criteria, $data, $params);
             
-            if (!$dataEntity) throw new \Exception('Item not found', 404);
-            
-            $product = $this->product->update($dataEntity, $data);
-            
-            $response = [
-                "data" => new ProductTransformer($product)
-            ];
-            $status = 200;
-            \DB::commit();
+            //Response
+            $response = ["data" => 'Item Updated'];
+            \DB::commit();//Commit to DataBase
         } catch (\Exception $e) {
             \Log::error($e);
-            \DB::rollback();
+            \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }

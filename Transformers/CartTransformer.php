@@ -12,6 +12,7 @@ class CartTransformer extends Resource
         $data = [
             'id' => $this->when($this->id, $this->id),
             'ip' => $this->when($this->ip, $this->ip),
+            'sessionId' => $this->when($this->session_id, $this->session_id),
             'userId' => $this->when($this->user_id, $this->user_id),
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
