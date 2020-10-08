@@ -13,9 +13,14 @@ class RenameActiveColumnToStatusInShippingMethodsTable extends Migration
    */
   public function up()
   {
-    Schema::table('icommerce__shipping_methods', function (Blueprint $table) {
-      $table->renameColumn('status', 'active');
-    });
+    try{
+      Schema::table('icommerce__shipping_methods', function (Blueprint $table) {
+        $table->renameColumn('active', 'status');
+      });
+    }catch(\Exception $e){
+      \Log::info(" There is no column with name 'status' on table 'icommerce__shipping_methods'");
+    }
+   
   }
   
   /**

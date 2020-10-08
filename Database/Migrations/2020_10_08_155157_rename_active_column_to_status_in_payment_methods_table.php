@@ -13,9 +13,14 @@ class RenameActiveColumnToStatusInPaymentMethodsTable extends Migration
    */
   public function up()
   {
-    Schema::table('icommerce__payment_methods', function (Blueprint $table) {
-      $table->renameColumn('active', 'status');
-    });
+    try{
+      Schema::table('icommerce__payment_methods', function (Blueprint $table) {
+        $table->renameColumn('active', 'status');
+      });
+    }catch(\Exception $e){
+      \Log::info(" There is no column with name 'status' on table 'icommerce__payment_methods'");
+    }
+    
   }
   
   /**
