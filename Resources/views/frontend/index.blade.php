@@ -10,12 +10,12 @@
 @includeFirst(['icommerce.partials.preloader','icommerce::frontend.partials.preloader'])
     
 
-<div id="content_index_commerce" class="page mt-3">
+<div id="content_index_commerce" class="page icommerce icommerce-index mt-3">
 
     {{-- TOP PAGE (breadcrumb, orderby, etc --}}
     @includeFirst(['icommerce.index.top-page','icommerce::frontend.index.top-page'])
     
-    {{-- CONTENT (Siderbar,Products GRID --}}
+    {{-- CONTENT (Sidebar,Products GRID --}}
     @includeFirst(['icommerce.index.content','icommerce::frontend.index.content'])
 
 </div>
