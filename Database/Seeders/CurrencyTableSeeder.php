@@ -18,17 +18,19 @@ class CurrencyTableSeeder extends Seeder
   public function run()
   {
     Model::unguard();
+    $copSeed = Currency::where("code","COP")->first();
     
-    Currency::create([
-      "code"	=> "COP",
-      "symbol_left"	=> "$",
-      "symbol_right"	=> "",
-      "decimal_place"=> "",
-      "value"	=> 1,
-      "status"	=> 1,
-      "default_currency"	=> true
-      
-    ]);
+    if(!isset($copSeed->id))
+      Currency::create([
+        "code"	=> "COP",
+        "symbol_left"	=> "$",
+        "symbol_right"	=> "",
+        "decimal_place"=> "",
+        "value"	=> 1,
+        "status"	=> 1,
+        "default_currency"	=> true
+        
+      ]);
     
   }
 }

@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Icommerce\Entities\ItemType;
+use Modules\Icommerce\Entities\ItemTypeTranslation;
 use Modules\Icommerce\Entities\OrderStatus;
 
 class ItemTypeTableSeeder extends Seeder
@@ -28,11 +29,18 @@ class ItemTypeTableSeeder extends Seeder
         
         if ($locale == 'en') {
           $type['title'] = trans($statusTrans, [], $locale);
-          $itemType = ItemType::create($type);
+          $typeCreated = ItemTypeTranslation::where("title",$type['title'])->where("locale",$locale)->first();
+          if(!isset($typeCreated->id))
+            $itemType = ItemType::create($type);
         } else {
           $title = trans($statusTrans, [], $locale);
-          $itemType->translateOrNew($locale)->title = $title;
-          $itemType->save();
+          $typeCreated = ItemTypeTranslation::where("title",$title)->where("locale",$locale)->first();
+          
+          if(!isset($typeCreated->id)){
+            $itemType->translateOrNew($locale)->title = $title;
+            $itemType->save();
+          }
+          
         }
         
       }//End Foreach

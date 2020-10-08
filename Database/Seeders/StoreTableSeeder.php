@@ -17,12 +17,15 @@ class StoreTableSeeder extends Seeder
   {
     Model::unguard();
     
-    Store::create([
-        'name'=>'Default',
-        'address'=>'N/a',
-        'phone'=>'00000000',
-      
-    ]);
+    $default = Store::where("name","Default")->first();
+    
+    if(!isset($default->id))
+      Store::create([
+          'name'=>'Default',
+          'address'=>'N/a',
+          'phone'=>'00000000',
+        
+      ]);
     
   }
 }
