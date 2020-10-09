@@ -178,6 +178,7 @@ const vue_index_commerce = new Vue({
                     toastr[type](menssage);
                 },
               loadCategory(indexCategory){
+                this.preloaded = true;
                 this.indexCategory=indexCategory;
                 this.queryExternalCategory=true;
                 vue_index_commerce.loadProduct = true;
@@ -201,6 +202,7 @@ const vue_index_commerce = new Vue({
                   vue_index_commerce.order_response(response);
                   vue_index_commerce.categorititle=indexCategory.title;
                   vue_index_commerce.loadProduct = false;
+                  this.preloaded = false;
                 });
               },
               getProducts() {

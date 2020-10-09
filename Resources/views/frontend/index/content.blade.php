@@ -4,21 +4,10 @@
         {{-- SIDEBAR --}}
         <div class="col-lg-3 pb-5">
 
-                
-            <div class="text-title">
-                <h1 class="text-main text-uppercase mb-4 px-3">
-                    @{{ categorybase.title }}
-                </h1>
-            </div>
-
-                    
-            {{-- 
-            @includeFirst(['icommerce.widgets.categories','icommerce::frontend.widgets.categories'])
-            @include('icommerce.widgets.categories-children')
-            @include('icommerce.widgets.filter-option')
-            @include('icommerce.widgets.range_price')
-            --}}
-
+           
+            @includeFirst(['icommerce.widgets.categories','icommerce::frontend.widgets.categories'])     
+           
+           
         </div>
 
         {{-- PRODUCTS --}}
