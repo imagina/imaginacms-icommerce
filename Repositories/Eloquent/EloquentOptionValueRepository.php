@@ -135,7 +135,7 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
       $model=  $model->update((array)$data);
       return $model;
     }else{
-      return false;
+      throw new \Exception('Item not found', 404);
     }
     
   }

@@ -205,10 +205,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     } else {
       
+      //Pre filters by default
+      //pre-filter date_available
       $query->where(function ($query) use ($filter) {
         $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
         $query->orWhereNull("date_available");
       });
+      
+      //pre-filter status
+      $query->where("status", 1);
+     
+      //pre-filter quantity and subtract
+      $query->whereRaw("(subtract = 1 and quantity > 0) or (subtract = 0)");
     }
     
     //add default order by
@@ -290,10 +298,20 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
     } else {
+  
+      //Pre filters by default
+      //pre-filter date_available
       $query->where(function ($query) use ($filter) {
         $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
         $query->orWhereNull("date_available");
       });
+  
+      //pre-filter status
+      $query->where("status", 1);
+  
+      //pre-filter quantity and subtract
+      $query->whereRaw("(subtract = 1 and quantity > 0) or (subtract = 0)");
+      
     }
     
     
