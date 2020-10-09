@@ -80,6 +80,7 @@ class IcommerceServiceProvider extends ServiceProvider
         $this->publishConfig('icommerce', 'permissions');
         $this->publishConfig('icommerce', 'settings');
         $this->publishConfig('icommerce', 'config');
+        $this->publishConfig('icommerce', 'settings-fields');
         //$this->app[TagManager::class]->registerNamespace(new Product());
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
