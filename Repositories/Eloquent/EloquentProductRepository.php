@@ -216,7 +216,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $query->where("status", 1);
      
       //pre-filter quantity and subtract
-      $query->whereRaw("(subtract = 1 and quantity > 0) or (subtract = 0)");
+      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
     }
     
     //add default order by
@@ -310,7 +310,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $query->where("status", 1);
   
       //pre-filter quantity and subtract
-      $query->whereRaw("(subtract = 1 and quantity > 0) or (subtract = 0)");
+      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
       
     }
     
