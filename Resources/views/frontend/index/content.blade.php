@@ -1,11 +1,13 @@
  <div class="container pt-5">
     <div class="row">
 
-        {{-- SIDEBAR --}}
+        {{-- WIDGETS --}}
         <div class="col-lg-3 pb-5">
 
            
-            @includeFirst(['icommerce.widgets.categories','icommerce::frontend.widgets.categories'])     
+            @includeFirst(['icommerce.widgets.categories','icommerce::frontend.widgets.categories']) 
+
+            @includeFirst(['icommerce.widgets.range_price','icommerce::frontend.widgets.range_price'])    
            
            
         </div>
