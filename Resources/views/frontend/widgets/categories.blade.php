@@ -2,7 +2,7 @@
 
     <a class="item mb-3" data-toggle="collapse" href="#categoriesP" role="button" aria-expanded="true"
            aria-controls="categoriesP">
-        <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom">
+        <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom text-uppercase">
                 <i class="fa angle float-right" aria-hidden="true"></i>
                 {{trans('icommerce::common.categories')}}
         </h5>
