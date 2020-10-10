@@ -1,25 +1,38 @@
-{{-- <div class="card border-0 card-items mb-3">
-    <div class="card-header bg-primary  py-2 px-3 text-white">
-        {{trans('icommerce::common.range.title')}}
-    </div>
+<div class="filters-range-price pb-4">
 
-    <div class="range_price_contend card-body pl-4 pt-3">
-        <!-- rango -->
-        <div id="slider-range"></div>
-        <!-- valores -->
-        <div class="pt-2 pr-3">
-            <span id="amount" class="text-primary"></span>
+    <div class="filter-order">
+
+        <a class="item mb-3" data-toggle="collapse" href="#rangeP" role="button" aria-expanded="true"
+           aria-controls="rangeP">
+            <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom">
+                <i class="fa angle float-right" aria-hidden="true"></i>
+                {{trans('icommerce::common.range.title')}}
+            </h5>
+        </a>
+
+        <div class="collapse multi-collapse show mb-2" id="rangeP">
+            <ul class="list-group list-group-flush mt-3">
+                <li class="list-group-item border-0 py-0">
+                    <div class="custom-control custom-radio" @click="filter_price(0,100000)">
+                        <input   type="radio" name="rangeP" class="custom-control-input" id="checkRange1">
+                        <label class="custom-control-label" for="checkRange1">$0.00 - $100.000</label>
+                    </div>
+                </li>
+                <li class="list-group-item border-0 py-0">
+                    <div class="custom-control custom-radio" @click="filter_price(100000,200000)">
+                        <input   type="radio" name="rangeP"  class="custom-control-input"  id="checkRange2">
+                        <label class="custom-control-label" for="checkRange2">$100.000 - $200.000</label>
+                    </div>
+                </li>
+                <li class="list-group-item border-0 py-0">
+                    <div class="custom-control custom-radio" @click="filter_price(200000,300000)">
+                        <input   type="radio" name="rangeP"  class="custom-control-input"  id="checkRange3">
+                        <label class="custom-control-label" for="checkRange3">$200.000 - $300.000</label>
+                    </div>
+                </li>
+            </ul>
         </div>
+        
     </div>
-</div>
---}}
 
-<div class="filter-price col-md-3 col-6">
-    <h3 class="text-capitalize">{{trans('icommerce::common.range.title')}}</h3>
-    <div class="d-inline-block">
-        <a class="cursor-pointer d-block w-100" @click="filter_price([min_price,150])"> $0.00 - $150.00</a>
-        <a class="cursor-pointer d-block w-100" @click="filter_price([150,300])">$150.00 - $300.00</a>
-        <a class="cursor-pointer d-block w-100" @click="filter_price([300,450])">$300.00 - $450.00</a>
-        <a class="cursor-pointer d-block w-100" @click="filter_price([450,max_price])">$450.00 +</a>
-    </div>
 </div>
