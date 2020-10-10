@@ -54,7 +54,7 @@
 
 {{-- NOT PRODUCTS MSG --}}
 <div v-if="articles.length==0 && !preloaded">
-    No hay productos en la categoría ...
+    No existen productos disponibles ...
 </div>
 
 
