@@ -12,6 +12,5 @@ return [
         'description' => 'icommerce::common.settings.product-per-page',
         'view' => 'number',
     ],
-
     
 ];
