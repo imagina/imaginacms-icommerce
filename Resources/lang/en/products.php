@@ -87,6 +87,8 @@ return [
     'shopping'              => 'SHOPPING',
     'details'               => 'DETAILS',
     'reviews'               => 'REVIEWS',
+    'sold out'              => 'Sold out',
+    'consult'               => 'Consult',
   ],
   'validation'        => [
     'error delete'          => 'Error: You can\'t delete this product because it has associated elements',

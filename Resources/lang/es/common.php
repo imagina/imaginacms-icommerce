@@ -145,5 +145,8 @@ return [
       'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
     ],
   ],
+  'details' => 'Detalles',
+  'comments' => 'Comentarios',
+
 
 ];

@@ -85,12 +85,12 @@
                 </g>
               </svg>
             </div>
-            COMPRAR
+            {{trans('icommerce::cart.button.add')}}
           </a>
         </div>
         <!-- BUTTON CONSULT -->
         <div  v-else>
-          <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">CONSULTAR</a>
+          <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">{{trans('icommerce::products.messages.consult')}}</a>
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@
   </div>
 
   <div v-else>
-    <p class="label d-inline-block px-3 py-2 mb-0">Producto Agotado </p>
+    <p class="label d-inline-block px-3 py-2 mb-0">{{trans('icommerce::products.messages.sold out')}}</p>
 
     <hr>
   </div>

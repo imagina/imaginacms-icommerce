@@ -86,6 +86,8 @@ return [
         'shopping'                  => 'COMPRANDO',
         'details'                   => 'DETALLES',
         'reviews'                   => 'RESEÑAS',
+        'sold out'                  => 'Agotado',
+        'consult'                   => 'Consult',
     ],
     'validation'        => [
         'error delete'              => 'Error: No se puede eliminar  este producto porque tiene elementos asociados',
