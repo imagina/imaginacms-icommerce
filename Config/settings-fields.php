@@ -17,28 +17,18 @@ return [
       'label' => 'icommerce::settings.product-per-page'
     ],
   ],
-  'filter-categories' => [
-    'value' => false,
-    'name' => 'icommerce::filter-categories',
-    'type' => 'checkbox',
+  'filters' => [
+    'name' => 'filters',
+    'value' => [],
+    'type' => 'select',
     'props' => [
-      'label' => 'icommerce::settings.filter-categories.title'
+      'label' => "icommerce::settings.filters",
+      'multiple' => true,
+      'useChips' => true,
+      'options' => [
+        ['label' => 'Categorias', 'value' => 'filterCategories'],
+        ['label' => 'Precios', 'value' => 'filterPrices'],
+      ]
     ]
-  ],
-  'filter-prices' => [
-    'value' => false,
-    'name' => 'icommerce::filter-prices',
-    'type' => 'checkbox',
-    'props' => [
-      'label' => 'icommerce::settings.filter-prices.title'
-    ]
-  ],
-  'filter-prices-max' => [
-    'value' => "9999999",
-    'name' => 'icommerce::filter-prices-max',
-    'type' => 'input',
-    'props' => [
-      'label' => 'icommerce::settings.filter-prices.max'
-    ]
-  ],
+  ]
 ];

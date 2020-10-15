@@ -8,7 +8,7 @@
   <div id="checkout" class="page checkout">
     
     
-    @component('partials.widgets.breadcrumb')
+    @component('icommerce::frontend.widgets.breadcrumb')
       <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
     @endcomponent
     

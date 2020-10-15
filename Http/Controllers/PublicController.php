@@ -18,6 +18,7 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 use Route;
 
 use Modules\Setting\Contracts\Setting;
+use Modules\Icommerce\Entities\Product;
 
 class PublicController extends BasePublicController
 {
@@ -64,9 +65,11 @@ class PublicController extends BasePublicController
 
     $category = $this->category->findBySlug($slug);
     $categories = $this->category->all();
+    $maxPriceP = (int)Product::get()->max('price');
+    $maxPrice = $maxPriceP ? $maxPriceP : 9999999;
 
     // Get Params to filters
-    $params=$this->_paramsRequest($request,$category->id);
+    $params=$this->_paramsRequest($request,$category->id,$maxPrice);
     $products = $this->product->getItemsBy($params);
 
     // Get Templates
@@ -92,7 +95,7 @@ class PublicController extends BasePublicController
     // Transforms Products
     $products= ProductTransformer::collection($products);
 
-    return view($tpl, compact('category','categories','products','paginate'));
+    return view($tpl, compact('category','categories','products','maxPrice','paginate'));
 
   }
 
@@ -173,19 +176,16 @@ class PublicController extends BasePublicController
   * @param  $request, $category
   * @return array params
   */
-  private function _paramsRequest($request,$category)
+  private function _paramsRequest($request,$category,$maxPrice)
   {
 
     // Get Settings
     $productsPerPage = (int)$this->setting->get('icommerce::product-per-page');
-    $filterPriceMax = (int)$this->setting->get('icommerce::filter-prices-max');
     
     // Validate Default Settings
     $pPerPage = $productsPerPage ? $productsPerPage : 12;
-    $fPriceMax = $filterPriceMax ? $filterPriceMax : 9999999;
-
     
-    $maxPrice=$request->input('maxPrice')??$fPriceMax;
+    $maxPrice=$request->input('maxPrice')??$maxPrice;
     $minPrice=$request->input('minPrice')??0;
     $options=$request->input('options')??null;
     $manufacturer=$request->input('manufacturer')??null;
