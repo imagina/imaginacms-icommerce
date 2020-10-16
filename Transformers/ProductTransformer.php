@@ -62,83 +62,83 @@ class ProductTransformer extends BaseApiTransformer
       'url' => $this->url ?? '#',
       // totalDiscounts deprecated, bad way to calculate discounts
       'totalDiscounts' => $this->present()->totalDiscounts,
-      
+
       'totalTaxes' => $this->getTotalTaxes($filter),
       'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
       'taxClassId' => $this->when($this->tax_class_id, intval($this->tax_class_id)),
     ];
-  
+
     $discount = $this->discount;
     if(isset($discount->id)){
       $data["discount"] = new ProductDiscountTransformer($discount);
     }
-    
+
     /*RELATIONSHIPS*/
     // Tax Class
     $this->ifRequestInclude('addedBy') ?
       $data['addedBy'] = ($this->added_by_id ? new UserTransformer($this->addedBy) : false) : false;
-    
+
     // Tax Class
     $this->ifRequestInclude('taxClass') ?
       $data['taxClass'] = ($this->tax_class_id ? new TaxClassTransformer($this->taxClass) : false) : false;
-    
+
     // Tags
     $this->ifRequestInclude('tags') ?
       $data['tags'] = ($this->tags ? TagTransformer::collection($this->tags) : false) : false;
-    
+
     // Orders
     $this->ifRequestInclude('orders') ?
       $data['orders'] = ($this->orders ? OrderTransformer::collection($this->orders) : false) : false;
-    
+
     // Featured Products
     $this->ifRequestInclude('featuredProducts') ?
       $data['featuredProducts'] = ($this->featuredProducts ? ProductTransformer::collection($this->featuredProducts) : false) : false;
-    
+
     // Manufacturer
     $this->ifRequestInclude('manufacturer') ?
       $data['manufacturer'] = ($this->manufacturer_id ? new ManufacturerTransformer($this->manufacturer) : false) : false;
-    
+
     /* OJO PROBAR
     // Discounts
     $this->ifRequestInclude('discounts') ?
       $data['discounts'] = ($this->discounts ? OrderTransformer::collection($this->discounts) : false) : false;
   */
-    
+
     /* OJO FALTA TRANSFORMER
     // Product Options
     $this->ifRequestInclude('productOptions') ?
       $data['productOptions'] = ($this->productOptions ? $this->productOptions : false) : false;
   */
-    
+
     // Wishlist
     $this->ifRequestInclude('wishlists') ?
       $data['wishlists'] = ($this->wishlists ? WishlistTransformer::collection($this->wishlists) : false) : false;
-    
+
     // Coupons
     $this->ifRequestInclude('coupons') ?
       $data['coupons'] = ($this->coupons ? CouponTransformer::collection($this->coupons) : false) : false;
-    
+
     // Parent
     $this->ifRequestInclude('parent') ?
       $data['parent'] = ($this->parent_id ? new ProductTransformer($this->parent) : false) : false;
-    
+
     // Children
     $this->ifRequestInclude('children') ?
       $data['children'] = ($this->children ? ProductTransformer::collection($this->children) : false) : false;
-    
+
     if (is_module_enabled('Marketplace')) {
       $data['store'] = new MarketplaceStoreTransformer($this->whenLoaded('store'));
     } else {
       $data['store'] = new StoreTransformer($this->whenLoaded('store'));
     }
-    
+
     // TRANSLATIONS
     $filter = json_decode($request->filter);
     // Return data with available translations
     if (isset($filter->allTranslations) && $filter->allTranslations) {
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
-      
+
       foreach ($languages as $lang => $value) {
         if ($this->hasTranslation($lang)) {
           $data[$lang]['name'] = $this->hasTranslation($lang) ?
@@ -156,10 +156,20 @@ class ProductTransformer extends BaseApiTransformer
         }
       }
     }
-    
+
+    $customProductIncludes = config('asgard.icommerce.config.customProductIncludes');
+
+    foreach ($customProductIncludes as $include=>$customProductInclude){
+      if($customProductInclude['multiple']){
+        $data[$include] = $customProductInclude['path']::collection($this->whenLoaded($include));
+      }else{
+        $data[$include] = new $customProductInclude['path']($this->whenLoaded($include));
+      }
+    }
+
     return $data;
   }
-  
+
   private function getTotalTaxes($filter)
   {
     $basePrice = $this->price ? $this->price : 0;
