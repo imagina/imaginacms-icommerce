@@ -157,13 +157,13 @@ class ProductTransformer extends BaseApiTransformer
       }
     }
 
-    $customUserIncludes = config('asgard.icommerce.config.customProductIncludes');
+    $customProductIncludes = config('asgard.icommerce.config.customProductIncludes');
 
-    foreach ($customUserIncludes as $include=>$customUserInclude){
-      if($customUserInclude['multiple']){
-        $data[$include] = $customUserInclude['path']::collection($this->whenLoaded($include));
+    foreach ($customProductIncludes as $include=>$customProductInclude){
+      if($customProductInclude['multiple']){
+        $data[$include] = $customProductInclude['path']::collection($this->whenLoaded($include));
       }else{
-        $data[$include] = new $customUserInclude['path']($this->whenLoaded($include));
+        $data[$include] = new $customProductInclude['path']($this->whenLoaded($include));
       }
     }
 
