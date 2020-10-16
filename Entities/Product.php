@@ -360,7 +360,7 @@ class Product extends Model implements TaggableInterface
     public function __call($method, $parameters)
     {
       #i: Convert array to dot notation
-      $config = implode('.', ['asgard.icommerce.config.relations', $method]);
+      $config = implode('.', ['asgard.icommerce.config.productRelations', $method]);
 
       #i: Relation method resolver
       if (config()->has($config)) {
