@@ -245,11 +245,11 @@ class Product extends Model implements TaggableInterface
         }
 
     }
-    
+
     public function getDiscountAttribute()
     {
       $now = date('Y-m-d');
-  
+
       $userId = Auth::user() ? Auth::user()->id : 0;
       $departments = [];
       if ($userId){
@@ -257,9 +257,9 @@ class Product extends Model implements TaggableInterface
           ->table('iprofile__user_department')->select("department_id")
           ->where('user_id', $userId)
           ->pluck('department_id');
-    
+
       }
-  
+
       $discount = $this->discounts()
         ->orderBy('priority', 'desc')
         ->orderBy('created_at', 'asc')
@@ -274,7 +274,7 @@ class Product extends Model implements TaggableInterface
 
       if(isset($discount->id)){
         return $discount;
-    
+
       }else{
         return null;
       }
@@ -359,18 +359,19 @@ class Product extends Model implements TaggableInterface
      */
     public function __call($method, $parameters)
     {
-        #i: Convert array to dot notation
-        $config = implode('.', ['asgard.iblog.config.relations', $method]);
+      #i: Convert array to dot notation
+      $config = implode('.', ['asgard.icommerce.config.relations', $method]);
 
-        #i: Relation method resolver
-        if (config()->has($config)) {
-            $function = config()->get($config);
+      #i: Relation method resolver
+      if (config()->has($config)) {
+        $function = config()->get($config);
+        $bound = $function->bindTo($this);
 
-            return $function($this);
-        }
+        return $bound();
+      }
 
-        #i: No relation found, return the call to parent (Eloquent) to handle it.
-        return parent::__call($method, $parameters);
+      #i: No relation found, return the call to parent (Eloquent) to handle it.
+      return parent::__call($method, $parameters);
     }
 
 }
