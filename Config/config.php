@@ -90,7 +90,7 @@ return [
     */
   ],
   //add: product relations like users relations style
-  'relations' =>[
+  'productRelations' =>[
     /*
     'post' => function () {
       return $this->hasOne(
