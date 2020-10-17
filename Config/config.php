@@ -81,22 +81,22 @@ return [
       'housands_sep' => ','
   ],
   //add: custom product includes (if they are empty icommerce module will be using default includes) (slim)
-  'customProductIncludes'=>[
-    /*
-    'post'=>[
-      'path'=>'Modules\Iblog\Transformers\PostTransformer', //this is the transformer path
-      'multiple'=>false, //if is one-to-many, multiple must be set to true
-    ],
-    */
+  'includes'=>[
+    /*'ProductTransformer'=>[
+      'post'=>[
+        'path'=>'Modules\Iblog\Transformers\PostTransformer', //this is the transformer path
+        'multiple'=>false, //if is one-to-many, multiple must be set to true
+      ],
+    ]*/
   ],
   //add: product relations like users relations style
-  'productRelations' =>[
-    /*
-    'post' => function () {
-      return $this->hasOne(
-        \Modules\Iblog\Entities\Post::class, 'product_id');
-    },
-    */
+  'relations' =>[
+    /*'product'=>[
+      'post' => function () {
+        return $this->hasOne(
+          \Modules\Iblog\Entities\Post::class, 'product_id');
+      },
+    ]*/
   ]
   //end custom includes and transformers
 ];
