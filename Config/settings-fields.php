@@ -6,7 +6,7 @@ return [
     'value' => null,
     'type' => 'input',
     'props' => [
-      'label' => 'icommerce::common.settings.emails'
+      'label' => '(trans)icommerce::common.settings.emails'
     ],
   ],
   'product-per-page' => [
@@ -14,7 +14,7 @@ return [
     'value' => null,
     'type' => 'input',
     'props' => [
-      'label' => 'icommerce::common.settings.product-per-page'
+      'label' => '(trans)icommerce::common.settings.product-per-page'
     ],
   ],
 ];
