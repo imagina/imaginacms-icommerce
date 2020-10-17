@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Icommerce\Entities\Status;
+use Modules\Ihelpers\Traits\Transformeable;
 use Modules\Iprofile\Transformers\UserTransformer;
 use Modules\Ihelpers\Transformers\BaseApiTransformer;
 use Modules\Marketplace\Transformers\StoreTransformer as MarketplaceStoreTransformer;
@@ -11,6 +12,8 @@ use Modules\Icurrency\Support\Facades\Currency;
 
 class ProductTransformer extends BaseApiTransformer
 {
+  use Transformeable;
+
   public function toArray($request)
   {
     $filter = json_decode($request->filter);
@@ -157,6 +160,8 @@ class ProductTransformer extends BaseApiTransformer
         }
       }
     }
+
+    $this->customIncludes($data);
 
     return $data;
   }

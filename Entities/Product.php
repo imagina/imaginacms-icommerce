@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Ihelpers\Traits\Relationable;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,Rateable;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';
@@ -245,11 +246,11 @@ class Product extends Model implements TaggableInterface
         }
 
     }
-    
+
     public function getDiscountAttribute()
     {
       $now = date('Y-m-d');
-  
+
       $userId = Auth::user() ? Auth::user()->id : 0;
       $departments = [];
       if ($userId){
@@ -257,9 +258,9 @@ class Product extends Model implements TaggableInterface
           ->table('iprofile__user_department')->select("department_id")
           ->where('user_id', $userId)
           ->pluck('department_id');
-    
+
       }
-  
+
       $discount = $this->discounts()
         ->orderBy('priority', 'desc')
         ->orderBy('created_at', 'asc')
@@ -274,7 +275,7 @@ class Product extends Model implements TaggableInterface
 
       if(isset($discount->id)){
         return $discount;
-    
+
       }else{
         return null;
       }
@@ -349,28 +350,6 @@ class Product extends Model implements TaggableInterface
 
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
 
-    }
-
-    /**
-     * Magic Method modification to allow dynamic relations to other entities.
-     * @return string
-     * @var $destination_path
-     * @var $value
-     */
-    public function __call($method, $parameters)
-    {
-        #i: Convert array to dot notation
-        $config = implode('.', ['asgard.iblog.config.relations', $method]);
-
-        #i: Relation method resolver
-        if (config()->has($config)) {
-            $function = config()->get($config);
-
-            return $function($this);
-        }
-
-        #i: No relation found, return the call to parent (Eloquent) to handle it.
-        return parent::__call($method, $parameters);
     }
 
 }
