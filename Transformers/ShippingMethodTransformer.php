@@ -19,6 +19,7 @@ class ShippingMethodTransformer extends Resource
       'mainImage' => $this->mainImage,
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
+      'files' => $this->transformerFiles()
     ];
 
     switch($this->name){

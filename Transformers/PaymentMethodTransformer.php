@@ -19,7 +19,8 @@ class PaymentMethodTransformer extends Resource
             'options' => $this->when($this->options, $this->options),
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
-            'activevalue'=>$this->active
+            'activevalue'=>$this->active,
+            'files' => $this->transformerFiles()
         ];
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
@@ -44,7 +45,7 @@ class PaymentMethodTransformer extends Resource
                 ]);
 
 
-  
+
     }
         $filter = json_decode($request->filter);
 
