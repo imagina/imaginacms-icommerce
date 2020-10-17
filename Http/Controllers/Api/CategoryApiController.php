@@ -136,15 +136,9 @@ class CategoryApiController extends BaseApiController
 
             //Validate Request
             $this->validateRequestApi(new UpdateCategoryRequest($data));
-
-            //Request to Repository
-            $category = $this->category->getItem($criteria, $params);
-
-            //Break if no found item
-            if (!$category) throw new \Exception('Item not found', 404);
-
+            
             //Update data
-            $category = $this->category->update($category, $data);
+            $category = $this->category->updateBy($criteria, $data,$params);
 
             //Response
             $response = ['data' => 'Item Updated'];
@@ -168,14 +162,8 @@ class CategoryApiController extends BaseApiController
             //Get params
             $params = $this->getParamsRequest($request);
 
-            //Request to Repository
-            $category = $this->category->getItem($criteria, $params);
-
-            //Break if no found item
-            if (!$category) throw new \Exception('Item not found', 404);
-
             //Delete data
-            $this->category->destroy($category);
+            $this->category->deleteBy($criteria, $params);
 
             //Response
             $response = ['data' => ''];
