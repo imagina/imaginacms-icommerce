@@ -20,7 +20,7 @@
 			{{-- Top Content , Products, Pagination --}}
 			<div class="col-lg-9">
 				
-				@includeFirst(['icommerce.filters.index','icommerce::frontend.index.top-content'])
+				@includeFirst(['icommerce.index.top-content','icommerce::frontend.index.top-content'])
 
 			</div>
 			
@@ -29,5 +29,7 @@
 
 </div>
 
-
 @stop
+
+{{-- VUEJS SCRIPTS--}}
+@includeFirst(['icommerce.index.scripts','icommerce::frontend.index.scripts'])
