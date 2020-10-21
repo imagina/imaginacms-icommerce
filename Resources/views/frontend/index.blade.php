@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.livewire')
 
 {{-- Meta --}}
 @includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
@@ -20,7 +20,24 @@
 			{{-- Top Content , Products, Pagination --}}
 			<div class="col-lg-9">
 				
-				@includeFirst(['icommerce.index.top-content','icommerce::frontend.index.top-content'])
+				@includeFirst(['icommerce.index.top-content',
+				'icommerce::frontend.index.top-content'])
+				
+				<hr>
+				<h2>Prueba de Livewire</h2>
+				<hr>
+				{{--
+				@livewire('counter')
+				--}}
+				{{--
+				@livewire(Modules\Icommerce\Http\Livewire\Counter::class)
+				--}}
+				
+				@livewire('icommerce::counter')
+
+				@livewire('icommerce::test')
+				
+				<hr>
 
 			</div>
 			

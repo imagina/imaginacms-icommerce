@@ -97,6 +97,12 @@ return [
           \Modules\Iblog\Entities\Post::class, 'product_id');
       },
     ]*/
+  ],
+  //add components livewire
+  'components' => [
+    '1' =>[
+      'name' => 'icommerce::counter',
+      'path' => '\Modules\Icommerce\Http\Livewire\Counter::class'
+    ]
   ]
-  //end custom includes and transformers
 ];

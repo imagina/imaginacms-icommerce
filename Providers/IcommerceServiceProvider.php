@@ -11,7 +11,7 @@ use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
 
-
+use Livewire\Livewire;
 class IcommerceServiceProvider extends ServiceProvider
 {
     use CanPublishConfiguration;
@@ -85,6 +85,7 @@ class IcommerceServiceProvider extends ServiceProvider
         //$this->app[TagManager::class]->registerNamespace(new Product());
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
+        $this->registerComponentsLivewire();
     }
 
     /**
@@ -568,6 +569,25 @@ class IcommerceServiceProvider extends ServiceProvider
 
         $this->app['command.icommerce.update-cart'] = $this->app->make(UpdateCarts::class);
         $this->commands(['ccommand.icommerce.update-cart']);
+    }
+
+    /**
+     * Register components Livewire
+     */
+
+    private function registerComponentsLivewire(){
+
+        Livewire::component('icommerce::counter',\Modules\Icommerce\Http\Livewire\Counter::class);
+        Livewire::component('icommerce::test',\Modules\Icommerce\Http\Livewire\Test::class);
+        /*
+        $components = config('asgard.icommerce.config.components');
+        if($components){
+            foreach ($components as $component) {
+                Livewire::component($component['name'],$component['path']);
+            }
+        }
+        */
+        
     }
 
 
