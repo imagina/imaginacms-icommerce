@@ -20,7 +20,7 @@ class PaymentMethodTransformer extends Resource
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
             'activevalue'=>$this->active,
-            'files' => $this->transformerFiles()
+            'mediaFiles' => $this->mediaFiles()
         ];
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
