@@ -13,8 +13,8 @@
 
 			{{-- Filters --}}
 			<div class="col-lg-3">
-				@includeFirst(['icommerce.filters.index',
-				'icommerce::frontend.filters.index'])
+				@includeFirst(['icommerce.index.filters',
+				'icommerce::frontend.index.filters'])
 			</div>
 
 			{{-- Top Content , Products, Pagination --}}

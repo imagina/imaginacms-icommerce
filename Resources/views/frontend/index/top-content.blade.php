@@ -18,7 +18,7 @@
 
 		{{-- Filter - Order By --}}
 		<div class="col-lg-5">
-			@includeFirst(['icommerce.filters.order-by','icommerce::frontend.filters.order-by']) 
+			@livewire('icommerce::filter-orderby') 
 		</div>
 
 		{{-- Change Layout --}}
