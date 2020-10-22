@@ -58,9 +58,11 @@
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.city")}}:</b> @{{billingAddress.city}}</p>
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.state")}}:</b> @{{billingAddress.state}}</p>
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.country")}}:</b> @{{billingAddress.country}}</p>
-          
+  
+          <!--17-09-2020::JCEC - segunda version del address extra fields
+                                      toca irlo mejorando-->
           @php
-            $addressesExtraFields = is_array(setting('iprofile::userAddressesExtraFields')) ? setting('iprofile::userAddressesExtraFields') : is_array(json_decode(setting('iprofile::userAddressesExtraFields'))) ? json_decode(setting('iprofile::userAddressesExtraFields')) : json_decode(json_encode(setting('iprofile::userAddressesExtraFields')));
+            $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
           @endphp
           @foreach($addressesExtraFields as $extraField)
             @if($extraField->active)

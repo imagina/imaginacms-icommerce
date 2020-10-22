@@ -182,10 +182,10 @@
           </div>
           
           
-          <!--17-09-2020::JCEC - primera version del address extra fields
+          <!--17-09-2020::JCEC - segunda version del address extra fields
                                         toca irlo mejorando-->
           @php
-            $registerExtraFields = is_array(setting('iprofile::registerExtraFields')) ? setting('iprofile::registerExtraFields') : is_array(json_decode(setting('iprofile::registerExtraFields'))) ? json_decode(setting('iprofile::registerExtraFields')) : json_decode(json_encode(setting('iprofile::registerExtraFields')));
+            $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
           @endphp
           @foreach($addressesExtraFields as $extraField)
             @if($extraField->active)
