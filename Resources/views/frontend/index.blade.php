@@ -23,19 +23,9 @@
 				@includeFirst(['icommerce.index.top-content',
 				'icommerce::frontend.index.top-content'])
 				
-				<hr>
-				<h2>Prueba de Livewire</h2>
-				<hr>
-				{{--
-				@livewire('counter')
-				--}}
-				{{--
-				@livewire(Modules\Icommerce\Http\Livewire\Counter::class)
-				--}}
 				
-				@livewire('icommerce::counter')
-
-				@livewire('icommerce::test')
+				@livewire('icommerce::products-list')
+				
 				
 				<hr>
 

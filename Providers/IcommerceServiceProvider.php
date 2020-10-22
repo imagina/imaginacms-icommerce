@@ -574,20 +574,10 @@ class IcommerceServiceProvider extends ServiceProvider
     /**
      * Register components Livewire
      */
-
     private function registerComponentsLivewire(){
 
-        Livewire::component('icommerce::counter',\Modules\Icommerce\Http\Livewire\Counter::class);
-        Livewire::component('icommerce::test',\Modules\Icommerce\Http\Livewire\Test::class);
-        /*
-        $components = config('asgard.icommerce.config.components');
-        if($components){
-            foreach ($components as $component) {
-                Livewire::component($component['name'],$component['path']);
-            }
-        }
-        */
-        
+        Livewire::component('icommerce::products-list',\Modules\Icommerce\Http\Livewire\ProductsList::class);
+      
     }
 
 
