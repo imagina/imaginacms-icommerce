@@ -19,7 +19,7 @@ class OptionValueTransformer extends Resource
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
       'option' => new OptionTransformer($this->whenLoaded('option')),
       'mainImage' => $this->mainImage,
-      'files' => $this->transformerFiles()
+      'mediaFiles' => $this->mediaFiles()
     ];
 
     $filter = json_decode($request->filter);
