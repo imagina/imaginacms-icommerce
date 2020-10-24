@@ -58,19 +58,17 @@
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.city")}}:</b> @{{billingAddress.city}}</p>
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.state")}}:</b> @{{billingAddress.state}}</p>
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.country")}}:</b> @{{billingAddress.country}}</p>
-  
-          <!--17-09-2020::JCEC - segunda version del address extra fields
-                                      toca irlo mejorando-->
-          @php
-            $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
-          @endphp
-          @foreach($addressesExtraFields as $extraField)
-            @if($extraField->active)
-              <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b> @{{billingAddress[@php echo $extraField->field; @endphp ] || '-'}}</p>
-            
-            @endif
-          @endforeach
-          
+          <div v-if="billingAddress.options">
+            @php
+              $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
+            @endphp
+            @foreach($addressesExtraFields as $extraField)
+              @if($extraField->active)
+                <p class="card-text m-0" v-if="billingAddress.options.{{$extraField->field}}"><b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b> @{{billingAddress.options[@php echo "'".$extraField->field."'"; @endphp ] || '-'}}</p>
+              
+              @endif
+            @endforeach
+          </div>
           <p class="card-text m-0" v-if="billingAddress.default">
             {{trans("iprofile::addresses.form.default")}}
             <span v-if="billingAddress.type == 'billing'">({{trans("iprofile::addresses.form.billing")}})</span>
@@ -137,7 +135,7 @@
         </div>
         <div class="form-group">
           <label for="payment_telephone">{{ trans('icommerce::billing_details.form.telephone') }}</label>
-          <input type="text" :class="'form-control '+ ($v.billingData.telephone.$error ? 'is-invalid' : '')" id="paymentTelephone" name="payment_telephone"
+          <input type="number" :class="'form-control '+ ($v.billingData.telephone.$error ? 'is-invalid' : '')" id="paymentTelephone" name="payment_telephone"
                  v-model="billingData.telephone">
         </div>
         
@@ -173,26 +171,108 @@
                  :class="'form-control '+ ($v.billingData.city.$error ? 'is-invalid' : '')"
                  v-model="billingData.city">
         </div>
+  
         
-        
-        <!--17-09-2020::JCEC - primera version del address extra fields
-                                      toca irlo mejorando-->
-        @php
-          $registerExtraFields = is_array(setting('iprofile::registerExtraFields')) ? setting('iprofile::registerExtraFields') : is_array(json_decode(setting('iprofile::registerExtraFields'))) ? json_decode(setting('iprofile::registerExtraFields')) : json_decode(json_encode(setting('iprofile::registerExtraFields')));
-        @endphp
+        @php($addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]")))
         @foreach($addressesExtraFields as $extraField)
+          {{-- if is active--}}
           @if($extraField->active)
-            <div class="form-group ">
-              <label for="{{$extraField->field}}">{{trans("iprofile::frontend.form.$extraField->field")}}</label>
-              <input id="billing{{$extraField->field}}"
-                     type="text"
-                     class="form-control"
-                     v-model="billingData.options.{{$extraField->field}}">
-            
-            </div>
-          @endif
-        @endforeach
+      
+            {{-- form group--}}
+            <div class="form-group">
         
+              {{-- label --}}
+              <label for="{{$extraField->field}}">{{trans("iprofile::frontend.form.$extraField->field")}}</label>
+        
+              {{-- Generic input --}}
+              @if( !in_array($extraField->type, ["select","textarea"]) )
+    
+                {{-- Document input --}}
+                @if($extraField->type == "documentType")
+                  
+                  {{-- foreach options --}}
+                  @if(isset($extraField->availableOptions) && is_array($extraField->availableOptions) && count($extraField->availableOptions))
+                    @php($optionValues = [])
+                    @foreach($extraField->availableOptions as $availableOption)
+                      {{-- finding if the availableOption exist in the options and get the full option object --}}
+                      @foreach ($extraField->options as $option)
+                        @if($option->value == $availableOption)
+                          @php($optionValues[] = $option)
+                        @endif
+                      @endforeach
+                    @endforeach
+                  @else
+                    @php($optionValues = $extraField->options)
+                  @endif
+                  
+                  {{-- Select Document Type --}}
+                  <select id="billing{{$extraField->field}}" v-model="billingData.options.{{$extraField->field}}"
+                          name="billing{{$extraField->field}}" class="form-control">
+                  
+                    {{-- select options --}}
+                    @foreach($optionValues as $option)
+                      <option value="{{$option->value}}">{{$option->label}}</option>
+        
+                    @endforeach {{--- end foreach options --}}
+                  </select>
+                  
+                  </div>
+                  {{-- DocumentNumber input --}}
+                  <div class="form-group">
+            
+                    {{-- label --}}
+                    <label for="billingdocumentNumber">{{trans("iprofile::frontend.form.documentNumber")}}</label>
+                    <input id="billingdocumentNumber"
+                           type="number"
+                           class="form-control"
+                           v-model="billingData.options.documentNumber"/>
+                 
+                @else
+                  <input id="billing{{$extraField->field}}"
+                         type="{{$extraField->type}}"
+                         class="form-control"
+                         v-model="billingData.options.{{$extraField->field}}"/>
+                @endif
+              @else
+                {{-- if is select --}}
+                @if($extraField->type == "select")
+                  {{-- foreach options --}}
+                  @if(isset($extraField->availableOptions) && is_array($extraField->availableOptions) && count($extraField->availableOptions))
+                    @php($optionValues = [])
+                    @foreach($extraField->availableOptions as $availableOption)
+                      {{-- finding if the availableOption exist in the options and get the full option object --}}
+                      @foreach ($extraField->options as $option)
+                        @if($option->value == $availableOption)
+                          @php($optionValues[] = $option)
+                        @endif
+                      @endforeach
+                    @endforeach
+                  @else
+                    @php($optionValues = $extraField->options)
+                  @endif
+            
+                  {{-- Select --}}
+                  <select id="billing{{$extraField->field}}" v-model="billingData.options.{{$extraField->field}}"
+                          name="billing{{$extraField->field}}" class="form-control">
+                    {{-- validate availableOptions and options --}}
+                    @foreach($optionValues as $option)
+                      <option value="{{$option->value}}">{{$option->label}}</option>
+              
+                    @endforeach {{--- end foreach options --}}
+                  </select>
+                @else
+                  {{-- if is textarea --}}
+                  @if($extraField->type == "textarea")
+                    {{-- Textarea --}}
+                    <textarea id="billing{{$extraField->field}}"
+                              v-model="billingData.options.{{$extraField->field}}" class="form-control" cols="30" rows="3"></textarea>
+                  @endif {{--- end if is textarea --}}
+                @endif {{-- end if is select --}}
+              @endif {{-- end if is generic input --}}
+            </div>
+          @endif {{-- end if is active --}}
+        @endforeach
+      
         <div class="form-check" >
           
           <label class="form-check-label">
