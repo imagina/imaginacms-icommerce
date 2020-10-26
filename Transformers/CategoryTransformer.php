@@ -17,7 +17,7 @@ class CategoryTransformer extends Resource
             'storeId' => $this->when($this->store_id, $this->store_id),
             'showMenu' => $this->when(isset($this->show_menu), ((int)$this->show_menu )),
             'featured' => $this->when(isset($this->featured), ((int)$this->featured )),
-            'sortOrder' => (int)$this->sort_order,
+            'sortOrder' => $this->when(isset($this->sort_order), ((int)$this->sort_order )),
             'metaTitle' => $this->meta_title ?? '',
             'metaDescription' => $this->meta_description ?? '',
             'options' => $this->when($this->options, $this->options),
