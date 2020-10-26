@@ -28,7 +28,8 @@ class Category extends Model
         'options',
         'show_menu',
         'featured',
-        'store_id'
+        'store_id',
+        'sort_order',
     ];
 
 
