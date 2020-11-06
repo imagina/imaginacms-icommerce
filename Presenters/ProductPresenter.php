@@ -21,6 +21,7 @@ class ProductPresenter extends Presenter
   private $post;
 
   private $department;
+  private $setting;
 
   public function __construct($entity)
   {
@@ -28,6 +29,7 @@ class ProductPresenter extends Presenter
     $this->post = app('Modules\Icommerce\Repositories\ProductRepository');
     $this->status = app('Modules\Icommerce\Entities\Status');
     $this->department = app('Modules\Iprofile\Repositories\DepartmentRepository');
+    $this->setting = app('Modules\Setting\Contracts\Setting');
   }
 
   /**
@@ -175,7 +177,8 @@ class ProductPresenter extends Presenter
   public function price(){
     $price=$this->entity->price;
     $auth=\Auth::user();
-    if(!$auth){
+    $priceList = $this->setting->get('icommerce::product-price-list');
+    if($auth && $priceList){
       if(count($this->entity->priceLists->where('status',1))>0){
         foreach($this->entity->priceLists as $pList){
           if($pList->related_entity=="Modules\Iprofile\Entities\Role"){

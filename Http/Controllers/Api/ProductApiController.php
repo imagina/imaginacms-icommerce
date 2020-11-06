@@ -248,7 +248,7 @@ class ProductApiController extends BaseApiController
             $product->ratings()->save($rating);
             $product->update(['sum_rating' => $oldRating + $data['rating']]);
 
-            $checkbox = $this->setting->get('points-per-rating-product-checkbox');
+            $checkbox = $this->setting->get('iredeems::points-per-rating-product-checkbox');
             if ($checkbox) {
                 $points = $this->setting->get('iredeems::points-per-rating-product');
 
