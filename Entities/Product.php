@@ -7,17 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
-use Modules\Ihelpers\Traits\Relationable;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
-use willvincent\Rateable\Rateable;
 use Illuminate\Support\Facades\Auth;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';

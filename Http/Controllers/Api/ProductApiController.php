@@ -61,7 +61,6 @@ class ProductApiController extends BaseApiController
         try {
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
-
             //Request to Repository
             $products = $this->product->getItemsBy($params);
 
@@ -131,7 +130,7 @@ class ProductApiController extends BaseApiController
 
             //Validate Request
             $this->validateRequestApi(new CreateProductRequest($data));
-  
+
             //Create item
             $product = $this->product->create($data);
 
@@ -161,15 +160,15 @@ class ProductApiController extends BaseApiController
         try {
           //Get data
             $data = $request->input('attributes') ?? [];
-            
+
             $this->validateRequestApi(new UpdateProductRequest($data));
-  
+
           //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
             $this->product->updateBy($criteria, $data, $params);
-            
+
             //Response
             $response = ["data" => 'Item Updated'];
             \DB::commit();//Commit to DataBase

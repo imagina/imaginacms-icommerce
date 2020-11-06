@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
 use Modules\Icommerce\Http\Requests\PriceListRequest;
+use Modules\Icommerce\Http\Requests\UpdatePriceListRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -62,20 +63,26 @@ class PriceListApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
-      //Request to Repository
-      $criteria = $this->priceList->getItem($criteria, $this->getParamsRequest($request));
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
 
-      $response = [
-        'data' => $criteria ? new PriceListTransformer($criteria) : '',
-      ];
+      //Request to Repository
+      $criteria = $this->priceList->getItem($criteria, $params);
+
+      //Break if no found item
+      if (!$criteria) throw new \Exception('Item not found', 404);
+
+      //Response
+      $response = ["data" => new PriceListTransformer($criteria)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($criteria)] : false;
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
@@ -84,18 +91,32 @@ class PriceListApiController extends BaseApiController
    */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->priceList->create($request->all());
+        $data = $request->input('attributes') ?? [];//Get data
+        //Validate Request
+        $this->validateRequestApi(new PriceListRequest($data));
 
-      $response = ['data' => ''];
+        //Create item
+        $entity = $this->priceList->create($data);
+        //Fresh data
+        $entity=$entity->fresh();
+        //Job
+        if(isset($data['productIds']) && $entity->criteria=="percentage"){
+          \Modules\Icommerce\Jobs\SaveProductsPriceLists::dispatch(json_decode($data['productIds']),$entity);
+        }
 
+        //Response
+        $response = ["data" => new PriceListTransformer($entity)];
+        \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+        \Log::error($e);
+        \DB::rollback();//Rollback to Data Base
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
@@ -105,19 +126,28 @@ class PriceListApiController extends BaseApiController
    */
   public function update($criteria, Request $request)
   {
+
+    \DB::beginTransaction();
     try {
+        $params = $this->getParamsRequest($request);
+        $data = $request->input('attributes');
 
-      $this->priceList->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+        //Validate Request
+        $this->validateRequestApi(new UpdatePriceListRequest($data));
 
-      $response = ['data' => ''];
+        //Update data
+        $category = $this->priceList->updateBy($criteria, $data,$params);
 
+        //Response
+        $response = ['data' => 'Item Updated'];
+        \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+        \DB::rollback();//Rollback to Data Base
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
     }
     return response()->json($response, $status ?? 200);
+
   }
 
   /**
@@ -126,18 +156,24 @@ class PriceListApiController extends BaseApiController
    */
   public function delete($criteria, Request $request)
   {
+
+    \DB::beginTransaction();
     try {
+        //Get params
+        $params = $this->getParamsRequest($request);
 
-      $this->priceList->deleteBy($criteria, $this->getParamsRequest($request));
+        //Delete data
+        $this->priceList->deleteBy($criteria, $params);
 
-      $response = ['data' => ''];
-
+        //Response
+        $response = ['data' => ''];
+        \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+        \DB::rollback();//Rollback to Data Base
+        $status = $this->getStatusError($e->getCode());
+        $response = ["errors" => $e->getMessage()];
     }
     return response()->json($response, $status ?? 200);
+    
   }
 }

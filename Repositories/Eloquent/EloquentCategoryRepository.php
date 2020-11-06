@@ -71,11 +71,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             if (isset($filter->store)) {
                 $query->where("store_id", $filter->store);
             }
-      
+
       if (isset($filter->featured) && is_numeric($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
-      
+
             //Filter by parent ID
             if (isset($filter->parentId)) {
                 $query->where("parent_id", $filter->parentId);
@@ -172,16 +172,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     {
     /*== initialize query ==*/
     $query = $this->model->query();
-    
+
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       //Update by field
       if (isset($filter->field))
         $field = $filter->field;
     }
-    
+
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
         event(new UpdateMedia($model, $data));//Event to Update media
@@ -192,15 +192,15 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     {
     /*== initialize query ==*/
     $query = $this->model->query();
-    
+
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field))//Where field
         $field = $filter->field;
     }
-    
+
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
         event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
@@ -208,4 +208,3 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     }
 
 }
-
