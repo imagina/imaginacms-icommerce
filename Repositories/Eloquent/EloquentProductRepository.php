@@ -8,6 +8,8 @@ use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
+use Modules\Icommerce\Events\ProductWasUpdated;
+use Modules\Icommerce\Events\ProductWasCreated;
 use Illuminate\Database\Eloquent\Builder;
 
 //Events media
@@ -352,13 +354,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     //Event to ADD media
     event(new CreateMedia($product, $data));
 
+
+    event(new ProductWasCreated($product));
+
     return $product;
   }
 
-    public function updateBy($criteria, $data, $params = false)
+  public function updateBy($criteria, $data, $params = false)
   {
-        /*== initialize query ==*/
-        $query = $this->model->query();
+    /*== initialize query ==*/
+    $query = $this->model->query();
 
         /*== FILTER ==*/
         if (isset($params->filter)) {
@@ -372,14 +377,14 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         /*== REQUEST ==*/
         $model = $query->where($field ?? 'id', $criteria)->first();
 
-        if ($model) {
-    $model->update($data);
+    if ($model) {
+      $model->update($data);
 
-    // sync tables
-    $model->categories()->sync(array_merge(array_get($data, 'categories', []), [$model->category_id]));
-    /*
-    if (isset($data['product_options']))
-    $model->productOptions()->sync(array_get($data, 'product_options', []));
+      // sync tables
+      $model->categories()->sync(array_merge(array_get($data, 'categories', []), [$model->category_id]));
+      /*
+      if (isset($data['product_options']))
+      $model->productOptions()->sync(array_get($data, 'product_options', []));
 
     if (isset($data['option_values']))
         $model->optionValues()->sync(array_get($data, 'option_values', []));
@@ -394,16 +399,18 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $model->relatedProducts()->sync(array_get($data, 'related_products', []));
 
 
-    if (isset($data['tags']))
-            $model->tags()->sync(array_get($data, 'tags', []));
+      if (isset($data['tags']))
+      $model->tags()->sync(array_get($data, 'tags', []));
 
-          //Event to Update media
-          event(new UpdateMedia($model, $data));
+      //Event to Update media
+      event(new UpdateMedia($model, $data));
 
-          return $model;
-        }
+      event(new ProductWasUpdated($model));
 
-        return false;
+      return $model;
+    }
+
+    return false;
   }
 
   public function deleteBy($criteria, $params = false)

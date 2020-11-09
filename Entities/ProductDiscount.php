@@ -8,9 +8,9 @@ use Modules\Iprofile\Entities\Department;
 
 class ProductDiscount extends Model
 {
-  
+
   protected $table = 'icommerce__product_discounts';
-  
+
   protected $fillable = [
     'product_id',
     'product_option_id',
@@ -24,12 +24,12 @@ class ProductDiscount extends Model
     'date_end',
     'department_id',
   ];
-  
+
   public function product()
   {
     return $this->belongsTo(Product::class);
   }
-  
+
   public function productOptionValue()
   {
     return $this->belongsTo(ProductOptionValue::class);
@@ -38,12 +38,12 @@ class ProductDiscount extends Model
   {
     return $this->belongsTo(ProductOption::class);
   }
-  
+
   public function getFinishedAttribute(){
     $now = date('Y-m-d');
 
     $endDate = date('Y-m-d',strtotime($this->date_end));
-  
+
     return $this->quantity_sold >= $this->quantity
     || ($now > $endDate);
   }
@@ -51,40 +51,40 @@ class ProductDiscount extends Model
     $now = date('Y-m-d');
     $startDate = date('Y-m-d',strtotime($this->date_start));
     $endDate = date('Y-m-d',strtotime($this->date_end));
-    
+
     return $this->quantity_sold < $this->quantity
     && (($now >= $startDate) && ($now <= $endDate));
   }
-  
+
   public function getPriceAttribute()
   {
-    
-    $basePrice = $this->product->price;
+
+    $basePrice = $this->product->present()->price;
     $valueDiscount = $this->calcDiscount( $basePrice);
 
     return  floatval($basePrice) - floatval($valueDiscount);
-  
+
   }
   public function getTotalDiscountAttribute()
   {
-    
-    $basePrice = $this->product->price;
+
+    $basePrice = $this->product->present()->price;
     $valueDiscount = $this->calcDiscount( $basePrice);
 
     return  $valueDiscount;
-  
+
   }
 
   public function department()
   {
     return $this->belongsTo(Department::class);
   }
-  
+
   private function calcDiscount ( $value) {
     if($this->criteria == 'fixed'){
       return  ($this->discount);
     }
-    
+
     if($this->criteria == 'percentage'){
       return floatval (($value * $this->discount) / 100 );
     }

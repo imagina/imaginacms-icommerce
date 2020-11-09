@@ -13,7 +13,7 @@ class ProductListTransformer extends Resource
       'id' => $this->id,
       'product_id' => $this->product_id,
       'price_list_id' => $this->price_list_id,
-      'product_option_value_id' => $this->product_option_value_id,
+      // 'product_option_value_id' => $this->product_option_value_id,
       'price' => $this->when($this->price, Currency::convert($this->price)),
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
