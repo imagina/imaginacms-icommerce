@@ -7,9 +7,27 @@ use Livewire\Component;
 class FilterManufacturers extends Component
 {
 
+    public $manufacturers;
+    public $selectedManufacturers;
 
 	protected $listeners = ['productListRendered'];
 
+
+    public function updatedSelectedManufacturers(){
+
+        //\Log::info("Filter Manufacturers: ".json_encode($this->selectedManufacturers));
+         
+        $newManu = [];
+        foreach($this->selectedManufacturers as $key => $m){
+            if($m)
+                array_push($newManu, $key);
+        }
+        //\Log::info("Filter Manufacturers: ".json_encode($newManu));
+        $this->emit('updateFilter',[
+          'manufacturers' => $newManu
+        ]);
+
+    }
 
 	private function getProductRepository(){
     	return app('Modules\Icommerce\Repositories\ProductRepository');
@@ -22,12 +40,21 @@ class FilterManufacturers extends Component
 	public function productListRendered($params){
 
 		// Testing
-		\Log::info("Filter Manufacturers: ".json_encode($params));
-		$newParams = json_decode(json_encode($params));
+		//\Log::info("Filter Manufacturers: ".json_encode($params));
+		//$newParams = json_decode(json_encode($params));
 
-		$products = $this->getProductRepository()->getItemsBy($newParams);
+		//$manufacturers = $this->getProductRepository()->getManufacturers($newParams);
 
-		\Log::info("Products: ".json_encode($products));
+        // Testing with All Manufacturers
+        $paramsT = [
+            "include" => [],
+            "take" => false,
+            "filter" => null
+        ];
+
+        $this->manufacturers = app('Modules\Icommerce\Repositories\ManufacturerRepository')->getItemsBy(json_decode(json_encode($paramsT)));
+
+		//\Log::info("Manufacturers: ".json_encode($this->manufacturers));
 
 	}
 
