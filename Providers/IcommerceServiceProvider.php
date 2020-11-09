@@ -12,7 +12,6 @@ use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
 
 use Livewire\Livewire;
-
 class IcommerceServiceProvider extends ServiceProvider
 {
   use CanPublishConfiguration;

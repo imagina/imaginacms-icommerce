@@ -40,7 +40,7 @@ class ProductsList extends Component
 	
 
 	/*
-    * Runs once, immediately after the component is instantiated, 
+    * Runs once, immediately after the component is instantiated,
     * but before render() is called
     */
 	public function mount(Request $request,$category)
@@ -172,7 +172,7 @@ class ProductsList extends Component
       ];
     	
     	if(isset($this->category->id))
-    		$params["filter"]["category"] = $this->category->id; 
+    		$params["filter"]["category"] = $this->category->id;
     	
 
 	    return $params;
@@ -184,7 +184,7 @@ class ProductsList extends Component
     }
     
     /*
-    * Render 
+    * Render
     *
     */
     public function render(){
