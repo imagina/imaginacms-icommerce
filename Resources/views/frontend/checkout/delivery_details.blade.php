@@ -78,7 +78,6 @@
           @foreach($addressesExtraFields as $extraField)
             @if($extraField->active)
               <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b> @{{billingAddress[@php echo $extraField->field; @endphp ] || '-'}}</p>
-            
             @endif
           @endforeach
           
@@ -200,7 +199,7 @@
             @endif
           @endforeach
           
-          <div class="form-check" >
+          <div class="form-check">
             
             <label class="form-check-label">
               <input type="checkbox"

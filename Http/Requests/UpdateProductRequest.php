@@ -10,16 +10,16 @@ class UpdateProductRequest extends BaseFormRequest
   public function rules()
   {
     return [
-      'category_id' => 'required',
+      //'category_id' => 'required',
     ];
   }
 
   public function translationRules()
   {
     return [
-      'name' => 'required|min:2',
-      'slug' => ["required",new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2"],
-      'description' => 'required|min:2'
+      'name' => 'min:2',
+      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2"],
+      'description' => 'min:2'
     ];
   }
 

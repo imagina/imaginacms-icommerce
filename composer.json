@@ -12,7 +12,9 @@
         "willvincent/laravel-rateable": "~1.0",
         "imagina/icurrency-module": "4.0.x-dev",
         "imagina/icommercecheckmo-module": "4.0.x-dev",
-        "imagina/icommerceagree-module": "4.0.x-dev"
+        "imagina/icommerceagree-module": "4.0.x-dev",
+        "livewire/livewire": "^1.3",
+        "kalnoy/nestedset": "^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",

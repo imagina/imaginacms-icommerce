@@ -1,9 +1,9 @@
 <div class="top-content">
 
-	<h4 class="text-primary text-uppercase font-weight-bold">{{$category->title}}</h4>
+	<h4 class="text-primary text-uppercase font-weight-bold">{{$category->title ?? setting('icommerce::customIndexTitle',null,trans('icommerce::products.title.products'))}}</h4>
 	<hr>
 
-	<div class="row">
+	<div class="row align-items-center mb-4">
 
 		{{-- Total Products --}}
 		<div class="col-lg-4">
@@ -18,7 +18,10 @@
 
 		{{-- Filter - Order By --}}
 		<div class="col-lg-5">
-			@includeFirst(['icommerce.filters.order-by','icommerce::frontend.filters.order-by']) 
+			@livewire('icommerce::filter-orderby')
+			{{--
+			@includeFirst(['icommerce.filters.order-by','icommerce::frontend.livewire.filter-orderby'])
+			--}}
 		</div>
 
 		{{-- Change Layout --}}

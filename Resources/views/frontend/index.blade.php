@@ -6,37 +6,25 @@
 
 @section('content')
 
-<div id="content_index_commerce" class="page icommerce icommerce-index py-5">
-
+<div id="content_index_commerce" class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
+	
+	{{-- Breadcrumb --}}
+	@include('icommerce::frontend.partials.breadcrumb')
+	
 	<div class="container">
 		<div class="row">
 
 			{{-- Filters --}}
 			<div class="col-lg-3">
-				@includeFirst(['icommerce.filters.index',
-				'icommerce::frontend.filters.index'])
+			
+				@includeFirst(['icommerce.index.filters',
+				'icommerce::frontend.index.filters'],["categoryBreadcrumb" => $categoryBreadcrumb])
 			</div>
 
 			{{-- Top Content , Products, Pagination --}}
 			<div class="col-lg-9">
 				
-				@includeFirst(['icommerce.index.top-content',
-				'icommerce::frontend.index.top-content'])
-				
-				<hr>
-				<h2>Prueba de Livewire</h2>
-				<hr>
-				{{--
-				@livewire('counter')
-				--}}
-				{{--
-				@livewire(Modules\Icommerce\Http\Livewire\Counter::class)
-				--}}
-				
-				@livewire('icommerce::counter')
-
-				@livewire('icommerce::test')
-				
+				@livewire('icommerce::products-list',["category" => $category ?? null])
 				<hr>
 
 			</div>

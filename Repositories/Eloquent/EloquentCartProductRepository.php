@@ -173,6 +173,8 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         $query->where($filter->field, $criteria);
       else //where id
         $query->where('id', $criteria);
+    }else{
+      $query->where('id', $criteria);
     }
 
 
@@ -181,6 +183,10 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
     if($model) {
       $model->delete();
+      
+      return true;
+    }else{
+      return false;
     }
   }
   

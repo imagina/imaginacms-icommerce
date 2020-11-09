@@ -122,10 +122,11 @@
         </div>
       </div>
     </div>
-
+{{--
     @include('partials.subcription')
 
     @include('partials.brands')
+    --}}
   </div>
 @stop
 
