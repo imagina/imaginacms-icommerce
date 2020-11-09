@@ -5,13 +5,14 @@ namespace Modules\Icommerce\Entities;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
+use Modules\Discountable\Traits\DiscountableTrait;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 
 
 class Category extends Model
 {
-    use Translatable, NamespacedEntity, MediaRelation;
+    use Translatable, NamespacedEntity, MediaRelation, DiscountableTrait;
 
     protected $table = 'icommerce__categories';
     protected static $entityNamespace = 'asgardcms/icommerceCategory';

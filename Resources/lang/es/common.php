@@ -65,8 +65,9 @@ return [
     'countryTax' => 'Pais donde la tasa sera aplicada',
     'countryDefault' => 'Pais por Defecto',
     'countryFreeshipping' => 'Pais con envío gratuito de Productos',
-    'product-per-page' => 'Productos Por Pagina'
-  
+    'product-per-page' => 'Productos Por Pagina',
+    'product-price-list' => 'Lista de precios de productos'
+
   ],
   'uri' => 'icommerce',
   'emailSubject' => [
@@ -133,7 +134,7 @@ return [
     'pro_cat_bran' => 'Productos - Categorias - Marcas',
     'load_data' => 'Cargar data',
   ],
-  
+
   'email' => [
     'subject' => 'Transaction Status:',
     'intro' => 'Payment System Report',

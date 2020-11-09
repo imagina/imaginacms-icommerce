@@ -17,14 +17,14 @@ class CreateIcommercePriceListsTable extends Migration
       $table->increments('id');
       // Your fields
       $table->integer('status')->default(1);
-      $table->enum('criteria', ['percentage', 'fixed']);
+      $table->enum('criteria', ['percentage', 'fixed'])->default('fixed');
       $table->integer('related_id')->nullable();
       $table->string('related_entity')->nullable();
 
       $table->timestamps();
     });
   }
-  
+
   /**
    * Reverse the migrations.
    *

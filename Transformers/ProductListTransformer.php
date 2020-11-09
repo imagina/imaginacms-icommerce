@@ -18,14 +18,14 @@ class ProductListTransformer extends Resource
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
-  
+
     if(isset($this->product))
       $item['product'] = $this->product;
-    
-  
+
+
     if(isset($this->productOptionValue))
       $item['productOptionValue'] = $this->productOptionValue;
-    
+
     return $item;
   }
 }

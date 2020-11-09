@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PriceList extends Model
 {
   use Translatable;
-  
+
   protected $table = 'icommerce__price_lists';
   public $translatedAttributes = [
     'name'
@@ -18,8 +18,10 @@ class PriceList extends Model
     'criteria',
     'related_id',
     'related_entity',
+    'operation_prefix',
+    'value',
   ];
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__product_lists')
@@ -27,5 +29,13 @@ class PriceList extends Model
       ->withTimestamps()
       ->using(ProductList::class);
   }
-  
+
+  public function getEntityAttribute()
+  {
+    if($this->related_entity && $this->related_id)
+    return app($this->related_entity)->find($this->related_id);
+    else
+    return null;
+  }
+
 }

@@ -65,7 +65,8 @@ return [
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',
         'countryFreeshipping' => 'Pais con envío gratuito de Productos',
-        'product-per-page' => 'Productos Por Pagina'
+        'product-per-page' => 'Productos Por Pagina',
+        'product-price-list' => 'Product price list'
 
     ],
     'uri' => 'icommerce',

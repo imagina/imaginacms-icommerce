@@ -26,9 +26,9 @@ class ProductListApiController extends BaseApiController
   }
 
   /**
-   * Display a listing of the resource.
-   * @return Response
-   */
+  * Display a listing of the resource.
+  * @return Response
+  */
   public function index(Request $request)
   {
     try {
@@ -51,89 +51,122 @@ class ProductListApiController extends BaseApiController
   }
 
   /** SHOW
-   * @param Request $request
-   *  URL GET:
-   *  &fields = type string
-   *  &include = type string
-   */
+  * @param Request $request
+  *  URL GET:
+  *  &fields = type string
+  *  &include = type string
+  */
   public function show($criteria, Request $request)
   {
-    try {
-      //Request to Repository
-      $productList = $this->productList->getItem($criteria, $this->getParamsRequest($request));
 
-      $response = [
-        'data' => $productList ? new ProductListTransformer($productList) : '',
-      ];
+    try {
+      //Get Parameters from URL.
+      $params = $this->getParamsRequest($request);
+
+      //Request to Repository
+      $criteria = $this->productList->getItem($criteria, $params);
+
+      //Break if no found item
+      if (!$criteria) throw new \Exception('Item not found', 404);
+
+      //Response
+      $response = ["data" => new ProductListTransformer($criteria)];
+
+      //If request pagination add meta-page
+      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($criteria)] : false;
 
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+
   }
 
   /**
-   * Show the form for creating a new resource.
-   * @return Response
-   */
+  * Show the form for creating a new resource.
+  * @return Response
+  */
   public function create(Request $request)
   {
+    \DB::beginTransaction();
     try {
-      $this->productList->create($request->all());
+      $data = $request->input('attributes') ?? [];//Get data
 
-      $response = ['data' => ''];
+      //Validate Request
+      $this->validateRequestApi(new ProductListRequest($data));
 
+      //Create item
+      $entity = $this->productList->create($data);
+
+      //Response
+      $response = ["data" => new ProductListTransformer($entity)];
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \Log::error($e);
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-    return response()->json($response, $status ?? 200);
+    //Return response
+    return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
   }
 
   /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
-   */
+  * Update the specified resource in storage.
+  * @param  Request $request
+  * @return Response
+  */
   public function update($criteria, Request $request)
   {
+
+    \DB::beginTransaction();
     try {
+      $params = $this->getParamsRequest($request);
+      $data = $request->input('attributes');
 
-      $this->productList->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      //Validate Request
+      $this->validateRequestApi(new UpdatePriceListRequest($data));
 
-      $response = ['data' => ''];
+      //Update data
+      $category = $this->productList->updateBy($criteria, $data,$params);
 
+      //Response
+      $response = ['data' => 'Item Updated'];
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
     return response()->json($response, $status ?? 200);
+
   }
 
   /**
-   * Remove the specified resource from storage.
-   * @return Response
-   */
+  * Remove the specified resource from storage.
+  * @return Response
+  */
   public function delete($criteria, Request $request)
   {
+
+    \DB::beginTransaction();
     try {
-      $this->productList->deleteBy($criteria, $this->getParamsRequest($request));
+      //Get params
+      $params = $this->getParamsRequest($request);
 
+      //Delete data
+      $this->productList->deleteBy($criteria, $params);
+
+      //Response
       $response = ['data' => ''];
-
+      \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
-      $status = 500;
-      $response = [
-        'errors' => $e->getMessage()
-      ];
+      \DB::rollback();//Rollback to Data Base
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
     return response()->json($response, $status ?? 200);
+
   }
 }

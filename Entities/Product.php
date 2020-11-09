@@ -8,6 +8,7 @@ use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
 use Modules\Ihelpers\Traits\Relationable;
+use Modules\Discountable\Traits\DiscountableTrait;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable, DiscountableTrait;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';
@@ -118,10 +119,10 @@ class Product extends Model implements TaggableInterface
         return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
     }
 
-    public function discounts()
+    /*public function discounts()
     {
         return $this->hasMany(ProductDiscount::class);
-    }
+    }*/
 
     public function productOptions()
     {
@@ -251,7 +252,7 @@ class Product extends Model implements TaggableInterface
     {
       $now = date('Y-m-d');
 
-      $userId = Auth::user() ? Auth::user()->id : 0;
+      /*$userId = Auth::user() ? Auth::user()->id : 0;
       $departments = [];
       if ($userId){
         $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
@@ -259,18 +260,18 @@ class Product extends Model implements TaggableInterface
           ->where('user_id', $userId)
           ->pluck('department_id');
 
-      }
+      }*/
 
       $discount = $this->discounts()
-        ->orderBy('priority', 'desc')
-        ->orderBy('created_at', 'asc')
-        ->whereRaw('quantity > quantity_sold')
+        //->orderBy('priority', 'desc')
+        ->orderBy('created_at', 'desc')
+        /*->whereRaw('quantity > quantity_sold')*/
         ->where('date_end', '>=', $now)
         ->where('date_start', '<=', $now)
-        ->where(function ($query) use ($departments){
+        /*->where(function ($query) use ($departments){
           $query->whereIn('department_id', $departments)
             ->orWhereNull('department_id');
-        })
+        })*/
         ->first();
 
       if(isset($discount->id)){

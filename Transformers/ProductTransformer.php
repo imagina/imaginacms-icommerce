@@ -17,7 +17,8 @@ class ProductTransformer extends BaseApiTransformer
   public function toArray($request)
   {
     $filter = json_decode($request->filter);
-    $price = Currency::convert($this->price);
+    //$price = Currency::convert($this->price);
+    $price = Currency::convert($this->present()->price);
 
     $data = [
       'id' => $this->id,
@@ -63,6 +64,7 @@ class ProductTransformer extends BaseApiTransformer
       'featured' => $this->featured  ? 1 : 0,
       'visible' => $this->featured  ? 1 : 0,
       'url' => $this->url ?? '#',
+      'productDiscounts' => $this->discounts()->pluck('discount_id'),
       // totalDiscounts deprecated, bad way to calculate discounts
       'totalDiscounts' => $this->present()->totalDiscounts,
 
