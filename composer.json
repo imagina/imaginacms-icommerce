@@ -6,13 +6,13 @@
     "require": {
         "php": ">=7.0.0",
         "composer/installers": "~1.0",
-        "imagina/core-module": "4.0.x-dev",
-        "imagina/ihelpers-module": "4.0.x-dev",
-        "imagina/notification-module": "4.0.x-dev",
+        "imagina/core-module": "v8.x-dev",
+        "imagina/ihelpers-module": "v8.x-dev",
+        "imagina/notification-module": "v8.x-dev",
         "willvincent/laravel-rateable": "~1.0",
-        "imagina/icurrency-module": "4.0.x-dev",
-        "imagina/icommercecheckmo-module": "4.0.x-dev",
-        "imagina/icommerceagree-module": "4.0.x-dev"
+        "imagina/icurrency-module": "v8.x-dev",
+        "imagina/icommercecheckmo-module": "v8.x-dev",
+        "imagina/icommerceagree-module": "v8.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",
