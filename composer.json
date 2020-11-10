@@ -4,12 +4,12 @@
     "type": "asgard-module",
     "license": "MIT",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.2.0",
         "composer/installers": "~1.0",
         "imagina/core-module": "v8.x-dev",
         "imagina/ihelpers-module": "v8.x-dev",
         "imagina/notification-module": "v8.x-dev",
-        "willvincent/laravel-rateable": "~1.0",
+        "imagina/laravel-rateable": "^2.3",
         "imagina/icurrency-module": "v8.x-dev",
         "imagina/icommercecheckmo-module": "v8.x-dev",
         "imagina/icommerceagree-module": "v8.x-dev"
