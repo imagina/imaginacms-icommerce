@@ -22,9 +22,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include)) {//If Request all relationships
-      $query->with(['translations', 'store','files']);
+      $query->with(['category','categories','manufacturer','translations', 'store','files']);
     } else {//Especific relationships
-      $includeDefault = ['translations', 'store','files'];//Default relationships
+      $includeDefault = ['discounts','translations', 'store', 'files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query

@@ -40,7 +40,7 @@ class ProductsList extends Component
 	
 
 	/*
-    * Runs once, immediately after the component is instantiated, 
+    * Runs once, immediately after the component is instantiated,
     * but before render() is called
     */
 	public function mount(Request $request,$category)
@@ -75,19 +75,17 @@ class ProductsList extends Component
     }
     
   
-  /*
-  * Listener - Update Filters
-  *
-  */
-  public function updateFilter($filter){
+    /*
+    * Listener - Update Filters
+    *
+    */
+    public function updateFilter($filter){
     
-    //\Log::info("filter: ".json_encode($filter));
-
-    $this->emitProductListRendered = true;
-    $this->filters = array_merge($this->filters, $filter);
-    $this->resetPage();
+        $this->emitProductListRendered = true;
+        $this->filters = array_merge($this->filters, $filter);
+        $this->resetPage();
     
-  }
+    }
 
     /*
     * Function Frontend - When change the layout
@@ -105,11 +103,11 @@ class ProductsList extends Component
     public function updateParametersUrl(){
 
      
-    	$paramsUrl = http_build_query([
-    	  "page" => $this->page ?? 1,
-        "filter" => $this->filters,
-        "order" => $this->order]
-      );
+        $paramsUrl = http_build_query([
+    	    "page" => $this->page ?? 1,
+            "filters" => $this->filters,
+            "orderBy" => $this->orderBy
+        ]);
  
         $this->emit('urlChange', $paramsUrl);
         
@@ -122,12 +120,9 @@ class ProductsList extends Component
     public function checkValuesFromRequest(){
         
         if(!empty($this->dataRequest)){
-
-            foreach ($this->queryString as $key => $value) {
-                if(isset($this->dataRequest[$value]))
-                    $this->{$value} = $this->dataRequest[$value];
+            foreach ($this->dataRequest as $key => $value) {
+                $this->{$key} = $value;
             }
-   
         }
 
         $this->firstRequest = false;
@@ -139,34 +134,38 @@ class ProductsList extends Component
     */
     public function makeParamsToRepository(){
 
-        /*
+        
     	if($this->firstRequest)
     		$this->checkValuesFromRequest();
-        */
+        
+        $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
 
-      $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
     	$params = [
-    		"include" => ['category','categories','manufacturer'],
+    		"include" => ['discounts','translations','category','categories','manufacturer'],
     		"take" => setting('icommmerce::product-per-page',null,12),
     		"page" => $this->page ?? 1,
     		"filter" => $this->filters,
             "order" =>  $this->order
-      ];
+        ];
     	
     	if(isset($this->category->id))
-    		$params["filter"]["category"] = $this->category->id; 
+    		$params["filter"]["category"] = $this->category->id;
     	
 
 	    return $params;
     	
-    	}
+    }
 
+    /*
+    * Get Product Repository
+    *
+    */
 	private function getProductRepository(){
 		return app('Modules\Icommerce\Repositories\ProductRepository');
     }
     
     /*
-    * Render 
+    * Render
     *
     */
     public function render(){
@@ -176,7 +175,7 @@ class ProductsList extends Component
 
       //	\Log::info("params: ".json_encode($params));
     	$products = $this->getProductRepository()->getItemsBy(json_decode(json_encode($params)));
-
+    
     	$this->totalProducts = $products->total();
 
     	$tpl = 'icommerce::frontend.livewire.products-list';
