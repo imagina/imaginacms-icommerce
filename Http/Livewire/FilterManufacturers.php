@@ -7,7 +7,7 @@ use Livewire\Component;
 class FilterManufacturers extends Component
 {
 
-    public $manufacturers;
+    protected $manufacturers;
     public $selectedManufacturers;
 
 	protected $listeners = ['productListRendered'];
@@ -53,17 +53,11 @@ class FilterManufacturers extends Component
             }
         }
         
-    
-        // Testing with All Manufacturers
-        $paramsT = [
-            "include" => [],
-            "take" => false,
-            "filter" => null
-        ];
+        // Remove from the filter so that it brings all the manufacturers and does not limit to one manufacturers
+        if(isset($params["filter"]["manufacturers"]))
+            unset($params["filter"]["manufacturers"]);
 
-        $this->manufacturers = app('Modules\Icommerce\Repositories\ManufacturerRepository')->getItemsBy(json_decode(json_encode($paramsT)));
-
-		//\Log::info("Manufacturers: ".json_encode($this->manufacturers));
+        $this->manufacturers = $this->getProductRepository()->getManufacturers(json_decode(json_encode($params)));
 
 	}
 
@@ -75,7 +69,7 @@ class FilterManufacturers extends Component
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        return view($tpl);
+        return view($tpl,['manufacturers' => $this->manufacturers]);
     }
 
 }
