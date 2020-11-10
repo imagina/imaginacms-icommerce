@@ -63,6 +63,7 @@ class PriceListApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
+      $params = $this->getParamsRequest($request);
       //Request to Repository
       $criteria = $this->priceList->getItem($criteria, $params);
 

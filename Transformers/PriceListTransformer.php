@@ -15,7 +15,7 @@ class PriceListTransformer extends BaseApiTransformer
       'status' => $this->status,
       'criteria' => $this->criteria,
       'value' => $this->value,
-      'operation_prefix' => $this->operation_prefix,
+      'operationPrefix' => $this->operation_prefix,
       //'entity' => app($this->related_entity)->find($this->related_id),
       'createdAt' => $this->created_at,
       'updatedAt' => $this->updated_at,
