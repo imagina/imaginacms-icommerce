@@ -2,7 +2,7 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icommerce\Entities\OrderStatus;
 use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 use Modules\Icommerce\Transformers\OrderItemTransformer;
@@ -11,7 +11,7 @@ use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ilocations\Transformers\CountryTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
 
-class OrderTransformer extends Resource
+class OrderTransformer extends JsonResource
 {
   public function toArray($request)
   {

@@ -362,22 +362,22 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if ($product) {
       
       // sync tables
-      $product->categories()->sync(array_merge(array_get($data, 'categories', []), [$product->category_id]));
+      $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
       
       if (isset($data['product_options']))
-        $product->productOptions()->sync(array_get($data, 'product_options', []));
+        $product->productOptions()->sync(Arr::get($data, 'product_options', []));
       
       if (isset($data['option_values']))
-        $product->optionValues()->sync(array_get($data, 'option_values', []));
+        $product->optionValues()->sync(Arr::get($data, 'option_values', []));
       if (isset($data['related_products']))
-        $product->relatedProducts()->sync(array_get($data, 'related_products', []));
+        $product->relatedProducts()->sync(Arr::get($data, 'related_products', []));
       
       /*
       if(isset($data['discounts']))
-      $product->discounts()->sync(array_get($data, 'discounts', []));
+      $product->discounts()->sync(Arr::get($data, 'discounts', []));
 */
       if (isset($data['tags']))
-        $product->setTags(array_get($data, 'tags', []));
+        $product->setTags(Arr::get($data, 'tags', []));
     }
     
     //Event to ADD media
@@ -407,20 +407,20 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $model->update($data);
       
       // sync tables
-      $model->categories()->sync(array_merge(array_get($data, 'categories', []), [$model->category_id]));
+      $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
       /*
       if (isset($data['product_options']))
-      $model->productOptions()->sync(array_get($data, 'product_options', []));
+      $model->productOptions()->sync(Arr::get($data, 'product_options', []));
   
       if (isset($data['option_values']))
-          $model->optionValues()->sync(array_get($data, 'option_values', []));
+          $model->optionValues()->sync(Arr::get($data, 'option_values', []));
       */
       if (isset($data['related_products']))
-        $model->relatedProducts()->sync(array_get($data, 'related_products', []));
+        $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
       
       
       if (isset($data['tags']))
-        $model->tags()->sync(array_get($data, 'tags', []));
+        $model->tags()->sync(Arr::get($data, 'tags', []));
       
       //Event to Update media
       event(new UpdateMedia($model, $data));

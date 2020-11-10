@@ -46,7 +46,7 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
                     $slug = "";
                     // Search by id
                     $category = $this->category->find($category_id);
-                    $slug = str_slug($title, '-');
+                    $slug = Str::slug($title, '-');
 
                     //data
                     $param = [

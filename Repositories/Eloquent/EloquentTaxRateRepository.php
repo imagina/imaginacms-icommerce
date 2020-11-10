@@ -75,7 +75,7 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
     
     $taxRate = $this->model->create($data);
   
-    //$taxRate->rates()->sync(array_get($data, 'rates', []));
+    //$taxRate->rates()->sync(Arr::get($data, 'rates', []));
 
     
     return $taxRate;
@@ -101,7 +101,7 @@ class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRat
     
     if($model){
       $model->update($data);
-      $model->rates()->sync(array_get($data, 'rates', []));
+      $model->rates()->sync(Arr::get($data, 'rates', []));
     }
     return $model;
   }

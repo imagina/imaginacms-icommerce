@@ -101,14 +101,14 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     //if not found product into cart with the same options
     if(!$cartProduct) {
       $cartProduct = $this->model->create($data);
-      $cartProduct->productOptionValues()->sync(array_column(array_get($data, 'product_option_values', []),'id'));
+      $cartProduct->productOptionValues()->sync(array_column(Arr::get($data, 'product_option_values', []),'id'));
 
     }else {
       // get product options
       $productOptionValues = $cartProduct->productOptionValues;
 
       // get options from front
-      $productOptionValuesFront = array_get($data, 'product_option_values', []);
+      $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
 
       // if product doesn't have the same options wil be created and sync options
 
@@ -118,7 +118,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       if( array_diff($productOptionValuesIds, $productOptionValuesIdsFront) !== array_diff($productOptionValuesIdsFront, $productOptionValuesIds)){
 
           $cartProduct = $this->model->create($data);
-          $cartProduct->productOptionValues()->sync(array_column(array_get($data, 'product_option_values', []),'id'));
+          $cartProduct->productOptionValues()->sync(array_column(Arr::get($data, 'product_option_values', []),'id'));
 
 
       }else{
@@ -143,7 +143,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       $productOptionValues = $cartProduct->productOptionValues;
   
       // get options from front
-      $productOptionValuesFront = array_get($data, 'product_option_values', []);
+      $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
   
       $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
       $productOptionValuesIdsFront = array_column($productOptionValuesFront,'id');
@@ -192,14 +192,14 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   
   public function findByAttributesOrOptions($data){
     // if the request has product without options
-    if(!count(array_get($data, 'product_option_values', []))) {
+    if(!count(Arr::get($data, 'product_option_values', []))) {
       // find product into cart by attributes
       $cartProduct = CartProduct::where('cart_id',$data['cart_id'])
         ->where('product_id', $data['product_id'])
         ->has('productOptionValues', 0)->first();
     }else{
       // get options from front
-      $productOptionValuesIdsFront = array_column(array_get($data, 'product_option_values', []),'id');
+      $productOptionValuesIdsFront = array_column(Arr::get($data, 'product_option_values', []),'id');
 
       // find product into cart where has the same options
       $cartProducts = CartProduct::where('cart_id',$data['cart_id'])

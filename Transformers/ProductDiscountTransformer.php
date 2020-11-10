@@ -2,11 +2,11 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Iprofile\Transformers\DepartmentTransformer;
 
 
-class ProductDiscountTransformer extends Resource
+class ProductDiscountTransformer extends JsonResource
   {
   public function toArray($request)
     {

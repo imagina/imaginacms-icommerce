@@ -83,7 +83,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     $tagClass = $this->model->create($data);
   
     // sync tables
-    $tagClass->rates()->sync(array_get($data, 'rates', []));
+    $tagClass->rates()->sync(Arr::get($data, 'rates', []));
     
     
     return $tagClass;
@@ -108,7 +108,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
         $model = $query->first();
 
         if($model) {
-            $rates = array_get($data, 'rates', []);
+            $rates = Arr::get($data, 'rates', []);
             unset($data['rates']);
             $model->update($data);
             // sync tables

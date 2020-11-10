@@ -80,7 +80,7 @@ class ProductsImport implements ToCollection, WithChunkReading, WithHeadingRow
                 $param = [
                   'id'=>$product_id,
                   'name'=>$title,
-                   'slug'=>str_slug($title),
+                   'slug'=>Str::slug($title),
                    'description'=>$description,
                    'summary'=>$summary,
                    'options'=>$options,

@@ -2,11 +2,11 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icommerce\Transformers\OrderOptionTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
 
-class OrderItemTransformer extends Resource
+class OrderItemTransformer extends JsonResource
 {
   public function toArray($request)
   {
