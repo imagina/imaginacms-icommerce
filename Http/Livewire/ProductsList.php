@@ -40,7 +40,7 @@ class ProductsList extends Component
 	
 
 	/*
-    * Runs once, immediately after the component is instantiated,
+    * Runs once, immediately after the component is instantiated, 
     * but before render() is called
     */
 	public function mount(Request $request,$category)
@@ -53,8 +53,8 @@ class ProductsList extends Component
 	    $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
 	    
 	    $this->mainLayout = "four";
-	    $this->setClassToLayout();
-
+        $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
+	    
 	    $this->priceMin = null;
 	    $this->priceMax = null;
 
@@ -95,25 +95,7 @@ class ProductsList extends Component
     */
     public function changeLayout($c){
     	$this->mainLayout = $c;
-    	$this->setClassToLayout();
-    }
-
-    /*
-    * Set class to layout products
-    *
-    */
-    public function setClassToLayout(){
-    	switch ($this->mainLayout) {
-    	  case "four":
-    	  	$this->layoutClass = "col-12 col-md-4 col-lg-3";
-    	  	break;
-		  case "three":
-		   	$this->layoutClass = "col-12 col-md-4 col-lg-4";
-		    break;
-		  case "one":
-			$this->layoutClass = "col-12";
-			break;
-		}
+        $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
     }
 
     /*
@@ -172,7 +154,7 @@ class ProductsList extends Component
       ];
     	
     	if(isset($this->category->id))
-    		$params["filter"]["category"] = $this->category->id;
+    		$params["filter"]["category"] = $this->category->id; 
     	
 
 	    return $params;
@@ -184,7 +166,7 @@ class ProductsList extends Component
     }
     
     /*
-    * Render
+    * Render 
     *
     */
     public function render(){
