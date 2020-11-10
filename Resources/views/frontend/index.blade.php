@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.livewire')
 
 {{-- Meta --}}
 @includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
@@ -6,17 +6,31 @@
 
 @section('content')
 
-{{-- Preloader --}}
-@includeFirst(['icommerce.partials.preloader','icommerce::frontend.partials.preloader'])
-    
+<div id="content_index_commerce" class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
+	
+	{{-- Breadcrumb --}}
+	@include('icommerce::frontend.partials.breadcrumb')
+	
+	<div class="container">
+		<div class="row">
 
-<div id="content_index_commerce" class="page icommerce icommerce-index mt-3">
+			{{-- Filters --}}
+			<div class="col-lg-3">
+			
+				@includeFirst(['icommerce.index.filters',
+				'icommerce::frontend.index.filters'],["categoryBreadcrumb" => $categoryBreadcrumb])
+			</div>
 
-    {{-- TOP PAGE (breadcrumb, orderby, etc --}}
-    @includeFirst(['icommerce.index.top-page','icommerce::frontend.index.top-page'])
-    
-    {{-- CONTENT (Sidebar,Products GRID --}}
-    @includeFirst(['icommerce.index.content','icommerce::frontend.index.content'])
+			{{-- Top Content , Products, Pagination --}}
+			<div class="col-lg-9">
+				
+				@livewire('icommerce::products-list',["category" => $category ?? null])
+				<hr>
+
+			</div>
+			
+		</div>
+	</div>
 
 </div>
 

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Icommerce\Repositories\ProductRepository;
@@ -16,8 +18,9 @@ use Modules\Icommerce\Transformers\PaymentMethodTransformer;
 use Modules\Icommerce\Transformers\ShippingMethodTransformer;
 use Modules\Icommerce\Transformers\ProductTransformer;
 use Route;
+use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
-class PublicController extends BasePublicController
+class PublicController extends BaseApiController
 {
   protected $auth;
   private $product;
@@ -41,52 +44,52 @@ class PublicController extends BasePublicController
     $this->payments = $payments;
     $this->shippings = $shippings;
   }
-  
+
   // view products by category
   public function index(Request $request)
   {
-    
-    $slug = \Request::path();
+    $argv = explode("/",$request->path());
+    $slug = end($argv);
+  
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
+  
+    $category = null;
+  
+    $categoryBreadcrumb = [];
     
-    $category = $this->category->findBySlug($slug);
-    
-    $params=$this->_paramsRequest($request,$category->id);
-    
-    $products = $this->product->getItemsBy($params);
-    
-    $ptpl = "icommerce.category.{$category->parent_id}%.index";
-    if ($category->parent_id != 0 && view()->exists($ptpl)) {
-      $tpl = $ptpl;
+    if($slug && $slug != trans('icommerce::routes.store.index')){
+      
+      $category = $this->category->findBySlug($slug);
+      
+      $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+      
+      $ptpl = "icommerce.category.{$category->parent_id}%.index";
+      if ($category->parent_id != 0 && view()->exists($ptpl)) {
+        $tpl = $ptpl;
+      }
+  
+      $ctpl = "icommerce.category.{$category->id}.index";
+      if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+      $ctpl = "icommerce.category.{$category->id}%.index";
+      if (view()->exists($ctpl)) $tpl = $ctpl;
+  
     }
-    
-    $ctpl = "icommerce.category.{$category->id}.index";
-    if (view()->exists($ctpl)) $tpl = $ctpl;
-    
-    $ctpl = "icommerce.category.{$category->id}%.index";
-    if (view()->exists($ctpl)) $tpl = $ctpl;
-    
-    $paginate=(object)[
-      "total" => $products->total(),
-      "lastPage" => $products->lastPage(),
-      "perPage" => $products->perPage(),
-      "currentPage" => $products->currentPage()
-    ];
-    
-    $products=ProductTransformer::collection($products);
-    
-    return view($tpl, compact('category','products','paginate'));
-    
-    
+
+    //$dataRequest = $request->all();
+
+    return view($tpl, compact('category','categoryBreadcrumb','paginate'));
   }
   
   // Informacion de Producto
-  public function show($slug)
+  public function show(Request $request)
   {
-    
+    $argv = explode("/",$request->path());
+    $slug = end($argv);
+   
     $tpl = 'icommerce::frontend.show';
     $ttpl = 'icommerce.show';
     if (view()->exists($ttpl)) $tpl = $ttpl;
@@ -152,20 +155,11 @@ class PublicController extends BasePublicController
     
     return view($tpl, compact('products','paginate', 'category'));
     
-    
   }
   
-  private function _paramsRequest($request,$category)
+  private function _paramsRequest(&$params)
   {
-    
-    $maxPrice=$request->input('maxPrice')??100000000000000000000000000000;
-    $minPrice=$request->input('minPrice')??0;
-    $options=$request->input('options')??null;
-    $manufacturer=$request->input('manufacturer')??null;
-    $search=$request->input('search')??$request->input('q')??null;
-    $currency=$request->input('currency')??null;
-    $order=["field"=>$request->input('orderField')??"created_at","way"=>$request->input('orderWay')??"desc"];
-    
+    //$params->take = $params->take ?? setting("")
     //Return params
     $params = (object)[
       "page" => is_numeric($request->input('page')) ? $request->input('page') : 1,
@@ -174,8 +168,7 @@ class PublicController extends BasePublicController
       "include" =>[],
       "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order,'status'=>1])),
     ];
-    //Set locale to filter
-    $params->filter->locale = \App::getLocale();
+
     return $params;//Response
   }
   

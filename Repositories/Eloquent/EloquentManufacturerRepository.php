@@ -7,14 +7,24 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
 class EloquentManufacturerRepository extends EloquentBaseRepository implements ManufacturerRepository
 {
-  public function getItemsBy($params)
+  public function getItemsBy($params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
     
     // RELATIONSHIPS
-    $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude, $params->include));
+    //$defaultInclude = ['translations'];
+    //$query->with(array_merge($defaultInclude, $params->include));
+
+    /*== RELATIONSHIPS ==*/
+    if (in_array('*', $params->include)) {//If Request all relationships
+      $query->with(['translations']);
+    } else {//Especific relationships
+      $includeDefault = ['translations'];//Default relationships
+      if (isset($params->include))//merge relations with default relationships
+        $includeDefault = array_merge($includeDefault, $params->include);
+      $query->with($includeDefault);//Add Relationships to query
+    }
     
     // FILTERS
     if ($params->filter) {

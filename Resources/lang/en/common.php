@@ -7,6 +7,7 @@ return [
         'details' => 'DETALLES',
     ],
     'button' => [
+        'update' => 'Update',
     ],
     'sidebar' => [
         'products' => 'Productos',
@@ -22,6 +23,7 @@ return [
         'title min 2' => 'El título debe contener mínimo dos caracteres',
         'description is required' => 'La descripción es requerida',
         'description min 2' => 'La descripción debe contener mínimo dos caracteres',
+        'no products' => 'There are no products available',
     ],
     'validation' => [
     ],
@@ -65,7 +67,8 @@ return [
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',
         'countryFreeshipping' => 'Pais con envío gratuito de Productos',
-        'product-per-page' => 'Productos Por Pagina'
+        'product-per-page' => 'Productos Por Pagina',
+        'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
 
     ],
     'uri' => 'icommerce',
@@ -105,7 +108,7 @@ return [
         'price_high_low' => 'Precio alto a bajo',
     ],
     'range' => [
-        'title' => 'RANGO DE PRECIO',
+        'title' => 'Price Range',
     ],
     'pagination' => [
         'previous' => 'Anterior',
@@ -154,7 +157,8 @@ return [
         'countryDefault' => 'Pais por defecto',
         'countryFreeshipping' => 'Paises con envio gratis',
         'fromemail' => 'Email',
-        'product-per-page' => 'Products Per Page'
+        'product-per-page' => 'Products Per Page',
+        'customIndexTitle' => 'Custom Index Title'
     ],
 
 
