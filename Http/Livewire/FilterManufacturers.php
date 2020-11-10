@@ -13,22 +13,28 @@ class FilterManufacturers extends Component
 	protected $listeners = ['productListRendered'];
 
 
+    /*
+    * When Manufacturer has been selected
+    * 
+    */
     public function updatedSelectedManufacturers(){
 
-        //\Log::info("Filter Manufacturers: ".json_encode($this->selectedManufacturers));
-         
         $newManu = [];
         foreach($this->selectedManufacturers as $key => $m){
             if($m)
                 array_push($newManu, $key);
         }
-        //\Log::info("Filter Manufacturers: ".json_encode($newManu));
+        
         $this->emit('updateFilter',[
           'manufacturers' => $newManu
         ]);
 
     }
 
+    /*
+    * Get Product Repository
+    *
+    */
 	private function getProductRepository(){
     	return app('Modules\Icommerce\Repositories\ProductRepository');
   	}
@@ -39,12 +45,15 @@ class FilterManufacturers extends Component
     */
 	public function productListRendered($params){
 
-		// Testing
-		//\Log::info("Filter Manufacturers: ".json_encode($params));
-		//$newParams = json_decode(json_encode($params));
-
-		//$manufacturers = $this->getProductRepository()->getManufacturers($newParams);
-
+		
+        $oldManufacturers  = $params["filter"]["manufacturers"] ?? null;
+        if(count($oldManufacturers)>0){
+            foreach($oldManufacturers as $oldM){
+                $this->selectedManufacturers[$oldM] = true;
+            }
+        }
+        
+    
         // Testing with All Manufacturers
         $paramsT = [
             "include" => [],
