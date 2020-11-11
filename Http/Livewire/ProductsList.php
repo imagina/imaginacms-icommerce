@@ -123,6 +123,7 @@ class ProductsList extends Component
             foreach ($this->dataRequest as $key => $value) {
                 $this->{$key} = $value;
             }
+   
         }
 
         $this->firstRequest = false;
@@ -134,7 +135,7 @@ class ProductsList extends Component
     */
     public function makeParamsToRepository(){
 
-        
+     
     	if($this->firstRequest)
     		$this->checkValuesFromRequest();
         
@@ -190,7 +191,7 @@ class ProductsList extends Component
 		\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
 		$this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;
 
-        return view($tpl,['products'=> ProductTransformer::collection($products), 'params' => $params]);
+        return view($tpl,['products'=> $products, 'params' => $params]);
     }
 
 }
