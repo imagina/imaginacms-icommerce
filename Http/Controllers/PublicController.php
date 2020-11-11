@@ -81,7 +81,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('category','categoryBreadcrumb','paginate'));
+    return view($tpl, compact('category','categoryBreadcrumb'));
   }
   
   // Informacion de Producto

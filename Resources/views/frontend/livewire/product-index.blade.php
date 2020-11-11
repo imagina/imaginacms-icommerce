@@ -5,7 +5,6 @@
       
         <div class="title-arrow text-center mb-5">
           <h2 class="px-5 bg-white"><strong>NUEVOS</strong> PRODUCTOS</h2>
-          <p>Livewire</p>
         </div>
         
         <div id="productIndex" class="owl-carousel owl-theme">

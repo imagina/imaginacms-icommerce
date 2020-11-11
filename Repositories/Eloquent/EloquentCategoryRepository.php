@@ -22,7 +22,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     if (in_array('*', $params->include)) {//If Request all relationships
       $query->with([]);
     } else {//Especific relationships
-            $includeDefault = ['translations','files'];//Default relationships
+            $includeDefault = ['translations', 'files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query
@@ -40,7 +40,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
           $query->whereHas('translations', function ($query) use ($filter) {
             $query->where('locale', $filter->locale)
               ->where('title', 'like', '%' . $filter->search . '%');
-          })->orWhere('id', 'like', '%' . $filter->search . '%')
+          })->orWhere('icommerce__categories.id', 'like', '%' . $filter->search . '%')
             ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
@@ -107,6 +107,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     
     
     /*== REQUEST ==*/
+    //dd($query->toSql());
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
     } else {

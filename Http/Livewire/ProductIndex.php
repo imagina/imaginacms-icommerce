@@ -38,7 +38,7 @@ class ProductIndex extends Component
     $this->productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
     $products = $this->productRepository->getItemsBy($params);
 
-    return view($this->view, ['products' => ProductTransformer::collection($products)]);
+    return view($this->view, ['products' => $products]);
     
     
   }

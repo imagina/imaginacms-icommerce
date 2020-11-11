@@ -1,5 +1,4 @@
 <section class="iblock general-block13 pb-5" data-blocksrc="general.block13">
-  <p style="text-align: center">Livewire</p>
   <div id="categoryIndex" class="owl-carousel owl-theme">
     @foreach($categories as $category)
       <slide wire:key="categoryIndex-{{$category->id}}">
