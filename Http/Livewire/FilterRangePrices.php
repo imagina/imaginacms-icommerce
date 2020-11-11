@@ -8,9 +8,10 @@ use Modules\Icommerce\Repositories\ProductRepository;
 
 class FilterRangePrices extends Component
 {
+
 	public $priceMin;
 	public $priceMax;
-  public $step;
+  	public $step;
 	public $selPriceMin;
 	public $selPriceMax;
 	
@@ -22,7 +23,7 @@ class FilterRangePrices extends Component
     */
 	public function mount()
 	{
-    $this->step = setting('icommerce::filterRangePricesStep',null,20000);
+    	$this->step = setting('icommerce::filterRangePricesStep',null,20000);
 		$this->priceMin = 0;
 		$this->priceMax = 1;
 		$this->selPriceMin = 0;
@@ -34,25 +35,30 @@ class FilterRangePrices extends Component
    * Emit updateFilter
    *
    */
-  public function updateRange($data)
-  {
-    $this->selPriceMin = $data["selPriceMin"];
-    $this->selPriceMax = $data["selPriceMax"];
-  	\Log::info("Sel Price Min: ".$this->selPriceMin);
-  	\Log::info("Sel Price Max: ".$this->selPriceMax);
+  	public function updateRange($data){
 
-    $this->emit('updateFilter',[
-      'priceRange' => [
-        'from' => $this->selPriceMin,
-        'to' => $this->selPriceMax
-      ]
-    ]);
+	    $this->selPriceMin = $data["selPriceMin"];
+	    $this->selPriceMax = $data["selPriceMax"];
+	  	//\Log::info("Sel Price Min: ".$this->selPriceMin);
+	  	//\Log::info("Sel Price Max: ".$this->selPriceMax);
 
-  }
+	    $this->emit('updateFilter',[
+	      'priceRange' => [
+	        'from' => $this->selPriceMin,
+	        'to' => $this->selPriceMax
+	      ]
+	    ]);
+
+  	}
   
-  private function getProductRepository(){
-    return app('Modules\Icommerce\Repositories\ProductRepository');
-  }
+  	/*
+    * Get Product Repository
+    *
+    */
+  	private function getProductRepository(){
+    	return app('Modules\Icommerce\Repositories\ProductRepository');
+  	}
+
 	/*
     * Listener - Product List Rendered 
     *
@@ -60,18 +66,19 @@ class FilterRangePrices extends Component
 	public function productListRendered($params){
 
 		// Testing
-		\Log::info("Filter Range Params: ".json_encode($params));
+		//\Log::info("Filter Range Params: ".json_encode($params));
 	
 		$selectedPrices  = $params["filter"]["priceRange"] ?? null;
 		
-		\Log::info("Selected Prices Range: ".json_encode($selectedPrices)." Params: ".json_encode($params));
+		//\Log::info("Selected Prices Range: ".json_encode($selectedPrices)." Params: ".json_encode($params));
+
 		$range = $this->getProductRepository()->getPriceRange(json_decode(json_encode($params)));
 		
 		// Testing
-		\Log::info("Selected Prices Range: ".json_encode($selectedPrices)." Params: ".json_encode($params));
+		//\Log::info("Selected Prices Range: ".json_encode($selectedPrices)." Params: ".json_encode($params));
 		
-    $this->priceMin = round($range->minPrice);
-    $this->priceMax = round($range->maxPrice);
+    	$this->priceMin = round($range->minPrice);
+    	$this->priceMax = round($range->maxPrice);
 		
 		if(!empty($selectedPrices)){
 			$this->selPriceMin = $selectedPrices["from"];
@@ -93,7 +100,6 @@ class FilterRangePrices extends Component
 			'step' => $this->step
 		]);
 		
-	
 	}
 
 	/*
