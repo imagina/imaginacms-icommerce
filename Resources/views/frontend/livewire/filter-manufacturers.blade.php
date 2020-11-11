@@ -29,9 +29,12 @@
 							</div>
 						@endforeach
 					@else
-						<p class="text-muted">
-						  No existen Marcas</a>.
-						</p>
+						<div class="no-results">
+							<p class="text-muted text-center"><small>
+							  {{trans('icommerce::manufacturers.messages.no-manufacturers-associated')}}
+								</small>
+							</p>	
+						</div>
 					@endif
 
 		  		</div>
