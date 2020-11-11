@@ -10,14 +10,14 @@ class UpdatePriceListRequest extends BaseFormRequest
   public function rules()
   {
     return [
-      'criteria' => 'required'
+      //'criteria' => 'required'
     ];
   }
 
   public function translationRules()
   {
     return [
-      'name' => 'required|min:2',
+      //'name' => 'required|min:2',
     ];
   }
 
@@ -29,8 +29,7 @@ class UpdatePriceListRequest extends BaseFormRequest
   public function messages()
   {
     return [
-      'criteria.required' => trans('icommerce::common.messages.field required'),
-
+      //'criteria.required' => trans('icommerce::common.messages.field required'),
     ];
   }
 
