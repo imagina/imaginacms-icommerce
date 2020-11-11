@@ -1,4 +1,4 @@
-@extends('layouts.livewire')
+@extends('icommerce::structure.livewire-index')
 
 {{-- Meta --}}
 @includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])

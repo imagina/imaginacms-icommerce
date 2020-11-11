@@ -492,6 +492,29 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     return $query->first();
   }
+
+  public function getManufacturers($params = false){
+
+    isset($params->take) ? $params->take = false : false;
+    isset($params->page) ? $params->page = null : false;
+    !isset($params->include) ? $params->include = [] : false;
+
+    isset($params->order) ? $params->order = null : false;
+
+    $params->onlyQuery = true;
+
+    $query = $this->getItemsBy($params);
+
+    $query->has("manufacturer");
+
+    $products = $query->get();
+
+    $manufacturers = $products->pluck('manufacturer')->unique();
+    $manufacturers->all();
+
+    return $manufacturers;
+   
+  }
   
   
 }
