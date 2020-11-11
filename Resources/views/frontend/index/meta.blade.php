@@ -10,5 +10,5 @@
 @stop
 
 @section('title')
-  {{isset($category->title)? $category->title: 'search'}}  | @parent
+  {{isset($category->title)? $category->title: trans("icommerce::routes.store.index")}}  | @parent
 @stop

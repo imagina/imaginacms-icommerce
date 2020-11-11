@@ -43,7 +43,7 @@ class OptionValueRequest extends BaseFormRequest
     return [
       // description
       'description.required' => trans('icommerce::common.messages.field required'),
-      'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      'description.min:1' => trans('icommerce::common.messages.min 1 characters'),
     ];
   }
   

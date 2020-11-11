@@ -32,6 +32,13 @@ class SaveOrderItems
           $product->quantity = $product->quantity - $item["quantity"];
           $product->quantity < 0 ? $product->quantity = 0 : false;
           //TODO aquí toca agregar una notificacion al correo del icommerce cuando el quantity se haga 0 y cuando el quantity se vuelva negativo
+          
+          //si el producto se agota y está como substraible de l stock, automáticamente pasarlo a producto agotado/
+          if($product->quantity == 0 && $product->subtract){
+            $product->stock_status = 0;
+            //TODO aqui hay que agregar una notificación de producto agotado al correo del admin del icommerce
+          }
+          
           $product->save();
         }
 			

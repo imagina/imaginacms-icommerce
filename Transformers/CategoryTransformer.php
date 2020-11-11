@@ -2,9 +2,9 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryTransformer extends Resource
+class CategoryTransformer extends JsonResource
 {
     public function toArray($request)
     {
@@ -12,6 +12,8 @@ class CategoryTransformer extends Resource
             'id' => $this->id,
             'title' => $this->title ?? '',
             'slug' => $this->slug ?? '',
+            'url' => $this->url ?? '',
+            'newUrl' => $this->new_url ?? '',
             'description' => $this->description ?? '',
             'parentId' => (int)$this->parent_id,
             'storeId' => $this->when($this->store_id, $this->store_id),

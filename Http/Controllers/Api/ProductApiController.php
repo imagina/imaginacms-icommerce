@@ -197,13 +197,9 @@ class ProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
 
-            $dataEntity = $this->product->getItem($criteria, $params);
+          //Request to Repository
+          $this->product->deleteBy($criteria, $params);
 
-            if (!$dataEntity) throw new \Exception('Item not found', 204);
-            $product = $this->product->destroy($dataEntity);
-            $response = [
-                "data" => $product
-            ];
             \DB::commit();
         } catch (\Exception $e) {
             \Log::error($e);

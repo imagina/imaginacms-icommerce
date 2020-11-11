@@ -99,7 +99,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         $model->update($data);
         event(new UpdateMedia($model, $data));
         // Sync Data
-        $model->geozones()->sync(array_get($data, 'geozones', []));
+        $model->geozones()->sync(Arr::get($data, 'geozones', []));
 
         return $model;
 

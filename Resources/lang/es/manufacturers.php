@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'single' => 'Marca',
+    'plural' => 'Marcas',
     'list resource' => 'List manufacturers',
     'create resource' => 'Create manufacturers',
     'edit resource' => 'Edit manufacturers',

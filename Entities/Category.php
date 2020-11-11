@@ -2,17 +2,18 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Dimsav\Translatable\Translatable;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Discountable\Traits\DiscountableTrait;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
-
+use TypiCMS\NestableTrait;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends Model
 {
-    use Translatable, NamespacedEntity, MediaRelation, DiscountableTrait;
+    use Translatable, NamespacedEntity, MediaRelation, NodeTrait, DiscountableTrait;
 
     protected $table = 'icommerce__categories';
     protected static $entityNamespace = 'asgardcms/icommerceCategory';
@@ -30,10 +31,11 @@ class Category extends Model
         'show_menu',
         'featured',
         'store_id',
-        'sort_order',
+        'sort_order'
     ];
 
 
+  protected $width = ['files'];
 
     protected $casts = [
         'options' => 'array'
@@ -63,11 +65,18 @@ class Category extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function getUrlAttribute() {
+  public function getUrlAttribute() {
 
-        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
+    return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
 
-    }
+  }
+
+
+  public function getNewUrlAttribute() {
+
+    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.category',$this->slug);
+
+  }
 
     public function getOptionsAttribute($value)
     {
@@ -80,7 +89,7 @@ class Category extends Model
 
     public function getMainImageAttribute()
     {
-        $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+        $thumbnail = $this->files->where('zone', 'mainimage')->first();
         if (!$thumbnail) {
             if (isset($this->options->mainimage)) {
                 $image = [
@@ -104,7 +113,7 @@ class Category extends Model
 
     public function getSecondaryImageAttribute()
     {
-        $thumbnail = $this->files()->where('zone', 'secondaryimage')->first();
+        $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
         if (!$thumbnail) {
             $image = [
                 'mimeType' => 'image/jpeg',
@@ -121,7 +130,7 @@ class Category extends Model
 
   public function getTertiaryImageAttribute()
   {
-    $thumbnail = $this->files()->where('zone', 'tertiaryimage')->first();
+    $thumbnail = $this->files->where('zone', 'tertiaryimage')->first();
     if (!$thumbnail) {
       $image = [
         'mimeType' => 'image/jpeg',
@@ -134,5 +143,31 @@ class Category extends Model
       ];
     }
     return json_decode(json_encode($image));
+  }
+
+  public function getLftName()
+  {
+    return 'lft';
+  }
+
+  public function getRgtName()
+  {
+    return 'rgt';
+  }
+
+  public function getDepthName()
+  {
+    return 'depth';
+  }
+
+  public function getParentIdName()
+  {
+    return 'parent_id';
+  }
+
+// Specify parent id attribute mutator
+  public function setParentAttribute($value)
+  {
+    $this->setParentIdAttribute($value);
   }
 }

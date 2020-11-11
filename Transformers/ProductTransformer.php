@@ -2,7 +2,7 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icommerce\Entities\Status;
 use Modules\Ihelpers\Traits\Transformeable;
 use Modules\Iprofile\Transformers\UserTransformer;

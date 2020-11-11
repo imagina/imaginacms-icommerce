@@ -7,6 +7,7 @@ return [
         'details' => 'DETALLES',
     ],
     'button' => [
+        'update' => 'Update',
     ],
     'sidebar' => [
         'products' => 'Productos',
@@ -22,6 +23,9 @@ return [
         'title min 2' => 'El título debe contener mínimo dos caracteres',
         'description is required' => 'La descripción es requerida',
         'description min 2' => 'La descripción debe contener mínimo dos caracteres',
+        'no products' => 'There are no products available',
+        'field required' => 'This field is required',
+        'min 2 characters' => 'Minimum of 2 characters',
     ],
     'validation' => [
     ],
@@ -60,13 +64,15 @@ return [
         'dashEvery' => 'Guión cada carácter x - Ejem: Si el número es 3 el codigo seria xxx-xxx-xxx',
         'tax' => 'Impuesto',
         'orderitemsTax' => 'Tasa en OrderItems',
-        'emails' => 'Email del Webmaster',
+        'emails' => 'Webmaster - Email',
         'fromemail' => 'Email',
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',
         'countryFreeshipping' => 'Pais con envío gratuito de Productos',
         'product-per-page' => 'Productos Por Pagina',
-        'product-price-list' => 'Product price list'
+        'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
+        'product-price-list' => 'Product price list',
+        'customIndexTitle' => 'Custom Index Title'
 
     ],
     'uri' => 'icommerce',
@@ -106,7 +112,7 @@ return [
         'price_high_low' => 'Precio alto a bajo',
     ],
     'range' => [
-        'title' => 'RANGO DE PRECIO',
+        'title' => 'Rango de Precio',
     ],
     'pagination' => [
         'previous' => 'Anterior',
@@ -132,11 +138,6 @@ return [
         'pro_cat_bran' => 'Productos - Categorias - Marcas',
         'load_data' => 'Cargar data',
     ],
-    'messages' => [
-        'field required' => 'This field is required',
-        'min 2 characters' => 'Minimum of 2 characters',
-    ],
-
     'email' => [
         'subject' => 'Transaction Status:',
         'intro' => 'Payment System Report',
@@ -148,15 +149,5 @@ return [
             'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
         ],
     ],
-
-    'settings' => [
-        'emails' => 'Webmaster - Email',
-        'tax' => 'Impuesto',
-        'countryDefault' => 'Pais por defecto',
-        'countryFreeshipping' => 'Paises con envio gratis',
-        'fromemail' => 'Email',
-        'product-per-page' => 'Products Per Page'
-    ],
-
 
 ];

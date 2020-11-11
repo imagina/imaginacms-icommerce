@@ -59,7 +59,7 @@ class OrderController extends BasePublicController
         if (view()->exists($ttpl)) $tpl = $ttpl;
         if (!isset($request->key)) {
             $user = $this->auth->user();
-            $order = $this->order->getItem($request->id,(object)["filter"=>(object)["customer"=>$user->id],"include"=>[]]);
+            $order = $this->order->getItem($request->orderId,(object)["filter"=>(object)["customer"=>$user->id],"include"=>[]]);
         }else
             $order = $this->order->getItem($request->key,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);
 

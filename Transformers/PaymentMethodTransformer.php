@@ -2,9 +2,9 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PaymentMethodTransformer extends Resource
+class PaymentMethodTransformer extends JsonResource
 {
     public function toArray($request)
     {

@@ -73,6 +73,16 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
     
     return $this->repository->deleteBy($criteria, $params);
   }
-
-
+  
+  /**
+   * Min and Max Price
+   *
+   * @return collection
+   */
+  public function getPriceRange($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getPriceRange($params);
+    });
+  }
 }

@@ -7,6 +7,7 @@ return [
     'details' => 'DETALLES',
   ],
   'button' => [
+    'update' => 'Actualizar'
   ],
   'sidebar' => [
     'products' => 'Productos',
@@ -22,6 +23,7 @@ return [
     'title min 2' => 'El título debe contener mínimo dos caracteres',
     'description is required' => 'La descripción es requerida',
     'description min 2' => 'La descripción debe contener mínimo dos caracteres',
+    'no products' => 'No existen productos disponibles',
   ],
   'validation' => [
   ],
@@ -66,6 +68,8 @@ return [
     'countryDefault' => 'Pais por Defecto',
     'countryFreeshipping' => 'Pais con envío gratuito de Productos',
     'product-per-page' => 'Productos Por Pagina',
+    'customIndexTitle' => 'Título Página Index',
+    'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
     'product-price-list' => 'Lista de precios de productos'
 
   ],
@@ -107,7 +111,7 @@ return [
     'price_high_low' => 'Precio alto a bajo',
   ],
   'range' => [
-    'title' => 'RANGO DE PRECIO',
+    'title' => 'Rango de Precio',
   ],
   'pagination' => [
     'previous' => 'Anterior',

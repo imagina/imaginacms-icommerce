@@ -2,7 +2,7 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Dimsav\Translatable\Translatable;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
@@ -64,7 +64,7 @@ class Product extends Model implements TaggableInterface
     protected $casts = [
         'options' => 'array'
     ];
-
+  protected $width = ['files'];
 
     public function store()
     {
@@ -285,7 +285,7 @@ class Product extends Model implements TaggableInterface
 
     public function getSecondaryImageAttribute()
     {
-        $thumbnail = $this->files()->where('zone', 'secondaryimage')->first();
+        $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
         if (!$thumbnail) {
             $image = [
                 'mimeType' => 'image/jpeg',
@@ -302,7 +302,7 @@ class Product extends Model implements TaggableInterface
 
     public function getMainImageAttribute()
     {
-        $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+        $thumbnail = $this->files->where('zone', 'mainimage')->first();
 
         if (!$thumbnail) {
             if (isset($this->options->mainimage)) {
@@ -352,5 +352,9 @@ class Product extends Model implements TaggableInterface
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
 
     }
-
+  public function getNewUrlAttribute() {
+    
+    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
+    
+  }
 }

@@ -53,45 +53,34 @@
           </label>
         </div>
         
-        <div id="collapseExistingShipping" :class="useExistingOrNewShippingAddress==1 ? 'collapse in show' : 'collapse'"
-             aria-labelledby="useExistingShipping" role="tabpanel">
+        <div id="collapseExistingShipping" :class="useExistingOrNewShippingAddress==1 ? 'collapse in show' : 'collapse'" aria-labelledby="useExistingShipping" role="tabpanel">
           <select :class="'form-control '+ ($v.form.selectedShippingAddress.$error ? 'is-invalid' : '')"
                   id="selectedShippingAddress"
                   v-model="form.selectedShippingAddress">
             <option value="">Selecciona una dirección</option>
-            <option v-for="(address, index) in user.addresses" :value="address.id">@{{address.first_name ?
-              address.first_name : address.firstName}} @{{address.last_name ? address.last_name : address.lastName}} -
-              @{{ address.address_1 ? address.address_1 : address.address1 }}
-            </option>
+            <option v-for="(address, index) in user.addresses" :value="address.id">@{{address.first_name ? address.first_name : address.firstName}} @{{address.last_name ? address.last_name : address.lastName}} - @{{ address.address_1 ? address.address_1 : address.address1 }}</option>
           
           
           </select>
         </div>
         
         <div id="shippingAddressResume" class="card p-2" v-if="shippingAddress" style="font-size: 12px">
-          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.name")}}:</b> @{{shippingAddress.firstName}} @{{
-            shippingAddress.lastName }}</p>
-          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.phone")}}:</b> @{{shippingAddress.telephone}}
-          </p>
-          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.address")}}:</b> @{{shippingAddress.address1}}
-            @{{ shippingAddress.address2 ? ", "+shippingAddress.address2 : ""}}</p>
+          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.name")}}:</b> @{{shippingAddress.firstName}} @{{ shippingAddress.lastName }}</p>
+          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.phone")}}:</b> @{{shippingAddress.telephone}}</p>
+          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.address")}}:</b> @{{shippingAddress.address1}} @{{ shippingAddress.address2 ?  ", "+shippingAddress.address2 : ""}}</p>
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.city")}}:</b> @{{shippingAddress.city}}</p>
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.state")}}:</b> @{{shippingAddress.state}}</p>
-          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.country")}}:</b> @{{shippingAddress.country}}
-          </p>
-          <div v-if="shippingAddress.options">
-            @php
-              $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', '[]'));
-            @endphp
-            @foreach($addressesExtraFields as $extraField)
-              @if($extraField->active)
-                <p class="card-text m-0" v-if="shippingAddress.options.{{$extraField->field}}">
-                  <b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b>
-                  @{{shippingAddress.options[@php echo $extraField->field; @endphp ] || '-'}}</p>
-              
-              @endif
-            @endforeach
-          </div>
+          <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.country")}}:</b> @{{shippingAddress.country}}</p>
+          
+          @php
+            $addressesExtraFields = is_array(setting('iprofile::userAddressesExtraFields')) ? setting('iprofile::userAddressesExtraFields') : is_array(json_decode(setting('iprofile::userAddressesExtraFields'))) ? json_decode(setting('iprofile::userAddressesExtraFields')) : json_decode(json_encode(setting('iprofile::userAddressesExtraFields')));
+          @endphp
+          @foreach($addressesExtraFields as $extraField)
+            @if($extraField->active)
+              <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b> @{{billingAddress[@php echo $extraField->field; @endphp ] || '-'}}</p>
+            @endif
+          @endforeach
+          
           <p class="card-text m-0" v-if="shippingAddress.default">
             {{trans("iprofile::addresses.form.default")}}
             <span v-if="shippingAddress.type == 'billing'">({{trans("iprofile::addresses.form.billing")}})</span>
@@ -120,22 +109,19 @@
           
           </label>
         </div>
-        <div id="collapseNewShipping" :class="addresses ? 'collapse' : 'collapse show'" aria-labelledby="useNewShipping"
-             role="tabpanel">
+        <div id="collapseNewShipping" :class="addresses ? 'collapse' : 'collapse show'" aria-labelledby="useNewShipping" role="tabpanel">
           
           
           <div class="form-group row">
             <div class="col pr-1">
               <label for="shipping_firstname">{{ trans('icommerce::delivery_details.form.first_name') }} </label>
-              <input type="text" :class="'form-control '+ ($v.shippingData.firstname.$error ? 'is-invalid' : '')"
-                     id="shipping_first_name" name="shipping_firstname"
+              <input type="text" :class="'form-control '+ ($v.shippingData.firstname.$error ? 'is-invalid' : '')" id="shipping_first_name" name="shipping_firstname"
                      v-model="shippingData.firstname">
             
             </div>
             <div class="col pl-1">
               <label for="shipping_lastname">{{ trans('icommerce::delivery_details.form.last_name') }}</label>
-              <input type="text" :class="'form-control '+ ($v.shippingData.lastname.$error ? 'is-invalid' : '')"
-                     id="shipping_last_name" name="shipping_lastname"
+              <input type="text" :class="'form-control '+ ($v.shippingData.lastname.$error ? 'is-invalid' : '')" id="shipping_last_name" name="shipping_lastname"
                      v-model="shippingData.lastname">
             </div>
           
@@ -143,8 +129,7 @@
           
           <div class="form-group">
             <label for="shipping_address_1">{{ trans('icommerce::delivery_details.form.address1') }}</label>
-            <input type="text" :class="'form-control '+ ($v.shippingData.address_1.$error ? 'is-invalid' : '')"
-                   id="shipping_address_1" name="shipping_address_1"
+            <input type="text"  :class="'form-control '+ ($v.shippingData.address_1.$error ? 'is-invalid' : '')" id="shipping_address_1" name="shipping_address_1"
                    v-model="shippingData.address_1">
           </div>
           <div class="form-group">
@@ -155,8 +140,7 @@
           
           <div class="form-group">
             <label for="shipping_telephone">{{ trans('icommerce::delivery_details.form.telephone') }}</label>
-            <input type="number" :class="'form-control '+ ($v.shippingData.telephone.$error ? 'is-invalid' : '')"
-                   id="shipping_telephone" name="shipping_telephone"
+            <input type="text" :class="'form-control '+ ($v.shippingData.telephone.$error ? 'is-invalid' : '')" id="shipping_telephone" name="shipping_telephone"
                    v-model="shippingData.telephone">
           </div>
           
@@ -192,106 +176,28 @@
           <div class="form-group">
             
             <label for="shipping_city">{{ trans('icommerce::delivery_details.form.city') }}</label>
-            <input type="text" :class="'form-control '+ ($v.shippingData.city.$error ? 'is-invalid' : '')"
-                   name="shipping_city" id="shipping_city"
+            <input type="text" :class="'form-control '+ ($v.shippingData.city.$error ? 'is-invalid' : '')" name="shipping_city" id="shipping_city"
                    v-model="shippingData.city">
           </div>
           
-          @php
-            $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
           
+          <!--17-09-2020::JCEC - primera version del address extra fields
+                                        toca irlo mejorando-->
+          @php
+            $registerExtraFields = is_array(setting('iprofile::registerExtraFields')) ? setting('iprofile::registerExtraFields') : is_array(json_decode(setting('iprofile::registerExtraFields'))) ? json_decode(setting('iprofile::registerExtraFields')) : json_decode(json_encode(setting('iprofile::registerExtraFields')));
           @endphp
           @foreach($addressesExtraFields as $extraField)
-    
-            {{-- if is active--}}
             @if($extraField->active)
-      
-              {{-- form group--}}
-              <div class="form-group">
-        
-                {{-- label --}}
+              <div class="form-group ">
                 <label for="{{$extraField->field}}">{{trans("iprofile::frontend.form.$extraField->field")}}</label>
-        
-                {{-- Generic input --}}
-                @if( !in_array($extraField->type, ["select","textarea"]) )
-          
-                  {{-- Document Type input --}}
-                  @if($extraField->type == "documentType")
-                    {{-- foreach options --}}
-                    @foreach($extraField->availableOptions as $availableOption)
-                      {{-- finding if the availableOption exist in the options and get the full option object --}}
-                      @foreach ($extraField->options as $option)
-                        @if($option->value == $availableOption)
-                          @php($optionValues[] = $option)
-                        @endif
-                      @endforeach
-                    @endforeach
-            
-            
-                    {{-- Select --}}
-                    <select id="delivery{{$extraField->field}}" v-model="shippingData.options.{{$extraField->field}}"
-                            name="delivery{{$extraField->field}}" class="form-control">
-                      {{-- validate availableOptions and options --}}
-                      @foreach($optionValues as $option)
-                        <option value="{{$option->value}}">{{$option->label}}</option>
-              
-                      @endforeach {{--- end foreach options --}}
-                    </select>
-      
-              </div>
-              {{-- DocumentNumber input --}}
-              <div class="form-group">
-        
-                {{-- label --}}
-                <label for="deliverydocumentNumber">{{trans("iprofile::frontend.form.documentNumber")}}</label>
-                <input id="deliverydocumentNumber"
-                       type="number"
+                <input id="delivery{{$extraField->field}}"
+                       type="text"
                        class="form-control"
-                       v-model="shippingData.options.documentNumber"/>
+                       v-model="shippingData.options.{{$extraField->field}}">
               
-    
-    
-            @else
-              <input id="delivery{{$extraField->field}}"
-                     type="{{$extraField->type}}"
-                     class="form-control"
-                     v-model="shippingData.options.{{$extraField->field}}"/>
+              </div>
             @endif
-            @else
-              {{-- if is select --}}
-              @if($extraField->type == "select")
-                {{-- foreach options --}}
-                @foreach($extraField->availableOptions as $availableOption)
-                  {{-- finding if the availableOption exist in the options and get the full option object --}}
-                  @foreach ($extraField->options as $option)
-                    @if($option->value == $availableOption)
-                      @php($optionValues[] = $option)
-                    @endif
-                  @endforeach
-                @endforeach
-        
-        
-                {{-- Select --}}
-                <select id="delivery{{$extraField->field}}" v-model="shippingData.options.{{$extraField->field}}"
-                        name="delivery{{$extraField->field}}" class="form-control">
-                  {{-- validate availableOptions and options --}}
-                  @foreach($optionValues as $option)
-                    <option value="{{$option->value}}">{{$option->label}}</option>
-          
-                  @endforeach {{--- end foreach options --}}
-                </select>
-              @else
-                {{-- if is textarea --}}
-                @if($extraField->type == "textarea")
-                  {{-- Textarea --}}
-                  <textarea id="delivery{{$extraField->field}}"
-                            v-model="shippingData.options.{{$extraField->field}}" class="form-control" cols="30" rows="3"></textarea>
-                @endif {{--- end if is textarea --}}
-              @endif {{-- end if is select --}}
-            @endif {{-- end if is generic input --}}
-        </div>
-        @endif {{-- end if is active --}}
-        @endforeach
+          @endforeach
           
           <div class="form-check">
             
@@ -304,9 +210,7 @@
           </div>
           
           <div class="form-group text-center">
-            <button type="button" class="btn btn-primary" @click="addAddress('shipping')" name="button">Agregar
-              dirección
-            </button>
+            <button type="button" class="btn btn-primary" @click="addAddress('shipping')" name="button">Agregar dirección</button>
           </div>
         </div>
       

@@ -180,8 +180,8 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
       //Update data
       $model->update((array)$cartData);
       //sync products
-      if (count(array_get($cartData, 'products', []))) {
-        $model->products()->sync(array_get($cartData, 'products', []));
+      if (count(Arr::get($cartData, 'products', []))) {
+        $model->products()->sync(Arr::get($cartData, 'products', []));
       }
     }
     

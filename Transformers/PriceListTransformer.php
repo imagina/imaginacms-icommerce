@@ -2,10 +2,9 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
-use Modules\Ihelpers\Transformers\BaseApiTransformer;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PriceListTransformer extends BaseApiTransformer
+class PriceListTransformer extends JsonResource
 {
   public function toArray($request)
   {
@@ -37,7 +36,7 @@ class PriceListTransformer extends BaseApiTransformer
 
       foreach ($languages as  $key => $value){
         if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['name'] = $this->translate("$key")['name'];
+          $data[$key]['name'] = $this->translate("$key")['name'];
         }
       }
     }
