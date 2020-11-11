@@ -1,21 +1,34 @@
 <div class="filter-range-prices mb-4" >
-	<h4 class="text-secondary">{{trans('icommerce::common.range.title')}}</h4>
-	<hr>
 
+	<div class="title">
+		<a data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
+			<div class="d-flex justify-content-between align-items-center">
+	  			<h5 class="text-secondary">{{trans('icommerce::common.range.title')}}</h5>
+	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
+	  		</div>
+	  		<hr>
+		</a>
+	</div>
 	
-	<input type="text" id="amount" class="amount border-0 text-primary font-weight-bold mb-2" readonly>
+	<div class="content">
+		<div class="collapse show" id="collapseRangePrices">
 
-	<input type="hidden" id="priceMin" name="priceMin" wire:model="priceMin">
-	<input type="hidden" id="priceMax" name="priceMax" wire:model="priceMax">
+			<input type="text" id="amount" class="amount border-0 text-primary font-weight-bold mb-2" readonly>
 
-	<input type="hidden" id="selPriceMin" name="selPriceMin" wire:model="selPriceMin">
-	<input type="hidden" id="selPriceMax" name="selPriceMax" wire:model="selPriceMax">
-	
-	<div id="slider-range" wire:ignore></div>
+			<input type="hidden" id="priceMin" name="priceMin" wire:model="priceMin">
+			<input type="hidden" id="priceMax" name="priceMax" wire:model="priceMax">
 
-	<button onClick="window.livewire.emit('updateRange',{'selPriceMin' : document.getElementById('selPriceMin').value,'selPriceMax' : document.getElementById('selPriceMax').value})" id="btnUpdatePrices" class="btn btn-outline-primary btn-sm btn-block mt-3">
-		{{trans('icommerce::common.button.update')}}
-	</button>
+			<input type="hidden" id="selPriceMin" name="selPriceMin" wire:model="selPriceMin">
+			<input type="hidden" id="selPriceMax" name="selPriceMax" wire:model="selPriceMax">
+			
+			<div id="slider-range" wire:ignore></div>
+
+			<button onClick="window.livewire.emit('updateRange',{'selPriceMin' : document.getElementById('selPriceMin').value,'selPriceMax' : document.getElementById('selPriceMax').value})" id="btnUpdatePrices" class="btn btn-outline-primary btn-sm btn-block mt-3">
+				{{trans('icommerce::common.button.update')}}
+			</button>
+
+		</div>
+	</div>
 
 </div>
 
