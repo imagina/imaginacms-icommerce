@@ -47,7 +47,7 @@ class FilterManufacturers extends Component
 
 		
         $oldManufacturers  = $params["filter"]["manufacturers"] ?? null;
-        if(count($oldManufacturers)>0){
+        if(!empty($oldManufacturers)){
             foreach($oldManufacturers as $oldM){
                 $this->selectedManufacturers[$oldM] = true;
             }
