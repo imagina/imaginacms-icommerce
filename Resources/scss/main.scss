@@ -1,10 +1,14 @@
-@import "index";
-@import "filter-categories";
-@import "product-layout";
-@import "header-category";
-@import "header-searcher";
-@import "header-nav";
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/mixins";
 
+@import "variables";
+
+@import "modules/icommerce/index";
+@import "modules/icommerce/filter-categories";
+@import "modules/icommerce/product-layout";
+@import "modules/icommerce/header-category";
+@import "modules/icommerce/header-searcher";
+@import "modules/icommerce/header-nav";
 
 
 .loading{
