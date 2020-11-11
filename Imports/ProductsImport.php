@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Icommerce\Entities\Product;
+use Illuminate\Support\Str;
 
 class ProductsImport implements ToCollection, WithChunkReading, WithHeadingRow
 {

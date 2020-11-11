@@ -12,6 +12,7 @@ use Modules\Icommerce\Support\Cart as cartSupport;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {

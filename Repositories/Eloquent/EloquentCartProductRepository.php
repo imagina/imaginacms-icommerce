@@ -6,6 +6,7 @@ use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 // Entities
 use Modules\Icommerce\Entities\CartProduct;
+use Illuminate\Support\Arr;
 
 class EloquentCartProductRepository extends EloquentBaseRepository implements CartProductRepository
 {

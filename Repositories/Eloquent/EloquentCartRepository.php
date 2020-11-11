@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-
+use Illuminate\Support\Arr;
 use Modules\Icommerce\Entities\CartProduct;
 
 class EloquentCartRepository extends EloquentBaseRepository implements CartRepository

@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\TaxClassRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Illuminate\Support\Arr;
 
 class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxClassRepository
 {
