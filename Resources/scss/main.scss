@@ -20,3 +20,18 @@
 .cursor-pointer{
 	cursor: pointer;
 }
+
+.owl-carousel{
+	.card-product{
+		.bg-img{
+			figure{
+				margin-bottom: 0px;
+				picture{
+					img{
+						max-height: 230px;
+					}
+				}
+			}
+		}
+	}
+}

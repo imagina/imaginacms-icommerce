@@ -1,4 +1,4 @@
-<div class="bg-img d-flex justify-content-center align-items-center">
+<div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
 	<a href="{{$product->new_url}}" title="{{$product->name}}">
 			
 		<figure>
@@ -10,7 +10,7 @@
 				<img 
 					data-src="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
 					alt = "{{$product->name}}" 
-					class="lazyload" />
+					class="lazyload mh-75" />
 			</picture>
 		</figure>
 
