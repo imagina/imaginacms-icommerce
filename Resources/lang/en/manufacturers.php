@@ -20,6 +20,7 @@ return [
     'form' => [
     ],
     'messages' => [
+        'no-manufacturers-associated' => 'There are no manufacturers associated with the products shown'
     ],
     'validation' => [
     ],

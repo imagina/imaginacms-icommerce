@@ -17,6 +17,8 @@ class ProductsList extends Component
 
 	use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
 	private $order;
 	private $firstRequest;
 
