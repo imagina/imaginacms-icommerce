@@ -54,7 +54,7 @@ class ProductsList extends Component
 	    $this->orderBy = "nameaz";
 	    $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
 	    
-	    $this->mainLayout = "four";
+	    $this->mainLayout = config("asgard.icommerce.config.layoutIndex.defaultIndexOption");
         $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
 	    
 	    $this->priceMin = null;
