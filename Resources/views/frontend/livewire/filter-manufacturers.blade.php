@@ -1,3 +1,5 @@
+@if($manufacturers && count($manufacturers)>0)
+
 <div class="filter-manufacturers mb-4">
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="false" aria-controls="collapseManufacturers">
@@ -28,13 +30,6 @@
 							  	</label>
 							</div>
 						@endforeach
-					@else
-						<div class="no-results">
-							<p class="text-muted text-center"><small>
-							  {{trans('icommerce::manufacturers.messages.no-manufacturers-associated')}}
-								</small>
-							</p>	
-						</div>
 					@endif
 
 		  		</div>
@@ -47,13 +42,4 @@
   	
 </div>
 
-@section('scripts')
-@parent
-
-<script type="text/javascript">
-
-console.warn("Componente: Filter Manufacturers - Start")
-
-</script>
-
-@stop
+@endif
