@@ -17,9 +17,9 @@
 	@endforeach
 	
 	{{--
-	@php($newUrl = $category->new_url.$extraParamsUrl)
+	@php($newUrl = $category->url.$extraParamsUrl)
 	--}}
-	@php($newUrl = $category->new_url)
+	@php($newUrl = $category->url)
 	<a class="text-secondary" data-toggle="{{$isSelected ? "collapse" : ""}}"
 		 href="{{$newUrl}}"
 		 aria-disabled="false"

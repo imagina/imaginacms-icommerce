@@ -52,13 +52,13 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
   ]);
   
   $router->get(trans('icommerce::routes.store.wishlist'), [
-    'as' =>  $locale . 'icommerce.store.wishlists.index',
+    'as' =>  $locale . '.icommerce.store.wishlists.index',
     'uses' => 'PublicController@wishlist',
     'middleware' => 'logged.in'
   ]);
   
-  $router->get(trans('icommerce::routes.store.wishlist'), [
-    'as' => $locale . 'icommerce.store.checkout',
+  $router->get(trans('icommerce::routes.store.checkout'), [
+    'as' => $locale . '.icommerce.store.checkout',
     'uses' => 'PublicController@checkout',
   ]);
   

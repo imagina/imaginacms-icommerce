@@ -119,7 +119,12 @@ class PublicController extends BaseApiController
     $tpl = 'icommerce::frontend.checkout.index';
     $ttpl = 'icommerce.checkout.index';
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    return view($tpl);
+  
+    $cart = request()->session()->get('cart');
+    if(isset($cart->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }
+    return view($tpl,compact('cart'));
   }
   
   public function wishlist()

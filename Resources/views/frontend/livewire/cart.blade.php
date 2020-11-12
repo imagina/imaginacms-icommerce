@@ -55,7 +55,7 @@
               
               <!-- titulo -->
               <h6 class="mb-2 w-100 __title">
-                <a href="{{$cartProduct->product->new_url}}">
+                <a href="{{$cartProduct->product->url}}">
                   {{ $cartProduct->product->name }}
                   @if($cartProduct->productOptionValues->count())
                     <label>({{($cartProduct->productOptionValues->first()->optionValue)}})</label>
@@ -96,7 +96,7 @@
   </span>
           </h6>
           <!-- botones-->
-          <a href="{{ url('checkout') }}" tabindex="-1" class="btn btn-warning btn-sm mx-1 text-white">
+          <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.checkout') }}" tabindex="-1" class="btn btn-warning btn-sm mx-1 text-white">
             {{trans('icommerce::cart.button.view_cart')}}
           </a>
         

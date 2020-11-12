@@ -14,7 +14,7 @@
 				@if($key == count($categoryBreadcrumb)-1)
 					{{ $breadcrumb->title }}
 				@else
-					<a href="{{$breadcrumb->new_url}}">{{ $breadcrumb->title }}</a>
+					<a href="{{$breadcrumb->url}}">{{ $breadcrumb->title }}</a>
 				@endif
 			</li>
 		@endforeach

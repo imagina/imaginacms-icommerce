@@ -134,10 +134,6 @@
             
           }
           
-          setTimeout(() => {
-            this.getCart();
-          }, 3000);
-          
           if (this.user) {
             if (this.user.addresses.length == 0) {
               this.useExistingOrNewPaymentAddress = 2;
@@ -198,7 +194,7 @@
       },
       data: {
         //Vars
-        cart: [],
+        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : null !!},
         currency: "",
         payments: [],
         shippingMethods: [],
@@ -210,7 +206,7 @@
           selectedShippingAddress: null,
           
         },
-        loadingCart: true,
+        loadingCart: false,
         paymentSelected: "",
         billingData: {
           firstname: '',
@@ -247,7 +243,7 @@
         },
         addressesExtraFields: [],
         addresses: [],
-        quantity: 0,
+        quantity: {{ isset($cart->id) ? $cart->quantity : 0 }},
         subTotal: 0,
         selectAddresses:[],
         shipping: 0,
@@ -617,25 +613,10 @@
         },
         
         getCart() {
-          
-          var cart_id = localStorage.getItem("cart_id");
-          
-          if(!cart_id){
-            var carts = JSON.parse(localStorage.getItem("carts"));
-            if(carts && this.user){
-              var cart = carts.find(cart => cart.userId == this.user.id)
-              if(cart)
-                cart_id = cart.cart_id
-            }else
-            if(carts && !this.user){
-              var cart = carts.find(cart => cart.userId == 0)
-              if(cart)
-                cart_id = cart.cart_id
-            }
-          }
-          
-          if (cart_id) {
-            axios.get("{{url('/')}}" + "/api/icommerce/v3/carts/" + cart_id)
+  
+          this.loadingCart = true
+          if (this.cart.id) {
+            axios.get("{{url('/')}}" + "/api/icommerce/v3/carts/" + this.cart.id)
               .then((response) => {
                 this.cart = response.data.data;
                 //vue_carting.articles = vue_carting.cart.products;
@@ -831,7 +812,6 @@
             .then((response) => {
               this.updatingData = false;
               console.warn("PRODUCT DELETED", response)
-              vue_carting.getCart();
               this.getCart();
               return true;
             })
@@ -872,7 +852,7 @@
           })
             .then( (response) =>{
               this.updatingData = false;
-              vue_carting.getCart();
+              window.livewire.emit('updateCart')
               return true;
             })
             .catch((error) => {

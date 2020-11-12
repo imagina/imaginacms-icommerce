@@ -39,6 +39,7 @@
                                 <div class="col-9">
 
                                     <a class="close cart-remove text-primary float-right"
+                                       :onClick="'window.livewire.emit(\'deleteFromCart\','+item.id+')'"
                                        v-on:click="deleteProductOfCart(item)"> <i
                                                 class="fa fa-times"></i> </a>
                                     <h5 class="mb-0 text-center">

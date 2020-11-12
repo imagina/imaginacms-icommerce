@@ -9,24 +9,24 @@
           @foreach($categories as $category)
             @if($category->parent_id == 0)
               <li class="nav-item dropdown">
-                <a href="{{$category->new_url}}" class="nav-link" data-toggle="dropdown">
+                <a href="{{$category->url}}" class="nav-link" data-toggle="dropdown">
                   <img class="white" src="/assets/media/iconos/ic-computadores.png">
                   <img class="dark" src="/assets/media/iconos/ic-computadores.png">
                   {{$category->title}}
                 </a>
                 <div class="dropdown-menu">
                   @php($firstChildrenLevel = $categories->where("parent_id",$category->id))
-                  <h3><a href="{{$category->new_url}}">{{$category->title}}</a></h3>
+                  <h3><a href="{{$category->url}}">{{$category->title}}</a></h3>
                   @if($firstChildrenLevel)
                     <ul class="frame-dropdown">
                       @foreach($firstChildrenLevel as $firstChildLevel)
                         <li class="nav-item">
-                          <a class="nav-link" href="{{$firstChildLevel->new_url}}">{{$firstChildLevel->title}}</a>
+                          <a class="nav-link" href="{{$firstChildLevel->url}}">{{$firstChildLevel->title}}</a>
                           @php($secondChildrenLevel = $categories->where("parent_id",$firstChildLevel->id))
                           @if($secondChildrenLevel)
                             <div class="dropdown-submenu">
                               @foreach($secondChildrenLevel as $secondChildLevel)
-                                <a href="{{$secondChildLevel->new_url}}">{{$secondChildLevel->title}}</a>
+                                <a href="{{$secondChildLevel->url}}">{{$secondChildLevel->title}}</a>
                               @endforeach
                             </div>
                           @endif

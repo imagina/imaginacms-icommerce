@@ -66,16 +66,15 @@ class Category extends Model
   
   public function getUrlAttribute() {
     
-    return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
+    $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
     
+    if($useOldRoutes)
+      return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
+    else
+      return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.category',$this->slug);
   }
   
-  
-  public function getNewUrlAttribute() {
-    
-    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.category',$this->slug);
-    
-  }
+ 
 
     public function getOptionsAttribute($value)
     {
