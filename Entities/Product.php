@@ -58,6 +58,7 @@ class Product extends Model implements TaggableInterface
         'store_id',
         'featured',
         'sum_rating',
+        'sort_order'
     ];
     protected $presenter = ProductPresenter::class;
     protected $casts = [
