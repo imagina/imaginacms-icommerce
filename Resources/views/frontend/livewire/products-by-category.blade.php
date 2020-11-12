@@ -14,9 +14,20 @@
             <slide wire:key="'featured-new-product-{{$product->id}}'">
               @includeFirst(["icommerce.product.meta","icommerce::frontend.product.meta"])
               <div class="card-product">
-                <div class="bg-img">
+                <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
                   <a href="{{$product->url}}">
-                    <img title="{{$product->name}}" alt="{{$product->name}}" src="{{$product->mediaFiles()->mainimage->mediumThumb}}" >
+                    <figure>
+                      <picture>
+                        <source
+                            type="image/jpeg"
+                            data-srcset="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
+                         />
+                        <img 
+                          data-src="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
+                          alt = "{{$product->name}}" 
+                          class="lazyload" />
+                      </picture>
+                    </figure>
                   </a>
                 </div>
                 <div class="mt-3 pb-3 text-center">
