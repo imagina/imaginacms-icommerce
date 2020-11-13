@@ -1,3 +1,4 @@
+@if($categories && count($categories)>0)
 <div class="filter-categories mb-4">
 
   @php($titleFilter = config("asgard.icommerce.config.filters.categories.title"))
@@ -22,3 +23,4 @@
   </div>
 
 </div>
+@endif
