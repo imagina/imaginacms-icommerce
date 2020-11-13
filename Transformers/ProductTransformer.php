@@ -60,7 +60,8 @@ class ProductTransformer extends BaseApiTransformer
       'gallery' => $this->gallery,
       'storeId' => $this->store_id,
       'averageRating'=> (float)$this->averageRating ?? 0,
-      'featured' => $this->featured  ? 1 : 0,
+      'featured' => $this->featured ? '1' : '0',
+      'sortOrder' => $this->when(isset($this->sort_order), ((int)$this->sort_order )),
       'visible' => $this->featured  ? 1 : 0,
       'url' => $this->url ?? '#',
       // totalDiscounts deprecated, bad way to calculate discounts

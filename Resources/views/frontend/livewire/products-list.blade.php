@@ -47,13 +47,8 @@
         window.livewire.on('urlChange', (param) => {
            	history.pushState(null, null, `${document.location.pathname}?${param}`);
         });
+			window.livewire.emit('productListRendered',{!! json_encode($params) !!});
     });
 </script>
-<script type="text/javascript">
-	console.warn("Componente: Products List - Start")
 
-	jQuery(document).ready(function($) {
-		window.livewire.emit('productListRendered',{!! json_encode($params) !!});
-	});
-</script>
 @stop

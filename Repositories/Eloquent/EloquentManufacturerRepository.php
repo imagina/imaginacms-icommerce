@@ -2,8 +2,12 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Ihelpers\Events\CreateMedia;
+use Modules\Ihelpers\Events\DeleteMedia;
+use Modules\Ihelpers\Events\UpdateMedia;
 
 class EloquentManufacturerRepository extends EloquentBaseRepository implements ManufacturerRepository
 {
@@ -20,7 +24,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     if (in_array('*', $params->include)) {//If Request all relationships
       $query->with(['translations']);
     } else {//Especific relationships
-      $includeDefault = ['translations'];//Default relationships
+      $includeDefault = ['translations','files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query
@@ -74,7 +78,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     $query->where('id', $criteria);
     
     // RELATIONSHIPS
-    $includeDefault = ['translations'];
+    $includeDefault = ['translations','files'];
     $query->with(array_merge($includeDefault, $params->include));
     
     // FIELDS
@@ -85,13 +89,30 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     
   }
   
+  /**
+   * Find a resource by the given slug
+   *
+   * @param  string $slug
+   * @return object
+   */
+  public function findBySlug($slug)
+  {
+    if (method_exists($this->model, 'translations')) {
+      return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
+        $q->where('slug', $slug);
+      })->with('translations')->firstOrFail();
+    }
+    
+    return $this->model->where('slug', $slug)->with('translations')->first();
+  }
   
   public function create($data)
   {
     
     $manufacturer = $this->model->create($data);
-    
-    
+  
+    //Event to ADD media
+    event(new CreateMedia($manufacturer, $data));
     return $manufacturer;
   }
   
@@ -116,6 +137,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
   
     if($model) {
       $model->update($data);
+      event(new UpdateMedia($model, $data));//Event to Update media
     }
     return $model;
     
@@ -141,6 +163,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
   
     if($model) {
       $model->delete();
+      event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     }
   }
 }

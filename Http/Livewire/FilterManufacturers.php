@@ -58,7 +58,7 @@ class FilterManufacturers extends Component
             unset($params["filter"]["manufacturers"]);
 
         $this->manufacturers = $this->getProductRepository()->getManufacturers(json_decode(json_encode($params)));
-
+        
 	}
 
     public function render()

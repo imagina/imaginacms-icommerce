@@ -141,6 +141,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
       //add filter by Manufacturers 1 or more than 1, in array
       if (isset($filter->manufacturers) && !empty($filter->manufacturers)) {
+        is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
         $query->whereIn("manufacturer_id", $filter->manufacturers);
       }
       

@@ -14,17 +14,20 @@ class FilterCategories extends Component
   private $categoryRepository;
   
   public $categories;
+  public $manufacturer;
 
   public $extraParamsUrl;
 
   protected $listeners = ['updateExtraParams'];
   
-  public function mount($categoryBreadcrumb)
+  public function mount($categoryBreadcrumb,$manufacturer)
   {
 
     
     $this->categoryBreadcrumb = $categoryBreadcrumb;
     $this->extraParamsUrl = "";
+
+    $this->manufacturer = $manufacturer;
     
   }
 
@@ -37,12 +40,14 @@ class FilterCategories extends Component
     
     $tpl = 'icommerce::frontend.livewire.filter-categories';
     $ttpl = 'icommerce.livewire.filter-categories';
-  
-    $params = (object)[
+
+    $params = json_decode(json_encode([
       "include" => ['translations'],
       "take" => 0,
-      
-    ];
+      "filter" => [
+        "manufacturers" => $this->manufacturer->id ?? null
+      ]
+    ]));
 
     $this->categoryRepository = app('Modules\Icommerce\Repositories\CategoryRepository');
     $this->categories = $this->categoryRepository->getItemsBy($params);

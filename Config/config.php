@@ -109,6 +109,10 @@ return [
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
     ],
+    'manufacturer' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single',
+    ],
     'product' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
@@ -150,23 +154,31 @@ return [
       ]
     ]
   ],
+
+  'layoutIndex' => [
+    'defaultIndexOption' => 'four'
+  ],
   
   'layoutIndexOptions' => [
     'four' => [
       'name' => 'four',
       'class' => 'col-12 col-md-4 col-lg-3',
       'icon' => 'fa fa-th-large fa-2x',
+      'status' => true
     ],
     'three' => [
       'name' => 'three',
       'class' => 'col-12 col-md-4 col-lg-4',
       'icon' => 'fa fa-square-o fa-2x',
+      'status' => true
     ],
     'one' => [
       'name' => 'one',
       'class' => 'col-12',
       'icon' => 'fa fa-align-justify fa-2x',
+      'status' => true
     ],
   ]
+  
 
 ];

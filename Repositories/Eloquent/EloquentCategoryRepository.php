@@ -53,6 +53,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query->where('show_menu', $filter->showMenu);
       }
       
+      
+      if (isset($filter->manufacturers) && $filter->manufacturers) {
+        is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
+        $query->whereHas('products', function ($query) use ($filter){
+          return $query->whereHas('manufacturer',function ($query) use ($filter){
+            $query->whereIn('icommerce__manufacturers.id',$filter->manufacturers);
+          });
+        });
+      }
+      
       //Filter by date
       if (isset($filter->date)) {
         $date = $filter->date;//Short filter date

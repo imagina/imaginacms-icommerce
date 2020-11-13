@@ -18,6 +18,16 @@ return [
     ],
     'form' => [
     ],
+    'pages' => [
+      'index' => 'Index Page'
+    ],
+    'filters' => [
+      'priceRange' => [
+        'group' => 'Filter Price Range',
+        'step' => 'Step'
+      ],
+      
+    ],
     'messages' => [
         'title is required' => 'El título es requerido',
         'title min 2' => 'El título debe contener mínimo dos caracteres',
@@ -67,8 +77,7 @@ return [
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',
         'countryFreeshipping' => 'Pais con envío gratuito de Productos',
-        'product-per-page' => 'Productos Por Pagina',
-        'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
+        'product-per-page' => 'Productos Por Pagina'
 
     ],
     'uri' => 'icommerce',

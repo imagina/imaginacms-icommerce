@@ -42,6 +42,7 @@ class Cart extends Component
   
   public function addToCart($productId, $quantity = 1, $productOptionValues = [])
   {
+  
     $data = [
       "cart_id" => $this->cart->id,
       "product_id" =>  $productId,

@@ -1,6 +1,6 @@
 <div class="top-content">
 
-	<h4 class="text-primary text-uppercase font-weight-bold">{{$category->title ?? setting('icommerce::customIndexTitle',null,trans('icommerce::products.title.products'))}}</h4>
+	<h4 class="text-primary text-uppercase font-weight-bold">{{$category->title ?? setting('icommerce::customIndexTitle',null,trans('icommerce::products.title.products'))}} {{isset($manufacturer->id) ? isset($category->id) ? "/ $manufacturer->name" : $manufacturer->name : ""}}</h4>
 	<hr>
 
 	<div class="row align-items-center mb-4">

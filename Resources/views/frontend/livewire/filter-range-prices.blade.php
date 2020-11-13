@@ -14,7 +14,7 @@
 
 		@include('icommerce::frontend.partials.preloader')
 
-		<div class="collapse show" id="collapseRangePrices">
+		<div class="collapse" id="collapseRangePrices">
 
 			<input type="text" id="amount" class="amount border-0 text-primary font-weight-bold mb-2" readonly>
 
