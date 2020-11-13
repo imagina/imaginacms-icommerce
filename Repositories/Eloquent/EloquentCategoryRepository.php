@@ -96,6 +96,13 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         }
       }
     }
+		if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+		
+		} else {
+			
+			//pre-filter status
+			$query->where("status", 1);
+		}
     
     // ORDER
     if (isset($params->order) && $params->order) {
@@ -104,7 +111,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       
       foreach ($order as $orderObject) {
         if (isset($orderObject->field) && isset($orderObject->way))
-          $model->orderBy($orderObject->field, $orderObject->way);
+					$query->orderBy($orderObject->field, $orderObject->way);
       }
     } else {
         $query->leftJoin("icommerce__category_translations as ct", "ct.category_id", "icommerce__categories.id")->orderBy('ct.title', 'asc');
@@ -167,6 +174,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query->where($field ?? 'id', $criteria);
       
     }
+	
+		if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+		
+		} else {
+		
+			//pre-filter status
+			$query->where("status", 1);
+		
+		}
+		
     /*== REQUEST ==*/
     return $query->first();
   }

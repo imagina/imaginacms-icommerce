@@ -14,8 +14,8 @@ class CategoryRequest extends BaseFormRequest
   public function translationRules()
   {
     return [
-      'title' => 'required|min:2',
-      'slug' => 'required',
+     // 'title' => 'required|min:2',
+    //  'slug' => 'required',
     ];
   }
 
