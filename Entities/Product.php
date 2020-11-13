@@ -119,10 +119,10 @@ class Product extends Model implements TaggableInterface
         return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
     }
 
-    /*public function discounts()
+    public function discounts()
     {
         return $this->hasMany(ProductDiscount::class);
-    }*/
+    }
 
     public function productOptions()
     {
@@ -252,26 +252,26 @@ class Product extends Model implements TaggableInterface
     {
         $now = date('Y-m-d');
 
-        /*$userId = Auth::user() ? Auth::user()->id : 0;
+        $userId = Auth::user() ? Auth::user()->id : 0;
         $departments = [];
         if ($userId){
-          $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
-            ->table('iprofile__user_department')->select("department_id")
-            ->where('user_id', $userId)
-            ->pluck('department_id');
+            $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
+                ->table('iprofile__user_department')->select("department_id")
+                ->where('user_id', $userId)
+                ->pluck('department_id');
 
-        }*/
+        }
 
         $discount = $this->discounts()
-            //->orderBy('priority', 'desc')
-            ->orderBy('created_at', 'desc')
-            /*->whereRaw('quantity > quantity_sold')*/
+            ->orderBy('priority', 'desc')
+            ->orderBy('created_at', 'asc')
+            ->whereRaw('quantity > quantity_sold')
             ->where('date_end', '>=', $now)
             ->where('date_start', '<=', $now)
-            /*->where(function ($query) use ($departments){
-              $query->whereIn('department_id', $departments)
-                ->orWhereNull('department_id');
-            })*/
+            ->where(function ($query) use ($departments){
+                $query->whereIn('department_id', $departments)
+                    ->orWhereNull('department_id');
+            })
             ->first();
 
         if(isset($discount->id)){

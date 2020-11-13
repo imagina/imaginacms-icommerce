@@ -33,6 +33,7 @@ class Category extends Model
         'sort_order'
     ];
 
+
     protected $width = ['files'];
 
     protected $casts = [
@@ -80,10 +81,12 @@ class Category extends Model
             return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
     }
 
-    public function urlManufacturer(Manufacturer $manufacturer) {
+    public function urlManufacturer(Manufacturer $manufacturer)
+    {
 
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.categoryManufacturer', [$this->slug,$manufacturer->slug]);
     }
+
 
     public function getOptionsAttribute($value)
     {
