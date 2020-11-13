@@ -99,8 +99,15 @@ class FilterRangePrices extends Component
 			$this->show = false;
 		}
 
+		$originalPriceMax = $this->priceMax;
+
 		// Sum Step Because the widget performs a calculation for the range
-		$this->priceMax+=intval($this->step)  ;
+		$this->priceMax+=intval($this->step);
+
+		// Validating the selected price if the "step" has increased the maximum value
+		if($this->selPriceMax==$originalPriceMax && $this->selPriceMax!=$this->priceMax){
+			$this->selPriceMax = $this->priceMax;
+		}
 
 
 		$this->dispatchBrowserEvent('filter-prices-updated', [
