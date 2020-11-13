@@ -1,5 +1,7 @@
 <div class="filter-range-prices mb-4" >
 
+	@if($show)
+	
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
 			<div class="d-flex justify-content-between align-items-center">
@@ -35,6 +37,7 @@
 		</div>
 	</div>
 
+	@endif
 </div>
 
 
