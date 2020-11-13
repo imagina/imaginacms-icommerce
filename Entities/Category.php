@@ -5,7 +5,6 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
-use Modules\Discountable\Traits\DiscountableTrait;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use TypiCMS\NestableTrait;
@@ -13,7 +12,7 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, DiscountableTrait;
+  use Translatable, NamespacedEntity, MediaRelation, NodeTrait;
 
   protected $table = 'icommerce__categories';
   protected static $entityNamespace = 'asgardcms/icommerceCategory';

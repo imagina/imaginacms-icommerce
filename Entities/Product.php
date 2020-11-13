@@ -8,7 +8,6 @@ use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
 use Modules\Ihelpers\Traits\Relationable;
-use Modules\Discountable\Traits\DiscountableTrait;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
@@ -18,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable, DiscountableTrait;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';
@@ -349,16 +348,16 @@ class Product extends Model implements TaggableInterface
      */
     public function getUrlAttribute()
     {
-  
+
       $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-  
+
       if($useOldRoutes)
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
       else
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
-      
-        
+
+
 
     }
- 
+
 }
