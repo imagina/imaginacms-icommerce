@@ -15,11 +15,15 @@
 			@php($expanded = true)
 		@endif
 	@endforeach
+
+	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
+	
+	
+	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
 	
 	{{--
-	@php($newUrl = $category->new_url.$extraParamsUrl)
+	@php($newUrl = $category->url)
 	--}}
-	@php($newUrl = $category->new_url)
 	<a class="text-secondary" data-toggle="{{$isSelected ? "collapse" : ""}}"
 		 href="{{$newUrl}}"
 		 aria-disabled="false"

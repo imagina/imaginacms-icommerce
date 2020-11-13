@@ -18,7 +18,7 @@ class CategoryTransformer extends JsonResource
             'parentId' => (int)$this->parent_id,
             'storeId' => $this->when($this->store_id, $this->store_id),
             'showMenu' => $this->when(isset($this->show_menu), ((int)$this->show_menu )),
-            'featured' => $this->when(isset($this->featured), ((int)$this->featured )),
+            'featured' => $this->featured ? '1' : '0',
             'sortOrder' => $this->when(isset($this->sort_order), ((int)$this->sort_order )),
             'metaTitle' => $this->meta_title ?? '',
             'metaDescription' => $this->meta_description ?? '',
@@ -30,6 +30,7 @@ class CategoryTransformer extends JsonResource
             'store' => new StoreTransformer($this->whenLoaded('store')),
             'products' => ProductTransformer::collection($this->whenLoaded('products')),
             'mainImage' => $this->mainImage,
+			'status' => $this->status ? '1' : '0',
             'mediaFiles' => $this->mediaFiles(),
             'categoryDiscounts' => $this->discounts()->pluck('discount_id'),
         ];

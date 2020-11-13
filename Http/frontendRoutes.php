@@ -46,19 +46,29 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
     'uses' => 'PublicController@index',
   ]);
   
+  $router->get(trans('icommerce::routes.store.manufacturer'), [
+    'as' => $locale . '.icommerce.store.index.manufacturer',
+    'uses' => 'PublicController@indexManufacturer',
+  ]);
+  
+  $router->get(trans('icommerce::routes.store.categoryManufacturer'), [
+    'as' => $locale . '.icommerce.store.index.categoryManufacturer',
+    'uses' => 'PublicController@indexCategoryManufacturer',
+  ]);
+  
   $router->get(trans('icommerce::routes.store.product'), [
     'as' => $locale . '.icommerce.store.show',
     'uses' => 'PublicController@show',
   ]);
   
   $router->get(trans('icommerce::routes.store.wishlist'), [
-    'as' =>  $locale . 'icommerce.store.wishlists.index',
+    'as' =>  $locale . '.icommerce.store.wishlists.index',
     'uses' => 'PublicController@wishlist',
     'middleware' => 'logged.in'
   ]);
   
-  $router->get(trans('icommerce::routes.store.wishlist'), [
-    'as' => $locale . 'icommerce.store.checkout',
+  $router->get(trans('icommerce::routes.store.checkout'), [
+    'as' => $locale . '.icommerce.store.checkout',
     'uses' => 'PublicController@checkout',
   ]);
   

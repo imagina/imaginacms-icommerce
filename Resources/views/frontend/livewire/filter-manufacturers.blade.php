@@ -1,4 +1,5 @@
 <div class="filter-manufacturers mb-4">
+@if($manufacturers && count($manufacturers)>0)
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="false" aria-controls="collapseManufacturers">
 	  		<div class="d-flex justify-content-between align-items-center">
@@ -28,10 +29,6 @@
 							  	</label>
 							</div>
 						@endforeach
-					@else
-						<p class="text-muted">
-						  No existen Marcas</a>.
-						</p>
 					@endif
 
 		  		</div>
@@ -40,17 +37,6 @@
 		  </div>
 		</div>
 	</div>
-  	
+@endif
   	
 </div>
-
-@section('scripts')
-@parent
-
-<script type="text/javascript">
-
-console.warn("Componente: Filter Manufacturers - Start")
-
-</script>
-
-@stop

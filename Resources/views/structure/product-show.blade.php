@@ -254,13 +254,13 @@
             return toastr.error("Faltan opciones requeridas por seleccionar");
 
           vue_show_commerce.sending_data = true;
-          vue_carting.addItemCart(
+  
+          window.livewire.emit('addToCart',
             data.id,
-            data.name,
-            (data.price + this.productOptionsSelected.total),
             this.quantity,
             this.productOptionsSelected.options
           );
+          
           vue_show_commerce.quantity = 1;
           vue_show_commerce.sending_data = false;
 

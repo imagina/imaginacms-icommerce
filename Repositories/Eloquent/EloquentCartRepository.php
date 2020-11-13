@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-
+use Illuminate\Support\Arr;
 use Modules\Icommerce\Entities\CartProduct;
 
 class EloquentCartRepository extends EloquentBaseRepository implements CartRepository
@@ -91,7 +91,7 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
         $query = $this->model->query();
 
         /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include)) {//If Request all relationships
+        if (in_array('*', $params->include ?? [])) {//If Request all relationships
             $query->with([]);
         } else {//Especific relationships
             $includeDefault = ['products'];//Default relationships

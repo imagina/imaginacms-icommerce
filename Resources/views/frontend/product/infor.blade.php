@@ -1,6 +1,6 @@
 <div class="infor mt-3 pb-3">
 
-	<a class="title" href="{{$product->new_url}}">{{$product->name}}</a>
+	<a class="title" href="{{$product->url}}">{{$product->name}}</a>
 
 	<div class="category">{{$product->category->title}}</div>
 

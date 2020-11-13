@@ -1,66 +1,69 @@
 <?php
 
 return [
-    'name' => 'Icommerce',
-    'frontendModuleName' => 'qcommerce',
-    'orderStatuses' => [
-        '1' => [
-            'id' => 1,
-            'title' => 'icommerce::orderstatuses.statuses.processing',
-        ],
-        '2' => [
-            'id' => 2,
-            'title' => 'icommerce::orderstatuses.statuses.shipped',
-        ],
-        '3' => [
-            'id' => 3,
-            'title' => 'icommerce::orderstatuses.statuses.canceled',
-        ],
-        '4' => [
-            'id' => 4,
-            'title' => 'icommerce::orderstatuses.statuses.completed',
-        ],
-        '5' => [
-            'id' => 5,
-            'title' => 'icommerce::orderstatuses.statuses.denied',
-        ],
-        '6' => [
-            'id' => 6,
-            'title' => 'icommerce::orderstatuses.statuses.canceledreversal',
-        ],
-        '7' => [
-            'id' => 7,
-            'title' => 'icommerce::orderstatuses.statuses.failed',
-        ],
-        '8' => [
-            'id' => 8,
-            'title' => 'icommerce::orderstatuses.statuses.refunded',
-        ],
-        '9' => [
-            'id' => 9,
-            'title' => 'icommerce::orderstatuses.statuses.reserved',
-        ],
-        '10' => [
-            'id' => 10,
-            'title' => 'icommerce::orderstatuses.statuses.chargeback',
-        ],
-        '11' => [
-            'id' => 11,
-            'title' => 'icommerce::orderstatuses.statuses.pending',
-        ],
-        '12' => [
-            'id' => 12,
-            'title' => 'icommerce::orderstatuses.statuses.voided',
-        ],
-        '13' => [
-            'id' => 13,
-            'title' => 'icommerce::orderstatuses.statuses.processed',
-        ],
-        '14' => [
-            'id' => 14,
-            'title' => 'icommerce::orderstatuses.statuses.expired',
-        ],
+  'name' => 'Icommerce',
+  'frontendModuleName' => 'qcommerce',
+  'orderStatuses' => [
+    '1' => [
+      'id' => 1,
+      'title' => 'icommerce::orderstatuses.statuses.processing',
     ],
+    '2' => [
+      'id' => 2,
+      'title' => 'icommerce::orderstatuses.statuses.shipped',
+    ],
+    '3' => [
+      'id' => 3,
+      'title' => 'icommerce::orderstatuses.statuses.canceled',
+    ],
+    '4' => [
+      'id' => 4,
+      'title' => 'icommerce::orderstatuses.statuses.completed',
+    ],
+    '5' => [
+      'id' => 5,
+      'title' => 'icommerce::orderstatuses.statuses.denied',
+    ],
+    '6' => [
+      'id' => 6,
+      'title' => 'icommerce::orderstatuses.statuses.canceledreversal',
+    ],
+    '7' => [
+      'id' => 7,
+      'title' => 'icommerce::orderstatuses.statuses.failed',
+    ],
+    '8' => [
+      'id' => 8,
+      'title' => 'icommerce::orderstatuses.statuses.refunded',
+    ],
+    '9' => [
+      'id' => 9,
+      'title' => 'icommerce::orderstatuses.statuses.reserved',
+    ],
+    '10' => [
+      'id' => 10,
+      'title' => 'icommerce::orderstatuses.statuses.chargeback',
+    ],
+    '11' => [
+      'id' => 11,
+      'title' => 'icommerce::orderstatuses.statuses.pending',
+    ],
+    '12' => [
+      'id' => 12,
+      'title' => 'icommerce::orderstatuses.statuses.voided',
+    ],
+    '13' => [
+      'id' => 13,
+      'title' => 'icommerce::orderstatuses.statuses.processed',
+    ],
+    '14' => [
+      'id' => 14,
+      'title' => 'icommerce::orderstatuses.statuses.expired',
+    ],
+  ],
+  
+  'useOldRoutes' => true,
+  
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -76,12 +79,12 @@ return [
     ],
   ],
   'formatmoney' => [
-      'decimals' => 2,
-      'dec_point' => '.',
-      'housands_sep' => ','
+    'decimals' => 2,
+    'dec_point' => '.',
+    'housands_sep' => ','
   ],
   //add: custom product includes (if they are empty icommerce module will be using default includes) (slim)
-  'includes'=>[
+  'includes' => [
     /*'ProductTransformer'=>[
       'post'=>[
         'path'=>'Modules\Iblog\Transformers\PostTransformer', //this is the transformer path
@@ -90,7 +93,7 @@ return [
     ]*/
   ],
   //add: product relations like users relations style
-  'relations' =>[
+  'relations' => [
     /*'product'=>[
       'post' => function () {
         return $this->hasOne(
@@ -105,6 +108,10 @@ return [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
+    ],
+    'manufacturer' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single',
     ],
     'product' => [
       'mainimage' => 'single',
@@ -148,22 +155,30 @@ return [
     ]
   ],
 
+  'layoutIndex' => [
+    'defaultIndexOption' => 'four'
+  ],
+  
   'layoutIndexOptions' => [
     'four' => [
       'name' => 'four',
       'class' => 'col-12 col-md-4 col-lg-3',
       'icon' => 'fa fa-th-large fa-2x',
+      'status' => true
     ],
     'three' => [
       'name' => 'three',
       'class' => 'col-12 col-md-4 col-lg-4',
       'icon' => 'fa fa-square-o fa-2x',
+      'status' => true
     ],
     'one' => [
       'name' => 'one',
       'class' => 'col-12',
       'icon' => 'fa fa-align-justify fa-2x',
+      'status' => true
     ],
   ]
+  
 
 ];

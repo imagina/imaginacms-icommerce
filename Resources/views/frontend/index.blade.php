@@ -1,4 +1,4 @@
-@extends('icommerce::structure.livewire-index')
+@extends('layouts.master')
 
 {{-- Meta --}}
 @includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
@@ -24,7 +24,7 @@
 			{{-- Top Content , Products, Pagination --}}
 			<div class="col-lg-9">
 				
-				@livewire('icommerce::products-list',["category" => $category ?? null])
+				@livewire('icommerce::products-list',["category" => $category ?? null,"manufacturer" => $manufacturer ?? null])
 				<hr>
 
 			</div>

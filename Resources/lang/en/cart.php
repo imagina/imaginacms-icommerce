@@ -37,6 +37,7 @@ return [
     ],
     'message' => [
         'add' => 'Product added to cart',
+        'remove' => 'Product removed from the cart',
         'can_not_add' => 'You must add at least one product to the cart',
         'not_existence' => 'You cannot add more since it exceeds the existence in the inventory',
         'min_exceeded' => 'La cantidad no puede ser menor a 1',

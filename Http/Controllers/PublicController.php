@@ -8,6 +8,7 @@ use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
@@ -25,6 +26,7 @@ class PublicController extends BaseApiController
   protected $auth;
   private $product;
   private $category;
+  private $manufacturer;
   private $currency;
   private $payments;
   private $shippings;
@@ -32,6 +34,7 @@ class PublicController extends BaseApiController
   public function __construct(
     ProductRepository $product,
     CategoryRepository $category,
+    ManufacturerRepository $manufacturer,
     CurrencyRepository $currency,
     PaymentMethodRepository $payments,
     ShippingMethodRepository $shippings
@@ -40,6 +43,7 @@ class PublicController extends BaseApiController
     parent::__construct();
     $this->product = $product;
     $this->category = $category;
+    $this->manufacturer = $manufacturer;
     $this->currency = $currency;
     $this->payments = $payments;
     $this->shippings = $shippings;
@@ -64,27 +68,117 @@ class PublicController extends BaseApiController
       
       $category = $this->category->findBySlug($slug);
       
-      $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
-      
-      $ptpl = "icommerce.category.{$category->parent_id}%.index";
-      if ($category->parent_id != 0 && view()->exists($ptpl)) {
-        $tpl = $ptpl;
+      if(isset($category->id)){
+        $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+        $ptpl = "icommerce.category.{$category->parent_id}%.index";
+        if ($category->parent_id != 0 && view()->exists($ptpl)) {
+          $tpl = $ptpl;
+        }
+  
+        $ctpl = "icommerce.category.{$category->id}.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+        $ctpl = "icommerce.category.{$category->id}%.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+      }else{
+        return response()->view('errors.404', [], 404);
       }
-  
-      $ctpl = "icommerce.category.{$category->id}.index";
-      if (view()->exists($ctpl)) $tpl = $ctpl;
-  
-      $ctpl = "icommerce.category.{$category->id}%.index";
-      if (view()->exists($ctpl)) $tpl = $ctpl;
-  
+      
     }
 
     //$dataRequest = $request->all();
 
     return view($tpl, compact('category','categoryBreadcrumb'));
   }
+
+  // view products by category
+  public function indexManufacturer(Request $request)
+  {
+    $argv = explode("/",$request->path());
+    $slug = end($argv);
   
-  // Informacion de Producto
+    $tpl = 'icommerce::frontend.index';
+    $ttpl = 'icommerce.index';
+    
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+  
+    $manufacturer = null;
+  
+    $categoryBreadcrumb = [];
+    
+    if($slug && $slug != trans('icommerce::routes.store.index')){
+  
+      $manufacturer = $this->manufacturer->findBySlug($slug);
+    
+      if(isset($manufacturer->id)){
+        
+      
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+      }else{
+        return response()->view('errors.404', [], 404);
+      }
+      
+    }
+
+    //$dataRequest = $request->all();
+
+    return view($tpl, compact('manufacturer','categoryBreadcrumb'));
+  }
+
+  // view products by category
+  public function indexCategoryManufacturer(Request $request, $categorySlug, $manufacturerSlug)
+  {
+    $argv = explode("/",$request->path());
+  
+    $tpl = 'icommerce::frontend.index';
+    $ttpl = 'icommerce.index';
+    
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+  
+    $manufacturer = null;
+    $category = null;
+  
+    $categoryBreadcrumb = [];
+    
+    if($categorySlug && $manufacturerSlug){
+  
+      $manufacturer = $this->manufacturer->findBySlug($manufacturerSlug);
+      
+      $category = $this->category->findBySlug($categorySlug);
+  
+     
+      if(isset($category->id) && isset($manufacturer->id)){
+      
+        $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+        
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+  
+      }else{
+        return response()->view('errors.404', [], 404);
+      }
+      
+    }
+
+    //$dataRequest = $request->all();
+
+    return view($tpl, compact('category','manufacturer','categoryBreadcrumb'));
+  }
+  
+  /**
+   * Show product
+   * @param Request $request
+   * @return mixed
+   */
   public function show(Request $request)
   {
     $argv = explode("/",$request->path());
@@ -119,7 +213,12 @@ class PublicController extends BaseApiController
     $tpl = 'icommerce::frontend.checkout.index';
     $ttpl = 'icommerce.checkout.index';
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    return view($tpl);
+  
+    $cart = request()->session()->get('cart');
+    if(isset($cart->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }
+    return view($tpl,compact('cart'));
   }
   
   public function wishlist()

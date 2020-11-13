@@ -59,6 +59,7 @@ class Product extends Model implements TaggableInterface
         'store_id',
         'featured',
         'sum_rating',
+        'sort_order'
     ];
     protected $presenter = ProductPresenter::class;
     protected $casts = [
@@ -348,13 +349,16 @@ class Product extends Model implements TaggableInterface
      */
     public function getUrlAttribute()
     {
-
+  
+      $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+  
+      if($useOldRoutes)
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
+      else
+        return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
+      
+        
 
     }
-  public function getNewUrlAttribute() {
-    
-    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
-    
-  }
+ 
 }

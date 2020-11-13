@@ -18,6 +18,16 @@ return [
     ],
     'form' => [
     ],
+    'pages' => [
+      'index' => 'Index Page'
+    ],
+    'filters' => [
+      'priceRange' => [
+        'group' => 'Filter Price Range',
+        'step' => 'Step'
+      ],
+
+    ],
     'messages' => [
         'title is required' => 'El título es requerido',
         'title min 2' => 'El título debe contener mínimo dos caracteres',
@@ -64,7 +74,7 @@ return [
         'dashEvery' => 'Guión cada carácter x - Ejem: Si el número es 3 el codigo seria xxx-xxx-xxx',
         'tax' => 'Impuesto',
         'orderitemsTax' => 'Tasa en OrderItems',
-        'emails' => 'Webmaster - Email',
+        'emails' => 'Email del Webmaster',
         'fromemail' => 'Email',
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Icommerce\Repositories\ProductRepository;
@@ -54,7 +56,7 @@ class OldPublicController extends BasePublicController
 
     $category = $this->category->findBySlug($slug);
     
-    $params=$this->_paramsRequest($request,$category->id);
+    $params = $this->_paramsRequest($request,$category->id);
     
     $products = $this->product->getItemsBy($params);
     
@@ -77,8 +79,10 @@ class OldPublicController extends BasePublicController
     ];
     
     $products=ProductTransformer::collection($products);
+  
+    $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
     
-    return view($tpl, compact('category','products','paginate'));
+    return view($tpl, compact('category','products','paginate','categoryBreadcrumb'));
   }
   
   // Informacion de Producto
@@ -114,7 +118,12 @@ class OldPublicController extends BasePublicController
     $tpl = 'icommerce::frontend.checkout.index';
     $ttpl = 'icommerce.checkout.index';
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    return view($tpl);
+  
+    $cart = request()->session()->get('cart');
+    if(isset($cart->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }
+    return view($tpl,compact('cart'));
   }
   
   public function wishlist()

@@ -13,27 +13,26 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends Model
 {
-    use Translatable, NamespacedEntity, MediaRelation, NodeTrait, DiscountableTrait;
+  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, DiscountableTrait;
 
-    protected $table = 'icommerce__categories';
-    protected static $entityNamespace = 'asgardcms/icommerceCategory';
-    public $translatedAttributes = [
-        'title',
-        'slug',
-        'description',
-        'meta_title',
-        'meta_description',
-        'translatable_options'
-    ];
-    protected $fillable = [
-        'parent_id',
-        'options',
-        'show_menu',
-        'featured',
-        'store_id',
-        'sort_order'
-    ];
-
+  protected $table = 'icommerce__categories';
+  protected static $entityNamespace = 'asgardcms/icommerceCategory';
+  public $translatedAttributes = [
+    'title',
+    'slug',
+    'description',
+    'meta_title',
+    'meta_description',
+    'translatable_options'
+  ];
+  protected $fillable = [
+    'parent_id',
+    'options',
+    'show_menu',
+    'featured',
+    'store_id',
+    'sort_order'
+  ];
 
   protected $width = ['files'];
 
@@ -57,7 +56,13 @@ class Category extends Model
     }
 
 
-    public function store()
+    public function manufacturers()
+  {
+    return $this->belongsToMany(Manufacturer::class, 'icommerce__products')->withTimestamps();
+  }
+
+
+  public function store()
     {
         if (is_module_enabled('Marketplace')) {
             return $this->belongsTo('Modules\Marketplace\Entities\Store');
@@ -65,17 +70,20 @@ class Category extends Model
         return $this->belongsTo(Store::class);
     }
 
-  public function getUrlAttribute() {
+  public function getUrlAttribute()
+{
 
+    $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+
+    if ($useOldRoutes)
     return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
+else
+      return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
+}
 
-  }
+  public function urlManufacturer(Manufacturer $manufacturer) {
 
-
-  public function getNewUrlAttribute() {
-
-    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.category',$this->slug);
-
+    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.categoryManufacturer', [$this->slug,$manufacturer->slug]);
   }
 
     public function getOptionsAttribute($value)

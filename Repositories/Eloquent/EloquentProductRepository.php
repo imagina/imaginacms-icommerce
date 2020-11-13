@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Ihelpers\Events\CreateMedia;
@@ -112,6 +113,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where('status', ($filter->status ? 1 : 0));
       }
 
+
       // add filter by Categories 1 or more than 1, in array
       if (isset($filter->categories) && !empty($filter->categories)) {
         is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
@@ -120,6 +122,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             $query->whereIn('icommerce__product_category.category_id', $filter->categories);
           })->orWhereIn('category_id', $filter->categories);
         });
+
       }
 
       // add filter by Categories 1 or more than 1, in array
@@ -216,17 +219,20 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       //Pre filters by default
       //pre-filter date_available
-      $query->where(function ($query) use ($filter) {
+      $query->where(function ($query) {
         $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
         $query->orWhereNull("date_available");
       });
 
       //pre-filter status
       $query->where("status", 1);
+
       //pre-filter quantity and subtract
       $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
     }
-// ORDER
+
+
+    // ORDER
     if (isset($params->order) && $params->order) {
 
       $order = is_array($params->order) ? $params->order : [$params->order];
@@ -328,14 +334,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
 
     } else {
+
       //Pre filters by default
       //pre-filter date_available
       $query->where(function ($query) use ($filter) {
         $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
         $query->orWhereNull("date_available");
       });
+
       //pre-filter status
       $query->where("status", 1);
+
       //pre-filter quantity and subtract
       $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
 
@@ -355,16 +364,14 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
-      if(isset($data['product_discounts'])){
-          $product->discount($data['product_discounts']);
-      }
-
       if (isset($data['product_options']))
         $product->productOptions()->sync(Arr::get($data, 'product_options', []));
+
       if (isset($data['option_values']))
-        $product->optionValues()->sync(array_get($data, 'option_values', []));
+        $product->optionValues()->sync(Arr::get($data, 'option_values', []));
       if (isset($data['related_products']))
         $product->relatedProducts()->sync(Arr::get($data, 'related_products', []));
+
       /*
       if(isset($data['discounts']))
       $product->discounts()->sync(Arr::get($data, 'discounts', []));
@@ -376,9 +383,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     //Event to ADD media
     event(new CreateMedia($product, $data));
 
-
-    event(new ProductWasCreated($product));
-
     return $product;
   }
 
@@ -387,17 +391,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== initialize query ==*/
     $query = $this->model->query();
 
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
 
-            //Update by field
-            if (isset($filter->field))
-                $field = $filter->field;
-        }
+      //Update by field
+      if (isset($filter->field))
+        $field = $filter->field;
+    }
 
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
 
     if ($model) {
       $model->update($data);
@@ -410,24 +414,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($data['option_values']))
           $model->optionValues()->sync(Arr::get($data, 'option_values', []));
-    */
-
-    if(isset($data['product_discounts'])){
-        $model->discount($data['product_discounts']);
-    }
-
-
-    if (isset($data['related_products']))
-      $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
+      */
+      if (isset($data['related_products']))
+        $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
 
 
       if (isset($data['tags']))
-      $model->tags()->sync(Arr::get($data, 'tags', []));
+        $model->tags()->sync(Arr::get($data, 'tags', []));
 
       //Event to Update media
       event(new UpdateMedia($model, $data));
-
-      event(new ProductWasUpdated($model));
 
       return $model;
     }
@@ -480,7 +476,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     return $query->paginate(setting('icommerce::product-per-page'));
   }
 
-public function getPriceRange($params = false)
+  public function getPriceRange($params = false)
   {
     isset($params->take) ? $params->take = false : false;
     isset($params->page) ? $params->page = null : false;
@@ -493,7 +489,7 @@ public function getPriceRange($params = false)
       \DB::raw("MIN(icommerce__products.price) AS minPrice"),
       \DB::raw("MAX(icommerce__products.price) AS maxPrice")
     );
-
+    $query->groupBy("icommerce__products.created_at");
     return $query->first();
   }
 

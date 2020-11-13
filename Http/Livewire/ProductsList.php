@@ -17,10 +17,14 @@ class ProductsList extends Component
 
 	use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
 	private $order;
 	private $firstRequest;
 
 	public $category;
+    public $manufacturer;
+
 	public $totalProducts;
 	public $orderBy;
 	public $mainLayout;
@@ -43,16 +47,18 @@ class ProductsList extends Component
     * Runs once, immediately after the component is instantiated,
     * but before render() is called
     */
-	public function mount(Request $request,$category)
+	public function mount(Request $request,$category,$manufacturer)
 	{
 
 	    $this->category = $category;
+        $this->manufacturer = $manufacturer;
+        
 	    $this->totalProducts = 0;
 	    $this->filters = [];
 	    $this->orderBy = "nameaz";
 	    $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
 	    
-	    $this->mainLayout = "four";
+	    $this->mainLayout = config("asgard.icommerce.config.layoutIndex.defaultIndexOption");
         $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
 	    
 	    $this->priceMin = null;
@@ -151,6 +157,12 @@ class ProductsList extends Component
     	
     	if(isset($this->category->id))
     		$params["filter"]["category"] = $this->category->id;
+
+        if(isset($this->manufacturer->id))
+            $params["filter"]["manufacturers"] = [$this->manufacturer->id];
+    	
+        if(isset($this->manufacturer->id))
+            $params["filter"]["manufacturers"] = [$this->manufacturer->id];
     	
 
 	    return $params;

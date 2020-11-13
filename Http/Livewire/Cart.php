@@ -15,7 +15,7 @@ class Cart extends Component
   public $view;
   public $defaultView;
   private $params;
-  protected $listeners = ['addToCart', 'deleteFromCart'];
+  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart'];
   
   public function mount(Request $request)
   {
@@ -25,10 +25,9 @@ class Cart extends Component
     
     $cart = request()->session()->get('cart');
     
-    if(!empty($cart)){
-      
-      $this->cart = $cart;
-      
+    if(isset($cart->id)){
+      $this->cart = $this->cartRepository()->getItem($cart->id);
+      request()->session()->put('cart', $this->cart);
     }else{
       $data =[];
       $data["ip"] = $request->ip();
@@ -39,11 +38,11 @@ class Cart extends Component
       request()->session()->put('cart', $this->cart);
    
     }
-   
   }
   
   public function addToCart($productId, $quantity = 1, $productOptionValues = [])
   {
+  
     $data = [
       "cart_id" => $this->cart->id,
       "product_id" =>  $productId,
@@ -53,6 +52,11 @@ class Cart extends Component
     
     $this->cartProductRepository()->create($data);
     $this->updateCart();
+  
+    $this->alert('success', trans('icommerce::cart.message.add'),[
+      'position' => 'bottom-end',
+      'iconColor' => setting("isite::brandPrimary","#fff")
+    ]);
   }
   
   public function deleteFromCart($cartProductId)
@@ -61,8 +65,12 @@ class Cart extends Component
     $result = $this->cartProductRepository()->deleteBy($cartProductId,$params);
 
     $this->updateCart();
-    $this->dispatchBrowserEvent(
-      'alert', ['type' => 'success',  'message' => 'Saved']);
+  
+    $this->alert('warning', trans('icommerce::cart.message.remove'),[
+      'position' => 'bottom-end',
+      'iconColor' => setting("isite::brandPrimary","#fff")
+    ]);
+    
   }
   
   public function updateCart(){

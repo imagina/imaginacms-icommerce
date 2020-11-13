@@ -180,7 +180,7 @@
       
             {{-- form group--}}
             <div class="form-group">
-        
+              @php(!isset($extraField->type) ? $extraField->type = "text" : false)
               {{-- label --}}
               <label for="{{$extraField->field}}">{{trans("iprofile::frontend.form.$extraField->field")}}</label>
         

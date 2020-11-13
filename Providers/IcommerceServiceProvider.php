@@ -10,8 +10,9 @@ use Modules\Icommerce\Console\UpdateCarts;
 use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
-
+use Illuminate\Support\Arr;
 use Livewire\Livewire;
+
 class IcommerceServiceProvider extends ServiceProvider
 {
   use CanPublishConfiguration;

@@ -18,6 +18,16 @@ return [
   ],
   'form' => [
   ],
+  'pages' => [
+    'index' => 'Página Principal'
+  ],
+  'filters' => [
+    'priceRange' => [
+      'group' => 'Filtro Rango de Precios',
+      'step' => 'Saltos'
+    ],
+  ],
+
   'messages' => [
     'title is required' => 'El título es requerido',
     'title min 2' => 'El título debe contener mínimo dos caracteres',

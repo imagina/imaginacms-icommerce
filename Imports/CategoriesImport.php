@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Entities\Category;
+use Illuminate\Support\Str;
 
 // class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
 class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
