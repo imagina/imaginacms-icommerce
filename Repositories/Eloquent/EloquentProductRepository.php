@@ -2,7 +2,6 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Illuminate\Support\Arr;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Status;
@@ -13,7 +12,7 @@ use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Support\Arr;
 //Events media
 
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository
@@ -144,6 +143,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
             //add filter by Manufacturers 1 or more than 1, in array
             if (isset($filter->manufacturers) && !empty($filter->manufacturers)) {
+                is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
                 $query->whereIn("manufacturer_id", $filter->manufacturers);
             }
 
@@ -367,7 +367,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             // sync tables
             $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
-
             if(isset($data['price_lists'])){
                 $product->priceLists()->sync($data['price_lists'] ?? []);
             }
@@ -390,7 +389,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         //Event to ADD media
         event(new CreateMedia($product, $data));
-
 
         event(new ProductWasCreated($product));
 
@@ -427,12 +425,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
                 $model->optionValues()->sync(Arr::get($data, 'option_values', []));
             */
 
-
-
             if(isset($data['price_lists'])){
                 $model->priceLists()->sync($data['price_lists']);
             }
-
 
             if (isset($data['related_products']))
                 $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
@@ -536,4 +531,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $manufacturers;
 
     }
+
+
 }
