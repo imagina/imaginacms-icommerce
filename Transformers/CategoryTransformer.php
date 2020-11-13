@@ -30,7 +30,7 @@ class CategoryTransformer extends JsonResource
             'store' => new StoreTransformer($this->whenLoaded('store')),
             'products' => ProductTransformer::collection($this->whenLoaded('products')),
             'mainImage' => $this->mainImage,
-			'status' => $this->status ? '1' : '0',
+            'status' => $this->status ? '1' : '0',
             'mediaFiles' => $this->mediaFiles(),
             'categoryDiscounts' => $this->discounts()->pluck('discount_id'),
         ];

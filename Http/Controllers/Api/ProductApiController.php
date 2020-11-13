@@ -158,12 +158,12 @@ class ProductApiController extends BaseApiController
     {
         \DB::beginTransaction(); //DB Transaction
         try {
-          //Get data
+            //Get data
             $data = $request->input('attributes') ?? [];
 
             $this->validateRequestApi(new UpdateProductRequest($data));
 
-          //Get Parameters from URL.
+            //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
@@ -197,8 +197,8 @@ class ProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
 
-          //Request to Repository
-          $this->product->deleteBy($criteria, $params);
+            //Request to Repository
+            $this->product->deleteBy($criteria, $params);
 
             \DB::commit();
         } catch (\Exception $e) {

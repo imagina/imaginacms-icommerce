@@ -12,28 +12,28 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, NodeTrait;
+    use Translatable, NamespacedEntity, MediaRelation, NodeTrait;
 
-  protected $table = 'icommerce__categories';
-  protected static $entityNamespace = 'asgardcms/icommerceCategory';
-  public $translatedAttributes = [
-    'title',
-    'slug',
-    'description',
-    'meta_title',
-    'meta_description',
-    'translatable_options'
-  ];
-  protected $fillable = [
-    'parent_id',
-    'options',
-    'show_menu',
-    'featured',
-    'store_id',
-    'sort_order'
-  ];
+    protected $table = 'icommerce__categories';
+    protected static $entityNamespace = 'asgardcms/icommerceCategory';
+    public $translatedAttributes = [
+        'title',
+        'slug',
+        'description',
+        'meta_title',
+        'meta_description',
+        'translatable_options'
+    ];
+    protected $fillable = [
+        'parent_id',
+        'options',
+        'show_menu',
+        'featured',
+        'store_id',
+        'sort_order'
+    ];
 
-  protected $width = ['files'];
+    protected $width = ['files'];
 
     protected $casts = [
         'options' => 'array'
@@ -56,12 +56,12 @@ class Category extends Model
 
 
     public function manufacturers()
-  {
-    return $this->belongsToMany(Manufacturer::class, 'icommerce__products')->withTimestamps();
-  }
+    {
+        return $this->belongsToMany(Manufacturer::class, 'icommerce__products')->withTimestamps();
+    }
 
 
-  public function store()
+    public function store()
     {
         if (is_module_enabled('Marketplace')) {
             return $this->belongsTo('Modules\Marketplace\Entities\Store');
@@ -69,21 +69,21 @@ class Category extends Model
         return $this->belongsTo(Store::class);
     }
 
-  public function getUrlAttribute()
-{
+    public function getUrlAttribute()
+    {
 
-    $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+        $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
 
-    if ($useOldRoutes)
-    return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
-else
-      return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
-}
+        if ($useOldRoutes)
+            return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.'.$this->slug);
+        else
+            return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
+    }
 
-  public function urlManufacturer(Manufacturer $manufacturer) {
+    public function urlManufacturer(Manufacturer $manufacturer) {
 
-    return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.categoryManufacturer', [$this->slug,$manufacturer->slug]);
-  }
+        return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.index.categoryManufacturer', [$this->slug,$manufacturer->slug]);
+    }
 
     public function getOptionsAttribute($value)
     {
@@ -135,46 +135,46 @@ else
         return json_decode(json_encode($image));
     }
 
-  public function getTertiaryImageAttribute()
-  {
-    $thumbnail = $this->files->where('zone', 'tertiaryimage')->first();
-    if (!$thumbnail) {
-      $image = [
-        'mimeType' => 'image/jpeg',
-        'path' => url('modules/iblog/img/post/default.jpg')
-      ];
-    } else {
-      $image = [
-        'mimeType' => $thumbnail->mimetype,
-        'path' => $thumbnail->path_string
-      ];
+    public function getTertiaryImageAttribute()
+    {
+        $thumbnail = $this->files->where('zone', 'tertiaryimage')->first();
+        if (!$thumbnail) {
+            $image = [
+                'mimeType' => 'image/jpeg',
+                'path' => url('modules/iblog/img/post/default.jpg')
+            ];
+        } else {
+            $image = [
+                'mimeType' => $thumbnail->mimetype,
+                'path' => $thumbnail->path_string
+            ];
+        }
+        return json_decode(json_encode($image));
     }
-    return json_decode(json_encode($image));
-  }
 
-  public function getLftName()
-  {
-    return 'lft';
-  }
+    public function getLftName()
+    {
+        return 'lft';
+    }
 
-  public function getRgtName()
-  {
-    return 'rgt';
-  }
+    public function getRgtName()
+    {
+        return 'rgt';
+    }
 
-  public function getDepthName()
-  {
-    return 'depth';
-  }
+    public function getDepthName()
+    {
+        return 'depth';
+    }
 
-  public function getParentIdName()
-  {
-    return 'parent_id';
-  }
+    public function getParentIdName()
+    {
+        return 'parent_id';
+    }
 
 // Specify parent id attribute mutator
-  public function setParentAttribute($value)
-  {
-    $this->setParentIdAttribute($value);
-  }
+    public function setParentAttribute($value)
+    {
+        $this->setParentIdAttribute($value);
+    }
 }
