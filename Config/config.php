@@ -155,6 +155,23 @@ return [
     ]
   ],
 
+  /*Filters*/
+  'filters'=>[
+    'categories' => [
+      'title' => 'icommerce::categories.plural',
+      'status' => true
+    ],
+    'range-prices' => [
+      'title' => 'icommerce::common.range.title',
+      'status' => true
+    ],
+    'manufacturers' => [
+      'title' => 'icommerce::manufacturers.plural',
+      'status' => true
+    ]
+  ],
+
+  /*Layout Index*/
   'layoutIndex' => [
     'defaultIndexOption' => 'four'
   ],
