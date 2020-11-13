@@ -18,6 +18,9 @@
 
 	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
 	
+	
+	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
+	
 	{{--
 	@php($newUrl = $category->url)
 	--}}

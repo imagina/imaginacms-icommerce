@@ -8,7 +8,7 @@
 	@livewire('icommerce::filter-range-prices')
 	
 	@if(!isset($manufacturer->id))
-	@livewire('icommerce::filter-manufacturers')
+		@livewire('icommerce::filter-manufacturers')
 	@endif
 	
 </div>

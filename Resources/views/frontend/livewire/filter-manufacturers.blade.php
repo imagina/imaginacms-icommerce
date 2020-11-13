@@ -1,6 +1,5 @@
-@if($manufacturers && count($manufacturers)>0)
-
 <div class="filter-manufacturers mb-4">
+@if($manufacturers && count($manufacturers)>0)
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="false" aria-controls="collapseManufacturers">
 	  		<div class="d-flex justify-content-between align-items-center">
@@ -38,8 +37,6 @@
 		  </div>
 		</div>
 	</div>
-  	
+@endif
   	
 </div>
-
-@endif
