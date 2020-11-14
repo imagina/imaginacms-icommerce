@@ -11,7 +11,7 @@
       </div>
       <div class="img-mini border mb-2" >
 
-        <img data-target="#carouselGallery" v-bind:data-slide-to="product_gallery.length" src="{{$product->mainImage->path}}">
+        <img data-target="#carouselGallery" v-bind:data-slide-to="product_gallery.length" src="{{$product->mediaFiles()->mainimage->path}}">
 
       </div>
     </div>
@@ -25,8 +25,8 @@
             </a>
           </div>
           <div class="carousel-item h-100">
-            <a href="{{$product->mainImage->path}}"  data-fancybox="gallery" data-caption="{{$product->title}}">
-              <img  src="{{$product->mainImage->path}}"  >
+            <a href="{{$product->mediaFiles()->mainimage->path}}"  data-fancybox="gallery" data-caption="{{$product->title}}">
+              <img  src="{{$product->mediaFiles()->mainimage->path}}"  >
               <i class="fa fa-search-plus bt-search position-absolute" aria-hidden="true" style="bottom: 0; right: 3px;"></i>
             </a>
           </div>
@@ -43,8 +43,8 @@
 
 <div class="mb-4 bg-image" v-else >
   <div class="img-big position-relative mb-3">
-    <a href="{{$product->mainImage->path}}" data-fancybox="{{$product->title}}" data-caption="{{$product->title}}">
-      <img src="{{$product->mainImage->path}}" class="img-fluid w-100" alt="{{$product->title}}">
+    <a href="{{$product->mediaFiles()->mainimage->path}}" data-fancybox="{{$product->title}}" data-caption="{{$product->title}}">
+      <img src="{{$product->mediaFiles()->mainimage->path}}" class="img-fluid w-100" alt="{{$product->title}}">
 
       <i class="fa fa-search-plus" aria-hidden="true" style="bottom: 18px; right: 18px; position: absolute; "></i>
     </a>
