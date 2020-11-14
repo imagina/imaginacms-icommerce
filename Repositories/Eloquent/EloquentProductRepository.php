@@ -125,6 +125,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         
       }
       
+      // add filter by related product Ids
+      if (isset($filter->related) && !empty($filter->related)) {
+        is_array($filter->related) ? true : $filter->related = [$filter->related];
+        $query->whereHas('relatedProducts', function ($query) use ($filter) {
+          $query->whereIn('related_id', $filter->related);
+        });
+        
+      }
+      
       // add filter by Categories 1 or more than 1, in array
       if (isset($filter->optionValues) && !empty($filter->optionValues)) {
         is_array($filter->optionValues) ? true : $filter->optionValues = [$filter->optionValues];

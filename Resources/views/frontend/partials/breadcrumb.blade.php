@@ -26,7 +26,9 @@
 		
 		@if(isset($manufacturer->id))
 		<li class="breadcrumb-item text-capitalize" aria-current="page">
+			<a href="{{$manufacturer->url}}">
 			{{$manufacturer->name}}
+			</a>
 		</li>
 		@endif
 @endcomponent
