@@ -586,6 +586,7 @@ class IcommerceServiceProvider extends ServiceProvider
     Livewire::component('icommerce::filter-orderby', \Modules\Icommerce\Http\Livewire\FilterOrderBy::class);
     Livewire::component('icommerce::product-index', \Modules\Icommerce\Http\Livewire\ProductIndex::class);
     Livewire::component('icommerce::category-index', \Modules\Icommerce\Http\Livewire\CategoryIndex::class);
+    Livewire::component('icommerce::manufacturer-index', \Modules\Icommerce\Http\Livewire\ManufacturerIndex::class);
     Livewire::component('icommerce::products-by-category', \Modules\Icommerce\Http\Livewire\ProductsByCategory::class);
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
     

@@ -1,5 +1,5 @@
 <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
-	<a href="{{$product->new_url}}" title="{{$product->name}}">
+	<a href="{{$product->url}}" title="{{$product->name}}">
 
 		<figure>
 			<picture>

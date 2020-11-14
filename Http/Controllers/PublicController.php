@@ -9,6 +9,7 @@ use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
+use Modules\Icommerce\Transformers\CartTransformer;
 use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
@@ -54,7 +55,7 @@ class PublicController extends BaseApiController
   {
     $argv = explode("/",$request->path());
     $slug = end($argv);
-  
+
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
     
@@ -64,12 +65,13 @@ class PublicController extends BaseApiController
   
     $categoryBreadcrumb = [];
     
-    if($slug && $slug != trans('icommerce::routes.store.index')){
+    if($slug && $slug != trans('icommerce::routes.store.index.index')){
       
       $category = $this->category->findBySlug($slug);
-      
+    
       if(isset($category->id)){
         $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+       
         $ptpl = "icommerce.category.{$category->parent_id}%.index";
         if ($category->parent_id != 0 && view()->exists($ptpl)) {
           $tpl = $ptpl;
@@ -218,7 +220,7 @@ class PublicController extends BaseApiController
     if(isset($cart->id)) {
       $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
     }
-    return view($tpl,compact('cart'));
+    return view($tpl,["cart" => new CartTransformer($cart)]);
   }
   
   public function wishlist()

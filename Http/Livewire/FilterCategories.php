@@ -53,8 +53,12 @@ class FilterCategories extends Component
     $this->categories = $this->categoryRepository->getItemsBy($params);
 
     if (view()->exists($ttpl)) $tpl = $ttpl;
-    
+  
+
+
     return view($tpl,['categoryBreadcrumb' => $this->categoryBreadcrumb]);
   }
+  
+ 
   
 }

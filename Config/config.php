@@ -152,11 +152,37 @@ return [
         'field' => "price",
         'way' => "desc",
       ]
+    ],
+    'recently' => [
+      'title' => 'icommerce::common.sort.recently',
+      'name' => 'recently',
+      'order' => [
+        'field' => "created_at",
+        'way' => "desc",
+      ]
     ]
   ],
 
+  /*Filters*/
+  'filters'=>[
+    'categories' => [
+      'title' => 'icommerce::categories.plural',
+      'status' => true
+    ],
+    'range-prices' => [
+      'title' => 'icommerce::common.range.title',
+      'status' => true
+    ],
+    'manufacturers' => [
+      'title' => 'icommerce::manufacturers.plural',
+      'status' => true
+    ]
+  ],
+
+  /*Layout Index*/
   'layoutIndex' => [
-    'defaultIndexOption' => 'four'
+    'defaultIndexOption' => 'four',
+    'defaultOrderOption' => 'recently',
   ],
   
   'layoutIndexOptions' => [

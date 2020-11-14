@@ -8,7 +8,7 @@
         <ul class="list-group list-group-flush">
           
           @foreach($categories as $category)
-            @if($category->parent_id == 0)
+            @if($category->parent_id == $parentId)
               @includeFirst(['icommerce.index.category','icommerce::frontend.index.category'])
             @endif
           @endforeach

@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Http\Livewire;
 
 use Livewire\Component;
 
-class CategoryIndex extends Component
+class ManufacturerIndex extends Component
 {
   
   private $view;
@@ -13,13 +13,13 @@ class CategoryIndex extends Component
   
   public function mount($params = [])
   {
-    $this->defaultView = 'icommerce::frontend.livewire.category-index';
+    $this->defaultView = 'icommerce::frontend.livewire.manufacturer-index';
     $this->view = $params["view"] ?? $this->defaultView;
     $this->params = $params;
   }
   
-  private function getCategoryRepository(){
-    return app('Modules\Icommerce\Repositories\CategoryRepository');
+  private function getManufacturerRepository(){
+    return app('Modules\Icommerce\Repositories\ManufacturerRepository');
   }
   
   private function makeParamsFunction(){
@@ -35,17 +35,15 @@ class CategoryIndex extends Component
   
   public function render()
   {
-   
-    $ttpl = 'icommerce.livewire.category-index';
-    $this->view = (view()->exists($this->view) && $this->view != $this->defaultView) ? $this->view : (view()->exists($ttpl) ? $ttpl : $this->defaultView );
-   
-    $params = $this->makeParamsFunction();
-    $categories = $this->getCategoryRepository()->getItemsBy(json_decode(json_encode($params)));
     
-    return view($this->view, ['categories' => $categories, 'params' => $params]);
+    $ttpl = 'icommerce.livewire.manufacturer-index';
+    $this->view = (view()->exists($this->view) && $this->view != $this->defaultView) ? $this->view : (view()->exists($ttpl) ? $ttpl : $this->defaultView );
+  
+    $params = $this->makeParamsFunction();
+    $manufacturers = $this->getManufacturerRepository()->getItemsBy(json_decode(json_encode($params)));
+    
+    return view($this->view, ['manufacturers' => $manufacturers, 'params' => $params]);
     
     
   }
-  
-
 }

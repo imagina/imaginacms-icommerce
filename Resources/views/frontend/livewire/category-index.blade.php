@@ -2,7 +2,7 @@
   <div id="categoryIndex" class="owl-carousel owl-theme">
     @foreach($categories as $category)
       <slide wire:key="categoryIndex-{{$category->id}}">
-        <a href="{{$category->newUrl}}" style="color : inherit">
+        <a href="{{$category->url}}" style="color : inherit">
           <div class="card card-categories position-relative text-white border-0">
             <div class="cover-img-16">
               <img alt="{{$category->title}}" src="{{$category->mediaFiles()->mainimage->mediumThumb}}" >
