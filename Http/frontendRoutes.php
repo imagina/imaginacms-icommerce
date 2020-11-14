@@ -92,7 +92,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
   
 });
 
-
+$router->get("tienda/test", [
+  'uses' => 'PublicController@test',
+]);
 /** @var Router $router */
 $router->group(['prefix' => 'store/search'], function (Router $router) use ($locale) {
   

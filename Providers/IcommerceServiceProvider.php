@@ -78,10 +78,8 @@ class IcommerceServiceProvider extends ServiceProvider
   
   public function boot()
   {
-    $this->publishConfig('icommerce', 'permissions');
-    $this->publishConfig('icommerce', 'settings');
+    
     $this->publishConfig('icommerce', 'config');
-    $this->publishConfig('icommerce', 'settings-fields');
     $this->publishConfig('icommerce', 'crud-fields');
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');

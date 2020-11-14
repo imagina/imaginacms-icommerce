@@ -257,6 +257,13 @@ class PublicController extends BaseApiController
     return view($tpl, compact('products','paginate', 'category'));
     
   }
+  // view products by category
+  public function test(Request $request)
+  {
+    
+
+    
+  }
   
   private function _paramsRequest(&$params)
   {

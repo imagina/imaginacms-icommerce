@@ -21,10 +21,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $query = $this->model->query();
 
     /*== RELATIONSHIPS ==*/
-    if (in_array('*', $params->include)) {//If Request all relationships
+    if (in_array('*', $params->include ?? [])) {//If Request all relationships
       $query->with(['category','categories','manufacturer','translations', 'store','files']);
     } else {//Especific relationships
-      $includeDefault = ['discounts','translations', 'store', 'files'];//Default relationships
+      $includeDefault = ['category','categories','manufacturer','translations', 'store','files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query
@@ -270,7 +270,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
     } else {
-      $params->take ? $query->take($params->take) : false;//Take
+      isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
       return $query->get();
     }
   }
@@ -283,9 +283,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with([]);
+      $query->with(['category','categories','manufacturer','translations', 'store','files','productOptions']);
     } else {//Especific relationships
-      $includeDefault = ['translations'];//Default relationships
+      $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
       $query->with($includeDefault);//Add Relationships to query
@@ -338,7 +338,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
       //Pre filters by default
       //pre-filter date_available
-      $query->where(function ($query) use ($filter) {
+      $query->where(function ($query) {
         $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
         $query->orWhereNull("date_available");
       });
@@ -351,6 +351,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
     }
     
+    if(!isset($params->filter->field)){
+      $query->where('id', $criteria);
+    }
     
     /*== REQUEST ==*/
     return $query->first();

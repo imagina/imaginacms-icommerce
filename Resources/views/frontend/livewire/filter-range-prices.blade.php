@@ -53,8 +53,6 @@
 
 	<script>
 	jQuery(document).ready(function($) {
-
-		console.warn("Componente: Filter Range Prices - Start")
 		/*
 		* Create Slider Range Price
 		*/
@@ -96,7 +94,6 @@
 		*/
 		window.addEventListener('filter-prices-updated', event => {
 
-			console.warn("Componente: Filter Range Prices - Listener - filter-prices-updated");
 
 			$("#slider-range").slider("destroy");
     		createSlider(event.detail.newPriceMin,event.detail.newPriceMax,event.detail.newSelPriceMin,event.detail.newSelPriceMax,event.detail.step)

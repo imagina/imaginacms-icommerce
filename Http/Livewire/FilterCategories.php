@@ -11,7 +11,6 @@ class FilterCategories extends Component
 {
   
   private $categoryBreadcrumb;
-  private $categoryRepository;
   
   public $categories;
   public $manufacturer;
@@ -35,6 +34,9 @@ class FilterCategories extends Component
     $this->extraParamsUrl = $params;
   }
   
+  private function getCategoryRepository(){
+    return app('Modules\Icommerce\Repositories\CategoryRepository');
+  }
   public function render()
   {
     
@@ -45,15 +47,26 @@ class FilterCategories extends Component
       "include" => ['translations'],
       "take" => 0,
       "filter" => [
-        "manufacturers" => $this->manufacturer->id ?? null
       ]
     ]));
 
-    $this->categoryRepository = app('Modules\Icommerce\Repositories\CategoryRepository');
-    $this->categories = $this->categoryRepository->getItemsBy($params);
+
+    $this->categories = $this->getCategoryRepository()->getItemsBy($params);
 
     if (view()->exists($ttpl)) $tpl = $ttpl;
   
+    if(isset($this->manufacturer->id)){
+      $params = json_decode(json_encode([
+        "include" => ['translations'],
+        "take" => 0,
+        "filter" => [
+          "manufacturers" => $this->manufacturer->id ?? null
+        ]
+      ]));
+      $categoriesOfManufacturer = $this->getCategoryRepository()->getItemsBy($params);
+
+    }
+    
 
 
     return view($tpl,['categoryBreadcrumb' => $this->categoryBreadcrumb]);

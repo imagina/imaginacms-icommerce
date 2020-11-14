@@ -60,6 +60,21 @@ class EloquentOptionValueRepository extends EloquentBaseRepository implements Op
         $query->where('option_id', $filter->optionId);
       }
     }
+  
+    // ORDER
+    if (isset($params->order) && $params->order) {
+    
+      $order = is_array($params->order) ? $params->order : [$params->order];
+    
+      foreach ($order as $orderObject) {
+        if (isset($orderObject->field) && isset($orderObject->way))
+          $query->orderBy($orderObject->field, $orderObject->way);
+      }
+    } else {
+      $query->orderBy('sort_order', 'asc');//Add order to query
+    }
+    
+    
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);

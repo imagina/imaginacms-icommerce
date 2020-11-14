@@ -12,7 +12,7 @@
   <meta itemprop="description"
         content="{{$product->meta_description??$product->summary}}">
   <meta itemprop="image"
-        content=" {{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
+        content=" {{url($product->mediaFiles()->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
   <!-- Open Graph para Facebook-->
 
   <meta property="og:title"
@@ -20,7 +20,7 @@
   <meta property="og:type" content="article"/>
   <meta property="og:url" content="{{$product->url}}"/>
   <meta property="og:image"
-        content="{{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}"/>
+        content="{{url($product->mediaFiles()->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}"/>
   <meta property="og:description"
         content="{{$product->meta_description??$product->summary}}"/>
   <meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
@@ -34,7 +34,7 @@
         content="{{$product->meta_description??$product->summary}}">
   <meta name="twitter:creator" content="">
   <meta name="twitter:image:src"
-        content="{{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
+        content="{{url($product->mediaFiles()->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
 
 @stop
 
@@ -153,8 +153,6 @@
           } else {
 
           }
-
-          console.warn(this.productOptValueSelected)
         },
         /* obtiene los productos */
         get_product: function () {

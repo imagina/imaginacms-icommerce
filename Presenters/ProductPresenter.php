@@ -170,4 +170,15 @@ class ProductPresenter extends Presenter
     }
     return $totalTaxes;
   }
+  
+  public function hasRequiredOptions(){
+    $hasRequiredOptions = false;
+    if(isset($this->entity->productOptions)){
+      foreach ($this->entity->productOptions as $productOption){
+        isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
+      }
+    }
+    
+    return $hasRequiredOptions;
+  }
 }

@@ -134,13 +134,9 @@ class ManufacturerApiController extends BaseApiController
 
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
-
-            $dataEntity = $this->manufacturer->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 204);
-
+            
             //Request to Repository
-            $this->manufacturer->update($dataEntity, $data);
+            $this->manufacturer->updateBy($criteria, $data, $params);
             //Response
             $response = ["data" => 'Item Updated'];
             \DB::commit();//Commit to DataBase
@@ -167,14 +163,8 @@ class ManufacturerApiController extends BaseApiController
         try {
             //Get params
             $params = $this->getParamsRequest($request);
-
-
-            $dataEntity = $this->manufacturer->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 204);
-
-            //call Method delete
-            $this->manufacturer->destroy($dataEntity);
+            
+            $dataEntity = $this->manufacturer->deleteBy($criteria, $params);
 
             //Response
             $response = ["data" => "Item deleted"];
