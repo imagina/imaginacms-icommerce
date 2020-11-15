@@ -45,6 +45,15 @@ class PaymentMethodTransformer extends JsonResource
                 ]);
 
 
+            case 'icommercexpay':
+                $data = array_merge($data, [
+          'user' => $this->when($this->options,$this->options->user??null),
+          'pass' => $this->when($this->options,$this->options->pass??null),
+          'mode' => $this->when($this->options,$this->options->mode??null),
+          'token' => $this->when($this->options,$this->options->token??null)
+                ]);
+
+
 
     }
         $filter = json_decode($request->filter);
