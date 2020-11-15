@@ -11,6 +11,7 @@ use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+
 //Events media
 
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository
@@ -258,15 +259,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         }
         
       }
-    } else {
-      $query->orderBy('created_at', 'desc');//Add order to query
     }
-    
-    //add default order by
-    if (!isset($params->filter->order)) {
-      $query->orderBy("created_at", "desc");//Add order to query
+
+    //Order by "Sort order"
+    if (!isset($params->filter->noSortOrder) || !$params->filter->noSortOrder) {
+      $query->orderBy('sort_order', 'desc');//Add order to query
     }
-    
+  
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
@@ -493,9 +492,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     isset($params->take) ? $params->take = false : false;
     isset($params->page) ? $params->page = null : false;
-    !isset($params->include) ? $params->include = [] : false;
+    isset($params->include) ? $params->include = [] : false;
     isset($params->filter->priceRange) ? $params->filter->priceRange = null : false;
     $params->onlyQuery = true;
+    $params->order = false;
+    if (isset($params->filter->order)) $params->filter->order = false;
+    $params->filter->noSortOrder = true;
     
     $query = $this->getItemsBy($params);
     $query->select(
