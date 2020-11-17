@@ -120,47 +120,52 @@ return [
     ]
   ],
   
-  'orderByOptions' => [
-    'nameaz' => [
-      'title' => 'icommerce::common.sort.name_a_z',
-      'name' => 'nameaz',
-      'order' => [
-        'field' => "name",
-        'way' => "asc",
+
+  /* Order By - Index */
+  'orderBy' =>[
+    'default' => 'recently',
+    'options' => [
+      'nameaz' => [
+        'title' => 'icommerce::common.sort.name_a_z',
+        'name' => 'nameaz',
+        'order' => [
+          'field' => "name",
+          'way' => "asc",
+        ]
+      ],
+      'nameza' => [
+        'title' => 'icommerce::common.sort.name_z_a',
+        'name' => 'nameza',
+        'order' => [
+          'field' => "name",
+          'way' => "desc",
+        ]
+      ],
+      'lowerprice' => [
+        'title' => 'icommerce::common.sort.price_low_high',
+        'name' => 'lowerprice',
+        'order' => [
+          'field' => "price",
+          'way' => "asc",
+        ]
+      ],
+      'higherprice' => [
+        'title' => 'icommerce::common.sort.price_high_low',
+        'name' => 'higherprice',
+        'order' => [
+          'field' => "price",
+          'way' => "desc",
+        ]
+      ],
+      'recently' => [
+        'title' => 'icommerce::common.sort.recently',
+        'name' => 'recently',
+        'order' => [
+          'field' => "created_at",
+          'way' => "desc",
+        ]
       ]
     ],
-    'nameza' => [
-      'title' => 'icommerce::common.sort.name_z_a',
-      'name' => 'nameza',
-      'order' => [
-        'field' => "name",
-        'way' => "desc",
-      ]
-    ],
-    'lowerprice' => [
-      'title' => 'icommerce::common.sort.price_low_high',
-      'name' => 'lowerprice',
-      'order' => [
-        'field' => "price",
-        'way' => "asc",
-      ]
-    ],
-    'higherprice' => [
-      'title' => 'icommerce::common.sort.price_high_low',
-      'name' => 'higherprice',
-      'order' => [
-        'field' => "price",
-        'way' => "desc",
-      ]
-    ],
-    'recently' => [
-      'title' => 'icommerce::common.sort.recently',
-      'name' => 'recently',
-      'order' => [
-        'field' => "created_at",
-        'way' => "desc",
-      ]
-    ]
   ],
 
   /*Filters*/
@@ -182,7 +187,6 @@ return [
   /*Layout Index*/
   'layoutIndex' => [
     'defaultIndexOption' => 'four',
-    'defaultOrderOption' => 'recently',
   ],
   
   'layoutIndexOptions' => [

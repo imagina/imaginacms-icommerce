@@ -37,6 +37,8 @@ class ProductsList extends Component
 
 	public $dataRequest;
 
+    public $configs;
+
 	protected $listeners = ['updateFilter'];
 
 	protected $queryString = ['search','orderBy','priceMin','priceMax','page'];
@@ -56,9 +58,12 @@ class ProductsList extends Component
         
 	    $this->totalProducts = 0;
 	    $this->filters = [];
-	    $this->orderBy = config("asgard.icommerce.config.layoutIndex.defaultOrderOption") ?? "nameaz";
-	    $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
-	    
+        
+        $this->initConfigs();
+
+        $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
+        $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
+
 	    $this->mainLayout = config("asgard.icommerce.config.layoutIndex.defaultIndexOption");
         $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
 	    
@@ -71,6 +76,15 @@ class ProductsList extends Component
 	    $this->emitProductListRendered = false;
 
 	}
+
+    /*
+    * Init Configs to ProductList
+    *
+    */
+    public function initConfigs(){
+
+        $this->configs['orderBy'] = config("asgard.icommerce.config.orderBy");
+    }
 
 	/*
     * Updating Attribute OrderBy
@@ -146,7 +160,8 @@ class ProductsList extends Component
     	if($this->firstRequest)
     		$this->checkValuesFromRequest();
         
-        $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
+        $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
+
         if(is_string($this->search) && $this->search){
           $this->filters["search"] = $this->search;
           $this->filters["locale"] = App::getLocale();
