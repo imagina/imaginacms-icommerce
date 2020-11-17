@@ -4,7 +4,7 @@
 	</label>
 	<div class="types-columns ml-1">
 		@foreach($this->configs['mainLayout']['options'] as  $layoutOption)
-			<i wire:click="changeLayout('{{$layoutOption['name']}}')" class="{{$layoutOption['icon']}} mx-1 cursor-pointer {{$mainLayout==$layoutOption['name'] ? 'text-primary' : $layoutOption['name']}}" aria-hidden="true"></i>
+			<i wire:click="changeLayout('{{$layoutOption['name']}}')" class="{{$layoutOption['icon']}} mx-1 cursor-pointer {{$mainLayout==$layoutOption['name'] ? 'active text-primary' : $layoutOption['name']}}" aria-hidden="true"></i>
 		@endforeach
 	</div>
 	
