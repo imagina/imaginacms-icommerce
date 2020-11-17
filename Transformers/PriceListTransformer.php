@@ -10,18 +10,17 @@ class PriceListTransformer extends JsonResource
     {
         $data = [
             'id' => $this->id,
-            'name' => $this->name,
-            'status' => $this->status,
-            'criteria' => $this->criteria,
-            'value' => $this->value,
-            'operationPrefix' => $this->operation_prefix,
+            'name' => $this->name ?? '',
+            'status' => $this->status ?? '0',
+            'criteria' => $this->when($this->criteria,$this->criteria),
+            'value' => $this->when($this->value, $this->value),
+            'operationPrefix' => $this->when($this->operation_prefix, $this->operation_prefix),
+            'price' => $this->when(isset($this->pivot), $this->pivot->price ?? 0),
             //'entity' => app($this->related_entity)->find($this->related_id),
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'products' => ProductTransformer::collection($this->whenLoaded('products')),
+            'createdAt' => $this->when($this->created_at, $this->created_at),
+            'updatedAt' => $this->when($this->updated_at, $this->updated_at),
         ];
-
-        $this->ifRequestInclude('products') ?
-            $data['products'] = ($this->products ? new ProductTransformer($this->products) : false) : false;
 
         $request->input('entity') ?
             $data['entity'] = $this->entity  : false;

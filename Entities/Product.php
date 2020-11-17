@@ -89,8 +89,8 @@ class Product extends Model implements TaggableInterface
 
     public function priceLists()
     {
-        return $this->belongsToMany(PriceList::class, 'icommerce__product_lists')
-            ->withPivot('id', 'price')
+        return $this->belongsToMany(PriceList::class, ProductList::class)
+            ->withPivot('price')
             ->withTimestamps();
     }
 

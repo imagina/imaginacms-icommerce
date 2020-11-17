@@ -368,7 +368,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
             if(isset($data['price_lists'])){
-                $product->priceLists()->sync($data['price_lists'] ?? []);
+                $product->priceLists()->sync(Arr::get($data, 'price_lists', []));
             }
 
             if (isset($data['product_options']))
@@ -426,7 +426,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             */
 
             if(isset($data['price_lists'])){
-                $model->priceLists()->sync($data['price_lists']);
+                $model->priceLists()->sync(Arr::get($data, 'price_lists', []));
             }
 
             if (isset($data['related_products']))

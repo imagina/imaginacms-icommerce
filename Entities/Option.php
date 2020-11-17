@@ -4,11 +4,10 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Discountable\Traits\DiscountableTrait;
 
 class Option extends Model
 {
-    use Translatable, DiscountableTrait;
+    use Translatable;
 
     protected $table = 'icommerce__options';
     public $translatedAttributes = [

@@ -179,16 +179,18 @@ class ProductPresenter extends Presenter
         $auth=\Auth::user();
         $priceList = $this->setting->get('icommerce::product-price-list');
         if($auth && $priceList){
-            if(count($this->entity->priceLists->where('status',1))>0){
-                foreach($this->entity->priceLists as $pList){
-                    if($pList->related_entity=="Modules\Iprofile\Entities\Role"){
-                        if($auth && $auth->hasRoleId($pList->related_id)){
-                            $price=$pList->pivot->price;
+            foreach($this->entity->priceLists as $pList){
+                if($pList->related_entity=="Modules\Iprofile\Entities\Role"){
+                    if($pList->related_id !== '0' && $pList->related_id !== 0) {
+                        if ($auth && $auth->hasRoleId($pList->related_id)) {
+                            $price = $pList->pivot->price;
                         }
                     }else{
-                        $price=$pList->pivot->price;
+                        $price = $pList->pivot->price;
                     }
-                }//
+                }else{
+                    $price=$pList->pivot->price;
+                }
             }//has priceLists
         }
         return Currency::convert($price);

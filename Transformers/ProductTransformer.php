@@ -18,7 +18,7 @@ class ProductTransformer extends BaseApiTransformer
     {
         $filter = json_decode($request->filter);
         //$price = Currency::convert($this->price);
-        $price = Currency::convert($this->present()->price);
+        $price = $this->present()->price();
 
         $data = [
             'id' => $this->id,
@@ -57,6 +57,7 @@ class ProductTransformer extends BaseApiTransformer
             'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
             'optionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('optionValues')),
             'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
+            'priceLists' => PriceListTransformer::collection($this->whenLoaded('priceLists')),
             'mainImage' => $this->mainImage,
             'gallery' => $this->gallery,
             'storeId' => $this->store_id,
@@ -65,7 +66,7 @@ class ProductTransformer extends BaseApiTransformer
             'sortOrder' => $this->when(isset($this->sort_order), ((int)$this->sort_order )),
             'visible' => $this->featured  ? 1 : 0,
             'url' => $this->url ?? '#',
-            'productDiscounts' => $this->discounts()->pluck('discount_id'),
+            //'productDiscounts' => $this->discounts()->pluck('discount_id'),
             // totalDiscounts deprecated, bad way to calculate discounts
             'totalDiscounts' => $this->present()->totalDiscounts,
 
