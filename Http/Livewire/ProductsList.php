@@ -166,10 +166,6 @@ class ProductsList extends Component
         if(isset($this->manufacturer->id))
             $params["filter"]["manufacturers"] = [$this->manufacturer->id];
     	
-        if(isset($this->manufacturer->id))
-            $params["filter"]["manufacturers"] = [$this->manufacturer->id];
-    	
-
 	    return $params;
     	
     }
