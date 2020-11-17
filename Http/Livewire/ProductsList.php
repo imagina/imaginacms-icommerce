@@ -64,9 +64,9 @@ class ProductsList extends Component
         $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
-	    $this->mainLayout = config("asgard.icommerce.config.layoutIndex.defaultIndexOption");
-        $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
-	    
+        $this->mainLayout = $this->configs['mainLayout']['default'] ?? "four";
+        $this->layoutClass = $this->configs['mainLayout']['options'][$this->mainLayout]['class'];
+
 	    $this->priceMin = null;
 	    $this->priceMax = null;
 
@@ -84,8 +84,9 @@ class ProductsList extends Component
     public function initConfigs(){
 
         $this->configs['orderBy'] = config("asgard.icommerce.config.orderBy");
-    }
+        $this->configs['mainLayout'] = config("asgard.icommerce.config.layoutIndex");
 
+    }
 	/*
     * Updating Attribute OrderBy
     *
@@ -114,7 +115,7 @@ class ProductsList extends Component
     */
     public function changeLayout($c){
     	$this->mainLayout = $c;
-        $this->layoutClass = config("asgard.icommerce.config.layoutIndexOptions")[$this->mainLayout]['class'];
+        $this->layoutClass = $this->configs['mainLayout']['options'][$this->mainLayout]['class'];
     }
 
     /*
@@ -202,7 +203,7 @@ class ProductsList extends Component
      	
      	$params = $this->makeParamsToRepository();
 
-      //	\Log::info("params: ".json_encode($params));
+        //	\Log::info("params: ".json_encode($params));
     	$products = $this->getProductRepository()->getItemsBy(json_decode(json_encode($params)));
     
     	$this->totalProducts = $products->total();
