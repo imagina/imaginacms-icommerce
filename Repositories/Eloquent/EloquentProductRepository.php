@@ -384,10 +384,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($data['related_products']))
         $product->relatedProducts()->sync(Arr::get($data, 'related_products', []));
       
-      /*
-      if(isset($data['discounts']))
-      $product->discounts()->sync(Arr::get($data, 'discounts', []));
-*/
       if (isset($data['tags']))
         $product->setTags(Arr::get($data, 'tags', []));
     }
@@ -420,13 +416,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
       // sync tables
       $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
-      /*
-      if (isset($data['product_options']))
-      $model->productOptions()->sync(Arr::get($data, 'product_options', []));
-  
-      if (isset($data['option_values']))
-          $model->optionValues()->sync(Arr::get($data, 'option_values', []));
-      */
+
       if (isset($data['related_products']))
         $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
       
@@ -494,10 +484,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     isset($params->page) ? $params->page = null : false;
     isset($params->include) ? $params->include = [] : false;
     isset($params->filter->priceRange) ? $params->filter->priceRange = null : false;
+    if (isset($params->filter->order)) $params->filter->order = false;
+    isset($params->filter) ? empty($params->filter) ? $params->filter = (object)["noSortOrder" => true] : $params->filter->noSortOrder = true : false;
     $params->onlyQuery = true;
     $params->order = false;
-    if (isset($params->filter->order)) $params->filter->order = false;
-    $params->filter->noSortOrder = true;
     
     $query = $this->getItemsBy($params);
     $query->select(

@@ -64,6 +64,8 @@ return [
   
   'useOldRoutes' => true,
   
+  'defaultProductRating' => 5,
+  
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -115,6 +117,7 @@ return [
     ],
     'product' => [
       'mainimage' => 'single',
+      'gallery' => 'multiple',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
     ]
