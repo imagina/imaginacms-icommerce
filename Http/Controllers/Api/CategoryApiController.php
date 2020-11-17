@@ -114,7 +114,7 @@ class CategoryApiController extends BaseApiController
         } catch (\Exception $e) {
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage(). ' '.$e->getFile().' '.$e->getLine()];
+            $response = ["errors" => $e->getMessage()];
         }
         //Return response
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
