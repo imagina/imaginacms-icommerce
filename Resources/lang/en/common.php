@@ -26,7 +26,9 @@ return [
         'group' => 'Filter Price Range',
         'step' => 'Step'
       ],
-
+      'priceList' => [
+          'group' => 'Price Lists'
+      ],
     ],
     'messages' => [
         'title is required' => 'El título es requerido',
@@ -81,7 +83,7 @@ return [
         'countryFreeshipping' => 'Pais con envío gratuito de Productos',
         'product-per-page' => 'Productos Por Pagina',
         'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
-        'product-price-list' => 'Product price list',
+        'product-price-list' => 'Enable',
         'customIndexTitle' => 'Custom Index Title'
 
     ],

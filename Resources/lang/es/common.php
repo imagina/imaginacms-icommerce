@@ -26,6 +26,9 @@ return [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
     ],
+    'priceList' => [
+      'group' => 'Listas de Precios'
+    ],
   ],
 
   'messages' => [
@@ -80,7 +83,7 @@ return [
     'product-per-page' => 'Productos Por Pagina',
     'customIndexTitle' => 'Título Página Index',
     'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
-    'product-price-list' => 'Lista de precios de productos'
+    'product-price-list' => 'Activar'
 
   ],
   'uri' => 'icommerce',

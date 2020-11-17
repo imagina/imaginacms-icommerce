@@ -5,6 +5,7 @@ return [
     'name' => 'icommerce::form-emails',
     'value' => null,
     'type' => 'input',
+    'group' => 'icommerce::common.pages.index',
     'columns' => 'col-12 col-md-6',
     'props' => [
       'label' => 'icommerce::common.settings.emails'
@@ -39,5 +40,17 @@ return [
     'props' => [
       'label' => 'icommerce::common.filters.priceRange.step'
     ],
+  ],
+  'product-price-list' => [
+      'name' => 'icommerce::product-price-list',
+      'value' => "0",
+      'type' => 'checkbox',
+      'columns' => 'col-12 col-md-6',
+      'group' => 'icommerce::common.filters.priceList.group',
+      'props' => [
+          'label' => 'icommerce::common.settings.product-price-list',
+          'trueValue' => "1",
+          'falseValue' => "0",
+      ],
   ],
 ];
