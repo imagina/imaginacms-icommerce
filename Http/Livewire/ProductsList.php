@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use App;
 use Modules\Icommerce\Repositories\ProductRepository;
 
 // Transformers
@@ -27,6 +27,7 @@ class ProductsList extends Component
 
 	public $totalProducts;
 	public $orderBy;
+	public $search;
 	public $mainLayout;
 	public $layoutClass;
 
@@ -38,7 +39,7 @@ class ProductsList extends Component
 
 	protected $listeners = ['updateFilter'];
 
-	protected $queryString = ['orderBy','priceMin','priceMax','page'];
+	protected $queryString = ['search','orderBy','priceMin','priceMax','page'];
 
 	protected $emitProductListRendered;
 	
@@ -55,7 +56,7 @@ class ProductsList extends Component
         
 	    $this->totalProducts = 0;
 	    $this->filters = [];
-	    $this->orderBy = "nameaz";
+	    $this->orderBy = config("asgard.icommerce.config.layoutIndex.defaultOrderOption") ?? "nameaz";
 	    $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
 	    
 	    $this->mainLayout = config("asgard.icommerce.config.layoutIndex.defaultIndexOption");
@@ -146,6 +147,10 @@ class ProductsList extends Component
     		$this->checkValuesFromRequest();
         
         $this->order = config("asgard.icommerce.config.orderByOptions")[$this->orderBy]['order'];
+        if(is_string($this->search) && $this->search){
+          $this->filters["search"] = $this->search;
+          $this->filters["locale"] = App::getLocale();
+        }
 
     	$params = [
     		"include" => ['discounts','translations','category','categories','manufacturer'],
@@ -161,10 +166,6 @@ class ProductsList extends Component
         if(isset($this->manufacturer->id))
             $params["filter"]["manufacturers"] = [$this->manufacturer->id];
     	
-        if(isset($this->manufacturer->id))
-            $params["filter"]["manufacturers"] = [$this->manufacturer->id];
-    	
-
 	    return $params;
     	
     }

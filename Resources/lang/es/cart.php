@@ -37,6 +37,8 @@ return [
     ],
     'message' => [
         'add' => 'Producto agregado al carrito',
+        'invalid_product' => 'Product inválido, no es posible agregarlo al carrito',
+        'product_with_required_options' => 'Este producto tiene algunas opciones requeridas',
         'remove' => 'Producto removido del carrito',
         'can_not_add' => 'Debes agregar al menos un productos al carrito',
         'not_existence' => 'No puedes agregar mas ya que excede la existencia en el inventario',

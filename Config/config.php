@@ -152,30 +152,56 @@ return [
         'field' => "price",
         'way' => "desc",
       ]
+    ],
+    'recently' => [
+      'title' => 'icommerce::common.sort.recently',
+      'name' => 'recently',
+      'order' => [
+        'field' => "created_at",
+        'way' => "desc",
+      ]
     ]
   ],
 
+  /*Filters*/
+  'filters'=>[
+    'categories' => [
+      'title' => 'icommerce::categories.plural',
+      'status' => true
+    ],
+    'range-prices' => [
+      'title' => 'icommerce::common.range.title',
+      'status' => true
+    ],
+    'manufacturers' => [
+      'title' => 'icommerce::manufacturers.plural',
+      'status' => true
+    ]
+  ],
+
+  /*Layout Index*/
   'layoutIndex' => [
-    'defaultIndexOption' => 'four'
+    'defaultIndexOption' => 'four',
+    'defaultOrderOption' => 'recently',
   ],
   
   'layoutIndexOptions' => [
     'four' => [
       'name' => 'four',
       'class' => 'col-12 col-md-4 col-lg-3',
-      'icon' => 'fa fa-th-large fa-2x',
+      'icon' => 'fa fa-th-large',
       'status' => true
     ],
     'three' => [
       'name' => 'three',
       'class' => 'col-12 col-md-4 col-lg-4',
-      'icon' => 'fa fa-square-o fa-2x',
+      'icon' => 'fa fa-square-o',
       'status' => true
     ],
     'one' => [
       'name' => 'one',
       'class' => 'col-12',
-      'icon' => 'fa fa-align-justify fa-2x',
+      'icon' => 'fa fa-align-justify',
       'status' => true
     ],
   ]

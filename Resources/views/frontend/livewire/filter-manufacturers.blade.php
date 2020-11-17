@@ -3,7 +3,9 @@
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="false" aria-controls="collapseManufacturers">
 	  		<div class="d-flex justify-content-between align-items-center">
-	  			<h5 class="text-secondary">{{ trans('icommerce::manufacturers.plural') }}</h5>
+	  			
+	  			@php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
+	  			<h5 class="text-secondary">{{ trans($titleFilter) }}</h5>
 	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
 	  		</div>
 	  		<hr>
@@ -14,7 +16,7 @@
 
 		@include('icommerce::frontend.partials.preloader')
 
-		<div class="collapse show" id="collapseManufacturers">
+		<div class="collapse" id="collapseManufacturers">
 		  <div class="row">
 		  	<div class="col-12">
 		  		

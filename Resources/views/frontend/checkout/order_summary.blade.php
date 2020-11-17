@@ -26,14 +26,14 @@
                         <div class="box-items-cart">
                             <div class="row item_carting pr-3 w-100 m-0" v-for="item in cart.products">
                                 <div class="col-3 px-0 pb-2">
-                                    <a v-if="item.mainImage != null"
-                                       v-bind:href="item.mainImage.path" class="cart-img float-left">
-                                        <img v-if="item.mainImage != null" class="img-fluid"
-                                             v-bind:src="item.mainImage.path"
-                                             v-bind:alt="item.name">
+                                    <a v-if="item.product.mediaFiles.mainimage.smallThumb"
+                                       v-bind:href="item.product.url" class="cart-img float-left">
+                                        <img v-if="item.product.mediaFiles.mainimage.smallThumb" class="img-fluid"
+                                             v-bind:src="item.product.mediaFiles.mainimage.smallThumb"
+                                             v-bind:alt="item.product.name">
                                         <img v-else class="img-fluid"
                                              src="{{url('modules/icommerce/img/product/default.jpg')}}"
-                                             v-bind:alt="item.name">
+                                             v-bind:alt="item.product.name">
                                     </a>
                                 </div>
                                 <div class="col-9">

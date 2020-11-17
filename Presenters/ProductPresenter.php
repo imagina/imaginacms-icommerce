@@ -116,23 +116,23 @@ class ProductPresenter extends Presenter
         $totalDiscounts = [];
         $userId = Auth::user() ? Auth::user()->id : 0;
         $departments = [];
-        /*if ($userId){
+        if ($userId){
           $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
             ->table('iprofile__user_department')->select("department_id")
             ->where('user_id', $userId)
             ->pluck('department_id');
 
-        }*/
+        }
 
         $discount = $this->entity->discounts()
-            //->orderBy('priority', 'desc')
+            ->orderBy('priority', 'desc')
             ->orderBy('created_at', 'desc')
             ->where('date_end', '>=', $now)
             ->where('date_start', '<=', $now)
-            /*->where(function ($query) use ($departments){
+            ->where(function ($query) use ($departments){
               $query->whereIn('department_id', $departments)
                 ->orWhereNull('department_id');
-            })*/
+            })
             ->first();
 
 
@@ -164,35 +164,46 @@ class ProductPresenter extends Presenter
         return $response;
     }
 
-    public function totalTaxes () {
-        $basePrice = $this->entity->price ? $this->entity->price : 0;
-        $taxes = isset($this->entity->taxClass) && isset($this->entity->taxClass->rates) ? $this->entity->taxClass->rates : [];
-        $totalTaxes = 0;
-        foreach ($taxes as $tax){
-            $totalTaxes += floatval( ($basePrice * $tax->rate) / 100) ;
-        }
-        return $totalTaxes;
+  public function totalTaxes () {
+    $basePrice = $this->entity->price ? $this->entity->price : 0;
+    $taxes = isset($this->entity->taxClass) && isset($this->entity->taxClass->rates) ? $this->entity->taxClass->rates : [];
+    $totalTaxes = 0;
+    foreach ($taxes as $tax){
+      $totalTaxes += floatval( ($basePrice * $tax->rate) / 100) ;
+    }
+    return $totalTaxes;
+  }
+
+  public function hasRequiredOptions(){
+    $hasRequiredOptions = false;
+    if(isset($this->entity->productOptions)){
+      foreach ($this->entity->productOptions as $productOption){
+        isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
+      }
     }
 
-    public function price(){
-        $price=$this->entity->price;
-        $auth=\Auth::user();
-        $priceList = $this->setting->get('icommerce::product-price-list');
-        if($auth && $priceList){
-            foreach($this->entity->priceLists as $pList){
-                if($pList->related_entity=="Modules\Iprofile\Entities\Role"){
-                    if($pList->related_id !== '0' && $pList->related_id !== 0) {
-                        if ($auth && $auth->hasRoleId($pList->related_id)) {
-                            $price = $pList->pivot->price;
-                        }
-                    }else{
-                        $price = $pList->pivot->price;
-                    }
-                }else{
-                    $price=$pList->pivot->price;
-                }
-            }//has priceLists
-        }
-        return Currency::convert($price);
-    }//
+    return $hasRequiredOptions;
+  }
+
+  public function price(){
+      $price=$this->entity->price;
+      $auth=\Auth::user();
+      $priceList = $this->setting->get('icommerce::product-price-list');
+      if($auth && $priceList){
+          foreach($this->entity->priceLists as $pList){
+              if($pList->related_entity=="Modules\Iprofile\Entities\Role"){
+                  if($pList->related_id !== '0' && $pList->related_id !== 0) {
+                      if ($auth && $auth->hasRoleId($pList->related_id)) {
+                          $price = $pList->pivot->price;
+                      }
+                  }else{
+                      $price = $pList->pivot->price;
+                  }
+              }else{
+                  $price=$pList->pivot->price;
+              }
+          }//has priceLists
+      }
+      return Currency::convert($price);
+  }//
 }

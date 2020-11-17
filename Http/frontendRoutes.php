@@ -35,33 +35,39 @@ $router->get('/wishlist', [
 /** @var Router $router */
 Route::group(['prefix' => LaravelLocalization::setLocale(),
   'middleware' => ['localize']], function (Router $router) use ($locale) {
-  
-  $router->get(trans('icommerce::routes.store.index'), [
+
+  $router->get(trans('icommerce::routes.store.index.index'), [
     'as' => $locale . '.icommerce.store.index',
     'uses' => 'PublicController@index',
   ]);
   
-  $router->get(trans('icommerce::routes.store.category'), [
+  $router->get(trans('icommerce::routes.store.index.category'), [
     'as' => $locale . '.icommerce.store.index.category',
     'uses' => 'PublicController@index',
   ]);
   
-  $router->get(trans('icommerce::routes.store.manufacturer'), [
+  $router->get(trans('icommerce::routes.store.index.manufacturer'), [
     'as' => $locale . '.icommerce.store.index.manufacturer',
     'uses' => 'PublicController@indexManufacturer',
   ]);
   
-  $router->get(trans('icommerce::routes.store.categoryManufacturer'), [
+  
+  $router->get(trans('icommerce::routes.store.manufacturer.index'), [
+    'as' => $locale . '.icommerce.store.manufacturer.index',
+    'uses' => 'ManufacturerController@index',
+  ]);
+  
+  $router->get(trans('icommerce::routes.store.index.categoryManufacturer'), [
     'as' => $locale . '.icommerce.store.index.categoryManufacturer',
     'uses' => 'PublicController@indexCategoryManufacturer',
   ]);
   
-  $router->get(trans('icommerce::routes.store.product'), [
+  $router->get(trans('icommerce::routes.store.show.product'), [
     'as' => $locale . '.icommerce.store.show',
     'uses' => 'PublicController@show',
   ]);
   
-  $router->get(trans('icommerce::routes.store.wishlist'), [
+  $router->get(trans('icommerce::routes.store.index.wishlist'), [
     'as' =>  $locale . '.icommerce.store.wishlists.index',
     'uses' => 'PublicController@wishlist',
     'middleware' => 'logged.in'
@@ -86,7 +92,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
   
 });
 
-
+$router->get("tienda/test", [
+  'uses' => 'PublicController@test',
+]);
 /** @var Router $router */
 $router->group(['prefix' => 'store/search'], function (Router $router) use ($locale) {
   

@@ -1,9 +1,13 @@
 <div class="filter-range-prices mb-4" >
 
+	@if($show)
+	
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
 			<div class="d-flex justify-content-between align-items-center">
-	  			<h5 class="text-secondary">{{trans('icommerce::common.range.title')}}</h5>
+
+				@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
+	  			<h5 class="text-secondary">{{trans($titleFilter)}}</h5>
 	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
 	  		</div>
 	  		<hr>
@@ -33,6 +37,7 @@
 		</div>
 	</div>
 
+	@endif
 </div>
 
 
@@ -48,8 +53,6 @@
 
 	<script>
 	jQuery(document).ready(function($) {
-
-		console.warn("Componente: Filter Range Prices - Start")
 		/*
 		* Create Slider Range Price
 		*/
@@ -91,7 +94,6 @@
 		*/
 		window.addEventListener('filter-prices-updated', event => {
 
-			console.warn("Componente: Filter Range Prices - Listener - filter-prices-updated");
 
 			$("#slider-range").slider("destroy");
     		createSlider(event.detail.newPriceMin,event.detail.newPriceMax,event.detail.newSelPriceMin,event.detail.newSelPriceMax,event.detail.step)

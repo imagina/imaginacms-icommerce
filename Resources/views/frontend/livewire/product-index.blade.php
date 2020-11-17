@@ -23,7 +23,7 @@
                     {{$product->category->title }}
                   </div>
           
-                  <a v-bind:href="article.url" class="name cursor-pointer">
+                  <a href="{{$product->url}}" class="name cursor-pointer">
                     {{ $product->name }}
                   </a>
           

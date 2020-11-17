@@ -21,7 +21,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     //$query->with(array_merge($defaultInclude, $params->include));
 
     /*== RELATIONSHIPS ==*/
-    if (in_array('*', $params->include)) {//If Request all relationships
+    if (in_array('*', $params->include ?? [])) {//If Request all relationships
       $query->with(['translations']);
     } else {//Especific relationships
       $includeDefault = ['translations','files'];//Default relationships
@@ -31,7 +31,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     }
     
     // FILTERS
-    if ($params->filter) {
+    if (isset($params->filter)) {
       $filter = $params->filter;
       
       //get language translation
@@ -57,15 +57,23 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
       }
     }
   
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+    } else {
+    
+      //pre-filter status
+      $query->where("status", 1);
+    }
+    
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
+
     /*== REQUEST ==*/
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
     } else {
-      $params->take ? $query->take($params->take) : false;//Take
+      isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
       return $query->get();
     }
   }
@@ -85,6 +93,15 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     if ($params->fields) {
       $query->select($params->fields);
     }
+    
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+    } else {
+    
+      //pre-filter status
+      $query->where("status", 1);
+    }
+    
     return $query->first();
     
   }

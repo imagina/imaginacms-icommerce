@@ -15,6 +15,8 @@ class FilterRangePrices extends Component
 	public $selPriceMin;
 	public $selPriceMax;
 	
+	public $show;
+	
 	protected $listeners = ['productListRendered','updateRange'];
 
 	/*
@@ -28,6 +30,8 @@ class FilterRangePrices extends Component
 		$this->priceMax = 1;
 		$this->selPriceMin = 0;
 		$this->selPriceMax = 1;
+		$this->show = true;
+
 	}
   
   /**
@@ -88,8 +92,22 @@ class FilterRangePrices extends Component
 			$this->selPriceMax = $this->priceMax;
 		}
 		
+		//\Log::info($this->priceMin."-".$this->selPriceMin."-".$this->priceMax."-".$this->selPriceMax);
+
+		//Validating if there is no price range
+		if($this->selPriceMin==$this->selPriceMax && $this->priceMin==$this->selPriceMin && $this->priceMax==$this->selPriceMax){
+			$this->show = false;
+		}
+
+		$originalPriceMax = $this->priceMax;
+
 		// Sum Step Because the widget performs a calculation for the range
-		$this->priceMax+=intval($this->step)  ;
+		$this->priceMax+=intval($this->step);
+
+		// Validating the selected price if the "step" has increased the maximum value
+		if($this->selPriceMax==$originalPriceMax && $this->selPriceMax!=$this->priceMax){
+			$this->selPriceMax = $this->priceMax;
+		}
 
 		
 		$this->dispatchBrowserEvent('filter-prices-updated', [

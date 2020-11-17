@@ -10,6 +10,8 @@ return [
   //Extra field to crud product categories
   'productCategories' => [],
   //Extra field to crud product categories
+  'manufacturers' => [],
+  //Extra field to crud product categories
   'productDiscounts' => [],
   //Extra field to crud product categories
   'productOptions' => [],

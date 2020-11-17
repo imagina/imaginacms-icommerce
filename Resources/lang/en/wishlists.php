@@ -18,6 +18,9 @@ return [
     'form' => [
     ],
     'messages' => [
+      'unauthenticated' => 'User Unauthenticated',
+      'productAdded' => 'Product added into wishlist',
+      
     ],
     'validation' => [
     ],

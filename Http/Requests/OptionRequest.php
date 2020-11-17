@@ -17,7 +17,7 @@ class OptionRequest extends BaseFormRequest
     public function translationRules()
     {
       return [
-        'description' => 'required|min:2',
+        'description' => 'required|min:1',
       ];
     }
 
@@ -43,7 +43,7 @@ class OptionRequest extends BaseFormRequest
         return [
           // description
           'description.required' => trans('icommerce::common.messages.field required'),
-          'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
+          'description.min:1' => trans('icommerce::common.messages.min 1 characters'),
         ];
     }
 }

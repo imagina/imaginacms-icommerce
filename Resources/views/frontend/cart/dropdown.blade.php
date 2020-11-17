@@ -42,7 +42,7 @@
 
           <!-- boton para eliminar-->
           <div style="width: 20px;  position: absolute; right: -7px; top: 0;">
-            <a class="close cart-remove text-danger" style="font-size: 1rem;" v-on:click="delete_item(item.id)" title="quitar producto">
+            <a class="close cart-remove text-danger cursor-pointer" style="font-size: 1rem;" v-on:click="delete_item(item.id)" title="quitar producto">
               <i class="fa fa-times"></i>
             </a>
           </div>

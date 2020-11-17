@@ -55,7 +55,7 @@
             }
           }).then(response => {
             id = response.data.data.id;
-            console.warn("CREATEA CART",response,id)
+   
             localStorage.setItem("cart_id", id);
             this.getCart();
           })

@@ -13,6 +13,7 @@ use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+
 //Events media
 
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository

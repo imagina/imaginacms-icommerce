@@ -17,7 +17,7 @@ class OptionValueRequest extends BaseFormRequest
   public function translationRules()
   {
     return [
-      'description' => 'required|min:2',
+      'description' => 'required|min:1',
     ];
   }
   

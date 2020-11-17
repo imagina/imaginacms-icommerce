@@ -120,6 +120,7 @@ return [
         'name_z_a' => 'Nombre (Z - A)',
         'price_low_high' => 'Precio: bajo a alto',
         'price_high_low' => 'Precio alto a bajo',
+        'recently' => 'More Recently',
     ],
     'range' => [
         'title' => 'Rango de Precio',

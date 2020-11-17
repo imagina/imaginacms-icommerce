@@ -17,6 +17,7 @@ class ProductIndex extends Component
     
     $this->defaultView = 'icommerce::frontend.livewire.product-index';
     $this->view = $params["view"] ?? $this->defaultView;
+
     $this->params = $params;
    
   }
@@ -26,7 +27,7 @@ class ProductIndex extends Component
   
     $ttpl = 'icommerce.livewire.products-index';
     $this->view = (view()->exists($this->view) && $this->view != $this->defaultView) ? $this->view : (view()->exists($ttpl) ? $ttpl : $this->defaultView );
-    
+   
     $params = json_decode(json_encode([
       "include" => $this->params["include"] ?? ['category','categories','manufacturer'],
       "take" => $this->params["take"] ?? setting('icommmerce::product-per-page', null, 12),
@@ -35,11 +36,18 @@ class ProductIndex extends Component
       "order" => $this->params["order"] ?? null
     ]));
     
-    $this->productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
-    $products = $this->productRepository->getItemsBy($params);
+    $products = $this->productRepository()->getItemsBy($params);
 
     return view($this->view, ['products' => $products]);
     
     
+  }
+  
+  /**
+   * @return productRepository
+   */
+  private function productRepository()
+  {
+    return app('Modules\Icommerce\Repositories\ProductRepository');
   }
 }

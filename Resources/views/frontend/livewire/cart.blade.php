@@ -58,7 +58,9 @@
                 <a href="{{$cartProduct->product->url}}">
                   {{ $cartProduct->product->name }}
                   @if($cartProduct->productOptionValues->count())
-                    <label>({{($cartProduct->productOptionValues->first()->optionValue)}})</label>
+                    @foreach($cartProduct->productOptionValues as $productOptionValue)
+                      <label>{{$productOptionValue->option->description}}:{{$productOptionValue->optionValue->description}})</label>
+                    @endforeach
                   @endif
                 </a>
               </h6>

@@ -811,7 +811,6 @@
           axios.delete("{{url('/')}}" + "/api/icommerce/v3/cart-products/" + item.id)
             .then((response) => {
               this.updatingData = false;
-              console.warn("PRODUCT DELETED", response)
               this.getCart();
               return true;
             })
