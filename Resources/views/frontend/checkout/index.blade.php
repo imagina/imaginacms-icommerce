@@ -106,7 +106,6 @@
       el: '#checkout',
       created() {
         this.$nextTick(function () {
-          this.getCurrency();
           this.getPaymentMethods();
           this.getShippingMethods();
           this.getAddressExtraFields()
@@ -195,7 +194,7 @@
       data: {
         //Vars
         cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : null !!},
-        currency: "",
+        currency: {!! isset($currency->id) ? $currency : null !!},
         payments: [],
         shippingMethods: [],
         user: null,
@@ -366,9 +365,9 @@
         numberFormat (value) {
           if (value != '') {
             //return this.currency.symbol_left+ " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')) + " " + this.currency.symbol_right;
-            if (checkout.currency.symbol_left)
-              value = checkout.currency.symbol_left + " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
-            if (checkout.currency.symbol_right) {
+            if (this.currency && this.currency.symbol_left)
+              value = this.currency.symbol_left + " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+            if (this.currency && this.currency.symbol_right) {
               value += " " + this.currency.symbol_right
             }
             return value
@@ -388,7 +387,7 @@
             }
           })
             .then(response => {
-              this.currency = response.data.data;
+              checkout.currency = response.data.data;
             })
             .catch((error) => {
             });

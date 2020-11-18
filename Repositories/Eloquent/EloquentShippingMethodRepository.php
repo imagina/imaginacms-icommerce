@@ -38,6 +38,12 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
                     ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
                     ->orWhere('created_at', 'like', '%' . $filter->search . '%');
             }
+            //add filter by status
+            if (isset($filter->status)) {
+                //find search in columns
+                $query->where('status', $filter->status);
+                
+            }
 
         }
         /*== FIELDS ==*/

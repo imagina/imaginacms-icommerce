@@ -7,6 +7,7 @@ use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Category;
+use Modules\Icommerce\Entities\Currency;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Icommerce\Transformers\CartTransformer;
@@ -220,7 +221,9 @@ class PublicController extends BaseApiController
     if(isset($cart->id)) {
       $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
     }
-    return view($tpl,["cart" => new CartTransformer($cart)]);
+    $currency = Currency::where("default_currency",1)->first();
+    
+    return view($tpl,["cart" => new CartTransformer($cart),"currency" => $currency]);
   }
   
   public function wishlist()
