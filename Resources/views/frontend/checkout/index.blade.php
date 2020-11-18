@@ -194,7 +194,7 @@
       data: {
         //Vars
         cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : null !!},
-        currency: {!! isset($currency->id) ? $currency : null !!},
+        currency: {!! isset($currency->id) ? json_encode($currency) : null !!},
         payments: [],
         shippingMethods: [],
         user: null,
@@ -302,7 +302,18 @@
               value += this.cart.products[i].priceUnit * this.cart.products[i].quantity;
             }
           }
-          this.orderTotal = value;
+          this.orderTotal = value + (parseFloat(this.shipping || 0));
+          return this.orderTotal
+        },
+        calculate_subtotal() {
+          var value = 0;
+          if (this.cart) {
+            for (var i = 0; i < this.cart.products.length; i++) {
+              value += this.cart.products[i].priceUnit * this.cart.products[i].quantity;
+            }
+          }
+          this.subTotal = value;
+          return this.subTotal;
         },
         shippingTitle() {
           if (this.shipping_name && this.shippingMethods.length > 0) {
@@ -365,13 +376,13 @@
         numberFormat (value) {
           if (value != '') {
             //return this.currency.symbol_left+ " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')) + " " + this.currency.symbol_right;
-            if (this.currency && this.currency.symbol_left)
-              value = this.currency.symbol_left + " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
-            if (this.currency && this.currency.symbol_right) {
-              value += " " + this.currency.symbol_right
+            if (checkout.currency && checkout.currency.symbol_left)
+              value = checkout.currency.symbol_left + " " + (parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'));
+            if (checkout.currency && checkout.currency.symbol_right) {
+              value += " " + checkout.currency.symbol_right
             }
             return value
-          }
+        }
           else
             return value;
         }
@@ -412,6 +423,8 @@
               
               if (this.shippingMethods && Array.isArray(this.shippingMethods) && this.shippingMethods.length > 0) {
                 this.shipping_name = this.shippingMethods[0].name
+                this.shipping = this.shippingMethods[0].cost || 0
+                this.shipping_title = this.shippingMethods[0].title
               }
             })
             .catch((error) => {
@@ -844,6 +857,7 @@
               cart_id: this.cart.id,
               product_id: item.productId,
               product_name: item.name,
+              product_option_values: item.productOptionValues,
               price: item.price,
               quantity: item.quantity
             }
