@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Entities\Category;
+
 use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Ihelpers\Events\CreateMedia;
@@ -516,10 +517,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     $manufacturers = $products->pluck('manufacturer')->unique();
     $manufacturers->all();
-
+  
+    
     return $manufacturers;
    
   }
+  
   
   
 }

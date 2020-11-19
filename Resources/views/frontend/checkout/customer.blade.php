@@ -88,11 +88,11 @@
         @if(Auth::user())
           @php
             $mainImage=\Modules\Iprofile\Entities\Field::where('user_id',Auth::user()->id)->where('name','mainImage')->first();
-          
+     
           @endphp
           <div id="imgProfile" class="mb-5 text-center">
             @if($mainImage)
-              <img id="mainImage" class="img-fluid rounded-circle bg-white" src="{{ url($fields['mainImage']) }}" alt="Logo">
+              <img id="mainImage" class="img-fluid rounded-circle bg-white" src="{{ url($mainImage->value) }}" alt="Logo">
             @else
               <img id="mainImage" class="img-fluid rounded-circle bg-white" src="{{url('modules/iprofile/img/default.jpg')}}" alt="Logo">
 

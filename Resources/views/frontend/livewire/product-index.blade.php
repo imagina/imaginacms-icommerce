@@ -15,15 +15,17 @@
                 <div class="bg-img">
                   <a href="{{$product->url}}">
                 
-                    <img title="{{$product->name}}" alt="{{$product->name}}" src="{{$product->mediaFiles()->mainimage->mediumThumb}}" >
+                    <img title="{{$product->name}}" alt="{{$product->name}}" src="{{$product->mediaFiles()->mainimage->path}}" >
                   </a>
                 </div>
                 <div class="mt-3 pb-3 text-center">
                   <div class="category">
+                    <a href="{{$product->category->url}}" title="{{$product->category->title }}"  class="cursor-pointer">
                     {{$product->category->title }}
+                    </a>
                   </div>
-          
-                  <a href="{{$product->url}}" class="name cursor-pointer">
+  
+                  <a href="{{$product->url}}" title="{{$product->name}}" class="name cursor-pointer">
                     {{ $product->name }}
                   </a>
           

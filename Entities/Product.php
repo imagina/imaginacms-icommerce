@@ -134,7 +134,7 @@ class Product extends Model implements TaggableInterface
     public function optionValues()
     {
         return $this->hasMany(ProductOptionValue::class);
-
+  
     }
 
     public function relatedProducts()
