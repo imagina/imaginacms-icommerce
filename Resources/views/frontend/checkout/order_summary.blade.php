@@ -93,8 +93,8 @@
                                 <div class="col-8 text-right">
                                     <p>
                                     <div v-if="!updatingData">
-                                        @{{ orderTotal | numberFormat }}
-                                        {{--@{{ subTotal | numberFormat }}--}}
+                                        {{--@{{ orderTotal | numberFormat }}--}}
+                                        @{{ calculate_subtotal | numberFormat }}
 
                                     </div>
                                     <div v-else>
@@ -119,7 +119,7 @@
                                         <div v-else>
                                             @{{shipping_title }}
                                             <br>
-                                            @{{ shipping!=0 ? shipping : '' | numberFormat }}
+                                            @{{ (shipping!=0 ? shipping : '') | numberFormat }}
 
                                         </div>
                                     </div>
@@ -163,7 +163,7 @@
                                 <div class="col-8">
                                     <h5 class="font-weight-bold text-right" v-if="!updatingData">
 
-                                        @{{ orderTotal | numberFormat }}
+                                        @{{ calculate_total | numberFormat }}
 
                                     </h5>
                                     <h5 v-else>
@@ -176,7 +176,7 @@
                     </div>
 
                 </div>
-                @{{calculate_total}}
+              
                 <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder" @click="submitOrder($event)"
                 :disabled="placeOrderButton || updatingData">
                 <div v-if="quantity>0" v-show="!placeOrderButton && !updatingData">

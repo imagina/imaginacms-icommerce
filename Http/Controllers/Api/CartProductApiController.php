@@ -170,7 +170,7 @@ class CartProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
-      $result = $this->cartProduct->updateBy($criteria, $data, $params);
+        $result = $this->cartProduct->updateBy($criteria, $data, $params);
 
 
             //Response

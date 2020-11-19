@@ -7,6 +7,7 @@ use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Category;
+use Modules\Icommerce\Entities\Currency;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
@@ -123,7 +124,8 @@ class OldPublicController extends BasePublicController
     if(isset($cart->id)) {
       $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
     }
-    return view($tpl,compact('cart'));
+    $currency = Currency::where("default_currency",1)->first();
+    return view($tpl,compact('cart','currency'));
   }
   
   public function wishlist()
