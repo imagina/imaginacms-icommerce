@@ -10,8 +10,9 @@
           </a>
           <ul id="ulNavItem" class="{{$params["type"] ?? "dropdown-menu"}}">
             @foreach($categories as $category)
-              <li class="nav-item dropdown">
-                <a href="{{$category->url}}" class="nav-link" data-toggle="dropdown">
+              @php($firstChildrenLevel = count($category->children) ? $category->children  : null)
+              <li class="nav-item {{$firstChildrenLevel ? 'dropdown' : ''}}">
+                <a href="{{$category->url}}" class="nav-link" data-toggle="{{$firstChildrenLevel ? 'dropdown' : ''}}">
                   @php($mediaFiles = $category->mediaFiles())
                   
                   @if(isset($mediaFiles->tertiaryimage->path) && !strpos($mediaFiles->tertiaryimage->path,"default.jpg"))
@@ -19,8 +20,9 @@
                   @endif
                   {{$category->title}}
                 </a>
-                <div class="dropdown-menu">
-                  @php($firstChildrenLevel = $category->children  ?? null)
+                @if($firstChildrenLevel)
+                  <div class="dropdown-menu">
+                  
                   <h3><a href="{{$category->url}}">{{$category->title}}</a></h3>
                   @if($firstChildrenLevel)
                     <ul class="frame-dropdown">
@@ -40,6 +42,7 @@
                     </ul>
                   @endif
                 </div>
+                @endif
               </li>
             
             @endforeach
