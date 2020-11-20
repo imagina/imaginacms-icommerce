@@ -15,4 +15,9 @@ interface ProductRepository extends BaseRepository
   public function deleteBy($criteria, $params);
   
   public function getPriceRange($params);
+
+  public function getManufacturers($params);
+
+  public function getProductOptions($params);
+  
 }

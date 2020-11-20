@@ -4,7 +4,6 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Entities\Category;
-use Modules\Icommerce\Entities\Option;
 use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Ihelpers\Events\CreateMedia;
@@ -533,20 +532,51 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $params->onlyQuery = true;
 
     $query = $this->getItemsBy($params);
-    
+
     $query->has("productOptions");
 
     $products = $query->get();
 
-    $productsIds = $products->pluck("id")->toArray();
 
-    $productOptions = Option::with('optionValues')->whereHas('optionValues', function($query) use ($productsIds){
-          $query->whereHas('optionValues', function($query) use ($productsIds){
-          $query->whereIn("icommerce__product_option_value.product_id",$productsIds);
-      });
-      })->whereHas("products", function($query) use ($productsIds){
-          $query->whereIn("icommerce__products.id",$productsIds);
-      })->get();
+    //dd($products);
+    /*
+    foreach ($products as $pro) {
+      foreach($pro->productOptions as $op){
+        dd($op->description); // La opcion (Color, Talla, etc)
+      }
+    }
+    */
+
+    //Esto sigue trayendo los 90 productos - Prueba 1
+    /*
+    $productOptions = $products->pluck('productOptions')->unique();
+    $productOptions->all();
+    dd("Prueba Pluck",$productOptions);
+    */
+
+    // Prueba 2 
+    $productOptions = $products->pluck('productOptions');
+    $productOptions->all();
+
+    dd($productOptions);
+
+    $unique =  $productOptions->unique();
+    $unique->all();
+
+    dd("unique: ",$unique);
+    
+
+    // Prueba 3
+    /*
+    $productOptions = $products->pluck('productOptions');
+    $productOptions->all();
+
+    $unique =  $productOptions->uniqueStrict();
+    $unique->all();
+
+    dd("unique Strict: ",$unique);
+    */
+
 
     return $productOptions;
     

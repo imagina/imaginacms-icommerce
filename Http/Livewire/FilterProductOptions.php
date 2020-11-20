@@ -7,6 +7,36 @@ use Livewire\Component;
 class FilterProductOptions extends Component
 {
 
+	protected $productOptions;
+    
+	protected $listeners = ['productListRendered'];
+
+	/*
+    * Get Product Repository
+    *
+    */
+	private function getProductRepository(){
+    	return app('Modules\Icommerce\Repositories\ProductRepository');
+  	}
+
+	/*
+    * Listener - Product List Rendered 
+    *
+    */
+	public function productListRendered($params){
+
+        // Testing
+        \Log::info("Filter Product Options: ".json_encode($params));
+
+       
+		$this->productOptions = $this->getProductRepository()->getProductOptions(json_decode(json_encode($params)));
+
+	}
+
+	/*
+    * Render 
+    *
+    */
     public function render()
     {
 
@@ -15,7 +45,8 @@ class FilterProductOptions extends Component
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
 
-        return view($tpl);
+    	return view($tpl,['productOptions' => $this->productOptions]);
+        
     }
 
 }

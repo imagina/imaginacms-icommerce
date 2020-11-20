@@ -8,6 +8,7 @@
 				    data-srcset="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
 				 />
 				<img 
+					src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
 					data-src="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
 					alt = "{{$product->name}}" 
 					class="lazyload" />
