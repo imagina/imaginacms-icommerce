@@ -6,6 +6,7 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Media\Support\Traits\MediaRelation;
+use Illuminate\Support\Str;
 
 class Manufacturer extends Model
 {
@@ -56,9 +57,11 @@ class Manufacturer extends Model
   
   public function getUrlAttribute()
   {
-    
-    
-    return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.manufacturer', $this->slug);
+    $url = "";
+    if(!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.manufacturer', $this->slug);
+    }
+    return $url;
   }
   
   

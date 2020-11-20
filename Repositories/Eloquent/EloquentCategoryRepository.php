@@ -53,6 +53,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query->where('show_menu', $filter->showMenu);
       }
       
+      if (isset($filter->ids)) {
+        is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
+        $query->whereIn('icommerce__categories.id', $filter->ids);
+      }
+      
       
       if (isset($filter->manufacturers) && $filter->manufacturers) {
         is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];

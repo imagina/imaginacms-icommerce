@@ -9,6 +9,7 @@ use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use TypiCMS\NestableTrait;
 use Kalnoy\Nestedset\NodeTrait;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -72,19 +73,27 @@ class Category extends Model
   
   public function getUrlAttribute()
   {
-    
+    $url = "";
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-    
-    if ($useOldRoutes)
-      return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.' . $this->slug);
-    else
-      return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
+    if(!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))){
+      if ($useOldRoutes){
+        $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.' . $this->slug);
+      }
+      else{
+        $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
+      }
+      }
+    return $url;
   }
   
   public function urlManufacturer(Manufacturer $manufacturer)
   {
-    
-    return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.categoryManufacturer', [$this->slug,$manufacturer->slug]);
+    $url = "";
+    $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+    if(!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.categoryManufacturer', [$this->slug, $manufacturer->slug]);
+    }
+    return $url;
   }
   
   

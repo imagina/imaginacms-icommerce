@@ -14,6 +14,7 @@ use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
 use willvincent\Rateable\Rateable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Product extends Model implements TaggableInterface
 {
@@ -348,16 +349,17 @@ class Product extends Model implements TaggableInterface
      */
     public function getUrlAttribute()
     {
-  
+      $url = "";
       $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+      if(!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+        if ($useOldRoutes) {
+          $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.' . $this->category->slug . '.product', [$this->slug]);
+        } else {
+          $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.show', $this->slug);
+        }
+      }
   
-      if($useOldRoutes)
-        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
-      else
-        return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
-      
-        
-
+        return $url;
     }
  
 }
