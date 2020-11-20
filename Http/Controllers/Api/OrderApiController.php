@@ -75,11 +75,9 @@ class OrderApiController extends BaseApiController
       //  $this->cart = $cart;
       //  $this->paymentMethod = $paymentMethod;
      //   $this->shippingMethod = $shippingMethod;
-        if(is_module_enabled('Marketplace')){
-            $this->store =app('Modules\Marketplace\Repositories\StoreRepository');
-        }else{
+    
             $this->store =app('Modules\Icommerce\Repositories\StoreRepository');
-        }
+        
     }
 
     /**

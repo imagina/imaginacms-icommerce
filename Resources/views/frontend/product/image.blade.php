@@ -5,10 +5,22 @@
 			<picture>
 				<source
 				  	type="image/jpeg"
-				    data-srcset="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
+				    data-srcset="{{$product->mediaFiles()->mainimage->relativePath}}"
+				 />
+				<source
+				  	type="image/jfif"
+				    data-srcset="{{$product->mediaFiles()->mainimage->relativePath}}"
+				 />
+				<source
+				  	type="image/png"
+				    data-srcset="{{$product->mediaFiles()->mainimage->relativePath}}"
+				 />
+				<source
+				  	type="image/svg"
+				    data-srcset="{{$product->mediaFiles()->mainimage->relativePath}}"
 				 />
 				<img 
-					data-src="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
+					data-src="{{$product->mediaFiles()->mainimage->relativePath}}"
 					alt = "{{$product->name}}" 
 					class="lazyload" />
 			</picture>
