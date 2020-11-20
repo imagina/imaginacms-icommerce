@@ -49,7 +49,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query->where('store_id', $filter->store);
       }
       
-      if (isset($filter->showMenu)) {
+      if (isset($filter->showMenu)&& is_bool($filter->showMenu)) {
         $query->where('show_menu', $filter->showMenu);
       }
       

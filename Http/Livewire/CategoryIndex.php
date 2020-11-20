@@ -46,6 +46,7 @@ class CategoryIndex extends Component
     if(isset($this->params["toTree"])){
 
       $categories = $categories->toTree();
+      
     }
     return view($this->view, ['categories' => $categories, 'params' => $params]);
     

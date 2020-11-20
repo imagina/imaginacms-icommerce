@@ -49,7 +49,7 @@ class OldPublicController extends BasePublicController
   public function index(Request $request)
   {
     $slug = \Request::path();
-    
+
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
     
@@ -116,6 +116,7 @@ class OldPublicController extends BasePublicController
   
   public function checkout()
   {
+  
     $tpl = 'icommerce::frontend.checkout.index';
     $ttpl = 'icommerce.checkout.index';
     if (view()->exists($ttpl)) $tpl = $ttpl;

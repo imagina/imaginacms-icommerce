@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Http\Livewire;
 use \Illuminate\Session\SessionManager;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 
@@ -19,7 +20,7 @@ class Cart extends Component
   
   public function mount(Request $request)
   {
-    
+
     $this->defaultView = 'icommerce::frontend.livewire.cart';
     $this->view = $params["view"] ?? $this->defaultView;
     
@@ -46,17 +47,11 @@ class Cart extends Component
     $product = $this->productRepository()->getItem($productId);
     
     if (!isset($product->id)) {
-      $this->alert('warning', trans('icommerce::cart.message.invalid_product'), [
-        'position' => 'bottom-end',
-        'iconColor' => setting("isite::brandPrimary", "#fff")
-      ]);
+      $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
       
     } else {
       if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $productOptionValues)) {
-        $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), [
-          'position' => 'bottom-end',
-          'iconColor' => setting("isite::brandPrimary", "#fff")
-        ]);
+        $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
         
         $this->redirect($product->url);
         
@@ -71,10 +66,7 @@ class Cart extends Component
         $this->cartProductRepository()->create($data);
         $this->updateCart();
   
-        $this->alert('success', trans('icommerce::cart.message.add'), [
-          'position' => 'bottom-end',
-          'iconColor' => setting("isite::brandPrimary", "#fff")
-        ]);
+        $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
   
       }
     }
@@ -105,10 +97,7 @@ class Cart extends Component
     
     $this->updateCart();
     
-    $this->alert('warning', trans('icommerce::cart.message.remove'), [
-      'position' => 'bottom-end',
-      'iconColor' => setting("isite::brandPrimary", "#fff")
-    ]);
+    $this->alert('warning', trans('icommerce::cart.message.remove'), config("asgard.isite.config.livewireAlerts"));
     
   }
   

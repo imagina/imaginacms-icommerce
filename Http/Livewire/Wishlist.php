@@ -53,7 +53,7 @@ class Wishlist extends Component
     //Validate session
     if (!$user) {
       $this->alert('warning', trans('icommerce::wishlists.messages.unauthenticated'), [
-        'position' => 'bottom-end',
+        'position' => 'top-end',
         'iconColor' => setting("isite::brandPrimary", "#fff")
       ]);
     } else {
@@ -64,10 +64,7 @@ class Wishlist extends Component
       );
 
       //Message
-      $this->alert('success', trans('icommerce::wishlists.messages.productAdded'), [
-        'position' => 'bottom-end',
-        'iconColor' => setting("isite::brandPrimary", "#fff")
-      ]);
+      $this->alert('success', trans('icommerce::wishlists.messages.productAdded'), config("asgard.isite.config.livewireAlerts"));
     }
   }
 
