@@ -6,27 +6,24 @@ use Livewire\Component;
 
 class FilterManufacturers extends Component
 {
-
+	
     protected $manufacturers;
     public $selectedManufacturers;
 
 	protected $listeners = ['productListRendered'];
-
-
+	
+	public function mount(){
+		$this->selectedManufacturers = [];
+	}
     /*
     * When Manufacturer has been selected
     * 
     */
     public function updatedSelectedManufacturers(){
+	
 
-        $newManu = [];
-        foreach($this->selectedManufacturers as $key => $m){
-            if($m)
-                array_push($newManu, $key);
-        }
-        
         $this->emit('updateFilter',[
-          'manufacturers' => $newManu
+          'manufacturers' => array_values($this->selectedManufacturers)
         ]);
 
     }
@@ -44,19 +41,8 @@ class FilterManufacturers extends Component
     *
     */
 	public function productListRendered($params){
-
+		$this->selectedManufacturers  = $params["filter"]["manufacturers"] ?? [];
 		
-        $oldManufacturers  = $params["filter"]["manufacturers"] ?? null;
-        if(!empty($oldManufacturers)){
-            foreach($oldManufacturers as $oldM){
-                $this->selectedManufacturers[$oldM] = true;
-            }
-        }
-        
-        // Remove from the filter so that it brings all the manufacturers and does not limit to one manufacturers
-        if(isset($params["filter"]["manufacturers"]))
-            unset($params["filter"]["manufacturers"]);
-
         $this->manufacturers = $this->getProductRepository()->getManufacturers(json_decode(json_encode($params)));
         
 	}
@@ -68,8 +54,14 @@ class FilterManufacturers extends Component
     	$ttpl = 'icommerce.livewire.filter-manufacturers';
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
-
-        return view($tpl,['manufacturers' => $this->manufacturers]);
+	
+			$isExpanded = false;
+		
+			$count = count(array_intersect($this->manufacturers ? $this->manufacturers->pluck("id")->toArray() : [],$this->selectedManufacturers));
+			if($count) $isExpanded = true;
+			
+			return view($tpl,['manufacturers' => $this->manufacturers,"isExpanded" => $isExpanded]);
+			
     }
 
 }

@@ -6,10 +6,30 @@ use Livewire\Component;
 
 class FilterProductOptions extends Component
 {
-
+	
+	
 	protected $productOptions;
+    public $selectedOptionValues;
     
 	protected $listeners = ['productListRendered'];
+
+
+		public function mount(){
+			$this->selectedOptionValues = [];
+		}
+     /*
+    * When Option Value has been selected
+    * 
+    */
+    public function updatedSelectedOptionValues(){
+
+
+        $this->emit('updateFilter',[
+            'optionValues' => array_values($this->selectedOptionValues)
+        ]);
+    
+    }
+
 
 	/*
     * Get Product Repository
@@ -25,12 +45,10 @@ class FilterProductOptions extends Component
     */
 	public function productListRendered($params){
 
-        // Testing
-        \Log::info("Filter Product Options: ".json_encode($params));
+		$this->selectedOptionValues = $params["filter"]["optionValues"] ?? [];
 
-       
 		$this->productOptions = $this->getProductRepository()->getProductOptions(json_decode(json_encode($params)));
-
+		
 	}
 
 	/*
@@ -44,7 +62,7 @@ class FilterProductOptions extends Component
     	$ttpl = 'icommerce.livewire.filter-product-options';
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
-
+	
     	return view($tpl,['productOptions' => $this->productOptions]);
         
     }

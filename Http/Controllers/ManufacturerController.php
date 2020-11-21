@@ -38,7 +38,7 @@ class ManufacturerController extends BaseApiController
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
 
-    $manufacturers = $this->manufacturer->getItemsBy(json_decode(json_encode(["params" => ["include" => []]])));
+    $manufacturers = $this->manufacturer->getItemsBy(json_decode(json_encode( ["include" => [], "order" => ["field" => "slug", "way" => "asc"]])));
     
     //$dataRequest = $request->all();
     

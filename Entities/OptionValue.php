@@ -50,6 +50,16 @@ class OptionValue extends Model
         'subtract', 'price', 'weight'
       )->withTimestamps();
   }
+  
+  public function productOptionValues()
+  {
+    return $this->belongsToMany(Product::class, 'icommerce__product_option_value')
+      ->withPivot(
+        'id', 'product_option_id', 'option_id',
+        'parent_option_value_id', 'quantity',
+        'subtract', 'price', 'weight'
+      )->withTimestamps();
+  }
 
   public function getMainImageAttribute()
   {

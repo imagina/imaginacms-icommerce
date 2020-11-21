@@ -11,52 +11,9 @@
         <div class="owl-carousel owl-theme owl-svg featured-{{$category->slug}}">
           @foreach($products as $product)
             
-            <slide wire:key="'featured-new-product-{{$product->id}}'">
-              @includeFirst(["icommerce.product.meta","icommerce::frontend.product.meta"])
-              <div class="card-product">
-                <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
-                  <a href="{{$product->url}}">
-                    <figure>
-                      <picture>
-                        <source
-                            type="image/jpeg"
-                            data-srcset="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
-                         />
-                        <img
-                          data-src="{{$product->mediaFiles()->mainimage->relativeMediumThumb}}"
-                          alt = "{{$product->name}}"
-                          class="lazyload" />
-                      </picture>
-                    </figure>
-                  </a>
-                </div>
-                <div class="mt-3 pb-3 text-center">
-                  <div class="category">
-                    {{$product->category->title }}
-                  </div>
-                  
-                  <a v-bind:href="article.url" class="name cursor-pointer">
-                    {{ $product->name }}
-                  </a>
-                  
-                  <div class="price">
-                    <i class="fa fa-shopping-cart icon"></i>
-                    {{ formatMoney($product->price) }}
-                  </div>
-                  <a class="cart-no">&nbsp;</a>
-                  @if($product->price!=0.00)
-                    <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
-                       class="cart text-primary cursor-pointer">
-                      Añadir al carrito
-                    </a>
-                  @else
-                    <a href="/contacto" class="cart text-primary cursor-pointer">
-                      Contacta con nosotros
-                    </a>
-                  @endif
-                </div>
-              </div>
-            </slide>
+            <div wire:key="'featured-new-product-{{$product->id}}'">
+              @include('icommerce::frontend.product.layout')
+            </div>
           @endforeach
         </div>
       </div>
