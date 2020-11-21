@@ -560,19 +560,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     foreach ($productOptions as &$productOption){
     	$productOption->values = $productOption->optionValues->whereIn("id",$productOptionValuesIds);
 		}
-	
-		$selectedOptionValues = [];
-		
-		foreach ($productOptions as $productOption){
-			$values = $productOption->values;
-		
-			foreach ($values as $value){
-				$selectedOptionValues[$value->id] = false;
-			
-			}
-		}
-		
-		//dd($selectedOptionValues);
+    
     return $productOptions;
    
   }
