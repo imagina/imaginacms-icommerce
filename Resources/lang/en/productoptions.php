@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'single' => 'Product Option',
+    'plural' => 'Product Options',
     'list resource' => 'List productoptions',
     'create resource' => 'Create productoptions',
     'edit resource' => 'Edit productoptions',

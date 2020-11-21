@@ -209,6 +209,10 @@ return [
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
       'status' => true
+    ],
+    'product-options' => [
+      'title' => 'icommerce::productoptions.plural',
+      'status' => true
     ]
   ],
 

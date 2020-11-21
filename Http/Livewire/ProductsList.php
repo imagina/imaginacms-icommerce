@@ -73,7 +73,7 @@ class ProductsList extends Component
 	    $this->dataRequest = $request->all();
 	    $this->firstRequest = true;
 
-	    $this->emitProductListRendered = false;
+	    $this->emitProductListRendered = false	;
 
 	}
 
@@ -169,7 +169,7 @@ class ProductsList extends Component
         }
 
     	$params = [
-    		"include" => ['discounts','translations','category','categories','manufacturer'],
+    		"include" => ['discounts','translations','category','categories','manufacturer','productOptions'],
     		"take" => setting('icommmerce::product-per-page',null,12),
     		"page" => $this->page ?? 1,
     		"filter" => $this->filters,

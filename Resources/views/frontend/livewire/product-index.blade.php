@@ -9,44 +9,7 @@
         
         <div id="productIndex" class="owl-carousel owl-theme">
             @foreach($products as $product)
-            <slide wire:key="'featured-new-product-{{$product->id}}'">
-              @includeFirst(["icommerce.product.meta","icommerce::frontend.product.meta"])
-              <div class="card-product">
-                <div class="bg-img">
-                  <a href="{{$product->url}}">
-                
-                    <img title="{{$product->name}}" alt="{{$product->name}}" src="{{$product->mediaFiles()->mainimage->path}}" >
-                  </a>
-                </div>
-                <div class="mt-3 pb-3 text-center">
-                  <div class="category">
-                    <a href="{{$product->category->url}}" title="{{$product->category->title }}"  class="cursor-pointer">
-                    {{$product->category->title }}
-                    </a>
-                  </div>
-  
-                  <a href="{{$product->url}}" title="{{$product->name}}" class="name cursor-pointer">
-                    {{ $product->name }}
-                  </a>
-          
-                  <div class="price mt-3">
-                    <i class="fa fa-shopping-cart icon"></i>
-                    {{ formatMoney($product->price) }}
-                  </div>
-                  <a class="cart-no">&nbsp;</a>
-                  @if($product->price!=0.00)
-                    <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
-                       class="cart text-primary cursor-pointer">
-                      Añadir al carrito
-                    </a>
-                  @else
-                    <a href="/contacto" class="cart text-primary cursor-pointer">
-                      Contacta con nosotros
-                    </a>
-                  @endif
-                </div>
-              </div>
-            </slide>
+            @include('icommerce::frontend.product.layout')
             @endforeach
         </div>
       </div>
