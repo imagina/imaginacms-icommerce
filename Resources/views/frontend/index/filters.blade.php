@@ -14,6 +14,7 @@
 			@if(!isset($manufacturer->id))
 				@livewire('icommerce::filter-manufacturers',key("filter-manufacturers"))
 			@endif
+			
 			@livewire('icommerce::filter-product-options',key("filter-product-options"))
 
 		</div>

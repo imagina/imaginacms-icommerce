@@ -9,7 +9,7 @@
         
         <div id="productIndex" class="owl-carousel owl-theme">
             @foreach($products as $product)
-            @include('icommerce::frontend.product.layout')
+              @include('icommerce::frontend.product.layout')
             @endforeach
         </div>
       </div>

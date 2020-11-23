@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 {{-- Meta --}}
-@includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
+@include('icommerce::frontend.index.meta')
 
 
 @section('content')
@@ -17,8 +17,9 @@
 			{{-- Filters --}}
 			<div class="col-lg-3">
 			
-				@includeFirst(['icommerce.index.filters',
-				'icommerce::frontend.index.filters'],["categoryBreadcrumb" => $categoryBreadcrumb])
+				@include('icommerce::frontend.index.filters',[
+					"categoryBreadcrumb" => $categoryBreadcrumb
+					])
 			</div>
 
 			{{-- Top Content , Products, Pagination --}}
@@ -37,4 +38,4 @@
 @stop
 
 {{-- VUEJS SCRIPTS--}}
-@includeFirst(['icommerce.index.scripts','icommerce::frontend.index.scripts'])
+@include('icommerce::frontend.index.scripts')

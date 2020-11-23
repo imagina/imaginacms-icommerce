@@ -1,6 +1,6 @@
 <div class="top-content">
 
-	<h1 class="text-primary text-uppercase font-weight-bold h3">{{$category->title ?? setting('icommerce::customIndexTitle',null,trans('icommerce::products.title.products'))}} {{isset($manufacturer->id) ? isset($category->id) ? "/ $manufacturer->name" : $manufacturer->name : ""}}</h1>
+	<h4 class="text-primary text-uppercase font-weight-bold">{{$category->title ?? setting('icommerce::customIndexTitle',null,trans('icommerce::products.title.products'))}} {{isset($manufacturer->id) ? isset($category->id) ? "/ $manufacturer->name" : $manufacturer->name : ""}}</h4>
 	<hr>
 
 	<div class="row align-items-center mb-4">
@@ -18,12 +18,12 @@
 
 		{{-- Filter - Order By --}}
 		<div class="col-lg-5">
-			@includeFirst(['icommerce.filters.index.top-content.filter-orderby','icommerce::frontend.index.top-content.filter-orderby'])
+			@include('icommerce::frontend.index.top-content.filter-orderby')
 		</div>
 
 		{{-- Change Layout --}}
 		<div class="col-lg-3">
-			@includeFirst(['icommerce.index.top-content.change-layout','icommerce::frontend.index.top-content.change-layout']) 
+			@include('icommerce::frontend.index.top-content.change-layout') 
 		</div>
 		
 	</div>

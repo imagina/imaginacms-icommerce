@@ -12,7 +12,7 @@
           
           @foreach($categories as $category)
             @if($category->parent_id == 0)
-              @includeFirst(['icommerce.index.category','icommerce::frontend.index.category'])
+              @include('icommerce::frontend.index.category')
             @endif
           @endforeach
         
