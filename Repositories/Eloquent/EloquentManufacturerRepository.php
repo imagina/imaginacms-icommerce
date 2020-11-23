@@ -65,6 +65,24 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
       $query->where("status", 1);
     }
     
+		// ORDER
+		if (isset($params->order) && $params->order) {
+		
+			$order = is_array($params->order) ? $params->order : [$params->order];
+		
+			foreach ($order as $orderObject) {
+				if (isset($orderObject->field) && isset($orderObject->way))
+				{
+					if (in_array($orderObject->field, $this->model->translatedAttributes)) {
+						$query->join('icommerce__manufacturer_trans as translations', 'translations.manufacturer_id', '=', 'icommerce__manufacturers.id');
+						$query->orderBy("translations.$orderObject->field", $orderObject->way);
+					} else
+						$query->orderBy($orderObject->field, $orderObject->way);
+				}
+			
+			}
+		}
+		
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);

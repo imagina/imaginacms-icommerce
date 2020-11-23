@@ -20,13 +20,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
         /*== RELATIONSHIPS ==*/
         if (in_array('*', $params->include)) {//If Request all relationships
-            $query->with([]);
+          $query->with([]);
         } else {//Especific relationships
             $includeDefault = ['translations', 'files'];//Default relationships
             if (isset($params->include))//merge relations with default relationships
                 $includeDefault = array_merge($includeDefault, $params->include);
             $query->with($includeDefault);//Add Relationships to query
-
         }
 
         // FILTERS
@@ -49,8 +48,13 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
                 $query->where('store_id', $filter->store);
             }
 
-            if (isset($filter->showMenu)) {
+            if (isset($filter->showMenu)&& is_bool($filter->showMenu)) {
                 $query->where('show_menu', $filter->showMenu);
+            }
+
+            if (isset($filter->ids)) {
+                is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
+                $query->whereIn('icommerce__categories.id', $filter->ids);
             }
             if (isset($filter->manufacturers) && $filter->manufacturers) {
                 is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
@@ -71,7 +75,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
                     $query->whereDate($date->field, '<=', $date->to);
             }
 
-            //Order by
+                //Order by
             if (isset($filter->order)) {
                 $orderByField = $filter->order->field ?? 'created_at';//Default field
                 $orderWay = $filter->order->way ?? 'desc';//Default way
@@ -148,115 +152,110 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
         /*== FIELDS ==*/
         if (isset($params->fields) && is_array($params->fields) && count($params->fields))
-            $query->select($params->fields);
+      $query->select($params->fields);
 
 
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
 
-            if (isset($filter->field))//Filter by specific field
-                $field = $filter->field;
+      if (isset($filter->field))//Filter by specific field
+        $field = $filter->field;
 
-            // find translatable attributes
-            $translatedAttributes = $this->model->translatedAttributes;
+      // find translatable attributes
+      $translatedAttributes = $this->model->translatedAttributes;
 
-            // filter by translatable attributes
-            if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
-                $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
-                    $query->where('locale', $filter->locale)
-                        ->where($field, $criteria);
-                });
-            else
-                // find by specific attribute or by id
-                $query->where($field ?? 'id', $criteria);
+      // filter by translatable attributes
+      if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
+        $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
+          $query->where('locale', $filter->locale)
+            ->where($field, $criteria);
+        });
+      else
+        // find by specific attribute or by id
+        $query->where($field ?? 'id', $criteria);
 
-        }
-
-        if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
-
-        } else {
-
-            //pre-filter status
-            $query->where("status", 1);
-
-        }
-
-        /*== REQUEST ==*/
-        return $query->first();
     }
 
-    /**
-     * Find a resource by the given slug
-     *
-     * @param  string $slug
-     * @return object
-     */
-    public function findBySlug($slug)
-    {
-        if (method_exists($this->model, 'translations')) {
-            return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
-                $q->where('slug', $slug);
-            })->with('translations', 'parent', 'children')->firstOrFail();
-        }
+		if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
 
-        return $this->model->where('slug', $slug)->with('translations', 'parent', 'children', 'vehicles')->first();;
+		} else {
+
+			//pre-filter status
+			$query->where("status", 1);
+
+		}
+
+    /*== REQUEST ==*/
+    return $query->first();
+  }
+
+  /**
+   * Find a resource by the given slug
+   *
+   * @param  string $slug
+   * @return object
+   */
+  public function findBySlug($slug)
+  {
+    if (method_exists($this->model, 'translations')) {
+      return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
+        $q->where('slug', $slug);
+      })->with('translations', 'parent', 'children')->firstOrFail();
     }
 
-    public function create($data)
-    {
+    return $this->model->where('slug', $slug)->with('translations', 'parent', 'children', 'vehicles')->first();;
+  }
 
-        $category = $this->model->create($data);
+  public function create($data)
+  {
 
-        if(isset($data['category_discounts'])){
-            $category->discount($data['category_discounts']);
-        }
+    $category = $this->model->create($data);
 
-        //Event to ADD media
-        event(new CreateMedia($category, $data));
+    //Event to ADD media
+    event(new CreateMedia($category, $data));
 
-        return $category;
+    return $category;
+  }
+
+  public function updateBy($criteria, $data, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
+
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      //Update by field
+      if (isset($filter->field))
+        $field = $filter->field;
     }
-    public function updateBy($criteria, $data, $params = false)
-    {
-        /*== initialize query ==*/
-        $query = $this->model->query();
 
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    event(new UpdateMedia($model, $data));//Event to Update media
+    return $model ? $model->update((array)$data) : false;
+  }
 
-            //Update by field
-            if (isset($filter->field))
-                $field = $filter->field;
-        }
+  public function deleteBy($criteria, $params = false)
+  {
+    /*== initialize query ==*/
+    $query = $this->model->query();
 
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
-        if(isset($data['category_discounts'])){
-            $model->discount($data['category_discounts']);
-        }
-        event(new UpdateMedia($model, $data));//Event to Update media
-        return $model ? $model->update((array)$data) : false;
+    /*== FILTER ==*/
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field))//Where field
+        $field = $filter->field;
     }
-    public function deleteBy($criteria, $params = false)
-    {
-        /*== initialize query ==*/
-        $query = $this->model->query();
 
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field))//Where field
-                $field = $filter->field;
-        }
-
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
-        event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
-        $model ? $model->delete() : false;
-    }
+    /*== REQUEST ==*/
+    $model = $query->where($field ?? 'id', $criteria)->first();
+    event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
+    $model ? $model->delete() : false;
+  }
 
 }
 

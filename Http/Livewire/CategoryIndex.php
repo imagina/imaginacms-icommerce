@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Http\Livewire;
 
 use Livewire\Component;
+use Modules\Icommerce\Entities\Category;
 
 class CategoryIndex extends Component
 {
@@ -41,7 +42,12 @@ class CategoryIndex extends Component
    
     $params = $this->makeParamsFunction();
     $categories = $this->getCategoryRepository()->getItemsBy(json_decode(json_encode($params)));
-    
+   
+    if(isset($this->params["toTree"])){
+
+      $categories = $categories->toTree();
+      
+    }
     return view($this->view, ['categories' => $categories, 'params' => $params]);
     
     

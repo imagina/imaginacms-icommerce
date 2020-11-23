@@ -64,6 +64,8 @@ return [
   
   'useOldRoutes' => true,
   
+  'defaultProductRating' => 5,
+  
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -115,51 +117,82 @@ return [
     ],
     'product' => [
       'mainimage' => 'single',
+      'gallery' => 'multiple',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
     ]
   ],
   
-  'orderByOptions' => [
-    'nameaz' => [
-      'title' => 'icommerce::common.sort.name_a_z',
-      'name' => 'nameaz',
-      'order' => [
-        'field' => "name",
-        'way' => "asc",
+
+  /* Order By - Index */
+  'orderBy' =>[
+    'default' => 'recently',
+    'options' => [
+      'nameaz' => [
+        'title' => 'icommerce::common.sort.name_a_z',
+        'name' => 'nameaz',
+        'order' => [
+          'field' => "name",
+          'way' => "asc",
+        ]
+      ],
+      'nameza' => [
+        'title' => 'icommerce::common.sort.name_z_a',
+        'name' => 'nameza',
+        'order' => [
+          'field' => "name",
+          'way' => "desc",
+        ]
+      ],
+      'lowerprice' => [
+        'title' => 'icommerce::common.sort.price_low_high',
+        'name' => 'lowerprice',
+        'order' => [
+          'field' => "price",
+          'way' => "asc",
+        ]
+      ],
+      'higherprice' => [
+        'title' => 'icommerce::common.sort.price_high_low',
+        'name' => 'higherprice',
+        'order' => [
+          'field' => "price",
+          'way' => "desc",
+        ]
+      ],
+      'recently' => [
+        'title' => 'icommerce::common.sort.recently',
+        'name' => 'recently',
+        'order' => [
+          'field' => "created_at",
+          'way' => "desc",
+        ]
       ]
     ],
-    'nameza' => [
-      'title' => 'icommerce::common.sort.name_z_a',
-      'name' => 'nameza',
-      'order' => [
-        'field' => "name",
-        'way' => "desc",
-      ]
-    ],
-    'lowerprice' => [
-      'title' => 'icommerce::common.sort.price_low_high',
-      'name' => 'lowerprice',
-      'order' => [
-        'field' => "price",
-        'way' => "asc",
-      ]
-    ],
-    'higherprice' => [
-      'title' => 'icommerce::common.sort.price_high_low',
-      'name' => 'higherprice',
-      'order' => [
-        'field' => "price",
-        'way' => "desc",
-      ]
-    ],
-    'recently' => [
-      'title' => 'icommerce::common.sort.recently',
-      'name' => 'recently',
-      'order' => [
-        'field' => "created_at",
-        'way' => "desc",
-      ]
+  ],
+
+  /*Layout Products - Index */
+  'layoutIndex' => [
+    'default' => 'four',
+    'options' => [
+      'four' => [
+        'name' => 'four',
+        'class' => 'col-12 col-md-4 col-lg-3',
+        'icon' => 'fa fa-th-large',
+        'status' => true
+      ],
+      'three' => [
+        'name' => 'three',
+        'class' => 'col-12 col-md-4 col-lg-4',
+        'icon' => 'fa fa-square-o',
+        'status' => true
+      ],
+      'one' => [
+        'name' => 'one',
+        'class' => 'col-12',
+        'icon' => 'fa fa-align-justify',
+        'status' => true
+      ],
     ]
   ],
 
@@ -176,35 +209,15 @@ return [
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
       'status' => true
+    ],
+    'product-options' => [
+      'title' => 'icommerce::productoptions.plural',
+      'status' => true
     ]
   ],
 
-  /*Layout Index*/
-  'layoutIndex' => [
-    'defaultIndexOption' => 'four',
-    'defaultOrderOption' => 'recently',
-  ],
   
-  'layoutIndexOptions' => [
-    'four' => [
-      'name' => 'four',
-      'class' => 'col-12 col-md-4 col-lg-3',
-      'icon' => 'fa fa-th-large',
-      'status' => true
-    ],
-    'three' => [
-      'name' => 'three',
-      'class' => 'col-12 col-md-4 col-lg-4',
-      'icon' => 'fa fa-square-o',
-      'status' => true
-    ],
-    'one' => [
-      'name' => 'one',
-      'class' => 'col-12',
-      'icon' => 'fa fa-align-justify',
-      'status' => true
-    ],
-  ]
+ 
   
 
 ];

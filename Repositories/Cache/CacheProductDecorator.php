@@ -85,4 +85,29 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
       return $this->repository->getPriceRange($params);
     });
   }
+
+  /**
+   * Get Manufactures From Products Filtered
+   *
+   * @return collection
+   */
+  public function getManufacturers($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getManufacturers($params);
+    });
+  }
+
+  /**
+   * Get Product Options From Products Filtered
+   *
+   * @return collection
+   */
+  public function getProductOptions($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getProductOptions($params);
+    });
+  }
+
 }

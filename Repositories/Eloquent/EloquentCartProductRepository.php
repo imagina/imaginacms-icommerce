@@ -139,19 +139,20 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     $cartProduct = $this->findByAttributesOrOptions($data);
     
     if($cartProduct) {
-  
+ 
       // get product options
       $productOptionValues = $cartProduct->productOptionValues;
-  
+      
       // get options from front
       $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
   
       $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
       $productOptionValuesIdsFront = array_column($productOptionValuesFront,'id');
       // if is the same option values ids
+   
       if( array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)){
         $cartProduct->update($data);
-        
+  
       }else{ // if not the same options create cart product
         $cartProduct = $this->model->create($data);
       }
@@ -192,6 +193,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
   
   public function findByAttributesOrOptions($data){
+
     // if the request has product without options
     if(!count(Arr::get($data, 'product_option_values', []))) {
       // find product into cart by attributes
@@ -208,14 +210,15 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
           $query->whereIn("product_option_value_id",$productOptionValuesIdsFront);
         })->get();
-
+      
       foreach ($cartProducts as $cartProductQuery){
         // get product options
         $productOptionValuesIds = $cartProductQuery->productOptionValues->pluck('id')->toArray();
-
+        
           if( array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)){
 
             $cartProduct = $cartProductQuery;
+           
           }
       }
     }

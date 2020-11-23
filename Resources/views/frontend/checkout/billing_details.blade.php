@@ -64,7 +64,12 @@
             @endphp
             @foreach($addressesExtraFields as $extraField)
               @if($extraField->active)
-                <p class="card-text m-0" v-if="billingAddress.options.{{$extraField->field}}"><b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b> @{{billingAddress.options[@php echo "'".$extraField->field."'"; @endphp ] || '-'}}</p>
+                @if($extraField->type == "documentType")
+                  <p class="card-text m-0" v-if="billingAddress.options && billingAddress.options.identification"><b>{{trans("iprofile::addresses.form.identification")}}:</b> @{{billingAddress.options.identification || '-'}}</p>
+                  <p class="card-text m-0" v-if="billingAddress.options && billingAddress.options.documentNumber"><b>{{trans("iprofile::addresses.form.documentNumber")}}:</b> @{{billingAddress.options.documentNumber || '-'}}</p>
+                @else
+                  <p class="card-text m-0" v-if="billingAddress.options && billingAddress.options.{{$extraField->field}}"><b>{{trans("iprofile::addresses.form.$extraField->field")}}:</b> @{{billingAddress.options[@php echo "'".$extraField->field."'"; @endphp ] || '-'}}</p>
+                @endif
               
               @endif
             @endforeach

@@ -134,7 +134,7 @@ class Product extends Model implements TaggableInterface
     public function optionValues()
     {
         return $this->hasMany(ProductOptionValue::class);
-
+  
     }
 
     public function relatedProducts()
@@ -239,9 +239,9 @@ class Product extends Model implements TaggableInterface
 
     protected function setRatingAttribute($value)
     {
-
+        $defaultRating = config("asgard.icommerce.config.defaultProductRating");
         if (!empty($value)) {
-            $this->attributes['rating'] = $value;
+            $this->attributes['rating'] = $defaultRating ?? $value;
         } else {
             $this->attributes['rating'] = 5;
         }

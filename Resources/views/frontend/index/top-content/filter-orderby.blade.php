@@ -5,7 +5,7 @@
 		</label>
 		<div class="col-xs-10">
 			<select id="f-order-by" name="f-order-by" class="form-control form-control-sm" wire:model="orderBy">
-				@foreach( config("asgard.icommerce.config.orderByOptions") as  $orderOption)
+				@foreach( $this->configs['orderBy']['options'] as  $orderOption)
 					<option value="{{$orderOption['name']}}">{{ trans($orderOption['title']) }}</option>
 				 @endforeach
 				

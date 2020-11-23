@@ -15,29 +15,26 @@
       
       </div>
       
-      <table class="table my-2">
+      <table id="shippingList" class="table my-2">
         <tbody>
         <tr class="shipping-item" v-for="(ship, index) in shippingMethods">
           <td >
             <div
               class="card-header collapsed bg-white border-0"
               role="tab"
-              id="headingOne"
-              :href="'shipping'+index"
-              data-parent="#shippingList"
-              data-toggle="collapse"
-              :data-target="'#shipping'+index"
-              aria-expanded="true"
-              :aria-controls="'shipping'+index">
+              id="headingOne">
               <label class="mb-0">
-                <input type="radio" class=""
+                <input type="radio"
+                       data-parent="#shippingList" data-toggle="collapse"
+                       :data-target="'#shipping'+index" aria-expanded="true"
+                       :aria-controls="'shipping'+index"
                        v-model="shipping_name" :value="ship.name">
                 <a class="card-title">
                   @{{ship.title | capitalize}}
                 </a>
               </label>
             </div>
-            <div :id="'shipping'+index" class="collapse" role="tabpanel" :aria-labelledby="'heading'+index">
+            <div :id="'shipping'+index" class="collapse" role="tabpanel" :aria-labelledby="'shipping'+index">
               <div class="card-block">
                 @{{ship.description}}
               </div>
