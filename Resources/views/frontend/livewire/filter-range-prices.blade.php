@@ -1,16 +1,16 @@
-<div class="filter-range-prices mb-4" >
+<div class="filter-range-prices" >
 
 	@if($show)
 	
 	<div class="title">
-		<a data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
-			<div class="d-flex justify-content-between align-items-center">
-
-				@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
-	  			<h5>{{trans($titleFilter)}}</h5>
-	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
-	  		</div>
-	  		<hr>
+		<a class ="item" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
+			
+			@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
+	  		<h5>
+	  			<i class="fa angle float-right" aria-hidden="true"></i>
+	  			{{trans($titleFilter)}}
+	  		</h5>
+	  		
 		</a>
 	</div>
 	
@@ -20,7 +20,7 @@
 
 		<div class="collapse" id="collapseRangePrices">
 
-			<input type="text" id="amount" class="amount border-0 text-primary font-weight-bold mb-2" readonly>
+			<input type="text" id="amount" class="amount border-0" readonly>
 
 			<input type="hidden" id="priceMin" name="priceMin" wire:model="priceMin">
 			<input type="hidden" id="priceMax" name="priceMax" wire:model="priceMax">
