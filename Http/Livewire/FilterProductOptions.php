@@ -59,10 +59,7 @@ class FilterProductOptions extends Component
     {
 
     	$tpl = 'icommerce::frontend.livewire.filter-product-options';
-    	$ttpl = 'icommerce.livewire.filter-product-options';
 
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
-	
     	return view($tpl,['productOptions' => $this->productOptions]);
         
     }

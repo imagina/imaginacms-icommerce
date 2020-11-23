@@ -27,9 +27,6 @@ class Loading extends Component
     {
 
     	$tpl = 'icommerce::frontend.livewire.loading';
-    	$ttpl = 'icommerce.livewire.loading';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
 
         return view($tpl);
     }

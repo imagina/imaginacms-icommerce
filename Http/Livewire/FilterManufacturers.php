@@ -51,16 +51,14 @@ class FilterManufacturers extends Component
     {
 
     	$tpl = 'icommerce::frontend.livewire.filter-manufacturers';
-    	$ttpl = 'icommerce.livewire.filter-manufacturers';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
-	
-			$isExpanded = false;
+    	
+		$isExpanded = false;
 		
-			$count = count(array_intersect($this->manufacturers ? $this->manufacturers->pluck("id")->toArray() : [],$this->selectedManufacturers));
-			if($count) $isExpanded = true;
+		$count = count(array_intersect($this->manufacturers ? $this->manufacturers->pluck("id")->toArray() : [],$this->selectedManufacturers));
+		
+        if($count) $isExpanded = true;
 			
-			return view($tpl,['manufacturers' => $this->manufacturers,"isExpanded" => $isExpanded]);
+		return view($tpl,['manufacturers' => $this->manufacturers,"isExpanded" => $isExpanded]);
 			
     }
 

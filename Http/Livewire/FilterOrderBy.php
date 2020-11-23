@@ -11,10 +11,7 @@ class FilterOrderBy extends Component
     {
 
     	$tpl = 'icommerce::frontend.livewire.filter-orderby';
-    	$ttpl = 'icommerce.livewire.filter-orderby';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
-
+    	
         return view($tpl);
     }
 

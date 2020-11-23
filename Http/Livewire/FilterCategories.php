@@ -44,7 +44,6 @@ class FilterCategories extends Component
   {
     
     $tpl = 'icommerce::frontend.livewire.filter-categories';
-    $ttpl = 'icommerce.livewire.filter-categories';
     
     $params = json_decode(json_encode([
       "include" => ['translations'],
@@ -54,8 +53,6 @@ class FilterCategories extends Component
     ]));
     
     $this->categories = $this->getCategoryRepository()->getItemsBy($params);
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
     
     if (isset($this->manufacturer->id)) {
       $params = json_decode(json_encode([

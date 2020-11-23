@@ -128,9 +128,6 @@ class FilterRangePrices extends Component
     {
 
     	$tpl = 'icommerce::frontend.livewire.filter-range-prices';
-    	$ttpl = 'icommerce.livewire.filter-range-prices';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
 
         return view($tpl);
     }
