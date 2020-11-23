@@ -6,7 +6,7 @@
         <li id="liNavItem" class="nav-item dropdown">
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
              >
-            <i class="fa fa-bars mr-2"></i> CATEGORÍAS
+            <i class="fa fa-bars mr-2"></i> CATEGOR&Iacute;AS
           </a>
           <ul id="ulNavItem" class="{{$params["type"] ?? "dropdown-menu"}}">
             @foreach($categories as $category)

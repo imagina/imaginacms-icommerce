@@ -55,10 +55,10 @@ class OldOrderController extends BasePublicController
     {
         $tpl = 'icommerce::frontend.orders.show';
         $ttpl = 'icommerce.orders.show';
-   
+        $user = \Auth::user();
         if (view()->exists($ttpl)) $tpl = $ttpl;
         if (!isset($request->key)) {
-            $user = $this->auth->user();
+            
             $order = $this->order->getItem($request->id,(object)["filter"=>(object)["customer"=>$user->id],"include"=>[]]);
         }else
             $order = $this->order->getItem($request->key,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);

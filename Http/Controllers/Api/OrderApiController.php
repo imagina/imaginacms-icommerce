@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
+use Modules\Icommerce\Entities\OrderStatusHistory;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 use Modules\Icommerce\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
@@ -331,11 +332,12 @@ class OrderApiController extends BaseApiController
             event(new OrderWasUpdated($order));
 
             if (isset($data["orderHistory"])) {
-              OrderStatusHistory::create([
+              $orderStatusHistory = OrderStatusHistory::create([
                 "order_id" => $order->id,
+                "notify" => 1,
                 "status" => $data["status_id"]
               ]);
-                event(new OrderStatusHistoryWasCreated($order));
+                event(new OrderStatusHistoryWasCreated($orderStatusHistory));
             }
 
         } catch (\Exception $e) {

@@ -113,13 +113,12 @@ $router->group(['prefix' => '/orders'], function (Router $router) use ($locale) 
         'middleware' => 'logged.in'
     ]);
     
-    /*
     $router->get('/{id}/{key}', [
         'as' => $locale . '.icommerce.order.showorder',
         'uses' => 'OldOrderController@show',
         'middleware' => 'logged.in',
     ]);
-    */
+    
 });
 
 

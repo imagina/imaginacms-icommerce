@@ -40,5 +40,14 @@ return [
       'label' => 'icommerce::common.filters.priceRange.step'
     ],
   ],
-
+  'daysEnabledForNewProducts' => [
+    'name' => 'icommerce::daysEnabledForNewProducts',
+    'value' => 15,
+    'type' => 'input',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.daysEnabledForNewProducts',
+      'type' => 'number'
+    ],
+  ],
 ];
