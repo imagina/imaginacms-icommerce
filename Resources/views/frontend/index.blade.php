@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div id="content_index_commerce" class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
+<div id="content_index_commerce" class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}}">
 	
 	{{-- Breadcrumb --}}
 	@include('icommerce::frontend.partials.breadcrumb')

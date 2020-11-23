@@ -1,4 +1,4 @@
-<li class="list-group-item" aria-disabled="true" aria-expanded="true">
+<li class="list-group-item category-{{$category->id}}" aria-disabled="true" aria-expanded="true">
 	
 	@php($children = $categories->where("parent_id",$category->id))
 
@@ -21,10 +21,7 @@
 	
 	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
 	
-	{{--
-	@php($newUrl = $category->url)
-	--}}
-	<a class="text-secondary" data-toggle="{{$isSelected ? "collapse" : ""}}"
+	<a data-toggle="{{$isSelected ? "collapse" : ""}}"
 		 href="{{$newUrl}}"
 		 aria-disabled="false"
 		 role="button" aria-expanded="false"
@@ -43,10 +40,11 @@
 	</a>
 	@if($children)
 	<div class="collapse multi-collapse {{$expanded ? 'show' : ''}}" id="multiCollapse-{{$slug}}">
+
 		<ul class="list-group list-group-flush">
 			
 				
-				@foreach($children as $category)
+				@foreach($children as $index => $category)
 					@include('icommerce::frontend.index.category')
 				@endforeach
 			
