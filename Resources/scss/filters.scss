@@ -1,0 +1,18 @@
+.filters{
+
+	.item {
+	    h5 {
+	      .angle:before {
+	        content: "\f105";
+	      }
+	    }
+  	}
+
+	.item[aria-expanded="true"] {
+	    h5 {
+	      .angle:before {
+	        content: "\f107";
+	      }
+	    }
+	}
+}

@@ -7,7 +7,7 @@
 			<div class="d-flex justify-content-between align-items-center">
 
 				@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
-	  			<h5 class="text-secondary">{{trans($titleFilter)}}</h5>
+	  			<h5>{{trans($titleFilter)}}</h5>
 	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
 	  		</div>
 	  		<hr>

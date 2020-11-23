@@ -1,14 +1,14 @@
-	<div class="filter-manufacturers mb-4">
+<div class="filter-manufacturers">
 @if($manufacturers && count($manufacturers)>0)
 	<div class="title">
-		<a data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseManufacturers" class="{{$isExpanded ? '' : 'collapsed'}}">
-	  		<div class="d-flex justify-content-between align-items-center">
-	  			
-	  			@php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
-	  			<h5 class="text-secondary">{{ trans($titleFilter) }}</h5>
-	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
-	  		</div>
-	  		<hr>
+		<a class ="item" data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseManufacturers" class="{{$isExpanded ? '' : 'collapsed'}}">
+	  		
+	  		@php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
+	  		<h5 class="text-secondary">
+	  			<i class="fa angle float-right" aria-hidden="true"></i>
+	  			{{ trans($titleFilter) }}
+	  		</h5>
+
   		</a>
 	</div>
 	
