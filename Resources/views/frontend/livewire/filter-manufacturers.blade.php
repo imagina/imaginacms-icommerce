@@ -4,7 +4,7 @@
 		<a class ="item" data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseManufacturers" class="{{$isExpanded ? '' : 'collapsed'}}">
 	  		
 	  		@php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
-	  		<h5 class="text-secondary">
+	  		<h5>
 	  			<i class="fa angle float-right" aria-hidden="true"></i>
 	  			{{ trans($titleFilter) }}
 	  		</h5>
