@@ -159,7 +159,7 @@ class ProductsImport implements ToCollection, WithChunkReading, WithHeadingRow
             // 3. Return the path
             return $destination_path;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
         }
     }
 

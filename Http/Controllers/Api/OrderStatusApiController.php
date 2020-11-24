@@ -123,7 +123,7 @@ class OrderStatusApiController extends BaseApiController
 
     } catch (\Exception $e) {
 
-      \Log::error($e);
+      \Log::error($e->getMessage());
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];

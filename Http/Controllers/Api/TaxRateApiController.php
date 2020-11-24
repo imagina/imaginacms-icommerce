@@ -130,7 +130,7 @@ class TaxRateApiController extends BaseApiController
       $response = ["data" => 'Item Updated'];
       \DB::commit();//Commit to DataBase
     } catch (\Exception $e) {
-      \Log::error($e);
+      \Log::error($e->getMessage());
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
