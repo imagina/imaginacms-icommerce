@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
@@ -152,10 +153,9 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
     // Create Order History
     $order->orderHistory()->create($data['orderHistory']);
-
-
-
-
+  
+    event(new OrderStatusHistoryWasCreated($order));
+  
     return $order;
 
   }

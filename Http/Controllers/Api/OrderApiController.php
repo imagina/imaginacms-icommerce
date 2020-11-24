@@ -103,7 +103,7 @@ class OrderApiController extends BaseApiController
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+          \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -139,7 +139,7 @@ class OrderApiController extends BaseApiController
             $response = ["data" => new OrderTransformer($dataEntity)];
 
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+          \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -264,10 +264,20 @@ class OrderApiController extends BaseApiController
         }
 
         $data["orderID"] = $order->id;
+  
+        // Event To create OrderItems, OrderOptions, next send email
+        try {
+          
+          event(new OrderWasCreated($order, $data['orderItems']));
 
+        }catch (\Exception $e){
+          \Log::error("error: ".$e->getMessage()."\n".$e->getFile()."\n".$e->getLine().$e->getTraceAsString());
+        }
+        
         $paymentData = $this->validateResponseApi(
           app($payment->options->init)->init(new Request($data))
         );
+  
         $updateCart=$this->cart->update($cart,['status'=>2]);
         //Response
         $response = ["data" => [
@@ -279,12 +289,9 @@ class OrderApiController extends BaseApiController
 
         \DB::commit(); //Commit to Data Base
 
-        // Event To create OrderItems, OrderOptions, next send email
-        event(new OrderWasCreated($order, $data['orderItems']));
-        event(new OrderStatusHistoryWasCreated($order));
+     
 
       } catch (\Exception $e) {
-
         \Log::error($e->getMessage());
         \DB::rollback();//Rollback to Data Base
         $status = $this->getStatusError($e->getCode());
@@ -324,7 +331,7 @@ class OrderApiController extends BaseApiController
 
 
             $order = $this->order->update($dataEntity, $data);
-
+        
             $response = ['data' => new OrderTransformer($order)];
 
             \DB::commit(); //Commit to Data Base
@@ -341,11 +348,11 @@ class OrderApiController extends BaseApiController
             }
 
         } catch (\Exception $e) {
-
-            \Log::error($e->getMessage());
+          \Log::error($e->getMessage());
+         
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ["errors" => $this->getErrorMessage($e)];
 
 
         }
@@ -381,6 +388,7 @@ class OrderApiController extends BaseApiController
             $response = ["data" => ""];
             \DB::commit();//Commit to Data Base
         } catch (\Exception $e) {
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];

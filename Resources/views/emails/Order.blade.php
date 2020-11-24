@@ -574,7 +574,7 @@
             $socials = json_decode(Setting::get('isite::SocialNetworks'));
           @endphp
       
-          @if(count($socials))
+          @if(is_array($socials) && !empty($socials))
             @foreach($socials as $index => $item)
               <a href="{{ $item->value }}" style="word-break: break-all;
         text-decoration: none;" title="{{$item->name}}">
