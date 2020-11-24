@@ -12,13 +12,9 @@
 
 				@foreach($products as $product)
 				<div class="{{$layoutClass}} product">
-
-					@if($mainLayout=='one')
-						@include('icommerce::frontend.product.layout-one')
-					@else
-						@include('icommerce::frontend.product.layout')
-					@endif
-
+					
+					<x-icommerce-product :product="$product" :mainLayout="$mainLayout"/>
+					
 				</div>
 				@endforeach
 

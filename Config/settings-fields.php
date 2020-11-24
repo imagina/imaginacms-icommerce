@@ -50,4 +50,23 @@ return [
       'type' => 'number'
     ],
   ],
+  'productLayoutBase' => [
+    'value' => [],
+    'name' => 'icommerce::productLayouts',
+    'group' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.layout',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Product Layout 1','value' => 'product-layout-1'],
+        ['label' => 'Product Layout 2','value' => 'product-layout-2'],
+        ['label' => 'Product Layout 3','value' => 'product-layout-3']
+      ]
+    ]
+  ],
 ];

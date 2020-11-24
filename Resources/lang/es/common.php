@@ -80,7 +80,11 @@ return [
     'product-per-page' => 'Productos Por Pagina',
     'customIndexTitle' => 'Título Página Index',
     'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
-    'daysEnabledForNewProducts' => 'días habilitados para productos nuevos '
+    'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
+    'product'=>[
+      'group' => 'Producto',
+      'layout' => 'Layout del Producto',
+    ]
   
   ],
   'uri' => 'icommerce',

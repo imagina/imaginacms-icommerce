@@ -11,6 +11,7 @@ use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 
 class IcommerceServiceProvider extends ServiceProvider
@@ -84,6 +85,7 @@ class IcommerceServiceProvider extends ServiceProvider
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     
+    $this->registerComponents();
     $this->registerComponentsLivewire();
   }
   
@@ -570,6 +572,14 @@ class IcommerceServiceProvider extends ServiceProvider
     $this->commands(['ccommand.icommerce.update-cart']);
   }
   
+  /**
+   * Register components
+   */
+
+  private function registerComponents(){
+    Blade::component('icommerce-product', \Modules\Icommerce\View\Components\Product::class);
+  }
+
   /**
    * Register components Livewire
    */
