@@ -1,0 +1,17 @@
+.cart-button-1 {
+  width: 22px;
+  
+  .quantity {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    border-radius: 50%;
+    right: 7px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include font-size(11px);
+    font-weight: bold;
+  }
+}

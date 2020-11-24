@@ -577,7 +577,7 @@ class IcommerceServiceProvider extends ServiceProvider
    */
 
   private function registerComponents(){
-    Blade::component('icommerce-product', \Modules\Icommerce\View\Components\Product::class);
+    Blade::component('icommerce-product-list-item', \Modules\Icommerce\View\Components\ProductListItem::class);
   }
 
   /**
@@ -587,7 +587,7 @@ class IcommerceServiceProvider extends ServiceProvider
   {
     
     Livewire::component('icommerce::loading', \Modules\Icommerce\Http\Livewire\Loading::class);
-    Livewire::component('icommerce::products-list', \Modules\Icommerce\Http\Livewire\ProductsList::class);
+    Livewire::component('icommerce::product-list', \Modules\Icommerce\Http\Livewire\ProductList::class);
     Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\FilterCategories::class);
     Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\FilterRangePrices::class);
     Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\FilterManufacturers::class);

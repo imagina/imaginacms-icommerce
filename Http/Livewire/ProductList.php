@@ -12,7 +12,7 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 
 use Illuminate\Http\Request;
 
-class ProductsList extends Component
+class ProductList extends Component
 {
 
 	use WithPagination;
@@ -208,8 +208,8 @@ class ProductsList extends Component
     
     	$this->totalProducts = $products->total();
 
-    	$tpl = 'icommerce::frontend.livewire.products-list';
-    	$ttpl = 'icommerce.livewire.products-list';
+    	$tpl = 'icommerce::frontend.livewire.product-list';
+    	$ttpl = 'icommerce.livewire.product-list';
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
 

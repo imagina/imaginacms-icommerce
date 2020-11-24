@@ -1,4 +1,4 @@
-<div class="products-list">
+<div class="product-list">
 
 	@includeFirst(['icommerce.index.top-content.index',
 				'icommerce::frontend.index.top-content.index'])
@@ -13,7 +13,7 @@
 				@foreach($products as $product)
 				<div class="{{$layoutClass}} product">
 					
-					<x-icommerce-product :product="$product" :mainLayout="$mainLayout"/>
+					<x-icommerce-product-list-item :product="$product" :mainLayout="$mainLayout"/>
 					
 				</div>
 				@endforeach
