@@ -81,7 +81,7 @@
           </p>
   
           @php
-            $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
+            $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', null, "[]"));
           @endphp
   
           @foreach($addressesExtraFields as $extraField)
@@ -201,7 +201,7 @@
                    v-model="shippingData.city">
           </div>
           
-          @php($addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]")))
+          @php($addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', null, "[]")))
           @foreach($addressesExtraFields as $extraField)
             {{-- if is active--}}
             @if($extraField->active)

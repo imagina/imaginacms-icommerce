@@ -208,7 +208,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("featured", $filter->visible);
       }
       
-      if (isset($filter->featured) && is_numeric($filter->featured)) {
+      if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
       if (isset($filter->rating) && !empty($filter->rating)) {

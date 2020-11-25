@@ -7,17 +7,17 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 
 class ProductIndex extends Component
 {
-  
-  private $view;
   private $params;
   private $defaultView;
-  
-  public function mount($params = [])
+  public $title;
+  public $subTitle;
+  public $name;
+  public function mount($params = [],$title = null, $subTitle = null, $name = "")
   {
-    
+    $this->title = $title;
+    $this->subTitle = $subTitle;
+    $this->name = $name;
     $this->defaultView = 'icommerce::frontend.livewire.product-index';
-    $this->view = $params["view"] ?? $this->defaultView;
-
     $this->params = $params;
    
   }
@@ -25,9 +25,6 @@ class ProductIndex extends Component
   public function render()
   {
   
-    $ttpl = 'icommerce.livewire.products-index';
-    $this->view = (view()->exists($this->view) && $this->view != $this->defaultView) ? $this->view : (view()->exists($ttpl) ? $ttpl : $this->defaultView );
-   
     $params = json_decode(json_encode([
       "include" => $this->params["include"] ?? ['category','categories','manufacturer'],
       "take" => $this->params["take"] ?? setting('icommmerce::product-per-page', null, 12),
@@ -38,7 +35,7 @@ class ProductIndex extends Component
     
     $products = $this->productRepository()->getItemsBy($params);
 
-    return view($this->view, ['products' => $products]);
+    return view($this->defaultView, ['products' => $products]);
     
     
   }

@@ -1,0 +1,23 @@
+#categoryList1 {
+  .card {
+    a{
+      height: calc(100vh *.72) !important;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    h3 {
+      @include font-size(38px);
+    }
+    &:hover {
+      box-shadow: 0px 0px 9px 0px #949393;
+      z-index: 9;
+    }
+    
+    @include media-breakpoint-down(sm) {
+      h3 {
+        @include font-size(18px);
+      }
+    }
+    
+  }
+}

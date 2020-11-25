@@ -10,6 +10,7 @@ class ProductListItem extends Component
   
   public $product;
   public $mainLayout;
+  public $view;
   
   /**
    * Create a new component instance.
@@ -20,6 +21,9 @@ class ProductListItem extends Component
   {
     $this->product = $product;
     $this->mainLayout = $mainLayout;
+    $productListItemLayout = setting('icommerce::productListItemLayout');
+    $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
+  
   }
   
   /**
@@ -29,10 +33,6 @@ class ProductListItem extends Component
    */
   public function render()
   {
-    
-    $productListItemLayout = setting('icommerce::productListItemLayout');
-    $view = "icommerce::frontend.components.product-list-item.layouts." . $productListItemLayout.".index";
-    
-    return view($view);
+    return view($this->view);
   }
 }

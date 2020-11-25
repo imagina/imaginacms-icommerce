@@ -581,6 +581,7 @@ class IcommerceServiceProvider extends ServiceProvider
 
   private function registerComponents(){
     Blade::component('icommerce-product-list-item', \Modules\Icommerce\View\Components\ProductListItem::class);
+    Blade::component('icommerce-category-list', \Modules\Icommerce\View\Components\CategoryList::class);
   }
 
   /**

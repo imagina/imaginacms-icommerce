@@ -11,7 +11,7 @@
 	@endif
 	
 	
-	@if(isset($product->discount))
+	@if(isset($discount) && $discount)
 		<div class="del-price">
 			<del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
 		</div>
@@ -22,7 +22,7 @@
         <div class="col">
         	<div class="price">
 				{{isset($currency) ? $currency->symbol_left : '$'}}
-				{{formatMoney($product->discount->price ?? $product->price)}}
+				{{formatMoney($discount->price ?? $product->price)}}
 			</div>
 		</div>
 

@@ -2,23 +2,19 @@
 
 	@if($show)
 	
-	<div class="title">
-		<a data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
-			<div class="d-flex justify-content-between align-items-center">
-
-				@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
-	  			<h5 class="text-secondary">{{trans($titleFilter)}}</h5>
-	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
-	  		</div>
-	  		<hr>
+        <a class="item mb-3" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="true" aria-controls="collapseRangePrices">
+            <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom">
+                <i class="fa angle float-right" aria-hidden="true"></i>
+                Precio
+            </h5>
 		</a>
-	</div>
+
 	
-	<div class="content position-relative">
+	<div class="content position-relative my-3">
 
 		@include('icommerce::frontend.partials.preloader')
 
-		<div class="collapse" id="collapseRangePrices">
+        <div class="collapse multi-collapse show mb-2" id="collapseRangePrices">
 
 			<input type="text" id="amount" class="amount border-0 text-primary font-weight-bold mb-2" readonly>
 

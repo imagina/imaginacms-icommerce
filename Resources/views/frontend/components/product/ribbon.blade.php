@@ -16,15 +16,14 @@
       </div>
     </div>
   @endif
-
 <!--Ribbon discount-->
-  @if($product->discount)
+  @if(isset($discount) && $discount)
     <div id="ribbonDiscount" class="ribbonContent">
       <div class="asideRibbon">
-        @if($product->discount && ($product->discount->criteria == 'fixed'))
+        @if($discount && ($discount->criteria == 'fixed'))
           <b><i class="fa fa-tags"></i></b>
         @else
-          <b>{{$product->discount->discount ?? 0}}%</b>
+          <b>{{$discount->discount ?? 0}}%</b>
         @endif
         <div class="ribbonLabel">DTO.</div>
       </div>

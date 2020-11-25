@@ -7,7 +7,7 @@
   
   <div class="row">
     <div class="col-12">
-      <div class="list-categories overflow-auto">
+      <div class="list-categories">
         <ul class="list-group list-group-flush">
           
           @foreach($categories as $category)

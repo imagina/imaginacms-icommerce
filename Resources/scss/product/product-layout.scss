@@ -1,7 +1,9 @@
 .product-layout {
   	
   	margin-bottom: 20px;
-
+		position: relative;
+		overflow: hidden;
+	
   	.bg-img {
 	    height: 260px;
 	    padding: 15px;
@@ -91,4 +93,157 @@
 	      color: $primary;
 	    }
 	}
+}
+
+.product-layout-2{
+	
+	.card-product {
+
+		.desc {
+			color: #fff;
+			top: 70px;
+			position: absolute;
+			right: 0;
+			background: $secondary;
+			padding: 5px;
+			font-weight: bold;
+			@include font-size(13px);
+		}
+		.new {
+			position: absolute;
+			color: #fff;
+			background: $secondary;
+			padding: 5px;
+			font-weight: bold;
+			@include font-size(13px);
+		}
+		.not {
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 60px;
+			.cls-1{fill:$danger;}
+			.cls-2{font-size:12.37px;fill:#fff;letter-spacing:0.04em;}
+			.cls-3{letter-spacing:0.05em;}
+			.cls-4{letter-spacing:0.04em;}
+			.cls-5{letter-spacing:0.01em;}
+			.cls-6{letter-spacing:0.05em;}
+		}
+		
+		.bg-img {
+			height: 0;
+			padding-bottom: 120%;
+			position: relative;
+			display: block;
+			
+			img {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				left: 0;
+			}
+		}
+		
+		.price, .name  {
+			@include font-size(17px);
+			color: #333333;
+			font-weight: 600;
+			text-align: center;
+			display: block;
+			text-transform: uppercase;
+			del {
+				color: #808080;
+				display: block;
+				@include font-size(14px);
+			}
+		}
+		
+		
+		.icon {
+			@include font-size(22px);
+		}
+		
+		.btn {
+			@include font-size(16px);
+		}
+		
+		
+		.card-overlay {
+			opacity: 0;
+			
+			.top {
+				position: absolute;
+				top: 0;
+				right: 0;
+				left: 0;
+				padding: 10px;
+				@include font-size(22px);
+				a {
+					width: 45px;
+					height: 45px;
+					margin-left: 0.5rem;
+					margin-right: 0.5rem;
+					cursor: pointer;
+					color: #fff;
+					border-radius: 50%;
+					i {
+						@include font-size(22px);
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						align-content: center;
+						width: 100%;
+						height: 100%;
+					}
+					svg {
+						display: flex;
+						align-content: center;
+						justify-content: center;
+						align-self: center;
+						width: 100%;
+						height: 100%;
+						.cls-1 {
+							fill: $white;
+						}
+					}
+				}
+				
+			}
+			
+			.bottom {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				padding: 1rem;
+				a {
+					padding-left: 1.5rem;
+					padding-right: 1.5rem;
+					color: #fff !important;
+					svg {
+						width: 20px;
+						margin-bottom: 2px;
+						.cls-1 {
+							fill: $white;
+						}
+					}
+				}
+				
+			}
+			
+		}
+		
+		&:hover {
+		
+			.card-overlay {
+				opacity: 1;
+			}
+			.price, .name {
+				color: $warning;
+			}
+		}
+		
+	}
+	
 }

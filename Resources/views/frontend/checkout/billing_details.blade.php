@@ -60,7 +60,7 @@
           <p class="card-text m-0"><b>{{trans("iprofile::addresses.form.country")}}:</b> @{{billingAddress.country}}</p>
           <div v-if="billingAddress.options">
             @php
-              $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]"));
+              $addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', null, "[]"));
             @endphp
             @foreach($addressesExtraFields as $extraField)
               @if($extraField->active)
@@ -178,7 +178,7 @@
         </div>
   
         
-        @php($addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', "[]")))
+        @php($addressesExtraFields =  json_decode(setting('iprofile::userAddressesExtraFields', null, "[]")))
         @foreach($addressesExtraFields as $extraField)
           {{-- if is active--}}
           @if($extraField->active)
