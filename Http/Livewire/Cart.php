@@ -21,7 +21,7 @@ class Cart extends Component
   public function mount(Request $request)
   {
 
-    $this->defaultView = 'icommerce::frontend.livewire.cart';
+    $this->defaultView = 'icommerce::frontend.livewire.cart.index';
     $this->view = $params["view"] ?? $this->defaultView;
     
     $cart = request()->session()->get('cart');
