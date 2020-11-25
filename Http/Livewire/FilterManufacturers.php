@@ -50,7 +50,7 @@ class FilterManufacturers extends Component
     public function render()
     {
 
-    	$tpl = 'icommerce::frontend.livewire.filter-manufacturers';
+    	$tpl = 'icommerce::frontend.livewire.index.filters.manufacturers';
     	$ttpl = 'icommerce.livewire.filter-manufacturers';
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
