@@ -2,12 +2,15 @@
 
 	@if($show)
 	
+	<div class="title">
         <a class="item mb-3" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="true" aria-controls="collapseRangePrices">
+            @php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
             <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom">
                 <i class="fa angle float-right" aria-hidden="true"></i>
-                Precio
+                {{trans($titleFilter)}}
             </h5>
 		</a>
+	</div>
 
 	
 	<div class="content position-relative my-3">
