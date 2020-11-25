@@ -359,5 +359,22 @@ class Product extends Model implements TaggableInterface
         
 
     }
+    /**
+     * Is New product
+     * @return number
+     */
+    public function getIsNewAttribute()
+    {
+      $isNew = false;
+      $daysEnabledForNewProducts = setting('icommerce::daysEnabledForNewProducts');
+      $date1 = new \DateTime($this->created_at);
+      $date2 = new \DateTime(now());
+      $days  = $date2->diff($date1)->format('%a');
+      if($days <=  $daysEnabledForNewProducts){
+        $isNew = true;
+      }
+      
+      return $isNew;
+    }
  
 }

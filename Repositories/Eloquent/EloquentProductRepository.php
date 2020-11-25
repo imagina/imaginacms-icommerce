@@ -208,7 +208,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("featured", $filter->visible);
       }
       
-      if (isset($filter->featured) && is_numeric($filter->featured)) {
+      if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
       if (isset($filter->rating) && !empty($filter->rating)) {
@@ -245,7 +245,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $query->where("status", 1);
       
       //pre-filter quantity and subtract
-      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
+      $query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
     }
 	
 	
@@ -362,7 +362,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $query->where("status", 1);
       
       //pre-filter quantity and subtract
-      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
+      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0) or (stock_status = 0))");
       
     }
     

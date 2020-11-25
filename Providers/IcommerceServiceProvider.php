@@ -11,6 +11,7 @@ use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 
 class IcommerceServiceProvider extends ServiceProvider
@@ -81,9 +82,13 @@ class IcommerceServiceProvider extends ServiceProvider
     
     $this->publishConfig('icommerce', 'config');
     $this->publishConfig('icommerce', 'crud-fields');
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings'), "asgard.icommerce.settings");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings-fields'), "asgard.icommerce.settings-fields");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'permissions'), "asgard.icommerce.permissions");
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     
+    $this->registerComponents();
     $this->registerComponentsLivewire();
   }
   
@@ -571,13 +576,22 @@ class IcommerceServiceProvider extends ServiceProvider
   }
   
   /**
+   * Register components
+   */
+
+  private function registerComponents(){
+    Blade::component('icommerce-product-list-item', \Modules\Icommerce\View\Components\ProductListItem::class);
+    Blade::component('icommerce-category-list', \Modules\Icommerce\View\Components\CategoryList::class);
+  }
+
+  /**
    * Register components Livewire
    */
   private function registerComponentsLivewire()
   {
     
     Livewire::component('icommerce::loading', \Modules\Icommerce\Http\Livewire\Loading::class);
-    Livewire::component('icommerce::products-list', \Modules\Icommerce\Http\Livewire\ProductsList::class);
+    Livewire::component('icommerce::product-list', \Modules\Icommerce\Http\Livewire\ProductList::class);
     Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\FilterCategories::class);
     Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\FilterRangePrices::class);
     Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\FilterManufacturers::class);

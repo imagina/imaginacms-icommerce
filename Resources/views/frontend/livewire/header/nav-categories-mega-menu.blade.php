@@ -1,20 +1,21 @@
  <div>
-   <div class="col-auto d-none d-lg-block">
+  <div class="col-auto">
   <nav class="navbar navbar-expand-md navbar-category p-0">
     <div id="navbarCollapse" class="collapse navbar-collapse">
       <ul id="navbarUl" class="navbar-nav">
         <li id="liNavItem" class="nav-item dropdown">
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
              >
-            <i class="fa fa-bars mr-2"></i> CATEGORÍAS
+            <i class="fa fa-bars mr-2"></i> CATEGOR&Iacute;AS
           </a>
           <ul id="ulNavItem" class="{{$params["type"] ?? "dropdown-menu"}}">
             @foreach($categories as $category)
               @php($firstChildrenLevel = count($category->children) ? $category->children  : null)
               <li class="nav-item {{$firstChildrenLevel ? 'dropdown' : ''}}">
-                <a href="{{$category->url}}" class="nav-link" data-toggle="{{$firstChildrenLevel ? 'dropdown' : ''}}">
+                  <a href="{{$category->url}}" class="nav-link" data-toggle="{{$firstChildrenLevel ? 'dropdown' : ''}}"
+                     onclick="window.location.href = '{{$category->url}}'">
                   @php($mediaFiles = $category->mediaFiles())
-                  
+
                   @if(isset($mediaFiles->tertiaryimage->path) && !strpos($mediaFiles->tertiaryimage->path,"default.jpg"))
                     <img class="filter" src="{{$mediaFiles->tertiaryimage->path}}">
                   @endif
@@ -22,7 +23,7 @@
                 </a>
                 @if($firstChildrenLevel)
                   <div class="dropdown-menu">
-                  
+
                   <h3><a href="{{$category->url}}">{{$category->title}}</a></h3>
                   @if($firstChildrenLevel)
                     <ul class="frame-dropdown">
@@ -44,9 +45,9 @@
                 </div>
                 @endif
               </li>
-            
+
             @endforeach
-          
+
           </ul>
         </li>
       </ul>
@@ -64,9 +65,9 @@
            </button>
          </div>
          <div class="modal-body">
-          
+
            <nav class="navbar  navbar-movil  p-0">
-            
+
              <div class="collapse navbar-collapse show " id="modalBody">
           </div>
         </nav>
@@ -78,11 +79,11 @@
 @section('scripts-owl')
   @parent
   <script>
-    
+
     $(document).ready(function () {
-      
+
       function divtomodal() {
-        
+
         var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         if (width <= 992) {
           console.log('xs');
@@ -95,11 +96,11 @@
           $('#ulNavItem').addClass("dropdown-menu");
           $('#liNavItem').append($("#ulNavItem"));
         }
-        
+
       }
-      
+
       $(window).resize(divtomodal);
-  
+
       var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       if(width<=992)
         divtomodal()

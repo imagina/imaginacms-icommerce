@@ -25,7 +25,7 @@
         <!-- If option type is radio -->
         <div v-if="option.type == 'radio'" class="ml-3">
           <div v-for="(value, key) in option.productOptionValues" :key="key"
-               :class="`text-left ${value.optionValueEntity.options.type != 1 ? 'd-inline-block' : ''}`">
+               :class="`text-left ${([3,2].indexOf(value.optionValueEntity.options.type) != -1) ? 'd-inline-block' : ''}`">
             <!--Color box-->
             <div v-if="value.optionValueEntity.options.type == 3"
                  :class="`box-color ${section[option.id].singleOption == value.optionValueId ? 'box-color-active' : ''}`"

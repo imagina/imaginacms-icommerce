@@ -62,7 +62,7 @@ return [
     ],
   ],
   
-  'useOldRoutes' => true,
+  'useOldRoutes' => false,
   
   'defaultProductRating' => 5,
   

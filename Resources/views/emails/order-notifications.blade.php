@@ -415,32 +415,32 @@
                      color: white;"
                    target="_blank">Ir a ver la orden: #{{$order->id}}</a>
             </p>
-          
+
         </div>
 
 
         <div class="footer p-3 text-center" style="text-align: center !important; color: white; padding: 12px;">
-    
+
             <div class="social" style="margin-bottom: 20px;">
                 @if(Setting::has('isite::SocialNetworks'))
                     @php
                         $socials = json_decode(Setting::get('isite::SocialNetworks'));
                     @endphp
-            
-                    @if(count($socials))
-                        @foreach($socials as $index => $item)
-                            <a href="{{ $item->value }}" style="word-break: break-all;
+
+                    @if(!empty($socials))
+                        @foreach($socials as $name => $item)
+                            <a href="{{ $item }}" style="word-break: break-all;
         text-decoration: none;">
                                 <span class="fa-stack fa-sm" aria-hidden="true">
                                   <i class="fa fa-circle-thin fa-stack-2x" style="color: #555;"></i>
-                                  <i class="fa fa-{{$item->label->value}} fa-stack-1x" style="color: #555;"></i>
+                                  <i class="fa fa-{{$name}} fa-stack-1x" style="color: #555;"></i>
                                 </span>
                             </a>
                         @endforeach
                     @endif
                 @endif
             </div>
-    
+
             <span class="copyright" style="color: #555;
         font-size: 14px;">
                 Copyrights © {{date('Y')}} {{trans('icommerce::orders.messages.rights')}} {{ setting('core::site-name') }}.
