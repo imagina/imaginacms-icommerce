@@ -2,9 +2,9 @@
   
   <div class="card-product">
     <div class="cursor-pointer position-relative">
-      
-      @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.image')
-      
+      @if(!isset($productListLayout) || $productListLayout!='one')
+        @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.image')
+      @endif
       <div class="card-overlay text-center">
         
         <div class="top">

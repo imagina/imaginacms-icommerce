@@ -16,7 +16,7 @@ class Cart extends Component
   public $view;
   public $defaultView;
   private $params;
-  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart'];
+  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart','deleteCart'];
   
   public function mount(Request $request)
   {
@@ -101,11 +101,19 @@ class Cart extends Component
     
   }
   
+  public function deleteCart()
+  {
+    $params = json_decode(json_encode(["include" => []]));
+    $result = $this->cartRepository()->deleteBy($this->cart->id, $params);
+    request()->session()->put('cart', null);
+  }
+  
   public function updateCart()
   {
     
     $params = json_decode(json_encode(["include" => []]));
     $this->cart = $this->cartRepository()->getItem($this->cart->id, $params);
+
     request()->session()->put('cart', $this->cart);
     
     

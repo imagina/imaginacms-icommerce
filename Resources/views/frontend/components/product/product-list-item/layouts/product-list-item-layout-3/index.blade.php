@@ -4,8 +4,8 @@
   
  
   
-  @if(isset($this->productListLayout) && $this->productListLayout=='one')
-    <div class="row">
+  @if(isset($productListLayout) && $productListLayout=='one')
+    <div class="row product-list-layout-one">
       
       <div class="col-12 col-sm-6">
         @include('icommerce::frontend.components.product.ribbon')

@@ -601,7 +601,7 @@
               }
             })
               .then((response) => {
-                
+                window.livewire.emit('deleteCart')
                 var data = response.data.data
                 toastr.success("Tu pedido se ha realizado con éxito, por favor verifica tu correo electrónico.");
                 localStorage.clear()
