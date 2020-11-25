@@ -47,7 +47,7 @@
 			
 				
 				@foreach($children as $category)
-					@includeFirst(['icommerce.index.category','icommerce::frontend.index.category'])
+					@include('icommerce::frontend.livewire.index.filters.categories.category-item')
 				@endforeach
 			
 		</ul>

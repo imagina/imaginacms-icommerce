@@ -43,7 +43,7 @@ class FilterCategories extends Component
   public function render()
   {
     
-    $tpl = 'icommerce::frontend.livewire.index.filters.categories';
+    $tpl = 'icommerce::frontend.livewire.index.filters.categories.index';
     $ttpl = 'icommerce.livewire.filter-categories';
     
     $params = json_decode(json_encode([
