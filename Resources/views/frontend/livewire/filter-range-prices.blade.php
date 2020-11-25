@@ -12,7 +12,7 @@
 	  		</h5>
 	  		
 		</a>
-
+	</div>
 	
 	<div class="content position-relative my-3">
 
