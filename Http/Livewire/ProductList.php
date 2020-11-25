@@ -208,14 +208,7 @@ class ProductList extends Component
     
     	$this->totalProducts = $products->total();
 
-<<<<<<< HEAD:Http/Livewire/ProductsList.php
     	$tpl = 'icommerce::frontend.livewire.products-list';
-=======
-    	$tpl = 'icommerce::frontend.livewire.product-list';
-    	$ttpl = 'icommerce.livewire.product-list';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
->>>>>>> v8.x:Http/Livewire/ProductList.php
 
     	//Updates Parameters URL
     	$this->updateParametersUrl();

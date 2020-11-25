@@ -12,11 +12,7 @@
         
         <div id="{{$name}}Carousel" class="owl-carousel owl-theme">
             @foreach($products as $product)
-<<<<<<< HEAD
-              @include('icommerce::frontend.product.layout')
-=======
             <x-icommerce-product-list-item :product="$product" />
->>>>>>> v8.x
             @endforeach
         </div>
       </div>

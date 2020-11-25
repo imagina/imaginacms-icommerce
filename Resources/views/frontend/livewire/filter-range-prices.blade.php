@@ -2,7 +2,6 @@
 
 	@if($show)
 	
-<<<<<<< HEAD
 	<div class="title">
 		<a class ="item" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
 			
@@ -12,13 +11,6 @@
 	  			{{trans($titleFilter)}}
 	  		</h5>
 	  		
-=======
-        <a class="item mb-3" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="true" aria-controls="collapseRangePrices">
-            <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom">
-                <i class="fa angle float-right" aria-hidden="true"></i>
-                Precio
-            </h5>
->>>>>>> v8.x
 		</a>
 
 	
