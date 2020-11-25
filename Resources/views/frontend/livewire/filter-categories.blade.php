@@ -2,7 +2,7 @@
 <div class="filter-categories mb-4">
 
   @php($titleFilter = config("asgard.icommerce.config.filters.categories.title"))
-  <h4 class="text-secondary">{{ trans($titleFilter) }}</h4>
+  <h5 class="text-secondary">{{ trans($titleFilter) }}</h5>
   <hr>
   
   <div class="row">
