@@ -5,7 +5,7 @@
   
  
   
-  @if(isset($this->mainLayout) && $this->mainLayout=='one')
+  @if(isset($this->productListLayout) && $this->productListLayout=='one')
     <div class="row">
       
       <div class="col-12 col-sm-6">

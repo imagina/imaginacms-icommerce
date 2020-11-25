@@ -13,7 +13,7 @@
 				@foreach($products as $product)
 				<div class="{{$layoutClass}} product">
 					
-					<x-icommerce-product-list-item :product="$product" :mainLayout="$mainLayout"/>
+					<x-icommerce-product-list-item :product="$product" :productListLayout="$productListLayout"/>
 					
 				</div>
 				@endforeach

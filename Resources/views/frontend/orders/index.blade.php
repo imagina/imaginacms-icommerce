@@ -3,7 +3,7 @@
     @php
         $currency=localesymbol($code??'USD')
     @endphp
-   
+    
     @component('partials.widgets.breadcrumb')
         <li class="breadcrumb-item">
             <a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a>

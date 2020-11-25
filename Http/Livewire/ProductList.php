@@ -28,7 +28,7 @@ class ProductList extends Component
 	public $totalProducts;
 	public $orderBy;
 	public $search;
-	public $mainLayout;
+	public $productListLayout;
 	public $layoutClass;
 
 	public $priceMin;
@@ -64,8 +64,8 @@ class ProductList extends Component
         $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
-        $this->mainLayout = $this->configs['mainLayout']['default'] ?? "four";
-        $this->layoutClass = $this->configs['mainLayout']['options'][$this->mainLayout]['class'];
+        $this->productListLayout = $this->configs['productListLayout']['default'] ?? "four";
+        $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
 
 	    $this->priceMin = null;
 	    $this->priceMax = null;
@@ -84,7 +84,7 @@ class ProductList extends Component
     public function initConfigs(){
 
         $this->configs['orderBy'] = config("asgard.icommerce.config.orderBy");
-        $this->configs['mainLayout'] = config("asgard.icommerce.config.layoutIndex");
+        $this->configs['productListLayout'] = config("asgard.icommerce.config.layoutIndex");
 
     }
 	/*
@@ -114,8 +114,8 @@ class ProductList extends Component
     *
     */
     public function changeLayout($c){
-    	$this->mainLayout = $c;
-        $this->layoutClass = $this->configs['mainLayout']['options'][$this->mainLayout]['class'];
+    	$this->productListLayout = $c;
+        $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
     }
 
     /*

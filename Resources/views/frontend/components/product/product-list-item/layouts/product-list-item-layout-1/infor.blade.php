@@ -4,7 +4,7 @@
 
 	<div class="category">{{$product->category->title}}</div>
 
-	@if(isset($mainLayout) && $mainLayout=='one')
+	@if(isset($productListLayout) && $productListLayout=='one')
 		<div class="summary">
 			{{$product->summary}}
 		</div>
