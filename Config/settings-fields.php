@@ -31,7 +31,7 @@ return [
     ],
   ],
   'filterRangePricesStep' => [
-    'name' => 'filterRangePricesStep',
+    'name' => 'icommerce::filterRangePricesStep',
     'group' => 'icommerce::common.filters.priceRange.group',
     'value' => 20000,
     'type' => 'input',
@@ -52,7 +52,7 @@ return [
   ],
   'productListItemLayout' => [
     'value' => 'product-list-item-layout-1',
-    'name' => 'listProductLayout',
+    'name' => 'icommerce::productListItemLayout',
     'group' => 'icommerce::common.settings.product.group',
     'type' => 'select',
     'props' => [
