@@ -18,12 +18,12 @@
 
 		{{-- Filter - Order By --}}
 		<div class="col-lg-5">
-			@includeFirst(['icommerce.filters.index.top-content.filter-orderby','icommerce::frontend.index.top-content.filter-orderby'])
+			@include('icommerce::frontend.livewire.index.top-content.filter-orderby')
 		</div>
 
 		{{-- Change Layout --}}
 		<div class="col-lg-3">
-			@includeFirst(['icommerce.index.top-content.change-layout','icommerce::frontend.index.top-content.change-layout']) 
+			@include('icommerce::frontend.livewire.index.top-content.change-layout') 
 		</div>
 		
 	</div>

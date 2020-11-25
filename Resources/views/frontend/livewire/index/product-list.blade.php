@@ -1,7 +1,6 @@
 <div class="product-list">
 
-	@includeFirst(['icommerce.index.top-content.index',
-				'icommerce::frontend.index.top-content.index'])
+	@include('icommerce::frontend.livewire.index.top-content.index')
 
 	<div class="products">
 		<div class="row">
