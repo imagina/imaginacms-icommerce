@@ -58,7 +58,7 @@ class ProductOptions extends Component
     public function render()
     {
 
-    	$tpl = 'icommerce::frontend.livewire.index.filters.product-options';
+    	$tpl = 'icommerce::frontend.livewire.index.filters.product-options.index';
     	$ttpl = 'icommerce.livewire.filter-product-options';
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
