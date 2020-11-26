@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index\Filters;
 
 use Livewire\Component;
 
 use Modules\Icommerce\Repositories\ProductRepository;
 
-class FilterRangePrices extends Component
+class RangePrices extends Component
 {
 
 	public $priceMin;

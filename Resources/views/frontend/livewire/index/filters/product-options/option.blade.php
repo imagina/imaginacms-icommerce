@@ -5,11 +5,12 @@
 	<div class="title">
 		<a data-toggle="collapse" href="#collapseOption-{{$option->id}}" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}"
 		   aria-controls="collapseOption-{{$option->id}}" class="{{$isExpanded ? '' : 'collapsed'}}">
-	  		<div class="d-flex justify-content-between align-items-center">
-	  			<h5 class="text-secondary">{{$option->description}}</h5>
-	  			<i class="fa fa-arrow-right text-secondary" aria-hidden="true"></i>
-	  		</div>
-	  		<hr>
+	  		
+	  		<h5 class="text-secondary">
+	  			<i class="fa fa angle float-right" aria-hidden="true"></i>
+	  			{{$option->description}}
+	  		</h5>
+	  		
   		</a>
 	</div>
 

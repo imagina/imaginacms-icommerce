@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index;
 
 use Livewire\Component;
 use Livewire\WithPagination;

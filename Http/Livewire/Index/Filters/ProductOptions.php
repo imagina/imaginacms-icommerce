@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index\Filters;
 
 use Livewire\Component;
 
-class FilterProductOptions extends Component
+class ProductOptions extends Component
 {
 	
 	
@@ -58,7 +58,7 @@ class FilterProductOptions extends Component
     public function render()
     {
 
-    	$tpl = 'icommerce::frontend.livewire.index.filters.product-options';
+    	$tpl = 'icommerce::frontend.livewire.index.filters.product-options.index';
     	$ttpl = 'icommerce.livewire.filter-product-options';
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
