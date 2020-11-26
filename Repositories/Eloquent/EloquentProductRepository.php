@@ -210,7 +210,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("featured", $filter->visible);
       }
 
-      if (isset($filter->featured) && is_numeric($filter->featured)) {
+      if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
       if (isset($filter->rating) && !empty($filter->rating)) {
@@ -274,10 +274,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
     }
 
-    //Order by "Sort order"
-    if (!isset($params->filter->noSortOrder) || !$params->filter->noSortOrder) {
-      $query->orderBy('sort_order', 'desc');//Add order to query
-    }
 
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
@@ -368,8 +364,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       $query->where("status", 1);
 
       //pre-filter quantity and subtract
-      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0))");
-
+      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0) or (stock_status = 0))");
     }
 
     if(!isset($params->filter->field)){
@@ -397,10 +392,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($data['related_products']))
         $product->relatedProducts()->sync(Arr::get($data, 'related_products', []));
 
-      /*
-      if(isset($data['discounts']))
-      $product->discounts()->sync(Arr::get($data, 'discounts', []));
-*/
       if (isset($data['tags']))
         $product->setTags(Arr::get($data, 'tags', []));
     }
@@ -435,13 +426,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       // sync tables
       $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
-      /*
-      if (isset($data['product_options']))
-      $model->productOptions()->sync(Arr::get($data, 'product_options', []));
 
-      if (isset($data['option_values']))
-          $model->optionValues()->sync(Arr::get($data, 'option_values', []));
-      */
       if (isset($data['related_products']))
         $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
 
@@ -451,8 +436,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       //Event to Update media
       event(new UpdateMedia($model, $data));
-
-      event(new ProductWasUpdated($model));
 
       return $model;
     }
@@ -481,109 +464,108 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     event(new DeleteMedia($model->id, get_class($model)));
   }
 
-    /**
-     * @inheritdoc
-     */
-    public function findBySlug($slug)
-    {
-        if (method_exists($this->model, 'translations')) {
-            return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
-                $q->where('slug', $slug);
-            })->with('translations', 'category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();
-        }
-
-        return $this->model->where('slug', $slug)->with('category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();;
+  /**
+   * @inheritdoc
+   */
+  public function findBySlug($slug)
+  {
+    if (method_exists($this->model, 'translations')) {
+      return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
+        $q->where('slug', $slug);
+      })->with('translations', 'category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();
     }
 
-    public function whereCategory($id)
-    {
-        $query = $this->model->with('categories', 'category', 'tags', 'addedBy', 'translations');
-        $query->whereHas('categories', function ($q) use ($id) {
-            $q->where('category_id', $id);
-        })->whereStatus(Status::ENABLED)->where('created_at', '<', date('Y-m-d H:i:s'))->orderBy('created_at', 'DESC');
+    return $this->model->where('slug', $slug)->with('category', 'categories', 'tags', 'addedBy')->whereStatus(Status::ENABLED)->firstOrFail();;
+  }
 
-        return $query->paginate(setting('icommerce::product-per-page'));
-    }
+  public function whereCategory($id)
+  {
+    $query = $this->model->with('categories', 'category', 'tags', 'addedBy', 'translations');
+    $query->whereHas('categories', function ($q) use ($id) {
+      $q->where('category_id', $id);
+    })->whereStatus(Status::ENABLED)->where('created_at', '<', date('Y-m-d H:i:s'))->orderBy('created_at', 'DESC');
 
-    public function getPriceRange($params = false)
-    {
-        isset($params->take) ? $params->take = false : false;
-        isset($params->page) ? $params->page = null : false;
-        isset($params->include) ? $params->include = [] : false;
-        isset($params->filter->priceRange) ? $params->filter->priceRange = null : false;
-        if (isset($params->filter->order)) $params->filter->order = false;
-        isset($params->filter) ? empty($params->filter) ? $params->filter = (object)["noSortOrder" => true] : $params->filter->noSortOrder = true : false;
-        $params->onlyQuery = true;
-        $params->order = false;
+    return $query->paginate(setting('icommerce::product-per-page'));
+  }
 
-        $query = $this->getItemsBy($params);
-        $query->select(
-            \DB::raw("MIN(icommerce__products.price) AS minPrice"),
-            \DB::raw("MAX(icommerce__products.price) AS maxPrice")
-        );
+  public function getPriceRange($params = false)
+  {
+    isset($params->take) ? $params->take = false : false;
+    isset($params->page) ? $params->page = null : false;
+    isset($params->include) ? $params->include = [] : false;
+    isset($params->filter->priceRange) ? $params->filter->priceRange = null : false;
+    if (isset($params->filter->order)) $params->filter->order = false;
+    isset($params->filter) ? empty($params->filter) ? $params->filter = (object)["noSortOrder" => true] : $params->filter->noSortOrder = true : false;
+    $params->onlyQuery = true;
+    $params->order = false;
 
-        return $query->first();
-    }
+    $query = $this->getItemsBy($params);
+    $query->select(
+      \DB::raw("MIN(icommerce__products.price) AS minPrice"),
+      \DB::raw("MAX(icommerce__products.price) AS maxPrice")
+    );
 
-    public function getManufacturers($params = false){
+    return $query->first();
+  }
 
-        isset($params->take) ? $params->take = false : false;
-        isset($params->page) ? $params->page = null : false;
-        !isset($params->include) ? $params->include = [] : false;
-        isset($params->filter->manufacturers) ? $params->filter->manufacturers = null : false;
-        isset($params->order) ? $params->order = null : false;
+  public function getManufacturers($params = false){
 
-        $params->onlyQuery = true;
+    isset($params->take) ? $params->take = false : false;
+    isset($params->page) ? $params->page = null : false;
+    !isset($params->include) ? $params->include = [] : false;
+		isset($params->filter->manufacturers) ? $params->filter->manufacturers = null : false;
+    isset($params->order) ? $params->order = null : false;
 
-        $query = $this->getItemsBy($params);
+    $params->onlyQuery = true;
 
-        $query->has("manufacturer");
+    $query = $this->getItemsBy($params);
 
-        $products = $query->get();
+    $query->has("manufacturer");
 
-        $manufacturers = $products->pluck('manufacturer')->unique();
-        $manufacturers->all();
+    $products = $query->get();
 
-        return $manufacturers;
+    $manufacturers = $products->pluck('manufacturer')->unique();
+    $manufacturers->all();
 
-    }
+    return $manufacturers;
 
-    public function getProductOptions($params = false){
+  }
 
-        isset($params->take) ? $params->take = false : false;
-        isset($params->page) ? $params->page = null : false;
-        !isset($params->include) ? $params->include = [] : false;
-        isset($params->filter->optionValues) ? $params->filter->optionValues = null : false;
-        isset($params->order) ? $params->order = null : false;
+  public function getProductOptions($params = false){
 
-        $params->onlyQuery = true;
+    isset($params->take) ? $params->take = false : false;
+    isset($params->page) ? $params->page = null : false;
+    !isset($params->include) ? $params->include = [] : false;
+		isset($params->filter->optionValues) ? $params->filter->optionValues = null : false;
+    isset($params->order) ? $params->order = null : false;
 
-        $query = $this->getItemsBy($params);
+    $params->onlyQuery = true;
 
-        $query->has("productOptions");
+    $query = $this->getItemsBy($params);
 
-        $products = $query->get();
+    $query->has("productOptions");
 
-        $productsIds = $products->pluck("id")->toArray();
+    $products = $query->get();
 
-        $productOptions = Option::with('optionValues')->whereHas("products", function($query) use ($productsIds){
-            $query->whereIn("icommerce__products.id",$productsIds);
-        })->get();
+    $productsIds = $products->pluck("id")->toArray();
 
-        $productOptionValues = OptionValue::with("productOptionValues")
-            ->whereHas("productOptionValues", function ($query) use ($productsIds){
-                $query->whereIn("product_id",$productsIds);
-            })->get();
+    $productOptions = Option::with('optionValues')->whereHas("products", function($query) use ($productsIds){
+          $query->whereIn("icommerce__products.id",$productsIds);
+      })->get();
 
-        $productOptionValuesIds = $productOptionValues->pluck('id');
+    $productOptionValues = OptionValue::with("productOptionValues")
+			->whereHas("productOptionValues", function ($query) use ($productsIds){
+    	$query->whereIn("product_id",$productsIds);
+		})->get();
 
-        foreach ($productOptions as &$productOption){
-            $productOption->values = $productOption->optionValues->whereIn("id",$productOptionValuesIds);
-        }
+		$productOptionValuesIds = $productOptionValues->pluck('id');
 
-        return $productOptions;
+    foreach ($productOptions as &$productOption){
+    	$productOption->values = $productOption->optionValues->whereIn("id",$productOptionValuesIds);
+		}
 
-    }
+    return $productOptions;
 
+  }
 
 }

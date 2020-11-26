@@ -48,6 +48,7 @@ class CouponApiController extends BaseApiController
 
         } catch (\Exception $e) {
             //Message Error
+          \Log::error($e->getMessage());
             $status = 500;
             $response = [
                 'errors' => $e->getMessage()
@@ -92,7 +93,7 @@ class CouponApiController extends BaseApiController
                 $response = ["data" => new CouponTransformer($coupon)];
             }
         } catch (\Exception $e) {
-            \Log::error($e);
+          \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -122,7 +123,7 @@ class CouponApiController extends BaseApiController
 
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \Log::error($e);
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -157,6 +158,7 @@ class CouponApiController extends BaseApiController
             $response = ['data' => 'Item Updated'];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -188,6 +190,7 @@ class CouponApiController extends BaseApiController
             $response = ['data' => 'Item Deleted'];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -202,6 +205,7 @@ class CouponApiController extends BaseApiController
             $validateCoupons = new validateCoupons();
             $response = $validateCoupons->validateCode($params->filter->couponCode, $params->filter->cartId);
         } catch (\Exception $exception) {
+          \Log::error($exception->getMessage());
             $status = 500;
             $response = [
                 'errors' => $exception->getMessage()

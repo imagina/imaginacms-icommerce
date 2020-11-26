@@ -86,7 +86,7 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
 
                 }//if isset title
             } catch (\Exception $e) {
-                \Log::error($e);
+                \Log::error($e->getMessage());
                 // dd($e->getMessage());
             }
 
@@ -129,7 +129,7 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
             // 3. Return the path
             return $destination_path;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
         }
     }
 

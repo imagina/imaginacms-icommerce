@@ -64,7 +64,7 @@ class Product extends Model implements TaggableInterface
     protected $casts = [
         'options' => 'array'
     ];
-    protected $width = ['files'];
+  protected $width = ['files'];
 
     public function store()
     {
@@ -134,7 +134,7 @@ class Product extends Model implements TaggableInterface
     public function optionValues()
     {
         return $this->hasMany(ProductOptionValue::class);
-  
+
     }
 
     public function relatedProducts()
@@ -250,36 +250,36 @@ class Product extends Model implements TaggableInterface
 
     public function getDiscountAttribute()
     {
-        $now = date('Y-m-d');
+      $now = date('Y-m-d');
 
-        $userId = Auth::user() ? Auth::user()->id : 0;
-        $departments = [];
-        if ($userId){
-            $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
-                ->table('iprofile__user_department')->select("department_id")
-                ->where('user_id', $userId)
-                ->pluck('department_id');
+      $userId = Auth::user() ? Auth::user()->id : 0;
+      $departments = [];
+      if ($userId){
+        $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
+          ->table('iprofile__user_department')->select("department_id")
+          ->where('user_id', $userId)
+          ->pluck('department_id');
 
-        }
+      }
 
-        $discount = $this->discounts()
-            ->orderBy('priority', 'desc')
-            ->orderBy('created_at', 'asc')
-            ->whereRaw('quantity > quantity_sold')
-            ->where('date_end', '>=', $now)
-            ->where('date_start', '<=', $now)
-            ->where(function ($query) use ($departments){
-                $query->whereIn('department_id', $departments)
-                    ->orWhereNull('department_id');
-            })
-            ->first();
+      $discount = $this->discounts()
+        ->orderBy('priority', 'desc')
+        ->orderBy('created_at', 'asc')
+        ->whereRaw('quantity > quantity_sold')
+        ->where('date_end', '>=', $now)
+        ->where('date_start', '<=', $now)
+        ->where(function ($query) use ($departments){
+          $query->whereIn('department_id', $departments)
+            ->orWhereNull('department_id');
+        })
+        ->first();
 
-        if(isset($discount->id)){
-            return $discount;
+      if(isset($discount->id)){
+        return $discount;
 
-        }else{
-            return null;
-        }
+      }else{
+        return null;
+      }
     }
 
 
@@ -349,15 +349,32 @@ class Product extends Model implements TaggableInterface
     public function getUrlAttribute()
     {
 
-        $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+      $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
 
-        if($useOldRoutes)
-            return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
-        else
-            return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
+      if($useOldRoutes)
+        return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
+      else
+        return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
 
 
 
+    }
+    /**
+     * Is New product
+     * @return number
+     */
+    public function getIsNewAttribute()
+    {
+      $isNew = false;
+      $daysEnabledForNewProducts = setting('icommerce::daysEnabledForNewProducts');
+      $date1 = new \DateTime($this->created_at);
+      $date2 = new \DateTime(now());
+      $days  = $date2->diff($date1)->format('%a');
+      if($days <=  $daysEnabledForNewProducts){
+        $isNew = true;
+      }
+
+      return $isNew;
     }
 
 }

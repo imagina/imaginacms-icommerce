@@ -11,6 +11,7 @@ use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 
 class IcommerceServiceProvider extends ServiceProvider
@@ -84,6 +85,7 @@ class IcommerceServiceProvider extends ServiceProvider
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
+    $this->registerComponents();
     $this->registerComponentsLivewire();
   }
 
@@ -571,25 +573,32 @@ class IcommerceServiceProvider extends ServiceProvider
   }
 
   /**
+   * Register components
+   */
+
+  private function registerComponents(){
+    Blade::component('icommerce-product-list-item', \Modules\Icommerce\View\Components\ProductListItem::class);
+    Blade::component('icommerce-category-list', \Modules\Icommerce\View\Components\CategoryList::class);
+  }
+
+  /**
    * Register components Livewire
    */
   private function registerComponentsLivewire()
   {
 
     Livewire::component('icommerce::loading', \Modules\Icommerce\Http\Livewire\Loading::class);
-    Livewire::component('icommerce::products-list', \Modules\Icommerce\Http\Livewire\ProductsList::class);
-    Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\FilterCategories::class);
-    Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\FilterRangePrices::class);
-    Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\FilterManufacturers::class);
-    Livewire::component('icommerce::filter-orderby', \Modules\Icommerce\Http\Livewire\FilterOrderBy::class);
+    Livewire::component('icommerce::product-list', \Modules\Icommerce\Http\Livewire\Index\ProductList::class);
+    Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\Index\Filters\Categories::class);
+    Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\Index\Filters\RangePrices::class);
+    Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\Index\Filters\Manufacturers::class);
     Livewire::component('icommerce::product-index', \Modules\Icommerce\Http\Livewire\ProductIndex::class);
     Livewire::component('icommerce::category-index', \Modules\Icommerce\Http\Livewire\CategoryIndex::class);
     Livewire::component('icommerce::manufacturer-index', \Modules\Icommerce\Http\Livewire\ManufacturerIndex::class);
     Livewire::component('icommerce::products-by-category', \Modules\Icommerce\Http\Livewire\ProductsByCategory::class);
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
     Livewire::component('icommerce::wishlist', \Modules\Icommerce\Http\Livewire\Wishlist::class);
-    Livewire::component('icommerce::filter-product-options', \Modules\Icommerce\Http\Livewire\FilterProductOptions::class);
-
+    Livewire::component('icommerce::filter-product-options', \Modules\Icommerce\Http\Livewire\Index\Filters\ProductOptions::class);
   }
 
 

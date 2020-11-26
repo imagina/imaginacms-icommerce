@@ -82,9 +82,14 @@ return [
         'countryDefault' => 'Pais por Defecto',
         'countryFreeshipping' => 'Pais con envío gratuito de Productos',
         'product-per-page' => 'Productos Por Pagina',
+        'customIndexTitle' => 'Título Página Index',
         'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
+        'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
+        'product'=>[
+            'group' => 'Product',
+            'layout' => 'Product Layout',
+        ],
         'product-price-list' => 'Enable',
-        'customIndexTitle' => 'Custom Index Title'
 
     ],
     'uri' => 'icommerce',
@@ -162,5 +167,4 @@ return [
             'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
         ],
     ],
-
 ];

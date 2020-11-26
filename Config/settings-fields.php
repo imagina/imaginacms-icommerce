@@ -32,7 +32,7 @@ return [
     ],
   ],
   'filterRangePricesStep' => [
-    'name' => 'filterRangePricesStep',
+    'name' => 'icommerce::filterRangePricesStep',
     'group' => 'icommerce::common.filters.priceRange.group',
     'value' => 20000,
     'type' => 'input',
@@ -40,6 +40,35 @@ return [
     'props' => [
       'label' => 'icommerce::common.filters.priceRange.step'
     ],
+  ],
+  'daysEnabledForNewProducts' => [
+    'name' => 'icommerce::daysEnabledForNewProducts',
+    'value' => 15,
+    'type' => 'input',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.daysEnabledForNewProducts',
+      'type' => 'number'
+    ],
+  ],
+  'productListItemLayout' => [
+    'value' => 'product-list-item-layout-1',
+    'name' => 'icommerce::productListItemLayout',
+    'group' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.layout',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'List Product Layout 1','value' => 'product-list-item-layout-1'],
+        ['label' => 'List Product Layout 2','value' => 'product-list-item-layout-2'],
+        ['label' => 'List Product Layout 3','value' => 'product-list-item-layout-3']
+      ]
+    ]
   ],
   'product-price-list' => [
       'name' => 'icommerce::product-price-list',

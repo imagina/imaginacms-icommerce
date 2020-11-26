@@ -73,7 +73,7 @@ class ManufacturersImport implements ToCollection,WithChunkReading,WithHeadingRo
                 }
               }//if row!=name
             } catch (\Exception $e) {
-                \Log::error($e);
+                \Log::error($e->getMessage());
                 dd($e->getMessage());
             }
 
@@ -116,7 +116,7 @@ class ManufacturersImport implements ToCollection,WithChunkReading,WithHeadingRo
             // 3. Return the path
             return $destination_path;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
         }
     }
 
