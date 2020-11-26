@@ -115,6 +115,18 @@ return [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
     ],
+    'paymentmethod' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single'
+    ],
+    'shippingmethod' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single'
+    ],
+    'optionvalue' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single'
+    ],
     'product' => [
       'mainimage' => 'single',
       'gallery' => 'multiple',
