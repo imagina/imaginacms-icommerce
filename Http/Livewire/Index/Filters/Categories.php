@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index\Filters;
 
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CategoryRepository;
 
-class FilterCategories extends Component
+class Categories extends Component
 {
   
   private $categoryBreadcrumb;

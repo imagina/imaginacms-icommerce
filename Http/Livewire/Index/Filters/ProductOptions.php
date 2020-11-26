@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index\Filters;
 
 use Livewire\Component;
 
-class FilterProductOptions extends Component
+class ProductOptions extends Component
 {
 	
 	
