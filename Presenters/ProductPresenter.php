@@ -187,13 +187,13 @@ class ProductPresenter extends Presenter
 
   public function price(){
       $price=$this->entity->price;
-      $auth=\Auth::user();
+      $auth=\Auth::user() ?? \Auth::guard('api')->user();
       $priceList = $this->setting->get('icommerce::product-price-list');
       if($auth && $priceList){
           foreach($this->entity->priceLists as $pList){
-              if($pList->related_entity=="Modules\Iprofile\Entities\Role"){
+              if($pList->related_entity=="Modules\Iprofile\Entities\Department"){
                   if($pList->related_id !== '0' && $pList->related_id !== 0) {
-                      if ($auth && $auth->hasRoleId($pList->related_id)) {
+                      if ($auth && $auth->departments()->where('id',$pList->related_id)) {
                           $price = $pList->pivot->price;
                       }
                   }else{

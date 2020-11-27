@@ -16,6 +16,7 @@ class PriceListTransformer extends JsonResource
             'value' => $this->when($this->value, $this->value),
             'operationPrefix' => $this->when($this->operation_prefix, $this->operation_prefix),
             'price' => $this->when(isset($this->pivot), $this->pivot->price ?? 0),
+            'relatedId' => $this->when($this->related_id, $this->related_id),
             //'entity' => app($this->related_entity)->find($this->related_id),
             'products' => ProductTransformer::collection($this->whenLoaded('products')),
             'createdAt' => $this->when($this->created_at, $this->created_at),

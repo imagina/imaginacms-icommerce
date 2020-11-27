@@ -406,6 +406,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
+      if(isset($data['price_lists']))
+          $product->priceLists()->sync(Arr::get($data, 'price_lists', []));
+
+
       if (isset($data['product_options']))
         $product->productOptions()->sync(Arr::get($data, 'product_options', []));
 
@@ -449,6 +453,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
 
+      if(isset($data['price_lists']))
+        $model->priceLists()->sync(Arr::get($data, 'price_lists', []));
+
+
       if (isset($data['related_products']))
         $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
 
@@ -459,6 +467,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       //Event to Update media
       event(new UpdateMedia($model, $data));
 
+      event(new ProductWasUpdated($model));
       return $model;
     }
 
