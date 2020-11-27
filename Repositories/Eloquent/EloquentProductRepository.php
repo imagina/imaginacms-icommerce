@@ -22,12 +22,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     /*== initialize query ==*/
     $query = $this->model->query();
-
+    
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category','categories','manufacturer','translations', 'store','files']);
+      $query->with(['category', 'categories', 'manufacturer', 'translations', 'store', 'files']);
     } else {//Especific relationships
-      $includeDefault = ['category','categories','manufacturer','translations', 'store','files'];//Default relationships
+      $includeDefault = ['category', 'categories', 'manufacturer', 'translations', 'store', 'files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query
@@ -62,26 +62,26 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         //Remove order by
         unset($filter->order);
       }
-			//Filter by catgeory ID
-			if (isset($filter->category) && !empty($filter->category)) {
-		
-		
-				$categories = Category::descendantsAndSelf($filter->category);
-		
-				if($categories->isNotEmpty()){
-					$query->where(function ($query) use ($categories) {
-				
-						$query->where(function ($query) use ($categories) {
-							$query->whereHas('categories', function ($query) use ($categories) {
-								$query->whereIn('icommerce__product_category.category_id', $categories->pluck("id"));
-							})->orWhereIn('icommerce__products.category_id', $categories->pluck("id"));
-						});
-					});
-			
-				}
-		
-		
-			}
+      //Filter by catgeory ID
+      if (isset($filter->category) && !empty($filter->category)) {
+        
+        
+        $categories = Category::descendantsAndSelf($filter->category);
+        
+        if ($categories->isNotEmpty()) {
+          $query->where(function ($query) use ($categories) {
+            
+            $query->where(function ($query) use ($categories) {
+              $query->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('icommerce__product_category.category_id', $categories->pluck("id"));
+              })->orWhereIn('icommerce__products.category_id', $categories->pluck("id"));
+            });
+          });
+          
+        }
+        
+        
+      }
       
       // Filter by category SLUG
       if (isset($filter->categorySlug) && !empty($filter->categorySlug)) {
@@ -211,6 +211,32 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
+      
+      if (isset($filter->withDiscount) && is_bool($filter->withDiscount)) {
+        
+        $now = date('Y-m-d');
+        
+        $userId = \Auth::user() ? \Auth::user()->id : 0;
+        $departments = [];
+        if ($userId) {
+          $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
+            ->table('iprofile__user_department')->select("department_id")
+            ->where('user_id', $userId)
+            ->pluck('department_id');
+          
+        }
+        $query->whereHas('discounts', function ($query) use ($filter,$departments,$now) {
+          $query->whereRaw('quantity > quantity_sold')
+            ->where('date_end', '>=', $now)
+            ->where('date_start', '<=', $now)
+            ->where(function ($query) use ($departments) {
+              $query->whereIn('department_id', $departments)
+                ->orWhereNull('department_id');
+            });
+        });
+        
+      }
+      
       if (isset($filter->rating) && !empty($filter->rating)) {
         $rating = $filter->rating;
         if ($rating === 'top') {
@@ -247,21 +273,20 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       //pre-filter quantity and subtract
       $query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
     }
-	
-	
-		//Order by "Sort order"
-		if (!isset($params->filter->noSortOrder) || !$params->filter->noSortOrder) {
-			$query->orderBy('sort_order', 'desc');//Add order to query
-		}
-		
+    
+    
+    //Order by "Sort order"
+    if (!isset($params->filter->noSortOrder) || !$params->filter->noSortOrder) {
+      $query->orderBy('sort_order', 'desc');//Add order to query
+    }
+    
     // ORDER
     if (isset($params->order) && $params->order) {
-    
+      
       $order = is_array($params->order) ? $params->order : [$params->order];
-    
+      
       foreach ($order as $orderObject) {
-        if (isset($orderObject->field) && isset($orderObject->way))
-        {
+        if (isset($orderObject->field) && isset($orderObject->way)) {
           if (in_array($orderObject->field, $this->model->translatedAttributes)) {
             $query->join('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
             $query->orderBy("translations.$orderObject->field", $orderObject->way);
@@ -271,8 +296,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         
       }
     }
-
-  
+    
+    
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
@@ -281,13 +306,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== REQUEST ==*/
     if (isset($params->onlyQuery) && $params->onlyQuery) {
       return $query;
-    }else
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
+    } else
+      if (isset($params->page) && $params->page) {
+        return $query->paginate($params->take);
+      } else {
+        isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
+        return $query->get();
+      }
   }
   
   
@@ -298,9 +323,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category','categories','manufacturer','translations', 'store','files','productOptions']);
+      $query->with(['category', 'categories', 'manufacturer', 'translations', 'store', 'files', 'productOptions']);
     } else {//Especific relationships
-      $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions'];//Default relationships
+      $includeDefault = ['category', 'categories', 'manufacturer', 'translations', 'store', 'files', 'productOptions'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
       $query->with($includeDefault);//Add Relationships to query
@@ -366,7 +391,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
     }
     
-    if(!isset($params->filter->field)){
+    if (!isset($params->filter->field)) {
       $query->where('id', $criteria);
     }
     
@@ -423,7 +448,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
       // sync tables
       $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
-
+      
       if (isset($data['related_products']))
         $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
       
@@ -501,68 +526,70 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       \DB::raw("MIN(icommerce__products.price) AS minPrice"),
       \DB::raw("MAX(icommerce__products.price) AS maxPrice")
     );
-		
+    
     return $query->first();
   }
-
-  public function getManufacturers($params = false){
-
+  
+  public function getManufacturers($params = false)
+  {
+    
     isset($params->take) ? $params->take = false : false;
     isset($params->page) ? $params->page = null : false;
     !isset($params->include) ? $params->include = [] : false;
-		isset($params->filter->manufacturers) ? $params->filter->manufacturers = null : false;
+    isset($params->filter->manufacturers) ? $params->filter->manufacturers = null : false;
     isset($params->order) ? $params->order = null : false;
-
+    
     $params->onlyQuery = true;
-
+    
     $query = $this->getItemsBy($params);
-		
+    
     $query->has("manufacturer");
-
+    
     $products = $query->get();
-
+    
     $manufacturers = $products->pluck('manufacturer')->unique();
     $manufacturers->all();
-
+    
     return $manufacturers;
-   
+    
   }
   
-  public function getProductOptions($params = false){
-
+  public function getProductOptions($params = false)
+  {
+    
     isset($params->take) ? $params->take = false : false;
     isset($params->page) ? $params->page = null : false;
     !isset($params->include) ? $params->include = [] : false;
-		isset($params->filter->optionValues) ? $params->filter->optionValues = null : false;
+    isset($params->filter->optionValues) ? $params->filter->optionValues = null : false;
     isset($params->order) ? $params->order = null : false;
-
+    
     $params->onlyQuery = true;
-
+    
     $query = $this->getItemsBy($params);
     
     $query->has("productOptions");
-
+    
     $products = $query->get();
-
+    
     $productsIds = $products->pluck("id")->toArray();
-
-    $productOptions = Option::with('optionValues')->whereHas("products", function($query) use ($productsIds){
-          $query->whereIn("icommerce__products.id",$productsIds);
-      })->get();
-
+    
+    $productOptions = Option::with('optionValues')->whereHas("products", function ($query) use ($productsIds) {
+      $query->whereIn("icommerce__products.id", $productsIds);
+    })->get();
+    
     $productOptionValues = OptionValue::with("productOptionValues")
-			->whereHas("productOptionValues", function ($query) use ($productsIds){
-    	$query->whereIn("product_id",$productsIds);
-		})->get();
-	
-		$productOptionValuesIds = $productOptionValues->pluck('id');
-
-    foreach ($productOptions as &$productOption){
-    	$productOption->values = $productOption->optionValues->whereIn("id",$productOptionValuesIds);
-		}
+      ->whereHas("productOptionValues", function ($query) use ($productsIds) {
+        $query->whereIn("product_id", $productsIds);
+      })->get();
+    
+    $productOptionValuesIds = $productOptionValues->pluck('id');
+    
+    foreach ($productOptions as &$productOption) {
+      $productOption->values = $productOption->optionValues->whereIn("id", $productOptionValuesIds);
+    }
     
     return $productOptions;
-   
+    
   }
-
+  
 }
