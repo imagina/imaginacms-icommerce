@@ -25,9 +25,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category', 'categories', 'manufacturer', 'translations', 'store', 'files']);
+      $query->with(['category','categories','manufacturer','translations', 'store','files','discount']);
     } else {//Especific relationships
-      $includeDefault = ['category', 'categories', 'manufacturer', 'translations', 'store', 'files'];//Default relationships
+      $includeDefault = ['category','categories','manufacturer','translations', 'store','files','discount'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include);
       $query->with($includeDefault);//Add Relationships to query
@@ -211,32 +211,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
-      
-      if (isset($filter->withDiscount) && is_bool($filter->withDiscount)) {
-        
-        $now = date('Y-m-d');
-        
-        $userId = \Auth::user() ? \Auth::user()->id : 0;
-        $departments = [];
-        if ($userId) {
-          $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
-            ->table('iprofile__user_department')->select("department_id")
-            ->where('user_id', $userId)
-            ->pluck('department_id');
-          
-        }
-        $query->whereHas('discounts', function ($query) use ($filter,$departments,$now) {
-          $query->whereRaw('quantity > quantity_sold')
-            ->where('date_end', '>=', $now)
-            ->where('date_start', '<=', $now)
-            ->where(function ($query) use ($departments) {
-              $query->whereIn('department_id', $departments)
-                ->orWhereNull('department_id');
-            });
-        });
-        
-      }
-      
       if (isset($filter->rating) && !empty($filter->rating)) {
         $rating = $filter->rating;
         if ($rating === 'top') {
@@ -247,12 +221,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         }
       }
       
-      if (isset($filter->discount) && !empty($filter->discount)) {
-        $query->whereHas('discounts', function ($query) use ($filter) {
-          $now = date('Y-m-d');
-          $query->whereDate('date_start', '>=', $now)
-            ->whereDate('date_end', '<=', $now);
-        });
+      if (isset($filter->withDiscount) && is_bool($filter->withDiscount)) {
+        
+        $query->has('discount');
+    
       }
     }
     
@@ -323,9 +295,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category', 'categories', 'manufacturer', 'translations', 'store', 'files', 'productOptions']);
+      $query->with(['category','categories','manufacturer','translations', 'store','files','productOptions','discount']);
     } else {//Especific relationships
-      $includeDefault = ['category', 'categories', 'manufacturer', 'translations', 'store', 'files', 'productOptions'];//Default relationships
+      $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
       $query->with($includeDefault);//Add Relationships to query
