@@ -12,7 +12,7 @@
           
           @foreach($categories as $category)
             @if($category->parent_id == 0)
-              @include('icommerce::frontend.livewire.index.filters.categories.category-item')
+              @include('icommerce::frontend.livewire.index.filters.categories.category-item',["level" => 0])
             @endif
           @endforeach
         

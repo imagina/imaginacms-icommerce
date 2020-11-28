@@ -135,6 +135,13 @@ return [
     ]
   ],
   
+  /**
+   *
+   *
+   * Configs of the Index view
+   *
+   *
+   */
 
   /* Order By - Index */
   'orderBy' =>[
@@ -212,6 +219,12 @@ return [
   'filters'=>[
     'categories' => [
       'title' => 'icommerce::categories.plural',
+      /*
+       * Mode for render:
+       *  allTree
+       *  onlyNodeSelected
+       */
+      'mode' => 'allTree',
       'status' => true
     ],
     'range-prices' => [
@@ -229,7 +242,4 @@ return [
   ],
 
   
- 
-  
-
 ];

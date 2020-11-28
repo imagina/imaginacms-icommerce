@@ -1,14 +1,15 @@
-<li class="list-group-item" aria-disabled="true" aria-expanded="true">
-	
+@php($categorySelected = $categoryBreadcrumb[count($categoryBreadcrumb)-1] ?? null)
+
+@php($isSelected = !empty($categorySelected) ? $categorySelected->id == $category->id ? true : false : false)
+
+<li class="list-group-item {{$isSelected ? 'category-selected' : ''}} level-{{$level}}" aria-disabled="true" aria-expanded="true">
+
 	@php($children = $categories->where("parent_id",$category->id))
 
 	@php($expanded = false)
 	
 	@php($slug = $category->slug)
 	
-	@php($categorySelected = $categoryBreadcrumb[count($categoryBreadcrumb)-1] ?? null)
-	
-	@php($isSelected = !empty($categorySelected) ? $categorySelected->id == $category->id ? true : false : false)
 	
 	@foreach($categoryBreadcrumb as $breadcrumb)
 		@if($breadcrumb->id == $category->id)
@@ -47,7 +48,7 @@
 			
 				
 				@foreach($children as $category)
-					@include('icommerce::frontend.livewire.index.filters.categories.category-item')
+					@include('icommerce::frontend.livewire.index.filters.categories.category-item',["level" => $level+1])
 				@endforeach
 			
 		</ul>

@@ -6,7 +6,8 @@
 
 			@livewire('icommerce::filter-categories',[
 			"categoryBreadcrumb" => $categoryBreadcrumb,
-			"manufacturer" => $manufacturer ?? null
+			"manufacturer" => $manufacturer ?? null,
+			"category" => $category ?? null
 			],key("filter-categories"))
 
 			@livewire('icommerce::filter-range-prices',key("filter-range-prices"))
