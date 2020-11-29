@@ -26,12 +26,14 @@ class CacheCartDecorator extends BaseCacheDecorator implements CartRepository
     });
   }
 
-  /**
-   * find a resource by id or slug
-   *
-   * @return object
-   */
-  public function getItem($criteria, $params)
+    /**
+     * find a resource by id or slug
+     *
+     * @param $criteria
+     * @param $params
+     * @return object
+     */
+  public function getItem($criteria, $params=false)
   {
     return $this->remember(function () use ($criteria, $params) {
       return $this->repository->getItem($criteria, $params);
