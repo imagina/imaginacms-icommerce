@@ -248,39 +248,38 @@ class Product extends Model implements TaggableInterface
 
     }
 
-    public function getDiscountAttribute()
-    {
-      $now = date('Y-m-d');
+    public function discount(){
 
+      // return one Discount
+      return $this->hasOne(ProductDiscount::class)
+        
+        //where the discount belongs to the user department's
+        //or where the department of the discount is Null - for all Users
+        ->where(function ($query){
+          $query->whereIn('icommerce__product_discounts.department_id',function ($query) {
       $userId = Auth::user() ? Auth::user()->id : 0;
-      $departments = [];
-      if ($userId){
-        $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
-          ->table('iprofile__user_department')->select("department_id")
-          ->where('user_id', $userId)
-          ->pluck('department_id');
-
-      }
-
-      $discount = $this->discounts()
-        ->orderBy('priority', 'desc')
-        ->orderBy('created_at', 'asc')
-        ->whereRaw('quantity > quantity_sold')
-        ->where('date_end', '>=', $now)
-        ->where('date_start', '<=', $now)
-        ->where(function ($query) use ($departments){
-          $query->whereIn('department_id', $departments)
-            ->orWhereNull('department_id');
+            $query->select("department_id")
+              ->from('iprofile__user_department')
+              ->where('user_id', $userId);
+          })->orWhereNull('department_id');
         })
-        ->first();
 
-      if(isset($discount->id)){
-        return $discount;
+        // ordered by priority
+        ->orderBy('priority', 'desc')
+        
+        // ordered by created_at
+        ->orderBy('created_at', 'asc')
 
-      }else{
-        return null;
+        // where the quantity_sold be less than quantity available for the discount
+        ->whereRaw('quantity_sold < icommerce__product_discounts.quantity')
+
+        // where now is between date_end and date_start
+        ->where('date_end', '>=', date('Y-m-d'))
+        ->where('date_start', '<=', date('Y-m-d'));
+      
       }
-    }
+    
+   
 
 
     public function getSecondaryImageAttribute()

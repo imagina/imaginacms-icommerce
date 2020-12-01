@@ -135,6 +135,13 @@ return [
     ]
   ],
 
+  /**
+   *
+   *
+   * Configs of the Index view
+   *
+   *
+   */
 
   /* Order By - Index */
   'orderBy' =>[

@@ -13,13 +13,15 @@ class Categories extends Component
   private $categoryBreadcrumb;
   
   public $categories;
+  public $configs;
   public $manufacturer;
+  public $category;
   
   public $extraParamsUrl;
   
   protected $listeners = ['updateExtraParams'];
   
-  public function mount($categoryBreadcrumb, $manufacturer)
+  public function mount($categoryBreadcrumb, $manufacturer, $category)
   {
     
     
@@ -27,6 +29,19 @@ class Categories extends Component
     $this->extraParamsUrl = "";
     
     $this->manufacturer = $manufacturer;
+    $this->category = $category;
+    
+    $this->initConfigs();
+  }
+  
+  
+  /*
+  * Init Configs to ProductList
+  *
+  */
+  public function initConfigs(){
+    
+    $this->configs = config("asgard.icommerce.config.filters.categories");
     
   }
   
@@ -75,6 +90,16 @@ class Categories extends Component
       
       $this->categories = collect($parents)->merge($categoriesOfManufacturer)->keyBy("id");
 
+    }elseif (isset($this->category->id)) {
+      if( $this->configs["mode"] == 'onlyNodeSelected'){
+        $ancestors = Category::ancestorsOf($this->category->id);
+        $descendants = $result = Category::descendantsAndSelf($this->category->id);
+        $siblings = $this->category->getSiblings();
+        
+        $this->categories = $ancestors->merge($descendants)->merge($siblings);
+        
+      }
+      
     }
     
     return view($tpl, ['categoryBreadcrumb' => $this->categoryBreadcrumb]);
