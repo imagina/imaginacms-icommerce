@@ -61,11 +61,11 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-  
+
   'useOldRoutes' => false,
-  
+
   'defaultProductRating' => 5,
-  
+
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -103,7 +103,7 @@ return [
       },
     ]*/
   ],
-  
+
   //end custom includes and transformers
   "mediaFillable" => [
     'category' => [
@@ -134,7 +134,7 @@ return [
       'quaternaryimage' => 'single',
     ]
   ],
-  
+
 
   /* Order By - Index */
   'orderBy' =>[
@@ -212,6 +212,12 @@ return [
   'filters'=>[
     'categories' => [
       'title' => 'icommerce::categories.plural',
+      /*
+       * Mode for render:
+       *  allTree
+       *  onlyNodeSelected
+       */
+      'mode' => 'allTree',
       'status' => true
     ],
     'range-prices' => [
@@ -228,8 +234,5 @@ return [
     ]
   ],
 
-  
- 
-  
 
 ];
