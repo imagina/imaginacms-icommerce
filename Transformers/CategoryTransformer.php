@@ -13,6 +13,7 @@ class CategoryTransformer extends JsonResource
             'title' => $this->title ?? '',
             'slug' => $this->slug ?? '',
             'url' => $this->url ?? '',
+            'newUrl' => $this->new_url ?? '',
             'description' => $this->description ?? '',
             'parentId' => (int)$this->parent_id,
             'storeId' => $this->when($this->store_id, $this->store_id),
@@ -29,8 +30,8 @@ class CategoryTransformer extends JsonResource
             'store' => new StoreTransformer($this->whenLoaded('store')),
             'products' => ProductTransformer::collection($this->whenLoaded('products')),
             'mainImage' => $this->mainImage,
-						'status' => $this->status ? '1' : '0',
-            'mediaFiles' => $this->mediaFiles()
+            'status' => $this->status ? '1' : '0',
+            'mediaFiles' => $this->mediaFiles(),
         ];
 
         $filter = json_decode($request->filter);

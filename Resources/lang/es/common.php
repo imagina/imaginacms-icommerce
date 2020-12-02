@@ -26,6 +26,9 @@ return [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
     ],
+    'priceList' => [
+      'group' => 'Listas de Precios'
+    ],
   ],
 
   'messages' => [
@@ -84,8 +87,9 @@ return [
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
-    ]
-  
+    ],
+    'product-price-list' => 'Activar'
+
   ],
   'uri' => 'icommerce',
   'emailSubject' => [
@@ -153,7 +157,7 @@ return [
     'pro_cat_bran' => 'Productos - Categorias - Marcas',
     'load_data' => 'Cargar data',
   ],
-  
+
   'email' => [
     'subject' => 'Transaction Status:',
     'intro' => 'Payment System Report',

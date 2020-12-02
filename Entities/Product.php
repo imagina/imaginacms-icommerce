@@ -89,8 +89,8 @@ class Product extends Model implements TaggableInterface
 
     public function priceLists()
     {
-        return $this->belongsToMany(PriceList::class, 'icommerce__product_lists')
-            ->withPivot('id', 'price')
+        return $this->belongsToMany(PriceList::class, ProductList::class)
+            ->withPivot('price')
             ->withTimestamps();
     }
 
@@ -134,7 +134,7 @@ class Product extends Model implements TaggableInterface
     public function optionValues()
     {
         return $this->hasMany(ProductOptionValue::class);
-  
+
     }
 
     public function relatedProducts()
@@ -347,15 +347,15 @@ class Product extends Model implements TaggableInterface
      */
     public function getUrlAttribute()
     {
-  
+
       $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-  
+
       if($useOldRoutes)
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
       else
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
-      
-        
+
+
 
     }
     /**
@@ -372,8 +372,8 @@ class Product extends Model implements TaggableInterface
       if($days <=  $daysEnabledForNewProducts){
         $isNew = true;
       }
-      
+
       return $isNew;
     }
- 
+
 }
