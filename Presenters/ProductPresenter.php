@@ -3,11 +3,9 @@
 namespace Modules\Icommerce\Presenters;
 
 use Laracasts\Presenter\Presenter;
-use Modules\Icommerce\Entities\OrderItem;
 use Modules\Icommerce\Entities\Status;
 use Illuminate\Support\Facades\Auth;
 use Modules\Iprofile\Entities\Department;
-use Modules\Icurrency\Support\Facades\Currency;
 
 class ProductPresenter extends Presenter
 {
@@ -21,7 +19,6 @@ class ProductPresenter extends Presenter
     private $post;
 
     private $department;
-    private $setting;
 
     public function __construct($entity)
     {
@@ -29,7 +26,6 @@ class ProductPresenter extends Presenter
         $this->post = app('Modules\Icommerce\Repositories\ProductRepository');
         $this->status = app('Modules\Icommerce\Entities\Status');
         $this->department = app('Modules\Iprofile\Repositories\DepartmentRepository');
-        $this->setting = app('Modules\Setting\Contracts\Setting');
     }
 
     /**
@@ -184,26 +180,4 @@ class ProductPresenter extends Presenter
 
     return $hasRequiredOptions;
   }
-
-  public function price(){
-      $price=$this->entity->price;
-      $auth=\Auth::user() ?? \Auth::guard('api')->user();
-      $priceList = $this->setting->get('icommerce::product-price-list');
-      if($auth && $priceList){
-          foreach($this->entity->priceLists as $pList){
-              if($pList->related_entity=="Modules\Iprofile\Entities\Department"){
-                  if($pList->related_id !== '0' && $pList->related_id !== 0) {
-                      if ($auth && $auth->departments()->where('id',$pList->related_id)) {
-                          $price = $pList->pivot->price;
-                      }
-                  }else{
-                      $price = $pList->pivot->price;
-                  }
-              }else{
-                  $price=$pList->pivot->price;
-              }
-          }//has priceLists
-      }
-      return Currency::convert($price);
-  }//
 }

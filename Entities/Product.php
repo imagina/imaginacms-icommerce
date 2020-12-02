@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ihelpers\Traits\Relationable;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
@@ -252,7 +253,7 @@ class Product extends Model implements TaggableInterface
 
       // return one Discount
       return $this->hasOne(ProductDiscount::class)
-        
+
         //where the discount belongs to the user department's
         //or where the department of the discount is Null - for all Users
         ->where(function ($query){
@@ -266,7 +267,7 @@ class Product extends Model implements TaggableInterface
 
         // ordered by priority
         ->orderBy('priority', 'desc')
-        
+
         // ordered by created_at
         ->orderBy('created_at', 'asc')
 
@@ -276,10 +277,10 @@ class Product extends Model implements TaggableInterface
         // where now is between date_end and date_start
         ->where('date_end', '>=', date('Y-m-d'))
         ->where('date_start', '<=', date('Y-m-d'));
-      
+
       }
-    
-   
+
+
 
 
     public function getSecondaryImageAttribute()
@@ -374,6 +375,28 @@ class Product extends Model implements TaggableInterface
       }
 
       return $isNew;
+    }
+
+    public function getPriceAttribute($value){
+        $price = $value;
+        $auth=\Auth::user() ?? \Auth::guard('api')->user();
+        $priceList = setting('icommerce::product-price-list');
+        if($auth && $priceList){
+            foreach($this->entity->priceLists as $pList){
+                if($pList->related_entity=="Modules\Iprofile\Entities\Department"){
+                    if($pList->related_id !== '0' && $pList->related_id !== 0) {
+                        if ($auth && $auth->departments()->where('id',$pList->related_id)) {
+                            $price = $pList->pivot->price;
+                        }
+                    }else{
+                        $price = $pList->pivot->price;
+                    }
+                }else{
+                    $price=$pList->pivot->price;
+                }
+            }//has priceLists
+        }
+        return Currency::convert($price);
     }
 
 }
