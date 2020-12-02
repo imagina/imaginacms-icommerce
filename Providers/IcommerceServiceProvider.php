@@ -592,10 +592,6 @@ class IcommerceServiceProvider extends ServiceProvider
     Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\Index\Filters\Categories::class);
     Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\Index\Filters\RangePrices::class);
     Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\Index\Filters\Manufacturers::class);
-    Livewire::component('icommerce::product-index', \Modules\Icommerce\Http\Livewire\ProductIndex::class);
-    Livewire::component('icommerce::category-index', \Modules\Icommerce\Http\Livewire\CategoryIndex::class);
-    Livewire::component('icommerce::manufacturer-index', \Modules\Icommerce\Http\Livewire\ManufacturerIndex::class);
-    Livewire::component('icommerce::products-by-category', \Modules\Icommerce\Http\Livewire\ProductsByCategory::class);
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
     Livewire::component('icommerce::wishlist', \Modules\Icommerce\Http\Livewire\Wishlist::class);
     Livewire::component('icommerce::filter-product-options', \Modules\Icommerce\Http\Livewire\Index\Filters\ProductOptions::class);
