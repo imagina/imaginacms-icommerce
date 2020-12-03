@@ -297,7 +297,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category','categories','manufacturer','translations', 'store','files','productOptions','discount']);
+        $defaultIncludes = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];
+
+        $query->with();
     } else {//Especific relationships
       $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
       if (isset($params->include))//merge relations with default relationships

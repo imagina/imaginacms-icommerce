@@ -88,7 +88,7 @@ return [
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
     ],
-    'product-price-list' => 'Activar'
+    'product-price-list-enable' => 'Activar'
 
   ],
   'uri' => 'icommerce',
