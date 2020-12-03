@@ -18,7 +18,7 @@ class ProductTransformer extends BaseApiTransformer
     {
         $filter = json_decode($request->filter);
         //$price = Currency::convert($this->price);
-        $price = $this->present()->price();
+        //$price = $this->present()->price();
 
         $data = [
             'id' => $this->id,
@@ -31,8 +31,8 @@ class ProductTransformer extends BaseApiTransformer
             'sku' => $this->when($this->sku, $this->sku),
             'quantity' => $this->when(isset($this->quantity), $this->quantity),
             'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
-            'price' => $price,
-            'formattedPrice' => formatMoney($price),
+            'price' => $this->when($this->price, $this->price),
+            'formattedPrice' => formatMoney($this->price),
             'dateAvailable' => $this->when($this->date_available, $this->date_available),
             'weight' => $this->when($this->weight, $this->weight),
             'length' => $this->when($this->length, $this->length),
