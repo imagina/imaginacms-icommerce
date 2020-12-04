@@ -43,12 +43,12 @@ class CategoryTranslation extends Model
             $this->attributes['meta_description'] = $value;
         }
     }
-  
-  public function getMetaDescriptionAttribute(){
-    
-    return $this->meta_description ?? substr(strip_tags($this->description??''),0,150);
-  }
-  
+
+    public function getMetaDescriptionAttribute(){
+
+        return $this->meta_description ?? substr(strip_tags($this->description??''),0,150);
+    }
+
     public function getTranslatableOptionAttribute($value) {
 
         $options=json_decode($value);
@@ -56,18 +56,18 @@ class CategoryTranslation extends Model
 
 
     }
-  
-  
-  /**
-   * @return mixed
-   */
-  public function getMetaTitleAttribute(){
-    
-    return $this->meta_title ?? $this->title;
-  }
 
-  
-  /**
+
+    /**
+     * @return mixed
+     */
+    public function getMetaTitleAttribute(){
+
+        return $this->meta_title ?? $this->title;
+    }
+
+
+    /**
      * @return mixed
      */
     public function setMetaTitleAttribute($value){

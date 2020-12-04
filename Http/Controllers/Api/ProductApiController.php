@@ -61,7 +61,6 @@ class ProductApiController extends BaseApiController
         try {
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
-
             //Request to Repository
             $products = $this->product->getItemsBy($params);
 
@@ -131,7 +130,7 @@ class ProductApiController extends BaseApiController
 
             //Validate Request
             $this->validateRequestApi(new CreateProductRequest($data));
-  
+
             //Create item
             $product = $this->product->create($data);
 
@@ -159,17 +158,17 @@ class ProductApiController extends BaseApiController
     {
         \DB::beginTransaction(); //DB Transaction
         try {
-          //Get data
+            //Get data
             $data = $request->input('attributes') ?? [];
-            
+
             $this->validateRequestApi(new UpdateProductRequest($data));
-  
-          //Get Parameters from URL.
+
+            //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
             $this->product->updateBy($criteria, $data, $params);
-            
+
             //Response
             $response = ["data" => 'Item Updated'];
             \DB::commit();//Commit to DataBase
@@ -198,8 +197,8 @@ class ProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
 
-          //Request to Repository
-          $this->product->deleteBy($criteria, $params);
+            //Request to Repository
+            $this->product->deleteBy($criteria, $params);
 
             \DB::commit();
         } catch (\Exception $e) {
@@ -245,7 +244,7 @@ class ProductApiController extends BaseApiController
             $product->ratings()->save($rating);
             $product->update(['sum_rating' => $oldRating + $data['rating']]);
 
-            $checkbox = $this->setting->get('points-per-rating-product-checkbox');
+            $checkbox = $this->setting->get('iredeems::points-per-rating-product-checkbox');
             if ($checkbox) {
                 $points = $this->setting->get('iredeems::points-per-rating-product');
 

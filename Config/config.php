@@ -61,11 +61,11 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-  
+
   'useOldRoutes' => false,
-  
+
   'defaultProductRating' => 5,
-  
+
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -103,7 +103,7 @@ return [
       },
     ]*/
   ],
-  
+
   //end custom includes and transformers
   "mediaFillable" => [
     'category' => [
@@ -134,7 +134,7 @@ return [
       'quaternaryimage' => 'single',
     ]
   ],
-  
+
   /**
    *
    *
@@ -242,5 +242,5 @@ return [
     ]
   ],
 
-  
+
 ];
