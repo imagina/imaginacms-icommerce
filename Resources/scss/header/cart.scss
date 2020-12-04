@@ -16,6 +16,13 @@
       font-weight: bold;
       background: $primary;
       
+    }
+  }
+}
+
+#cartLayout2{
+  .cart{
+    .quantity{
       &:before{
         content:'(';
       }

@@ -110,6 +110,7 @@ return [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
+      'iconimage' => 'single',
     ],
     'manufacturer' => [
       'mainimage' => 'single',

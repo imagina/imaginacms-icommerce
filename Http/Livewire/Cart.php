@@ -27,10 +27,10 @@ class Cart extends Component
 
     
     $cart = request()->session()->get('cart');
-    
+
     if (isset($cart->id)) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
-      request()->session()->put('cart', $this->cart);
+
     } else {
       $data = [];
       $data["ip"] = $request->ip();
@@ -38,9 +38,9 @@ class Cart extends Component
       
       //Create item
       $this->cart = $this->cartRepository()->create($data);
-      request()->session()->put('cart', $this->cart);
       
     }
+    request()->session()->put('cart', $this->cart);
   }
   
   public function addToCart($productId, $quantity = 1, $productOptionValues = [])
