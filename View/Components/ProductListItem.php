@@ -17,11 +17,11 @@ class ProductListItem extends Component
    *
    * @return void
    */
-  public function __construct($product, $productListLayout = null)
+  public function __construct($product, $productListLayout = null, $layout = null)
   {
     $this->product = $product;
     $this->productListLayout = $productListLayout;
-    $productListItemLayout = setting('icommerce::productListItemLayout');
+    $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
   
   }

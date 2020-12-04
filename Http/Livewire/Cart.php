@@ -14,15 +14,17 @@ class Cart extends Component
   
   public $cart;
   public $view;
-  public $defaultView;
+  public $layout;
+  public $icon;
   private $params;
   protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart','deleteCart'];
   
-  public function mount(Request $request)
+  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart')
   {
+    $this->layout = $layout;
+    $this->icon = $icon;
+    $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
 
-    $this->defaultView = 'icommerce::frontend.livewire.cart.index';
-    $this->view = $params["view"] ?? $this->defaultView;
     
     $cart = request()->session()->get('cart');
     
@@ -121,9 +123,6 @@ class Cart extends Component
   
   public function render()
   {
-    $ttpl = 'icommerce.livewire.cart';
-    $this->view = (view()->exists($this->view)) && $this->view != $this->defaultView ? $this->view : (view()->exists($ttpl)) ? $ttpl : $this->defaultView;
-    
     return view($this->view);
   }
   

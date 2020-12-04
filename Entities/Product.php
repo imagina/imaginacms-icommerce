@@ -96,7 +96,7 @@ class Product extends Model implements TaggableInterface
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)->with('translations');
     }
 
     public function taxClass()
@@ -106,7 +106,7 @@ class Product extends Model implements TaggableInterface
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'icommerce__product_category')->withTimestamps();
+        return $this->belongsToMany(Category::class, 'icommerce__product_category')->withTimestamps()->with('translations');
     }
 
     public function orderItems()

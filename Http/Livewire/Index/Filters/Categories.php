@@ -91,14 +91,23 @@ class Categories extends Component
       $this->categories = collect($parents)->merge($categoriesOfManufacturer)->keyBy("id");
 
     }elseif (isset($this->category->id)) {
-      if( $this->configs["mode"] == 'onlyNodeSelected'){
-        $ancestors = Category::ancestorsOf($this->category->id);
-        $descendants = $result = Category::descendantsAndSelf($this->category->id);
-        $siblings = $this->category->getSiblings();
-        
-        $this->categories = $ancestors->merge($descendants)->merge($siblings);
-        
+      switch($this->configs["mode"]){
+        case 'allFamilyOfTheSelectedNode':
+          $ancestors = Category::ancestorsAndSelf($this->category->id);
+          $rootCategory = $ancestors->whereNull('parent_id')->first();
+          $this->categories = Category::descendantsAndSelf($rootCategory->id);
+          break;
+  
+        case 'onlyLeftAndRightOfTheSelectedNode':
+          $ancestors = Category::ancestorsOf($this->category->id);
+          $descendants = $result = Category::descendantsAndSelf($this->category->id);
+          $siblings = $this->category->getSiblings();
+          $this->categories = $ancestors->merge($descendants)->merge($siblings);
+          break;
       }
+    
+      
+      
       
     }
     
