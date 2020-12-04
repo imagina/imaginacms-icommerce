@@ -78,6 +78,8 @@ class ProductList extends Component
 
 	    $this->emitProductListRendered = false	;
 
+        $this->fill(request()->only('search', 'filters','page','orderBy'));
+
 	}
 
     /*
@@ -120,32 +122,16 @@ class ProductList extends Component
     	$this->productListLayout = $c;
         $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
     }
+
     
-    /*
-    * Check Values From Request
-    * just First Request
-    */
-    public function checkValuesFromRequest(){
-        
-        if(!empty($this->dataRequest)){
-            foreach ($this->dataRequest as $key => $value) {
-                $this->{$key} = $value;
-            }
-   
-        }
-
-        $this->firstRequest = false;
-    }
-
     /*
     * Make params to Repository
     * before execcute the query
     */
     public function makeParamsToRepository(){
 
-     
     	if($this->firstRequest)
-    		$this->checkValuesFromRequest();
+    		$this->firstRequest = false;
         
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
@@ -193,7 +179,7 @@ class ProductList extends Component
 
      	$params = $this->makeParamsToRepository();
 
-        //	\Log::info("params: ".json_encode($params));
+        //\Log::info("params: ".json_encode($params));
     	$products = $this->getProductRepository()->getItemsBy(json_decode(json_encode($params)));
     
     	$this->totalProducts = $products->total();
