@@ -385,14 +385,15 @@ class Product extends Model implements TaggableInterface
             foreach($this->priceLists as $pList){
                 if($pList->related_entity=="Modules\Iprofile\Entities\Department"){
                     if($pList->related_id !== '0' && $pList->related_id !== 0) {
-                        if ($auth && $auth->departments()->where('id',$pList->related_id)) {
+                        $depts = $auth->departments()->where('department_id',$pList->related_id)->get();
+                        if ($auth && count($depts) > 0) {
                             $price = $pList->pivot->price;
                         }
                     }else{
                         $price = $pList->pivot->price;
                     }
                 }else{
-                    $price=$pList->pivot->price;
+                    $price = $pList->pivot->price;
                 }
             }//has priceLists
         }
