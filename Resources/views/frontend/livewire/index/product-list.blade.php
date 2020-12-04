@@ -39,10 +39,7 @@
 @parent
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
-        window.livewire.on('urlChange', (param) => {
-           	history.pushState(null, null, `${document.location.pathname}?${param}`);
-        });
-			window.livewire.emit('productListRendered',{!! json_encode($params) !!});
+		window.livewire.emit('productListRendered',{!! json_encode($params) !!});
     });
 </script>
 

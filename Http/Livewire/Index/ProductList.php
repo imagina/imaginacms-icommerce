@@ -27,13 +27,13 @@ class ProductList extends Component
 
 	public $totalProducts;
 	public $orderBy;
-	public $search;
+	public $search = '';
 	public $productListLayout;
 	public $layoutClass;
 
 	public $priceMin;
 	public $priceMax;
-	public $filters;
+	public $filters = [];
 
 	public $dataRequest;
 
@@ -41,8 +41,12 @@ class ProductList extends Component
 
 	protected $listeners = ['updateFilter'];
 
-	protected $queryString = ['search','orderBy','priceMin','priceMax','page'];
-
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'filters' => ['except' => []],
+        'page' => ['except' => 1]
+    ];
+    
 	protected $emitProductListRendered;
 	
 
@@ -57,8 +61,7 @@ class ProductList extends Component
         $this->manufacturer = $manufacturer;
         
 	    $this->totalProducts = 0;
-	    $this->filters = [];
-        
+	   
         $this->initConfigs();
 
         $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
@@ -74,6 +77,8 @@ class ProductList extends Component
 	    $this->firstRequest = true;
 
 	    $this->emitProductListRendered = false	;
+
+        $this->fill(request()->only('search', 'filters','page','orderBy'));
 
 	}
 
@@ -118,48 +123,15 @@ class ProductList extends Component
         $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
     }
 
-    /*
-    * Update Parameters Url to keep the Filters
-    *
-    */
-    public function updateParametersUrl(){
-
-     
-        $paramsUrl = http_build_query([
-    	    "page" => $this->page ?? 1,
-            "filters" => $this->filters,
-            "orderBy" => $this->orderBy
-        ]);
- 
-        $this->emit('urlChange', $paramsUrl);
-        
-    }
-
-    /*
-    * Check Values From Request
-    * just First Request
-    */
-    public function checkValuesFromRequest(){
-        
-        if(!empty($this->dataRequest)){
-            foreach ($this->dataRequest as $key => $value) {
-                $this->{$key} = $value;
-            }
-   
-        }
-
-        $this->firstRequest = false;
-    }
-
+    
     /*
     * Make params to Repository
     * before execcute the query
     */
     public function makeParamsToRepository(){
 
-     
     	if($this->firstRequest)
-    		$this->checkValuesFromRequest();
+    		$this->firstRequest = false;
         
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
@@ -200,10 +172,14 @@ class ProductList extends Component
     */
     public function render(){
      	
-     	
+
+     	if(!$this->firstRequest && !in_array('orderBy', $this->queryString)){
+            array_push($this->queryString, 'orderBy');
+        }
+
      	$params = $this->makeParamsToRepository();
 
-        //	\Log::info("params: ".json_encode($params));
+        //\Log::info("params: ".json_encode($params));
     	$products = $this->getProductRepository()->getItemsBy(json_decode(json_encode($params)));
     
     	$this->totalProducts = $products->total();
@@ -213,11 +189,8 @@ class ProductList extends Component
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
 
-    	//Updates Parameters URL
-    	$this->updateParametersUrl();
-
   		// Emit Finish Render
-		\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
+		//\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
 		$this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;
 
         return view($tpl,['products'=> $products, 'params' => $params]);
