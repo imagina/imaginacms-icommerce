@@ -15,12 +15,6 @@
       <div class="{{$col}} category-list-2__item position-relative">
         <a href="{{$category->url}}">
           <figure>
-            {{--<picture>
-               <source type="image/jpeg" data-srcset="{!! $slide->getImageUrl() !!}"/>
-               <img data-src="{!! $slide->getImageUrl() !!}"
-                    alt="{{$slide->title}}"
-                    class="lazyload cover-img" />
-            </picture>--}}
             <img class="cover-img lazyload" src="{!! $category->mediaFiles()->mainimage->path !!}" alt="{{$category->title}}">
             
             <figcaption>

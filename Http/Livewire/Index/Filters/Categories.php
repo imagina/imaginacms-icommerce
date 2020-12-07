@@ -90,7 +90,7 @@ class Categories extends Component
       
       $this->categories = collect($parents)->merge($categoriesOfManufacturer)->keyBy("id");
 
-    }elseif (isset($this->category->id)) {
+    }elseif (isset($this->category->id) && isset($this->configs["mode"])) {
       switch($this->configs["mode"]){
         case 'allFamilyOfTheSelectedNode':
           $ancestors = Category::ancestorsAndSelf($this->category->id);
