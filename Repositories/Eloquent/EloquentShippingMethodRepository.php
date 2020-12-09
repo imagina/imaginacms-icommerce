@@ -119,7 +119,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      * @return Response
      */
 
-    public function getCalculations($request, $params)
+    public function getCalculations($data, $params)
     {
 
       /* Init query */
@@ -145,7 +145,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
         
         if (isset($data['cart_id'])) {
-            $cart = $cartRepository->find($request->products['cart_id']);
+            $cart = $cartRepository->find($data['cart_id']);
             // Fix data cart products
             $supportCart = new cartSupport();
             $dataCart = $supportCart->fixProductsAndTotal($cart);
