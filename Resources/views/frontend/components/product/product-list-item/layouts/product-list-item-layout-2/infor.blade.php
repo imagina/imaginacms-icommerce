@@ -20,7 +20,7 @@
         </div>
         
         <div class="bottom">
-          @if($product->price>0 || $product->stock_status == 1)
+          @if($product->price>0  && $product->stock_status && $product->quantity)
             <a  onClick="window.livewire.emit('addToCart',{{$product->id}})" class="btn btn-warning px-4 text-white cursor-pointer">
               <i class="fa fa-shopping-basket"></i>
               COMPRAR
