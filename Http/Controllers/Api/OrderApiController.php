@@ -219,7 +219,7 @@ class OrderApiController extends BaseApiController
 
         //Get Shipping Methods with calculates
         $shippingMethods = $this->shippingMethod->getCalculations($dataMethods,$params);
-          
+
         //Get Shipping Method Price
         $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
         $data["shippingPrice"] = $shippingPrice;

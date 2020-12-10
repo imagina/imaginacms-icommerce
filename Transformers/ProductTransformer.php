@@ -73,7 +73,7 @@ class ProductTransformer extends BaseApiTransformer
             'totalTaxes' => $this->getTotalTaxes($filter),
             'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
             'taxClassId' => $this->when($this->tax_class_id, intval($this->tax_class_id)),
-            //'mediaFiles' => $this->mediaFiles()
+            'mediaFiles' => $this->mediaFiles()
         ];
 
         $discount = $this->discount;

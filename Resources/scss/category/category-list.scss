@@ -82,3 +82,125 @@
     }
   }
 }
+
+#categoryList3 {
+  
+  .first-category {
+    padding-bottom: 40px;
+    border-bottom: solid 1px #b4b4b4;
+    margin-bottom: 40px;
+    @include media-breakpoint-down(md) {
+      padding-bottom: 20px;
+      border-bottom: solid 1px #b4b4b4;
+      margin-bottom: 20px;
+    }
+    
+    .items {
+      height: 880px;
+      @include media-breakpoint-down(md) {
+        height: 400px;
+      }
+    }
+  }
+  
+  .other-category {
+    .items {
+      height: 400px;
+    }
+    
+    &:first-child {
+      padding-bottom: 40px;
+      border-bottom: solid 1px #b4b4b4;
+      margin-bottom: 40px;
+      @include media-breakpoint-down(md) {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+  
+  .items {
+    position: relative;
+    
+    .imagen {
+      overflow: hidden;
+      
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        transform: scale(1);
+        transition: all 500ms ease-in-out;
+      }
+    }
+    
+    &:after {
+      content: '';
+      background-color: rgba(#3C3C3B, 0.5);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    &:nth-of-type(2):before {
+      content: '';
+      border-bottom: 1px solid #b4b4b4;
+      position: absolute;
+      bottom: -40px;
+      display: block;
+      height: 100%;
+      z-index: 99;
+      width: 100%;
+    }
+    
+    .card-img-overlay {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #fff;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    
+    h3 {
+      @include font-size(60px);
+      font-weight: bold;
+    }
+    
+    .btn {
+      @include font-size(15px);
+      border-radius: 0;
+      color: #0A0808;
+      background-color: rgba($white, 0.7);
+    }
+    
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
+  
+  @media (max-width: 769px) {
+    
+    .items {
+      h3 {
+        @include font-size(30px);
+      }
+      
+      &:nth-of-type(1), &:nth-of-type(2) {
+        &:before {
+          border-bottom: 1px solid #b4b4b4;
+          bottom: -20px;
+        }
+      }
+    }
+  }
+}

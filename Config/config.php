@@ -81,9 +81,9 @@ return [
     ],
   ],
   'formatmoney' => [
-    'decimals' => 2,
+    'decimals' => 0,
     'dec_point' => '.',
-    'housands_sep' => ','
+    'housands_sep' => '.'
   ],
   //add: custom product includes (if they are empty icommerce module will be using default includes) (slim)
   'includes' => [
@@ -110,6 +110,7 @@ return [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
+      'iconimage' => 'single',
     ],
     'manufacturer' => [
       'mainimage' => 'single',
@@ -222,7 +223,8 @@ return [
       /*
        * Mode for render:
        *  allTree
-       *  onlyNodeSelected
+       *  allFamilyOfTheSelectedNode
+       *  onlyLeftAndRightOfTheSelectedNode
        */
       'mode' => 'allTree',
       'status' => true

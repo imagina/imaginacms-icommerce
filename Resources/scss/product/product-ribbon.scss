@@ -42,7 +42,7 @@
   /*Sold out Ribbon*/
   #ribbonSoldOut {
     transform: rotate(-45deg);
-    background-color: #de2727;
+    background-color: $danger;
     top: 14px;
     left: -40px;
     text-align: center;
@@ -57,7 +57,7 @@
     top: -10px;
     left: -45px;
     transform: rotate(-45deg);
-    background-color: #076707;
+    background-color: $primary;
     text-align: center;
     color: white;
     width: 130px;

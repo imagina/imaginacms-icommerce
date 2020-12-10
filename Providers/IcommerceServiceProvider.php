@@ -82,6 +82,9 @@ class IcommerceServiceProvider extends ServiceProvider
 
     $this->publishConfig('icommerce', 'config');
     $this->publishConfig('icommerce', 'crud-fields');
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings'), "asgard.icommerce.settings");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings-fields'), "asgard.icommerce.settings-fields");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'permissions'), "asgard.icommerce.permissions");
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
@@ -587,7 +590,6 @@ class IcommerceServiceProvider extends ServiceProvider
   private function registerComponentsLivewire()
   {
 
-    Livewire::component('icommerce::loading', \Modules\Icommerce\Http\Livewire\Loading::class);
     Livewire::component('icommerce::product-list', \Modules\Icommerce\Http\Livewire\Index\ProductList::class);
     Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\Index\Filters\Categories::class);
     Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\Index\Filters\RangePrices::class);
