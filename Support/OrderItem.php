@@ -27,9 +27,6 @@ class OrderItem
         ]);
 
       if(isset($item->product->discount->id)){
-
-        \Log::info("Discount id: ".$item->product->discount->id);
-        \Log::info([$item->product->discount]);
         $productDiscount = ProductDiscount::find($item->product->discount->id);
         $productDiscount->quantity_sold += (int)$item->quantity;
         $productDiscount->save();
