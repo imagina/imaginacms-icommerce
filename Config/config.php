@@ -111,6 +111,7 @@ return [
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
       'iconimage' => 'single',
+      'bannerindeximage' => 'single',
     ],
     'manufacturer' => [
       'mainimage' => 'single',

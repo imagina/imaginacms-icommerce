@@ -19,6 +19,17 @@ return [
         'entity' => "Modules\Icommerce\Entities\Category",
         'entityId' => null
       ]
+    ],
+    'bannerindeximage' => [
+      'value' => (object)[],
+      'name' => 'mediasSingle',
+      'type' => 'media',
+      'props' => [
+        'label' => 'Banner Página Índice',
+        'zone' => 'bannerindeximage',
+        'entity' => "Modules\Icommerce\Entities\Category",
+        'entityId' => null
+      ]
     ]
     ],
   //Extra field to crud product categories
