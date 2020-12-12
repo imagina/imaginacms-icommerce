@@ -114,12 +114,13 @@
               </div>
             </div>
 
-            <div class="col-12">
-              @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
-            </div>
+            
 
           </div>
         </div>
+      </div>
+      <div class="col-12">
+        @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
       </div>
     </div>
 {{--

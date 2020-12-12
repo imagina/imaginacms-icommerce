@@ -1,5 +1,5 @@
 @component('partials.widgets.breadcrumb')
-		<li class="breadcrumb-item text-capitalize" aria-current="page">
+		<li class="breadcrumb-item text-capitalize store-index" aria-current="page">
 			@if(isset($category->id) || isset($manufacturer->id))
 			<a href="{{\URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index')}}">
 				{{ trans('icommerce::routes.store.index.index') }}
@@ -10,7 +10,7 @@
 		</li>
 	
 		@foreach($categoryBreadcrumb as $key => $breadcrumb)
-			<li class="breadcrumb-item" aria-current="page">
+			<li class="breadcrumb-item category-index {{($key == count($categoryBreadcrumb)-1) ? 'category-index-selected' : ''}}" aria-current="page">
 				@if($key == count($categoryBreadcrumb)-1)
 					@if(isset($manufacturer->id))
 						<a href="{{$breadcrumb->url}}">{{ $breadcrumb->title }}</a>
@@ -25,7 +25,7 @@
 		@endforeach
 		
 		@if(isset($manufacturer->id))
-		<li class="breadcrumb-item text-capitalize" aria-current="page">
+		<li class="breadcrumb-item text-capitalize manufacturer-index-selected" aria-current="page">
 			<a href="{{$manufacturer->url}}">
 			{{$manufacturer->name}}
 			</a>

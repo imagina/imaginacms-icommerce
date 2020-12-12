@@ -116,8 +116,8 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
                     $query->orderBy($orderObject->field, $orderObject->way);
             }
         } else {
-            $query->leftJoin("icommerce__category_translations as ct", "ct.category_id", "icommerce__categories.id")->orderBy('ct.title', 'asc');
-            $query->orderBy('sort_order', 'desc');//Add order to query
+          $query->orderBy('sort_order', 'desc');//Add order to query
+          $query->leftJoin("icommerce__category_translations as ct", "ct.category_id", "icommerce__categories.id")->orderBy('ct.title', 'asc');
         }
 
         /*== FIELDS ==*/

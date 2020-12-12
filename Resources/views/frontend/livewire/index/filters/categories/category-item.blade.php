@@ -31,6 +31,11 @@
 		 role="button" aria-expanded="false"
 		 aria-controls="{{$children? "multiCollapse-$slug" : ""}}">
 		
+		@php($mediaFiles = $category->mediaFiles())
+		
+		@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
+			<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
+		@endif
 		
 		<i class="fa fa-angle-{{$isSelected && $children ? 'down' : 'right'}}" ></i>
 		
