@@ -35,7 +35,7 @@
 
 </div>
 
-@section('scripts')
+@section('scripts-owl')
 @parent
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
