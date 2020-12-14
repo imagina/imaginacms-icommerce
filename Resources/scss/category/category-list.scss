@@ -83,6 +83,46 @@
   }
 }
 
+/***** Media Queries *****/
+@include media-breakpoint-down(xs) {
+  #categoryList2 {
+    padding-right: 0;
+    padding-left: 0;
+    
+    .category-list-2 {
+      &__item {
+        padding: 0;
+        margin-bottom: 1px;
+        
+        figure {
+          height: 168px;
+          
+          figcaption {
+            left: 23px;
+            bottom: 11px;
+            
+            h2 {
+              font-size: 26px;
+              margin-bottom: 2px;
+            }
+            
+            .btn-custom {
+              font-size: 11px;
+              padding: 0;
+              margin-left: 0;
+              
+              i {
+                font-size: 14px;
+                vertical-align: middle;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 #categoryList3 {
   
   .first-category {
