@@ -24,15 +24,21 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     /*== initialize query ==*/
     $query = $this->model->query();
+    $priceListEnable = setting('icommerce::product-price-list-enable');
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category','categories','manufacturer','translations', 'store','files','discount']);
+        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];
+        if($priceListEnable)
+            $includeDefault[] = 'priceLists';
+        $query->with($includeDefault);
     } else {//Especific relationships
-      $includeDefault = ['category','categories','manufacturer','translations', 'store','files','discount'];//Default relationships
-      if (isset($params->include))//merge relations with default relationships
-        $includeDefault = array_merge($includeDefault, $params->include);
-      $query->with($includeDefault);//Add Relationships to query
+        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
+        if (isset($params->include))//merge relations with default relationships
+            $includeDefault = array_merge($includeDefault, $params->include ?? []);
+        if($priceListEnable)
+            $includeDefault[] = 'priceLists';
+        $query->with($includeDefault);//Add Relationships to query
     }
 
     /*== FILTERS ==*/
@@ -294,14 +300,19 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     //Initialize query
     $query = $this->model->query();
-
+    $priceListEnable = setting('icommerce::product-price-list-enable');
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with(['category','categories','manufacturer','translations', 'store','files','productOptions','discount']);
+        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];
+        if($priceListEnable)
+            $includeDefault[] = 'priceLists';
+        $query->with($includeDefault);
     } else {//Especific relationships
       $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
+      if($priceListEnable)
+        $includeDefault[] = 'priceLists';
       $query->with($includeDefault);//Add Relationships to query
     }
 

@@ -89,7 +89,7 @@ return [
             'group' => 'Product',
             'layout' => 'Product Layout',
         ],
-        'product-price-list' => 'Enable',
+        'product-price-list-enable' => 'Enable',
 
     ],
     'uri' => 'icommerce',

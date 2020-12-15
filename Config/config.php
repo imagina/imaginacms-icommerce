@@ -244,5 +244,21 @@ return [
     ]
   ],
 
+  /**
+   * @note routeName param must be set without locale. Ex: (icommerce orders: 'icommerce.store.order.index')
+   */
+  "userMenuLinks" => [
+      [
+          "title" => "icommerce::orders.title.orders",
+          "routeName" => "icommerce.store.order.index",
+          "icon" => "fa fa-bars",
+      ],
+      [
+          "title" => "icommerce::wishlists.title.wishlists",
+          "routeName" => "icommerce.store.wishlists.index",
+          "icon" => "fa fa-heart",
+      ]
+  ]
+
 
 ];
