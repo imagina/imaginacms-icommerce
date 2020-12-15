@@ -23,7 +23,7 @@
         @if($discount && ($discount->criteria == 'fixed'))
           <b><i class="fa fa-tags"></i></b>
         @else
-          <b>{{$discount->discount ?? 0}}%</b>
+          <b>{{round($discount->discount) ?? 0}}%</b>
         @endif
         <div class="ribbonLabel">DTO.</div>
       </div>
