@@ -381,7 +381,9 @@ class Product extends Model implements TaggableInterface
         $price = $value;
         $auth=\Auth::user() ?? \Auth::guard('api')->user();
         $priceList = setting('icommerce::product-price-list-enable');
-        if($auth && $priceList){
+        $setting = json_decode(request()->get('setting'));
+
+        if($auth && $priceList && !isset($setting->fromAdmin)){
             foreach($this->priceLists as $pList){
                 if($pList->related_entity=="Modules\Iprofile\Entities\Department"){
                     if($pList->related_id !== '0' && $pList->related_id !== 0) {
