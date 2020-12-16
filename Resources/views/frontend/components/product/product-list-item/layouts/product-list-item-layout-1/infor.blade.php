@@ -68,8 +68,8 @@
 
 
 @section('scripts')
-	
-	<script>
+@parent
+	<script type="text/javascript">
 		
 		function incrementValue(e) {
 			e.preventDefault();
@@ -113,4 +113,4 @@
 		
 	</script>
 	
-	@stop
+@stop
