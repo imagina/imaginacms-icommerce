@@ -70,6 +70,18 @@ return [
       ]
     ]
   ],
+  'product-add-to-cart-with-quantity' => [
+    'name' => 'icommerce::product-add-to-cart-with-quantity',
+    'value' => "0",
+    'type' => 'checkbox',
+    'columns' => 'col-12 col-md-6',
+    'group' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'label' => 'icommerce::common.settings.product-add-to-cart-with-quantity',
+      'trueValue' => "1",
+      'falseValue' => "0",
+    ],
+  ],
   'product-price-list-enable' => [
       'name' => 'icommerce::product-price-list-enable',
       'value' => "0",

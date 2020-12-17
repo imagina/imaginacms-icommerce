@@ -88,7 +88,8 @@ return [
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
     ],
-    'product-price-list-enable' => 'Activar'
+    'product-price-list-enable' => 'Activar',
+    'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad(Product Item)',
 
   ],
   'uri' => 'icommerce',

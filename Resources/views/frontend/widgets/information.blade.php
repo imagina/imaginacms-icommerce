@@ -15,10 +15,9 @@
   <!-- PRICE -->
   <div v-if="products_children === false && product.price >0.00">
     <div class="price text-primary">
-      @{{currencysymbolleft}}
-      <!--@{{ new Intl.NumberFormat().format((product.price + productOptionsSelected.total) * quantity) }}-->
-      @{{product.formattedPrice}}
-      @{{currencysymbolright}}
+      {{isset($currency->id) ? $currency->symbol_left : '$'}}
+      {{formatMoney($discount->price ?? $product->price)}}
+      {{isset($currency->id) ? $currency->symbol_right : ''}}
     </div>
   </div>
   <!-- END PRICE -->
