@@ -25,7 +25,7 @@ class RangePrices extends Component
     */
 	public function mount()
 	{
-    	$this->step = setting('icommerce::filterRangePricesStep',null,20000);
+    	$this->step = (int)setting('icommerce::filterRangePricesStep',null,20000);
 		$this->priceMin = 0;
 		$this->priceMax = 1;
 		$this->selPriceMin = 0;
