@@ -3,7 +3,12 @@
   <div class="card-product">
     <div class="cursor-pointer position-relative">
       @if(!isset($productListLayout) || $productListLayout!='one')
-        @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.image')
+
+        <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
+           <x-media-single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                                  :mediaFiles="$product->mediaFiles()"/>
+        </div>
+
       @endif
       <div class="card-overlay text-center">
         
