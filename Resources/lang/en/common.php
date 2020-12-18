@@ -132,6 +132,11 @@ return [
     'range' => [
         'title' => 'Rango de Precio',
     ],
+    'product-type' => [
+        'title' => 'Product Type',
+        'searchable' => 'Consultable',
+        'affordable' => 'Comprable'
+    ],
     'pagination' => [
         'previous' => 'Anterior',
         'next' => 'Siguiente',

@@ -93,8 +93,9 @@
 		*/
 		window.addEventListener('filter-prices-updated', event => {
 
+			if($("#slider-range").hasClass( "ui-slider" ))
+				$("#slider-range").slider("destroy");
 
-			$("#slider-range").slider("destroy");
     		createSlider(event.detail.newPriceMin,event.detail.newPriceMax,event.detail.newSelPriceMin,event.detail.newSelPriceMax,event.detail.step)
 
 		})
