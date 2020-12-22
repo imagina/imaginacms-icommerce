@@ -261,7 +261,7 @@ return [
   /*Widgets Components*/
   'widgets' => [
     "carousel-vertical" => [
-      "component" => "icommerce-widget-base-vertical",
+      "component" => "icommerce::widgets.carousel-vertical",
       "status" => false,
       "id" => "widgetFeaturedProducts",
       "title" => "Destacados",

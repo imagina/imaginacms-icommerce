@@ -1,6 +1,6 @@
 <div class="carousel-vertical">
 
-	<x-icommerce::widget.base :id="$id" :isExpanded="$isExpanded">
+	<x-icommerce::widgets.base :id="$id" :isExpanded="$isExpanded">
         <x-slot name="title">
                {{$title}}
         </x-slot>
@@ -13,6 +13,6 @@
                   :params="$props['params']" 
                   :responsive="$props['responsive']"/>
         </x-slot>
-   	</x-icommerce::widget.base>
+   	</x-icommerce::widgets.base>
    
 </div>
