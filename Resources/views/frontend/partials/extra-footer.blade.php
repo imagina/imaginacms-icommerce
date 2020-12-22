@@ -4,7 +4,7 @@
     	@foreach(config("asgard.icommerce.config.extraFooter") as $key => $block)
     		@if($block['status'])
 
-    			<x-isite-owl-carousel 
+    			<x-isite::carousel.owl-carousel
 			    	:id="$block['id']" 
 			    	:title="$block['title']"
 			    	:subTitle="$block['subTitle']"
