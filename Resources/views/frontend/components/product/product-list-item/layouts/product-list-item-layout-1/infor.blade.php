@@ -42,7 +42,7 @@
     </div>
   
   </div>
-  @if(isset($addToCartWithQuantity))
+  @if($addToCartWithQuantity)
     @if($product->price>0 && $product->stock_status && $product->quantity)
       <div class="row add-to-cart-with-quantity">
         <!-- BUTTON QUANTITY -->
