@@ -18,7 +18,8 @@ class ProductListItem extends Component
    *
    * @return void
    */
-  public function __construct($product, $productListLayout = null, $layout = null, $addToCartWithQuantity = null)
+  public function __construct($product, $productListLayout = null, $layout = null, $addToCartWithQuantity = null,
+                              $parentAttributes = null)
   {
     $this->product = $product;
     $this->productListLayout = $productListLayout;
@@ -26,6 +27,15 @@ class ProductListItem extends Component
     $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
   
+    if(!empty($parentAttributes))
+      $this->getParentAttributes($parentAttributes);
+  }
+  
+  private function getParentAttributes($parentAttributes){
+    
+    isset($parentAttributes["productListLayout"]) ? $this->productListLayout = $parentAttributes["productListLayout"] : false;
+    isset($parentAttributes["addToCartWithQuantity"]) ? $this->addToCartWithQuantity = $parentAttributes["addToCartWithQuantity"] : false;
+    
   }
   
   /**
