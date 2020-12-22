@@ -97,44 +97,33 @@
   @parent
   <script>
     
-    function incrementValue(e) {
+    
+    function addToCart() {
+      let quantity = $('#quantityField' + productId).val();
+      window.livewire.emit('addToCart', {{$product->id}}, quantity)
+      $('#quantityField{{$product->id}}' ).val(1)
+    }
+    
+    $('.input-group{{$product->id}}').on('click', '.button-plus-{{$product->id}}', function (e) {
       e.preventDefault();
-      var fieldName = $(e.target).data('field');
-      var parent = $(e.target).closest('div');
-      var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+      var currentVal = parseInt($('#quantityField{{$product->id}}').val(), 10);
       
       if (!isNaN(currentVal)) {
-        parent.find('input[name=' + fieldName + ']').val(currentVal + 1);
+        $('#quantityField{{$product->id}}').val(currentVal + 1);
       } else {
-        parent.find('input[name=' + fieldName + ']').val(0);
+        $('#quantityField{{$product->id}}').val(0);
       }
-    }
-    
-    function decrementValue(e) {
-      e.preventDefault();
-      var fieldName = $(e.target).data('field');
-      var parent = $(e.target).closest('div');
-      var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
-      
-      if (!isNaN(currentVal) && currentVal > 0) {
-        parent.find('input[name=' + fieldName + ']').val(currentVal - 1);
-      } else {
-        parent.find('input[name=' + fieldName + ']').val(1);
-      }
-    }
-    
-    function addToCart(productId) {
-      let quantity = $('#quantityField' + productId).val();
-      window.livewire.emit('addToCart', productId, quantity)
-      $('#quantityField' + productId).val(1)
-    }
-    
-    $('.input-group').on('click', '.button-plus', function (e) {
-      incrementValue(e);
     });
     
-    $('.input-group').on('click', '.button-minus', function (e) {
-      decrementValue(e);
+    $('.input-group{{$product->id}}').on('click', '.button-minus-{{$product->id}}', function (e) {
+      e.preventDefault();
+      var currentVal = parseInt($('#quantityField{{$product->id}}').val(), 10);
+      
+      if (!isNaN(currentVal) && currentVal > 0) {
+        $('#quantityField{{$product->id}}').val(currentVal - 1);
+      } else {
+        $('#quantityField{{$product->id}}').val(1);
+      }
     });
   
   </script>
