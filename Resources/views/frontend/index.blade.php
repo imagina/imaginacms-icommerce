@@ -11,7 +11,9 @@
     
     {{-- Category Index Banner --}}
     @if(isset($category->id))
-      @php($mediaFiles = $category->mediaFiles())
+      @php 
+        $mediaFiles = $category->mediaFiles()
+      @endphp
       @if(isset($mediaFiles->bannerindeximage->path) && !strpos($mediaFiles->bannerindeximage->path,"default.jpg"))
         @include('icommerce::frontend.partials.category-index-banner')
       @else
@@ -27,11 +29,30 @@
     <div class="container">
       <div class="row">
         
-        {{-- Filters --}}
+        {{-- Filters, Widgets --}}
         <div class="col-lg-3">
           
           @includeFirst(['icommerce.index.filters',
           'icommerce::frontend.index.filters'],["categoryBreadcrumb" => $categoryBreadcrumb])
+
+          @if(config("asgard.icommerce.config.widgets"))
+            <div class="widgets">
+            @foreach(config("asgard.icommerce.config.widgets") as $widget)
+              @if($widget['status'])
+            
+                <x-dynamic-component 
+                  :component="$widget['component']" 
+                  :id="$widget['id']" 
+                  :isExpanded="$widget['isExpanded']" 
+                  :title="$widget['title']"
+                  :props="$widget['props']"
+                />
+               
+              @endif
+            @endforeach
+            </div>
+          @endif
+         
         </div>
         
         {{-- Top Content , Products, Pagination --}}

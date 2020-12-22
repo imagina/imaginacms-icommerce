@@ -1,3 +1,4 @@
+{{--
 @component('partials.widgets.breadcrumb')
 		<li class="breadcrumb-item text-capitalize store-index" aria-current="page">
 			@if(isset($category->id) || isset($manufacturer->id))
@@ -32,3 +33,4 @@
 		</li>
 		@endif
 @endcomponent
+--}}
