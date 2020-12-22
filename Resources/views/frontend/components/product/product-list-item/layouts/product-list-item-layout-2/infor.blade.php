@@ -5,7 +5,7 @@
       @if(!isset($productListLayout) || $productListLayout!='one')
 
         <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
-           <x-media-single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+           <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                                   :mediaFiles="$product->mediaFiles()"/>
         </div>
 

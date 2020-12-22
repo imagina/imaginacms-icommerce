@@ -12,7 +12,7 @@
         
         <div id="{{$name}}Carousel" class="owl-carousel owl-theme">
             @foreach($products as $product)
-            <x-icommerce-product-list-item :product="$product" />
+            <x-icommerce::product-list-item :product="$product" />
             @endforeach
         </div>
       </div>

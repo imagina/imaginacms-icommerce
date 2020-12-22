@@ -11,7 +11,7 @@
         <div class="row justify-content-center position-relative m-0">
         @include('icommerce::frontend.components.product.ribbon')
         <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
-          <x-media-single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+          <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                                 :mediaFiles="$product->mediaFiles()"/>
         </div>
         </div>
@@ -23,7 +23,7 @@
   @else
     @include('icommerce::frontend.components.product.ribbon')
     <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
-      <x-media-single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+      <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                             :mediaFiles="$product->mediaFiles()"/>
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
