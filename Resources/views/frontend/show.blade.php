@@ -124,6 +124,10 @@
         @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
       </div>
     </div>
+
+    {{-- Extra Footer End Page --}}
+    @include('icommerce::frontend.partials.extra-footer')
+    
 {{--
     @include('partials.subcription')
 
