@@ -241,6 +241,20 @@ return [
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
       'status' => true
+    ],
+    'product-types' => [
+      'title' => 'icommerce::common.product-type.title',
+      'status' => true,
+      'options' => [
+        'affordable' => [
+          'title' => 'icommerce::common.product-type.affordable',
+          'status' => true
+        ],
+        'searchable' => [
+          'title' => 'icommerce::common.product-type.searchable',
+          'status' => true
+        ],
+      ]
     ]
   ],
 

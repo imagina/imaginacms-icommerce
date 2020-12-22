@@ -234,6 +234,19 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->has('discount');
 
       }
+
+      if(isset($filter->productType) && !empty($filter->productType)){
+
+        $type = $filter->productType;
+      
+        if($type=="searchable")
+          $query->where("price",0);
+
+        if($type=="affordable") 
+          $query->where("price",">",0);
+      
+      }
+
     }
 
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
@@ -593,6 +606,34 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     }
 
     return $productOptions;
+
+  }
+
+  public function getProductTypes($params = false)
+  {
+
+    isset($params->take) ? $params->take = false : false;
+    isset($params->page) ? $params->page = null : false;
+    !isset($params->include) ? $params->include = [] : false;
+    isset($params->order) ? $params->order = null : false;
+
+    $params->onlyQuery = true;
+
+    $query = $this->getItemsBy($params);
+
+    $products = $query->get();
+
+    // At least one product is searchable
+    $searchable = $products->contains('price', 0);
+
+    // At least one product is affordable
+    $affordable = $products->where('price','>', 0)->count();
+
+    $showFilter = false;
+    if($searchable && $affordable>0)
+       $showFilter = true;
+
+    return $showFilter;
 
   }
 

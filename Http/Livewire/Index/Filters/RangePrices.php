@@ -92,12 +92,17 @@ class RangePrices extends Component
 			$this->selPriceMax = $this->priceMax;
 		}
 		
-		//\Log::info($this->priceMin."-".$this->selPriceMin."-".$this->priceMax."-".$this->selPriceMax);
+		//\Log::info("Price Min:".$this->priceMin." -Price Min SEL:".$this->selPriceMin." -Price Max:".$this->priceMax." -Price Max Sel:".$this->selPriceMax);
 
 		//Validating if there is no price range
 		if($this->selPriceMin==$this->selPriceMax && $this->priceMin==$this->selPriceMin && $this->priceMax==$this->selPriceMax){
 			$this->show = false;
+		}else{
+			$this->show = true;
 		}
+
+		if($this->priceMax==0)
+			$this->show = false;
 
 		$originalPriceMax = $this->priceMax;
 

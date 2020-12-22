@@ -17,6 +17,8 @@
 			@endif
 			@livewire('icommerce::filter-product-options',key("filter-product-options"))
 
+			@livewire('icommerce::filter-product-types',key("filter-product-types"))
+
 		</div>
 	</div>
 
