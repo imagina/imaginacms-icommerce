@@ -258,6 +258,36 @@ return [
     ]
   ],
 
+  /*Widgets Components*/
+  'widgets' => [
+    "carousel-vertical" => [
+      "component" => "icommerce-widget-base-vertical",
+      "status" => false,
+      "id" => "widgetFeaturedProducts",
+      "title" => "Destacados",
+      "isExpanded" => true,
+      "props" => [
+        'itemsBySlide' => 3,
+        'params' => ['filter' => ['featured' => true]],
+        'responsive' => [0 => ['items' =>  1],640 => ['items' => 1],992 => ['items' => 1]]
+      ]
+    ]
+  ],
+
+  /*Extra Footer Partials*/
+  'extraFooter' => [
+    'carouselBestSellers' => [
+        'status' => false,
+        'id' => "extraBestSellers",
+        'title' => 'Lo que necesitas aqui',
+        'subTitle' => 'Los Más Vendidos',
+        'props' => [
+          'params' => ['filter' => ['featured' => true]],
+          'responsive' => [0 => ['items' =>  1],640 => ['items' => 2],992 => ['items' => 4]]
+        ]
+    ]
+  ],
+
   /**
    * @note routeName param must be set without locale. Ex: (icommerce orders: 'icommerce.store.order.index')
    */

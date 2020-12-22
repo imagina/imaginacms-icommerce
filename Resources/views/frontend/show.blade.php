@@ -9,13 +9,14 @@
 
     <div id="content_show_commerce">
       <!-- MIGA DE PAN  -->
-
+      {{--
       @component('partials.widgets.breadcrumb')
         <li class="breadcrumb-item" v-for="category in categories">
           <a :href="url+'/'+category.slug">@{{category.title}}</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">@{{product.name}}</li>
       @endcomponent
+      --}}
 
       <div id="content" class="product">
         <div class="container ">
@@ -123,6 +124,10 @@
         @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
       </div>
     </div>
+
+    {{-- Extra Footer End Page --}}
+    @include('icommerce::frontend.partials.extra-footer')
+    
 {{--
     @include('partials.subcription')
 

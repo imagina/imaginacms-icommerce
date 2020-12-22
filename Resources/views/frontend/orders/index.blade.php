@@ -4,6 +4,7 @@
         $currency=localesymbol($code??'USD')
     @endphp
     
+    {{--
     @component('partials.widgets.breadcrumb')
         <li class="breadcrumb-item">
             <a href="{{ URL::to('/') }}">{{trans('icommerce::common.home.title')}}</a>
@@ -12,7 +13,10 @@
             {{trans('icommerce::orders.breadcrumb.title')}}
         </li>
     @endcomponent
+    --}}
+
     <div id="orderList" class="icommerce-page page">
+
         <div class="container container-page">
             <div class="row">
                 <div class="col-12">
@@ -67,7 +71,12 @@
                 </div>
             </div>
         </div>
+
+        {{-- Extra Footer End Page --}}
+        @include('icommerce::frontend.partials.extra-footer')
+
     </div>
+
 @stop
 @section('scripts')
     @parent

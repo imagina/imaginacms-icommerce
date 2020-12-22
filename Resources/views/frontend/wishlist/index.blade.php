@@ -86,6 +86,9 @@
             </div>
         </div>
 
+        {{-- Extra Footer End Page --}}
+        @include('icommerce::frontend.partials.extra-footer')
+
     </div>
 
 @stop
