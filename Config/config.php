@@ -267,8 +267,9 @@ return [
       "title" => "Destacados",
       "isExpanded" => true,
       "props" => [
+        'itemsBySlide' => 4,
         'params' => ['filter' => ['featured' => true]],
-        'responsive' => [0 => ['items' =>  1],640 => ['items' => 2],992 => ['items' => 4]]
+        'responsive' => [0 => ['items' =>  1],640 => ['items' => 1],992 => ['items' => 1]]
       ]
     ]
   ],

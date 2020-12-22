@@ -8,6 +8,8 @@
                   <x-isite-owl-carousel 
                   :id="$id" 
                   repository="Modules\Icommerce\Repositories\ProductRepository"
+                  productListLayout="one"
+                  :itemsBySlide="$props['itemsBySlide']"
                   :params="$props['params']" 
                   :responsive="$props['responsive']"/>
         </x-slot>
