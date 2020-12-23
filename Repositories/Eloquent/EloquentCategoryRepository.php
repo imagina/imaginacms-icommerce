@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Ihelpers\Events\CreateMedia;
@@ -212,6 +213,9 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
     $category = $this->model->create($data);
 
+    if (isset($data['discounts']))
+        $category->discount(Arr::get($data, 'discounts', []));
+
     //Event to ADD media
     event(new CreateMedia($category, $data));
 
@@ -234,6 +238,10 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
+
+    if (isset($data['discounts']))
+        $model->discount(Arr::get($data, 'discounts', []));
+
     event(new UpdateMedia($model, $data));//Event to Update media
     return $model ? $model->update((array)$data) : false;
   }

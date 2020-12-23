@@ -238,13 +238,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if(isset($filter->productType) && !empty($filter->productType)){
 
         $type = $filter->productType;
-      
+
         if($type=="searchable")
           $query->where("price",0);
 
-        if($type=="affordable") 
+        if($type=="affordable")
           $query->where("price",">",0);
-      
+
       }
 
     }
@@ -424,6 +424,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($data['tags']))
         $product->setTags(Arr::get($data, 'tags', []));
+
+      if (isset($data['discounts']))
+          $product->discount(Arr::get($data, 'discounts', []));
+
     }
 
     //Event to ADD media
@@ -471,6 +475,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($data['tags']))
         $model->tags()->sync(Arr::get($data, 'tags', []));
+
+      if (isset($data['discounts']))
+          $model->discount(Arr::get($data, 'discounts', []));
 
       //Event to Update media
       event(new UpdateMedia($model, $data));
