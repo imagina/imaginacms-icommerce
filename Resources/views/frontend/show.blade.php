@@ -8,15 +8,14 @@
     </div>
 
     <div id="content_show_commerce">
-      <!-- MIGA DE PAN  -->
-      {{--
-      @component('partials.widgets.breadcrumb')
+      <x-isite::breadcrumb>
+      
         <li class="breadcrumb-item" v-for="category in categories">
           <a :href="url+'/'+category.slug">@{{category.title}}</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">@{{product.name}}</li>
-      @endcomponent
-      --}}
+      
+      </x-isite::breadcrumb>
 
       <div id="content" class="product">
         <div class="container ">
