@@ -6,7 +6,7 @@
 	  		
 	  			
 	  		@php($titleFilter = config("asgard.icommerce.config.filters.product-types.title"))
-	  		<h5 class="text-secondary">
+	  		<h5 class="p-3 border-top border-bottom">
 	  			{{ trans($titleFilter) }}
 	  			<i class="fa fa angle float-right" aria-hidden="true"></i>
 	  		</h5>
