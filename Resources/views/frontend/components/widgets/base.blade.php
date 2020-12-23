@@ -3,7 +3,7 @@
 	<div class="title">
         <a data-toggle="collapse" href="#collapse{{$id}}" role="button" 
         aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapse{{$id}}" class="{{$isExpanded ? '' : 'collapsed'}}">
-            <h5 class="p-3 d-block font-weight-bold cursor-pointer mb-0 border-top border-bottom">
+            <h5 class="p-3 border-top border-bottom">
                 <i class="fa angle float-right" aria-hidden="true"></i>
                 {{$title}}
             </h5>

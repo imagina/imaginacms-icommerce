@@ -54,7 +54,7 @@ class ProductList extends Component
     * Runs once, immediately after the component is instantiated,
     * but before render() is called
     */
-	public function mount(Request $request,$category,$manufacturer)
+	public function mount(Request $request,$category,$manufacturer, $productListLayout = null)
 	{
 
 	    $this->category = $category;
@@ -67,7 +67,7 @@ class ProductList extends Component
         $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
-        $this->productListLayout = $this->configs['productListLayout']['default'] ?? "four";
+        $this->productListLayout = $productListLayout ?? $this->configs['productListLayout']['default'] ?? "four";
         $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
 
 	    $this->priceMin = null;

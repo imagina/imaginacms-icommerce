@@ -15,8 +15,9 @@
       <div class="{{$col}} category-list-2__item position-relative">
         <a href="{{$category->url}}">
           <figure>
-            <img class="cover-img lazyload" src="{!! $category->mediaFiles()->mainimage->path !!}" alt="{{$category->title}}">
-            
+            <x-media::single-image :alt="$category->title" :title="$category->title" :url="$category->url" :isMedia="true"
+                                   :mediaFiles="$category->mediaFiles()" imgClasses="cover-img"/>
+          
             <figcaption>
               <h2 class="text-white">{{$category->title}}</h2>
               
