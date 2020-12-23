@@ -6,10 +6,10 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
+use Modules\Discountable\Traits\DiscountableTrait;
 use Modules\Icommerce\Presenters\ProductPresenter;
 use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ihelpers\Traits\Relationable;
-use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Product extends Model implements TaggableInterface
 {
-    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
+    use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable, DiscountableTrait;
 
     protected $table = 'icommerce__products';
     protected static $entityNamespace = 'asgardcms/product';
@@ -120,7 +120,7 @@ class Product extends Model implements TaggableInterface
         return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
     }
 
-    public function discounts()
+    public function productDiscounts()
     {
         return $this->hasMany(ProductDiscount::class);
     }
@@ -249,7 +249,7 @@ class Product extends Model implements TaggableInterface
 
     }
 
-    public function discount(){
+    public function productDiscount(){
 
       // return one Discount
       return $this->hasOne(ProductDiscount::class)

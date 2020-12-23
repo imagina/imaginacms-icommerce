@@ -73,13 +73,13 @@ class ProductPresenter extends Presenter
 
         $departments[] = null;
 
-        $discounts = $this->entity->discounts()
+        $discounts = $this->entity->productDiscounts()
             ->orderBy('created_at', 'desc')
             ->whereDate('date_end', '>=', $now)
             ->whereDate('date_start', '<=', $now)
             ->get();
 
-        $discounts = $discounts->whereIn('department_id', $departments);
+        //$discounts = $discounts->whereIn('department_id', $departments);
 
         foreach ($discounts as $key => $discount){
             $valueDiscount = $this->calcDiscount($discount, $newPrice);

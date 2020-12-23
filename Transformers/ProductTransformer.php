@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Discountable\Transformers\DiscountTransformer;
 use Modules\Icommerce\Entities\Status;
 use Modules\Ihelpers\Traits\Transformeable;
 use Modules\Iprofile\Transformers\UserTransformer;
@@ -32,6 +33,7 @@ class ProductTransformer extends BaseApiTransformer
             'quantity' => $this->when(isset($this->quantity), $this->quantity),
             'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
             'price' => $this->when($this->price, $this->price),
+            'priceWithDiscounts' => $this->when($this->price_with_discounts, $this->price_with_discounts),
             'formattedPrice' => formatMoney($this->price),
             'dateAvailable' => $this->when($this->date_available, $this->date_available),
             'weight' => $this->when($this->weight, $this->weight),
@@ -52,7 +54,7 @@ class ProductTransformer extends BaseApiTransformer
             'parentId' => $this->when($this->parent_id, $this->parent_id),
             'categoryId' => $this->when($this->category_id, intval($this->category_id)),
             'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
-            'discounts' => ProductDiscountTransformer::collection($this->whenLoaded('discounts')),
+            'productDiscounts' => ProductDiscountTransformer::collection($this->whenLoaded('productDiscounts')),
             'category' => new CategoryTransformer($this->whenLoaded('category')),
             'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
             'optionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('optionValues')),
@@ -76,9 +78,14 @@ class ProductTransformer extends BaseApiTransformer
             'mediaFiles' => $this->mediaFiles()
         ];
 
-        $discount = $this->discount;
+        $discount = $this->productDiscount;
         if(isset($discount->id)){
             $data["discount"] = new ProductDiscountTransformer($discount);
+        }
+
+
+        if(is_module_enabled('Discountable')){
+            $data['discounts'] = \Modules\Discountable\Transformers\DiscountTransformer::collection($this->whenLoaded('discounts'));
         }
 
         /*RELATIONSHIPS*/
