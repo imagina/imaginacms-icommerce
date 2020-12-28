@@ -104,7 +104,10 @@ return [
         'add_cart'      => 'Producto agregado al carro',
         'no_add_cart'   => 'Producto no agregado al carro, por favor intente de nuevo',
         'no_more'       => 'No hay mas productos en inventario',
-        'no_zero'       => 'El producto no puede ser menor a 0'
+        'no_zero'       => 'El producto no puede ser menor a 0',
+        'new'           => 'Nuevo',
+        'sold out'      => 'Agotado',
+
     ],
     'bulkload'=>[
         'success migrate from product' => 'productos migrados con éxito, la actualización se realiza en unos instantes',
