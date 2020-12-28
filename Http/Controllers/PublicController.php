@@ -203,7 +203,9 @@ class PublicController extends BaseApiController
     
     if($product){
       $category= $product->category;
-      return view($tpl, compact('product','category'));
+      $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+      
+      return view($tpl, compact('product','category','categoryBreadcrumb'));
       
     }else{
       return response()->view('errors.404', [], 404);

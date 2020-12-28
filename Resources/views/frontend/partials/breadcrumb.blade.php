@@ -11,7 +11,7 @@
 	
 	@foreach($categoryBreadcrumb as $key => $breadcrumb)
 		<li class="breadcrumb-item category-index {{($key == count($categoryBreadcrumb)-1) ? 'category-index-selected' : ''}}" aria-current="page">
-			@if($key == count($categoryBreadcrumb)-1)
+			@if($key == count($categoryBreadcrumb)-1 && !isset($product))
 				@if(isset($manufacturer->id))
 					<a href="{{$breadcrumb->url}}">{{ $breadcrumb->title }}</a>
 				@else
@@ -23,6 +23,10 @@
 			@endif
 		</li>
 	@endforeach
+
+	@if(isset($product->id))
+		<li class="breadcrumb-item active" aria-current="page">{{$product->name}}</li>
+	@endif
 	
 	@if(isset($manufacturer->id))
 		<li class="breadcrumb-item text-capitalize manufacturer-index-selected" aria-current="page">

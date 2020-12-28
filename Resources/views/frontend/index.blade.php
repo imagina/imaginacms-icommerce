@@ -9,22 +9,8 @@
   <div id="content_index_commerce"
        class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
     
-    {{-- Category Index Banner --}}
-    @if(isset($category->id))
-      @php 
-        $mediaFiles = $category->mediaFiles();
-      @endphp
-      @if(isset($mediaFiles->bannerindeximage->path) && !strpos($mediaFiles->bannerindeximage->path,"default.jpg"))
-        @include('icommerce::frontend.partials.category-index-banner')
-      @else
-        {{-- Breadcrumb --}}
-        @include('icommerce::frontend.partials.breadcrumb')
-      @endif
-    @else
-      {{-- Breadcrumb --}}
-      @include('icommerce::frontend.partials.breadcrumb')
-    @endif
-    
+    {{-- Banner Top--}}
+    @include("icommerce::frontend.partials.banner")
     
     <div class="container">
       <div class="row">
