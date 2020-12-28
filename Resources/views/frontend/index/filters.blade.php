@@ -17,7 +17,11 @@
 			@endif
 			@livewire('icommerce::filter-product-options',key("filter-product-options"))
 
-			@livewire('icommerce::filter-product-types',key("filter-product-types"))
+			@if(config("asgard.icommerce.config.filters.product-types"))
+				@if(config("asgard.icommerce.config.filters.product-types.status"))
+					@livewire('icommerce::filter-product-types',key("filter-product-types"))
+				@endif
+			@endif
 
 		</div>
 	</div>
