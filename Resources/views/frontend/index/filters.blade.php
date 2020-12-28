@@ -4,22 +4,22 @@
 
 		<div id="contenttomove">
 
-			@livewire('icommerce::filter-categories',[
-			"categoryBreadcrumb" => $categoryBreadcrumb,
-			"manufacturer" => $manufacturer ?? null,
-			"category" => $category ?? null
-			],key("filter-categories"))
+			<livewire:icommerce::filter-categories :key="filter-categories"
+            	:categoryBreadcrumb="$categoryBreadcrumb" 
+            	:manufacturer="$manufacturer ?? null" 
+            	:category="$category ?? null" />
 
-			@livewire('icommerce::filter-range-prices',key("filter-range-prices"))
+			<livewire:icommerce::filter-range-prices :key="filter-range-prices" />
 
 			@if(!isset($manufacturer->id))
-				@livewire('icommerce::filter-manufacturers',key("filter-manufacturers"))
+				<livewire:icommerce::filter-manufacturers :key="filter-manufacturers" />
 			@endif
-			@livewire('icommerce::filter-product-options',key("filter-product-options"))
+
+			<livewire:icommerce::filter-product-options :key="filter-product-options" />
 
 			@if(config("asgard.icommerce.config.filters.product-types"))
 				@if(config("asgard.icommerce.config.filters.product-types.status"))
-					@livewire('icommerce::filter-product-types',key("filter-product-types"))
+					<livewire:icommerce::filter-product-types :key="filter-product-types" />
 				@endif
 			@endif
 
