@@ -28,7 +28,7 @@
 
 	<a data-toggle="modal" data-target="#modalFilter"
 	   class="btn btn-primary btn-sm cursor-pointer float-right d-lg-none mb-4 mr-2">
-		Filtrar <i class="fa fa-filter"></i>
+		{{trans('icommerce::common.filters.title')}} <i class="fa fa-filter"></i>
 	</a>
 
 	<div class="modal  fade" id="modalFilter" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
@@ -37,7 +37,7 @@
 			<div class="modal-content">
 
 				<div class="modal-header">
-					<h5 class="modal-title">Filtrar</h5>
+					<h5 class="modal-title">{{trans('icommerce::common.filters.title')}}</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

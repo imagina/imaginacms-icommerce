@@ -22,6 +22,7 @@ return [
       'index' => 'Index Page'
     ],
     'filters' => [
+      'title' => 'Filters',
       'priceRange' => [
         'group' => 'Filter Price Range',
         'step' => 'Step'

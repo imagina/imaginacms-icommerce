@@ -22,6 +22,7 @@ return [
     'index' => 'Página Principal'
   ],
   'filters' => [
+    'title' => 'Filtrar',
     'priceRange' => [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
