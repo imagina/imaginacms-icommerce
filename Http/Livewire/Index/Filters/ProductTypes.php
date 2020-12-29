@@ -57,6 +57,12 @@ class ProductTypes extends Component
 
         $resultShowFilter = $this->getProductRepository()->getProductTypes(json_decode(json_encode($params)));
 
+        // Validation from URL
+        if(isset($params["filter"]["productType"])){
+            $this->selectedType = $params["filter"]["productType"];
+            $this->show = true;
+        }
+
         if($this->isExpanded || $resultShowFilter)
             $this->show = true;
         

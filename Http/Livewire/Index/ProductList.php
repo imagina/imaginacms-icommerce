@@ -142,7 +142,7 @@ class ProductList extends Component
 
     	$params = [
     		"include" => ['discounts','translations','category','categories','manufacturer','productOptions'],
-    		"take" => setting('icommmerce::product-per-page',null,12),
+    		"take" => setting('icommerce::product-per-page',null,12),
     		"page" => $this->page ?? 1,
     		"filter" => $this->filters,
             "order" =>  $this->order

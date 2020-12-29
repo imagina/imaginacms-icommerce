@@ -43,8 +43,11 @@
         
         {{-- Top Content , Products, Pagination --}}
         <div class="col-lg-9">
-          
-          @livewire('icommerce::product-list',["category" => $category ?? null,"manufacturer" => $manufacturer ?? null])
+         
+          <livewire:icommerce::product-list 
+            :category="$category ?? null" 
+            :manufacturer="$manufacturer ?? null" />
+
           <hr>
         
         </div>
