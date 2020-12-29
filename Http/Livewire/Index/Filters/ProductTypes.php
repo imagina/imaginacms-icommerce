@@ -18,10 +18,9 @@ class ProductTypes extends Component
     public function mount(){
 
        $this->productTypes = config("asgard.icommerce.config.filters.product-types.options");
+       $this->isExpanded = config("asgard.icommerce.config.filters.product-types.isExpanded") ?? false;
        $this->show = false;
-       $this->isExpanded = false;
-
-
+       
     }
 
     /*
