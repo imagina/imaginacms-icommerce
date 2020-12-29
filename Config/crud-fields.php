@@ -30,7 +30,20 @@ return [
         'entity' => "Modules\Icommerce\Entities\Category",
         'entityId' => null
       ]
-    ]
+    ],
+    'summaryIndex' => [
+      'name' => 'descriptionIndex',
+      'value' => '',
+      'type' => 'input',
+      'fakeFieldName' => 'options',
+      'columns' => 'col-12 col-md-6',
+      'props' => [
+        'label' => 'icommerce::common.crudFields.categoryIndexDescription',
+        'type' => 'textarea',
+        'rows' => 3,
+      ],
+    ],
+    
     ],
   //Extra field to crud product categories
   'manufacturers' => [],

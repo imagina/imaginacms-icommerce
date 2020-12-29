@@ -100,6 +100,9 @@ return [
     'pending' => 'Transaccion pendiente',
     'history' => 'Estado de la orden',
   ],
+  'crudFields' => [
+    'categoryIndexDescription' => 'Descripción - Página Index'
+  ],
   'emailIntro' => [
     'failed' => 'Reporte del Sistema de Pagos: Transaccion Fallida',
     'complete' => 'Reporte del Sistema de Pagos: Transaccion Completa',
