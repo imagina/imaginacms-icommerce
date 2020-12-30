@@ -1,4 +1,4 @@
-<div class="product-layout product-layout-3">
+<div class="product-layout product-layout-3 card-product">
   @php($discount = $product->discount ?? null)
   @include('icommerce::frontend.components.product.meta')
   
