@@ -44,6 +44,10 @@
         {{-- Top Content , Products, Pagination --}}
         <div class="col-lg-9">
          
+          @if(isset($gallery) && !empty($gallery))
+            @include('icommerce::frontend.partials.carousel-index-image')
+          @endif
+
           <livewire:icommerce::product-list 
             :category="$category ?? null" 
             :manufacturer="$manufacturer ?? null" />

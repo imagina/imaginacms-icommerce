@@ -112,6 +112,7 @@ return [
       'quaternaryimage' => 'single',
       'iconimage' => 'single',
       'bannerindeximage' => 'single',
+      'carouselindeximage' => 'multiple',
     ],
     'manufacturer' => [
       'mainimage' => 'single',

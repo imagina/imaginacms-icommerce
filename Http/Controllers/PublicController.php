@@ -83,6 +83,8 @@ class PublicController extends BaseApiController
   
         $ctpl = "icommerce.category.{$category->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
+
+        $gallery = $this->getGalleryCategory($category);
   
       }else{
         return response()->view('errors.404', [], 404);
@@ -92,7 +94,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('category','categoryBreadcrumb'));
+    return view($tpl, compact('category','categoryBreadcrumb','gallery'));
   }
 
   // view products by category
@@ -283,6 +285,32 @@ class PublicController extends BaseApiController
     ];
 
     return $params;//Response
+  }
+
+  /**
+  * Get Images to gallery top Category
+  *
+  */
+  protected function getGalleryCategory($category){
+
+    $gallery = [];
+
+    $typeGallery = setting('icommerce::carouselIndexCategory',null,'carousel-category-active');
+    if(isset($category->id)){
+
+      if($category->parent_id!=null && $typeGallery=="carousel-category-parent"){
+        $category = Category::whereAncestorOf($category)->whereNull("parent_id")->first();
+      }
+
+      $mediaFiles = $category->mediaFiles();
+      if(isset($mediaFiles->carouselindeximage)){
+        $gallery = $mediaFiles->carouselindeximage;
+      } 
+
+    }
+
+    return $gallery;
+
   }
   
 }
