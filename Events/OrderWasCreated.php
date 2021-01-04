@@ -11,9 +11,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 // Transformers
 use Modules\Icommerce\Transformers\OrderTransformer;
 
-class OrderWasCreated implements ShouldBroadcast
+class OrderWasCreated /*implements ShouldBroadcast*/
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+   // use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
     public $items;
