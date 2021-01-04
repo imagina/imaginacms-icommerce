@@ -18,8 +18,8 @@
         {{-- Filters, Widgets --}}
         <div class="col-lg-3">
           
-          @includeFirst(['icommerce.index.filters',
-          'icommerce::frontend.index.filters'],["categoryBreadcrumb" => $categoryBreadcrumb])
+          @include('icommerce::frontend.index.filters',[
+            "categoryBreadcrumb" => $categoryBreadcrumb])
 
           @if(config("asgard.icommerce.config.widgets"))
             <div class="widgets">
