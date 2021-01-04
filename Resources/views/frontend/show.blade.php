@@ -18,12 +18,12 @@
           <div class="row">
             <div class="col-lg-6 mb-5">
 
-              @includeFirst(['icommerce.widgets.gallery','icommerce::frontend.widgets.gallery'])
+              @includeFirst(['icommerce::frontend.widgets.gallery'])
 
             </div>
 
             <div class="col-lg-6 mb-5">
-              @includeFirst(['icommerce.widgets.information','icommerce::frontend.widgets.information'])
+              @includeFirst(['icommerce::frontend.widgets.information'])
               <div class="row">
                 <div class="col-12">
                   <h5 class="pay mb-3">MEDIOS DE PAGO</h5>
@@ -93,7 +93,7 @@
                   <div class="tab-content border">
                     <div class="tab-pane active " id="descripcion" role="tabpanel">
                       <div class="p-3 p-md-5">
-                        @includeFirst(['icommerce.products.tabs','icommerce::frontend.products.tabs'])
+                        @includeFirst(['icommerce::frontend.products.tabs'])
                       </div>
 
                     </div>

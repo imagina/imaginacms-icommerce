@@ -65,6 +65,7 @@ class Cart extends Component
           "quantity" => $quantity,
           "product_option_values" => $productOptionValues
         ];
+        
         $this->cartProductRepository()->create($data);
         $this->updateCart();
   

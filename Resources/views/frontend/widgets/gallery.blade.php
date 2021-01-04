@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="d-none d-md-block">
-        @includeFirst(['icommerce.products.share','icommerce::frontend.products.share'])
+        @includeFirst(['icommerce::frontend.products.share'])
       </div>
 
     </div>
@@ -49,7 +49,7 @@
       <i class="fa fa-search-plus" aria-hidden="true" style="bottom: 18px; right: 18px; position: absolute; "></i>
     </a>
   </div>
-  @includeFirst(['icommerce.products.share','icommerce::frontend.products.share'])
+  @includeFirst(['icommerce::frontend.products.share'])
 </div>
 
 @section('scripts-owl')

@@ -41,7 +41,7 @@
         margin: 0;
         overflow: hidden;
         
-        &:before {
+        .before {
           @include pseudo;
           width: 100%;
           height: 100%;

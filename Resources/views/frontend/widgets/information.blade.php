@@ -86,6 +86,12 @@
             </div>
             COMPRAR
           </a>
+  
+          <!-- BUTTON WISHLIST -->
+          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist" v-if="!products_children">
+            AGREGAR A LA LISTA
+            <i class="fa fa-heart-o ml-1"></i>
+          </a>
         </div>
         <!-- BUTTON CONSULT -->
         <div  v-else>

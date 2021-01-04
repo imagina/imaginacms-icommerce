@@ -59,7 +59,6 @@ class ProductList extends Component
 
 	    $this->category = $category;
         $this->manufacturer = $manufacturer;
-        
 	    $this->totalProducts = 0;
 	   
         $this->initConfigs();
