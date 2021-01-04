@@ -58,9 +58,6 @@ class PublicController extends BaseApiController
     $slug = end($argv);
 
     $tpl = 'icommerce::frontend.index';
-    $ttpl = 'icommerce.index';
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
   
     $category = null;
   
