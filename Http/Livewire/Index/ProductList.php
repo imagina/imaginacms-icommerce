@@ -184,10 +184,7 @@ class ProductList extends Component
     	$this->totalProducts = $products->total();
 
     	$tpl = 'icommerce::frontend.livewire.index.product-list';
-    	$ttpl = 'icommerce.livewire.product-list';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
-
+    	
   		// Emit Finish Render
 		//\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
 		$this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;

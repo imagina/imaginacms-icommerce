@@ -1,4 +1,4 @@
-<div class="option option-{{$option->id}}">
+<div class="option option-{{$option->id}} mb-4">
 	@php($isExpanded = count(array_intersect($option->values ? $option->values->pluck("id")->toArray() : [],$this->selectedOptionValues)))
 
 
@@ -6,7 +6,7 @@
 		<a data-toggle="collapse" href="#collapseOption-{{$option->id}}" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}"
 		   aria-controls="collapseOption-{{$option->id}}" class="{{$isExpanded ? '' : 'collapsed'}}">
 	  		
-	  		<h5 class="text-secondary">
+	  		<h5 class="p-3 border-top border-bottom">
 	  			<i class="fa fa angle float-right" aria-hidden="true"></i>
 	  			{{$option->description}}
 	  		</h5>

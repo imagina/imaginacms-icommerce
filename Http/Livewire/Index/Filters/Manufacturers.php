@@ -8,12 +8,15 @@ class Manufacturers extends Component
 {
 	
     protected $manufacturers;
+
     public $selectedManufacturers;
+    public $isExpanded;
 
 	protected $listeners = ['productListRendered'];
 	
 	public function mount(){
 		$this->selectedManufacturers = [];
+        $this->isExpanded = config("asgard.icommerce.config.filters.manufacturers.isExpanded") ?? false;
 	}
     /*
     * When Manufacturer has been selected
@@ -55,12 +58,12 @@ class Manufacturers extends Component
 
     	if (view()->exists($ttpl)) $tpl = $ttpl;
 	
-			$isExpanded = false;
 		
-			$count = count(array_intersect($this->manufacturers ? $this->manufacturers->pluck("id")->toArray() : [],$this->selectedManufacturers));
-			if($count) $isExpanded = true;
+		$count = count(array_intersect($this->manufacturers ? $this->manufacturers->pluck("id")->toArray() : [],$this->selectedManufacturers));
+		
+        if($count) $this->isExpanded = true;
 			
-			return view($tpl,['manufacturers' => $this->manufacturers,"isExpanded" => $isExpanded]);
+		return view($tpl,['manufacturers' => $this->manufacturers]);
 			
     }
 

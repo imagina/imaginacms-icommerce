@@ -112,6 +112,7 @@ return [
       'quaternaryimage' => 'single',
       'iconimage' => 'single',
       'bannerindeximage' => 'single',
+      'carouselindeximage' => 'multiple',
     ],
     'manufacturer' => [
       'mainimage' => 'single',
@@ -236,7 +237,8 @@ return [
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
-      'status' => true
+      'status' => true,
+      'isExpanded' => false,
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
@@ -245,6 +247,7 @@ return [
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
       'status' => true,
+      'isExpanded' => false,
       'options' => [
         'affordable' => [
           'title' => 'icommerce::common.product-type.affordable',

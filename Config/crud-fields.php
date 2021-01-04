@@ -43,6 +43,18 @@ return [
         'rows' => 3,
       ],
     ],
+    'carouselIndexImage' => [
+      'multiple' => true,
+      'value' => (object)[],
+      'name' => 'mediasMulti',
+      'type' => 'media',
+      'props' => [
+        'label' => 'Carousel Página Índice',
+        'zone' => 'carouselindeximage',
+        'entity' => "Modules\Icommerce\Entities\Category",
+        'entityId' => null
+      ]
+    ],
     
     ],
   //Extra field to crud product categories

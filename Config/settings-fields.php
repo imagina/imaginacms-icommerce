@@ -31,6 +31,24 @@ return [
       'label' => 'icommerce::common.settings.customIndexTitle'
     ],
   ],
+  'carouselIndexCategory' => [
+    'value' => 'carousel-category-active',
+    'name' => 'icommerce::carouselIndexCategory',
+    'group' => 'icommerce::common.pages.index',
+    'type' => 'select',
+    'props' => [
+      'label' => 'Imagenes para el Carousel Top',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Categoria Activa','value' => 'carousel-category-active'],
+        ['label' => 'Categoria Padre','value' => 'carousel-category-parent'],
+      ]
+    ]
+  ],
   'filterRangePricesStep' => [
     'name' => 'icommerce::filterRangePricesStep',
     'group' => 'icommerce::common.filters.priceRange.group',

@@ -83,7 +83,9 @@ class OldPublicController extends BasePublicController
   
     $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
     
-    return view($tpl, compact('category','products','paginate','categoryBreadcrumb'));
+    $gallery = $this->getGalleryCategory($category);
+   
+    return view($tpl, compact('category','products','paginate','categoryBreadcrumb','gallery'));
   }
   
   // Informacion de Producto
@@ -187,6 +189,32 @@ class OldPublicController extends BasePublicController
     //Set locale to filter
     $params->filter->locale = \App::getLocale();
     return $params;//Response
+  }
+
+  /**
+  * Get Images to gallery top Category
+  *
+  */
+  protected function getGalleryCategory($category){
+
+    $gallery = [];
+
+    $typeGallery = setting('icommerce::carouselIndexCategory',null,'carousel-category-active');
+    if(isset($category->id)){
+
+      if($category->parent_id!=null && $typeGallery=="carousel-category-parent"){
+        $category = Category::whereAncestorOf($category)->whereNull("parent_id")->first();
+      }
+
+      $mediaFiles = $category->mediaFiles();
+      if(isset($mediaFiles->carouselindeximage)){
+        $gallery = $mediaFiles->carouselindeximage;
+      } 
+
+    }
+
+    return $gallery;
+
   }
   
 }
