@@ -1,8 +1,7 @@
 @if($categories && count($categories)>0)
 <div class="filter-categories mb-4">
 
-  @php($titleFilter = config("asgard.icommerce.config.filters.categories.title"))
-  <h5 class="text-secondary">{{ trans($titleFilter) }}</h5>
+  <h5 class="text-secondary">{{$titleFilter}}</h5>
   <hr>
   
   <div class="row">

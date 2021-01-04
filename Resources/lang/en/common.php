@@ -23,6 +23,10 @@ return [
     ],
     'filters' => [
       'title' => 'Filters',
+      'categories' => [
+          'group' => 'Filter Categories',
+          'title' => 'Title'
+       ],
       'priceRange' => [
         'group' => 'Filter Price Range',
         'step' => 'Step'

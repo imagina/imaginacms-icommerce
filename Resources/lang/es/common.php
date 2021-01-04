@@ -23,6 +23,10 @@ return [
   ],
   'filters' => [
     'title' => 'Filtrar',
+    'categories' => [
+      'group' => 'Filtro Categorias',
+      'title' => 'Titulo'
+    ],
     'priceRange' => [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
