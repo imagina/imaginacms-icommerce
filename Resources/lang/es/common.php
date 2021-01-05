@@ -184,4 +184,8 @@ return [
     ],
   ],
 
+  'social' => [
+    'share' => 'Compartir'
+  ],
+
 ];
