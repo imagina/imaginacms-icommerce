@@ -19,7 +19,8 @@
             <div class="col-lg-6 mb-5">
 
               @include('icommerce::frontend.widgets.gallery')
-
+  
+              @includeFirst(['icommerce::frontend.products.share'])
             </div>
 
             <div class="col-lg-6 mb-5">
