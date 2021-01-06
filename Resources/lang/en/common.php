@@ -23,6 +23,10 @@ return [
     ],
     'filters' => [
       'title' => 'Filters',
+      'categories' => [
+          'group' => 'Filter Categories',
+          'title' => 'Title'
+       ],
       'priceRange' => [
         'group' => 'Filter Price Range',
         'step' => 'Step'
@@ -173,4 +177,9 @@ return [
             'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
         ],
     ],
+
+    'social' => [
+        'share' => 'Share'
+    ],
+
 ];

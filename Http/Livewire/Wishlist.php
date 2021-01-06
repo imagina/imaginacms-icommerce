@@ -7,16 +7,19 @@ use Illuminate\Http\Request;
 
 class Wishlist extends Component
 {
-  public $view;
-  public $defaultView;
+
+ 
   public $moduleView;
+  public $showButton;
+
   private $params;
   protected $listeners = ['addToWishList'];
 
-  public function mount(Request $request, $params = [])
+  public function mount(Request $request, $showButton = false)
   {
-    $this->defaultView = $params["view"] ?? 'icommerce.livewire.wishlist';
+
     $this->moduleView = 'icommerce::frontend.livewire.wishlist';
+    $this->showButton = $showButton;
   }
 
   /**
@@ -40,8 +43,9 @@ class Wishlist extends Component
    */
   public function render()
   {
-    $view = view()->exists($this->defaultView) ? $this->defaultView : $this->moduleView;
-    return view($view);
+    
+    return view($this->moduleView);
+
   }
 
   /**

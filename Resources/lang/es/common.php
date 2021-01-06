@@ -23,6 +23,10 @@ return [
   ],
   'filters' => [
     'title' => 'Filtrar',
+    'categories' => [
+      'group' => 'Filtro Categorias',
+      'title' => 'Titulo'
+    ],
     'priceRange' => [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
@@ -178,6 +182,10 @@ return [
       'comment' => 'Comment',
       'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
     ],
+  ],
+
+  'social' => [
+    'share' => 'Compartir'
   ],
 
 ];

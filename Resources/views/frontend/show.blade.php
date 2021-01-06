@@ -18,12 +18,14 @@
           <div class="row">
             <div class="col-lg-6 mb-5">
 
-              @includeFirst(['icommerce::frontend.widgets.gallery'])
+              @include('icommerce::frontend.widgets.gallery')
 
             </div>
 
             <div class="col-lg-6 mb-5">
-              @includeFirst(['icommerce::frontend.widgets.information'])
+              
+              @include('icommerce::frontend.widgets.information')
+
               <div class="row">
                 <div class="col-12">
                   <h5 class="pay mb-3">MEDIOS DE PAGO</h5>

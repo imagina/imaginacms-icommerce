@@ -49,6 +49,24 @@ return [
       ]
     ]
   ],
+  'filterCategoriesTitle' => [
+    'value' => 'basic',
+    'name' => 'icommerce::filterCategoriesTitle',
+    'group' => 'icommerce::common.filters.categories.group',
+    'type' => 'select',
+    'props' => [
+      'label' => 'Titulo a mostrar',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Palabra Categoria','value' => 'basic'],
+        ['label' => 'Titulo de la Categoria','value' => 'category-title'],
+      ]
+    ]
+  ],
   'filterRangePricesStep' => [
     'name' => 'icommerce::filterRangePricesStep',
     'group' => 'icommerce::common.filters.priceRange.group',

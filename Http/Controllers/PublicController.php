@@ -62,6 +62,7 @@ class PublicController extends BaseApiController
     $category = null;
   
     $categoryBreadcrumb = [];
+    $gallery = [];
     
     if($slug && $slug != trans('icommerce::routes.store.index.index')){
       
