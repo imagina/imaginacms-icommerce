@@ -32,7 +32,7 @@ class Categories extends Component
     $this->manufacturer = $manufacturer;
     $this->category = $category;
 
-    $this->isExpanded = config("asgard.icommerce.config.filters.categories.isExpanded") ?? false;
+    $this->isExpanded = config("asgard.icommerce.config.filters.categories.isExpanded") ?? true;
     
     $this->initConfigs();
   }
