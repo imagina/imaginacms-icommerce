@@ -117,6 +117,8 @@ return [
     'manufacturer' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
+      'tertiaryimage' => 'single',
+      'quaternaryimage' => 'single',
     ],
     'paymentmethod' => [
       'mainimage' => 'single',

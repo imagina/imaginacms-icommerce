@@ -49,6 +49,35 @@ return [
       ]
     ]
   ],
+  /*
+  'breadcrumbIndexPosition' => [
+    'value' => 'top',
+    'name' => 'icommerce::breadcrumbIndexPosition',
+    'group' => 'icommerce::common.pages.index',
+    'type' => 'select',
+    'props' => [
+      'label' => 'Posicion del Breadcrumb',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Top','value' => 'top'],
+        ['label' => 'Sidebar','value' => 'sidebar'],
+      ]
+    ]
+  ],
+  */
+  'showBreadcrumbSidebar' => [
+    'value' => false,
+    'name' => 'icommerce::showBreadcrumbSidebar',
+    'type' => 'checkbox',
+    'group' => 'icommerce::common.pages.index',
+    'props' => [
+      'label' => 'Mostrar breadcrumb en Sidebar'
+    ]
+  ],
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
