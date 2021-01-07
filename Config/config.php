@@ -229,7 +229,8 @@ return [
        *  onlyLeftAndRightOfTheSelectedNode
        */
       'mode' => 'allTree',
-      'status' => true
+      'status' => true,
+      'isExpanded' => true,
     ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',

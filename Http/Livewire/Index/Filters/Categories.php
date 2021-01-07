@@ -16,6 +16,7 @@ class Categories extends Component
   public $configs;
   public $manufacturer;
   public $category;
+  public $isExpanded;
   
   public $extraParamsUrl;
   
@@ -30,6 +31,8 @@ class Categories extends Component
     
     $this->manufacturer = $manufacturer;
     $this->category = $category;
+
+    $this->isExpanded = config("asgard.icommerce.config.filters.categories.isExpanded") ?? false;
     
     $this->initConfigs();
   }
