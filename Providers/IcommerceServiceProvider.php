@@ -23,7 +23,7 @@ class IcommerceServiceProvider extends ServiceProvider
    * @var bool
    */
   protected $defer = false;
-  
+
   /**
    * Register the service provider.
    *
@@ -33,7 +33,7 @@ class IcommerceServiceProvider extends ServiceProvider
   {
     $this->registerBindings();
     $this->app['events']->listen(BuildingSidebar::class, RegisterIcommerceSidebar::class);
-    
+
     $this->app['events']->listen(LoadingBackendTranslations::class, function (LoadingBackendTranslations $event) {
       $event->load('categories', Arr::dot(trans('icommerce::categories')));
       $event->load('manufacturers', Arr::dot(trans('icommerce::manufacturers')));
@@ -72,14 +72,14 @@ class IcommerceServiceProvider extends ServiceProvider
       $event->load('shippingmethodgeozones', Arr::dot(trans('icommerce::shippingmethodgeozones')));
       $event->load('paymentmethodgeozones', Arr::dot(trans('icommerce::paymentmethodgeozones')));
       // append translations
-      
-      
+
+
     });
   }
-  
+
   public function boot()
   {
-    
+
     $this->publishConfig('icommerce', 'config');
     $this->publishConfig('icommerce', 'crud-fields');
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings'), "asgard.icommerce.settings");
@@ -87,11 +87,11 @@ class IcommerceServiceProvider extends ServiceProvider
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'permissions'), "asgard.icommerce.permissions");
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-    
+
     $this->registerComponents();
     $this->registerComponentsLivewire();
   }
-  
+
   /**
    * Get the services provided by the provider.
    *
@@ -101,18 +101,18 @@ class IcommerceServiceProvider extends ServiceProvider
   {
     return array();
   }
-  
+
   private function registerBindings()
   {
     $this->app->bind(
       'Modules\Icommerce\Repositories\CategoryRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCategoryRepository(new \Modules\Icommerce\Entities\Category());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCategoryDecorator($repository);
       }
     );
@@ -120,11 +120,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ManufacturerRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentManufacturerRepository(new \Modules\Icommerce\Entities\Manufacturer());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheManufacturerDecorator($repository);
       }
     );
@@ -132,11 +132,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductRepository(new \Modules\Icommerce\Entities\Product());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductDecorator($repository);
       }
     );
@@ -144,11 +144,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductTagRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductTagRepository(new \Modules\Icommerce\Entities\ProductTag());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductTagDecorator($repository);
       }
     );
@@ -156,11 +156,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductCategoryRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductCategoryRepository(new \Modules\Icommerce\Entities\ProductCategory());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductCategoryDecorator($repository);
       }
     );
@@ -168,11 +168,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OptionRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOptionRepository(new \Modules\Icommerce\Entities\Option());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOptionDecorator($repository);
       }
     );
@@ -180,11 +180,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CouponRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCouponRepository(new \Modules\Icommerce\Entities\Coupon());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCouponDecorator($repository);
       }
     );
@@ -192,11 +192,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CurrencyRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCurrencyRepository(new \Modules\Icommerce\Entities\Currency());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCurrencyDecorator($repository);
       }
     );
@@ -204,11 +204,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderRepository(new \Modules\Icommerce\Entities\Order());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderDecorator($repository);
       }
     );
@@ -216,11 +216,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductDiscountRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductDiscountRepository(new \Modules\Icommerce\Entities\ProductDiscount());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductDiscountDecorator($repository);
       }
     );
@@ -228,11 +228,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OptionValueRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOptionValueRepository(new \Modules\Icommerce\Entities\OptionValue());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOptionValueDecorator($repository);
       }
     );
@@ -240,11 +240,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductOptionRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductOptionRepository(new \Modules\Icommerce\Entities\ProductOption());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductOptionDecorator($repository);
       }
     );
@@ -252,11 +252,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductOptionValueRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductOptionValueRepository(new \Modules\Icommerce\Entities\ProductOptionValue());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductOptionValueDecorator($repository);
       }
     );
@@ -264,11 +264,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderProductRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderProductRepository(new \Modules\Icommerce\Entities\OrderProduct());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderProductDecorator($repository);
       }
     );
@@ -276,11 +276,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderOptionRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderOptionRepository(new \Modules\Icommerce\Entities\OrderOption());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderOptionDecorator($repository);
       }
     );
@@ -288,11 +288,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderHistoryRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderHistoryRepository(new \Modules\Icommerce\Entities\OrderStatusHistory());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderHistoryDecorator($repository);
       }
     );
@@ -300,11 +300,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderStatusRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderStatusRepository(new \Modules\Icommerce\Entities\OrderStatus());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderStatusDecorator($repository);
       }
     );
@@ -312,11 +312,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\OrderShipmentRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderShipmentRepository(new \Modules\Icommerce\Entities\OrderShipment());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheOrderShipmentDecorator($repository);
       }
     );
@@ -324,11 +324,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CouponCategoryRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCouponCategoryRepository(new \Modules\Icommerce\Entities\CouponCategory());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCouponCategoryDecorator($repository);
       }
     );
@@ -336,11 +336,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CouponProductRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCouponProductRepository(new \Modules\Icommerce\Entities\CouponProduct());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCouponProductDecorator($repository);
       }
     );
@@ -348,11 +348,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CouponHistoryRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCouponHistoryRepository(new \Modules\Icommerce\Entities\CouponOrderHistory());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCouponHistoryDecorator($repository);
       }
     );
@@ -360,11 +360,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\WishlistRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentWishlistRepository(new \Modules\Icommerce\Entities\Wishlist());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheWishlistDecorator($repository);
       }
     );
@@ -372,11 +372,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\TransactionRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTransactionRepository(new \Modules\Icommerce\Entities\Transaction());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheTransactionDecorator($repository);
       }
     );
@@ -384,11 +384,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ShippingRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentShippingRepository(new \Modules\Icommerce\Entities\Shipping());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheShippingDecorator($repository);
       }
     );
@@ -396,11 +396,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\TaxRateRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTaxRateRepository(new \Modules\Icommerce\Entities\TaxRate());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheTaxRateDecorator($repository);
       }
     );
@@ -408,11 +408,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\TaxClassRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTaxClassRepository(new \Modules\Icommerce\Entities\TaxClass());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheTaxClassDecorator($repository);
       }
     );
@@ -420,11 +420,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CartRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCartRepository(new \Modules\Icommerce\Entities\Cart());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCartDecorator($repository);
       }
     );
@@ -432,11 +432,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\CartProductRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentCartProductRepository(new \Modules\Icommerce\Entities\CartProduct());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheCartProductDecorator($repository);
       }
     );
@@ -444,11 +444,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ItemTypeRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentItemTypeRepository(new \Modules\Icommerce\Entities\ItemType());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheItemTypeDecorator($repository);
       }
     );
@@ -456,11 +456,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\RelatedProductRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentRelatedProductRepository(new \Modules\Icommerce\Entities\RelatedProduct());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheRelatedProductDecorator($repository);
       }
     );
@@ -468,11 +468,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\PriceListRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentPriceListRepository(new \Modules\Icommerce\Entities\PriceList());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CachePriceListDecorator($repository);
       }
     );
@@ -480,11 +480,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ProductListRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductListRepository(new \Modules\Icommerce\Entities\ProductList());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheProductListDecorator($repository);
       }
     );
@@ -492,24 +492,24 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\PaymentMethodRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentPaymentMethodRepository(new \Modules\Icommerce\Entities\PaymentMethod());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CachePaymentMethodDecorator($repository);
       }
     );
-    
+
     $this->app->bind(
       'Modules\Icommerce\Repositories\ShippingMethodRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentShippingMethodRepository(new \Modules\Icommerce\Entities\ShippingMethod());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheShippingMethodDecorator($repository);
       }
     );
@@ -517,11 +517,11 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentShippingMethodGeozoneRepository(new \Modules\Icommerce\Entities\ShippingMethodGeozone());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheShippingMethodGeozoneDecorator($repository);
       }
     );
@@ -529,34 +529,34 @@ class IcommerceServiceProvider extends ServiceProvider
       'Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentPaymentMethodGeozoneRepository(new \Modules\Icommerce\Entities\PaymentMethodGeozone());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CachePaymentMethodGeozoneDecorator($repository);
       }
     );
-    
+
     $this->app->bind(
       'Modules\Icommerce\Repositories\StoreRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentStoreRepository(new \Modules\Icommerce\Entities\Store());
-        
+
         if (!config('app.cache')) {
           return $repository;
         }
-        
+
         return new \Modules\Icommerce\Repositories\Cache\CacheStoreDecorator($repository);
       }
     );
 
 
 // add bindings
-  
-  
+
+
   }
-  
+
   /**
    * Register all commands for this module
    */
@@ -564,24 +564,23 @@ class IcommerceServiceProvider extends ServiceProvider
   {
     $this->registerUpdateCartCommand();
   }
-  
+
   /**
    * Register the refresh thumbnails command
    */
   private function registerUpdateCartCommand()
   {
-    
+
     $this->app['command.icommerce.update-cart'] = $this->app->make(UpdateCarts::class);
     $this->commands(['ccommand.icommerce.update-cart']);
   }
-  
+
   /**
    * Register components
    */
 
   private function registerComponents(){
-    Blade::component('icommerce-product-list-item', \Modules\Icommerce\View\Components\ProductListItem::class);
-    Blade::component('icommerce-category-list', \Modules\Icommerce\View\Components\CategoryList::class);
+    Blade::componentNamespace("Modules\Icommerce\View\Components", 'icommerce');
   }
 
   /**
@@ -589,22 +588,16 @@ class IcommerceServiceProvider extends ServiceProvider
    */
   private function registerComponentsLivewire()
   {
-    
-    Livewire::component('icommerce::loading', \Modules\Icommerce\Http\Livewire\Loading::class);
-    Livewire::component('icommerce::product-list', \Modules\Icommerce\Http\Livewire\ProductList::class);
-    Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\FilterCategories::class);
-    Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\FilterRangePrices::class);
-    Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\FilterManufacturers::class);
-    Livewire::component('icommerce::filter-orderby', \Modules\Icommerce\Http\Livewire\FilterOrderBy::class);
-    Livewire::component('icommerce::product-index', \Modules\Icommerce\Http\Livewire\ProductIndex::class);
-    Livewire::component('icommerce::category-index', \Modules\Icommerce\Http\Livewire\CategoryIndex::class);
-    Livewire::component('icommerce::manufacturer-index', \Modules\Icommerce\Http\Livewire\ManufacturerIndex::class);
-    Livewire::component('icommerce::products-by-category', \Modules\Icommerce\Http\Livewire\ProductsByCategory::class);
+
+    Livewire::component('icommerce::product-list', \Modules\Icommerce\Http\Livewire\Index\ProductList::class);
+    Livewire::component('icommerce::filter-categories', \Modules\Icommerce\Http\Livewire\Index\Filters\Categories::class);
+    Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\Index\Filters\RangePrices::class);
+    Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\Index\Filters\Manufacturers::class);
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
     Livewire::component('icommerce::wishlist', \Modules\Icommerce\Http\Livewire\Wishlist::class);
-    Livewire::component('icommerce::filter-product-options', \Modules\Icommerce\Http\Livewire\FilterProductOptions::class);
-    
+    Livewire::component('icommerce::filter-product-options', \Modules\Icommerce\Http\Livewire\Index\Filters\ProductOptions::class);
+    Livewire::component('icommerce::filter-product-types', \Modules\Icommerce\Http\Livewire\Index\Filters\ProductTypes::class);
   }
-  
-  
+
+
 }

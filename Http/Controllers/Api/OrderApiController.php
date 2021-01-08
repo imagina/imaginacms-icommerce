@@ -218,7 +218,7 @@ class OrderApiController extends BaseApiController
         $dataMethods = $supportShipping->fixDataSend((object)$data);
 
         //Get Shipping Methods with calculates
-        $shippingMethods = $this->shippingMethod->getCalculations(new Request($dataMethods),[]);
+        $shippingMethods = $this->shippingMethod->getCalculations($dataMethods,$params);
 
         //Get Shipping Method Price
         $shippingPrice = $supportShipping->searchPriceByName($shippingMethods, $data['shipping_method']);
@@ -278,7 +278,7 @@ class OrderApiController extends BaseApiController
           app($payment->options->init)->init(new Request($data))
         );
   
-        $updateCart=$this->cart->update($cart,['status'=>2]);
+        $updateCart = $this->cart->update($cart,['status'=>2]);
         //Response
         $response = ["data" => [
           "orderId" => $order->id,

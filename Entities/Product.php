@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ihelpers\Traits\Relationable;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
@@ -89,14 +90,14 @@ class Product extends Model implements TaggableInterface
 
     public function priceLists()
     {
-        return $this->belongsToMany(PriceList::class, 'icommerce__product_lists')
-            ->withPivot('id', 'price')
+        return $this->belongsToMany(PriceList::class, ProductList::class)
+            ->withPivot('price')
             ->withTimestamps();
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)->with('translations');
     }
 
     public function taxClass()
@@ -106,7 +107,7 @@ class Product extends Model implements TaggableInterface
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'icommerce__product_category')->withTimestamps();
+        return $this->belongsToMany(Category::class, 'icommerce__product_category')->withTimestamps()->with('translations');
     }
 
     public function orderItems()
@@ -134,7 +135,7 @@ class Product extends Model implements TaggableInterface
     public function optionValues()
     {
         return $this->hasMany(ProductOptionValue::class);
-  
+
     }
 
     public function relatedProducts()
@@ -248,39 +249,38 @@ class Product extends Model implements TaggableInterface
 
     }
 
-    public function getDiscountAttribute()
-    {
-      $now = date('Y-m-d');
+    public function discount(){
 
+      // return one Discount
+      return $this->hasOne(ProductDiscount::class)
+
+        //where the discount belongs to the user department's
+        //or where the department of the discount is Null - for all Users
+        ->where(function ($query){
+          $query->whereIn('icommerce__product_discounts.department_id',function ($query) {
       $userId = Auth::user() ? Auth::user()->id : 0;
-      $departments = [];
-      if ($userId){
-        $departments = \DB::connection(env('DB_CONNECTION', 'mysql'))
-          ->table('iprofile__user_department')->select("department_id")
-          ->where('user_id', $userId)
-          ->pluck('department_id');
-
-      }
-
-      $discount = $this->discounts()
-        ->orderBy('priority', 'desc')
-        ->orderBy('created_at', 'asc')
-        ->whereRaw('quantity > quantity_sold')
-        ->where('date_end', '>=', $now)
-        ->where('date_start', '<=', $now)
-        ->where(function ($query) use ($departments){
-          $query->whereIn('department_id', $departments)
-            ->orWhereNull('department_id');
+            $query->select("department_id")
+              ->from('iprofile__user_department')
+              ->where('user_id', $userId);
+          })->orWhereNull('department_id');
         })
-        ->first();
 
-      if(isset($discount->id)){
-        return $discount;
+        // ordered by priority
+        ->orderBy('priority', 'desc')
 
-      }else{
-        return null;
+        // ordered by created_at
+        ->orderBy('created_at', 'asc')
+
+        // where the quantity_sold be less than quantity available for the discount
+        ->whereRaw('quantity_sold < icommerce__product_discounts.quantity')
+
+        // where now is between date_end and date_start
+        ->where('date_end', '>=', date('Y-m-d'))
+        ->where('date_start', '<=', date('Y-m-d'));
+
       }
-    }
+
+
 
 
     public function getSecondaryImageAttribute()
@@ -348,15 +348,15 @@ class Product extends Model implements TaggableInterface
      */
     public function getUrlAttribute()
     {
-  
+
       $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-  
+
       if($useOldRoutes)
         return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.'.$this->category->slug.'.product', [$this->slug]);
       else
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.show',$this->slug);
-      
-        
+
+
 
     }
     /**
@@ -373,8 +373,33 @@ class Product extends Model implements TaggableInterface
       if($days <=  $daysEnabledForNewProducts){
         $isNew = true;
       }
-      
+
       return $isNew;
     }
- 
+
+    public function getPriceAttribute($value){
+        $price = $value;
+        $auth=\Auth::user() ?? \Auth::guard('api')->user();
+        $priceList = setting('icommerce::product-price-list-enable');
+        $setting = json_decode(request()->get('setting'));
+
+        if($auth && $priceList && !isset($setting->fromAdmin)){
+            foreach($this->priceLists as $pList){
+                if($pList->related_entity=="Modules\Iprofile\Entities\Department"){
+                    if($pList->related_id !== '0' && $pList->related_id !== 0) {
+                        $depts = $auth->departments()->where('department_id',$pList->related_id)->get();
+                        if ($auth && count($depts) > 0) {
+                            $price = $pList->pivot->price;
+                        }
+                    }else{
+                        $price = $pList->pivot->price;
+                    }
+                }else{
+                    $price = $pList->pivot->price;
+                }
+            }//has priceLists
+        }
+        return $price;
+    }
+
 }

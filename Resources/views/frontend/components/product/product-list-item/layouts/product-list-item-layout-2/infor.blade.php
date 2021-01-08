@@ -2,9 +2,14 @@
   
   <div class="card-product">
     <div class="cursor-pointer position-relative">
-      
-      @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.image')
-      
+      @if(!isset($productListLayout) || $productListLayout!='one')
+
+        <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
+           <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                                  :mediaFiles="$product->mediaFiles()"/>
+        </div>
+
+      @endif
       <div class="card-overlay text-center">
         
         <div class="top">
@@ -20,7 +25,7 @@
         </div>
         
         <div class="bottom">
-          @if($product->price>0 || $product->stock_status == 1)
+          @if($product->price>0  && $product->stock_status && $product->quantity)
             <a  onClick="window.livewire.emit('addToCart',{{$product->id}})" class="btn btn-warning px-4 text-white cursor-pointer">
               <i class="fa fa-shopping-basket"></i>
               COMPRAR
@@ -44,7 +49,7 @@
       
       <div class="category text-center">{{$product->category->title}}</div>
       
-      @if(isset($mainLayout) && $mainLayout=='one')
+      @if(isset($productListLayout) && $productListLayout=='one')
         <div class="summary">
           {{$product->summary}}
         </div>
@@ -63,5 +68,8 @@
       </div>
     
     </div>
+    @if($addToCartWithQuantity)
+      @include("icommerce::frontend.components.product.addToCartWithQuantity")
+    @endif
   </div>
 </div>

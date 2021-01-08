@@ -195,6 +195,7 @@ return [
         'destroy' => 'icommerce::lists.destroy resource',
     ],
     'icommerce.productlists' => [
+        'manage' => 'icommerce::productlists.manage resource',
         'index' => 'icommerce::productlists.list resource',
         'create' => 'icommerce::productlists.create resource',
         'edit' => 'icommerce::productlists.edit resource',

@@ -10,15 +10,19 @@
   <h2 class="name">@{{product.name}}</h2>
   <!-- END TITLE -->
 
+  <!-- REFERENCE -->
+  <div v-if="product.reference" class="reference"><span class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}</div>
+  
+  <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
-
+  
+ 
   <!-- PRICE -->
   <div v-if="products_children === false && product.price >0.00">
     <div class="price text-primary">
-      @{{currencysymbolleft}}
-      <!--@{{ new Intl.NumberFormat().format((product.price + productOptionsSelected.total) * quantity) }}-->
-      @{{product.formattedPrice}}
-      @{{currencysymbolright}}
+      {{isset($currency->id) ? $currency->symbol_left : '$'}}
+      {{formatMoney($discount->price ?? $product->price)}}
+      {{isset($currency->id) ? $currency->symbol_right : ''}}
     </div>
   </div>
   <!-- END PRICE -->
@@ -86,6 +90,12 @@
               </svg>
             </div>
             COMPRAR
+          </a>
+  
+          <!-- BUTTON WISHLIST -->
+          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist" v-if="!products_children">
+            <span>AGREGAR A LA LISTA</span>
+            <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
         <!-- BUTTON CONSULT -->

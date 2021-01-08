@@ -6,11 +6,11 @@
   
   
   <div id="checkout" class="page checkout">
-    
-    
-    @component('partials.widgets.breadcrumb')
+  
+    <x-isite::breadcrumb>
       <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
-    @endcomponent
+    </x-isite::breadcrumb>
+
     
     
     <div class="container">
@@ -601,7 +601,7 @@
               }
             })
               .then((response) => {
-                
+                window.livewire.emit('deleteCart')
                 var data = response.data.data
                 toastr.success("Tu pedido se ha realizado con éxito, por favor verifica tu correo electrónico.");
                 localStorage.clear()
@@ -894,28 +894,6 @@
           };
           
           toastr[type](menssage);
-        },
-        
-        sanitizeTitle(title) {
-          var slug = "";
-          // Change to lower case
-          var titleLower = title.toLowerCase();
-          // Letter "e"
-          slug = titleLower.replace(/e|é|è|ẽ|ẻ|ẹ|ê|ế|ề|ễ|ể|ệ/gi, 'e');
-          // Letter "a"
-          slug = slug.replace(/a|á|à|ã|ả|ạ|ă|ắ|ằ|ẵ|ẳ|ặ|â|ấ|ầ|ẫ|ẩ|ậ/gi, 'a');
-          // Letter "o"
-          slug = slug.replace(/o|ó|ò|õ|ỏ|ọ|ô|ố|ồ|ỗ|ổ|ộ|ơ|ớ|ờ|ỡ|ở|ợ/gi, 'o');
-          // Letter "u"
-          slug = slug.replace(/u|ú|ù|ũ|ủ|ụ|ư|ứ|ừ|ữ|ử|ự/gi, 'u');
-          // Letter "d"
-          slug = slug.replace(/đ/gi, 'd');
-          // Trim the last whitespace
-          slug = slug.replace(/\s*$/g, '');
-          // Change whitespace to "-"
-          slug = slug.replace(/\s+/g, '-');
-          
-          return slug;
         },
         
         status(validation) {

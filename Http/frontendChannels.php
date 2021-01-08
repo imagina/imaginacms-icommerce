@@ -4,4 +4,3 @@
 Broadcast::channel('global', function () {
   return true;
 });
-

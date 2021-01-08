@@ -7,9 +7,7 @@ class ShippingMethod
 
     public function fixDataSend($data){
 
-        $dataMethods['products'] = array(
-          "cart_id" => $data->cart->id
-        );
+        $dataMethods['cart_id'] = $data->cart->id;
 
         if(isset($data->addressShipping->country)){
           $data['countryCode'] = $data->addressShipping->country->iso_2;

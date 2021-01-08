@@ -8,14 +8,9 @@
     </div>
 
     <div id="content_show_commerce">
-      <!-- MIGA DE PAN  -->
 
-      @component('partials.widgets.breadcrumb')
-        <li class="breadcrumb-item" v-for="category in categories">
-          <a :href="url+'/'+category.slug">@{{category.title}}</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">@{{product.name}}</li>
-      @endcomponent
+      {{-- Banner Top--}}
+      @include("icommerce::frontend.partials.banner")
 
       <div id="content" class="product">
         <div class="container ">
@@ -23,12 +18,15 @@
           <div class="row">
             <div class="col-lg-6 mb-5">
 
-              @includeFirst(['icommerce.widgets.gallery','icommerce::frontend.widgets.gallery'])
-
+              @include('icommerce::frontend.widgets.gallery')
+  
+              @includeFirst(['icommerce::frontend.products.share'])
             </div>
 
             <div class="col-lg-6 mb-5">
-              @includeFirst(['icommerce.widgets.information','icommerce::frontend.widgets.information'])
+              
+              @include('icommerce::frontend.widgets.information')
+
               <div class="row">
                 <div class="col-12">
                   <h5 class="pay mb-3">MEDIOS DE PAGO</h5>
@@ -98,7 +96,7 @@
                   <div class="tab-content border">
                     <div class="tab-pane active " id="descripcion" role="tabpanel">
                       <div class="p-3 p-md-5">
-                        @includeFirst(['icommerce.products.tabs','icommerce::frontend.products.tabs'])
+                        @includeFirst(['icommerce::frontend.products.tabs'])
                       </div>
 
                     </div>
@@ -114,14 +112,19 @@
               </div>
             </div>
 
-            <div class="col-12">
-              @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
-            </div>
+            
 
           </div>
         </div>
       </div>
+      <div class="col-12">
+        @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
+      </div>
     </div>
+
+    {{-- Extra Footer End Page --}}
+    @include('icommerce::frontend.partials.extra-footer')
+    
 {{--
     @include('partials.subcription')
 

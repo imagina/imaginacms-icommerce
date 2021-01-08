@@ -9,21 +9,33 @@ class ProductListItem extends Component
   
   
   public $product;
-  public $mainLayout;
+  public $productListLayout;
   public $view;
+  public $addToCartWithQuantity;
   
   /**
    * Create a new component instance.
    *
    * @return void
    */
-  public function __construct($product, $mainLayout = null)
+  public function __construct($product, $productListLayout = null, $layout = null, $addToCartWithQuantity = null,
+                              $parentAttributes = null)
   {
     $this->product = $product;
-    $this->mainLayout = $mainLayout;
-    $productListItemLayout = setting('icommerce::productListItemLayout');
+    $this->productListLayout = $productListLayout;
+    $this->addToCartWithQuantity = $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity',null,false);
+    $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
   
+    if(!empty($parentAttributes))
+      $this->getParentAttributes($parentAttributes);
+  }
+  
+  private function getParentAttributes($parentAttributes){
+    
+    isset($parentAttributes["productListLayout"]) ? $this->productListLayout = $parentAttributes["productListLayout"] : false;
+    isset($parentAttributes["addToCartWithQuantity"]) ? $this->addToCartWithQuantity = $parentAttributes["addToCartWithQuantity"] : false;
+    
   }
   
   /**

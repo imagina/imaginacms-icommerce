@@ -22,11 +22,18 @@ return [
       'index' => 'Index Page'
     ],
     'filters' => [
+      'title' => 'Filters',
+      'categories' => [
+          'group' => 'Filter Categories',
+          'title' => 'Title'
+       ],
       'priceRange' => [
         'group' => 'Filter Price Range',
         'step' => 'Step'
       ],
-      
+      'priceList' => [
+          'group' => 'Price Lists'
+      ],
     ],
     'messages' => [
         'title is required' => 'El título es requerido',
@@ -34,6 +41,8 @@ return [
         'description is required' => 'La descripción es requerida',
         'description min 2' => 'La descripción debe contener mínimo dos caracteres',
         'no products' => 'There are no products available',
+        'field required' => 'This field is required',
+        'min 2 characters' => 'Minimum of 2 characters',
     ],
     'validation' => [
     ],
@@ -84,7 +93,8 @@ return [
         'product'=>[
             'group' => 'Product',
             'layout' => 'Product Layout',
-        ]
+        ],
+        'product-price-list-enable' => 'Enable',
 
     ],
     'uri' => 'icommerce',
@@ -125,7 +135,12 @@ return [
         'recently' => 'More Recently',
     ],
     'range' => [
-        'title' => 'Price Range',
+        'title' => 'Rango de Precio',
+    ],
+    'product-type' => [
+        'title' => 'Product Type',
+        'searchable' => 'Consultable',
+        'affordable' => 'Comprable'
     ],
     'pagination' => [
         'previous' => 'Anterior',
@@ -151,11 +166,6 @@ return [
         'pro_cat_bran' => 'Productos - Categorias - Marcas',
         'load_data' => 'Cargar data',
     ],
-    'messages' => [
-        'field required' => 'This field is required',
-        'min 2 characters' => 'Minimum of 2 characters',
-    ],
-
     'email' => [
         'subject' => 'Transaction Status:',
         'intro' => 'Payment System Report',
@@ -168,15 +178,8 @@ return [
         ],
     ],
 
-    'settings' => [
-        'emails' => 'Webmaster - Email',
-        'tax' => 'Impuesto',
-        'countryDefault' => 'Pais por defecto',
-        'countryFreeshipping' => 'Paises con envio gratis',
-        'fromemail' => 'Email',
-        'product-per-page' => 'Products Per Page',
-        'customIndexTitle' => 'Custom Index Title'
+    'social' => [
+        'share' => 'Share'
     ],
-
 
 ];

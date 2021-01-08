@@ -3,7 +3,7 @@
   <div class="row">
       <div class="col">
           <div class="row m-0 pointer" data-toggle="collapse" href="#PaymentList" role="button" aria-expanded="false" aria-controls="PaymentList">
-              <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-3 py-1">
+              <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-3 py-2">
                       5
               </div>
               <h3 class="d-flex align-items-center my-1">

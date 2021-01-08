@@ -81,7 +81,11 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
 				}
 			
 			}
-		}
+		}else{
+      $query->orderBy('sort_order', 'desc');//Add order to query
+      $query->leftJoin("icommerce__manufacturer_trans as mt", "mt.manufacturer_id", "icommerce__manufacturers.id")
+        ->orderBy('mt.name', 'asc');
+    }
 		
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))

@@ -22,9 +22,17 @@ return [
     'index' => 'Página Principal'
   ],
   'filters' => [
+    'title' => 'Filtrar',
+    'categories' => [
+      'group' => 'Filtro Categorias',
+      'title' => 'Titulo'
+    ],
     'priceRange' => [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
+    ],
+    'priceList' => [
+      'group' => 'Listas de Precios'
     ],
   ],
 
@@ -84,8 +92,11 @@ return [
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
-    ]
-  
+      'minimumQuantityToNotify' => 'Cantidad mínima para notificar',
+    ],
+    'product-price-list-enable' => 'Activar',
+    'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad(Product Item)',
+
   ],
   'uri' => 'icommerce',
   'emailSubject' => [
@@ -94,6 +105,9 @@ return [
     'refunded' => 'Transaccion rechazada',
     'pending' => 'Transaccion pendiente',
     'history' => 'Estado de la orden',
+  ],
+  'crudFields' => [
+    'categoryIndexDescription' => 'Descripción - Página Index'
   ],
   'emailIntro' => [
     'failed' => 'Reporte del Sistema de Pagos: Transaccion Fallida',
@@ -128,6 +142,11 @@ return [
   'range' => [
     'title' => 'Rango de Precio',
   ],
+  'product-type' => [
+    'title' => 'Tipo de Producto',
+    'searchable' => 'Consultable',
+    'affordable' => 'Comprable'
+  ],
   'pagination' => [
     'previous' => 'Anterior',
     'next' => 'Siguiente',
@@ -153,7 +172,7 @@ return [
     'pro_cat_bran' => 'Productos - Categorias - Marcas',
     'load_data' => 'Cargar data',
   ],
-  
+
   'email' => [
     'subject' => 'Transaction Status:',
     'intro' => 'Payment System Report',
@@ -164,6 +183,10 @@ return [
       'comment' => 'Comment',
       'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
     ],
+  ],
+
+  'social' => [
+    'share' => 'Compartir'
   ],
 
 ];

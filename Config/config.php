@@ -61,11 +61,11 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-  
+
   'useOldRoutes' => false,
-  
+
   'defaultProductRating' => 5,
-  
+
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -81,9 +81,9 @@ return [
     ],
   ],
   'formatmoney' => [
-    'decimals' => 2,
+    'decimals' => 0,
     'dec_point' => '.',
-    'housands_sep' => ','
+    'housands_sep' => '.'
   ],
   //add: custom product includes (if they are empty icommerce module will be using default includes) (slim)
   'includes' => [
@@ -103,17 +103,34 @@ return [
       },
     ]*/
   ],
-  
+
   //end custom includes and transformers
   "mediaFillable" => [
     'category' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
+      'iconimage' => 'single',
+      'bannerindeximage' => 'single',
+      'carouselindeximage' => 'multiple',
     ],
     'manufacturer' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
+      'tertiaryimage' => 'single',
+      'quaternaryimage' => 'single',
+    ],
+    'paymentmethod' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single'
+    ],
+    'shippingmethod' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single'
+    ],
+    'optionvalue' => [
+      'mainimage' => 'single',
+      'secondaryimage' => 'single'
     ],
     'product' => [
       'mainimage' => 'single',
@@ -122,7 +139,14 @@ return [
       'quaternaryimage' => 'single',
     ]
   ],
-  
+
+  /**
+   *
+   *
+   * Configs of the Index view
+   *
+   *
+   */
 
   /* Order By - Index */
   'orderBy' =>[
@@ -200,7 +224,15 @@ return [
   'filters'=>[
     'categories' => [
       'title' => 'icommerce::categories.plural',
-      'status' => true
+      /*
+       * Mode for render:
+       *  allTree
+       *  allFamilyOfTheSelectedNode
+       *  onlyLeftAndRightOfTheSelectedNode
+       */
+      'mode' => 'allTree',
+      'status' => true,
+      'isExpanded' => true,
     ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
@@ -208,16 +240,75 @@ return [
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
-      'status' => true
+      'status' => true,
+      'isExpanded' => false,
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
       'status' => true
+    ],
+    'product-types' => [
+      'title' => 'icommerce::common.product-type.title',
+      'status' => true,
+      'isExpanded' => false,
+      'options' => [
+        'affordable' => [
+          'title' => 'icommerce::common.product-type.affordable',
+          'status' => true
+        ],
+        'searchable' => [
+          'title' => 'icommerce::common.product-type.searchable',
+          'status' => true
+        ],
+      ]
     ]
   ],
 
-  
- 
-  
+  /*Widgets Components*/
+  'widgets' => [
+    "carousel-vertical" => [
+      "component" => "icommerce::widgets.carousel-vertical",
+      "status" => false,
+      "id" => "widgetFeaturedProducts",
+      "title" => "Destacados",
+      "isExpanded" => true,
+      "props" => [
+        'itemsBySlide' => 3,
+        'params' => ['filter' => ['featured' => true]],
+        'responsive' => [0 => ['items' =>  1],640 => ['items' => 1],992 => ['items' => 1]]
+      ]
+    ]
+  ],
 
+  /*Extra Footer Partials*/
+  'extraFooter' => [
+    'carouselBestSellers' => [
+        'status' => false,
+        'id' => "extraBestSellers",
+        'title' => 'Lo que necesitas aqui',
+        'subTitle' => 'Los Más Vendidos',
+        'props' => [
+          'params' => ['filter' => ['featured' => true]],
+          'responsive' => [0 => ['items' =>  1],640 => ['items' => 2],992 => ['items' => 4]]
+        ]
+    ]
+  ],
+
+  /**
+   * @note routeName param must be set without locale. Ex: (icommerce orders: 'icommerce.store.order.index')
+   */
+  "userMenuLinks" => [
+      [
+          "title" => "icommerce::orders.title.orders",
+          "routeName" => "icommerce.store.order.index",
+          "icon" => "fa fa-bars",
+      ],
+      [
+          "title" => "icommerce::wishlists.title.wishlists",
+          "routeName" => "icommerce.store.wishlists.index",
+          "icon" => "fa fa-heart",
+      ]
+  ]
+  
+  
 ];

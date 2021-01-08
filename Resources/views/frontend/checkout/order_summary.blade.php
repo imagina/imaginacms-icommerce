@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col">
             <div class="row m-0 pointer" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false" aria-controls="CheckList">
-                <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-2 py-1">
+                <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-3 py-2">
                     <i class="fa fa-check px-1"></i>
                 </div>
                 <h3 class="d-flex align-items-center my-1">

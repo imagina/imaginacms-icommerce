@@ -21,7 +21,6 @@ class CategoryList extends Component
   {
     $this->params = $params;
     $this->layout = $layout;
-    $categoryListLayout = setting('icommerce::categoryListLayout');
     $this->view = "icommerce::frontend.components.category.category-list.layouts." . $layout.".index";
   
   }
