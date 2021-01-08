@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 {{-- Meta --}}
-@includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
+@include('icommerce::frontend.index.meta')
 
 
 @section('content')
