@@ -2,44 +2,50 @@
 
 namespace Modules\Icommerce\Events;
 
-// Transformers
-use Modules\Iprofile\Entities\Sentinel\User;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderWasCreated
+// Transformers
+use Modules\Icommerce\Transformers\OrderTransformer;
+
+class OrderWasCreated /*implements ShouldBroadcast*/
 {
+   // use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
-    public $entity;
     public $items;
 
     public function __construct($order,$items)
     {
         $this->order = $order;
-        $this->entity = $order;
         $this->items = $items;
 
     }
   
-  public function notification(){
+    public function broadcastAs()
+    {
+        return 'newOrder';
+    }
 
-    $subject = trans('icommerce::orders.title.single_order_title')." #".$order->id.": ".$order->status->title;
-    $emailTo = explode(',', $this->setting->get('icommerce::form-emails'));
-    $users = User::whereIn("email",$emailTo)->get();
+    public function broadcastWith()
+    {
     return [
-      "title" =>  "Nueva Orden",
-      "message" =>  $subject,
-      "icon" => "fas fa-shopping-cart",
-      "link" => env('FRONTEND_URL')."/?showEventId=".$this->event->id,
-      "view" => "icommerce::emails.Order",
-      "recipients" => [
-        "email" => $emailTo,
-        "broadcast" => $users->pluck('id')->toArray(),
-        "push" => $users->pluck('id')->toArray(),
-      ],
-      "event" => $this->entity
+            'id' => $this->order->id
     ];
   }
 
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
+    public function broadcastOn()
+    {
  
+      return new Channel('global');
+    }
 
 }

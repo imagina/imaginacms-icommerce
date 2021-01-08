@@ -308,20 +308,7 @@ return [
           "routeName" => "icommerce.store.wishlists.index",
           "icon" => "fa fa-heart",
       ]
-  ],
-
-
-  'notifiable' => [
-    
-    'title' => 'Order',
-    'entityName' => 'Modules\\Icommerce\\Entities\\Order',
-    'events' => [
-      //ORDER WAS CREATED
-      [
-        'title' => 'Order was created',
-        'path' => "Modules\\Icommerce\\Events\\OrderWasCreated"
-      ]
-    ]
   ]
+  
   
 ];
