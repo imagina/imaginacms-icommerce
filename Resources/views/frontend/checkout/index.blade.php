@@ -6,11 +6,11 @@
   
   
   <div id="checkout" class="page checkout">
-    
-    
-    @component('partials.widgets.breadcrumb')
+  
+    <x-isite::breadcrumb>
       <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
-    @endcomponent
+    </x-isite::breadcrumb>
+
     
     
     <div class="container">
