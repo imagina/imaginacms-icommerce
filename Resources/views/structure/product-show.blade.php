@@ -114,7 +114,7 @@
             responseType: 'json',
             url: "{{ route('api.icommerce.products.index') }}",
             params: {
-              include: 'categories,productOptions,optionValues,category,wishlists',
+              include: 'categories,productOptions,optionValues,category',
             }
           }).then(response => {
             vue_show_commerce.products = response.data.data;
@@ -143,7 +143,7 @@
             responseType: 'json',
             url: "{{ route('api.icommerce.products.index') }}",
             params: {
-              include: 'categories,productOptions,optionValues,category,wishlists',
+              include: 'categories,productOptions,optionValues,category',
               filter: {category: product.categoryId },
               take: 20
             }
@@ -212,7 +212,7 @@
         responseType: 'json',
         url: this.path,
         params: {
-          include: 'categories,productOptions,optionValues,category,wishlists,relatedProducts',
+          include: 'categories,productOptions,optionValues,category,relatedProducts',
         }
       }).then(function (response) {
         

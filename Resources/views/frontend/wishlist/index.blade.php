@@ -61,9 +61,13 @@
                           <tbody>
                             <tr v-for="wishlist in wishlists" v-if="wishlist.product">
                               <td>
-                                <img :src="wishlist.product.mainImage.path" :alt="wishlist.product.name" class="img-responsive img-fluid" style="width:200px;height:200px;">
+                                <a :href="wishlist.product.url">
+                                  <img :src="wishlist.product.mediaFiles.mainimage.relativeSmallThumb" :alt="wishlist.product.name" class="img-responsive img-fluid" style="width:100px;height:auto;">
+                                </a>
+                                
                               </td>
-                              <td>@{{wishlist.product.name}}</td>
+                              
+                              <td><a :href="wishlist.product.url"> @{{wishlist.product.name}} </a></td>
                               <td>@{{wishlist.product.price | numberFormat}}</td>
                               <td>
                                 <a title="Agregar al carro de compras" @click="addCart(wishlist.product);deleteWishlist(wishlist.id)" v-show="wishlist.product.price > 0" class="cart text-primary cursor-pointer">
