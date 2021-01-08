@@ -49,6 +49,15 @@ return [
       ]
     ]
   ],
+  'showBreadcrumbSidebar' => [
+    'value' => false,
+    'name' => 'icommerce::showBreadcrumbSidebar',
+    'type' => 'checkbox',
+    'group' => 'icommerce::common.pages.index',
+    'props' => [
+      'label' => 'Mostrar breadcrumb en Sidebar'
+    ]
+  ],
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
