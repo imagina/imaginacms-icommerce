@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div class="container container-page">
+        <div class="container container-page pt-5">
             
            
             <div class="cart-content" v-show="items.length > 0">
