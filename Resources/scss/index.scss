@@ -1,3 +1,20 @@
-.icommerce-index{
- 
+#content_index_commerce {
+  @include media-breakpoint-down(md) {
+    .product-list {
+      .total-products {
+        text-align: center;
+      }
+      
+      .filter-order-by {
+        float: left;
+      }
+      
+      .change-layout {
+        float: right;
+        margin-top: -58px;
+        flex-direction: column;
+        align-items: initial !important;
+      }
+    }
+  }
 }
