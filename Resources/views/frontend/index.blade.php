@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 {{-- Meta --}}
-@includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
+@include('icommerce::frontend.index.meta')
 
 
 @section('content')
@@ -15,12 +15,19 @@
     <div class="container">
       <div class="row">
         
-        {{-- Filters, Widgets --}}
+        {{-- Sidebar --}}
         <div class="col-lg-3">
+
+          {{-- Breadcrumb Optional --}}
+          @if(setting('icommerce::showBreadcrumbSidebar'))
+            @include('icommerce::frontend.partials.breadcrumb')
+          @endif
           
+          {{-- Filters --}}
           @include('icommerce::frontend.index.filters',[
             "categoryBreadcrumb" => $categoryBreadcrumb])
 
+          {{-- Extra Widgets --}}
           @if(config("asgard.icommerce.config.widgets"))
             <div class="widgets">
             @foreach(config("asgard.icommerce.config.widgets") as $widget)

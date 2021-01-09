@@ -61,12 +61,16 @@
                           <tbody>
                             <tr v-for="wishlist in wishlists" v-if="wishlist.product">
                               <td>
-                                <img :src="wishlist.product.mainImage.path" :alt="wishlist.product.name" class="img-responsive img-fluid" style="width:200px;height:200px;">
+                                <a :href="wishlist.product.url">
+                                  <img :src="wishlist.product.mediaFiles.mainimage.relativeSmallThumb" :alt="wishlist.product.name" class="img-responsive img-fluid" style="width:100px;height:auto;">
+                                </a>
+                                
                               </td>
-                              <td>@{{wishlist.product.name}}</td>
+                              
+                              <td><a :href="wishlist.product.url"> @{{wishlist.product.name}} </a></td>
                               <td>@{{wishlist.product.price | numberFormat}}</td>
                               <td>
-                                <a title="Agregar al carro de compras" @click="addCart(wishlist.product);deleteWishlist(wishlist.id)" v-show="wishlist.product.price > 0" class="cart text-primary cursor-pointer">
+                                <a title="Agregar al carro de compras"  :onClick="'window.livewire.emit(\'addToCart\','+wishlist.product.id+')'" @click="deleteWishlist(wishlist.id)" v-show="wishlist.product.price > 0" class="cart text-primary cursor-pointer">
                                     <i class="fa fa-shopping-basket" style="margin: 0 5px;"></i>
                                 </a>
                                 <a title="Eliminar de la lista de deseos" @click="deleteWishlist(wishlist.id)" v-show="wishlist.product.price > 0" class="cart text-primary cursor-pointer">
@@ -158,7 +162,7 @@
                             'Authorization':token
                           }
                       }).then(response => {
-                        this.alerta("Producto eliminado de la listsa de deseos", "success");
+                        
                         this.getWishlist();
                       });
                   }//this.user

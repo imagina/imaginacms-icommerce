@@ -92,6 +92,7 @@ return [
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
+      'minimumQuantityToNotify' => 'Cantidad mínima para notificar',
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad(Product Item)',

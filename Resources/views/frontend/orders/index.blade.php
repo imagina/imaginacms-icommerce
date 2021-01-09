@@ -15,16 +15,26 @@
     @endcomponent
     --}}
 
-    <div id="orderList" class="icommerce-page page">
-
-        <div class="container container-page">
-            <div class="row">
-                <div class="col-12">
-                    <div class="container__title container__title--white">
-                        <span>{{trans('icommerce::orders.breadcrumb.title')}}</span>
+    <div id="content_index_commerce" class="icommerce-page page mt-3">
+        <div class="top-page border-top border-bottom">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-lg-3">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb bg-transparent text-white mb-0">
+                                <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Inicio</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <span>{{trans('icommerce::orders.breadcrumb.title')}}</span>
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="container container-page pt-5">
+            
+           
             <div class="cart-content" v-show="items.length > 0">
                 <div class="table-responsive">
                     <table class="table table-hover">

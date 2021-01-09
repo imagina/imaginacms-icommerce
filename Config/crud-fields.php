@@ -44,11 +44,11 @@ return [
       ],
     ],
     'carouselIndexImage' => [
-      'multiple' => true,
       'value' => (object)[],
       'name' => 'mediasMulti',
       'type' => 'media',
       'props' => [
+				'multiple' => true,
         'label' => 'Carousel Página Índice',
         'zone' => 'carouselindeximage',
         'entity' => "Modules\Icommerce\Entities\Category",

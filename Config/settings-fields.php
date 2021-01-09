@@ -49,6 +49,15 @@ return [
       ]
     ]
   ],
+  'showBreadcrumbSidebar' => [
+    'value' => false,
+    'name' => 'icommerce::showBreadcrumbSidebar',
+    'type' => 'checkbox',
+    'group' => 'icommerce::common.pages.index',
+    'props' => [
+      'label' => 'Mostrar breadcrumb en Sidebar'
+    ]
+  ],
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
@@ -77,6 +86,7 @@ return [
       'label' => 'icommerce::common.filters.priceRange.step'
     ],
   ],
+
   'daysEnabledForNewProducts' => [
     'name' => 'icommerce::daysEnabledForNewProducts',
     'value' => 15,
@@ -92,6 +102,7 @@ return [
     'name' => 'icommerce::productListItemLayout',
     'group' => 'icommerce::common.settings.product.group',
     'type' => 'select',
+    'columns' => 'col-12 col-md-6',
     'props' => [
       'label' => 'icommerce::common.settings.product.layout',
       'useInput' => false,
@@ -130,5 +141,14 @@ return [
           'falseValue' => "0",
       ],
   ],
-  
+  'productMinimumQuantityToNotify' => [
+    'name' => 'icommerce::productMinimumQuantityToNotify',
+    'group' => 'icommerce::common.settings.product.group',
+    'value' => 3,
+    'type' => 'input',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.minimumQuantityToNotify'
+    ],
+  ],
 ];

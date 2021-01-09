@@ -10,8 +10,13 @@
   <h2 class="name">@{{product.name}}</h2>
   <!-- END TITLE -->
 
+  <!-- REFERENCE -->
+  <div v-if="product.reference" class="reference"><span class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}</div>
+  
+  <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
-
+  
+ 
   <!-- PRICE -->
   <div v-if="products_children === false && product.price >0.00">
     <div class="price text-primary">

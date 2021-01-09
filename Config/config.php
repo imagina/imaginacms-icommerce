@@ -117,6 +117,8 @@ return [
     'manufacturer' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
+      'tertiaryimage' => 'single',
+      'quaternaryimage' => 'single',
     ],
     'paymentmethod' => [
       'mainimage' => 'single',
@@ -229,7 +231,8 @@ return [
        *  onlyLeftAndRightOfTheSelectedNode
        */
       'mode' => 'allTree',
-      'status' => true
+      'status' => true,
+      'isExpanded' => true,
     ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
@@ -306,6 +309,6 @@ return [
           "icon" => "fa fa-heart",
       ]
   ]
-
-
+  
+  
 ];
