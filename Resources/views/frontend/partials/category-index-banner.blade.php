@@ -1,5 +1,5 @@
 <section class="page-banner" style="
-	background: url('{{$mediaFiles->bannerindeximage->path}}');
+	background: url('{{$imgUrl}}');
 	background-repeat:  no-repeat;
 	background-position: top center;
 	background-size: cover;">

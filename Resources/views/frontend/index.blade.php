@@ -22,6 +22,11 @@
           @if(setting('icommerce::showBreadcrumbSidebar'))
             @include('icommerce::frontend.partials.breadcrumb')
           @endif
+
+          {{-- Manufacturer Card Optional --}}
+          {{--
+          @include('icommerce::frontend.partials.manufacturer-card')
+          --}}
           
           {{-- Filters --}}
           @include('icommerce::frontend.index.filters',[

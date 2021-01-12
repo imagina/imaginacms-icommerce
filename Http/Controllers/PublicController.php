@@ -62,6 +62,8 @@ class PublicController extends BaseApiController
     $category = null;
   
     $categoryBreadcrumb = [];
+    $carouselImages =[];
+
     $gallery = [];
     
     if($slug && $slug != trans('icommerce::routes.store.index.index')){
@@ -82,7 +84,12 @@ class PublicController extends BaseApiController
         $ctpl = "icommerce.category.{$category->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
 
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($category);
+
+        // Carousel Right over ProductList with settings to images categories
         $gallery = $this->getGalleryCategory($category);
+
   
       }else{
         return response()->view('errors.404', [], 404);
@@ -92,7 +99,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('category','categoryBreadcrumb','gallery'));
+    return view($tpl, compact('category','categoryBreadcrumb','carouselImages','gallery'));
   }
 
   // view products by category
@@ -109,6 +116,7 @@ class PublicController extends BaseApiController
     $manufacturer = null;
   
     $categoryBreadcrumb = [];
+    $carouselImages =[];
     
     if($slug && $slug != trans('icommerce::routes.store.index')){
   
@@ -122,7 +130,10 @@ class PublicController extends BaseApiController
   
         $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
-  
+
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($manufacturer);
+        
       }else{
         return response()->view('errors.404', [], 404);
       }
@@ -131,7 +142,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('manufacturer','categoryBreadcrumb'));
+    return view($tpl, compact('manufacturer','categoryBreadcrumb','carouselImages'));
   }
 
   // view products by category
@@ -148,6 +159,7 @@ class PublicController extends BaseApiController
     $category = null;
   
     $categoryBreadcrumb = [];
+    $carouselImages =[];
     
     if($categorySlug && $manufacturerSlug){
   
@@ -165,6 +177,9 @@ class PublicController extends BaseApiController
   
         $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
+
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($manufacturer);
   
       }else{
         return response()->view('errors.404', [], 404);
@@ -174,7 +189,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('category','manufacturer','categoryBreadcrumb'));
+    return view($tpl, compact('category','manufacturer','categoryBreadcrumb','carouselImages'));
   }
   
   /**
@@ -283,6 +298,25 @@ class PublicController extends BaseApiController
 
     return $params;//Response
   }
+
+
+  /**
+  * Get Images to carousel top index
+  *
+  */
+  protected function getImagesToCarousel($entity){
+
+    $carouselImages = [];
+
+    $mediaFiles = $entity->mediaFiles();
+
+    if(isset($mediaFiles->carouseltopindeximages) && count($mediaFiles->carouseltopindeximages)>0){
+        $carouselImages = $mediaFiles->carouseltopindeximages;
+    } 
+
+    return $carouselImages;
+  }
+
 
   /**
   * Get Images to gallery top Category

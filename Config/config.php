@@ -113,12 +113,14 @@ return [
       'iconimage' => 'single',
       'bannerindeximage' => 'single',
       'carouselindeximage' => 'multiple',
+      'carouseltopindeximages' => 'multiple'
     ],
     'manufacturer' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
       'tertiaryimage' => 'single',
       'quaternaryimage' => 'single',
+      'carouseltopindeximages' => 'multiple'
     ],
     'paymentmethod' => [
       'mainimage' => 'single',

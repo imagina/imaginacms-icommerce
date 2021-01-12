@@ -48,9 +48,22 @@ return [
       'name' => 'mediasMulti',
       'type' => 'media',
       'props' => [
-				'multiple' => true,
+        'multiple' => true,
         'label' => 'Carousel Página Índice',
         'zone' => 'carouselindeximage',
+        'entity' => "Modules\Icommerce\Entities\Category",
+        'entityId' => null
+      ]
+    ],
+
+    'carouselTopIndexImages' => [
+      'value' => (object)[],
+      'name' => 'mediasMulti',
+      'type' => 'media',
+      'props' => [
+        'multiple' => true,
+        'label' => 'Carousel Top Página Índice',
+        'zone' => 'carouseltopindeximages',
         'entity' => "Modules\Icommerce\Entities\Category",
         'entityId' => null
       ]
@@ -58,7 +71,22 @@ return [
     
     ],
   //Extra field to crud product categories
-  'manufacturers' => [],
+  'manufacturers' => [
+
+    'carouselTopIndexImages' => [
+      'value' => (object)[],
+      'name' => 'mediasMulti',
+      'type' => 'media',
+      'props' => [
+        'multiple' => true,
+        'label' => 'Carousel Top Página Índice',
+        'zone' => 'carouseltopindeximages',
+        'entity' => "Modules\Icommerce\Entities\Manufacturer",
+        'entityId' => null
+      ]
+    ],
+
+  ],
   //Extra field to crud product categories
   'productDiscounts' => [],
   //Extra field to crud product categories

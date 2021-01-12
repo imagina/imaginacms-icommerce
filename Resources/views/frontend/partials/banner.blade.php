@@ -1,19 +1,13 @@
 <div class="banner-top">
-@if(isset($category->id))
-  @php 
-    $mediaFiles = $category->mediaFiles();
-  @endphp
 
-  @if(isset($mediaFiles->bannerindeximage->path) && !strpos($mediaFiles->bannerindeximage->path,"default.jpg"))
-    @include('icommerce::frontend.partials.category-index-banner')
-  @else
-      {{-- Breadcrumb --}}
-    @include('icommerce::frontend.partials.breadcrumb')
-  @endif
+@if(isset($carouselImages) && !empty($carouselImages))
 
-@else
-  {{-- Breadcrumb --}}
-  @include('icommerce::frontend.partials.breadcrumb')
+  @include('icommerce::frontend.partials.carousel-index-image',[
+        "gallery" => $carouselImages])
 
 @endif
+  
+{{-- Breadcrumb --}}
+@include('icommerce::frontend.partials.breadcrumb')
+
 </div>
