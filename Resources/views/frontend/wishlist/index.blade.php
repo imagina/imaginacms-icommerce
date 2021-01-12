@@ -24,23 +24,11 @@
     </div>
 
     <div id="content_index_commerce" class="page mt-3">
-
-        <div class="top-page border-top border-bottom">
-          <div class="container">
-            <div class="row ">
-              <div class="col-lg-3">
-                <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb bg-transparent text-white mb-0">
-                    <li class="breadcrumb-item"><a href="{{ URL::to('/') }}">Inicio</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                      Lista de deseos
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
+  
+      <x-isite::breadcrumb>
+        <li class="breadcrumb-item active" aria-current="page">Lista de Deseos</li>
+      </x-isite::breadcrumb>
+      
 
         <div class="container pt-5">
             <div class="row">

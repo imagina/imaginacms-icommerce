@@ -16,7 +16,7 @@
         </div>
         </div>
       </div>
-      <div class="col-12 col-sm-6">
+      <div class="col-6">
         @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
       </div>
     </div>

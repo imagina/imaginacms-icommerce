@@ -8,7 +8,7 @@
   @if(isset($productListLayout) && $productListLayout=='one')
     <div class="row product-list-layout-one">
       
-      <div class="col-12 col-sm-6">
+      <div class="col-6">
         <div class="row justify-content-center position-relative m-0">
           @include('icommerce::frontend.components.product.ribbon')
           <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
@@ -18,7 +18,7 @@
         </div>
       
       </div>
-      <div class="col-12 col-sm-6">
+      <div class="col-6">
         @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.infor')
       
       
