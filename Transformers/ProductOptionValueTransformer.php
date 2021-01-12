@@ -29,6 +29,7 @@ class ProductOptionValueTransformer extends JsonResource
       'pointsPrefix' => $this->when($this->points_prefix, $this->points_prefix),
       'weight' => $this->when($this->weight, $this->weight),
       'weightPrefix' => $this->when($this->weight_prefix, $this->weight_prefix),
+      'stockStatus' => $this->when(isset($this->stock_status), $this->stock_status),
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
       'optionValueEntity' => new OptionValueTransformer($this->whenLoaded('optionValue'))

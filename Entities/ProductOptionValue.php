@@ -23,7 +23,8 @@ class ProductOptionValue extends Model
     'points',
     'points_prefix',
     'weight',
-    'weight_prefix'
+    'weight_prefix',
+    'stock_status'
   ];
 
   // OK YA PROBADAS
@@ -64,5 +65,31 @@ class ProductOptionValue extends Model
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
+  }
+
+  public function parentProductOptionValue()
+  {
+    return $this->belongsTo($this, 'parent_option_value_id');
+  }
+
+  public function childrensProductOptionValue()
+  {
+    return $this->hasMany($this,  'parent_option_value_id', 'id');
+  }
+
+  public function updateStockByChildrens()
+  {
+    $stock = 0;
+    if ($this->subtract) {
+      foreach ($this->childrensProductOptionValue as $key => $children) {
+        if ($children->subtract) {
+          $stock += $children->quantity;
+        }
+      }
+      $this->update(["quantity" => $stock]);
+      return $stock;
+
+    }
+    return $this->quantity;
   }
 }
