@@ -23,10 +23,21 @@
             @include('icommerce::frontend.partials.breadcrumb')
           @endif
 
-          {{-- Manufacturer Card Optional --}}
-          {{--
-          @include('icommerce::frontend.partials.manufacturer-card')
-          --}}
+
+          {{-- Custom Includes --}}
+          @if(config("asgard.icommerce.config.customIncludesBeforeFilters"))
+            @foreach(config("asgard.icommerce.config.customIncludesBeforeFilters") as $custom)
+
+                @if(in_array("manufacturer",$custom['show']) && isset($manufacturer->id))
+                  @include($custom['view'])
+                @endif
+
+                @if(in_array("category",$custom['show']) && isset($category->id))
+                  @include($custom['view'])
+                @endif
+
+            @endforeach
+          @endif
           
           {{-- Filters --}}
           @include('icommerce::frontend.index.filters',[

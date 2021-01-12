@@ -222,6 +222,16 @@ return [
     ]
   ],
 
+  /*Custom Includes Before Filters*/
+  'customIncludesBeforeFilters' => [
+    /*
+    'manufacturerCard' => [
+      'view' => "icommerce.partials.manufacturer-card",
+      'show' => ['manufacturer'] //category, manufacturer
+    ]
+    */
+  ],
+
   /*Filters*/
   'filters'=>[
     'categories' => [
