@@ -82,11 +82,19 @@ class ProductOptionValue extends Model
     $stock = 0;
     if ($this->subtract) {
       foreach ($this->childrensProductOptionValue as $key => $children) {
-        if ($children->subtract) {
+        if ($children->subtract && $children->stock_status == 1) {
           $stock += $children->quantity;
         }
       }
       $this->update(["quantity" => $stock]);
+      if ($stock == 0) {
+        $this->update(["stock_status" => 0]);
+      }elseif ($this->stock_status == 0 && $this->childrensProductOptionValue()->where("stock_status",1)->get()->isNotEmpty()) {
+        $this->update(["stock_status" => 1]);
+      }
+      if ($this->parentProductOptionValue) {
+        $this->parentProductOptionValue->updateStockByChildrens();
+      }
       return $stock;
 
     }
