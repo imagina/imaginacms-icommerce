@@ -57,6 +57,7 @@ return [
   'title' => 'Título',
   'slug' => 'Enlace permanente:',
   'description' => 'Descripción',
+  'status' => 'Estado',
   'date' => 'Fecha y hora',
   'optional' => '(Opcional)',
   'summary' => 'Sumario',
