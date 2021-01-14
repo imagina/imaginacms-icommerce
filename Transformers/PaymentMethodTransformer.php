@@ -17,10 +17,12 @@ class PaymentMethodTransformer extends JsonResource
             'mainImage' => $this->mainImage,
             'init' => $this->when(isset($this->options),$this->options->init),
             'options' => $this->when($this->options, $this->options),
+            'parentName' => $this->when($this->parent_name, $this->parent_name),
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
             'activevalue'=>$this->active,
-            'mediaFiles' => $this->mediaFiles()
+            'mediaFiles' => $this->mediaFiles(),
+
         ];
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel

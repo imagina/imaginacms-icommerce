@@ -15,6 +15,7 @@ class ShippingMethodTransformer extends JsonResource
       'name' => $this->when($this->name,$this->name),
       'status' => $this->status == "1" ? true : false,
       'options' => $this->when($this->options,$this->options),
+      'parentName' => $this->when($this->parent_name, $this->parent_name),
       'init' => $this->when($this->options,$this->options->init),
       'mainImage' => $this->mainImage,
       'createdAt' => $this->when($this->created_at,$this->created_at),
