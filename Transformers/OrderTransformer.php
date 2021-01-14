@@ -101,7 +101,8 @@ class OrderTransformer extends JsonResource
         'values' => [
           [
             'label' => 'Dirección de Envio',
-            'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, {$item['shippingDepartment']->name}, {$item['shippingCountry']->name}"
+            'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
+              ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
           ]
         ]
       ],
