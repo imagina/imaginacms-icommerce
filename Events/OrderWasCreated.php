@@ -11,9 +11,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 // Transformers
 use Modules\Icommerce\Transformers\OrderTransformer;
 
-class OrderWasCreated implements ShouldBroadcast
+class OrderWasCreated /*implements ShouldBroadcast*/
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+   // use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
     public $items;
@@ -24,7 +24,7 @@ class OrderWasCreated implements ShouldBroadcast
         $this->items = $items;
 
     }
-
+  
     public function broadcastAs()
     {
         return 'newOrder';
@@ -32,10 +32,10 @@ class OrderWasCreated implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        return [
+    return [
             'id' => $this->order->id
-        ];
-    }
+    ];
+  }
 
     /**
      * Get the channels the event should broadcast on.
@@ -44,7 +44,7 @@ class OrderWasCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-
+ 
       return new Channel('global');
     }
 

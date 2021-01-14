@@ -16,6 +16,7 @@ class Categories extends Component
   public $configs;
   public $manufacturer;
   public $category;
+  public $isExpanded;
   
   public $extraParamsUrl;
   
@@ -30,6 +31,8 @@ class Categories extends Component
     
     $this->manufacturer = $manufacturer;
     $this->category = $category;
+
+    $this->isExpanded = config("asgard.icommerce.config.filters.categories.isExpanded") ?? true;
     
     $this->initConfigs();
   }
@@ -111,7 +114,11 @@ class Categories extends Component
       
     }
     
-    return view($tpl, ['categoryBreadcrumb' => $this->categoryBreadcrumb]);
+    return view($tpl, [
+      'categoryBreadcrumb' => $this->categoryBreadcrumb,
+      'titleFilter' => $this->getTitle() 
+    ]);
+
   }
   
   private function getParents($categoryManufacturer, &$parents = [])
@@ -122,6 +129,18 @@ class Categories extends Component
         $this->getParents($category, $parents);
       }
     }
+  }
+
+  private function getTitle(){
+
+    $titleFilter = trans(config("asgard.icommerce.config.filters.categories.title"));
+    
+    $typeTitle = setting('icommerce::filterCategoriesTitle',null,'basic');
+    if($typeTitle=="category-title" && isset($this->category))
+      $titleFilter = $this->category->title;
+
+    return $titleFilter;
+
   }
   
 }

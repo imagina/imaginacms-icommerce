@@ -3,12 +3,12 @@
 	@include('icommerce::frontend.livewire.index.top-content.index')
 
 	<div class="products">
-		<div class="row">
+		
+		@include('icommerce::frontend.partials.preloader')
 			
-			@include('icommerce::frontend.partials.preloader')
-			
-			@if(isset($products) && count($products)>0)
+		@if(isset($products) && count($products)>0)
 
+			<div class="row">
 				@foreach($products as $product)
 				<div class="{{$layoutClass}} product">
 					
@@ -16,21 +16,22 @@
 					
 				</div>
 				@endforeach
+			</div>
 
+			<div class="row">
 				<div class="product-list-pagination d-flex w-100 px-3 justify-content-end">
 					{{ $products->links() }}
 				</div>
-				
-
-			@else
-				<div class="col-12">
-					<div class="alert alert-danger my-5" role="alert">
-					  {{trans('icommerce::common.messages.no products')}}
-					</div>
+			</div>
+	
+		@else
+			<div class="row">
+				<div class="alert alert-danger my-5" role="alert">
+					{{trans('icommerce::common.messages.no products')}}
 				</div>
-			@endif
+			</div>
+		@endif
 			
-		</div>
 	</div>
 
 </div>

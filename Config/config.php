@@ -112,10 +112,15 @@ return [
       'quaternaryimage' => 'single',
       'iconimage' => 'single',
       'bannerindeximage' => 'single',
+      'carouselindeximage' => 'multiple',
+      'carouseltopindeximages' => 'multiple'
     ],
     'manufacturer' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
+      'tertiaryimage' => 'single',
+      'quaternaryimage' => 'single',
+      'carouseltopindeximages' => 'multiple'
     ],
     'paymentmethod' => [
       'mainimage' => 'single',
@@ -217,6 +222,16 @@ return [
     ]
   ],
 
+  /*Custom Includes Before Filters*/
+  'customIncludesBeforeFilters' => [
+    /*
+    'manufacturerCard' => [
+      'view' => "icommerce.partials.manufacturer-card",
+      'show' => ['manufacturer'] //category, manufacturer
+    ]
+    */
+  ],
+
   /*Filters*/
   'filters'=>[
     'categories' => [
@@ -228,7 +243,8 @@ return [
        *  onlyLeftAndRightOfTheSelectedNode
        */
       'mode' => 'allTree',
-      'status' => true
+      'status' => true,
+      'isExpanded' => true,
     ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
@@ -236,7 +252,8 @@ return [
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
-      'status' => true
+      'status' => true,
+      'isExpanded' => false,
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
@@ -245,6 +262,7 @@ return [
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
       'status' => true,
+      'isExpanded' => false,
       'options' => [
         'affordable' => [
           'title' => 'icommerce::common.product-type.affordable',
@@ -303,6 +321,6 @@ return [
           "icon" => "fa fa-heart",
       ]
   ]
-
-
+  
+  
 ];

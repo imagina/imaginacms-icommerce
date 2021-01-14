@@ -22,6 +22,11 @@ return [
       'index' => 'Index Page'
     ],
     'filters' => [
+      'title' => 'Filters',
+      'categories' => [
+          'group' => 'Filter Categories',
+          'title' => 'Title'
+       ],
       'priceRange' => [
         'group' => 'Filter Price Range',
         'step' => 'Step'
@@ -53,6 +58,7 @@ return [
     'title' => 'Título',
     'slug' => 'Enlace permanente:',
     'description' => 'Descripción',
+    'status' => 'Status',
     'date' => 'Fecha y hora',
     'optional' => '(Opcional)',
     'summary' => 'Sumario',
@@ -172,4 +178,9 @@ return [
             'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
         ],
     ],
+
+    'social' => [
+        'share' => 'Share'
+    ],
+
 ];

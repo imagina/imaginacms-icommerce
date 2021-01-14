@@ -30,10 +30,63 @@ return [
         'entity' => "Modules\Icommerce\Entities\Category",
         'entityId' => null
       ]
-    ]
+    ],
+    'summaryIndex' => [
+      'name' => 'descriptionIndex',
+      'value' => '',
+      'type' => 'input',
+      'fakeFieldName' => 'options',
+      'columns' => 'col-12 col-md-6',
+      'props' => [
+        'label' => 'icommerce::common.crudFields.categoryIndexDescription',
+        'type' => 'textarea',
+        'rows' => 3,
+      ],
+    ],
+    'carouselIndexImage' => [
+      'value' => (object)[],
+      'name' => 'mediasMulti',
+      'type' => 'media',
+      'props' => [
+        'multiple' => true,
+        'label' => 'Carousel Página Índice',
+        'zone' => 'carouselindeximage',
+        'entity' => "Modules\Icommerce\Entities\Category",
+        'entityId' => null
+      ]
+    ],
+
+    'carouselTopIndexImages' => [
+      'value' => (object)[],
+      'name' => 'mediasMulti',
+      'type' => 'media',
+      'props' => [
+        'multiple' => true,
+        'label' => 'Carousel Top Página Índice',
+        'zone' => 'carouseltopindeximages',
+        'entity' => "Modules\Icommerce\Entities\Category",
+        'entityId' => null
+      ]
+    ],
+    
     ],
   //Extra field to crud product categories
-  'manufacturers' => [],
+  'manufacturers' => [
+
+    'carouselTopIndexImages' => [
+      'value' => (object)[],
+      'name' => 'mediasMulti',
+      'type' => 'media',
+      'props' => [
+        'multiple' => true,
+        'label' => 'Carousel Top Página Índice',
+        'zone' => 'carouseltopindeximages',
+        'entity' => "Modules\Icommerce\Entities\Manufacturer",
+        'entityId' => null
+      ]
+    ],
+
+  ],
   //Extra field to crud product categories
   'productDiscounts' => [],
   //Extra field to crud product categories

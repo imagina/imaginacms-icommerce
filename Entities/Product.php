@@ -399,7 +399,7 @@ class Product extends Model implements TaggableInterface
                 }
             }//has priceLists
         }
-        return Currency::convert($price);
+        return $price;
     }
 
 }

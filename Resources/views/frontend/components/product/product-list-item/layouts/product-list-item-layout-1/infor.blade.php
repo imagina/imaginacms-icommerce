@@ -34,7 +34,7 @@
             <i class="fa fa-shopping-basket"></i>
           </a>
         @endif
-        <a class="wishlist" href="#">
+        <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{$product->id}})" >
           <i class="fa fa-heart-o"></i>
         </a>
       </div>

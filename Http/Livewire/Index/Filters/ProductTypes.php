@@ -18,10 +18,9 @@ class ProductTypes extends Component
     public function mount(){
 
        $this->productTypes = config("asgard.icommerce.config.filters.product-types.options");
+       $this->isExpanded = config("asgard.icommerce.config.filters.product-types.isExpanded") ?? false;
        $this->show = false;
-       $this->isExpanded = false;
-
-
+       
     }
 
     /*
@@ -56,6 +55,12 @@ class ProductTypes extends Component
 
 
         $resultShowFilter = $this->getProductRepository()->getProductTypes(json_decode(json_encode($params)));
+
+        // Validation from URL
+        if(isset($params["filter"]["productType"])){
+            $this->selectedType = $params["filter"]["productType"];
+            $this->show = true;
+        }
 
         if($this->isExpanded || $resultShowFilter)
             $this->show = true;

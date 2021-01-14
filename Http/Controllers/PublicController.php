@@ -58,13 +58,13 @@ class PublicController extends BaseApiController
     $slug = end($argv);
 
     $tpl = 'icommerce::frontend.index';
-    $ttpl = 'icommerce.index';
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
   
     $category = null;
   
     $categoryBreadcrumb = [];
+    $carouselImages =[];
+
+    $gallery = [];
     
     if($slug && $slug != trans('icommerce::routes.store.index.index')){
       
@@ -83,6 +83,13 @@ class PublicController extends BaseApiController
   
         $ctpl = "icommerce.category.{$category->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
+
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($category);
+
+        // Carousel Right over ProductList with settings to images categories
+        $gallery = $this->getGalleryCategory($category);
+
   
       }else{
         return response()->view('errors.404', [], 404);
@@ -92,7 +99,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('category','categoryBreadcrumb'));
+    return view($tpl, compact('category','categoryBreadcrumb','carouselImages','gallery'));
   }
 
   // view products by category
@@ -109,6 +116,7 @@ class PublicController extends BaseApiController
     $manufacturer = null;
   
     $categoryBreadcrumb = [];
+    $carouselImages =[];
     
     if($slug && $slug != trans('icommerce::routes.store.index')){
   
@@ -122,7 +130,10 @@ class PublicController extends BaseApiController
   
         $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
-  
+
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($manufacturer);
+        
       }else{
         return response()->view('errors.404', [], 404);
       }
@@ -131,7 +142,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('manufacturer','categoryBreadcrumb'));
+    return view($tpl, compact('manufacturer','categoryBreadcrumb','carouselImages'));
   }
 
   // view products by category
@@ -148,6 +159,7 @@ class PublicController extends BaseApiController
     $category = null;
   
     $categoryBreadcrumb = [];
+    $carouselImages =[];
     
     if($categorySlug && $manufacturerSlug){
   
@@ -165,6 +177,9 @@ class PublicController extends BaseApiController
   
         $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
+
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($manufacturer);
   
       }else{
         return response()->view('errors.404', [], 404);
@@ -174,7 +189,7 @@ class PublicController extends BaseApiController
 
     //$dataRequest = $request->all();
 
-    return view($tpl, compact('category','manufacturer','categoryBreadcrumb'));
+    return view($tpl, compact('category','manufacturer','categoryBreadcrumb','carouselImages'));
   }
   
   /**
@@ -188,8 +203,7 @@ class PublicController extends BaseApiController
     $slug = end($argv);
    
     $tpl = 'icommerce::frontend.show';
-    $ttpl = 'icommerce.show';
-    if (view()->exists($ttpl)) $tpl = $ttpl;
+   
     $params = json_decode(json_encode(
       [
         "include" => explode(",","translations,category,categories,tags,addedBy"),
@@ -203,7 +217,9 @@ class PublicController extends BaseApiController
     
     if($product){
       $category= $product->category;
-      return view($tpl, compact('product','category'));
+      $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+      
+      return view($tpl, compact('product','category','categoryBreadcrumb'));
       
     }else{
       return response()->view('errors.404', [], 404);
@@ -281,6 +297,51 @@ class PublicController extends BaseApiController
     ];
 
     return $params;//Response
+  }
+
+
+  /**
+  * Get Images to carousel top index
+  *
+  */
+  protected function getImagesToCarousel($entity){
+
+    $carouselImages = [];
+
+    $mediaFiles = $entity->mediaFiles();
+
+    if(isset($mediaFiles->carouseltopindeximages) && count($mediaFiles->carouseltopindeximages)>0){
+        $carouselImages = $mediaFiles->carouseltopindeximages;
+    } 
+
+    return $carouselImages;
+  }
+
+
+  /**
+  * Get Images to gallery top Category
+  *
+  */
+  protected function getGalleryCategory($category){
+
+    $gallery = [];
+
+    $typeGallery = setting('icommerce::carouselIndexCategory',null,'carousel-category-active');
+    if(isset($category->id)){
+
+      if($category->parent_id!=null && $typeGallery=="carousel-category-parent"){
+        $category = Category::whereAncestorOf($category)->whereNull("parent_id")->first();
+      }
+
+      $mediaFiles = $category->mediaFiles();
+      if(isset($mediaFiles->carouselindeximage)){
+        $gallery = $mediaFiles->carouselindeximage;
+      } 
+
+    }
+
+    return $gallery;
+
   }
   
 }

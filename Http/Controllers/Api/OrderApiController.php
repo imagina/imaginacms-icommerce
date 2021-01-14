@@ -278,7 +278,7 @@ class OrderApiController extends BaseApiController
           app($payment->options->init)->init(new Request($data))
         );
   
-        $updateCart=$this->cart->update($cart,['status'=>2]);
+        $updateCart = $this->cart->update($cart,['status'=>2]);
         //Response
         $response = ["data" => [
           "orderId" => $order->id,

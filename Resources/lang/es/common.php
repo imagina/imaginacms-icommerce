@@ -22,6 +22,11 @@ return [
     'index' => 'Página Principal'
   ],
   'filters' => [
+    'title' => 'Filtrar',
+    'categories' => [
+      'group' => 'Filtro Categorias',
+      'title' => 'Titulo'
+    ],
     'priceRange' => [
       'group' => 'Filtro Rango de Precios',
       'step' => 'Saltos'
@@ -52,6 +57,7 @@ return [
   'title' => 'Título',
   'slug' => 'Enlace permanente:',
   'description' => 'Descripción',
+  'status' => 'Estado',
   'date' => 'Fecha y hora',
   'optional' => '(Opcional)',
   'summary' => 'Sumario',
@@ -87,6 +93,7 @@ return [
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
+      'minimumQuantityToNotify' => 'Cantidad mínima para notificar',
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad(Product Item)',
@@ -99,6 +106,9 @@ return [
     'refunded' => 'Transaccion rechazada',
     'pending' => 'Transaccion pendiente',
     'history' => 'Estado de la orden',
+  ],
+  'crudFields' => [
+    'categoryIndexDescription' => 'Descripción - Página Index'
   ],
   'emailIntro' => [
     'failed' => 'Reporte del Sistema de Pagos: Transaccion Fallida',
@@ -174,6 +184,10 @@ return [
       'comment' => 'Comment',
       'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
     ],
+  ],
+
+  'social' => [
+    'share' => 'Compartir'
   ],
 
 ];

@@ -59,7 +59,6 @@ class ProductList extends Component
 
 	    $this->category = $category;
         $this->manufacturer = $manufacturer;
-        
 	    $this->totalProducts = 0;
 	   
         $this->initConfigs();
@@ -142,7 +141,7 @@ class ProductList extends Component
 
     	$params = [
     		"include" => ['discounts','translations','category','categories','manufacturer','productOptions'],
-    		"take" => setting('icommmerce::product-per-page',null,12),
+    		"take" => setting('icommerce::product-per-page',null,12),
     		"page" => $this->page ?? 1,
     		"filter" => $this->filters,
             "order" =>  $this->order
@@ -185,10 +184,7 @@ class ProductList extends Component
     	$this->totalProducts = $products->total();
 
     	$tpl = 'icommerce::frontend.livewire.index.product-list';
-    	$ttpl = 'icommerce.livewire.product-list';
-
-    	if (view()->exists($ttpl)) $tpl = $ttpl;
-
+    	
   		// Emit Finish Render
 		//\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
 		$this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;

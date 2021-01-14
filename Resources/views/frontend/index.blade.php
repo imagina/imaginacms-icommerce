@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 {{-- Meta --}}
-@includeFirst(['icommerce.index.meta','icommerce::frontend.index.meta'])
+@include('icommerce::frontend.index.meta')
 
 
 @section('content')
@@ -9,32 +9,41 @@
   <div id="content_index_commerce"
        class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
     
-    {{-- Category Index Banner --}}
-    @if(isset($category->id))
-      @php 
-        $mediaFiles = $category->mediaFiles();
-      @endphp
-      @if(isset($mediaFiles->bannerindeximage->path) && !strpos($mediaFiles->bannerindeximage->path,"default.jpg"))
-        @include('icommerce::frontend.partials.category-index-banner')
-      @else
-        {{-- Breadcrumb --}}
-        @include('icommerce::frontend.partials.breadcrumb')
-      @endif
-    @else
-      {{-- Breadcrumb --}}
-      @include('icommerce::frontend.partials.breadcrumb')
-    @endif
-    
+    {{-- Banner Top--}}
+    @include("icommerce::frontend.partials.banner")
     
     <div class="container">
       <div class="row">
         
-        {{-- Filters, Widgets --}}
+        {{-- Sidebar --}}
         <div class="col-lg-3">
-          
-          @includeFirst(['icommerce.index.filters',
-          'icommerce::frontend.index.filters'],["categoryBreadcrumb" => $categoryBreadcrumb])
 
+          {{-- Breadcrumb Optional --}}
+          @if(setting('icommerce::showBreadcrumbSidebar'))
+            @include('icommerce::frontend.partials.breadcrumb')
+          @endif
+
+
+          {{-- Custom Includes --}}
+          @if(config("asgard.icommerce.config.customIncludesBeforeFilters"))
+            @foreach(config("asgard.icommerce.config.customIncludesBeforeFilters") as $custom)
+
+                @if(in_array("manufacturer",$custom['show']) && isset($manufacturer->id))
+                  @include($custom['view'])
+                @endif
+
+                @if(in_array("category",$custom['show']) && isset($category->id))
+                  @include($custom['view'])
+                @endif
+
+            @endforeach
+          @endif
+          
+          {{-- Filters --}}
+          @include('icommerce::frontend.index.filters',[
+            "categoryBreadcrumb" => $categoryBreadcrumb])
+
+          {{-- Extra Widgets --}}
           @if(config("asgard.icommerce.config.widgets"))
             <div class="widgets">
             @foreach(config("asgard.icommerce.config.widgets") as $widget)
@@ -57,8 +66,15 @@
         
         {{-- Top Content , Products, Pagination --}}
         <div class="col-lg-9">
-          
-          @livewire('icommerce::product-list',["category" => $category ?? null,"manufacturer" => $manufacturer ?? null])
+         
+          @if(isset($gallery) && !empty($gallery))
+            @include('icommerce::frontend.partials.carousel-index-image')
+          @endif
+
+          <livewire:icommerce::product-list
+            :category="$category ?? null" 
+            :manufacturer="$manufacturer ?? null" />
+
           <hr>
         
         </div>
