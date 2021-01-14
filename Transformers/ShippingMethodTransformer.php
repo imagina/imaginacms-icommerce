@@ -23,6 +23,14 @@ class ShippingMethodTransformer extends JsonResource
       'mediaFiles' => $this->mediaFiles()
     ];
 
+    // Add Crud Fields from Shipping Method
+    $config = "asgard.{$data['name']}.config.crudFields";
+
+    if(isset($this->parent_name) && !empty($this->parent_name))
+      $config = "asgard.{$data['parentName']}.config.crudFields";
+        
+    $data['crudFields'] = config($config);
+
     switch($this->name){
 
 
