@@ -28,22 +28,22 @@ class SaveOrderItems
         $order = $event->order;
         $items = $event->items;
         foreach ($items as $item) {
-            $cartProductOptionsValues = $item["productOptionValues"];
-            unset($item["productOptionValues"]);
+          $cartProductOptionsValues = $item["productOptionValues"];
+          unset($item["productOptionValues"]);
 
             // Create Order Items
             $orderItem = $order->orderItems()->create($item);
             $product   = Product::find($item["product_id"]);
             if (isset($product->id) && $product->subtract) {
-                $product->quantity                          = $product->quantity - $item["quantity"];
+                $product->quantity = $product->quantity - $item["quantity"];
                 $product->quantity < 0 ? $product->quantity = 0 : false;
-                //TODO aquí toca agregar una notificacion al correo del icommerce cuando el quantity se haga 0 y cuando el quantity se vuelva negativo
-
+               
                 //si el producto se agota y está como substraible de l stock, automáticamente pasarlo a producto agotado/
                 if ($product->quantity == 0 && $product->subtract) {
                     $product->stock_status = 0;
-                    //TODO aqui hay que agregar una notificación de producto agotado al correo del admin del icommerce
                 }
+                
+                //Notificaciones al correo de producto agotado o de
                 if ($product->quantity <= $productMinimumQuantityToNotify) {
                     if ($product->stock_status == 0 || $product->quantity == 0) {
                         event(new ProductSoldOut($this->emails,$product));
@@ -53,7 +53,7 @@ class SaveOrderItems
                 }
                 $product->save();
             }
-
+            
             if ($cartProductOptionsValues != null) {
                 foreach ($cartProductOptionsValues as $productOptionValue) {
                     $quantity_ = $stock = 0;
@@ -63,6 +63,8 @@ class SaveOrderItems
                     $logvar             = json_encode($dataOrderOption);
                     // Create Order Option
                     $order->orderOption()->create($dataOrderOption);
+                    
+                    
                     if ($productOptionValue->subtract) {
                         //Restar cantidad comprada a la opcion seleccionada
                         $productOptionValue->quantity = $productOptionValue->quantity - $item["quantity"];
@@ -91,6 +93,8 @@ class SaveOrderItems
                             }
                         }
                     }
+                    
+                    
                 }
             }
         } // End Foreach
