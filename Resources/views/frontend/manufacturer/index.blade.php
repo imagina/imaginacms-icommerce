@@ -9,13 +9,12 @@
   
   <div class="page">
     
-    {{-- Autores --}}
-    @component('partials.widgets.breadcrumb')
+    <x-isite::breadcrumb>
       <li class="breadcrumb-item active"
           aria-current="page">
         {{trans('icommerce::manufacturers.title.manufacturers')}}
       </li>
-    @endcomponent
+    </x-isite::breadcrumb>
     
     <section class="iblock general-block31 pb-5" data-blocksrc="general.block31">
       <div class="container">
