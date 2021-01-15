@@ -16,11 +16,13 @@
         <div class="container ">
 
           <div class="row">
+
             <div class="col-lg-6 mb-5">
 
               @include('icommerce::frontend.widgets.gallery')
   
-              @includeFirst(['icommerce::frontend.products.share'])
+              @include('icommerce::frontend.products.share')
+
             </div>
 
             <div class="col-lg-6 mb-5">
@@ -117,19 +119,18 @@
           </div>
         </div>
       </div>
+
       <div class="col-12">
-        @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
+
+        @include('icommerce::frontend.products.related-products')
+
       </div>
+
     </div>
 
     {{-- Extra Footer End Page --}}
     @include('icommerce::frontend.partials.extra-footer')
     
-{{--
-    @include('partials.subcription')
-
-    @include('partials.brands')
-    --}}
   </div>
 @stop
 
