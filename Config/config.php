@@ -3,6 +3,11 @@
 return [
   'name' => 'Icommerce',
   'frontendModuleName' => 'qcommerce',
+  
+  //default layout in the notification module
+  'defaultEmailLayout' => 'notification::emails.layouts.default',
+  'defaultEmailContent' => 'notification::emails.contents.default',
+  
   'orderStatuses' => [
     '1' => [
       'id' => 1,
@@ -113,12 +118,14 @@ return [
       'iconimage' => 'single',
       'bannerindeximage' => 'single',
       'carouselindeximage' => 'multiple',
+      'carouseltopindeximages' => 'multiple'
     ],
     'manufacturer' => [
       'mainimage' => 'single',
       'secondaryimage' => 'single',
       'tertiaryimage' => 'single',
       'quaternaryimage' => 'single',
+      'carouseltopindeximages' => 'multiple'
     ],
     'paymentmethod' => [
       'mainimage' => 'single',
@@ -220,6 +227,16 @@ return [
     ]
   ],
 
+  /*Custom Includes Before Filters*/
+  'customIncludesBeforeFilters' => [
+    /*
+    'manufacturerCard' => [
+      'view' => "icommerce.partials.manufacturer-card",
+      'show' => ['manufacturer'] //category, manufacturer
+    ]
+    */
+  ],
+
   /*Filters*/
   'filters'=>[
     'categories' => [
@@ -308,7 +325,33 @@ return [
           "routeName" => "icommerce.store.wishlists.index",
           "icon" => "fa fa-heart",
       ]
-  ]
+  ],
+
+
+  'notifiable' => [
+    
+    [ // Order Entity
   
+      'title' => 'Order',
+      'entityName' => 'Modules\\Icommerce\\Entities\\Order',
+      'events' => [
+        [ //ORDER WAS CREATED
+          'title' => 'Order was created',
+          'path' => "Modules\\Icommerce\\Events\\OrderWasCreated"
+        ]
+      ],
+      "conditions" => [
+  
+      ],
+      "settings" => [
+        "email" => [
+          "recipients" => [
+          ]
+        ],
+      ],
+    ]
+    
+    ]
+   
   
 ];
