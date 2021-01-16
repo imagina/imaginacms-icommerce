@@ -5,12 +5,14 @@
     @endphp
 
     <div id="orderDetails" class="pb-5">
-        @component('partials.widgets.breadcrumb')
+        <x-isite::breadcrumb>
+    
             <li class="breadcrumb-item">
-                <a href="{{ URL::to('/orders') }}">{{trans('icommerce::orders.title.orders')}}</a>
+                <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}">{{trans('icommerce::orders.title.orders')}}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}}</li>
-        @endcomponent
+        </x-isite::breadcrumb>
+        
 
         <div class="container" v-if="order">
             <div class="row">
@@ -164,7 +166,7 @@
                 </div>
                 <hr class="my-4 hr-lg">
                 <div class="col-12 text-right mt-3 mt-md-0">
-                    <a href="{{ url('/orders') }}"
+                    <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}"
                        class="btn btn-outline-primary btn-rounded btn-lg my-2">
                        Ver Ordenes
                        {{--{{trans('icommerce::orders.button.Back_to_order_list')}}--}}

@@ -28,6 +28,7 @@ class OrderTransformer extends JsonResource
       'lastName' => $this->when($this->last_name,$this->last_name),
       'email' => $this->when($this->email,$this->email),
       'paymentFirstName' => $this->when($this->payment_first_name,$this->payment_first_name),
+      'url' => $this->url,
       'paymentLastName' => $this->when($this->payment_last_name,$this->payment_last_name),
       'paymentCompany' => $this->when($this->payment_company,$this->payment_company),
       'paymentAddress1' => $this->when($this->payment_address_1,$this->payment_address_1),
@@ -77,6 +78,42 @@ class OrderTransformer extends JsonResource
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' =>  TransactionTransformer::collection($this->whenLoaded('transactions'))
     ];
+    //Add information blocks
+    $item['informationBlocks'] = [
+      [
+        'title' => 'Información de pedido y cuenta',
+        'values' => [
+          ['label' => 'Estado del pedido', 'value' => $item['statusName']],
+          ['label' => 'Fecha de orden', 'value' => $item['createdAt']],
+          ['label' => 'Pedido realizado desde la IP', 'value' => $item['ip']],
+        ]
+      ],
+      [
+        'title' => 'Información de cuenta',
+        'values' => [
+          ['label' => 'Nombre', 'value' => $item['customer']->present()->fullname],
+          ['label' => 'Email', 'value' => $item['customer']->email],
+          ['label' => 'Teléfono', 'value' => $item['telephone']],
+        ]
+      ],
+      [
+        'title' => 'Datos de domicilio',
+        'values' => [
+          [
+            'label' => 'Dirección de Envio',
+            'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
+              ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
+          ]
+        ]
+      ],
+      [
+        'title' => 'Pago y método de envío',
+        'values' => [
+          ['label' => 'Información del pago', 'value' => $item['paymentMethod']]
+        ]
+      ],
+    ];
+    
 
     return $item;
   }

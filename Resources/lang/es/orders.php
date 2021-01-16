@@ -10,6 +10,7 @@ return [
         'create order' => 'Crear un pedido',
         'edit order' => 'Editar un pedido',
         'single_order_title'=>'Orden de Compra',
+        'confirmation_single_order_title'=>'Confirmación de orden de compra',
         'detail order'=> 'Detalle de  la Orden'
     ],
     'breadcrumb'=>[
@@ -64,6 +65,7 @@ return [
         'order status' => 'Estado del pedido:',
         'rights' => 'Todos los derechos reservados por',
         'notificationOrder' => 'Notificación Orden de compra',
+        'statusChanged' => 'su orden <b>#:orderId</b> fue actualizada a estado: <strong>:statusName</strong>',
     ],
     'validation' => [
     ],
