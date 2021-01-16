@@ -125,7 +125,14 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
 
     //Event to ADD media
     event(new CreateMedia($productOptionValue, $data));
-
+  
+    if(!empty($productOptionValue->parent_option_value_id)){
+      $parent = $productOptionValue->parentProductOptionValue;
+      //Verificacion y posible actualizacion de status y stock de padre
+      $parent->updateStockByChildren();
+    
+    }
+    
     return $productOptionValue;
   }
 
@@ -145,8 +152,20 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
 
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
-    event(new UpdateMedia($model, $data));//Event to Update media
-    return $model ? $model->update((array)$data) : false;
+  
+    if(!empty($model)){
+      event(new UpdateMedia($model, $data));//Event to Update media
+      $model->update((array)$data);
+  
+      if(!empty($model->parent_option_value_id)){
+        $parent = $model->parentProductOptionValue;
+          //Verificacion y posible actualizacion de status y stock de padre
+          $parent->updateStockByChildren();
+       
+      }
+    }
+    
+    return $model;
   }
 
   public function deleteBy($criteria, $params = false)

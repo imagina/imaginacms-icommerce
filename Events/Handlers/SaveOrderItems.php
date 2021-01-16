@@ -79,9 +79,9 @@ class SaveOrderItems
                         if ($productOptionValue->parentProductOptionValue) {
                             $father = $productOptionValue->parentProductOptionValue;
                             //Segunda Verificacion, al ser padre verifica que tenga hijos (no es totalmente necesario)
-                            if ($father->childrensProductOptionValue->isNotEmpty()) {
+                            if ($father->childrenProductOptionValue->isNotEmpty()) {
                                 //Verificacion y posible actualizacion de status y stock de padre
-                                $stock = $father->updateStockByChildrens();
+                                $stock = $father->updateStockByChildren();
                             }
                         }
 

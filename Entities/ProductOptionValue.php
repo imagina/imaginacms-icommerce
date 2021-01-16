@@ -72,16 +72,16 @@ class ProductOptionValue extends Model
     return $this->belongsTo($this, 'parent_option_value_id');
   }
 
-  public function childrensProductOptionValue()
+  public function childrenProductOptionValue()
   {
     return $this->hasMany($this,  'parent_option_value_id', 'id');
   }
 
-  public function updateStockByChildrens()
+  public function updateStockByChildren()
   {
     $stock = 0;
     if ($this->subtract) {
-      foreach ($this->childrensProductOptionValue as $key => $children) {
+      foreach ($this->childrenProductOptionValue as $key => $children) {
         if ($children->subtract && $children->stock_status == 1) {
           $stock += $children->quantity;
         }
@@ -89,11 +89,11 @@ class ProductOptionValue extends Model
       $this->update(["quantity" => $stock]);
       if ($stock == 0) {
         $this->update(["stock_status" => 0]);
-      }elseif ($this->stock_status == 0 && $this->childrensProductOptionValue()->where("stock_status",1)->get()->isNotEmpty()) {
+      }elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where("stock_status",1)->get()->isNotEmpty()) {
         $this->update(["stock_status" => 1]);
       }
       if ($this->parentProductOptionValue) {
-        $this->parentProductOptionValue->updateStockByChildrens();
+        $this->parentProductOptionValue->updateStockByChildren();
       }
       return $stock;
 

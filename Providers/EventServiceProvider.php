@@ -25,8 +25,7 @@ class EventServiceProvider extends ServiceProvider
             SendOrder::class
         ],
         OrderWasUpdated::class => [
-            SendOrder::class,
-            DiscountStockProducts::class
+            SendOrder::class
         ],
         OrderStatusHistoryWasCreated::class => [
             UpdateOrderStatus::class,
