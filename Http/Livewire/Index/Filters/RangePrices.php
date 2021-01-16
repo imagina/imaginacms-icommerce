@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index\Filters;
 
 use Livewire\Component;
 
 use Modules\Icommerce\Repositories\ProductRepository;
 
-class FilterRangePrices extends Component
+class RangePrices extends Component
 {
 
 	public $priceMin;
@@ -25,7 +25,7 @@ class FilterRangePrices extends Component
     */
 	public function mount()
 	{
-    	$this->step = setting('icommerce::filterRangePricesStep',null,20000);
+    	$this->step = (int)setting('icommerce::filterRangePricesStep',null,20000);
 		$this->priceMin = 0;
 		$this->priceMax = 1;
 		$this->selPriceMin = 0;
@@ -92,12 +92,17 @@ class FilterRangePrices extends Component
 			$this->selPriceMax = $this->priceMax;
 		}
 		
-		//\Log::info($this->priceMin."-".$this->selPriceMin."-".$this->priceMax."-".$this->selPriceMax);
+		//\Log::info("Price Min:".$this->priceMin." -Price Min SEL:".$this->selPriceMin." -Price Max:".$this->priceMax." -Price Max Sel:".$this->selPriceMax);
 
 		//Validating if there is no price range
 		if($this->selPriceMin==$this->selPriceMax && $this->priceMin==$this->selPriceMin && $this->priceMax==$this->selPriceMax){
 			$this->show = false;
+		}else{
+			$this->show = true;
 		}
+
+		if($this->priceMax==0)
+			$this->show = false;
 
 		$originalPriceMax = $this->priceMax;
 
@@ -127,7 +132,10 @@ class FilterRangePrices extends Component
     public function render()
     {
 
-    	$tpl = 'icommerce::frontend.livewire.filter-range-prices';
+    	$tpl = 'icommerce::frontend.livewire.index.filters.range-prices';
+    	$ttpl = 'icommerce.livewire.filter-range-prices';
+
+    	if (view()->exists($ttpl)) $tpl = $ttpl;
 
         return view($tpl);
     }

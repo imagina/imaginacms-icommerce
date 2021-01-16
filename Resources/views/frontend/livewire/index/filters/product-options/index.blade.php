@@ -6,9 +6,9 @@
 		@if($productOptions && count($productOptions)>0)
 			@foreach($productOptions as $key => $option)
 				
-				@include('icommerce::frontend.index.product-option',[
-					'option'=> $option
-				])
+				@include('icommerce::frontend.livewire.index.filters.product-options.option',
+					['option'=> $option]
+				)
 			@endforeach
 		@endif
 	</div>

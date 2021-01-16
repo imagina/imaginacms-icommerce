@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -27,13 +27,13 @@ class ProductList extends Component
 
 	public $totalProducts;
 	public $orderBy;
-	public $search;
-	public $mainLayout;
+	public $search = '';
+	public $productListLayout;
 	public $layoutClass;
 
 	public $priceMin;
 	public $priceMax;
-	public $filters;
+	public $filters = [];
 
 	public $dataRequest;
 
@@ -41,7 +41,11 @@ class ProductList extends Component
 
 	protected $listeners = ['updateFilter'];
 
-	protected $queryString = ['search','orderBy','priceMin','priceMax','page'];
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'filters' => ['except' => []],
+        'page' => ['except' => 1]
+    ];
 
 	protected $emitProductListRendered;
 	
@@ -50,22 +54,21 @@ class ProductList extends Component
     * Runs once, immediately after the component is instantiated,
     * but before render() is called
     */
-	public function mount(Request $request,$category,$manufacturer)
+	public function mount(Request $request,$category,$manufacturer, $productListLayout = null)
 	{
 
 	    $this->category = $category;
         $this->manufacturer = $manufacturer;
         
 	    $this->totalProducts = 0;
-	    $this->filters = [];
         
         $this->initConfigs();
 
         $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
-        $this->mainLayout = $this->configs['mainLayout']['default'] ?? "four";
-        $this->layoutClass = $this->configs['mainLayout']['options'][$this->mainLayout]['class'];
+        $this->productListLayout = $productListLayout ?? $this->configs['productListLayout']['default'] ?? "four";
+        $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
 
 	    $this->priceMin = null;
 	    $this->priceMax = null;
@@ -74,6 +77,8 @@ class ProductList extends Component
 	    $this->firstRequest = true;
 
 	    $this->emitProductListRendered = false	;
+
+        $this->fill(request()->only('search', 'filters','page','orderBy'));
 
 	}
 
@@ -84,7 +89,7 @@ class ProductList extends Component
     public function initConfigs(){
 
         $this->configs['orderBy'] = config("asgard.icommerce.config.orderBy");
-        $this->configs['mainLayout'] = config("asgard.icommerce.config.layoutIndex");
+        $this->configs['productListLayout'] = config("asgard.icommerce.config.layoutIndex");
 
     }
 	/*
@@ -114,42 +119,10 @@ class ProductList extends Component
     *
     */
     public function changeLayout($c){
-    	$this->mainLayout = $c;
-        $this->layoutClass = $this->configs['mainLayout']['options'][$this->mainLayout]['class'];
-    }
-
-    /*
-    * Update Parameters Url to keep the Filters
-    *
-    */
-    public function updateParametersUrl(){
-
-     
-        $paramsUrl = http_build_query([
-    	    "page" => $this->page ?? 1,
-            "filters" => $this->filters,
-            "orderBy" => $this->orderBy
-        ]);
- 
-        $this->emit('urlChange', $paramsUrl);
-        
-    }
-
-    /*
-    * Check Values From Request
-    * just First Request
-    */
-    public function checkValuesFromRequest(){
-        
-        if(!empty($this->dataRequest)){
-            foreach ($this->dataRequest as $key => $value) {
-                $this->{$key} = $value;
-            }
-   
+    	$this->productListLayout = $c;
+        $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
         }
 
-        $this->firstRequest = false;
-    }
 
     /*
     * Make params to Repository
@@ -159,7 +132,7 @@ class ProductList extends Component
 
      
     	if($this->firstRequest)
-    		$this->checkValuesFromRequest();
+    		$this->firstRequest = false;
         
         $this->order = $this->configs['orderBy']['options'][$this->orderBy]['order'];
 
@@ -170,7 +143,7 @@ class ProductList extends Component
 
     	$params = [
     		"include" => ['discounts','translations','category','categories','manufacturer','productOptions'],
-    		"take" => setting('icommmerce::product-per-page',null,12),
+    		"take" => setting('icommerce::product-per-page',null,12),
     		"page" => $this->page ?? 1,
     		"filter" => $this->filters,
             "order" =>  $this->order
@@ -201,6 +174,10 @@ class ProductList extends Component
     public function render(){
      	
      	
+     	if(!$this->firstRequest && !in_array('orderBy', $this->queryString)){
+            array_push($this->queryString, 'orderBy');
+        }
+
      	$params = $this->makeParamsToRepository();
 
         //	\Log::info("params: ".json_encode($params));
@@ -208,13 +185,10 @@ class ProductList extends Component
     
     	$this->totalProducts = $products->total();
 
-    	$tpl = 'icommerce::frontend.livewire.product-list';
-
-    	//Updates Parameters URL
-    	$this->updateParametersUrl();
+    	$tpl = 'icommerce::frontend.livewire.index.product-list';
 
   		// Emit Finish Render
-		\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
+		//\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
 		$this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;
 
         return view($tpl,['products'=> $products, 'params' => $params]);

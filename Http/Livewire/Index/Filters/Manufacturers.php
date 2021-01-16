@@ -1,19 +1,21 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire;
+namespace Modules\Icommerce\Http\Livewire\Index\Filters;
 
 use Livewire\Component;
 
-class FilterManufacturers extends Component
+class Manufacturers extends Component
 {
 	
     protected $manufacturers;
     public $selectedManufacturers;
+    public $isExpanded;
 
 	protected $listeners = ['productListRendered'];
 	
 	public function mount(){
 		$this->selectedManufacturers = [];
+        $this->isExpanded = config("asgard.icommerce.config.filters.manufacturers.isExpanded") ?? false;
 	}
     /*
     * When Manufacturer has been selected
@@ -50,15 +52,17 @@ class FilterManufacturers extends Component
     public function render()
     {
 
-    	$tpl = 'icommerce::frontend.livewire.filter-manufacturers';
+    	$tpl = 'icommerce::frontend.livewire.index.filters.manufacturers';
+    	$ttpl = 'icommerce.livewire.filter-manufacturers';
     	
-		$isExpanded = false;
+    	if (view()->exists($ttpl)) $tpl = $ttpl;
+	
 		
 		$count = count(array_intersect($this->manufacturers ? $this->manufacturers->pluck("id")->toArray() : [],$this->selectedManufacturers));
 		
-        if($count) $isExpanded = true;
+        if($count) $this->isExpanded = true;
 			
-		return view($tpl,['manufacturers' => $this->manufacturers,"isExpanded" => $isExpanded]);
+		return view($tpl,['manufacturers' => $this->manufacturers]);
 			
     }
 
