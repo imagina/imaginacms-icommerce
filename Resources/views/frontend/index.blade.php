@@ -5,19 +5,18 @@
 
 
 @section('content')
-  
-  <div id="content_index_commerce"
-       class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
-    
-    {{-- Banner Top--}}
-    @include("icommerce::frontend.partials.banner")
-    
-    <div class="container">
-      <div class="row">
-        
-        {{-- Sidebar --}}
-        <div class="col-lg-3">
 
+<div id="content_index_commerce" class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}}">
+	
+	{{-- Breadcrumb --}}
+	@include('icommerce::frontend.partials.breadcrumb')
+	
+	<div class="container">
+		<div class="row">
+
+			{{-- Filters --}}
+			<div class="col-lg-3">
+			
           {{-- Breadcrumb Optional --}}
           @if(setting('icommerce::showBreadcrumbSidebar'))
             @include('icommerce::frontend.partials.breadcrumb')
@@ -91,4 +90,4 @@
 @stop
 
 {{-- VUEJS SCRIPTS--}}
-@includeFirst(['icommerce.index.scripts','icommerce::frontend.index.scripts'])
+@include('icommerce::frontend.index.scripts')

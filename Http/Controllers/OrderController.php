@@ -55,13 +55,13 @@ class OrderController extends BasePublicController
     {
         $tpl = 'icommerce::frontend.orders.show';
         $ttpl = 'icommerce.orders.show';
-   
+
         if (view()->exists($ttpl)) $tpl = $ttpl;
-        if (!isset($request->key)) {
+        if (!isset($request->orderKey)) {
             $user = $this->auth->user();
             $order = $this->order->getItem($request->orderId,(object)["filter"=>(object)["customer"=>$user->id],"include"=>[]]);
         }else
-            $order = $this->order->getItem($request->key,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);
+            $order = $this->order->getItem($request->orderKey,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);
 
         $products = [];
         if (isset($order) && !empty($order)) {
@@ -73,7 +73,7 @@ class OrderController extends BasePublicController
             if ($order->tax_amount){
                 $subtotal = $subtotal - $order->tax_amount;
             }
-            return view($tpl, compact('order', 'user','subtotal'));
+            return view($tpl, compact('order','subtotal'));
 
         } else
             return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));

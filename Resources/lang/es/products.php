@@ -7,6 +7,7 @@ return [
     'list resource'         => 'Listar productos',
     'create resource'       => 'Crear productos',
     'edit resource'         => 'Editar productos',
+    'edit'         => 'Editar producto',
     'destroy resource'      => 'Eliminar productos',
     'bulkload import' => 'Importación masiva',
     'title'             => [
@@ -86,6 +87,8 @@ return [
         'shopping'                  => 'COMPRANDO',
         'details'                   => 'DETALLES',
         'reviews'                   => 'RESEÑAS',
+        'productSoldOut'      => 'Tu producto: <b>:name</b> se ha <b>agotado</b>',
+        'productLowStock'      => 'Te queda(n) <b>:units</b> unidad(es) del producto <b>:name</b>',
     ],
     'validation'        => [
         'error delete'              => 'Error: No se puede eliminar  este producto porque tiene elementos asociados',
@@ -107,6 +110,8 @@ return [
         'no_zero'       => 'El producto no puede ser menor a 0',
         'new'           => 'Nuevo',
         'sold out'      => 'Agotado',
+        'productSoldOut'      => 'Producto Agotado',
+        'productLowStock'      => 'Producto con bajo inventario',
 
     ],
     'bulkload'=>[

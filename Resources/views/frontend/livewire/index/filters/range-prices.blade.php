@@ -1,17 +1,18 @@
-<div class="filter-range-prices mb-4" >
+<div class="filter-range-prices" >
 
 	@if($show)
 	
 	<div class="title">
-        <a class="item mb-3" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="true" aria-controls="collapseRangePrices">
-            @php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
-            <h5 class="p-3 border-top border-bottom">
-                <i class="fa angle float-right" aria-hidden="true"></i>
-                {{trans($titleFilter)}}
-            </h5>
+		<a class ="item" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="false" aria-controls="collapseRangePrices">
+			
+			@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
+	  		<h5>
+	  			<i class="fa angle float-right" aria-hidden="true"></i>
+	  			{{trans($titleFilter)}}
+	  		</h5>
+	  		
 		</a>
 	</div>
-
 	
 	<div class="content position-relative my-3">
 
@@ -19,7 +20,7 @@
 
         <div class="collapse multi-collapse show mb-2" id="collapseRangePrices">
 
-			<input type="text" id="amount" class="amount border-0 text-primary font-weight-bold mb-2" readonly>
+			<input type="text" id="amount" class="amount border-0" readonly>
 
 			<input type="hidden" id="priceMin" name="priceMin" wire:model="priceMin">
 			<input type="hidden" id="priceMax" name="priceMax" wire:model="priceMax">
@@ -93,9 +94,8 @@
 		*/
 		window.addEventListener('filter-prices-updated', event => {
 
-			if($("#slider-range").hasClass( "ui-slider" ))
-				$("#slider-range").slider("destroy");
 
+			$("#slider-range").slider("destroy");
     		createSlider(event.detail.newPriceMin,event.detail.newPriceMax,event.detail.newSelPriceMin,event.detail.newSelPriceMax,event.detail.step)
 
 		})

@@ -21,8 +21,8 @@ return [
     
     'checkout' => 'store/checkout',
     'order' => [
-      'index' => 'orders',
-      'show' => 'orders/{orderId}'
+      'index' => 'store/orders',
+      'show' => 'store/orders/{orderId}/{orderKey}'
     ]
   ],
 ];

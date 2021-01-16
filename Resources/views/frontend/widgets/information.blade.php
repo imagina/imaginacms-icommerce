@@ -19,11 +19,15 @@
  
   <!-- PRICE -->
   <div v-if="products_children === false && product.price >0.00">
+    @if(isset($product->discount->price))
+      <del>{{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($product->price) }}</del>
+    @endif
     <div class="price text-primary">
       {{isset($currency->id) ? $currency->symbol_left : '$'}}
-      {{formatMoney($discount->price ?? $product->price)}}
+      {{formatMoney($product->discount->price ?? $product->price)}}
       {{isset($currency->id) ? $currency->symbol_right : ''}}
     </div>
+   
   </div>
   <!-- END PRICE -->
   <!-- OPCIONES DE PRODUCTO -->

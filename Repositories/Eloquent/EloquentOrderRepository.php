@@ -18,7 +18,8 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     $query = $this->model->query();
 
     // RELATIONSHIPS
-    $defaultInclude = ['customer','addedBy'];
+    $defaultInclude = ['customer','addedBy', 'paymentCountry', 'shippingCountry', 'shippingDepartment',
+      'paymentDepartment'];
     $query->with(array_merge($defaultInclude, $params->include));
 
     // FILTERS
@@ -115,7 +116,8 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       if(in_array('*',$params->include)){//If Request all relationships
         $query->with([]);
       }else{//Especific relationships
-        $includeDefault = ['customer','addedBy','orderItems','orderHistory','transactions'];//Default relationships
+        $includeDefault = ['customer','addedBy','orderItems','orderHistory','transactions',
+          'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'];//Default relationships
         if (isset($params->include))//merge relations with default relationships
           $includeDefault = array_merge($includeDefault, $params->include);
         $query->with($includeDefault);//Add Relationships to query

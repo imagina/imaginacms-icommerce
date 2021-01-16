@@ -1,28 +1,25 @@
 <?php
 
-namespace Modules\Icommerce\Http\Livewire\Index\Filters;
+namespace Modules\Icommerce\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CategoryRepository;
 
-class Categories extends Component
+class FilterCategories extends Component
 {
   
   private $categoryBreadcrumb;
   
   public $categories;
-  public $configs;
   public $manufacturer;
-  public $category;
-  public $isExpanded;
   
   public $extraParamsUrl;
   
   protected $listeners = ['updateExtraParams'];
   
-  public function mount($categoryBreadcrumb, $manufacturer, $category)
+  public function mount($categoryBreadcrumb, $manufacturer)
   {
     
     
@@ -30,21 +27,6 @@ class Categories extends Component
     $this->extraParamsUrl = "";
     
     $this->manufacturer = $manufacturer;
-    $this->category = $category;
-
-    $this->isExpanded = config("asgard.icommerce.config.filters.categories.isExpanded") ?? true;
-    
-    $this->initConfigs();
-  }
-  
-  
-  /*
-  * Init Configs to ProductList
-  *
-  */
-  public function initConfigs(){
-    
-    $this->configs = config("asgard.icommerce.config.filters.categories");
     
   }
   
@@ -61,8 +43,7 @@ class Categories extends Component
   public function render()
   {
     
-    $tpl = 'icommerce::frontend.livewire.index.filters.categories.index';
-    $ttpl = 'icommerce.livewire.filter-categories';
+    $tpl = 'icommerce::frontend.livewire.filter-categories';
     
     $params = json_decode(json_encode([
       "include" => ['translations'],
@@ -72,8 +53,6 @@ class Categories extends Component
     ]));
     
     $this->categories = $this->getCategoryRepository()->getItemsBy($params);
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
     
     if (isset($this->manufacturer->id)) {
       $params = json_decode(json_encode([
@@ -93,32 +72,9 @@ class Categories extends Component
       
       $this->categories = collect($parents)->merge($categoriesOfManufacturer)->keyBy("id");
 
-    }elseif (isset($this->category->id) && isset($this->configs["mode"])) {
-      switch($this->configs["mode"]){
-        case 'allFamilyOfTheSelectedNode':
-          $ancestors = Category::ancestorsAndSelf($this->category->id);
-          $rootCategory = $ancestors->whereNull('parent_id')->first();
-          $this->categories = Category::descendantsAndSelf($rootCategory->id);
-          break;
-  
-        case 'onlyLeftAndRightOfTheSelectedNode':
-          $ancestors = Category::ancestorsOf($this->category->id);
-          $descendants = $result = Category::descendantsAndSelf($this->category->id);
-          $siblings = $this->category->getSiblings();
-          $this->categories = $ancestors->merge($descendants)->merge($siblings);
-          break;
-      }
-    
-      
-      
-      
     }
     
-    return view($tpl, [
-      'categoryBreadcrumb' => $this->categoryBreadcrumb,
-      'titleFilter' => $this->getTitle() 
-    ]);
-
+    return view($tpl, ['categoryBreadcrumb' => $this->categoryBreadcrumb]);
   }
   
   private function getParents($categoryManufacturer, &$parents = [])
@@ -129,18 +85,6 @@ class Categories extends Component
         $this->getParents($category, $parents);
       }
     }
-  }
-
-  private function getTitle(){
-
-    $titleFilter = trans(config("asgard.icommerce.config.filters.categories.title"));
-    
-    $typeTitle = setting('icommerce::filterCategoriesTitle',null,'basic');
-    if($typeTitle=="category-title" && isset($this->category))
-      $titleFilter = $this->category->title;
-
-    return $titleFilter;
-
   }
   
 }

@@ -4,31 +4,25 @@
 
 		<div id="contenttomove">
 
-			<livewire:icommerce::filter-categories :key="filter-categories"
-            	:categoryBreadcrumb="$categoryBreadcrumb" 
-            	:manufacturer="$manufacturer ?? null" 
-            	:category="$category ?? null" />
+			@livewire('icommerce::filter-categories',[
+			"categoryBreadcrumb" => $categoryBreadcrumb,
+			"manufacturer" => $manufacturer ?? null
+			],key("filter-categories"))
 
-			<livewire:icommerce::filter-range-prices :key="filter-range-prices" />
+			@livewire('icommerce::filter-range-prices',key("filter-range-prices"))
 
 			@if(!isset($manufacturer->id))
-				<livewire:icommerce::filter-manufacturers :key="filter-manufacturers" />
+				@livewire('icommerce::filter-manufacturers',key("filter-manufacturers"))
 			@endif
-
-			<livewire:icommerce::filter-product-options :key="filter-product-options" />
-
-			@if(config("asgard.icommerce.config.filters.product-types"))
-				@if(config("asgard.icommerce.config.filters.product-types.status"))
-					<livewire:icommerce::filter-product-types :key="filter-product-types" />
-				@endif
-			@endif
+			
+			@livewire('icommerce::filter-product-options',key("filter-product-options"))
 
 		</div>
 	</div>
 
 	<a data-toggle="modal" data-target="#modalFilter"
 	   class="btn btn-primary btn-sm cursor-pointer float-right d-lg-none mb-4 mr-2">
-		{{trans('icommerce::common.filters.title')}} <i class="fa fa-filter"></i>
+		Filtrar <i class="fa fa-filter"></i>
 	</a>
 
 	<div class="modal  fade" id="modalFilter" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
@@ -37,7 +31,7 @@
 			<div class="modal-content">
 
 				<div class="modal-header">
-					<h5 class="modal-title">{{trans('icommerce::common.filters.title')}}</h5>
+					<h5 class="modal-title">Filtrar</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

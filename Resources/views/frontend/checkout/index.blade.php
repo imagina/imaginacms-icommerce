@@ -609,7 +609,7 @@
                   window.open(data.paymentData.redirectRoute)
                 }
                 window.setTimeout(() => {
-                  window.location.replace("{{url('')}}" + '/orders/' + data.id)
+                  window.location.replace(data.url)
                 }, 5000)
                 this.placeOrderButton = false;
               })

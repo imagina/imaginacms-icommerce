@@ -1,16 +1,40 @@
 <?php
 
 return [
+  'usersToNotify' => [
+    'name' => 'icommerce::usersToNotify',
+    'value' => [],
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.quser.users',
+      'select' => ['label' => 'email', 'id' => 'id'],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.settings.usersToNotify',
+      'multiple' => true,
+      'clearable' => true,
+    ],
+  ],
+  
+  
   'form-emails' => [
     'name' => 'icommerce::form-emails',
-    'value' => null,
-    'type' => 'input',
-    'group' => 'icommerce::common.pages.index',
+    'value' => [],
+    'type' => 'select',
     'columns' => 'col-12 col-md-6',
     'props' => [
+      'useInput' => true,
+      'useChips' => true,
+      'multiple' => true,
+      'hint' => 'icommerce::common.settingHints.emails',
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
       'label' => 'icommerce::common.settings.emails'
     ],
   ],
+  
+
   'product-per-page' => [
     'name' => 'icommerce::product-per-page',
     'value' => 12,
@@ -91,6 +115,7 @@ return [
     'name' => 'icommerce::daysEnabledForNewProducts',
     'value' => 15,
     'type' => 'input',
+    'group' => 'icommerce::common.settings.product.group',
     'columns' => 'col-12 col-md-6',
     'props' => [
       'label' => 'icommerce::common.settings.daysEnabledForNewProducts',

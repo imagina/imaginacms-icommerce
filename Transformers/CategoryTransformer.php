@@ -26,7 +26,7 @@ class CategoryTransformer extends JsonResource
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
             'parent' => new CategoryTransformer ($this->whenLoaded('parent')),
-            'childrens' => CategoryTransformer::collection($this->whenLoaded('children')),
+            'children' => CategoryTransformer::collection($this->whenLoaded('children')),
             'store' => new StoreTransformer($this->whenLoaded('store')),
             'products' => ProductTransformer::collection($this->whenLoaded('products')),
             'mainImage' => $this->mainImage,
