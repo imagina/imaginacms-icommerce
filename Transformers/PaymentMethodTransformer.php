@@ -13,7 +13,7 @@ class PaymentMethodTransformer extends JsonResource
             'title' => $this->when($this->title, $this->title),
             'description' => $this->when($this->description, $this->description),
             'name' => $this->when($this->name, $this->name),
-            'status' => boolval($this->status),
+            'status' => $this->status ? '1' : '0',
             'mainImage' => $this->mainImage,
             'init' => $this->when(isset($this->options),$this->options->init),
             'options' => $this->when($this->options, $this->options),

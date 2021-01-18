@@ -13,7 +13,7 @@ class ShippingMethodTransformer extends JsonResource
       'title' => $this->when($this->title,$this->title),
       'description' => $this->when($this->description,$this->description),
       'name' => $this->when($this->name,$this->name),
-      'status' => $this->status == "1" ? true : false,
+      'status' => $this->status ? '1' : '0',
       'options' => $this->when($this->options,$this->options),
       'parentName' => $this->when($this->parent_name, $this->parent_name),
       'init' => $this->when($this->options,$this->options->init),
