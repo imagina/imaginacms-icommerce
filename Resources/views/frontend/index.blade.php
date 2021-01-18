@@ -16,7 +16,7 @@
 		<div class="row">
 
         {{-- Sidebar --}}
-			<div class="col-lg-3">
+			<div class="col-lg-3 sidebar">
 			
           {{-- Breadcrumb Optional --}}
           @if(setting('icommerce::showBreadcrumbSidebar'))
