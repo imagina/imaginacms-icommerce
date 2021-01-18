@@ -59,6 +59,7 @@ class SendOrder
           "message" => $subject,
           "icon_class" => "fas fa-shopping-cart",
           "link" => $order->url,
+          "content" => "icommerce::emails.order",
           "view" => "icommerce::emails.Order",
           "setting" => [
             "saveInDatabase" => 1 // now, the notifications with type broadcast need to be save in database to really send the notification
