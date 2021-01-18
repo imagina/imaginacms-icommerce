@@ -136,9 +136,9 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'List Product Layout 1','value' => 'product-list-item-layout-1'],
-        ['label' => 'List Product Layout 2','value' => 'product-list-item-layout-2'],
-        ['label' => 'List Product Layout 3','value' => 'product-list-item-layout-3']
+        ['label' => 'Product List Layout 1','value' => 'product-list-item-layout-1'],
+        ['label' => 'Product List Layout 2','value' => 'product-list-item-layout-2'],
+        ['label' => 'Product List Layout 3','value' => 'product-list-item-layout-3']
       ]
     ]
   ],
