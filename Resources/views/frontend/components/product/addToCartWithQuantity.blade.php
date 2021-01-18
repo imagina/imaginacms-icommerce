@@ -2,14 +2,14 @@
   <div class="row add-to-cart-with-quantity">
     <!-- BUTTON QUANTITY -->
     <div class="number-input input-group quantity-selector">
-      <input type="button" value="-" class="button-minus" data-field="quantity">
+      <input wire:click="$emit('decrementValue',$event)" type="button" value="-" class="button-minus" data-field="quantity">
       <input type="number" step="1" value="1" name="quantity" class="quantity-field">
-      <input type="button" value="+" class="button-plus" data-field="quantity">
+      <input wire:click="$emit('incrementValue',$event)" type="button" value="+" class="button-plus" data-field="quantity">
     </div>
     
     <!-- BUTTON ADD -->
     <div class="add-to-cart-button">
-      <a class="btn btn-primary add-to-cart-with-quantity-button" data-pid="{{$product->id}}">
+      <a wire:click="$emit('addCartWithQuantity',$event)" class="btn btn-primary add-to-cart-with-quantity-button" data-pid="{{$product->id}}">
         <i class="fa fa-shopping-cart"></i>Comprar
       </a>
     </div>
@@ -17,7 +17,7 @@
   </div>
 
   @once
-@section('scripts')
+@section('scripts-owl')
   @parent
   <script>
     
@@ -57,24 +57,35 @@
       window.livewire.emit('addToCart', productId, $(quantityInput).val())
       $(quantityInput).val(1)
     }
+
+    @if(isset($productListLayout) && !empty($productListLayout))
+      Livewire.on('incrementValue', (e) => {
+        icommerce_incrementValue(e);
+      })
+
+      Livewire.on('decrementValue', (e) => {
+        icommerce_decrementValue(e);
+      })
+
+      Livewire.on('addCartWithQuantity', (e) => {
+        icommerce_addToCartWithQuantity(e);
+      })
+    @else
+      $('.infor .input-group').on('click', '.button-plus', function (e) {
+        icommerce_incrementValue(e);
+      });
+      $('.infor .input-group').on('click', '.button-minus', function (e) {
+        icommerce_decrementValue(e);
+      });
+      $('.infor .add-to-cart-with-quantity-button').click(function (e) {
+        icommerce_addToCartWithQuantity(e);
+      });
+    @endif
     
-    $('.infor .input-group').on('click', '.button-plus', function (e) {
-      icommerce_incrementValue(e);
-    });
     
-    $('.infor .input-group').on('click', '.button-minus', function (e) {
-      icommerce_decrementValue(e);
-    });
-    
-    $('.infor .add-to-cart-with-quantity-button').click(function (e) {
-      icommerce_addToCartWithQuantity(e);
-    });
-  
   </script>
 
 @stop
 @endonce
 
 @endif
-
-

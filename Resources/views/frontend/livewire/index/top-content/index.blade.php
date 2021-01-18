@@ -8,7 +8,7 @@
 		@endif
 	<hr>
 
-	<div class="row align-items-center mb-4">
+	<div class="row align-items-center">
 
 		{{-- Total Products --}}
 		<div class="col-lg-4">

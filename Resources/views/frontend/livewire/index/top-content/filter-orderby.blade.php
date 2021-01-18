@@ -1,5 +1,5 @@
 <div class="filter-order-by">
-	<div class="form-group row col align-items-center mb-0">
+	<div class="form-group row align-items-center mb-0">
 		<label for="f-order-by" class="col-xs-2 col-form-label mr-2">
 			{{ trans('icommerce::common.sort.title') }}:
 		</label>

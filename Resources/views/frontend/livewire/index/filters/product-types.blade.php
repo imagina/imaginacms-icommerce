@@ -2,7 +2,7 @@
 @if($show)
 
 	<div class="title">
-		<a data-toggle="collapse" href="#collapseProductTypePrice" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseProductTypePrice" class="{{$isExpanded ? '' : 'collapsed'}}">
+		<a class="item" data-toggle="collapse" href="#collapseProductTypePrice" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseProductTypePrice" class="{{$isExpanded ? '' : 'collapsed'}}">
 	  		
 	  			
 	  		@php($titleFilter = config("asgard.icommerce.config.filters.product-types.title"))

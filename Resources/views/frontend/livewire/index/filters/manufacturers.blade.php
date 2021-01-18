@@ -1,7 +1,7 @@
 <div class="filter-manufacturers mb-4">
 @if($manufacturers && count($manufacturers)>0)
 	<div class="title">
-		<a data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseManufacturers" class="{{$isExpanded ? '' : 'collapsed'}}">
+		<a class="item" data-toggle="collapse" href="#collapseManufacturers" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseManufacturers" class="{{$isExpanded ? '' : 'collapsed'}}">
 	  		
 	  		
 	  		@php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
