@@ -6,13 +6,6 @@ use Illuminate\Routing\Router;
 $locale = LaravelLocalization::setLocale() ?: App::getLocale();
 
 
-$router->get('/wishlist', [
-  'as' => 'icommerce.wishlists.index',
-  'uses' => 'OldPublicController@wishlist',
-  'middleware' => 'logged.in'
-]);
-
-if(!config('asgard.icommerce.config.useOldRoutes')){
   /** @var Router $router */
   Route::group(['prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localize']], function (Router $router) use ($locale) {
@@ -73,8 +66,8 @@ if(!config('asgard.icommerce.config.useOldRoutes')){
     
   });
 
-  
-}else{
+
+if(config('asgard.icommerce.config.useOldRoutes')){
   
   if (!App::runningInConsole()) {
     $categoryRepository = app('Modules\Icommerce\Repositories\CategoryRepository');
