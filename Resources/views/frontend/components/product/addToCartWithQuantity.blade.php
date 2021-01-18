@@ -69,7 +69,6 @@
 
       Livewire.on('addCartWithQuantity', (e) => {
         icommerce_addToCartWithQuantity(e);
-        console.warn("agrego")
       })
     @else
       $('.infor .input-group').on('click', '.button-plus', function (e) {
@@ -90,5 +89,3 @@
 @endonce
 
 @endif
-
-
