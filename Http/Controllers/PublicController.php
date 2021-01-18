@@ -203,6 +203,8 @@ class PublicController extends BaseApiController
     $slug = end($argv);
     
     $tpl = 'icommerce::frontend.show';
+    $ttpl = 'icommerce.show';
+    if (view()->exists($ttpl)) $tpl = $ttpl;
    
     $params = json_decode(json_encode(
       [
