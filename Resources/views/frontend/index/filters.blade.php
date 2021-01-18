@@ -11,11 +11,15 @@
 
 			<livewire:icommerce::filter-range-prices :key="filter-range-prices" />
 
-			@if(!isset($manufacturer->id))
-				<livewire:icommerce::filter-manufacturers :key="filter-manufacturers" />
+			@if(config("asgard.icommerce.config.filters.manufacturers.status"))
+				@if(!isset($manufacturer->id))
+					<livewire:icommerce::filter-manufacturers :key="filter-manufacturers" />
+				@endif
 			@endif
 
-			<livewire:icommerce::filter-product-options :key="filter-product-options" />
+			@if(config("asgard.icommerce.config.filters.product-options.status"))
+				<livewire:icommerce::filter-product-options :key="filter-product-options" />
+			@endif
 
 			@if(config("asgard.icommerce.config.filters.product-types"))
 				@if(config("asgard.icommerce.config.filters.product-types.status"))
