@@ -14,9 +14,13 @@
 		<div class="col-lg-4">
 
 			<div class="total-products">
-				{{trans('icommerce::frontend.index.we found')}}:
-				{{$totalProducts}}
-				{{trans('icommerce::products.plural')}}
+				<label class="title mb-0">
+					{{trans('icommerce::frontend.index.we found')}}:
+				</label>
+				<label class="infor mb-0">
+					{{$totalProducts}}
+					{{trans('icommerce::products.plural')}}
+				</label>
 			</div>
 			
 		</div>
