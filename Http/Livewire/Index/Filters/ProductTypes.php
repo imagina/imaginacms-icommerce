@@ -25,17 +25,17 @@ class ProductTypes extends Component
 
     /*
     * When SelectedType has been selected
-    * option = "searchable" (consultable) price == 0
-    * option = "affordable" (comprable) price > 0
+    * option = "searchable" (consultable) value = 1
+    * option = "affordable" (comprable) value = 0
     */
     public function updatedSelectedType(){
 
         //\Log::info("Selected Type: ".json_encode($this->selectedType));
 
         $this->emit('updateFilter',[
-          'productType' => $this->selectedType
+          'isCall' => (boolean)$this->selectedType
         ]);
-    
+       
         $this->isExpanded = true;
     }
 
@@ -57,13 +57,14 @@ class ProductTypes extends Component
         $resultShowFilter = $this->getProductRepository()->getProductTypes(json_decode(json_encode($params)));
 
         // Validation from URL
-        if(isset($params["filter"]["productType"])){
-            $this->selectedType = $params["filter"]["productType"];
+        if(isset($params["filter"]["isCall"])){
+            $this->selectedType = $params["filter"]["isCall"];
             $this->show = true;
         }
 
         if($this->isExpanded || $resultShowFilter)
             $this->show = true;
+       
         
     }
     

@@ -28,7 +28,7 @@
 		  				@if($option['status'])
 		  				<div class="form-check">
 		  					<input class="form-check-input" type="radio" 
-		  					value="{{$key}}" 
+		  					value="{{$option['value']}}" 
 		  					name="ptpo{{$key}}" 
 		  					id="ptpo{{$key}}"
 		  					wire:model="selectedType">
