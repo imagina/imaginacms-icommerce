@@ -17,7 +17,7 @@
 
 		@include('icommerce::frontend.partials.preloader')
 
-		<div class="collapse {{$isExpanded ? 'show' : ''}}" id="collapseManufacturers">
+		<div class="collapse {{$isExpanded ? 'show' : ''}} m-3" id="collapseManufacturers">
 		  <div class="row">
 		  	<div class="col-12">
 		  		
