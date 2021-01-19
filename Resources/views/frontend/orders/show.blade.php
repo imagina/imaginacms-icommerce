@@ -1,34 +1,30 @@
-@extends('layouts.master')
-@section('content')
+@extends('iprofile::frontend.layouts.master')
+@section('profileBreadcrumb')
+    
+    <x-isite::breadcrumb>
+        
+        <li class="breadcrumb-item">
+            <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}">{{trans('icommerce::orders.title.orders')}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}}</li>
+    </x-isite::breadcrumb>
+@endsection
+
+@section('profileTitle')
+    {{trans('icommerce::orders.title.detail order')}} #{{$order->id}}
+@endsection
+@section('profileContent')
     @php
         $currency= isset($order->currency) ? $order->currency : localesymbol($code ?? 'USD');
     @endphp
-
-    <div id="orderDetails" class="pb-5">
-        <x-isite::breadcrumb>
     
-            <li class="breadcrumb-item">
-                <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}">{{trans('icommerce::orders.title.orders')}}</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}}</li>
-        </x-isite::breadcrumb>
-        
-
-        <div class="container" v-if="order">
-            <div class="row">
-                <div class="col">
-                    <div class="title-arrow text-center mb-5">
-                        <h1 class="px-5 bg-white font-weight-bold text-uppercase">{{trans('icommerce::orders.title.detail order')}}</h1>
-                </div>
-            </div>
-        </div>
 
             <div class="row">
                 <div class="col-12 col-sm-4 mb-3">
                     <div class="card">
                         <div class="card-header bg-secondary text-white bg-secondary text-white">
                             <i style="margin-right: 5px;" class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            {{trans('icommerce::orders.table.details')}}
+                           
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">{{ $order->created_at}}</li>
@@ -180,8 +176,7 @@
                     @endif
                 </div>
             </div>
-        </div>
-    </div>
+       
     <style type="text/css">
         table .clickable-row {
             cursor: pointer;

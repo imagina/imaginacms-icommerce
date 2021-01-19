@@ -11,6 +11,7 @@ return [
         'edit order' => 'Editar un pedido',
         'single_order_title'=>'Orden de Compra',
         'confirmation_single_order_title'=>'Confirmación de orden de compra',
+        'myOrders'=>'Mis Ordenes',
         'detail order'=> 'Detalle de  la Orden'
     ],
     'breadcrumb'=>[
