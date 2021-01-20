@@ -7,7 +7,7 @@
 @section('content')
 
   <div id="content_index_commerce"
-       class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-'.$category->id : ''}} py-5">
+       class="page icommerce icommerce-index {{isset($category->id) ? 'icommerce-index-category icommerce-index-category-'.$category->id : ''}} py-5 {{isset($manufacturer->id) ? 'icommerce-index-manufacturer icommerce-index-manufacturer-'.$manufacturer->id : ''}}">
 	
     {{-- Banner Top--}}
     @include("icommerce::frontend.partials.banner")
