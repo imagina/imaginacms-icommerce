@@ -223,6 +223,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("featured", $filter->visible);
       }
 
+      if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut)) {
+        $query->where("quantity", "<=", setting("productMinimumQuantityToNotify"));
+      }
+
       if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
@@ -249,7 +253,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if($type=="searchable")
           $query->where("price",0);
 
-        if($type=="affordable") 
+        if($type=="affordable")
           $query->where("price",">",0);
       
       }
