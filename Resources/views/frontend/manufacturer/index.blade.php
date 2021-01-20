@@ -7,7 +7,7 @@
 
 @section('content')
   
-  <div class="page">
+  <div class="page icommerce manufacturer-page">
 
     @php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
     

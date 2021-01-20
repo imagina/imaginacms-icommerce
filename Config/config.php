@@ -272,10 +272,12 @@ return [
       'options' => [
         'affordable' => [
           'title' => 'icommerce::common.product-type.affordable',
+          'value' => 0,
           'status' => true
         ],
         'searchable' => [
           'title' => 'icommerce::common.product-type.searchable',
+          'value' => 1,
           'status' => true
         ],
       ]

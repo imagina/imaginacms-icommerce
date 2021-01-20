@@ -254,6 +254,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       
       }
 
+      if (isset($filter->isCall) && !empty($filter->isCall)) {
+        $query->where("is_call", $filter->isCall);
+      }
+
     }
 
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
@@ -641,13 +645,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $products = $query->get();
 
     // At least one product is searchable
-    $searchable = $products->contains('price', 0);
+    $searchable = $products->contains('is_call', 1);
 
     // At least one product is affordable
-    $affordable = $products->where('price','>', 0)->count();
+    $affordable = $products->contains('is_call',0);
 
     $showFilter = false;
-    if($searchable && $affordable>0)
+    if($searchable && $affordable)
        $showFilter = true;
 
     return $showFilter;

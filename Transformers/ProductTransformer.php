@@ -68,6 +68,7 @@ class ProductTransformer extends BaseApiTransformer
             //'productDiscounts' => $this->discounts()->pluck('discount_id'),
             // totalDiscounts deprecated, bad way to calculate discounts
             'totalDiscounts' => $this->present()->totalDiscounts,
+            'isCall' => $this->is_call ? '1' : '0',
 
             'totalTaxes' => $this->getTotalTaxes($filter),
             'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
