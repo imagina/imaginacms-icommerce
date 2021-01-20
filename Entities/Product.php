@@ -62,11 +62,6 @@ class Product extends Model implements TaggableInterface
     'sort_order'
   ];
   
-  public function __construct()
-  {
-    $this->user = Auth::user();
-  }
-  
   protected $presenter = ProductPresenter::class;
   protected $casts = [
     'options' => 'array'
@@ -92,13 +87,6 @@ class Product extends Model implements TaggableInterface
   {
     $stockStatus = new StockStatus();
     return $stockStatus->get($this->stock_status);
-  }
-  
-  public function priceLists()
-  {
-    return $this->belongsToMany(PriceList::class, ProductList::class)
-      ->withPivot('price')
-      ->withTimestamps();
   }
   
   public function category()
@@ -249,7 +237,7 @@ class Product extends Model implements TaggableInterface
     return json_decode($value);
   }
   
- 
+  
   protected function setRatingAttribute($value)
   {
     $defaultRating = config("asgard.icommerce.config.defaultProductRating");
@@ -260,13 +248,17 @@ class Product extends Model implements TaggableInterface
     }
     
   }
+  public function getAuthUserAttribute(){
+    
+    return Auth::user();
+  }
   
   public function discount()
   {
   
-
-    $userId = Auth::user() ? Auth::user()->id : 0;
-   
+  
+    $user = $this->auth_user;
+    $userId = $user->id ?? 0;
     $departments = [];
     if(!empty($userId)) {
       $departments = \DB::table('iprofile__user_department')
@@ -274,38 +266,39 @@ class Product extends Model implements TaggableInterface
         ->get()
         ->pluck("department_id")->toArray();
     }
+  
     // return one Discount
     return $this->hasOne(ProductDiscount::class)
-  
+      
       //where the discount belongs to the user department's
       //or where the department of the discount is Null - for all Users
-      ->where(function ($query) use($userId){
-        $query->whereIn('icommerce__product_discounts.department_id', function ($query)  use($userId){
+      ->where(function ($query) use ($userId) {
+        $query->whereIn('icommerce__product_discounts.department_id', function ($query) use ($userId) {
           $query->select("department_id")
             ->from('iprofile__user_department')
             ->where('user_id', $userId);
         })->orWhereNull('department_id');
       })
-  
+      
       //where the discount not belongs to the exclude departments
       //or where the exclude departments of the discount is Null - for all Users
-      ->where(function ($query) use($departments){
-        foreach ($departments as $departmentId){
-          $query->whereRaw("(".$departmentId." not in (REPLACE(REPLACE(REPLACE(exclude_departments, '\'', ''), '[', ''), ']', '')))");
+      ->where(function ($query) use ($departments) {
+        foreach ($departments as $departmentId) {
+          $query->whereRaw("(" . $departmentId . " not in (REPLACE(REPLACE(REPLACE(exclude_departments, '\'', ''), '[', ''), ']', '')))");
         }
-        $query->orWhere('exclude_departments',"[]");
+        $query->orWhere('exclude_departments', "[]");
         $query->orWhereNull('exclude_departments');
       })
-  
-  
+      
+      
       //where the discount  belongs to the include departments
       //or where the exclude departments of the discount is Null - for all Users
-      ->where(function ($query) use($departments){
-        foreach ($departments as $departmentId){
-          $query->whereRaw("(".$departmentId." in (REPLACE(REPLACE(REPLACE(include_departments, '\'', ''), '[', ''), ']', '')))");
+      ->where(function ($query) use ($departments) {
+        foreach ($departments as $departmentId) {
+          $query->whereRaw("(" . $departmentId . " in (REPLACE(REPLACE(REPLACE(include_departments, '\'', ''), '[', ''), ']', '')))");
         }
-        $query->orWhere('include_departments',"[0]");
-        $query->orWhere('include_departments',"[]");
+        $query->orWhere('include_departments', "[0]");
+        $query->orWhere('include_departments', "[]");
         $query->orWhereNull('include_departments');
       })
       
@@ -423,25 +416,27 @@ class Product extends Model implements TaggableInterface
   {
     $price = $value;
     $auth = \Auth::user();
-  
-    $priceList = setting('icommerce::product-price-list-enable');
+    
+    $priceList = is_module_enabled('Icommercepricelist');
     $setting = json_decode(request()->get('setting'));
     
     if (isset($auth->id) && $priceList && !isset($setting->fromAdmin)) {
-      foreach ($this->priceLists as $pList) {
-        if ($pList->related_entity == "Modules\Iprofile\Entities\Department") {
-          if ($pList->related_id !== '0' && $pList->related_id !== 0) {
-            $depts = $auth->departments()->where('department_id', $pList->related_id)->get();
-            if ($auth && count($depts) > 0) {
+      if ($this->priceLists) {
+        foreach ($this->priceLists as $pList) {
+          if ($pList->related_entity == "Modules\Iprofile\Entities\Department") {
+            if ($pList->related_id !== '0' && $pList->related_id !== 0) {
+              $depts = $auth->departments()->where('department_id', $pList->related_id)->get();
+              if ($auth && count($depts) > 0) {
+                $price = $pList->pivot->price;
+              }
+            } else {
               $price = $pList->pivot->price;
             }
           } else {
             $price = $pList->pivot->price;
           }
-        } else {
-          $price = $pList->pivot->price;
-        }
-      }//has priceLists
+        }//has priceLists
+      }
     }
     return $price;
   }

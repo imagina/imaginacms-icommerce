@@ -57,7 +57,6 @@ class ProductTransformer extends BaseApiTransformer
             'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
             'optionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('optionValues')),
             'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
-            'priceLists' => PriceListTransformer::collection($this->whenLoaded('priceLists')),
             'mainImage' => $this->mainImage,
             'gallery' => $this->gallery,
             'storeId' => $this->store_id,

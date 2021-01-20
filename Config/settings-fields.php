@@ -154,18 +154,7 @@ return [
       'falseValue' => "0",
     ],
   ],
-  'product-price-list-enable' => [
-      'name' => 'icommerce::product-price-list-enable',
-      'value' => "0",
-      'type' => 'checkbox',
-      'columns' => 'col-12 col-md-6',
-      'group' => 'icommerce::common.filters.priceList.group',
-      'props' => [
-          'label' => 'icommerce::common.settings.product-price-list-enable',
-          'trueValue' => "1",
-          'falseValue' => "0",
-      ],
-  ],
+
   'productMinimumQuantityToNotify' => [
     'name' => 'icommerce::productMinimumQuantityToNotify',
     'group' => 'icommerce::common.settings.product.group',

@@ -183,3 +183,7 @@
         }
     </style>
 @stop
+
+@section('profileExtraFooter')
+    @include('icommerce::frontend.partials.extra-footer')
+@endsection

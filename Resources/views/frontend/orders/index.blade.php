@@ -3,6 +3,12 @@
 @php
   $currency=localesymbol($code??'USD')
 @endphp
+
+
+@section('title')
+  {{trans("icommerce::orders.title.myOrders")}}  | @parent
+@stop
+
 @section('profileTitle')
   {{trans("icommerce::orders.title.myOrders")}}
 @endsection
@@ -58,6 +64,10 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('profileExtraFooter')
+  @include('icommerce::frontend.partials.extra-footer')
 @endsection
 
 @section('scripts')
