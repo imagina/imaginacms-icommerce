@@ -101,13 +101,14 @@ return [
   ],
   //add: product relations like users relations style
   'relations' => [
+    /*
     'product'=>[
       'priceLists' => function () {
         return $this->belongsToMany(Modules\Icommercepricelist\Entities\PriceList::class, Modules\Icommercepricelist\Entities\ProductList::class)
           ->withPivot('price')
           ->withTimestamps();
       },
-    ]
+    ]*/
   ],
 
   //end custom includes and transformers
