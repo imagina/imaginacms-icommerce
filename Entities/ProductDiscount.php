@@ -23,6 +23,8 @@ class ProductDiscount extends Model
         'date_start',
         'date_end',
         'department_id',
+        'exclude_departments',
+        'include_departments',
     ];
 
     public function product()

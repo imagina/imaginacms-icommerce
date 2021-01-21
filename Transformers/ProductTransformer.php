@@ -3,7 +3,6 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Discountable\Transformers\DiscountTransformer;
 use Modules\Icommerce\Entities\Status;
 use Modules\Ihelpers\Traits\Transformeable;
 use Modules\Iprofile\Transformers\UserTransformer;
@@ -33,7 +32,6 @@ class ProductTransformer extends BaseApiTransformer
             'quantity' => $this->when(isset($this->quantity), $this->quantity),
             'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
             'price' => $this->when($this->price, $this->price),
-            'priceWithDiscounts' => $this->when($this->price_with_discounts, $this->price_with_discounts),
             'formattedPrice' => formatMoney($this->price),
             'dateAvailable' => $this->when($this->date_available, $this->date_available),
             'weight' => $this->when($this->weight, $this->weight),
@@ -54,12 +52,11 @@ class ProductTransformer extends BaseApiTransformer
             'parentId' => $this->when($this->parent_id, $this->parent_id),
             'categoryId' => $this->when($this->category_id, intval($this->category_id)),
             'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
-            'productDiscounts' => ProductDiscountTransformer::collection($this->whenLoaded('productDiscounts')),
+            'discounts' => ProductDiscountTransformer::collection($this->whenLoaded('discounts')),
             'category' => new CategoryTransformer($this->whenLoaded('category')),
             'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
             'optionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('optionValues')),
             'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
-            'priceLists' => PriceListTransformer::collection($this->whenLoaded('priceLists')),
             'mainImage' => $this->mainImage,
             'gallery' => $this->gallery,
             'storeId' => $this->store_id,
@@ -71,6 +68,7 @@ class ProductTransformer extends BaseApiTransformer
             //'productDiscounts' => $this->discounts()->pluck('discount_id'),
             // totalDiscounts deprecated, bad way to calculate discounts
             'totalDiscounts' => $this->present()->totalDiscounts,
+            'isCall' => $this->is_call ? '1' : '0',
 
             'totalTaxes' => $this->getTotalTaxes($filter),
             'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
@@ -78,14 +76,13 @@ class ProductTransformer extends BaseApiTransformer
             'mediaFiles' => $this->mediaFiles()
         ];
 
-        $discount = $this->productDiscount;
+        $discount = $this->discount;
         if(isset($discount->id)){
             $data["discount"] = new ProductDiscountTransformer($discount);
         }
 
-
-        if(is_module_enabled('Discountable')){
-            $data['discounts'] = \Modules\Discountable\Transformers\DiscountTransformer::collection($this->whenLoaded('discounts'));
+        if(is_module_enabled('Icommercepricelist')){
+            $data['priceLists'] = \Modules\Icommercepricelist\Transformers\PriceListTransformer::collection($this->whenLoaded('priceLists'));
         }
 
         /*RELATIONSHIPS*/

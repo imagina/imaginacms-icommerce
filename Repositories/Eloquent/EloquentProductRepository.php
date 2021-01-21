@@ -24,7 +24,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     /*== initialize query ==*/
     $query = $this->model->query();
-    $priceListEnable = setting('icommerce::product-price-list-enable');
+    $priceListEnable = is_module_enabled('Icommercepricelist');
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
@@ -36,8 +36,15 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
         if (isset($params->include))//merge relations with default relationships
             $includeDefault = array_merge($includeDefault, $params->include ?? []);
-        if($priceListEnable)
-            $includeDefault[] = 'priceLists';
+        if($priceListEnable){
+          $includeDefault[] = 'priceLists';
+        }
+        else{
+          //removing priceList if exist in the include
+          if (($key = array_search('priceLists', $includeDefault)) !== false) {
+            unset($includeDefault[$key]);
+          }
+        }
         $query->with($includeDefault);//Add Relationships to query
     }
 
@@ -216,6 +223,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("featured", $filter->visible);
       }
 
+      if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut)) {
+        $query->where("quantity", "<=", setting("productMinimumQuantityToNotify"));
+      }
+
       if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
@@ -245,6 +256,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if($type=="affordable")
           $query->where("price",">",0);
 
+      }
+
+      if (isset($filter->isCall) && !empty($filter->isCall)) {
+        $query->where("is_call", $filter->isCall);
       }
 
     }
@@ -311,21 +326,30 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
   public function getItem($criteria, $params = false)
   {
+
     //Initialize query
     $query = $this->model->query();
-    $priceListEnable = setting('icommerce::product-price-list-enable');
+    $priceListEnable = is_module_enabled('Icommercepricelist');
+
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];
+        $includeDefault = ['category','categories','manufacturer','translations','files','productOptions','discount'];
         if($priceListEnable)
             $includeDefault[] = 'priceLists';
         $query->with($includeDefault);
     } else {//Especific relationships
-      $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
+      $includeDefault = ['category','categories','manufacturer','translations','files','productOptions','discount'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
-      if($priceListEnable)
+      if($priceListEnable){
         $includeDefault[] = 'priceLists';
+      }
+      else{
+        //removing priceList if exist in the include
+        if (($key = array_search('priceLists', $includeDefault)) !== false) {
+          unset($includeDefault[$key]);
+        }
+      }
       $query->with($includeDefault);//Add Relationships to query
     }
 
@@ -395,6 +419,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== REQUEST ==*/
     return $query->first();
+
   }
 
   public function create($data)
@@ -406,7 +431,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
-      $priceListEnable = setting('icommerce::product-price-list-enable');
+      $priceListEnable = is_module_enabled('Icommercepricelist');
 
       if($priceListEnable) {
           if (isset($data['price_lists']))
@@ -424,10 +449,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($data['tags']))
         $product->setTags(Arr::get($data, 'tags', []));
-
-      if (isset($data['discounts']))
-          $product->discount(Arr::get($data, 'discounts', []));
-
     }
 
     //Event to ADD media
@@ -461,7 +482,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       // sync tables
       $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
 
-      $priceListEnable = setting('icommerce::product-price-list-enable');
+      $priceListEnable = is_module_enabled('Icommercepricelist');
 
       if($priceListEnable) {
           if (isset($data['price_lists']))
@@ -475,9 +496,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($data['tags']))
         $model->tags()->sync(Arr::get($data, 'tags', []));
-
-      if (isset($data['discounts']))
-          $model->discount(Arr::get($data, 'discounts', []));
 
       //Event to Update media
       event(new UpdateMedia($model, $data));
@@ -631,13 +649,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $products = $query->get();
 
     // At least one product is searchable
-    $searchable = $products->contains('price', 0);
+    $searchable = $products->contains('is_call', 1);
 
     // At least one product is affordable
-    $affordable = $products->where('price','>', 0)->count();
+    $affordable = $products->contains('is_call',0);
 
     $showFilter = false;
-    if($searchable && $affordable>0)
+    if($searchable && $affordable)
        $showFilter = true;
 
     return $showFilter;

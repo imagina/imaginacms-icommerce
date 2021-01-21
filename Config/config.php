@@ -96,12 +96,12 @@ return [
   ],
   //add: product relations like users relations style
   'relations' => [
-    /*'product'=>[
-      'post' => function () {
+    'product'=>[
+      /*'post' => function () {
         return $this->hasOne(
           \Modules\Iblog\Entities\Post::class, 'product_id');
-      },
-    ]*/
+      },*/
+    ]
   ],
 
   //end custom includes and transformers
@@ -321,6 +321,6 @@ return [
           "icon" => "fa fa-heart",
       ]
   ]
-  
-  
+
+
 ];
