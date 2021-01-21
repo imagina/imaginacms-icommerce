@@ -23,6 +23,7 @@ class PaymentMethod extends Model
         'options',
         'store_id',
         'geozone_id',
+        'parent_name'
     ];
 
     protected $casts = [

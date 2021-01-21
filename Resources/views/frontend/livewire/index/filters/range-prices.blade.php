@@ -4,14 +4,14 @@
 	
 	<div class="title">
         <a class="item mb-3" data-toggle="collapse" href="#collapseRangePrices" role="button" aria-expanded="true" aria-controls="collapseRangePrices">
-            @php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
+			@php($titleFilter = config("asgard.icommerce.config.filters.range-prices.title"))
             <h5 class="p-3 border-top border-bottom">
-                <i class="fa angle float-right" aria-hidden="true"></i>
-                {{trans($titleFilter)}}
-            </h5>
+	  			<i class="fa angle float-right" aria-hidden="true"></i>
+	  			{{trans($titleFilter)}}
+	  		</h5>
+	  		
 		</a>
 	</div>
-
 	
 	<div class="content position-relative my-3">
 
@@ -94,8 +94,7 @@
 		window.addEventListener('filter-prices-updated', event => {
 
 			if($("#slider-range").hasClass( "ui-slider" ))
-				$("#slider-range").slider("destroy");
-
+			$("#slider-range").slider("destroy");
     		createSlider(event.detail.newPriceMin,event.detail.newPriceMax,event.detail.newSelPriceMin,event.detail.newSelPriceMax,event.detail.step)
 
 		})

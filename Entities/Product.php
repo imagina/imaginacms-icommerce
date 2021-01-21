@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ihelpers\Traits\Relationable;
+use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
@@ -439,14 +441,13 @@ class Product extends Model implements TaggableInterface
     }
     return $price;
   }
-
   function priceLists(){
-     if(is_module_enabled('Icommercepricelist')) {
+    if(is_module_enabled('Icommercepricelist')) {
         return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
-             ->withPivot(['price','id'])
-             ->withTimestamps();
-        }
-     return collect([]);
+            ->withPivot(['price','id'])
+            ->withTimestamps();
+    }
+    return collect([]);
   }
 
 }

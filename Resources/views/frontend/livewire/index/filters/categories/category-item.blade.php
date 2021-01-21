@@ -3,7 +3,7 @@
 @php($isSelected = !empty($categorySelected) ? $categorySelected->id == $category->id ? true : false : false)
 
 <li class="list-group-item {{$isSelected ? 'category-selected' : ''}} level-{{$level}}" aria-disabled="true" aria-expanded="true">
-
+	
 	@php($children = $categories->where("parent_id",$category->id))
 
 	@php($expanded = false)
@@ -49,6 +49,7 @@
 	</a>
 	@if($children)
 	<div class="collapse multi-collapse {{$expanded ? 'show' : ''}}" id="multiCollapse-{{$slug}}">
+
 		<ul class="list-group list-group-flush">
 			
 				

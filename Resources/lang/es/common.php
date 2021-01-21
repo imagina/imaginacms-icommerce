@@ -81,7 +81,8 @@ return [
     'dashEvery' => 'Guión cada carácter x - Ejem: Si el número es 3 el codigo seria xxx-xxx-xxx',
     'tax' => 'Impuesto',
     'orderitemsTax' => 'Tasa en OrderItems',
-    'emails' => 'Email del Webmaster',
+    'emails' => 'Emails para enviar notificaciones',
+    'usersToNotify' => 'Usuarios para enviar notificaciones',
     'fromemail' => 'Email',
     'countryTax' => 'Pais donde la tasa sera aplicada',
     'countryDefault' => 'Pais por Defecto',
@@ -93,11 +94,14 @@ return [
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
-      'minimumQuantityToNotify' => 'Cantidad mínima para notificar',
+      'minimumQuantityToNotify' => 'Cantidad mínima para notificar inventario bajo',
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad(Product Item)',
 
+  ],
+  'settingHints' => [
+    'emails' => "Ingresa el correo y presiona enter"
   ],
   'uri' => 'icommerce',
   'emailSubject' => [

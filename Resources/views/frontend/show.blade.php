@@ -2,7 +2,7 @@
 
 @section('content')
   @parent
-  <div class="page">
+  <div class="page show show-product show-product-{{$product->id}}">
     <div id="content_preloader">
       <div id="preloader"></div>
     </div>
@@ -16,63 +16,19 @@
         <div class="container ">
 
           <div class="row">
+
             <div class="col-lg-6 mb-5">
 
               @include('icommerce::frontend.widgets.gallery')
   
-              @includeFirst(['icommerce::frontend.products.share'])
+              @include('icommerce::frontend.products.share')
+
             </div>
 
             <div class="col-lg-6 mb-5">
               
               @include('icommerce::frontend.widgets.information')
-
-              <div class="row">
-                <div class="col-12">
-                  <h5 class="pay mb-3">MEDIOS DE PAGO</h5>
-                </div>
-                <div class="bg-img1 col-auto text-center">
-                  <img src="/assets/media/iconos/ic-tarjetas.png" alt="Tarjeta de Débito y Crédito">
-                  Tarjeta de Crédito <br> y Débito
-                </div>
-                <div class="bg-img1 col-auto text-center">
-                  <img src="/assets/media/iconos/ic-consignacion.png" alt="Consignación">
-                  Consignación
-                </div>
-                <div class="bg-img1 col-auto text-center">
-                  <img src="/assets/media/iconos/ic-transferencias.png" alt="Transferecia">
-                  Transferecia
-                </div>
-                <div class="bg-img1 col-auto text-center">
-                  <img src="/assets/media/iconos/ic-pagotienda.png" alt="Pago en tienda">
-                  Pago en tienda
-                </div>
-                <div class="col-12 py-3">
-                  <div class="row">
-                    <div class="bg-img2 col-auto text-center">
-                      <img src="/assets/media/paginas/prosperando-gris-claro-metodo-de-pago.jpg" alt="Prosperando">
-                    </div>
-                    <div class="bg-img2 col-auto text-center">
-                      <img src="/assets/media/paginas/efecty.png" alt="Efecty">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr class="mt-0">
-              <div class="row">
-                <div class="bg-img3 col-auto">
-                  <img src="/assets/media/iconos/ic-compra-segura.png" alt="Compra Segura">
-                  <a href="{{url('compra-segura')}}" style="color: #666666;">Compra Segura</a>
-                </div>
-                <div class="bg-img3 col-auto">
-                  <img src="/assets/media/iconos/ic-politica-envios.png" alt="Política de Envío">
-                  <a href="{{url('politica-de-entrega-garantia-y-envio')}}" style="color: #666666;">Política de Envío</a>
-                </div>
-                <div class="bg-img3 col-auto">
-                  <img src="/assets/media/iconos/ic-politica-devolucion.png" alt="Política de Devolución">
-                  <a href="{{url('politica-de-devolucion')}}" style="color: #666666;">Política de Devolución</a>
-                </div>
-              </div>
+              
             </div>
 
             <div class="col-lg-12 mb-5">
@@ -117,19 +73,18 @@
           </div>
         </div>
       </div>
+
       <div class="col-12">
-        @includeFirst(['icommerce.products.related-products','icommerce::frontend.products.related-products'])
+
+        @include('icommerce::frontend.products.related-products')
+
       </div>
+
     </div>
 
     {{-- Extra Footer End Page --}}
     @include('icommerce::frontend.partials.extra-footer')
     
-{{--
-    @include('partials.subcription')
-
-    @include('partials.brands')
-    --}}
   </div>
 @stop
 

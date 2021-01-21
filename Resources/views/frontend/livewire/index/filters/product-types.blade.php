@@ -2,7 +2,7 @@
 @if($show)
 
 	<div class="title">
-		<a data-toggle="collapse" href="#collapseProductTypePrice" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseProductTypePrice" class="{{$isExpanded ? '' : 'collapsed'}}">
+		<a class="item" data-toggle="collapse" href="#collapseProductTypePrice" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseProductTypePrice" class="{{$isExpanded ? '' : 'collapsed'}}">
 	  		
 	  			
 	  		@php($titleFilter = config("asgard.icommerce.config.filters.product-types.title"))
@@ -28,7 +28,7 @@
 		  				@if($option['status'])
 		  				<div class="form-check">
 		  					<input class="form-check-input" type="radio" 
-		  					value="{{$key}}" 
+		  					value="{{$option['value']}}" 
 		  					name="ptpo{{$key}}" 
 		  					id="ptpo{{$key}}"
 		  					wire:model="selectedType">

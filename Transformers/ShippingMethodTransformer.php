@@ -13,14 +13,23 @@ class ShippingMethodTransformer extends JsonResource
       'title' => $this->when($this->title,$this->title),
       'description' => $this->when($this->description,$this->description),
       'name' => $this->when($this->name,$this->name),
-      'status' => $this->status == "1" ? true : false,
+      'status' => $this->status ? '1' : '0',
       'options' => $this->when($this->options,$this->options),
+      'parentName' => $this->when($this->parent_name, $this->parent_name),
       'init' => $this->when($this->options,$this->options->init),
       'mainImage' => $this->mainImage,
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
       'mediaFiles' => $this->mediaFiles()
     ];
+
+    // Add Crud Fields from Shipping Method
+    $config = "asgard.{$data['name']}.config.crudFields";
+
+    if(isset($this->parent_name) && !empty($this->parent_name))
+      $config = "asgard.{$data['parentName']}.config.crudFields";
+        
+    $data['crudFields'] = config($config);
 
     switch($this->name){
 

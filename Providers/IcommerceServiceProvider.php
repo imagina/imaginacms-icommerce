@@ -464,30 +464,7 @@ class IcommerceServiceProvider extends ServiceProvider
         return new \Modules\Icommerce\Repositories\Cache\CacheRelatedProductDecorator($repository);
       }
     );
-    $this->app->bind(
-      'Modules\Icommerce\Repositories\PriceListRepository',
-      function () {
-        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentPriceListRepository(new \Modules\Icommerce\Entities\PriceList());
-
-        if (!config('app.cache')) {
-          return $repository;
-        }
-
-        return new \Modules\Icommerce\Repositories\Cache\CachePriceListDecorator($repository);
-      }
-    );
-    $this->app->bind(
-      'Modules\Icommerce\Repositories\ProductListRepository',
-      function () {
-        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductListRepository(new \Modules\Icommerce\Entities\ProductList());
-
-        if (!config('app.cache')) {
-          return $repository;
-        }
-
-        return new \Modules\Icommerce\Repositories\Cache\CacheProductListDecorator($repository);
-      }
-    );
+ 
     $this->app->bind(
       'Modules\Icommerce\Repositories\PaymentMethodRepository',
       function () {

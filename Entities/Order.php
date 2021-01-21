@@ -152,6 +152,11 @@ class Order extends Model
         return json_decode($value);
     }
 
+    public function getUrlAttribute()
+    {
+        return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.show',["orderId" => $this->id, "orderKey" => $this->key]);
+    }
+
     public function setOptionsAttribute($value)
     {
         $this->attributes['options'] = json_encode($value);

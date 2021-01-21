@@ -28,6 +28,7 @@ class OrderTransformer extends JsonResource
       'lastName' => $this->when($this->last_name, $this->last_name),
       'email' => $this->when($this->email, $this->email),
       'paymentFirstName' => $this->when($this->payment_first_name, $this->payment_first_name),
+      'url' => $this->url,
       'paymentLastName' => $this->when($this->payment_last_name, $this->payment_last_name),
       'paymentCompany' => $this->when($this->payment_company, $this->payment_company),
       'paymentAddress1' => $this->when($this->payment_address_1, $this->payment_address_1),
@@ -77,7 +78,6 @@ class OrderTransformer extends JsonResource
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions'))
     ];
-
     //Add information blocks
     $item['informationBlocks'] = [
       [
@@ -113,6 +113,7 @@ class OrderTransformer extends JsonResource
         ]
       ],
     ];
+    
 
     return $item;
   }

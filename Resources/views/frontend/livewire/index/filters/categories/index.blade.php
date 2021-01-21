@@ -2,7 +2,7 @@
 <div class="filter-categories mb-4">
 
   <div class="title">
-    <a data-toggle="collapse" href="#collapseCategories" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseManufacturers" class="{{$isExpanded ? '' : 'collapsed'}}">
+    <a class="item" data-toggle="collapse" href="#collapseCategories" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseCategories" class="{{$isExpanded ? '' : 'collapsed'}}">
         
         <h5 class="p-3 border-top border-bottom">
           {{ trans($titleFilter) }}

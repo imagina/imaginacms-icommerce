@@ -22,6 +22,7 @@ return [
     'validation' => [
     ],
     'statuses' => [
+        'pending'           => 'Pendiente',
         'processing'        => 'Procesando',
         'shipped'           => 'Enviado',
         'canceled'          => 'Cancelado',

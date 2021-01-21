@@ -188,19 +188,7 @@ return [
         'edit' => 'icommerce::relatedproducts.edit resource',
         'destroy' => 'icommerce::relatedproducts.destroy resource',
     ],
-    'icommerce.lists' => [
-        'index' => 'icommerce::lists.list resource',
-        'create' => 'icommerce::lists.create resource',
-        'edit' => 'icommerce::lists.edit resource',
-        'destroy' => 'icommerce::lists.destroy resource',
-    ],
-    'icommerce.productlists' => [
-        'manage' => 'icommerce::productlists.manage resource',
-        'index' => 'icommerce::productlists.list resource',
-        'create' => 'icommerce::productlists.create resource',
-        'edit' => 'icommerce::productlists.edit resource',
-        'destroy' => 'icommerce::productlists.destroy resource',
-    ],
+  
     'icommerce.payment-methods' => [
         'manage' => 'icommerce::paymentmethods.manage resource',
         'index' => 'icommerce::paymentmethods.list resource',

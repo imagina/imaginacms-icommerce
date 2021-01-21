@@ -107,16 +107,16 @@ class Categories extends Component
           $siblings = $this->category->getSiblings();
           $this->categories = $ancestors->merge($descendants)->merge($siblings);
           break;
-      }
+    }
     
-      
-      
-      
+    
+    
+    
     }
     
     return view($tpl, [
       'categoryBreadcrumb' => $this->categoryBreadcrumb,
-      'titleFilter' => $this->getTitle() 
+      'titleFilter' => $this->getTitle()
     ]);
 
   }
@@ -130,7 +130,7 @@ class Categories extends Component
       }
     }
   }
-
+  
   private function getTitle(){
 
     $titleFilter = trans(config("asgard.icommerce.config.filters.categories.title"));

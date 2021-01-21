@@ -50,6 +50,12 @@ class CategoryList extends Component
     $params = $this->makeParamsFunction();
     $this->categories = $this->getCategoryRepository()->getItemsBy(json_decode(json_encode($params)));
 
+    if(isset($this->params["filter"]["ids"])){
+      $ids = $this->params["filter"]["ids"];
+      $this->categories = $this->categories->sortBy(function($model) use ($ids) {
+        return array_search($model->getKey(), $ids);
+      });
+    }
     
     return view($this->view);
   }

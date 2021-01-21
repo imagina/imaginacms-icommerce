@@ -1,16 +1,40 @@
 <?php
 
 return [
+  'usersToNotify' => [
+    'name' => 'icommerce::usersToNotify',
+    'value' => [],
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.quser.users',
+      'select' => ['label' => 'email', 'id' => 'id'],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.settings.usersToNotify',
+      'multiple' => true,
+      'clearable' => true,
+    ],
+  ],
+  
+  
   'form-emails' => [
     'name' => 'icommerce::form-emails',
-    'value' => null,
-    'type' => 'input',
-    'group' => 'icommerce::common.pages.index',
+    'value' => [],
+    'type' => 'select',
     'columns' => 'col-12 col-md-6',
     'props' => [
+      'useInput' => true,
+      'useChips' => true,
+      'multiple' => true,
+      'hint' => 'icommerce::common.settingHints.emails',
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
       'label' => 'icommerce::common.settings.emails'
     ],
   ],
+  
+
   'product-per-page' => [
     'name' => 'icommerce::product-per-page',
     'value' => 12,
@@ -91,6 +115,7 @@ return [
     'name' => 'icommerce::daysEnabledForNewProducts',
     'value' => 15,
     'type' => 'input',
+    'group' => 'icommerce::common.settings.product.group',
     'columns' => 'col-12 col-md-6',
     'props' => [
       'label' => 'icommerce::common.settings.daysEnabledForNewProducts',
@@ -111,9 +136,9 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'List Product Layout 1','value' => 'product-list-item-layout-1'],
-        ['label' => 'List Product Layout 2','value' => 'product-list-item-layout-2'],
-        ['label' => 'List Product Layout 3','value' => 'product-list-item-layout-3']
+        ['label' => 'Product List Layout 1','value' => 'product-list-item-layout-1'],
+        ['label' => 'Product List Layout 2','value' => 'product-list-item-layout-2'],
+        ['label' => 'Product List Layout 3','value' => 'product-list-item-layout-3']
       ]
     ]
   ],
@@ -129,18 +154,7 @@ return [
       'falseValue' => "0",
     ],
   ],
-  'product-price-list-enable' => [
-      'name' => 'icommerce::product-price-list-enable',
-      'value' => "0",
-      'type' => 'checkbox',
-      'columns' => 'col-12 col-md-6',
-      'group' => 'icommerce::common.filters.priceList.group',
-      'props' => [
-          'label' => 'icommerce::common.settings.product-price-list-enable',
-          'trueValue' => "1",
-          'falseValue' => "0",
-      ],
-  ],
+
   'productMinimumQuantityToNotify' => [
     'name' => 'icommerce::productMinimumQuantityToNotify',
     'group' => 'icommerce::common.settings.product.group',

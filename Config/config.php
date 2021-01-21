@@ -3,10 +3,15 @@
 return [
   'name' => 'Icommerce',
   'frontendModuleName' => 'qcommerce',
+
+  //default layout in the notification module
+  'defaultEmailLayout' => 'notification::emails.layouts.default',
+  'defaultEmailContent' => 'notification::emails.contents.default',
+
   'orderStatuses' => [
     '1' => [
       'id' => 1,
-      'title' => 'icommerce::orderstatuses.statuses.processing',
+      'title' => 'icommerce::orderstatuses.statuses.pending',
     ],
     '2' => [
       'id' => 2,
@@ -82,24 +87,25 @@ return [
   ],
   'formatmoney' => [
     'decimals' => 0,
-    'dec_point' => '.',
+    'dec_point' => '',
     'housands_sep' => '.'
   ],
   //add: custom product includes (if they are empty icommerce module will be using default includes) (slim)
   'includes' => [
-    /*'ProductTransformer'=>[
-      'post'=>[
-        'path'=>'Modules\Iblog\Transformers\PostTransformer', //this is the transformer path
-        'multiple'=>false, //if is one-to-many, multiple must be set to true
-      ],
-    ]*/
+    'ProductTransformer'=>[
+      /*'priceLists'=>[
+        'path'=>'Modules\Icommercepricelist\Transformers\PriceListTransformer', //this is the transformer path
+        'multiple'=> true, //if is one-to-many, multiple must be set to true
+      ],*/
+    ]
   ],
   //add: product relations like users relations style
   'relations' => [
     'product'=>[
-      /*'post' => function () {
-        return $this->hasOne(
-          \Modules\Iblog\Entities\Post::class, 'product_id');
+      /*'priceLists' => function () {
+        return $this->belongsToMany(Modules\Icommercepricelist\Entities\PriceList::class, Modules\Icommercepricelist\Entities\ProductList::class)
+          ->withPivot('price')
+          ->withTimestamps();
       },*/
     ]
   ],
@@ -266,10 +272,12 @@ return [
       'options' => [
         'affordable' => [
           'title' => 'icommerce::common.product-type.affordable',
+          'value' => 0,
           'status' => true
         ],
         'searchable' => [
           'title' => 'icommerce::common.product-type.searchable',
+          'value' => 1,
           'status' => true
         ],
       ]
@@ -308,6 +316,8 @@ return [
 
   /**
    * @note routeName param must be set without locale. Ex: (icommerce orders: 'icommerce.store.order.index')
+   * use **onlyShowInTheDropdownHeader** (boolean) if you want the link only appear in the dropdown in the header
+   * use **onlyShowInTheMenuOfTheIndexProfilePage** (boolean) if you want the link only appear in the dropdown in the header
    */
   "userMenuLinks" => [
       [
@@ -320,7 +330,33 @@ return [
           "routeName" => "icommerce.store.wishlists.index",
           "icon" => "fa fa-heart",
       ]
-  ]
+  ],
+
+
+  'notifiable' => [
+
+    [ // Order Entity
+
+      'title' => 'Order',
+      'entityName' => 'Modules\\Icommerce\\Entities\\Order',
+      'events' => [
+        [ //ORDER WAS CREATED
+          'title' => 'Order was created',
+          'path' => "Modules\\Icommerce\\Events\\OrderWasCreated"
+        ]
+      ],
+      "conditions" => [
+
+      ],
+      "settings" => [
+        "email" => [
+          "recipients" => [
+          ]
+        ],
+      ],
+    ]
+
+    ]
 
 
 ];

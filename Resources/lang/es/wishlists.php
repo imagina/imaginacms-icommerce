@@ -9,6 +9,7 @@ return [
         'wishlists' => 'Lista de Deseos',
         'create wishlist' => 'Create a wishlist',
         'edit wishlist' => 'Edit a wishlist',
+        'myWishlist' => 'Mi lista de deseos',
     ],
     'button' => [
         'create wishlist' => 'Create a wishlist',

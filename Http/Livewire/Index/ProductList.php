@@ -46,7 +46,7 @@ class ProductList extends Component
         'filters' => ['except' => []],
         'page' => ['except' => 1]
     ];
-    
+
 	protected $emitProductListRendered;
 	
 
@@ -59,8 +59,9 @@ class ProductList extends Component
 
 	    $this->category = $category;
         $this->manufacturer = $manufacturer;
+        
 	    $this->totalProducts = 0;
-	   
+        
         $this->initConfigs();
 
         $this->orderBy = $this->configs['orderBy']['default'] ?? "nameaz";
@@ -120,15 +121,16 @@ class ProductList extends Component
     public function changeLayout($c){
     	$this->productListLayout = $c;
         $this->layoutClass = $this->configs['productListLayout']['options'][$this->productListLayout]['class'];
-    }
+        }
 
-    
+
     /*
     * Make params to Repository
     * before execcute the query
     */
     public function makeParamsToRepository(){
 
+     
     	if($this->firstRequest)
     		$this->firstRequest = false;
         
@@ -171,20 +173,20 @@ class ProductList extends Component
     */
     public function render(){
      	
-
+     	
      	if(!$this->firstRequest && !in_array('orderBy', $this->queryString)){
             array_push($this->queryString, 'orderBy');
         }
 
      	$params = $this->makeParamsToRepository();
 
-        //\Log::info("params: ".json_encode($params));
+        //	\Log::info("params: ".json_encode($params));
     	$products = $this->getProductRepository()->getItemsBy(json_decode(json_encode($params)));
     
     	$this->totalProducts = $products->total();
 
     	$tpl = 'icommerce::frontend.livewire.index.product-list';
-    	
+
   		// Emit Finish Render
 		//\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
 		$this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;

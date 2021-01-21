@@ -42,7 +42,7 @@
               <div class="formUser">
                 
                 
-                @includeFirst(['iprofile.widgets.register','iprofile::frontend.widgets.register'],["embedded" => true, "route" => $locale . 'icommerce.checkout'])
+                @includeFirst(['iprofile.widgets.register','iprofile::frontend.widgets.register'],["embedded" => true, "route" => $locale . '.icommerce.store.checkout'])
               
               
               </div>
@@ -77,7 +77,7 @@
           <!-- FORMULARIO -->
           <div class="alert alert-danger d-none" id="loginAlert"></div>
           
-          @includeFirst(['iprofile.widgets.login','iprofile::frontend.widgets.login'],["embedded" => true, "route" => $locale . 'icommerce.checkout', "register" => false])
+          @includeFirst(['iprofile.widgets.login','iprofile::frontend.widgets.login'],["embedded" => true, "route" => $locale . '.icommerce.store.checkout', "register" => false])
         
         </div>
       </div>

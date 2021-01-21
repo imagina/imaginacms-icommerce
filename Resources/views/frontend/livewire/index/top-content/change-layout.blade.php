@@ -6,7 +6,7 @@
 			@foreach($this->configs['productListLayout']['options'] as  $layoutOption)
 			@if(!empty($layoutOption) && $layoutOption['status'])
 				<i wire:click="changeLayout('{{$layoutOption['name']}}')" class="{{$layoutOption['icon']}} mx-1 cursor-pointer {{$productListLayout==$layoutOption['name'] ? 'active text-primary' : $layoutOption['name']}}" aria-hidden="true"></i>
-		@endif
+			@endif
 		@endforeach
 	</div>
 	

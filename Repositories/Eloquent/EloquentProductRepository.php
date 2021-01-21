@@ -24,7 +24,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     /*== initialize query ==*/
     $query = $this->model->query();
-    $priceListEnable = is_module_enabled('Icommercepricelist');
+    $priceListEnable = setting('icommerce::product-price-list-enable');
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
@@ -221,10 +221,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($filter->visible) && !empty($filter->visible)) {
         $query->where("featured", $filter->visible);
-      }
-
-      if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut)) {
-        $query->where("quantity", "<=", setting("productMinimumQuantityToNotify"));
       }
 
       if (isset($filter->featured) && is_bool($filter->featured)) {

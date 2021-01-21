@@ -30,6 +30,7 @@ class Category extends Model
         'show_menu',
         'featured',
         'store_id',
+        'status',
         'sort_order'
     ];
 

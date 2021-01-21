@@ -201,8 +201,10 @@ class PublicController extends BaseApiController
   {
     $argv = explode("/",$request->path());
     $slug = end($argv);
-   
+    
     $tpl = 'icommerce::frontend.show';
+    $ttpl = 'icommerce.show';
+    if (view()->exists($ttpl)) $tpl = $ttpl;
    
     $params = json_decode(json_encode(
       [
@@ -212,9 +214,9 @@ class PublicController extends BaseApiController
         ]
       ]
     ));
-    
+ 
     $product = $this->product->getItem($slug,$params);
-    
+   
     if($product){
       $category= $product->category;
       $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));

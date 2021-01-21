@@ -7,22 +7,23 @@
 
 @section('content')
   
-  <div class="page">
+  <div class="page icommerce manufacturer-page">
+
+    @php($titleFilter = config("asgard.icommerce.config.filters.manufacturers.title"))
     
-    {{-- Autores --}}
-    @component('partials.widgets.breadcrumb')
+    <x-isite::breadcrumb>
       <li class="breadcrumb-item active"
           aria-current="page">
-        {{trans('icommerce::manufacturers.title.manufacturers')}}
+        {{trans($titleFilter)}}
       </li>
-    @endcomponent
+    </x-isite::breadcrumb>
     
     <section class="iblock general-block31 pb-5" data-blocksrc="general.block31">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="text-title text-center mb-5">
-              <h1 class="title text-uppercase"> {{trans('icommerce::manufacturers.title.manufacturers')}} </h1>
+              <h1 class="title text-uppercase"> {{trans($titleFilter)}} </h1>
             </div>
             <div class="row" id="p_autores">
               

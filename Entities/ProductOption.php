@@ -22,21 +22,20 @@ class ProductOption extends Model
     'sort_order'
   ];
 
-    public function option()
-    {
-        return $this->belongsTo(Option::class);
-    }
+  public function option()
+  {
+    return $this->belongsTo(Option::class);
+  }
 
-    public function parent()
-    {
-        return $this->belongsTo(Option::class, 'parent_id');
-    }
+  public function parent()
+  {
+    return $this->belongsTo(Option::class, 'parent_id');
+  }
 
   public function product()
   {
     return $this->belongsTo(Product::class);
   }
-
 
   public function productOptionValues()
   {

@@ -22,7 +22,8 @@ class ShippingMethod extends Model
         'name',
         'options',
         'store_id',
-        'geozone_id'
+        'geozone_id',
+        'parent_name'
     ];
 
     protected $casts = [

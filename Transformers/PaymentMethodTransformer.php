@@ -13,15 +13,26 @@ class PaymentMethodTransformer extends JsonResource
             'title' => $this->when($this->title, $this->title),
             'description' => $this->when($this->description, $this->description),
             'name' => $this->when($this->name, $this->name),
-            'status' => boolval($this->status),
+            'status' => $this->status ? '1' : '0',
             'mainImage' => $this->mainImage,
             'init' => $this->when(isset($this->options),$this->options->init),
             'options' => $this->when($this->options, $this->options),
+            'parentName' => $this->when($this->parent_name, $this->parent_name),
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
             'activevalue'=>$this->active,
-            'mediaFiles' => $this->mediaFiles()
+            'mediaFiles' => $this->mediaFiles(),
+
         ];
+
+        // Add Crud Fields from Payment Method
+        $config = "asgard.{$data['name']}.config.crudFields";
+
+        if(isset($this->parent_name) && !empty($this->parent_name))
+            $config = "asgard.{$data['parentName']}.config.crudFields";
+        
+        $data['crudFields'] = config($config);
+
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
     switch($this->name){

@@ -1,4 +1,4 @@
-<div class="filter-product-options mb-4">
+	<div class="filter-product-options mb-4">
 
 	<div class="content position-relative">
 		@include('icommerce::frontend.partials.preloader')

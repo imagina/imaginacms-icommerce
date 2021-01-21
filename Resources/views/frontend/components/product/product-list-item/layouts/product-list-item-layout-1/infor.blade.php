@@ -11,19 +11,15 @@
   @endif
   
   
-  @if(isset($discount) && $discount)
-    <div class="del-price">
-      <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
-    </div>
-  @endif
-  
-  
   <div class="row align-items-end">
     <div class="col col-price">
       <div class="price">
         {{isset($currency) ? $currency->symbol_left : '$'}}
         {{formatMoney($discount->price ?? $product->price)}}
       </div>
+      @if(isset($discount) && $discount)
+        <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
+      @endif
     </div>
     
     <div class="col-auto col-buttons">
