@@ -30,10 +30,12 @@
 		</div>
 	</div>
 
+	{{--
 	<a data-toggle="modal" data-target="#modalFilter"
 	   class="btn btn-primary btn-sm cursor-pointer float-right d-lg-none mb-4 mr-2">
 		{{trans('icommerce::common.filters.title')}} <i class="fa fa-filter"></i>
 	</a>
+	--}}
 
 	<div class="modal  fade" id="modalFilter" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
 		 aria-hidden="true">
@@ -69,10 +71,8 @@
 
 				var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 				if(width <= 992) {
-					console.log('xs');
 					$('#modal-body').append($("#contenttomove"));
 				} else {
-					console.log('not-xs');
 					$('#staticdiv').append($("#contenttomove"));
 				}
 
