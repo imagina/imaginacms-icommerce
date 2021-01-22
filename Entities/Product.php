@@ -68,7 +68,13 @@ class Product extends Model implements TaggableInterface
     'options' => 'array'
   ];
   protected $width = ['files'];
+  private $auth;
   
+  public function __construct(array $attributes = [])
+  {
+    $this->auth = Auth::user();
+    parent::__construct($attributes);
+  }
   public function store()
   {
     if (is_module_enabled('Marketplace')) {
@@ -249,17 +255,15 @@ class Product extends Model implements TaggableInterface
     }
     
   }
-  public function getAuthUserAttribute(){
-    
-    return Auth::user();
-  }
+
   
   public function discount()
   {
   
   
-    $user = $this->auth_user;
+    $user = $this->auth;
     $userId = $user->id ?? 0;
+    //dd($userId);
     $departments = [];
     if(!empty($userId)) {
       $departments = \DB::table('iprofile__user_department')
@@ -416,7 +420,7 @@ class Product extends Model implements TaggableInterface
   public function getPriceAttribute($value)
   {
     $price = $value;
-    $auth = \Auth::user();
+    $auth = $this->auth_user;
     
     $priceList = is_module_enabled('Icommercepricelist');
     $setting = json_decode(request()->get('setting'));
@@ -441,5 +445,15 @@ class Product extends Model implements TaggableInterface
     }
     return $price;
   }
+  
+  function priceLists(){
+    if(is_module_enabled('Icommercepricelist')) {
+      return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
+        ->withPivot(['price','id'])
+        ->withTimestamps();
+    }
+    return collect([]);
+  }
+  
   
 }
