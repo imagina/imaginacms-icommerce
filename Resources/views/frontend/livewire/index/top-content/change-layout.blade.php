@@ -12,15 +12,3 @@
 	</div>
 	
 </div>
-
-@section('scripts-owl')
-   @parent
-
-   <script type="text/javascript">
-      	$(document).ready(function () {
-
-      		
-      	});
-   </script>
-
-@stop
