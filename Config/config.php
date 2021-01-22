@@ -209,13 +209,13 @@ return [
     'options' => [
       'four' => [
         'name' => 'four',
-        'class' => 'col-12 col-md-4 col-lg-3',
+        'class' => 'col-6 col-md-4 col-lg-3',
         'icon' => 'fa fa-th-large',
         'status' => true
       ],
       'three' => [
         'name' => 'three',
-        'class' => 'col-12 col-md-4 col-lg-4',
+        'class' => 'col-6 col-md-4 col-lg-4',
         'icon' => 'fa fa-square-o',
         'status' => true
       ],
@@ -324,6 +324,7 @@ return [
           "title" => "icommerce::orders.title.orders",
           "routeName" => "icommerce.store.order.index",
           "icon" => "fa fa-bars",
+        
       ],
       [
           "title" => "icommerce::wishlists.title.wishlists",
