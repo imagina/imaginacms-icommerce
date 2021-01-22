@@ -8,33 +8,30 @@
 		@endif
 	<hr>
 
-	<div class="row align-items-center">
+	<div class="options-product-list d-none d-lg-block d-xl-block">
 
-		{{-- Total Products --}}
-		<div class="col-lg-4">
+		<div class="row align-items-center">
 
-			<div class="total-products">
-				<label class="title mb-0">
-					{{trans('icommerce::frontend.index.we found')}}:
-				</label>
-				<label class="infor mb-0">
-					{{$totalProducts}}
-					{{trans('icommerce::products.plural')}}
-				</label>
+			{{-- Total Products --}}
+			<div class="col-lg-4">
+				@include('icommerce::frontend.livewire.index.top-content.total-products')
+			</div>
+
+			{{-- Filter - Order By --}}
+			<div class="col-lg-5">
+				@include('icommerce::frontend.livewire.index.top-content.filter-orderby')
+			</div>
+
+			{{-- Change Layout --}}
+			<div class="col-lg-3">
+				@include('icommerce::frontend.livewire.index.top-content.change-layout') 
 			</div>
 			
 		</div>
 
-		{{-- Filter - Order By --}}
-		<div class="col-lg-5">
-			@include('icommerce::frontend.livewire.index.top-content.filter-orderby')
-		</div>
-
-		{{-- Change Layout --}}
-		<div class="col-lg-3">
-			@include('icommerce::frontend.livewire.index.top-content.change-layout') 
-		</div>
-		
 	</div>
 
+	@include('icommerce::frontend.livewire.index.top-content.mobile.index')
+
+	
 </div>
