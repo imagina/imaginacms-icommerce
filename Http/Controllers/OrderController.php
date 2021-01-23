@@ -6,6 +6,7 @@ use Modules\Core\Http\Controllers\BasePublicController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Icommerce\Transformers\OrderTransformer;
 use Modules\User\Contracts\Authentication;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
@@ -73,6 +74,7 @@ class OrderController extends BasePublicController
             if ($order->tax_amount){
                 $subtotal = $subtotal - $order->tax_amount;
             }
+          $order = new OrderTransformer($order);
             return view($tpl, compact('order','subtotal'));
 
         } else
