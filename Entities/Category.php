@@ -59,7 +59,11 @@ class Category extends Model
   
   public function ownProducts()
   {
-    return $this->hasMany(Product::class);
+    return $this->hasMany(Product::class)->where(function ($query) {
+      $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
+      $query->orWhereNull("date_available");
+    })->where("status", 1)
+      ->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0) or (stock_status = 0))");
   }
   
   public function manufacturers()
