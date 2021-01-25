@@ -224,7 +224,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
 
       if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut)) {
-        $query->where("quantity", "<=", setting("productMinimumQuantityToNotify"))
+        $query->where("quantity", "<=", setting("icommerce::productMinimumQuantityToNotify"))
         ->where("quantity","!=",0)
         ->where("subtract",1);
       }
