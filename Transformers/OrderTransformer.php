@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icommerce\Entities\OrderStatus;
+use Modules\Icommerce\Entities\PaymentMethod;
 use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 use Modules\Icommerce\Transformers\OrderItemTransformer;
 use Modules\Iprofile\Transformers\UserTransformer;
@@ -87,7 +88,7 @@ class OrderTransformer extends JsonResource
           ['label' => 'Estado del pedido', 'value' => $item['statusName']],
           ['label' => 'Fecha de orden', 'value' => $item['createdAt']],
           ['label' => 'Pedido realizado desde la IP', 'value' => $item['ip']],
-          ['label' => 'URL', 'value' => $this->url],
+          ['label' => 'URL', 'value' => "<a href='$this->url'>$this->url</a>"],
         ]
       ]
     ];
@@ -219,14 +220,25 @@ class OrderTransformer extends JsonResource
       }
     }
     array_push($item["informationBlocks"],$customerBillingAddressBlock);
-  
+	
+	
+		$paymentInfo = [
+			'title' => 'Pago y método de envío',
+			'values' => [
+				['label' => 'Método de pago', 'value' => $item['paymentMethod']],
+				
+			]
+		];
+		
+    $paymentMethod = PaymentMethod::find( $item['paymentCode']);
+    
+    if(isset($paymentMethod->description) && !empty($paymentMethod->description)){
+			array_push($paymentInfo["values"],
+				['label' => 'Descripción del método', 'value' => $paymentMethod->description]);
+		}
+    
     array_push($item['informationBlocks'],
-      [
-        'title' => 'Pago y método de envío',
-        'values' => [
-          ['label' => 'Información del pago', 'value' => $item['paymentMethod']]
-        ]
-      ],
+      $paymentInfo
     );
     
     

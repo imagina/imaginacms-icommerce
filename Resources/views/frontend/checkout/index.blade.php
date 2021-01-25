@@ -2,17 +2,17 @@
 
 @section('content')
   <!-- preloader -->
-  
-  
-  
+
+
+
   <div id="checkout" class="page checkout">
-  
+
     <x-isite::breadcrumb>
       <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
     </x-isite::breadcrumb>
 
-    
-    
+
+
     <div class="container">
       <div class="row">
         <div class="col">
@@ -21,16 +21,16 @@
           </div>
         </div>
       </div>
-    
+
     </div>
-    
+
     <div v-if="loadingCart" id="content_preloader">
       <div id="preloader"></div>
     </div>
     <!-- ======== @Region: #content ======== -->
     <div id="content" class="pb-5">
       <div class="container">
-        
+
         <div v-if="quantity > 0 && !loadingCart">
           <div class="row">
             <div class="col py-2">
@@ -38,33 +38,33 @@
                  href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
             </div>
           </div>
-          
+
           <div class="currency">
             <input v-if="currency" type="hidden" name="currency_id" :value="currency.id">
             <input v-if="currency" type="hidden" name="currency_code" :value="currency.code">
             <input v-if="currency" type="hidden" name="currency_value" :value="currency.value">
           </div>
           <div class="row">
-            
+
             <div class="col-12 col-md-6 col-lg-4">
               @includeFirst(['icommerce.checkout.customer','icommerce::frontend.checkout.customer'])
-            
+
             </div>
             <div class="col-12 col-md-6 col-lg-4">
               @includeFirst(['icommerce.checkout.billing_details','icommerce::frontend.checkout.billing_details'])
               @includeFirst(['icommerce.checkout.delivery_details','icommerce::frontend.checkout.delivery_details'])
-            
+
             </div>
             <div class="col-12 col-md-12 col-lg-4">
-              
+
               @includeFirst(['icommerce.checkout.shipping_methods','icommerce::frontend.checkout.shipping_methods'])
               @includeFirst(['icommerce.checkout.payment','icommerce::frontend.checkout.payment'])
               @includeFirst(['icommerce.checkout.order_summary','icommerce::frontend.checkout.order_summary'])
-            
+
             </div>
-          
+
           </div>
-          
+
           <div class="row">
             <div class="col py-2">
               <a class="btn btn-success" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
@@ -79,18 +79,18 @@
             </a>
             {{ trans('icommerce::checkout.no_products_2') }}
           </div>
-        
-        
+
+
         </div>
       </div>
     </div>
   </div>
 @stop
 @section('scripts')
-  
-  
+
+
   @parent
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <script type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
@@ -99,7 +99,7 @@
   <script type="text/javascript">
     Vue.use(VueMask.VueMaskPlugin);
   </script>
-  
+
   <script type="text/javascript">
     const {required, requiredIf,minLength} = window.validators
     var checkout = new Vue({
@@ -123,16 +123,16 @@
             }).then(response => {
               this.user = response.data.data;
               this.addresses = response.data.data.addresses;
-              
+
               this.form.selectedBillingAddress = this.getDefaultBillingAddress()
               this.form.selectedShippingAddress = this.getDefaultShippingAddress()
-              
-              
+
+
             }).catch(error => {
             });
-            
+
           }
-          
+
           if (this.user) {
             if (this.user.addresses.length == 0) {
               this.useExistingOrNewPaymentAddress = 2;
@@ -140,7 +140,7 @@
           }//if user auth
           if (this.shippingMethods.length > 0)
             this.shipping_name = this.shippingMethods[0].name;
-          
+
           axios.get('{{url('/api/ilocations/allmincountries')}}', {
             params: {
               filter: {
@@ -148,18 +148,18 @@
               }
             }
           })
-            .then((response) => {
-              if (response.status == 200) {
-                this.countries = response.data;
-                if (this.shippingData.countryIndex) {
-                  this.getProvincesByCountry(this.shippingData.countryIndex,1)
-                  this.getProvincesByCountry(this.shippingData.countryIndex,2)
-                }
-              }
-            });
-          
+                  .then((response) => {
+                    if (response.status == 200) {
+                      this.countries = response.data;
+                      if (this.shippingData.countryIndex) {
+                        this.getProvincesByCountry(this.shippingData.countryIndex,1)
+                        this.getProvincesByCountry(this.shippingData.countryIndex,2)
+                      }
+                    }
+                  });
+
         });
-        
+
       },
       validations: {
         form: {
@@ -203,7 +203,7 @@
         form: {
           selectedBillingAddress: null,
           selectedShippingAddress: null,
-          
+
         },
         loadingCart: false,
         paymentSelected: "",
@@ -331,17 +331,17 @@
         'form.shippingName' (value) {
           let name = this.shippingMethods.find(item => item.name == value)
           this.form.shippingTitle = name.title
-          
+
         },
         user() {
-          
+
           if (this.user && Array.isArray(this.user.addresses) && this.user.addresses.length == 0) {
             this.useExistingOrNewPaymentAddress = 2
             this.prefillAddress()
           }
         },
         customerRegisterToggle(newVal) {
-          
+
           if (newVal) {
             this.customerLoginToggle = false
             $("#collapseOne").collapse('show');
@@ -353,7 +353,7 @@
           }
         },
         customerLoginToggle(newVal) {
-          
+
           if (newVal) {
             this.customerRegisterToggle = false
             $("#collapseTwo").collapse('show');
@@ -382,13 +382,21 @@
               value += " " + checkout.currency.symbol_right
             }
             return value
-        }
+          }
           else
             return value;
         }
       },
       methods: {
-        
+
+        nl2br(str, is_xhtml = null) {
+          if (typeof str === 'undefined' || str === null) {
+            return '';
+          }
+          var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+          return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+        },
+
         getCurrency() {
           axios.get("{{url('/')}}" + "/api/icommerce/v3/currencies/1", {
             params: {
@@ -397,40 +405,40 @@
               }
             }
           })
-            .then(response => {
-              checkout.currency = response.data.data;
-            })
-            .catch((error) => {
-            });
+                  .then(response => {
+                    checkout.currency = response.data.data;
+                  })
+                  .catch((error) => {
+                  });
         },
-        
+
         getPaymentMethods() {
           axios.get("{{url('/')}}" + '/api/icommerce/v3/payment-methods?&filter={"status":1}')
-            .then(response => {
-              this.payments = response.data.data;
-              if (this.payments && Array.isArray(this.payments) && this.payments.length > 0) {
-                this.paymentSelected = this.payments[0].id
-              }
-            })
-            .catch((error) =>{
-            });
+                  .then(response => {
+                    this.payments = response.data.data;
+                    if (this.payments && Array.isArray(this.payments) && this.payments.length > 0) {
+                      this.paymentSelected = this.payments[0].id
+                    }
+                  })
+                  .catch((error) =>{
+                  });
         },
-        
+
         getShippingMethods() {
           axios.get("{{url('/')}}" + '/api/icommerce/v3/shipping-methods?&filter={"status":1}')
-            .then(response => {
-              this.shippingMethods = response.data.data;
-              
-              if (this.shippingMethods && Array.isArray(this.shippingMethods) && this.shippingMethods.length > 0) {
-                this.shipping_name = this.shippingMethods[0].name
-                this.shipping = this.shippingMethods[0].cost || 0
-                this.shipping_title = this.shippingMethods[0].title
-              }
-            })
-            .catch((error) => {
-            });
+                  .then(response => {
+                    this.shippingMethods = response.data.data;
+
+                    if (this.shippingMethods && Array.isArray(this.shippingMethods) && this.shippingMethods.length > 0) {
+                      this.shipping_name = this.shippingMethods[0].name
+                      this.shipping = this.shippingMethods[0].cost || 0
+                      this.shipping_title = this.shippingMethods[0].title
+                    }
+                  })
+                  .catch((error) => {
+                  });
         },
-        
+
         clearFieldsUser() {
           this.newUser.name = "";
           this.newUser.lastName = "";
@@ -439,7 +447,7 @@
           this.newUser.password = "";
           this.newUser.password_confirmation = "";
         },
-        
+
         registerUser() {
           this.registeringUser = true;
           axios.post("{{url('/')}}" + "/api/profile/v1/users/register", {
@@ -462,53 +470,53 @@
               activated: 1,
               roles: ['User']
             }
-            
+
           })
-            .then( (response) => {
-              toastr.success("Usuario creado exitosamente.");
-              this.email = this.newUser.email;
-              this.password = this.newUser.password;
-              this.loginUser();
-              this.clearFieldsUser();
-              this.registeringUser = true;
-            })
-            .catch( (error) => {
-              let errors = [];
-              if ('errors' in error.response.data) {
-                errors = JSON.parse(error.response.data.errors);
-                
-              }
-              for (var i in errors) {
-                // alert(errors[i]);
-                toastr.error(errors[i]);
-              }
-              this.registeringUser = true;
-            });
+                  .then( (response) => {
+                    toastr.success("Usuario creado exitosamente.");
+                    this.email = this.newUser.email;
+                    this.password = this.newUser.password;
+                    this.loginUser();
+                    this.clearFieldsUser();
+                    this.registeringUser = true;
+                  })
+                  .catch( (error) => {
+                    let errors = [];
+                    if ('errors' in error.response.data) {
+                      errors = JSON.parse(error.response.data.errors);
+
+                    }
+                    for (var i in errors) {
+                      // alert(errors[i]);
+                      toastr.error(errors[i]);
+                    }
+                    this.registeringUser = true;
+                  });
         },
-        
+
         loginUser() {
           axios.post("{{url('/')}}" + "/api/profile/v1/auth/login", {
             username: this.email,
             password: this.password
           })
-            .then( (response) => {
-              this.user = response.data.data.userData;
-              this.tokenUser = response.data.data.userToken;
-            })
-            .catch((error) => {
-              
-              if ('errors' in error.response.data) {
-                toastr.error(error.response.data.errors);
-              }
-            });
+                  .then( (response) => {
+                    this.user = response.data.data.userData;
+                    this.tokenUser = response.data.data.userToken;
+                  })
+                  .catch((error) => {
+
+                    if ('errors' in error.response.data) {
+                      toastr.error(error.response.data.errors);
+                    }
+                  });
         },
-        
+
         submitOrder() {
-          
+
           this.$v.form.$reset()
           this.$v.form.$touch()
-          
-          
+
+
           if(this.useExistingOrNewShippingAddress == '2'){
             toastr.error('Por favor agrega una dirección de envío para la orden');
             return;
@@ -521,14 +529,14 @@
             toastr.error('Por favor completa los campos obligatorios');
             return;
           }
-          
+
           //Validations:
           var user_id = 0;
           if (this.user)
             user_id = this.user.id;
           else
             user_id = {!! Auth::user() ? Auth::user()->id : 0 !!};
-          
+
           if (!user_id) {
             toastr.error('Debes estar autenticado');
             return false;
@@ -548,7 +556,7 @@
               token = this.tokenUser;
             else
               token = "Bearer " + "{!! Auth::user() ? Auth::user()->createToken('Laravel Password Grant Client')->accessToken : "0" !!}";
-            
+
             var shippingMethodId = 0;
             for (var i = 0; i < this.shippingMethods.length; i++) {
               if (this.shippingMethods[i].name == this.shipping_name) {
@@ -556,14 +564,14 @@
                 break;
               }
             }
-            
+
             let addressBilling =  this.user.addresses.find(address => address.id == this.form.selectedBillingAddress)
             let addressShipping =  this.user.addresses.find(address => address.id == this.form.selectedShippingAddress)
-            
+
             if(this.sameDeliveryBilling)
               addressShipping = addressBilling
-            
-            
+
+
             axios.post("{{url('/')}}" + "/api/icommerce/v3/orders", {
               attributes: {
                 customer_id: user_id,
@@ -600,53 +608,53 @@
                 'Authorization': token
               }
             })
-              .then((response) => {
-                window.livewire.emit('deleteCart')
-                var data = response.data.data
-                toastr.success("Tu pedido se ha realizado con éxito, por favor verifica tu correo electrónico.");
-                localStorage.clear()
-                if (data.paymentData.redirectRoute) {
-                  window.open(data.paymentData.redirectRoute)
-                }
-                window.setTimeout(() => {
-                  window.location.replace(data.url)
-                }, 5000)
-                this.placeOrderButton = false;
-              })
-              .catch((error) => {
-                // console.log(error);
-                this.placeOrderButton = false;
-                // alert("Se ha producido un error en el servidor.");
-              });
-            
-            
+                    .then((response) => {
+                      window.livewire.emit('deleteCart')
+                      var data = response.data.data
+                      toastr.success("Tu pedido se ha realizado con éxito, por favor verifica tu correo electrónico.");
+                      localStorage.clear()
+                      if (data.paymentData.redirectRoute) {
+                        window.open(data.paymentData.redirectRoute)
+                      }
+                      window.setTimeout(() => {
+                        window.location.replace(data.url)
+                      }, 5000)
+                      this.placeOrderButton = false;
+                    })
+                    .catch((error) => {
+                      // console.log(error);
+                      this.placeOrderButton = false;
+                      // alert("Se ha producido un error en el servidor.");
+                    });
+
+
           }//else
-          
+
         },
-        
+
         getCart() {
-  
+
           this.loadingCart = true
           if (this.cart.id) {
             axios.get("{{url('/')}}" + "/api/icommerce/v3/carts/" + this.cart.id)
-              .then((response) => {
-                this.cart = response.data.data;
-                //vue_carting.articles = vue_carting.cart.products;
-                this.quantity = this.cart.quantity;
-                
-                this.loadingCart = false
-              })
-              .catch(error => {
-                this.loadingCart = false
-              });
+                    .then((response) => {
+                      this.cart = response.data.data;
+                      //vue_carting.articles = vue_carting.cart.products;
+                      this.quantity = this.cart.quantity;
+
+                      this.loadingCart = false
+                    })
+                    .catch(error => {
+                      this.loadingCart = false
+                    });
           } else {
             this.cart = []
             this.loadingCart = false
           }
-          
-          
+
+
         },
-        
+
         prefillAddress() {
           this.billingData.firstname = this.shippingData.firstname = this.user.firstName
           this.billingData.lastname = this.shippingData.lastname = this.user.lastName
@@ -658,50 +666,50 @@
             }
           }
         },
-        
+
         addAddress(type = "billing") {
-          
+
           //Add address to profile
           if (type == "billing") {
             this.$v.billingData.$reset()
             this.$v.billingData.$touch()
-            
+
             if (this.$v.billingData.$error) {
               toastr.error('Por favor completa los campos obligatorios');
               return;
             }
-            
+
             var data = this.billingData;
           } else {
             this.$v.shippingData.$reset()
             this.$v.shippingData.$touch()
-            
+
             if (this.$v.shippingData.$error) {
               toastr.error('Por favor completa los campos obligatorios');
               return;
             }
             var data = this.shippingData;
           }
-          
+
           var user_id = 0;
           if (this.user)
             user_id = this.user.id;
           else
             user_id = {!! Auth::user() ? Auth::user()->id : 0 !!};
-          
+
           if (user_id <= 0) {
             toastr.error('Debes estar autenticado');
             return;
           }
-          
-          
+
+
           var token = "";
           if (this.tokenUser)
             token = this.tokenUser;
           else
             token = "Bearer " + "{!! Auth::user() ? Auth::user()->createToken('Laravel Password Grant Client')->accessToken : "0" !!}";
-          
-          
+
+
           axios.post("{{url('/')}}" + "/api/profile/v1/addresses", {
             attributes: {
               user_id: user_id,
@@ -722,133 +730,133 @@
               'Authorization': token
             }
           })
-            .then(response => {
-              toastr.success("Dirección agregada correctamente.");
-              if (type == "billing") {
-                this.billingData.firstname = "";
-                this.billingData.lastname = "";
-                this.billingData.address_1 = "";
-                this.billingData.address_2 = "";
-                this.billingData.telephone = "";
-                this.billingData.city = "";
-                this.form.selectedBillingAddress = response.data.data.id;
-                this.useExistingOrNewPaymentAddress = 1;
-              } else {
-                this.shippingData.firstname = "";
-                this.shippingData.lastname = "";
-                this.shippingData.address_1 = "";
-                this.shippingData.address_2 = "";
-                this.shippingData.telephone = "";
-                this.shippingData.city = "";
-                this.form.selectedShippingAddress = response.data.data.id;
-                this.useExistingOrNewShippingAddress = 1;
-              }
-              
-              this.user.addresses.push(response.data.data);
-              
-              if(type == 'billing'){
-                this.$v.billingData.$reset()
-                this.getDefaultBillingAddress()
-              }else{
-                this.$v.shippingData.$reset()
-                this.getDefaultShippingAddress()
-              }
-              
-              
-              
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          
+                  .then(response => {
+                    toastr.success("Dirección agregada correctamente.");
+                    if (type == "billing") {
+                      this.billingData.firstname = "";
+                      this.billingData.lastname = "";
+                      this.billingData.address_1 = "";
+                      this.billingData.address_2 = "";
+                      this.billingData.telephone = "";
+                      this.billingData.city = "";
+                      this.form.selectedBillingAddress = response.data.data.id;
+                      this.useExistingOrNewPaymentAddress = 1;
+                    } else {
+                      this.shippingData.firstname = "";
+                      this.shippingData.lastname = "";
+                      this.shippingData.address_1 = "";
+                      this.shippingData.address_2 = "";
+                      this.shippingData.telephone = "";
+                      this.shippingData.city = "";
+                      this.form.selectedShippingAddress = response.data.data.id;
+                      this.useExistingOrNewShippingAddress = 1;
+                    }
+
+                    this.user.addresses.push(response.data.data);
+
+                    if(type == 'billing'){
+                      this.$v.billingData.$reset()
+                      this.getDefaultBillingAddress()
+                    }else{
+                      this.$v.shippingData.$reset()
+                      this.getDefaultShippingAddress()
+                    }
+
+
+
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+
         },
-        
+
         getAddressExtraFields() {
-          
+
           this.loading = true
           let uriSettings = icommerce.url + '/api/isite/v1/settings/iprofile';
-          
+
           axios.get(uriSettings, {params: {}}).then(response => {
-            
+
             let data = response.data.data;
             this.addressesExtraFields = data.find(item => item.name == "iprofile::userAddressesExtraFields")
-            
+
             if (this.addressesExtraFields && Array.isArray(this.addressesExtraFields.value) && this.addressesExtraFields.value.length) {
               this.addressesExtraFields.value.forEach(item => {
                 this.billingData.options[item.field] = null
               })
-              
+
             }
-            
+
             this.loading = false
-            
+
           })
-            .catch(error => {
-              this.loading = false
-            })
+                  .catch(error => {
+                    this.loading = false
+                  })
         },
-        
+
         getProvincesByCountry(countryCode,component) {
-          
+
           axios.get('{{url('/api/ilocations/allprovincesbycountry/iso2')}}' + '/' +countryCode)
-            .then(response => {
-              //data is the JSON string
-              if (component == 1) {
-                this.statesBilling = response.data;
-                this.statesBillingAlternative = !this.statesBilling.length;
-              }
-              else if (component == 2) {
-                this.statesDelivery = response.data;
-                this.statesShippingAlternative = !this.statesDelivery.length;
-              }
-            }).catch(error => {
-            
+                  .then(response => {
+                    //data is the JSON string
+                    if (component == 1) {
+                      this.statesBilling = response.data;
+                      this.statesBillingAlternative = !this.statesBilling.length;
+                    }
+                    else if (component == 2) {
+                      this.statesDelivery = response.data;
+                      this.statesShippingAlternative = !this.statesDelivery.length;
+                    }
+                  }).catch(error => {
+
           });
         },
-        
+
         getCitiesByProvince() {
           this.billingData.zone = this.statesBilling[this.billingData.zoneIndex].name;
           axios.get('{{url('/api/ilocations/allcitiesbyprovince')}}' + '/' + this.statesBilling[this.billingData.zoneIndex].id)
-            .then(response => {
-              //data is the JSON string
-              this.cities = response.data;
-            }).catch(error => {
-            
+                  .then(response => {
+                    //data is the JSON string
+                    this.cities = response.data;
+                  }).catch(error => {
+
           });
-          
+
         },
-        
+
         deleteProductOfCart(item) {
           this.updatingData = true;
           axios.delete("{{url('/')}}" + "/api/icommerce/v3/cart-products/" + item.id)
-            .then((response) => {
-              this.updatingData = false;
-              this.getCart();
-              return true;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+                  .then((response) => {
+                    this.updatingData = false;
+                    this.getCart();
+                    return true;
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
           return false;
         },
-        
+
         /** actualiza la cantidad del producto antes de enviarlo */
         update_quantity(item, sign) {
-          
+
           let quantityAux = item.quantity
           sign === '+' ?
-            item.quantity++ :
-            item.quantity--;
-          
+                  item.quantity++ :
+                  item.quantity--;
+
           if (item.quantity > 0)
             this.updateCart(item);
           else {
-            
+
             toastr.error("la Cantidad no puede ser cero(0)");
             item.quantity = quantityAux
           }
         },
-        
+
         /** actualiza el item del carrito */
         updateCart(item) {
           this.updatingData = true;
@@ -862,17 +870,17 @@
               quantity: item.quantity
             }
           })
-            .then( (response) =>{
-              this.updatingData = false;
-              window.livewire.emit('updateCart')
-              return true;
-            })
-            .catch((error) => {
-            
-            });
+                  .then( (response) =>{
+                    this.updatingData = false;
+                    window.livewire.emit('updateCart')
+                    return true;
+                  })
+                  .catch((error) => {
+
+                  });
           return false;
         },
-        
+
         /** genera los msjs de alerta success, warning y error*/
         alert(menssage, type) {
           toastr.options = {
@@ -892,26 +900,26 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
           };
-          
+
           toastr[type](menssage);
         },
-        
+
         status(validation) {
           return {
             error: validation.$error,
             dirty: validation.$dirty
           }
         },
-        
-        
-        
+
+
+
         getDefaultBillingAddress(){
-          
+
           let address = null
           if (this.user) {
             if (this.user.addresses && this.user.addresses.length > 0) {
               let defaultBillingAddress = this.user.addresses.find(address => address.default && address.type == "billing")
-              
+
               if(defaultBillingAddress){
                 address = defaultBillingAddress.id
               }else{
@@ -921,9 +929,9 @@
           }//if user auth
           return address
         },
-        
+
         getDefaultShippingAddress(){
-          
+
           let address = null
           if (this.user) {
             if (this.user.addresses && this.user.addresses.length > 0) {
