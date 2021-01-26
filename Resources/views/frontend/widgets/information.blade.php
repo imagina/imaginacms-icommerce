@@ -25,7 +25,7 @@
         {{isset($currency->id) ? $currency->symbol_right : ''}}
       </span>
       @if(isset($product->discount->price))
-        <br><span class="price-desc pl-3">Antes: <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
+        <br><span class="price-desc h6 pl-3">Antes: <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
       @endif
     </div>
   </div>
