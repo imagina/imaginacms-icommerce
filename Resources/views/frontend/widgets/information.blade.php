@@ -7,7 +7,7 @@
   </div>
   <!-- END CATEGORIES -->
   <!-- TITLE -->
-  <h2 class="name">@{{product.name}}</h2>
+  <h1 class="name">@{{product.name}}</h1>
   <!-- END TITLE -->
 
   <!-- REFERENCE -->

@@ -1,4 +1,4 @@
-{{--
+
 <div>
     <h6 class="options" v-if="product.weight || product.length || product.width || product.heigth">TAMAÑO:</h6>
     <p class="icommerce-option" v-if="product.weight"> {{trans('icommerce::products.table.weight')}}
@@ -11,17 +11,15 @@
         :@{{product.heigth}}</p>
 
 </div>
---}}
-<div v-if="product && Array.isArray(product.productOptions) && Array.isArray(product.optionValues)">
-<div v-if="product.productOptions.length>0 && product.optionValues.length>0"
+
+<div v-if="product.productOptions.length && product.optionValues.length"
      v-for="(option,index) in product.productOptions">
     <h6 class="options">@{{option.description}}:</h6>
     <div>
         <p><span v-for="(value,index) in product.optionValues"
-                 v-if="value.optionId==option.optionId">-@{{value.optionValue}} </span>
+                 v-if="value.optionId==option.optionId">- @{{value.optionValue}} </span>
         </p>
     </div>
-</div>
 </div>
 
 
@@ -33,20 +31,10 @@
     <p class="icommerce-option" v-if="product.manufacturer"><b>
             {{trans('icommerce::products.table.manufacturer')}}:</b> <span>@{{product.manufacturer}}</span>
     </p>
-    {{--  <p class="icommerce-option" v-if="product.category"><b>
-          {{trans('icommerce::products.table.category')}}:</b> <span>@{{product.category.title}}</span>
-      </p>
-
-      <p class="icommerce-option" v-if="product.shipping=='NO'"><b>
-              {{trans('icommerce::products.table.shipping')}}:</b> <span>@{{product.shipping}}</span>
-          </p>
-
-          <p class="icommerce-option" v-if="product.shipping!='NO'"><b>
-              {{trans('icommerce::products.table.shipping')}}:</b> <span>{{trans('icommerce::coupons.table.yes')}}</span>
-          </p>
-           --}}
+    
+    
     <p class="icommerce-option" v-if="product.pdf">
-
+        
         <a  v-bind:href="product.pdf" target="_blank" class="d-block icommerce-pdf">
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
             <span>{{trans('icommerce::products.messages.product_brochure')}}</span>
