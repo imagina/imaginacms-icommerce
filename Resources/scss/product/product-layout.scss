@@ -103,7 +103,11 @@
         }
       }
     }
-    
+  
+    /***** Media Queries *****/
+    @include media-breakpoint-down(md) {
+      height: 170px;
+    }
   }
   
   .infor {
