@@ -11,24 +11,25 @@
   <!-- END TITLE -->
 
   <!-- REFERENCE -->
-  <div v-if="product.reference" class="reference"><span class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}</div>
+  <div v-if="product.reference" class="reference my-2"><span class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}</div>
   
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
   
- 
   <!-- PRICE -->
-  <div v-if="products_children === false && product.price >0.00">
-    @if(isset($product->discount->price))
-      <del>{{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($product->price) }}</del>
-    @endif
-    <div class="price text-primary">
-      {{isset($currency->id) ? $currency->symbol_left : '$'}}
-      {{formatMoney($product->discount->price ?? $product->price)}}
-      {{isset($currency->id) ? $currency->symbol_right : ''}}
+  <div class="price " v-if="products_children === false && product.price >0.00">
+    <div class="mb-0">
+      <span class="text-primary font-weight-bold">
+        {{isset($currency->id) ? $currency->symbol_left : '$'}}
+        {{formatMoney($product->discount->price ?? $product->price)}}
+        {{isset($currency->id) ? $currency->symbol_right : ''}}
+      </span>
+      @if(isset($product->discount->price))
+        <br><span class="price-desc pl-3">Antes: <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
+      @endif
     </div>
-   
   </div>
+
   <!-- END PRICE -->
   <!-- OPCIONES DE PRODUCTO -->
   <select-product-options v-model="productOptionsSelected" v-bind:options="productOptions"></select-product-options>

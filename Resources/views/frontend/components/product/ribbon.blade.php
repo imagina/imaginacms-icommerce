@@ -1,7 +1,7 @@
 <div id="productRibbon">
 
   <!--Ribbon Sold out-->
-  @if(($product->quantity <= 0) || (!$product->stock_status))
+  @if(($product->quantity <= 0 && $product->subtract) || (!$product->stock_status))
     <div id="ribbonSoldOut" class="ribbonContent">
       <div class="asideRibbon">
         <div class="ribbonLabel">{{trans('icommerce::products.alerts.sold out')}}</div>

@@ -19,7 +19,7 @@
   </x-isite::breadcrumb>
 @endsection
 @section('profileContent')
-  <div class="cart-content">
+  <div class="">
     <div class="table-responsive">
       <table class="table table-hover">
         <thead class=" bg-secondary text-white">
@@ -48,10 +48,12 @@
     </div>
     <!--End of Shopping cart items-->
     <hr class="my-4 hr-lg">
-    <div class="cart-content-footer">
-      <div class="row">
-        {{$orders->links()}}
+
+    <div class="row">
+      <div class="orders-list-pagination d-flex w-100 px-3 justify-content-end">
+        {{$orders->links('pagination::bootstrap-4')}}
       </div>
+    </div>
       <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-8 text-right mt-3 mt-md-0">

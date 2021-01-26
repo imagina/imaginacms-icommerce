@@ -4,6 +4,7 @@ namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icommerce\Entities\OrderStatus;
+use Modules\Icommerce\Entities\PaymentMethod;
 use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 use Modules\Icommerce\Transformers\OrderItemTransformer;
 use Modules\Iprofile\Transformers\UserTransformer;
@@ -78,43 +79,169 @@ class OrderTransformer extends JsonResource
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions'))
     ];
+
     //Add information blocks
     $item['informationBlocks'] = [
       [
-        'title' => 'Información de pedido y cuenta',
+        'title' => 'Información de pedido',
         'values' => [
           ['label' => 'Estado del pedido', 'value' => $item['statusName']],
           ['label' => 'Fecha de orden', 'value' => $item['createdAt']],
           ['label' => 'Pedido realizado desde la IP', 'value' => $item['ip']],
+          ['label' => 'URL', 'value' => "<a href='$this->url'>$this->url</a>"],
         ]
-      ],
-      [
-        'title' => 'Información de cuenta',
-        'values' => [
-          ['label' => 'Nombre', 'value' => $item['customer']->present()->fullname],
-          ['label' => 'Email', 'value' => $item['customer']->email],
-          ['label' => 'Teléfono', 'value' => $item['telephone']],
-        ]
-      ],
-      [
-        'title' => 'Datos de domicilio',
-        'values' => [
-          [
-            'label' => 'Dirección de Envio',
-            'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
-              ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
-          ]
-        ]
-      ],
-      [
-        'title' => 'Pago y método de envío',
-        'values' => [
-          ['label' => 'Información del pago', 'value' => $item['paymentMethod']]
-        ]
-      ],
+      ]
     ];
     
-
+    $customerFields = $item['customer']->fields;
+    $customerRegisterExtraFields = json_decode(setting("iprofile::registerExtraFields", null, "[]"));
+    
+    if(!empty($customerFields)){
+      $customerBlockInfo = [
+        'title' => 'Información del cliente',
+        'values' => [
+          [
+            'label' => trans("iprofile::addresses.form.name"),
+            'value' => $item['customer']->present()->fullname
+          ],
+          [
+            'label' => trans("iprofile::frontend.form.email"),
+            'value' => $item['customer']->email
+          ],
+          [
+            'label' => trans("iprofile::frontend.form.cellularPhone"),
+            'value' => $item['telephone']
+          ],
+        ]
+      ];
+  
+      foreach ($customerRegisterExtraFields as $extraField) {
+        if ($extraField->active) {
+          $customerField = $customerFields->where("name", $extraField->field)->first();
+      
+          if (!empty($customerField)) {
+            if ($extraField->type == "documentType") {
+              $documentNumber = $customerFields->where("name", "documentNumber")->first();
+              array_push($customerBlockInfo["values"], [
+                "label" => trans("iprofile::addresses.form.identification"),
+                "value" => $customerField->value . " " . $documentNumber->value
+              ]);
+            } else {
+              array_push($customerBlockInfo["values"], [
+                "label" => trans("iprofile::addresses.form.$extraField->field"),
+                "value" => $customerField->value
+              ]);
+            }
+        
+          }
+        }
+      }
+      array_push($item['informationBlocks'], $customerBlockInfo);
+    }
+    
+    
+    $customerAddressExtraFields = json_decode(setting("iprofile::userAddressesExtraFields", null, "[]"));
+    
+    $customerShippingAddressBlock = [
+      'title' =>  trans("iprofile::addresses.form.shipping"),
+      'values' => [
+        [
+          "label" => trans("iprofile::addresses.form.name"),
+          "value" => $this->shipping_first_name." ".$this->shipping_last_name
+        ],
+        [
+          'label' =>  trans("iprofile::frontend.form.shipping_address"),
+          'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
+            ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
+        ]
+      ]
+    ];
+  
+    $orderShippingExtraFields = $this->options->shippingAddress ?? [];
+    
+    if (!empty($orderShippingExtraFields)) {
+      foreach ($customerAddressExtraFields as $extraField) {
+        if ($extraField->active) {
+          if (isset($orderShippingExtraFields->{$extraField->field})) {
+            if($extraField->field == "documentType"){
+              $documentNumber = $orderShippingExtraFields->documentNumber ?? '';
+             
+              array_push($customerShippingAddressBlock["values"],[
+                "label" => trans("iprofile::addresses.form.identification"),
+                "value" => $orderShippingExtraFields->{$extraField->field} . " " . $documentNumber
+              ]);
+            }else{
+              array_push($customerShippingAddressBlock["values"],[
+                "label" => trans("iprofile::addresses.form.$extraField->field"),
+                "value" => $orderShippingExtraFields->{$extraField->field}
+              ]);
+            }
+          }
+        }
+      }
+    }
+    
+    array_push($item["informationBlocks"],$customerShippingAddressBlock);
+    
+    $customerBillingAddressBlock = [
+      'title' => trans("iprofile::addresses.form.billing"),
+      'values' => [
+        [
+          "label" => trans("iprofile::addresses.form.name"),
+          "value" => $this->payment_first_name." ".$this->payment_last_name
+        ],
+        [
+          'label' =>  trans("iprofile::frontend.form.billing_address"),
+          'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, {$item['paymentCity']}, " .
+            ($item['paymentDepartment']->name ?? '') . ", " . ($item['paymentCountry']->name ?? '')
+        ]
+      ]
+    ];
+  
+    $orderBillingExtraFields = $this->options->billingAddress ?? [];
+    if (!empty($orderBillingExtraFields)) {
+      foreach ($customerAddressExtraFields as $extraField) {
+        if ($extraField->active) {
+          if (isset($orderBillingExtraFields->{$extraField->field})) {
+            if($extraField->field == "documentType"){
+              $documentNumber = $orderBillingExtraFields->documentNumber ?? '';
+              array_push($customerBillingAddressBlock["values"],[
+                "label" => trans("iprofile::addresses.form.identification"),
+                "value" => $orderBillingExtraFields->{$extraField->field} . " " . $documentNumber
+              ]);
+            }else{
+              array_push($customerBillingAddressBlock["values"],[
+                "label" => trans("iprofile::addresses.form.$extraField->field"),
+                "value" => $orderBillingExtraFields->{$extraField->field}
+              ]);
+            }
+          }
+        }
+      }
+    }
+    array_push($item["informationBlocks"],$customerBillingAddressBlock);
+	
+	
+		$paymentInfo = [
+			'title' => 'Pago y método de envío',
+			'values' => [
+				['label' => 'Método de pago', 'value' => $item['paymentMethod']],
+				
+			]
+		];
+		
+    $paymentMethod = PaymentMethod::find( $item['paymentCode']);
+    
+    if(isset($paymentMethod->description) && !empty($paymentMethod->description)){
+			array_push($paymentInfo["values"],
+				['label' => 'Descripción del método', 'value' => $paymentMethod->description]);
+		}
+    
+    array_push($item['informationBlocks'],
+      $paymentInfo
+    );
+    
+    
     return $item;
   }
 }

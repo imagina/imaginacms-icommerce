@@ -11,6 +11,8 @@
 
 </div>
 
+
+
 <p>
   {{trans('icommerce::common.emailMsg.orderurl')}}
 </p>
@@ -45,7 +47,10 @@
       @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
       <tr class="product-order">
         <td>
-          <h4>{{$product->title}}</h4>
+          <a href="{{$product->product->url}}">
+            <h4>{{$product->title}}</h4>
+          </a>
+          
           <!--Show item options-->
           @if($productOptionText->count())
             <div class="text-muted" style="font-size: 13px">({{
@@ -117,48 +122,28 @@
     </tbody>
   </table>
 </div>
+
+@php
+  $orderTransformed = collect(new \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with(['customer','addedBy','orderItems','orderHistory','transactions',
+          'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'])->where("id",$order->id)->first()))->toArray();
+  $informationBlocks = $orderTransformed["informationBlocks"];
+@endphp
+
 <div class="user-information">
   <div class="row" style=" width: 100%; display: inline-block;
       margin-bottom: 60px;
       text-align: left;">
+    @foreach($informationBlocks as $block)
     <div class="col" style="  width: 43%;
       display: block;
       float: left;
       padding: 0 15px;">
-      <h4>{{trans("icommerce::orders.table.shipping address")}}</h4>
-      <p>{{$order->shipping_first_name}} {{$order->shipping_last_name}}</p>
-      <p> {{$order->shipping_address_1}}</p>
-      <p>{{$order->shipping_city}}</p>
-      <p>{{$order->shipping_zone}}</p>
-      <p>{{$order->shippingCountry->translations[0]->name ?? ''}}</p>
-      
-      
-      <h4>{{trans("icommerce::orders.table.payment address")}}</h4>
-      <p>{{$order->payment_first_name}} {{$order->payment_last_name}}</p>
-      <p> {{$order->payment_address_1}}</p>
-      <p>{{$order->payment_city}}</p>
-      <p>{{$order->payment_zone}}</p>
-      <p>{{$order->paymentCountry->translations[0]->name ?? ''}}</p>
-    
-    
+      <h4>{{ $block["title"] }}</h4>
+      @foreach($block["values"] as $item)
+        <p> <b>{{ $item["label"] }}:</b> {!! $item["value"] !!}</p>
+      @endforeach
     </div>
-    <div class="col" style="  width: 43%;
-      display: block;
-      float: left;
-      padding: 0 15px;">
-      <h4>{{trans("icommerce::orders.table.customer details")}}</h4>
-      <p>{{$order->first_name}} {{$order->last_name}}</p>
-      <p style=" margin: 0;">{{$order->email}}</p>
-      <p style=" margin: 0;">{{$order->telephone}}</p>
-      
-      <h4>{{trans("icommerce::orders.table.shipping_method")}}</h4>
-      <p>{{$order->shipping_method}}</p>
-      
-      <h4>{{trans("icommerce::orders.table.payment_method")}}</h4>
-      <p>{{$order->payment_method}}</p>
-    
-    
-    </div>
+    @endforeach
   </div>
 </div>
    
