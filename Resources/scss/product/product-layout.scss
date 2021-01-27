@@ -75,7 +75,7 @@
     height: 300px;
     padding: 15px;
     position: relative;
-    
+    width: 100%;
     .desc {
       position: absolute;
       top: 0;
@@ -103,7 +103,11 @@
         }
       }
     }
-    
+  
+    /***** Media Queries *****/
+    @include media-breakpoint-down(md) {
+      height: 170px;
+    }
   }
   
   .infor {
@@ -134,7 +138,9 @@
   }
   
   .buttons {
-  
+    a{
+      cursor: pointer;
+    }
   }
   
   .icon {
