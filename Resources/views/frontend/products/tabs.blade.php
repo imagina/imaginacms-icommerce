@@ -1,4 +1,5 @@
 
+<!--
 <div>
     <h6 class="options" v-if="product.weight || product.length || product.width || product.heigth">TAMAÑO:</h6>
     <p class="icommerce-option" v-if="product.weight"> {{trans('icommerce::products.table.weight')}}
@@ -11,6 +12,7 @@
         :@{{product.heigth}}</p>
 
 </div>
+-->
 
 <div v-if="product.productOptions.length && product.optionValues.length"
      v-for="(option,index) in product.productOptions">
