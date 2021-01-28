@@ -3,12 +3,12 @@
   <div class="card-product">
     <div class="cursor-pointer position-relative">
       @if(!isset($productListLayout) || $productListLayout!='one')
-
+        
         <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
-           <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-                                  :mediaFiles="$product->mediaFiles()"/>
+          <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                                 :mediaFiles="$product->mediaFiles()"/>
         </div>
-
+      
       @endif
       <div class="card-overlay text-center">
         
@@ -25,14 +25,15 @@
         </div>
         
         <div class="bottom">
-          @if($product->price>0  && $product->stock_status && $product->quantity)
-            <a  onClick="window.livewire.emit('addToCart',{{$product->id}})" class="btn btn-warning px-4 text-white cursor-pointer">
+          @if(!$product->is_call && $product->stock_status)
+            <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
+               class="btn btn-warning px-4 text-white cursor-pointer">
               <i class="fa fa-shopping-basket"></i>
               COMPRAR
             </a>
           @else
             <a href="/contacto" class="btn btn-warning px-4 text-white cursor-pointer">
-              <i class="fa fa-envelope"></i> CONTACTANOS
+              <i class="fa fa-envelope"></i> CONTÁCTANOS
             </a>
           @endif
         </div>
@@ -50,25 +51,26 @@
       <div class="category text-center">{{$product->category->title}}</div>
       
       @if(isset($productListLayout) && $productListLayout=='one')
-        <div class="summary">
+        <div class="d-none d-md-block summary">
           {{$product->summary}}
         </div>
       @endif
       
-      <div class="price text-center">
+      @if(!$product->is_call)
+        <div class="price text-center">
+          
+          {{isset($currency) ? $currency->symbol_left : '$'}}
+          {{formatMoney($discount->price ?? $product->price)}}
+          
+          @if(isset($discount) && $discount)
+            <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
+          
+          @endif
         
-        {{isset($currency) ? $currency->symbol_left : '$'}}
-        {{formatMoney($discount->price ?? $product->price)}}
-        
-        @if(isset($discount) && $discount)
-          <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
-        
-        @endif
-      
-      </div>
-    
+        </div>
+      @endif
     </div>
-    @if($addToCartWithQuantity)
+    @if($addToCartWithQuantity && !$product->is_call)
       @include("icommerce::frontend.components.product.addToCartWithQuantity")
     @endif
   </div>

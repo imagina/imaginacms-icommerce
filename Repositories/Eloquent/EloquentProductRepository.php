@@ -194,7 +194,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
 
       // add filter by Freeshipping
-      if (isset($filter->freeshipping) && !empty($filter->freeshipping)) {
+      if (isset($filter->freeshipping) && !empty($filter->freeshipping) && $filter->freeshipping) {
         $query->where("freeshipping", $filter->freeshipping);
       }
 
