@@ -154,6 +154,9 @@ class ProductList extends Component
 
         if(isset($this->manufacturer->id))
             $params["filter"]["manufacturers"] = [$this->manufacturer->id];
+
+        if(isset($params["filter"]["withDiscount"])) 
+            $params["filter"]["withDiscount"] = (boolean)$params["filter"]["withDiscount"];
     	
 	    return $params;
     	
@@ -179,8 +182,8 @@ class ProductList extends Component
         }
 
      	$params = $this->makeParamsToRepository();
+        //\Log::info("params: ".json_encode($params));
 
-        //	\Log::info("params: ".json_encode($params));
     	$products = $this->getProductRepository()->getItemsBy(json_decode(json_encode($params)));
     
     	$this->totalProducts = $products->total();
