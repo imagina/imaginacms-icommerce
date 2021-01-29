@@ -18,10 +18,8 @@
         <div class="list-categories">
           <ul class="list-group list-group-flush">
             
-            @foreach($categories as $category)
-              @if($category->parent_id == 0)
-                @include('icommerce::frontend.livewire.index.filters.categories.category-item',["level" => 0])
-              @endif
+            @foreach($categories->where("parent_id",0) as $category)
+                @include('icommerce::frontend.livewire.index.filters.categories.category-item',["level" => 0,"category" => $category,"categoryId" => $category->id])
             @endforeach
           
           

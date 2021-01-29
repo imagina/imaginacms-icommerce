@@ -352,3 +352,38 @@
     }
   }
 }
+
+.not-image {
+
+  #categoryList4 {
+    .card-categories {
+      grid-gap: 10px;
+      .item-category {
+        border: 1px solid #cccccc;
+        .bg-img {
+          display: none !important;
+        }
+        .card-overlay {
+          position: relative !important;
+          padding: 15px !important;
+          .card-title {
+            a {
+              color: #333 !important;
+              text-align: center !important;
+            }
+          }
+        }
+        &:hover {
+          background-color: #cccccc;
+          box-shadow: none;
+          .card-overlay {
+            right: 0;
+          }
+        }
+        &:before {
+          content: none;
+        }
+      }
+    }
+  }
+}
