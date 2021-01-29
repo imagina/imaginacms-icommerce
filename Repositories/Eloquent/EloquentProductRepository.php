@@ -134,9 +134,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         $query->where('status', ($filter->status ? 1 : 0));
       }
+  
+      if (isset($filter->ids) && !empty($filter->ids)) {
+        is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
+        $query->whereIn('icommerce__products.id', $filter->ids);
+      }
 
-
-      // add filter by Categories 1 or more than 1, in array
+      // add filter by Categories 1 or more than 1, in array/*
       if (isset($filter->categories) && !empty($filter->categories)) {
         is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
         $query->where(function ($query) use ($filter) {

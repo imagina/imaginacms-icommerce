@@ -1,7 +1,9 @@
 .filter-categories{
  
 	.list-categories{
-	
+		li.list-group-item.level-2,li.list-group-item.level-1{
+			padding-right: 0;
+		}
 	}
 
 }

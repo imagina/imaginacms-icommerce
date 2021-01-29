@@ -2,7 +2,7 @@
 
 @php($isSelected = !empty($categorySelected) ? $categorySelected->id == $category->id ? true : false : false)
 
-<li class="list-group-item {{$isSelected ? 'category-selected' : ''}} level-{{$level}}" aria-disabled="true" aria-expanded="true">
+<li class="list-group-item {{$isSelected ? 'category-selected' : ''}} level-{{$level}}">
 	
 	@php($children = $categories->where("parent_id",$category->id))
 
@@ -25,31 +25,27 @@
 	{{--
 	@php($newUrl = $category->url)
 	--}}
-	<a class="text-secondary" data-toggle="{{$isSelected ? "collapse" : ""}}"
-		 href="{{$newUrl}}"
-		 aria-disabled="false"
-		 role="button" aria-expanded="false"
-		 aria-controls="{{$children? "multiCollapse-$slug" : ""}}">
 		
-		@php($mediaFiles = $category->mediaFiles())
-		
-		@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
-			<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
-		@endif
-		
-		<i class="fa fa-angle-{{$isSelected && $children ? 'down' : 'right'}}" ></i>
-		
-		@if($isSelected)
-		<strong>
+	@if($children && $level<2)
+		<div class="link-desktop d-none d-md-block {{$isSelected && $children ? 'font-weight-bold' : ''}}">
+			<a href="{{$category->url}}" class="text-href ">
 			{{$category->title}}
-		</strong>
-		@else
-			{{$category->title}}
-		@endif
+			</a>
+			<a class="icon-collapsable" data-toggle="collapse" role="button"
+			   href="#multiCollapse-{{$slug}}" aria-expanded="{{$isSelected && $children ? 'true' : 'false'}}"
+			   aria-controls="multiCollapse-{{$slug}}">
+				<i class="fa angle"></i>
+			</a>
+		</div>
+		<div class="link-movil d-block d-md-none {{$isSelected && $children ? 'font-weight-bold' : ''}}">
+			<a class="text-collapsable" data-toggle="collapse" role="button"
+			   href="#multiCollapse-{{$slug}}" aria-expanded="{{$isSelected && $children ? 'true' : 'false'}}"
+			   aria-controls="multiCollapse-{{$slug}}"> {{$category->title}} </a>
+			<a href="{{$category->url}}" class="icon-href float-right">
+				<i class="fa fa-external-link"></i>
 	</a>
-	@if($children)
-	<div class="collapse multi-collapse {{$expanded ? 'show' : ''}}" id="multiCollapse-{{$slug}}">
-
+		</div>
+		<div class="collapse multi-collapse mt-2 {{$expanded ? 'show' : ''}}" id="multiCollapse-{{$slug}}">
 		<ul class="list-group list-group-flush">
 			
 				
@@ -59,6 +55,9 @@
 			
 		</ul>
 	</div>
+	@else
+
+		<a href="{{$category->url}}" class="link-childless d-block {{$isSelected && $children ? 'font-weight-bold' : ''}}"> {{$category->title}} </a>
 
 	@endif
 </li>

@@ -27,11 +27,14 @@
 			<input type="hidden" id="selPriceMin" name="selPriceMin" wire:model="selPriceMin">
 			<input type="hidden" id="selPriceMax" name="selPriceMax" wire:model="selPriceMax">
 			
+			<div class="mx-3">
 			<div id="slider-range" wire:ignore></div>
 
 			<button onClick="window.livewire.emit('updateRange',{'selPriceMin' : document.getElementById('selPriceMin').value,'selPriceMax' : document.getElementById('selPriceMax').value})" id="btnUpdatePrices" class="btn btn-outline-primary btn-sm btn-block mt-3">
 				{{trans('icommerce::common.button.update')}}
 			</button>
+			</div>
+
 
 		</div>
 	</div>

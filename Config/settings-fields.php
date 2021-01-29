@@ -82,6 +82,35 @@ return [
       'label' => 'Mostrar breadcrumb en Sidebar'
     ]
   ],
+  'showCategoryChildrenIndexHeader' => [
+    'value' => false,
+    'name' => 'icommerce::showCategoryChildrenIndexHeader',
+    'type' => 'checkbox',
+    'group' => 'icommerce::common.pages.index',
+    'props' => [
+      'label' => 'Mostrar Categorías Hijas en el header del Index'
+    ]
+  ],
+  
+  'categoryChildrenIndexHeader' => [
+    'value' => 'basic',
+    'name' => 'icommerce::filterCategoriesTitle',
+    'group' => 'icommerce::common.filters.categories.group',
+    'type' => 'select',
+    'props' => [
+      'label' => 'Titulo a mostrar',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Palabra Categoria','value' => 'basic'],
+        ['label' => 'Titulo de la Categoria','value' => 'category-title'],
+      ]
+    ]
+  ],
+  
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
