@@ -1,4 +1,11 @@
 #content_show_commerce{
+
+  .information{
+    .price{
+      font-size: 2.25rem;
+    }
+  }
+
   .bg-image {
     .img-mini {
       width: 67px;
@@ -29,4 +36,12 @@
       }
     }
   }
+
+  .btn-comprar{
+    svg{
+      width: 20px;
+      fill:white;
+    }
+  } 
+
 }

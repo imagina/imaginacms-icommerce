@@ -1,4 +1,4 @@
-<div>
+<div class="information">
   
   <!-- CATEGORY -->
   <div class="category text-uppercase" v-if="product.category">
