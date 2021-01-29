@@ -89,6 +89,7 @@ return [
     'countryFreeshipping' => 'Pais con envío gratuito de Productos',
     'product-per-page' => 'Productos Por Pagina',
     'customIndexTitle' => 'Título Página Index',
+    'customIndexDescription' => 'Descripción Página Index',
     'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
     'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
     'product'=>[

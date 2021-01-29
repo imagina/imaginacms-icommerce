@@ -55,6 +55,19 @@ return [
       'label' => 'icommerce::common.settings.customIndexTitle'
     ],
   ],
+  'customIndexDescription' => [
+    'name' => 'icommerce::customIndexDescription',
+    'value' => '',
+    'group' => 'icommerce::common.pages.index',
+    'type' => 'input',
+    'columns' => 'col-12',
+    'props' => [
+      'label' => 'icommerce::common.settings.customIndexDescription',   
+      'type' => 'textarea',
+      'rows' => 3  
+    ],
+  ],
+
   'carouselIndexCategory' => [
     'value' => 'carousel-category-active',
     'name' => 'icommerce::carouselIndexCategory',
