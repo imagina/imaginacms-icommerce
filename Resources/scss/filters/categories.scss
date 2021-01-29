@@ -1,8 +1,48 @@
-.filter-categories{
- 
-	.list-categories{
-		li.list-group-item.level-2,li.list-group-item.level-1{
-			padding-right: 0;
+.filter-categories {
+
+	.icon-collapsable {
+		.angle:before {
+			content: "\f105";
+		}
+	}
+
+	.icon-collapsable[aria-expanded="true"] {
+		.angle:before {
+			content: "\f107";
+		}
+	}
+
+	.category-icon {
+		display: inline-block;
+	}
+
+	.link-desktop {
+		position: relative;
+		height: 30px;
+		.text-href {
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		.icon-collapsable {
+			display: flex;
+			justify-content: flex-end;
+			height: 100%;
+			align-items: center;
+		}
+	}
+
+	.link-movil {
+		position: relative;
+		.text-collapsable {
+			display: block;
+		}
+		.icon-href {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
 		}
 	}
 
