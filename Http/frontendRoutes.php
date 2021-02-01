@@ -44,24 +44,25 @@ $locale = LaravelLocalization::setLocale() ?: App::getLocale();
     $router->get(trans('icommerce::routes.store.index.wishlist'), [
       'as' =>  $locale . '.icommerce.store.wishlists.index',
       'uses' => 'PublicController@wishlist',
-      'middleware' => 'logged.in'
+      'middleware' => ['logged.in', 'doNotCacheResponse']
     ]);
     
     $router->get(trans('icommerce::routes.store.checkout'), [
       'as' => $locale . '.icommerce.store.checkout',
       'uses' => 'PublicController@checkout',
+      'middleware' => 'doNotCacheResponse'
     ]);
     
     $router->get(trans('icommerce::routes.store.order.index'), [
       'as' => $locale . '.icommerce.store.order.index',
       'uses' => 'OrderController@index',
-      'middleware' => 'logged.in'
+      'middleware' => ['logged.in', 'doNotCacheResponse']
     ]);
     
     $router->get(trans('icommerce::routes.store.order.show'), [
       'as' => $locale . '.icommerce.store.order.show',
       'uses' => 'OrderController@show',
-      //'middleware' => 'logged.in'
+      'middleware' => 'doNotCacheResponse'
     ]);
     
   });
