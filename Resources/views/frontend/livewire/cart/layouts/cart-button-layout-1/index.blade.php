@@ -9,10 +9,11 @@
 </div>
 
 @section('scripts-owl')
-  <script>
+  @parent
+  <script type="text/javascript">
   
   $(document).ready(function () {
     window.livewire.emit('refreshCart');
   });
   </script>
-  @stop
+@stop
