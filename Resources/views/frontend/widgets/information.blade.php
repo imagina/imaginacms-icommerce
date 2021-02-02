@@ -1,5 +1,5 @@
-<div>
-
+<div class="information">
+  
   <!-- CATEGORY -->
   <div class="category text-uppercase" v-if="product.category">
     @{{product.category.title}}
@@ -9,31 +9,34 @@
   <!-- TITLE -->
   <h1 class="name">@{{product.name}}</h1>
   <!-- END TITLE -->
-
+  
   <!-- REFERENCE -->
-  <div v-if="product.reference" class="reference my-2"><span class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}</div>
+  <div v-if="product.reference" class="reference my-2"><span
+      class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}
+  </div>
   
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
   
   <!-- PRICE -->
-  <div class="price " v-if="products_children === false && product.price >0.00">
-    <div class="mb-0">
+  @if(!$product->is_call)
+    <div class="price " v-if="products_children === false && product.price >0.00">
+      <div class="mb-0">
       <span class="text-primary font-weight-bold">
         {{isset($currency->id) ? $currency->symbol_left : '$'}}
         {{formatMoney($product->discount->price ?? $product->price)}}
         {{isset($currency->id) ? $currency->symbol_right : ''}}
       </span>
-      @if(isset($product->discount->price))
-        <br><span class="price-desc h6 pl-3">Antes: <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
-      @endif
+        @if(isset($product->discount->price))
+          <br><span class="price-desc h6 pl-3">Antes: <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
+        @endif
+      </div>
     </div>
-  </div>
-
-  <!-- END PRICE -->
+@endif
+<!-- END PRICE -->
   <!-- OPCIONES DE PRODUCTO -->
   <select-product-options v-model="productOptionsSelected" v-bind:options="productOptions"></select-product-options>
-
+  
   <div class=" align-items-center mb-4" v-if="product.pdf">
     <a v-bind:href="product.pdf"
        class="btn btn-outline-light text-dark">
@@ -41,8 +44,8 @@
       {{trans('icommerce::products.messages.product_brochure')}}
     </a>
   </div>
-
-  <div class="add-cart" v-if="product.quantity > 0 && product.stockStatus">
+  
+  <div v-if="product.isCall=='0' && product.stockStatus" class="add-cart" >
     <hr>
     <div class="row">
       <!-- BUTTON QUANTITY -->
@@ -66,7 +69,7 @@
       </div>
       <div class="col my-2 my-md-0">
         <!-- BUTTON ADD -->
-        <div v-if="product.price!='0.00'">
+        <div>
           <a v-on:click="addCart(product)" class="btn-comprar btn btn-primary text-white">
             <div class="d-inline-block mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.83 32.84">
@@ -96,25 +99,42 @@
             </div>
             COMPRAR
           </a>
-  
+          
           <!-- BUTTON WISHLIST -->
-          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist" v-if="!products_children">
+          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist"
+             v-if="!products_children">
             <span>AGREGAR A LA LISTA</span>
             <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
-        <!-- BUTTON CONSULT -->
-        <div  v-else>
-          <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">CONSULTAR</a>
-        </div>
+       
       </div>
     </div>
     <hr>
   </div>
-
+  <!-- BUTTON CONSULT -->
+  <div v-else-if="product.isCall=='1'" class="add-cart" >
+    <hr>
+    <div class="row">
+      <div class="col my-2 my-md-0">
+        <div>
+          <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">CONSULTAR</a>
+    
+          <!-- BUTTON WISHLIST -->
+          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist"
+             v-if="!products_children">
+            <span>AGREGAR A LA LISTA</span>
+            <i class="fa fa-heart-o ml-1"></i>
+          </a>
+        </div>
+ 
+      </div>
+    </div>
+    <hr>
+  </div>
   <div v-else>
     <p class="label d-inline-block px-3 py-2 mb-0">Producto Agotado </p>
-
+    
     <hr>
   </div>
 

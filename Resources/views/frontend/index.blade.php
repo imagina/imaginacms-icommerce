@@ -70,6 +70,10 @@
           @if(isset($gallery) && !empty($gallery))
             @include('icommerce::frontend.partials.carousel-index-image')
           @endif
+          
+          @if(setting("icommerce::showCategoryChildrenIndexHeader"))
+            @include('icommerce::frontend.partials.children-categories-index-section',["category" => $category ?? null])
+          @endif
 
           <livewire:icommerce::product-list
             :category="$category ?? null" 

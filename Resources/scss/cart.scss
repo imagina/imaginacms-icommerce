@@ -1,4 +1,9 @@
 .cart-dropdown-menu {
+
+  .cart-remove{
+    cursor: pointer;
+  }
+  
   .dropdown-menu{
     max-height: 380px;
     overflow-y: scroll;

@@ -5,41 +5,48 @@
   <div class="category">{{$product->category->title}}</div>
   
   @if(isset($productListLayout) && $productListLayout=='one')
-    <div class="summary">
+    <div class="d-none d-lg-block summary">
       {{$product->summary}}
     </div>
   @endif
   
   
   <div class="row align-items-end">
-    <div class="col col-price">
-      <div class="price">
-        {{isset($currency) ? $currency->symbol_left : '$'}}
-        {{formatMoney($discount->price ?? $product->price)}}
-      </div>
-      @if(isset($discount) && $discount)
-        <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
-      @endif
-    </div>
-    
-    <div class="col-auto col-buttons">
-      
-      <div class="buttons">
-        @if($product->price>0  && $product->stock_status && $product->quantity)
-          <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}})">
-            <i class="fa fa-shopping-basket"></i>
-          </a>
+    @if(!$product->is_call)
+      <div class="col col-price">
+        <div class="price">
+          {{isset($currency) ? $currency->symbol_left : '$'}}
+          {{formatMoney($discount->price ?? $product->price)}}
+        </div>
+        @if(isset($discount) && $discount)
+          <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
         @endif
-        <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{$product->id}})" >
-          <i class="fa fa-heart-o"></i>
+      </div>
+     @else
+      <div class="col">
+        <a href="{{ URL::to('/contacto') }}" class="btn btn-warning px-4 text-white cursor-pointer">
+          Contacta con nosotros
         </a>
       </div>
-    
-    </div>
+     @endif
+      <div class="col-auto col-buttons">
+        
+        <div class="buttons">
+          @if(!$product->is_call && $product->stock_status)
+            <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}})">
+              <i class="fa fa-shopping-basket"></i>
+            </a>
+          @endif
+          <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{$product->id}})">
+            <i class="fa fa-heart-o"></i>
+          </a>
+        </div>
+      
+      </div>
   
   </div>
-  @if($addToCartWithQuantity)
-   @include("icommerce::frontend.components.product.addToCartWithQuantity")
+  @if($addToCartWithQuantity && !$product->is_call)
+    @include("icommerce::frontend.components.product.addToCartWithQuantity")
   @endif
 
 

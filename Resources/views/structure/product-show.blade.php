@@ -137,273 +137,223 @@
           
         },
         
-        getRelatedProducts(product) {
+        /* actualizar precio de producto */
+        update_product: function (indexOption, indexValue) {
+          // console.log(indexOption, indexValue);
+          vue_show_commerce.option_type = vue_show_commerce.product.productOptions[indexOption].type;
+          if (vue_show_commerce.index_product_option_value_selected != "select") {
+            vue_show_commerce.option_value = vue_show_commerce.product.productOptions[indexOption].optionValue;
+            option = vue_show_commerce.product.optionValues[indexValue];
+            // console.log(option);
+            if (parseFloat(option.price) != 0.00) {
+              if (option.pointsPrefix == "+") {
+                vue_show_commerce.product.price = parseFloat(vue_show_commerce.product.price) + parseFloat(option.price);
+                // console.log(vue_show_commerce.product.price);
+                this.productOptValueSelected = [option];
+              }
+            }
+          } else {
+          
+          }
+        },
+        /* obtiene los productos */
+        get_product: function () {
           axios({
             method: 'Get',
             responseType: 'json',
-            url: "{{ route('api.icommerce.products.index') }}",
+            url: this.path,
             params: {
-              include: 'categories,productOptions,optionValues,category',
-              filter: {category: product.categoryId },
-              take: 20
+              include: 'categories,productOptions,optionValues,category,relatedProducts',
             }
-          }).then(response => {
-            vue_show_commerce.relatedProducts = response.data.data;
-  
-            setTimeout(() =>{
-  
-              var owlr = $('#relatedProducts');
-              owlr.owlCarousel({
-                margin: 10,
-                loop: false,
-                nav: false,
-                lazyContent: true,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                responsive: {
-                  0: {
-                    items: 1,
-                    dots: true,
-                  },
-                  540: {
-                    items: 2,
-                    dots: true,
-                  },
-                  768: {
-                    items: 3,
-                    dots: true,
-                  },
-                  992: {
-                    items: 4,
-                    dots: false,
-                  }
+          }).then(function (response) {
+            
+            vue_show_commerce.product = response.data.data;
+            vue_show_commerce.categories = response.data.data.categories.reverse();
+            vue_show_commerce.video = response.data.data.options.video;
+            vue_show_commerce.product_gallery = response.data.data.gallery;
+            vue_show_commerce.currency = "$";
+            vue_show_commerce.get_product_options();
+          });
+          
+        },
+        get_product_options: function () {
+          axios({
+            method: 'Get',
+            responseType: 'json',
+            url: this.pathOptions,
+            params: {
+              filter: {productId: this.product.id},
+              include: 'productOptionValues'
+            }
+          }).then(function (response) {
+            vue_show_commerce.productOptions = vue_show_commerce.builTree(response.data.data)
+          });
+        },
+        
+        builTree(elements, parentId = 0) {
+          var branch = [];
+          elements.forEach(element => {
+            element.parentId ? false : element.parentId = 0
+            if (element.parentId == parentId) {
+              var children = vue_show_commerce.builTree(elements, element.id);
+              let record = element
+              if (children.length)
+                record['children'] = children
+              branch.push(record);
+            }
+          })
+          
+          return branch;
+        },
+        
+        /*change quantity, product children*/
+        check_children: function (tr, operation, product) {
+          (operation === '+') ?
+            product.quantity_cart < parseInt(product.quantity) ?
+              product.quantity_cart++ :
+              this.alerta("{{trans('icommerce::products.alerts.no_more')}}", "warning")
+            :
+            false;
+          (operation === '-') ?
+            (product.quantity_cart >= 1) ?
+              product.quantity_cart-- :
+              this.alerta("{{trans('icommerce::products.alerts.no_zero')}}", "warning")
+            :
+            false;
+          
+          this.save_product_children(product.quantity_cart, product);
+        },
+        
+        /*save/update/delete product for add to cart*/
+        save_product_children: function (quantity, product) {
+          var products = this.products_children_cart;
+          var pos = -1;
+          
+          if (Array.isArray(products.length) && products.length >= 1) ;
+          {
+            $.each(products, function (index, item) {
+              item.id === product.id ? pos = index : false;
+            });
+          }
+          
+          if (parseInt(quantity)) { /*add/update item*/
+            pos >= 0 ?
+              this.products_children_cart[pos] = product :
+              this.products_children_cart.push(product);
+            
+          } else if (!parseInt(quantity) && pos !== -1) {/*delete item*/
+            this.products_children_cart.splice(pos, 1);
+          }
+        },
+        
+        /*agrega el producto al carro de compras*/
+        addCart: function (data) {
+          //Validate if options required is selected
+          if (this.productOptionsSelected.required)
+            return toastr.error("Faltan opciones requeridas por seleccionar");
+          
+          vue_show_commerce.sending_data = true;
+          
+          window.livewire.emit('addToCart',
+            data.id,
+            this.quantity,
+            this.productOptionsSelected.options
+          );
+          
+          vue_show_commerce.quantity = 1;
+          vue_show_commerce.sending_data = false;
+          
+        },
+        
+        /* products wishlist */
+        get_wishlist: function () {
+          if (this.user) {
+            axios({
+              method: 'get',
+              responseType: 'json',
+              url: Laravel.routes.wishlist.get + '?filter={' + this.user + '}'
+            }).then(response => {
+              this.products_wishlist = response.data.data;
+              $.each(this.products_wishlist, function (index, item) {
+                if (vue_show_commerce.product.id == item.product_id) {
+                  button = $('.btn-wishlist').prop("disabled", false);
+                  button.find("i").addClass('fa-heart').removeClass('fa-heart-o');
                 }
               });
-            }, 1000);
-            
-        });
-      
-      
-    },
-    /* actualizar precio de producto */
-    update_product: function (indexOption, indexValue) {
-      // console.log(indexOption, indexValue);
-      vue_show_commerce.option_type = vue_show_commerce.product.productOptions[indexOption].type;
-      if (vue_show_commerce.index_product_option_value_selected != "select") {
-        vue_show_commerce.option_value = vue_show_commerce.product.productOptions[indexOption].optionValue;
-        option = vue_show_commerce.product.optionValues[indexValue];
-        // console.log(option);
-        if (parseFloat(option.price) != 0.00) {
-          if (option.pointsPrefix == "+") {
-            vue_show_commerce.product.price = parseFloat(vue_show_commerce.product.price) + parseFloat(option.price);
-            // console.log(vue_show_commerce.product.price);
-            this.productOptValueSelected = [option];
+            })
           }
-        }
-      } else {
-      
-      }
-    },
-    /* obtiene los productos */
-    get_product: function () {
-      axios({
-        method: 'Get',
-        responseType: 'json',
-        url: this.path,
-        params: {
-          include: 'categories,productOptions,optionValues,category,relatedProducts',
-        }
-      }).then(function (response) {
+        },
         
-        vue_show_commerce.product = response.data.data;
-        vue_show_commerce.categories = response.data.data.categories.reverse();
-        vue_show_commerce.video = response.data.data.options.video;
-        vue_show_commerce.product_gallery = response.data.data.gallery;
-        vue_show_commerce.currency = "$";
-        vue_show_commerce.getRelatedProducts(vue_show_commerce.product);
-        vue_show_commerce.get_product_options();
-      });
-      
-    },
-    get_product_options: function () {
-      axios({
-        method: 'Get',
-        responseType: 'json',
-        url: this.pathOptions,
-        params: {
-          filter: {productId: this.product.id},
-          include: 'productOptionValues'
-        }
-      }).then(function (response) {
-        vue_show_commerce.productOptions = vue_show_commerce.builTree(response.data.data)
-      });
-    },
-    
-    builTree(elements, parentId = 0) {
-      var branch = [];
-      elements.forEach(element => {
-        element.parentId ? false : element.parentId = 0
-        if (element.parentId == parentId) {
-          var children = vue_show_commerce.builTree(elements, element.id);
-          let record = element
-          if (children.length)
-            record['children'] = children
-          branch.push(record);
-        }
-      })
-      
-      return branch;
-    },
-    
-    /*change quantity, product children*/
-    check_children: function (tr, operation, product) {
-      (operation === '+') ?
-        product.quantity_cart < parseInt(product.quantity) ?
-          product.quantity_cart++ :
-          this.alerta("{{trans('icommerce::products.alerts.no_more')}}", "warning")
-        :
-        false;
-      (operation === '-') ?
-        (product.quantity_cart >= 1) ?
-          product.quantity_cart-- :
-          this.alerta("{{trans('icommerce::products.alerts.no_zero')}}", "warning")
-        :
-        false;
-      
-      this.save_product_children(product.quantity_cart, product);
-    },
-    
-    /*save/update/delete product for add to cart*/
-    save_product_children: function (quantity, product) {
-      var products = this.products_children_cart;
-      var pos = -1;
-      
-      if (Array.isArray(products.length) && products.length >= 1) ;
-      {
-        $.each(products, function (index, item) {
-          item.id === product.id ? pos = index : false;
-        });
-      }
-      
-      if (parseInt(quantity)) { /*add/update item*/
-        pos >= 0 ?
-          this.products_children_cart[pos] = product :
-          this.products_children_cart.push(product);
         
-      } else if (!parseInt(quantity) && pos !== -1) {/*delete item*/
-        this.products_children_cart.splice(pos, 1);
-      }
-    },
-    
-    /*agrega el producto al carro de compras*/
-    addCart: function (data) {
-      //Validate if options required is selected
-      if (this.productOptionsSelected.required)
-        return toastr.error("Faltan opciones requeridas por seleccionar");
-      
-      vue_show_commerce.sending_data = true;
-      
-      window.livewire.emit('addToCart',
-        data.id,
-        this.quantity,
-        this.productOptionsSelected.options
-      );
-      
-      vue_show_commerce.quantity = 1;
-      vue_show_commerce.sending_data = false;
-      
-    },
-    
-    /* products wishlist */
-    get_wishlist: function () {
-      if (this.user) {
-        axios({
-          method: 'get',
-          responseType: 'json',
-          url: Laravel.routes.wishlist.get + '?filter={' + this.user + '}'
-        }).then(response => {
-          this.products_wishlist = response.data.data;
+        /* product add wishlist */
+        addWishList: function (item) {
+          if (this.user) {
+            button = $('.btn-wishlist');
+            button.find("i").addClass('fa-spinner fa-spin').removeClass('fa-heart');
+            if (!this.check_wisht_list(item.id)) {
+              axios.post("{{url('/')}}" + "/api/icommerce/v3/wishlists", {
+                attributes: {
+                  user_id: this.user,
+                  product_id: item.id
+                }
+              }).then(response => {
+                this.get_wishlist();
+                this.alerta("producto agregado a la lista", "success");
+                button.find("i").addClass('fa-heart').removeClass('fa-spinner fa-spin');
+              })
+            } else {
+              button.find("i").addClass('fa-heart-o').removeClass('fa-spinner fa-spin');
+              this.alerta("Producto en la lista", "warning");
+            }
+          } else {
+            this.alerta("Por Favor, Inicie Sesion", "warning");
+          }
+        },
+        
+        /*check if exist product in wisthlist*/
+        check_wisht_list: function (id) {
+          var response = false;
           $.each(this.products_wishlist, function (index, item) {
-            if (vue_show_commerce.product.id == item.product_id) {
-              button = $('.btn-wishlist').prop("disabled", false);
-              button.find("i").addClass('fa-heart').removeClass('fa-heart-o');
+            if (id == item.product_id) {
+              response = true;
             }
           });
-        })
-      }
-    },
-    
-    
-    /* product add wishlist */
-    addWishList: function (item) {
-      if (this.user) {
-        button = $('.btn-wishlist');
-        button.find("i").addClass('fa-spinner fa-spin').removeClass('fa-heart');
-        if (!this.check_wisht_list(item.id)) {
-          axios.post("{{url('/')}}" + "/api/icommerce/v3/wishlists", {
-            attributes: {
-              user_id: this.user,
-              product_id: item.id
-            }
-          }).then(response => {
-            this.get_wishlist();
-            this.alerta("producto agregado a la lista", "success");
-            button.find("i").addClass('fa-heart').removeClass('fa-spinner fa-spin');
-          })
-        } else {
-          button.find("i").addClass('fa-heart-o').removeClass('fa-spinner fa-spin');
-          this.alerta("Producto en la lista", "warning");
+          return response;
+        },
+        /*get comments of product*/
+        get_comments: function () {
+          axios({
+            method: 'Get',
+            responseType: 'json',
+            url: this.path
+          }).then(function (response) {
+            vue_show_commerce.product_comments = response.data.product_comments;
+            vue_show_commerce.count_comments = response.data.count_comments;
+          });
+        },
+        
+        /*alertas*/
+        alerta: function (menssage, type) {
+          toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 400,
+            "hideDuration": 400,
+            "timeOut": 4000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          };
+          toastr[type](menssage);
         }
-      } else {
-        this.alerta("Por Favor, Inicie Sesion", "warning");
       }
-    },
-    
-    /*check if exist product in wisthlist*/
-    check_wisht_list: function (id) {
-      var response = false;
-      $.each(this.products_wishlist, function (index, item) {
-        if (id == item.product_id) {
-          response = true;
-        }
-      });
-      return response;
-    },
-    /*get comments of product*/
-    get_comments: function () {
-      axios({
-        method: 'Get',
-        responseType: 'json',
-        url: this.path
-      }).then(function (response) {
-        vue_show_commerce.product_comments = response.data.product_comments;
-        vue_show_commerce.count_comments = response.data.count_comments;
-      });
-    },
-    
-    /*alertas*/
-    alerta: function (menssage, type) {
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": 400,
-        "hideDuration": 400,
-        "timeOut": 4000,
-        "extendedTimeOut": 1000,
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-      };
-      toastr[type](menssage);
-    }
-    }
     });
   </script>
 @stop

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
+use Illuminate\Support\Facades\Auth;
 
 class Cart extends Component
 {
@@ -17,30 +18,52 @@ class Cart extends Component
   public $layout;
   public $icon;
   private $params;
-  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart','deleteCart'];
+  private $request;
+  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart','deleteCart','refreshCart'];
   
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart')
   {
+
+    
     $this->layout = $layout;
     $this->icon = $icon;
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
 
+   //$this->refreshCart();
+  }
+  
+  public function refreshCart(){
     
     $cart = request()->session()->get('cart');
-
+  
     if (isset($cart->id)) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
-
+      
+      $user = Auth::user();
+      $data = [];
+      if(isset($user->id) && empty($this->cart->user_id)){
+        $data["user_id"] = $user->id;
+        $this->cart->user_id = $data["user_id"];
+        $this->cart->save();
+        $this->updateCart();
+      }
+    
     } else {
       $data = [];
-      $data["ip"] = $request->ip();
+      $data["ip"] = request()->ip();
       $data["session_id"] = session('_token');
+      
+      $user = Auth::user();
+    
+      if(isset($user->id))
+        $data["user_id"] = $user->id;
       
       //Create item
       $this->cart = $this->cartRepository()->create($data);
-      
+    
     }
     request()->session()->put('cart', $this->cart);
+    
   }
   
   public function addToCart($productId, $quantity = 1, $productOptionValues = [])

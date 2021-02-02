@@ -193,7 +193,7 @@
       },
       data: {
         //Vars
-        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : null !!},
+        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : (object)[] !!},
         currency: {!! isset($currency->id) ? json_encode($currency) : null !!},
         payments: [],
         shippingMethods: [],
