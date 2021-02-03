@@ -1,6 +1,8 @@
 <?php
 
 namespace Modules\Icommerce\Transformers;
+use Modules\Isite\Http\Controllers\Api\FieldsApiController;
+use Illuminate\Http\Request;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,21 +23,21 @@ class PaymentMethodTransformer extends JsonResource
             'createdAt' => $this->when($this->created_at, $this->created_at),
             'updatedAt' => $this->when($this->updated_at, $this->updated_at),
             'activevalue'=>$this->active,
-            'mediaFiles' => $this->mediaFiles(),
-
+            'mediaFiles' => $this->mediaFiles()
         ];
 
         // Add Crud Fields from Payment Method
-        if(isset($this->name) && !empty($this->name)){
-            $config = "asgard.{$data['name']}.config.crudFields";
+        if (isset($this->name) && !empty($this->name)) {
+          $config = "crud-fields." . ucfirst($data['name']) . ".formFields";
 
-            if(isset($this->parent_name) && !empty($this->parent_name))
-                $config = "asgard.{$data['parentName']}.config.crudFields";
-            
-            $data['crudFields'] = config($config);
+          if (isset($this->parent_name) && !empty($this->parent_name))
+            $config = "crud-fields." . ucfirst($data['parentName']) . ".formFields";
+
+          $fieldsController = new FieldsApiController();
+          $data['crudFields'] = $fieldsController->validateResponseApi($fieldsController->index(new Request([
+            'filter' => json_encode(['configFieldName' => $config])
+          ])));
         }
-
-        
 
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
