@@ -26,12 +26,16 @@ class PaymentMethodTransformer extends JsonResource
         ];
 
         // Add Crud Fields from Payment Method
-        $config = "asgard.{$data['name']}.config.crudFields";
+        if(isset($this->name) && !empty($this->name)){
+            $config = "asgard.{$data['name']}.config.crudFields";
 
-        if(isset($this->parent_name) && !empty($this->parent_name))
-            $config = "asgard.{$data['parentName']}.config.crudFields";
+            if(isset($this->parent_name) && !empty($this->parent_name))
+                $config = "asgard.{$data['parentName']}.config.crudFields";
+            
+            $data['crudFields'] = config($config);
+        }
+
         
-        $data['crudFields'] = config($config);
 
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
