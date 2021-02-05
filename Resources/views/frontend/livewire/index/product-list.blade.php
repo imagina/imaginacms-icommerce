@@ -20,7 +20,7 @@
 
 			<div class="row">
 				<div class="product-list-pagination d-flex w-100 px-3 justify-content-end">
-					{{ $products->links() }}
+					{{ $products->links('icommerce::frontend.livewire.index.custom-pagination') }}
 				</div>
 			</div>
 	
@@ -42,6 +42,13 @@
     document.addEventListener('DOMContentLoaded', function () {
 		window.livewire.emit('productListRendered',{!! json_encode($params) !!});
     });
+    
+    $(document).on('click', '.page-link-scroll', function (e) {
+    	let scrollPos = $(".product-list").offset().top; 
+
+	  $("html, body").animate({ scrollTop: scrollPos }, "slow");
+	  return false;
+	});
 </script>
 
 @stop

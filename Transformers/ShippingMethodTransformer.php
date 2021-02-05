@@ -2,6 +2,8 @@
 
 namespace Modules\Icommerce\Transformers;
 
+use Modules\Isite\Http\Controllers\Api\FieldsApiController;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShippingMethodTransformer extends JsonResource
@@ -23,13 +25,21 @@ class ShippingMethodTransformer extends JsonResource
       'mediaFiles' => $this->mediaFiles()
     ];
 
-    // Add Crud Fields from Shipping Method
-    $config = "asgard.{$data['name']}.config.crudFields";
+  
 
-    if(isset($this->parent_name) && !empty($this->parent_name))
-      $config = "asgard.{$data['parentName']}.config.crudFields";
-        
-    $data['crudFields'] = config($config);
+    // Add Crud Fields from Payment Method
+    if (isset($this->name) && !empty($this->name)) {
+      $config = "crud-fields." . ucfirst($data['name']) . ".formFields";
+
+        if (isset($this->parent_name) && !empty($this->parent_name))
+          $config = "crud-fields." . ucfirst($data['parentName']) . ".formFields";
+
+        $fieldsController = new FieldsApiController();
+        $data['crudFields'] = $fieldsController->validateResponseApi($fieldsController->index(new Request([
+            'filter' => json_encode(['configFieldName' => $config])
+        ])));
+    }
+
 
     switch($this->name){
 
