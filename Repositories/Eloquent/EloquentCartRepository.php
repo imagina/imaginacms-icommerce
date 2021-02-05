@@ -133,7 +133,7 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     //Search by userñ
     if (isset($data['user_id'])) {
       $userCart = $this->model->where('user_id', $data['user_id'])
-        ->where('store_id', $data['store_id'])
+        ->where('store_id', $data['store_id'] ?? null)
         ->where('status', 1)->first();
     }
     
@@ -159,7 +159,7 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     //Search cart by user
     $userCart = !$data['user_id'] ? false :
       $this->model->where('user_id', $data['user_id'])
-        ->where('store_id', $data['store_id'])
+        ->where('store_id', $data['store_id'] ?? null)
         ->where('status', 1)->first();
     
     //Validate cart

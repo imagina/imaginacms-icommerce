@@ -12,7 +12,7 @@
         :@{{product.heigth}}</p>
 
 </div>
--->
+
 
 <div v-if="product.productOptions.length && product.optionValues.length"
      v-for="(option,index) in product.productOptions">
@@ -23,7 +23,7 @@
         </p>
     </div>
 </div>
-
+-->
 
 <div class="description" v-html="product.description">
     <h3>DESCRIPCION:</h3><p>@{{ product.description }}</p>
@@ -37,7 +37,7 @@
     
     <p class="icommerce-option" v-if="product.pdf">
         
-        <a  v-bind:href="product.pdf" target="_blank" class="d-block icommerce-pdf">
+        <a v-bind:href="product.pdf" target="_blank" class="d-block icommerce-pdf">
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
             <span>{{trans('icommerce::products.messages.product_brochure')}}</span>
         </a>

@@ -41,7 +41,7 @@
     </a>
   @else
     <a href="{{ URL::to('/contacto') }}" class="cart text-primary cursor-pointer">
-      Contacta con nosotros
+      {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
     </a>
   @endif
   

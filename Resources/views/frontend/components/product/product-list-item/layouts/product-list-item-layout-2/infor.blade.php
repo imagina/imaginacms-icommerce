@@ -33,7 +33,7 @@
             </a>
           @else
             <a href="/contacto" class="btn btn-warning px-4 text-white cursor-pointer">
-              <i class="fa fa-envelope"></i> CONTÁCTANOS
+              <i class="fa fa-envelope"></i> {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
             </a>
           @endif
         </div>

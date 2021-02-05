@@ -25,7 +25,7 @@
      @else
       <div class="col">
         <a href="{{ URL::to('/contacto') }}" class="btn btn-warning px-4 text-white cursor-pointer">
-          Contacta con nosotros
+          {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
         </a>
       </div>
      @endif
