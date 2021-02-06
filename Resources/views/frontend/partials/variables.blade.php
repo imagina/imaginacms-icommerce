@@ -1,4 +1,5 @@
 @section('scripts-owl')
+    @parent
     @php
         $currency=localesymbol(isset($code ) ? $code : 'USD');
     @endphp
@@ -14,6 +15,5 @@
             url:"{{url('/')}}"
         };
     </script>
-    @parent
 
 @stop
