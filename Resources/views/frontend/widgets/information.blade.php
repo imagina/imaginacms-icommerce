@@ -118,7 +118,7 @@
     <div class="row">
       <div class="col my-2 my-md-0">
         <div>
-          <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">CONSULTAR</a>
+          <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">{{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}</a>
     
           <!-- BUTTON WISHLIST -->
           <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist"

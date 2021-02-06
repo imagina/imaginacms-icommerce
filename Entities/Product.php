@@ -275,15 +275,6 @@ class Product extends Model implements TaggableInterface
 		// return one Discount
 		return $this->hasOne(ProductDiscount::class)
 
-			//where the discount belongs to the user department's
-			//or where the department of the discount is Null - for all Users
-			->where(function ($query) use ($userId) {
-				$query->whereIn('icommerce__product_discounts.department_id', function ($query) use ($userId) {
-					$query->select("department_id")
-						->from('iprofile__user_department')
-						->where('user_id', $userId);
-				})->orWhereNull('department_id');
-			})
 
 			//where the discount not belongs to the exclude departments
 			//or where the exclude departments of the discount is Null - for all Users
@@ -293,6 +284,10 @@ class Product extends Model implements TaggableInterface
 				}
 				$query->orWhere('exclude_departments', "[]");
 				$query->orWhereNull('exclude_departments');
+
+				if(empty($departments)){
+          $query->orWhereRaw("(0 in (REPLACE(REPLACE(REPLACE(include_departments, '\"', ''), '[', ''), ']', '')))");
+        }
 			})
 
 
@@ -420,7 +415,7 @@ class Product extends Model implements TaggableInterface
 	public function getPriceAttribute($value)
 	{
 		$price = $value;
-		$auth = $this->auth_user;
+		$auth = $this->auth;
 
 		$priceList = is_module_enabled('Icommercepricelist');
 		$setting = json_decode(request()->get('setting'));

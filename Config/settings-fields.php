@@ -67,12 +67,25 @@ return [
       'rows' => 3  
     ],
   ],
+  
+  'customIndexContactLabel' => [
+    'name' => 'icommerce::customIndexContactLabel',
+    'value' => 'Contáctenos',
+    'group' => 'icommerce::common.pages.index',
+    'type' => 'input',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.customIndexContactLabel',
+      'type' => 'text',
+    ],
+  ],
 
   'carouselIndexCategory' => [
     'value' => 'carousel-category-active',
     'name' => 'icommerce::carouselIndexCategory',
     'group' => 'icommerce::common.pages.index',
     'type' => 'select',
+    'columns' => 'col-6',
     'props' => [
       'label' => 'Imagenes para el Carousel Top',
       'useInput' => false,

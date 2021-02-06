@@ -92,6 +92,7 @@ return [
     'customIndexDescription' => 'Descripción Página Index',
     'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
     'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
+    'customIndexContactLabel' => 'Título para el Botón de Contacto',
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',

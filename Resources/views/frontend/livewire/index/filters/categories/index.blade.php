@@ -31,3 +31,9 @@
 
 </div>
 @endif
+
+@section('scripts-owl')
+  <script>
+  
+  </script>
+  @stop
