@@ -6,7 +6,7 @@
   
   .dropdown-menu{
     max-height: 380px;
-    overflow-y: scroll;
+    overflow-y: auto;
     &::-webkit-scrollbar{
       width: 10px;
       background-color: #F5F5F5;
