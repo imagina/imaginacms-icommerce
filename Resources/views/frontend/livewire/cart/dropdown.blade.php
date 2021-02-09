@@ -24,13 +24,14 @@
         
             <!-- imagen -->
             <div class="col-3 px-0 mb-3">
-              <a href="{{$cartProduct->product->url}}">
-                <div
-                  class="img_product_carting mr-3 border"
-                  style="height: 80px; width: 100%;background-size: contain;  background-repeat: no-repeat;  background-position: center; background-image: url('{{$cartProduct->product->mediaFiles()->mainimage->smallThumb}}'); cursor: pointer;"
-                  >
-                </div>
-              </a>
+              <div class="img-product-cart">
+                <x-media::single-image 
+                  :alt="$cartProduct->product->name" 
+                  :title="$cartProduct->product->name" 
+                  :url="$cartProduct->product->url" 
+                  :isMedia="true"
+                  :mediaFiles="$cartProduct->product->mediaFiles()"/>
+              </div>
             </div>
 
             <!-- descripción -->
