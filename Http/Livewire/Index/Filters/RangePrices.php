@@ -17,7 +17,7 @@ class RangePrices extends Component
 	
 	public $show;
 	
-	protected $listeners = ['productListRendered','updateRange'];
+	protected $listeners = ['itemListRendered','updateRange'];
 
 	/*
     * Runs once, immediately after the component is instantiated, 
@@ -64,10 +64,10 @@ class RangePrices extends Component
   	}
 
 	/*
-    * Listener - Product List Rendered 
+    * Listener - Item List Rendered 
     *
     */
-	public function productListRendered($params){
+	public function itemListRendered($params){
 
 		// Testing
 		//\Log::info("Filter Range Params: ".json_encode($params));

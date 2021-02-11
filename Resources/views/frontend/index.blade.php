@@ -75,10 +75,15 @@
             @include('icommerce::frontend.partials.children-categories-index-section',["category" => $category ?? null])
           @endif
 
-          <livewire:icommerce::product-list
-            :category="$category ?? null" 
-            :manufacturer="$manufacturer ?? null" />
-
+          <livewire:isite::item-list 
+            moduleName="Icommerce"
+            itemComponentName="product-list-item" 
+            entityName="Product"
+            :params="[
+            'filter' => ['category' => $category->id ?? null, 'manufacturer' => $manufacturer->id ?? null],
+            'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
+            'take' => setting('icommerce::product-per-page',null,12)]"/>
+         
           <hr>
         
         </div>

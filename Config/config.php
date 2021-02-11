@@ -229,6 +229,9 @@ return [
     ]
   ],
 
+  /*Top Content - Index */
+  'showTopContentIndex' => true,
+
   /*Custom Includes Before Filters*/
   'customIncludesBeforeFilters' => [
     /*

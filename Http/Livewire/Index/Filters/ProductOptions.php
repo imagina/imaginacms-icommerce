@@ -11,7 +11,7 @@ class ProductOptions extends Component
 	protected $productOptions;
     public $selectedOptionValues;
     
-	protected $listeners = ['productListRendered'];
+	protected $listeners = ['itemListRendered'];
 
 
 		public function mount(){
@@ -43,7 +43,7 @@ class ProductOptions extends Component
     * Listener - Product List Rendered 
     *
     */
-	public function productListRendered($params){
+	public function itemListRendered($params){
 
 		$this->selectedOptionValues = $params["filter"]["optionValues"] ?? [];
 

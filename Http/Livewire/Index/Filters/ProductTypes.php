@@ -13,7 +13,7 @@ class ProductTypes extends Component
     public $isExpanded;
     public $show;
 
-    protected $listeners = ['productListRendered'];
+    protected $listeners = ['itemListRendered'];
 
     public function mount(){
 
@@ -51,7 +51,7 @@ class ProductTypes extends Component
     * Listener - Product List Rendered 
     *
     */
-    public function productListRendered($params){
+    public function itemListRendered($params){
 
 
         $resultShowFilter = $this->getProductRepository()->getProductTypes(json_decode(json_encode($params)));
