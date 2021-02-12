@@ -220,4 +220,24 @@ return [
       'label' => 'icommerce::common.settings.product.minimumQuantityToNotify'
     ],
   ],
+  'filterCategoriesStyle' => [
+    'value' => '',
+    'name' => 'icommerce::filterCategoriesStyle',
+    'group' => 'icommerce::common.filters.categories.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'Estilo Filtro Categorías',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Default','value' => ''],
+        ['label' => 'Style TTYS','value' => 'filter-categories-style-1'],
+        ['label' => 'Style ALNAT','value' => 'filter-categories-style-2'],
+      ]
+    ]
+  ],
 ];

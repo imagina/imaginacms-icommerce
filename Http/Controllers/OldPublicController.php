@@ -107,8 +107,11 @@ class OldPublicController extends BasePublicController
     $product = $this->product->getItem($slug,$params);
     
     if($product){
+  
       $category= $product->category;
-      return view($tpl, compact('product','category'));
+      $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+  
+      return view($tpl, compact('product','category','categoryBreadcrumb'));
       
     }else{
       return response()->view('errors.404', [], 404);

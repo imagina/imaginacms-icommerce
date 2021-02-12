@@ -193,7 +193,7 @@
       },
       data: {
         //Vars
-        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : (object)[] !!},
+        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : null !!},
         currency: {!! isset($currency->id) ? json_encode($currency) : null !!},
         payments: [],
         shippingMethods: [],
@@ -202,8 +202,7 @@
         customerRegisterToggle: true,
         form: {
           selectedBillingAddress: null,
-          selectedShippingAddress: null,
-
+          selectedShippingAddress: null
         },
         loadingCart: false,
         paymentSelected: "",

@@ -76,7 +76,7 @@ class ProductList extends Component
 	    $this->dataRequest = $request->all();
 	    $this->firstRequest = true;
 
-	    $this->emitProductListRendered = false	;
+	    $this->emitProductListRendered = false;
 
         $this->fill(request()->only('search', 'filters','page','orderBy'));
 

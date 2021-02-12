@@ -52,6 +52,7 @@ return [
     'unpublished' => 'En espera',
   ],
   'status_text' => 'Estado',
+  'download' => 'Descargar',
   'image' => 'Imágen',
   'categories' => 'Categorías',
   'title' => 'Título',
