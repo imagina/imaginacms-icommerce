@@ -18,9 +18,7 @@
 		@endif
 	@endforeach
 
-	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
-	
-	
+
 	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
 	
 	{{--
@@ -28,7 +26,7 @@
 	--}}
 	@if($children->isNotEmpty())
 		<div class="link-desktop d-none d-md-block {{$isSelected && $children ? 'font-weight-bold' : ''}}">
-			<a href="{{$category->url}}" class="text-href ">
+			<a href="{{$newUrl}}" class="text-href ">
 				@php($mediaFiles = $category->mediaFiles())
 				@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
 					<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
@@ -51,7 +49,7 @@
 				@endif
 				{{$category->title}}
 			</a>
-			<a href="{{$category->url}}" class="icon-href float-right">
+			<a href="{{$newUrl}}" class="icon-href float-right">
 				<i class="fa fa-external-link"></i>
 			</a>
 		</div>
@@ -64,7 +62,7 @@
 		</div>
 	@else
 	
-		<a href="{{$category->url}}" class="link-childless d-block {{$isSelected && $children->isEmpty() ? 'font-weight-bold' : ''}}"> {{$category->title}} </a>
+		<a href="{{$newUrl}}" class="link-childless d-block {{$isSelected && $children->isEmpty() ? 'font-weight-bold' : ''}}"> {{$category->title}} </a>
 
 	@endif
 
