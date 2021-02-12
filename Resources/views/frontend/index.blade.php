@@ -79,7 +79,7 @@
             moduleName="Icommerce"
             itemComponentName="product-list-item" 
             entityName="Product"
-            :params="[
+            :moduleParams="[
             'filter' => ['category' => $category->id ?? null, 'manufacturer' => $manufacturer->id ?? null],
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
             'take' => setting('icommerce::product-per-page',null,12)]"/>
