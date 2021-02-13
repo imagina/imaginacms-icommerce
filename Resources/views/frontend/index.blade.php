@@ -79,7 +79,8 @@
             moduleName="Icommerce"
             itemComponentName="product-list-item" 
             entityName="Product"
-            :moduleParams="[
+            :responsive="['top-content' => ['mobil' => true, 'desktop' => true ]]"
+            :params="[
             'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
             'take' => setting('icommerce::product-per-page',null,12)]"/>
