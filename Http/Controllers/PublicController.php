@@ -241,7 +241,12 @@ class PublicController extends BaseApiController
     }
     $currency = Currency::where("default_currency",1)->first();
     
-    return view($tpl,["cart" => new CartTransformer($cart),"currency" => $currency]);
+    if(setting("icommerce::customCheckoutTitle")){
+      $title = setting("icommerce::customCheckoutTitle");
+    }else{
+      $title =  trans('icommerce::checkout.title');
+    }
+    return view($tpl,["cart" => new CartTransformer($cart),"currency" => $currency, "title" => $title]);
   }
   
   public function wishlist()

@@ -19,7 +19,9 @@ return [
   'form' => [
   ],
   'pages' => [
-    'index' => 'Página Principal'
+    'index' => 'Página Principal',
+    'checkout' => 'Página Checkout',
+    
   ],
   'filters' => [
     'title' => 'Filtrar',
@@ -95,6 +97,7 @@ return [
     'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
     'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
     'customIndexContactLabel' => 'Título para el Botón de Contacto',
+    'customCheckoutTitle' => 'Título para el Checkout',
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',

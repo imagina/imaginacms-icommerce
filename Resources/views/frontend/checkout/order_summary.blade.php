@@ -189,7 +189,6 @@
                     <i class="fa fa-spinner fa-pulse"></i>
                 </div>
                 </button>
-s
             </div>
         </div>
     </div>

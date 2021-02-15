@@ -8,8 +8,9 @@
   <div id="checkout" class="page checkout">
 
     <x-isite::breadcrumb>
-      <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{$title }}</li>
     </x-isite::breadcrumb>
+
 
 
 
@@ -17,14 +18,14 @@
       <div class="row">
         <div class="col">
           <div class="text-title text-center mb-5">
-            <h1 class="title">{{ trans('icommerce::checkout.title') }}</h1>
+            <h1 class="title">{{ $title }}</h1>
           </div>
         </div>
       </div>
 
     </div>
 
-    <div v-if="loadingCart" id="content_preloader">
+    <div v-if="loadingCart || !quantity" id="content_preloader">
       <div id="preloader"></div>
     </div>
     <!-- ======== @Region: #content ======== -->

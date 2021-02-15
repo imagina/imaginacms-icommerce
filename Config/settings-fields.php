@@ -240,4 +240,16 @@ return [
       ]
     ]
   ],
+  'customCheckoutTitle' => [
+    'name' => 'icommerce::customCheckoutTitle',
+    'value' => '',
+    'group' => 'icommerce::common.pages.checkout',
+    'type' => 'input',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.customCheckoutTitle',
+      'type' => 'text',
+    ],
+  ],
+
 ];
