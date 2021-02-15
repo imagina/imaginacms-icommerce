@@ -23,10 +23,16 @@ class ProductOptions extends Component
     */
     public function updatedSelectedOptionValues(){
 
-
+        $this->emit('getData',[
+            'filters' => [
+                'optionValues' => array_values($this->selectedOptionValues)
+            ]
+        ]);
+        /*
         $this->emit('updateFilter',[
             'optionValues' => array_values($this->selectedOptionValues)
         ]);
+        */
     
     }
 

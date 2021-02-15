@@ -46,12 +46,22 @@ class RangePrices extends Component
 	  	//\Log::info("Sel Price Min: ".$this->selPriceMin);
 	  	//\Log::info("Sel Price Max: ".$this->selPriceMax);
 
+	    $this->emit('getData',[
+	    	'filters' => [
+		      'priceRange' => [
+		        'from' => $this->selPriceMin,
+		        'to' => $this->selPriceMax
+		      ]
+		    ]
+	    ]);
+	    /*
 	    $this->emit('updateFilter',[
 	      'priceRange' => [
 	        'from' => $this->selPriceMin,
 	        'to' => $this->selPriceMax
 	      ]
 	    ]);
+	    */
 
   	}
   

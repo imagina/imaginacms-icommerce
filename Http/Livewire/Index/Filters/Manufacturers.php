@@ -23,10 +23,16 @@ class Manufacturers extends Component
     */
     public function updatedSelectedManufacturers(){
 	
-
+        $this->emit('getData',[
+            'filters' => [
+                'manufacturers' => array_values($this->selectedManufacturers)
+            ]
+        ]);
+        /*
         $this->emit('updateFilter',[
           'manufacturers' => array_values($this->selectedManufacturers)
         ]);
+        */
 
     }
 

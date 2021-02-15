@@ -32,9 +32,16 @@ class ProductTypes extends Component
 
         //\Log::info("Selected Type: ".json_encode($this->selectedType));
 
+         $this->emit('getData',[
+            'filters' => [
+                'isCall' => (boolean)$this->selectedType
+            ]
+        ]);
+        /*
         $this->emit('updateFilter',[
           'isCall' => (boolean)$this->selectedType
         ]);
+        */
        
         $this->isExpanded = true;
     }
