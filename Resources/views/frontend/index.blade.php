@@ -77,7 +77,7 @@
 
           <livewire:isite::item-list 
             moduleName="Icommerce"
-            itemComponentName="product-list-item" 
+            itemComponentName="icommerce::product-list-item" 
             entityName="Product"
             :params="[
             'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
