@@ -253,19 +253,56 @@ return [
       'mode' => 'allTree',
       'status' => true,
       'isExpanded' => true,
-    ],
+      'type' => 'tree',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => null,
+      'repoAction' => null,
+      'repoAttribute' => null,
+      'listener' => null,
+      'getDataRepo' => null,
+      'layout' => null,
+      'classes' => 'col-xs-12'
+     ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
-      'status' => true
+      'status' => true,
+      'isExpanded' => true,
+      'type' => 'range',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'getData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'priceRange',
+      'listener' => 'itemListRendered',
+      'getDataRepo' => 'getPriceRange',
+      'layout' => 'slider',
+      'classes' => 'col-xs-12'
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
       'status' => true,
       'isExpanded' => false,
+      'type' => 'checkbox',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'getData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'manufacturers',
+      'listener' => 'itemListRendered',
+      'getDataRepo' => 'getManufacturers',
+      'layout' => 'default',
+      'classes' => 'col-xs-12'
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
-      'status' => true
+      'status' => true,
+      'type' => 'checkbox',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'getData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'optionValues',
+      'listener' => 'itemListRendered',
+      'getDataRepo' => 'getProductOptions',
+      'layout' => 'default',
+      'classes' => 'col-xs-12'
     ],
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
@@ -282,7 +319,16 @@ return [
           'value' => 1,
           'status' => true
         ],
-      ]
+      ],
+      'type' => 'radio',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'getData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'isCall',
+      'listener' => 'itemListRendered',
+      'getDataRepo' => 'getProductTypes',
+      'layout' => 'default',
+      'classes' => 'col-xs-12'
     ]
   ],
 
