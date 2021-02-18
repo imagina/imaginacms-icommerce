@@ -40,8 +40,13 @@
           @endif
           
           {{-- Filters --}}
+          {{--
           @include('icommerce::frontend.index.filters',[
             "categoryBreadcrumb" => $categoryBreadcrumb])
+          --}}
+
+          <livewire:isite::filters :filters="config('asgard.icommerce.config.filters')"/>
+          
 
           {{-- Extra Widgets --}}
           @if(config("asgard.icommerce.config.widgets"))
