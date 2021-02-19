@@ -274,7 +274,7 @@ return [
       'repoAttribute' => 'priceRange',
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getPriceRange',
-      'layout' => 'slider',
+      'layout' => 'range-layout-1',
       'classes' => 'col-xs-12',
       'step' => 10000
     ],
@@ -289,7 +289,7 @@ return [
       'repoAttribute' => 'manufacturers',
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getManufacturers',
-      'layout' => 'default',
+      'layout' => 'checkbox-layout-1',
       'classes' => 'col-xs-12'
     ],
     'product-options' => [
@@ -328,7 +328,7 @@ return [
       'repoAttribute' => 'isCall',
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getProductTypes',
-      'layout' => 'default',
+      'layout' => 'radio-layout-1',
       'classes' => 'col-xs-12'
     ]
   ],
