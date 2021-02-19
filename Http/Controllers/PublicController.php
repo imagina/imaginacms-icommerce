@@ -143,6 +143,27 @@ class PublicController extends BaseApiController
     //$dataRequest = $request->all();
 
     return view($tpl, compact('manufacturer','categoryBreadcrumb','carouselImages'));
+  }  // view products by category
+  
+  public function indexOffers(Request $request)
+  {
+    $argv = explode("/",$request->path());
+
+  
+    $tpl = 'icommerce::frontend.index';
+    $ttpl = 'icommerce.index';
+    
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    
+    $withDiscount = false;
+    
+    if($slug && $slug != trans('icommerce::routes.store.index')){
+  
+      $withDiscount = true;
+      
+    }
+
+    return view($tpl, compact('withDiscount'));
   }
 
   // view products by category
@@ -231,7 +252,9 @@ class PublicController extends BaseApiController
   
   public function checkout()
   {
-    $tpl = 'icommerce::frontend.checkout.index';
+    $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
+    
+    $tpl = "icommerce::frontend.checkout.layouts.$layout.index";
     $ttpl = 'icommerce.checkout.index';
     if (view()->exists($ttpl)) $tpl = $ttpl;
   

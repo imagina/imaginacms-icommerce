@@ -4,11 +4,11 @@ use Illuminate\Routing\Router;
 
 
 $locale = LaravelLocalization::setLocale() ?: App::getLocale();
-
+$customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
 
   /** @var Router $router */
   Route::group(['prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localize']], function (Router $router) use ($locale) {
+    'middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
     
     $router->get(trans('icommerce::routes.store.index.index'), [
       'as' => $locale . '.icommerce.store.index',
@@ -23,6 +23,11 @@ $locale = LaravelLocalization::setLocale() ?: App::getLocale();
     $router->get(trans('icommerce::routes.store.index.manufacturer'), [
       'as' => $locale . '.icommerce.store.index.manufacturer',
       'uses' => 'PublicController@indexManufacturer',
+    ]);
+    
+    $router->get(trans('icommerce::routes.store.index.offers'), [
+      'as' => $locale . '.icommerce.store.index.offers',
+      'uses' => 'PublicController@indexOffers',
     ]);
     
     
@@ -79,7 +84,8 @@ if(config('asgard.icommerce.config.useOldRoutes')){
         continue;
       }
       /** @var Router $router */
-      $router->group(['prefix' => $category->slug], function (Router $router) use ($locale, $category) {
+      $router->group(['prefix' => $category->slug,
+        'middleware' => $customMiddlewares], function (Router $router) use ($locale, $category) {
         
         $router->get('/', [
           'as' => $locale . '.icommerce.category.' . $category->slug,
