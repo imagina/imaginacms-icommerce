@@ -275,7 +275,8 @@ return [
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getPriceRange',
       'layout' => 'slider',
-      'classes' => 'col-xs-12'
+      'classes' => 'col-xs-12',
+      'step' => 10000
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
@@ -301,7 +302,7 @@ return [
       'repoAttribute' => 'optionValues',
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getProductOptions',
-      'layout' => 'default',
+      'layout' => 'icommerce::frontend.livewire.index.filters.product-options.index',
       'classes' => 'col-xs-12'
     ],
     'product-types' => [
