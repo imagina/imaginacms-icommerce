@@ -261,7 +261,7 @@ return [
       'listener' => null,
       'getDataRepo' => null,
       'layout' => null,
-      'classes' => 'col-xs-12'
+      'classes' => 'col-12'
      ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
@@ -275,7 +275,7 @@ return [
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getPriceRange',
       'layout' => 'range-layout-1',
-      'classes' => 'col-xs-12',
+      'classes' => 'col-12',
       'step' => 10000
     ],
     'manufacturers' => [
@@ -290,7 +290,7 @@ return [
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getManufacturers',
       'layout' => 'checkbox-layout-1',
-      'classes' => 'col-xs-12'
+      'classes' => 'col-12'
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
@@ -303,7 +303,7 @@ return [
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getProductOptions',
       'layout' => 'icommerce::frontend.livewire.index.filters.product-options.index',
-      'classes' => 'col-xs-12'
+      'classes' => 'col-12'
     ],
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
@@ -329,7 +329,7 @@ return [
       'listener' => 'itemListRendered',
       'getDataRepo' => 'getProductTypes',
       'layout' => 'radio-layout-1',
-      'classes' => 'col-xs-12'
+      'classes' => 'col-12'
     ]
   ],
 
