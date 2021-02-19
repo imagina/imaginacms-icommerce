@@ -251,5 +251,23 @@ return [
       'type' => 'text',
     ],
   ],
-
+  'checkoutLayout' => [
+    'value' => 'one-page-checkout',
+    'name' => 'icommerce::checkoutLayout',
+    'group' => 'icommerce::common.pages.checkout',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'Layout del Checkout',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'One Page Checkout','value' => 'one-page-checkout'],
+        ['label' => 'Tabs Checkout','value' => 'tabs-checkout'],
+      ]
+    ]
+  ],
 ];

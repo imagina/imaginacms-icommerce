@@ -4,10 +4,25 @@ return [
   'name' => 'Icommerce',
   'frontendModuleName' => 'qcommerce',
   
-  //default layout in the notification module
+  /*
+   |--------------------------------------------------------------------------
+   | Default layout for the notification module
+   |--------------------------------------------------------------------------
+   */
   'defaultEmailLayout' => 'notification::emails.layouts.default',
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Default content layout in the notification module
+   |--------------------------------------------------------------------------
+   */
   'defaultEmailContent' => 'notification::emails.contents.default',
   
+  /*
+   |--------------------------------------------------------------------------
+   | Order Statuses to seed in the order status table
+   |--------------------------------------------------------------------------
+   */
   'orderStatuses' => [
     '1' => [
       'id' => 1,
@@ -66,11 +81,26 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Define routes to sites with old routes
+   |--------------------------------------------------------------------------
+   */
   'useOldRoutes' => false,
-
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Define the default product rating
+   |--------------------------------------------------------------------------
+   */
   'defaultProductRating' => 5,
-
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Define the different item types to the products
+   |--------------------------------------------------------------------------
+   */
   'itemTypes' => [
     '1' => [
       'id' => 1,
@@ -85,21 +115,38 @@ return [
       'title' => 'icommerce::itemtypes.types.other',
     ],
   ],
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Define format money to the product price frontend
+   |--------------------------------------------------------------------------
+   */
   'formatmoney' => [
     'decimals' => 0,
     'dec_point' => '',
     'housands_sep' => '.'
   ],
-  //add: custom product includes (if they are empty icommerce module will be using default includes) (slim)
+  
+  /*
+   |--------------------------------------------------------------------------
+   | add: custom product includes
+   | (if they are empty icommerce module will be using default includes) (slim)
+   |--------------------------------------------------------------------------
+   */
   'includes' => [
-    'ProductTransformer'=>[
-      'priceLists'=>[
-        'path'=>'Modules\Icommercepricelist\Transformers\PriceListTransformer', //this is the transformer path
-        'multiple'=> true, //if is one-to-many, multiple must be set to true
+    'ProductTransformer' => [
+      'priceLists' => [
+        'path' => 'Modules\Icommercepricelist\Transformers\PriceListTransformer', //this is the transformer path
+        'multiple' => true, //if is one-to-many, multiple must be set to true
       ],
     ]
   ],
-  //add: product relations like users relations style
+  
+  /*
+   |--------------------------------------------------------------------------
+   | add: product relations like users relations style
+   |--------------------------------------------------------------------------
+   */
   'relations' => [
     /*
     'product'=>[
@@ -110,8 +157,12 @@ return [
       },
     ]*/
   ],
-
-  //end custom includes and transformers
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Define config to the mediaFillable trait for each entity
+   |--------------------------------------------------------------------------
+   */
   "mediaFillable" => [
     'category' => [
       'mainimage' => 'single',
@@ -148,17 +199,13 @@ return [
       'quaternaryimage' => 'single',
     ]
   ],
-
-  /**
-   *
-   *
-   * Configs of the Index view
-   *
-   *
+  
+    /*
+   |--------------------------------------------------------------------------
+   | Define config to the orderBy in the index page
+   |--------------------------------------------------------------------------
    */
-
-  /* Order By - Index */
-  'orderBy' =>[
+  'orderBy' => [
     'default' => 'recently',
     'options' => [
       'nameaz' => [
@@ -203,8 +250,12 @@ return [
       ]
     ],
   ],
-
-  /*Layout Products - Index */
+  
+   /*
+   |--------------------------------------------------------------------------
+   | Layout Products - Index
+   |--------------------------------------------------------------------------
+   */
   'layoutIndex' => [
     'default' => 'four',
     'options' => [
@@ -228,8 +279,12 @@ return [
       ],
     ]
   ],
-
-  /*Custom Includes Before Filters*/
+  
+  /*
+  |--------------------------------------------------------------------------
+  | Custom Includes Before Filters
+  |--------------------------------------------------------------------------
+  */
   'customIncludesBeforeFilters' => [
     /*
     'manufacturerCard' => [
@@ -238,9 +293,13 @@ return [
     ]
     */
   ],
-
-  /*Filters*/
-  'filters'=>[
+  
+  /*
+  |--------------------------------------------------------------------------
+  | Filters to the index page
+  |--------------------------------------------------------------------------
+  */
+  'filters' => [
     'categories' => [
       'title' => 'icommerce::categories.plural',
       /*
@@ -284,8 +343,13 @@ return [
       ]
     ]
   ],
-
-  /*Widgets Components*/
+  
+  
+  /*
+  |--------------------------------------------------------------------------
+  | Widgets Components
+  |--------------------------------------------------------------------------
+  */
   'widgets' => [
     "carousel-vertical" => [
       "component" => "icommerce::widgets.carousel-vertical",
@@ -296,49 +360,63 @@ return [
       "props" => [
         'itemsBySlide' => 3,
         'params' => ['filter' => ['featured' => true]],
-        'responsive' => [0 => ['items' =>  1],640 => ['items' => 1],992 => ['items' => 1]]
+        'responsive' => [0 => ['items' => 1], 640 => ['items' => 1], 992 => ['items' => 1]]
       ]
     ]
   ],
-
-  /*Extra Footer Partials*/
+  
+  /*
+  |--------------------------------------------------------------------------
+  | Extra Footer Partials
+  |--------------------------------------------------------------------------
+  */
   'extraFooter' => [
     'carouselBestSellers' => [
-        'status' => false,
-        'id' => "extraBestSellers",
-        'title' => 'Lo que necesitas aqui',
-        'subTitle' => 'Los Más Vendidos',
-        'props' => [
-          'params' => ['filter' => ['featured' => true]],
-          'responsive' => [0 => ['items' =>  1],640 => ['items' => 2],992 => ['items' => 4]]
-        ]
+      'status' => false,
+      'id' => "extraBestSellers",
+      'title' => 'Lo que necesitas aqui',
+      'subTitle' => 'Los Más Vendidos',
+      'props' => [
+        'params' => ['filter' => ['featured' => true]],
+        'responsive' => [0 => ['items' => 1], 640 => ['items' => 2], 992 => ['items' => 4]]
+      ]
     ]
   ],
-
-  /**
-   * @note routeName param must be set without locale. Ex: (icommerce orders: 'icommerce.store.order.index')
-   * use **onlyShowInTheDropdownHeader** (boolean) if you want the link only appear in the dropdown in the header
-   * use **onlyShowInTheMenuOfTheIndexProfilePage** (boolean) if you want the link only appear in the dropdown in the header
-   */
-  "userMenuLinks" => [
-      [
-          "title" => "icommerce::orders.title.orders",
-          "routeName" => "icommerce.store.order.index",
-          "icon" => "fa fa-bars",
-        
-      ],
-      [
-          "title" => "icommerce::wishlists.title.wishlists",
-          "routeName" => "icommerce.store.wishlists.index",
-          "icon" => "fa fa-heart",
-      ]
-  ],
-
-
-  'notifiable' => [
-    
-    [ // Order Entity
   
+  /*
+  |--------------------------------------------------------------------------
+  | Define the options to the user menu component
+  |
+  | @note routeName param must be set without locale. Ex: (icommerce orders: 'icommerce.store.order.index')
+  | use **onlyShowInTheDropdownHeader** (boolean) if you want the link only appear in the dropdown in the header
+  | use **onlyShowInTheMenuOfTheIndexProfilePage** (boolean) if you want the link only appear in the dropdown in the header
+  | use **showInMenuWithoutSession** (boolean) if you want the link only appear in the dropdown when don't exist session
+  | use **dispatchModal** (string - modalAlias) if you want the link only appear in the dropdown when don't exist session
+  | use **url** (string) if you want customize the link
+  |--------------------------------------------------------------------------
+  */
+  "userMenuLinks" => [
+    [
+      "title" => "icommerce::orders.title.orders",
+      "routeName" => "icommerce.store.order.index",
+      "icon" => "fa fa-bars",
+    
+    ],
+    [
+      "title" => "icommerce::wishlists.title.wishlists",
+      "routeName" => "icommerce.store.wishlists.index",
+      "icon" => "fa fa-heart",
+    ]
+  ],
+  
+  /*
+  |--------------------------------------------------------------------------
+  | Define Notifiable config to conect to the notification  Module
+  |--------------------------------------------------------------------------
+  */
+  'notifiable' => [
+    [ // Order Entity
+      
       'title' => 'Order',
       'entityName' => 'Modules\\Icommerce\\Entities\\Order',
       'events' => [
@@ -348,7 +426,7 @@ return [
         ]
       ],
       "conditions" => [
-  
+      
       ],
       "settings" => [
         "email" => [
@@ -357,8 +435,14 @@ return [
         ],
       ],
     ]
-    
-    ]
-   
   
+  ],
+  
+  /*
+    |--------------------------------------------------------------------------
+    | Define custom middlewares to apply to the all frontend rotes
+    |--------------------------------------------------------------------------
+    | example: 'logged.in' , 'auth.basic', 'throttle'
+    */
+  'middlewares' => []
 ];
