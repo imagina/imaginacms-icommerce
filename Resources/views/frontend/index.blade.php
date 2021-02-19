@@ -80,7 +80,7 @@
             @include('icommerce::frontend.partials.children-categories-index-section',["category" => $category ?? null])
           @endif
 
-          <livewire:isite::item-list 
+          <livewire:isite::items-list 
             moduleName="Icommerce"
             itemComponentName="icommerce::product-list-item" 
             entityName="Product"
