@@ -48,19 +48,19 @@
           <div class="row">
 
             <div class="col-12 col-md-6 col-lg-4">
-              @includeFirst(['icommerce.checkout.customer','icommerce::frontend.checkout.customer'])
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.customer')
 
             </div>
             <div class="col-12 col-md-6 col-lg-4">
-              @includeFirst(['icommerce.checkout.billing_details','icommerce::frontend.checkout.billing_details'])
-              @includeFirst(['icommerce.checkout.delivery_details','icommerce::frontend.checkout.delivery_details'])
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.billing_details')
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.delivery_details')
 
             </div>
             <div class="col-12 col-md-12 col-lg-4">
 
-              @includeFirst(['icommerce.checkout.shipping_methods','icommerce::frontend.checkout.shipping_methods'])
-              @includeFirst(['icommerce.checkout.payment','icommerce::frontend.checkout.payment'])
-              @includeFirst(['icommerce.checkout.order_summary','icommerce::frontend.checkout.order_summary'])
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.shipping_methods')
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.payment')
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.order_summary')
 
             </div>
 
