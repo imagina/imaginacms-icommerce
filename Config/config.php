@@ -440,7 +440,7 @@ return [
   
   /*
     |--------------------------------------------------------------------------
-    | Define custom middlewares to apply to the all frontend rotes
+    | Define custom middlewares to apply to the all frontend routes
     |--------------------------------------------------------------------------
     | example: 'logged.in' , 'auth.basic', 'throttle'
     */

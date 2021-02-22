@@ -2,7 +2,7 @@
   @php($discount = $product->discount ?? null)
   @include('icommerce::frontend.components.product.meta')
   
-  
+
   
   @if(isset($productListLayout) && $productListLayout=='one')
     <div class="row product-list-layout-one">
