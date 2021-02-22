@@ -110,6 +110,11 @@ class PublicController extends BaseApiController
   
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
+  
+    //Remove manufacturer filters of this index, its not necessary
+    $configFilters = config("asgard.icommerce.config.filters");
+    unset($configFilters["manufacturers"]);
+    config(["asgard.icommerce.config.filters" => $configFilters]);
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
   
