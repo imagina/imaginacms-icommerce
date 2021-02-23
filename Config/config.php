@@ -288,7 +288,7 @@ return [
       'repoAction' => 'filter',
       'repoAttribute' => 'priceRange',
       'listener' => 'itemListRendered',
-      'getDataRepo' => 'getPriceRange',
+      'repoMethod' => 'getPriceRange',
       'layout' => 'range-layout-1',
       'classes' => 'col-12',
       'step' => 10000
@@ -304,7 +304,7 @@ return [
       'repoAction' => 'filter',
       'repoAttribute' => 'manufacturers',
       'listener' => 'itemListRendered',
-      'getDataRepo' => 'getManufacturers',
+      'repoMethod' => 'getManufacturers',
       'layout' => 'checkbox-layout-1',
       'classes' => 'col-12'
     ],
@@ -318,7 +318,7 @@ return [
       'repoAction' => 'filter',
       'repoAttribute' => 'optionValues',
       'listener' => 'itemListRendered',
-      'getDataRepo' => 'getProductOptions',
+      'repoMethod' => 'getProductOptions',
       'layout' => 'icommerce::frontend.livewire.index.filters.product-options.index',
       'classes' => 'col-12'
     ],
@@ -345,7 +345,7 @@ return [
       'repoAction' => 'filter',
       'repoAttribute' => 'isCall',
       'listener' => 'itemListRendered',
-      'getDataRepo' => 'getProductTypes',
+      'repoMethod' => 'getProductTypes',
       'layout' => 'radio-layout-1',
       'classes' => 'col-12'
     ]
