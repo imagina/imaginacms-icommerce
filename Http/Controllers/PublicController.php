@@ -89,8 +89,13 @@ class PublicController extends BaseApiController
 
         // Carousel Right over ProductList with settings to images categories
         $gallery = $this->getGalleryCategory($category);
-
   
+        $configFilters = config("asgard.icommerce.config.filters");
+        $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
+        $configFilters["categories"]["itemSelected"] = $category;
+        config(["asgard.icommerce.config.filters" => $configFilters]);
+        
+        
       }else{
         return response()->view('errors.404', [], 404);
       }
@@ -110,11 +115,6 @@ class PublicController extends BaseApiController
   
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
-  
-    //Remove manufacturer filters of this index, its not necessary
-    $configFilters = config("asgard.icommerce.config.filters");
-    unset($configFilters["manufacturers"]);
-    config(["asgard.icommerce.config.filters" => $configFilters]);
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
   
@@ -128,8 +128,15 @@ class PublicController extends BaseApiController
       $manufacturer = $this->manufacturer->findBySlug($slug);
     
       if(isset($manufacturer->id)){
-        
-      
+  
+        //Remove manufacturer filters of this index, its not necessary
+        $configFilters = config("asgard.icommerce.config.filters");
+        unset($configFilters["manufacturers"]);
+  
+        $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
+        $configFilters["categories"]["params"] = ["filter" => ["manufacturers" => $manufacturer->id]];
+        config(["asgard.icommerce.config.filters" => $configFilters]);
+  
         $ctpl = "icommerce.manufacturer.{$manufacturer->id}.index";
         if (view()->exists($ctpl)) $tpl = $ctpl;
   
@@ -138,6 +145,9 @@ class PublicController extends BaseApiController
 
         // Carousel Top
         $carouselImages = $this->getImagesToCarousel($manufacturer);
+        
+        
+        
         
       }else{
         return response()->view('errors.404', [], 404);
@@ -167,11 +177,11 @@ class PublicController extends BaseApiController
     $carouselImages =[];
     
     if($categorySlug && $manufacturerSlug){
-  
+      
       $manufacturer = $this->manufacturer->findBySlug($manufacturerSlug);
       
       $category = $this->category->findBySlug($categorySlug);
-  
+
      
       if(isset($category->id) && isset($manufacturer->id)){
       
@@ -186,6 +196,17 @@ class PublicController extends BaseApiController
         // Carousel Top
         $carouselImages = $this->getImagesToCarousel($manufacturer);
   
+  
+        //Remove manufacturer filters of this index, its not necessary
+        $configFilters = config("asgard.icommerce.config.filters");
+        unset($configFilters["manufacturers"]);
+  
+        $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
+        $configFilters["categories"]["params"] = ["filter" => ["manufacturers" => $manufacturer->id]];
+        $configFilters["categories"]["itemSelected"] = $category;
+        config(["asgard.icommerce.config.filters" => $configFilters]);
+  
+        
       }else{
         return response()->view('errors.404', [], 404);
       }

@@ -134,7 +134,28 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             return $query->get();
         }
     }
+  
+    
+  public function getItemsByForTheTreeFilter($params)
+  {
+    $categories = $this->getItemsBy($params);
 
+    if (isset($params->filter->manufacturers) && !empty($params->filter->manufacturers)) {
+      $params->filter->manufacturers = null;
+  
+      $categoriesWithoutManufacturersFilter = $this->getItemsBy($params);
+ 
+      $parents = [];
+      foreach ($categories as $category) {
+        $this->getParents($category, $parents, $categoriesWithoutManufacturersFilter);
+      }
+  
+      $categories = collect($parents)->merge($categories)->keyBy("id");
+    }
+    
+    return $categories;
+  }
+  
     public function getItem($criteria, $params = false)
     {
         // INITIALIZE QUERY
@@ -255,6 +276,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     $model = $query->where($field ?? 'id', $criteria)->first();
     event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     $model ? $model->delete() : false;
+  }
+  
+  private function getParents($categoryManufacturer, &$parents = [], $categories)
+  {
+    foreach ($categories as $category) {
+      if ($categoryManufacturer->parent_id == $category->id) {
+        array_push($parents, $category);
+        $this->getParents($category, $parents, $categories);
+      }
+    }
   }
 
 }

@@ -244,27 +244,42 @@ return [
   'filters'=>[
     'categories' => [
       'title' => 'icommerce::categories.plural',
+      'name' => 'categories',
+      /*
+       * Types of Title:
+       *  itemSelected
+       *  titleOfTheConfig
+       */
+      'typeTitle' => 'titleOfTheConfig',
       /*
        * Mode for render:
        *  allTree
-       *  allFamilyOfTheSelectedNode
-       *  onlyLeftAndRightOfTheSelectedNode
+       *  allFamilyOfTheSelectedNode (Need NodeTrait implemented - laravel-nestedset package)
+       *  onlyLeftAndRightOfTheSelectedNode (Need NodeTrait implemented - laravel-nestedset package)
        */
       'mode' => 'allTree',
       'status' => true,
       'isExpanded' => true,
       'type' => 'tree',
-      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'repository' => 'Modules\Icommerce\Repositories\CategoryRepository',
+      'entityClass' => 'Modules\Icommerce\Entities\Category',
       'emitTo' => null,
       'repoAction' => null,
       'repoAttribute' => null,
       'listener' => null,
-      'getDataRepo' => null,
-      'layout' => null,
+      'repoMethod' => 'getItemsByForTheTreeFilter',
+      /*
+      * Layouts available:
+      *  ttys
+      *  alnat
+       * default
+      */
+      'layout' => 'default',
       'classes' => 'col-12'
      ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
+      'name' => 'range-prices',
       'status' => true,
       'isExpanded' => true,
       'type' => 'range',
@@ -280,6 +295,7 @@ return [
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
+      'name' => 'manufacturers',
       'status' => true,
       'isExpanded' => false,
       'type' => 'checkbox',
@@ -294,6 +310,7 @@ return [
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
+      'name' => 'product-options',
       'status' => true,
       'type' => 'checkbox',
       'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
@@ -307,6 +324,7 @@ return [
     ],
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
+      'name' => 'product-types',
       'status' => true,
       'isExpanded' => false,
       'options' => [
