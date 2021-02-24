@@ -92,7 +92,6 @@ class PublicController extends BaseApiController
         // Carousel Right over ProductList with settings to images categories
         $gallery = $this->getGalleryCategory($category);
         
-        $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
         $configFilters["categories"]["itemSelected"] = $category;
         
       }else{
@@ -137,7 +136,6 @@ class PublicController extends BaseApiController
         $configFilters = config("asgard.icommerce.config.filters");
         unset($configFilters["manufacturers"]);
   
-        $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
         $configFilters["categories"]["params"] = ["filter" => ["manufacturers" => $manufacturer->id]];
         config(["asgard.icommerce.config.filters" => $configFilters]);
   
@@ -205,7 +203,6 @@ class PublicController extends BaseApiController
         $configFilters = config("asgard.icommerce.config.filters");
         unset($configFilters["manufacturers"]);
   
-        $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
         $configFilters["categories"]["params"] = ["filter" => ["manufacturers" => $manufacturer->id]];
         $configFilters["categories"]["itemSelected"] = $category;
         config(["asgard.icommerce.config.filters" => $configFilters]);
