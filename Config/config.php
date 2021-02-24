@@ -248,31 +248,31 @@ return [
       /*
        * Types of Title:
        *  itemSelected
-       *  titleOfTheConfig
+       *  titleOfTheConfig - default
        */
       'typeTitle' => 'titleOfTheConfig',
       /*
-       * Mode for render:
-       *  allTree
+       * Types of Modes for render:
+       *  allTree - default
        *  allFamilyOfTheSelectedNode (Need NodeTrait implemented - laravel-nestedset package)
        *  onlyLeftAndRightOfTheSelectedNode (Need NodeTrait implemented - laravel-nestedset package)
        */
-      'mode' => 'allTree',
+      'renderMode' => 'allTree',
       'status' => true,
       'isExpanded' => true,
       'type' => 'tree',
       'repository' => 'Modules\Icommerce\Repositories\CategoryRepository',
       'entityClass' => 'Modules\Icommerce\Entities\Category',
-      'emitTo' => null,
+      'emitTo' => 'getData',
       'repoAction' => null,
       'repoAttribute' => null,
-      'listener' => null,
+      'listener' => 'itemListRendered',
       'repoMethod' => 'getItemsByForTheTreeFilter',
       /*
       * Layouts available:
       *  ttys
       *  alnat
-       * default
+       * default - default
       */
       'layout' => 'default',
       'classes' => 'col-12'

@@ -162,12 +162,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query = $this->model->query();
 
         /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include)) {//If Request all relationships
+        if (in_array('*', $params->include ?? [])) {//If Request all relationships
             $query->with([]);
         } else {//Especific relationships
             $includeDefault = ['translations'];//Default relationships
             if (isset($params->include))//merge relations with default relationships
-                $includeDefault = array_merge($includeDefault, $params->include);
+                $includeDefault = array_merge($includeDefault, $params->include ?? []);
             $query->with($includeDefault);//Add Relationships to query
         }
 
@@ -192,9 +192,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
           $query->where('locale', $filter->locale)
             ->where($field, $criteria);
         });
-      else
+      else{
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
+      }
+      
 
     }
 

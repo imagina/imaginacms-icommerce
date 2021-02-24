@@ -66,6 +66,8 @@ class PublicController extends BaseApiController
 
     $gallery = [];
     
+    $configFilters = config("asgard.icommerce.config.filters");
+    
     if($slug && $slug != trans('icommerce::routes.store.index.index')){
       
       $category = $this->category->findBySlug($slug);
@@ -89,20 +91,22 @@ class PublicController extends BaseApiController
 
         // Carousel Right over ProductList with settings to images categories
         $gallery = $this->getGalleryCategory($category);
-  
-        $configFilters = config("asgard.icommerce.config.filters");
+        
         $configFilters["categories"]["breadcrumb"] = $categoryBreadcrumb;
         $configFilters["categories"]["itemSelected"] = $category;
-        config(["asgard.icommerce.config.filters" => $configFilters]);
-        
         
       }else{
         return response()->view('errors.404', [], 404);
       }
       
+      
+    }else{
+      //Default breadcrumb
+      $configFilters["categories"]["breadcrumb"] = [];
     }
-
-    //$dataRequest = $request->all();
+    
+  
+    config(["asgard.icommerce.config.filters" => $configFilters]);
 
     return view($tpl, compact('category','categoryBreadcrumb','carouselImages','gallery'));
   }
