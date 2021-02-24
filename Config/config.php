@@ -263,10 +263,10 @@ return [
       'type' => 'tree',
       'repository' => 'Modules\Icommerce\Repositories\CategoryRepository',
       'entityClass' => 'Modules\Icommerce\Entities\Category',
-      'emitTo' => 'getData',
+      'emitTo' => null,
       'repoAction' => null,
       'repoAttribute' => null,
-      'listener' => 'itemListRendered',
+      'listener' => null,
       'repoMethod' => 'getItemsByForTheTreeFilter',
       /*
       * Layouts available:
