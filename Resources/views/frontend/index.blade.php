@@ -80,6 +80,7 @@
             @include('icommerce::frontend.partials.children-categories-index-section',["category" => $category ?? null])
           @endif
 
+          {{--
           <livewire:isite::items-list 
             moduleName="Icommerce"
             itemComponentName="icommerce::product-list-item" 
@@ -88,6 +89,9 @@
             'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
             'take' => setting('icommerce::product-per-page',null,12)]"/>
+          --}}
+          
+          @livewire('isite::items-list', config('asgard.icommerce.config.itemsList'))
          
           <hr>
         
