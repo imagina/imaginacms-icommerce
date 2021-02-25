@@ -102,6 +102,11 @@ return [
   //add: product relations like users relations style
   'relations' => [
     'product'=>[
+      //This is an productable relation. This relation must have same index as much as "productable product" crud field is called
+      /*'posts' => function(){
+            return $this->morphedByMany(Modules\Iblog\Entities\Post::class, 'productable','icommerce__productable', 'product_id', 'productable_id');
+      }*/
+
       /*'priceLists' => function () {
         return $this->belongsToMany(Modules\Icommercepricelist\Entities\PriceList::class, Modules\Icommercepricelist\Entities\ProductList::class)
           ->withPivot('price')
@@ -324,7 +329,7 @@ return [
           "title" => "icommerce::orders.title.orders",
           "routeName" => "icommerce.store.order.index",
           "icon" => "fa fa-bars",
-        
+
       ],
       [
           "title" => "icommerce::wishlists.title.wishlists",
