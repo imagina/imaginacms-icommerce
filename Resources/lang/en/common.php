@@ -59,6 +59,7 @@ return [
     'slug' => 'Enlace permanente:',
     'description' => 'Descripción',
     'status' => 'Status',
+    'minimum Amount' => 'Minimum amount',
     'date' => 'Fecha y hora',
     'optional' => '(Opcional)',
     'summary' => 'Sumario',

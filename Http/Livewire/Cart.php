@@ -35,9 +35,12 @@ class Cart extends Component
   public function refreshCart(){
     
     $cart = request()->session()->get('cart');
-
+    
     if (isset($cart->id)) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
+    }
+  
+    if (isset($this->cart->id)) {
       
       $user = Auth::user();
       $data = [];

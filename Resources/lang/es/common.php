@@ -19,7 +19,9 @@ return [
   'form' => [
   ],
   'pages' => [
-    'index' => 'Página Principal'
+    'index' => 'Página Principal',
+    'checkout' => 'Página Checkout',
+    
   ],
   'filters' => [
     'title' => 'Filtrar',
@@ -52,12 +54,14 @@ return [
     'unpublished' => 'En espera',
   ],
   'status_text' => 'Estado',
+  'download' => 'Descargar',
   'image' => 'Imágen',
   'categories' => 'Categorías',
   'title' => 'Título',
   'slug' => 'Enlace permanente:',
   'description' => 'Descripción',
   'status' => 'Estado',
+  'minimum Amount' => 'Monto Minimo',
   'date' => 'Fecha y hora',
   'optional' => '(Opcional)',
   'summary' => 'Sumario',
@@ -93,6 +97,7 @@ return [
     'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
     'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
     'customIndexContactLabel' => 'Título para el Botón de Contacto',
+    'customCheckoutTitle' => 'Título para el Checkout',
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',

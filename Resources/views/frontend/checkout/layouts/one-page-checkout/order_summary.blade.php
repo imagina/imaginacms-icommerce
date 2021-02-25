@@ -189,10 +189,6 @@
                     <i class="fa fa-spinner fa-pulse"></i>
                 </div>
                 </button>
-    
-                @if(Setting::get('iforms::api'))
-                    {!!app('captcha')->display($attributes = ['data-sitekey'=>Setting::get('iforms::api')])!!}
-                @endif
             </div>
         </div>
     </div>

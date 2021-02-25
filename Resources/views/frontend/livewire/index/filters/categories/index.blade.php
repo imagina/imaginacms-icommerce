@@ -1,5 +1,5 @@
 @if($categories && count($categories)>0)
-<div class="filter-categories mb-4">
+<div class="filter-categories {{$this->style}} mb-4">
 
   <div class="title">
     <a class="item" data-toggle="collapse" href="#collapseCategories" role="button" aria-expanded="{{$isExpanded ? 'true' : 'false'}}" aria-controls="collapseCategories" class="{{$isExpanded ? '' : 'collapsed'}}">

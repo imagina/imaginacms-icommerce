@@ -8,8 +8,9 @@
   <div id="checkout" class="page checkout">
 
     <x-isite::breadcrumb>
-      <li class="breadcrumb-item active" aria-current="page">{{ trans('icommerce::checkout.title') }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{$title }}</li>
     </x-isite::breadcrumb>
+
 
 
 
@@ -17,14 +18,14 @@
       <div class="row">
         <div class="col">
           <div class="text-title text-center mb-5">
-            <h1 class="title">{{ trans('icommerce::checkout.title') }}</h1>
+            <h1 class="title">{{ $title }}</h1>
           </div>
         </div>
       </div>
 
     </div>
 
-    <div v-if="loadingCart" id="content_preloader">
+    <div v-if="loadingCart || !quantity" id="content_preloader">
       <div id="preloader"></div>
     </div>
     <!-- ======== @Region: #content ======== -->
@@ -47,19 +48,19 @@
           <div class="row">
 
             <div class="col-12 col-md-6 col-lg-4">
-              @includeFirst(['icommerce.checkout.customer','icommerce::frontend.checkout.customer'])
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.customer')
 
             </div>
             <div class="col-12 col-md-6 col-lg-4">
-              @includeFirst(['icommerce.checkout.billing_details','icommerce::frontend.checkout.billing_details'])
-              @includeFirst(['icommerce.checkout.delivery_details','icommerce::frontend.checkout.delivery_details'])
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.billing_details')
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.delivery_details')
 
             </div>
             <div class="col-12 col-md-12 col-lg-4">
 
-              @includeFirst(['icommerce.checkout.shipping_methods','icommerce::frontend.checkout.shipping_methods'])
-              @includeFirst(['icommerce.checkout.payment','icommerce::frontend.checkout.payment'])
-              @includeFirst(['icommerce.checkout.order_summary','icommerce::frontend.checkout.order_summary'])
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.shipping_methods')
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.payment')
+              @include('icommerce::frontend.checkout.layouts.one-page-checkout.order_summary')
 
             </div>
 
@@ -193,7 +194,7 @@
       },
       data: {
         //Vars
-        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : (object)[] !!},
+        cart: {!! isset($cart->id) ? json_encode(new \Modules\Icommerce\Transformers\CartTransformer($cart)) : null !!},
         currency: {!! isset($currency->id) ? json_encode($currency) : null !!},
         payments: [],
         shippingMethods: [],
@@ -202,8 +203,7 @@
         customerRegisterToggle: true,
         form: {
           selectedBillingAddress: null,
-          selectedShippingAddress: null,
-
+          selectedShippingAddress: null
         },
         loadingCart: false,
         paymentSelected: "",

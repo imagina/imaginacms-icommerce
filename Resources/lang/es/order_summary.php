@@ -4,7 +4,7 @@ return [
     'title'         => 'Resumen del pedido',
     'item_car'      => 'Artículo en el carrito',
     'items_car'     => 'Artículos en el carrito',
-    'car_sub'       => 'Subtotal del carrito',
+    'car_sub'       => 'Subtotal',
     'shipping'      => 'Envío',
     'total'         => 'TOTAL DE LA ORDEN',
     'submit'        => 'Enviar Orden',

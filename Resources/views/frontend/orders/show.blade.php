@@ -7,12 +7,20 @@
       <a
         href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}">{{trans('icommerce::orders.title.orders')}}</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}} #{{$order->id}}</li>
   </x-isite::breadcrumb>
+
+
+ 
 @endsection
 
 @section('profileTitle')
+  <div class="float-right">
+    <x-isite::print-button containerId="showOrder{{$order->id}}" icon="fa fa-file-pdf-o" text="{{ trans('icommerce::common.download') }}" />
+  </div>
+  
   {{trans('icommerce::orders.title.detail order')}} #{{$order->id}}
+  
 @endsection
 @section('profileContent')
   @php
@@ -25,6 +33,7 @@
     $informationBlocks = $orderTransformed["informationBlocks"];
   @endphp
   
+  <div id="showOrder{{$order->id}}">
   <!--Dynamic blocks-->
   <div id="dynamicBlocksContent" class="row gutter-md">
     <!--Block content-->
@@ -173,7 +182,8 @@
       @endif
     </div>
   </div>
-  
+
+  </div>
   <style type="text/css">
     table .clickable-row {
       cursor: pointer;

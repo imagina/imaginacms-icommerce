@@ -43,8 +43,7 @@
                 
                 
                 @includeFirst(['iprofile.widgets.register','iprofile::frontend.widgets.register'],["embedded" => true, "route" => $locale . '.icommerce.store.checkout'])
-              
-              
+
               </div>
             
             </div>

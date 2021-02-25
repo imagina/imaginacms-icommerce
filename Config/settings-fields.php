@@ -220,4 +220,54 @@ return [
       'label' => 'icommerce::common.settings.product.minimumQuantityToNotify'
     ],
   ],
+  'filterCategoriesStyle' => [
+    'value' => '',
+    'name' => 'icommerce::filterCategoriesStyle',
+    'group' => 'icommerce::common.filters.categories.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'Estilo Filtro Categorías',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Default','value' => ''],
+        ['label' => 'Style TTYS','value' => 'filter-categories-style-1'],
+        ['label' => 'Style ALNAT','value' => 'filter-categories-style-2'],
+      ]
+    ]
+  ],
+  'customCheckoutTitle' => [
+    'name' => 'icommerce::customCheckoutTitle',
+    'value' => '',
+    'group' => 'icommerce::common.pages.checkout',
+    'type' => 'input',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.customCheckoutTitle',
+      'type' => 'text',
+    ],
+  ],
+  'checkoutLayout' => [
+    'value' => 'one-page-checkout',
+    'name' => 'icommerce::checkoutLayout',
+    'group' => 'icommerce::common.pages.checkout',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'Layout del Checkout',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'One Page Checkout','value' => 'one-page-checkout'],
+        ['label' => 'Tabs Checkout','value' => 'tabs-checkout'],
+      ]
+    ]
+  ],
 ];

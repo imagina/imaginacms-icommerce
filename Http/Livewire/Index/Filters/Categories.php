@@ -16,6 +16,7 @@ class Categories extends Component
   public $configs;
   public $manufacturer;
   public $category;
+  public $style;
   public $isExpanded;
   
   public $extraParamsUrl;
@@ -29,6 +30,7 @@ class Categories extends Component
     $this->categoryBreadcrumb = $categoryBreadcrumb;
     $this->extraParamsUrl = "";
     
+    $this->style = setting("icommerce::filterCategoriesStyle", null, "");
     $this->manufacturer = $manufacturer;
     $this->category = $category;
 

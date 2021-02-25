@@ -366,6 +366,10 @@
         .card-overlay {
           position: relative !important;
           padding: 15px !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
           .card-title {
             a {
               color: #333 !important;
@@ -384,6 +388,16 @@
           content: none;
         }
       }
+      @include media-breakpoint-down(sm) {
+        .item-category {
+          .card-overlay {
+            .card-title {
+              font-size: 12px;
+            }
+          }
+        }
     }
+  }
+
   }
 }
