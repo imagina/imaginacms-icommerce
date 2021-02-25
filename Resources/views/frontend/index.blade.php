@@ -88,7 +88,8 @@
             :params="[
             'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
-            'take' => setting('icommerce::product-per-page',null,12)]"/>
+            'take' => setting('icommerce::product-per-page',null,12)]"
+            :configOrderBy="config('asgard.icommerce.config.orderBy')"/>
           
           <hr>
         
