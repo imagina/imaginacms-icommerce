@@ -240,27 +240,6 @@ return [
     */
   ],
 
-
-  /*Items Lists*/
-  'itemsList' => [
-    'moduleName' => 'Icommerce',
-    'itemComponentName'=> 'icommerce::product-list-item',
-    'entityName' => 'Product',
-    'params'=> [
-      'filter' => [],
-      'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
-      'take' =>  function () { return setting('icommerce::product-per-page',null,12);}
-    ],
-    'orderByDefault' => [
-        'title' => 'isite::common.sort.recently',
-        'name' => 'recently',
-        'order' => [
-          'field' => "created_at",
-          'way' => "desc",
-        ]
-    ]
-  ],
-
   /*Filters*/
   'filters'=>[
     'categories' => [
