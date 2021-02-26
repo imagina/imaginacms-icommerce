@@ -83,25 +83,32 @@ class Category extends Model
   {
     $url = "";
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+    $currentLocale = \LaravelLocalization::getCurrentLocale();
+    $routeName = request()->route()->getName();
+
     if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
       if ($useOldRoutes) {
-        $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.category.' . $this->slug);
+        $url = \URL::route($currentLocale . '.icommerce.category.' . $this->slug);
       } else {
-        $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.category', $this->slug);
+        switch($routeName){
+          case $currentLocale.".icommerce.store.index.categoryManufacturer":
+            $manufacturerSlug = explode("/",request()->path())[4];
+            $url = \URL::route($currentLocale . '.icommerce.store.index.categoryManufacturer', [$this->slug, $manufacturerSlug]);
+            break;
+          case $currentLocale.".icommerce.store.index.manufacturer":
+            $manufacturerSlug = explode("/",request()->path())[2];
+            $url = \URL::route($currentLocale . '.icommerce.store.index.categoryManufacturer', [$this->slug, $manufacturerSlug]);
+          break;
+          
+          default:
+            $url = \URL::route($currentLocale . '.icommerce.store.index.category', $this->slug);
+            break;
+        }
       }
     }
     return $url;
   }
   
-  public function urlManufacturer(Manufacturer $manufacturer)
-  {
-    $url = "";
-    $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
-      $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.categoryManufacturer', [$this->slug, $manufacturer->slug]);
-    }
-    return $url;
-  }
   
   
   public function getOptionsAttribute($value)

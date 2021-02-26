@@ -1,5 +1,5 @@
 <div class="option option-{{$option->id}} mb-4">
-	@php($isExpanded = count(array_intersect($option->values ? $option->values->pluck("id")->toArray() : [],$this->selectedOptions)))
+	@php($isExpanded = count(array_intersect($option->values ? $option->values->pluck("id")->toArray() : [],$this->selectedOptionValues)))
 
 
 	<div class="title">
@@ -26,7 +26,7 @@
 				  		@foreach($option->values ?? [] as $value)
 
 				  			<div class="form-check">
-						  		<input class="form-check-input" type="checkbox" value="{{$value->id}}" name="optionValues{{$value->id}}" id="optionValues-{{$value->id}}" wire:model="selectedOptions" >
+						  		<input class="form-check-input" type="checkbox" value="{{$value->id}}" name="optionValues{{$value->id}}" id="optionValues-{{$value->id}}" wire:model="selectedOptionValues" >
 							  	<label class="form-check-label" for="optionValues{{$value->id}}">
 							    	{{$value->description}}
 							  	</label>

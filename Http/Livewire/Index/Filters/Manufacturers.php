@@ -11,7 +11,7 @@ class Manufacturers extends Component
     public $selectedManufacturers;
     public $isExpanded;
 
-	protected $listeners = ['productListRendered'];
+	protected $listeners = ['itemListRendered'];
 	
 	public function mount(){
 		$this->selectedManufacturers = [];
@@ -23,10 +23,16 @@ class Manufacturers extends Component
     */
     public function updatedSelectedManufacturers(){
 	
-
+        $this->emit('getData',[
+            'filters' => [
+                'manufacturers' => array_values($this->selectedManufacturers)
+            ]
+        ]);
+        /*
         $this->emit('updateFilter',[
           'manufacturers' => array_values($this->selectedManufacturers)
         ]);
+        */
 
     }
 
@@ -42,7 +48,7 @@ class Manufacturers extends Component
     * Listener - Product List Rendered 
     *
     */
-	public function productListRendered($params){
+	public function itemListRendered($params){
 		$this->selectedManufacturers  = $params["filter"]["manufacturers"] ?? [];
 		
         $this->manufacturers = $this->getProductRepository()->getManufacturers(json_decode(json_encode($params)));

@@ -18,6 +18,7 @@
 		@endif
 	@endforeach
 
+
 	@php($newUrl = isset($manufacturer->id) ? $category->urlManufacturer($manufacturer) : $category->url)
 	
 	{{--
@@ -30,7 +31,7 @@
 				@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
 					<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
 				@endif
-                <span title="{{$category->title}}">{{$category->title}}</span>
+				{{$category->title}}
 			</a>
 			<a class="icon-collapsable" data-toggle="collapse" role="button"
 			   href="#multiCollapse-{{$slug}}" aria-expanded="{{$isSelected && $children ? 'true' : 'false'}}"
@@ -46,7 +47,7 @@
 				@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
 					<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
 				@endif
-                <span title="{{$category->title}}">{{$category->title}}</span>
+				{{$category->title}}
 			</a>
 			<a href="{{$newUrl}}" class="icon-href float-right">
 				<i class="fa fa-external-link"></i>
@@ -60,13 +61,9 @@
 			</ul>
 		</div>
 	@else
-        <a  href="{{$newUrl}}" class="link-childless d-block {{$isSelected && $children->isEmpty() ? 'font-weight-bold' : ''}}">
-            @php($mediaFiles = $category->mediaFiles())
-            @if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
-                <img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
-            @endif
-            <span title="{{$category->title}}">{{$category->title}}</span>
-        </a>
+	
+		<a href="{{$newUrl}}" class="link-childless d-block {{$isSelected && $children->isEmpty() ? 'font-weight-bold' : ''}}"> {{$category->title}} </a>
+
 	@endif
 
 </li>

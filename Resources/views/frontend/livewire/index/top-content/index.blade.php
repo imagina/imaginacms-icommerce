@@ -1,5 +1,5 @@
 <div class="top-content mb-2">
-
+	
 	@include('icommerce::frontend.livewire.index.top-content.custom-titles')
 
 	<div class="options-product-list d-none d-lg-block d-xl-block">
