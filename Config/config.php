@@ -135,10 +135,10 @@ return [
    */
   'includes' => [
     'product' => [
-      'priceLists' => [
-        'path' => 'Modules\Icommercepricelist\Transformers\PriceListTransformer', //this is the transformer path
+      /*'posts' => [
+        'path' => 'Modules\Iblog\Transformers\PostTransformer', //this is the transformer path
         'multiple' => true, //if is one-to-many, multiple must be set to true
-      ],
+      ],*/
     ]
   ],
 
@@ -154,12 +154,6 @@ return [
       /*'posts' => function(){
             return $this->morphedByMany(Modules\Iblog\Entities\Post::class, 'productable','icommerce__productable', 'product_id', 'productable_id');
       }*/
-
-      'priceLists' => function () {
-        return $this->belongsToMany(Modules\Icommercepricelist\Entities\PriceList::class, Modules\Icommercepricelist\Entities\ProductList::class)
-          ->withPivot('price')
-          ->withTimestamps();
-      },
     ]
   ],
 

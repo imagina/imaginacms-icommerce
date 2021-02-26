@@ -457,28 +457,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($data['tags']))
         $product->setTags(Arr::get($data, 'tags', []));
 
-      $extraFields = config('asgard.icommerce.crud-fields.products.productables');
-      if (is_array($extraFields)) {
-          foreach ($extraFields as $name => $extraField) {
-              if (isset($data[$name])) {
-                  if (is_array($data[$name])) {
-                      foreach ($data[$name] as $oneData) {
-                          $productable = new ProductableEntity();
-                          $productable->productable_type = $extraField['entity'];
-                          $productable->productable_id = $oneData;
-                          $productable->product_id = $product->id;
-                          $productable->save();
-                      }
-                  } else {
-                      $productable = new ProductableEntity();
-                      $productable->productable_type = $extraField['entity'];
-                      $productable->productable_id = $data[$name];
-                      $productable->product_id = $product->id;
-                      $productable->save();
-                  }
-              }
-          }
-      }
+      $this->setProductables($product, $data);
 
     }
 
@@ -528,37 +507,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         if (isset($data['tags']))
             $model->tags()->sync(Arr::get($data, 'tags', []));
 
-        $extraFields = config('asgard.icommerce.crud-fields.products.productables');
-        if (is_array($extraFields)){
-            foreach ($extraFields as $name => $extraField) {
-                if (isset($data[$name])) {
-                    if (is_array($data[$name])) {
-                        ProductableEntity::where('productable_type', $extraField['entity'])->where('product_id', $model->id)->whereNotIn('productable_id', $data[$name])->delete();
-                        foreach ($data[$name] as $oneData) {
-                            $productableFind = ProductableEntity::where('productable_id', $oneData)->where('product_id', $model->id)->where('productable_type', $extraField['entity'])->first();
-                            if (!$productableFind) {
-                                $productable = new ProductableEntity();
-                                $productable->productable_type = $extraField['entity'];
-                                $productable->productable_id = $oneData;
-                                $productable->product_id = $model->id;
-                                $productable->save();
-                            }
-                        }
-                    } else {
-                        $productableFind = ProductableEntity::where('product_id', $model->id)->where('productable_type', $extraField['entity'])->first();
-                        if ($productableFind) {
-                            $productableFind->update(['productable_id' => $data[$name]]);
-                        } else {
-                            $productable = new ProductableEntity();
-                            $productable->productable_type = $extraField['entity'];
-                            $productable->productable_id = $data[$name];
-                            $productable->product_id = $model->id;
-                            $productable->save();
-                        }
-                    }
-                }
-            }
-        }
+        $this->setProductables($model, $data);
 
         //Event to Update media
         event(new UpdateMedia($model, $data));
@@ -723,6 +672,30 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     return $showFilter;
 
+  }
+
+  public function setProductables($model, $data){
+      $productableFields = config('asgard.icommerce.crud-fields.products.productables'); //get productable fields
+      if (is_array($productableFields)) {
+          //loop into productable fields
+          foreach ($productableFields as $name => $productableField) {
+              if (isset($data[$name])) {
+                  $productableIds = is_array($data[$name]) ? $data[$name] : [$data[$name]]; //get productable ids from data
+                  //delete productable fields where not exists into productable ids
+                  ProductableEntity::whereNotIn('productable_id', $productableIds)->where('product_id', $model->id)->where('productable_type', $productableField['entity'])->delete();
+                  foreach($productableIds as $productableId){
+                      $productable = ProductableEntity::where('productable_id', $productableId)->where('product_id', $model->id)->where('productable_type', $productableField['entity'])->first();
+                      if (!$productable) {
+                          $productable = new ProductableEntity();
+                      }
+                      $productable->productable_type = $productableField['entity'];
+                      $productable->productable_id = $productableId;
+                      $productable->product_id = $model->id;
+                      $productable->save();
+                  }
+              }
+          }
+      }
   }
 
 }
