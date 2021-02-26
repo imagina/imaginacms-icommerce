@@ -1,4 +1,4 @@
-#productRibbon {
+.productRibbon {
   .ribbonContent {
     width: max-content;
     position: absolute;
@@ -12,7 +12,7 @@
   }
 
   /*Discount Ribbon*/
-  #ribbonDiscount {
+  .ribbonDiscount {
     top: 5px;
     right: 0;
 
@@ -40,7 +40,7 @@
 
 
   /*Sold out Ribbon*/
-  #ribbonSoldOut {
+  .ribbonSoldOut {
     transform: rotate(-45deg);
     background-color: $danger;
     top: 14px;
@@ -53,7 +53,7 @@
   }
 
   /*New product Ribbon*/
-  #ribbonNewProduct {
+  .ribbonNewProduct {
     top: -10px;
     left: -45px;
     transform: rotate(-45deg);
