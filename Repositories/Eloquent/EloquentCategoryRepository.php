@@ -213,9 +213,6 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
     $category = $this->model->create($data);
 
-    if (isset($data['discounts']))
-        $category->setDiscount(Arr::get($data, 'discounts', []));
-
     //Event to ADD media
     event(new CreateMedia($category, $data));
 
@@ -238,9 +235,6 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
-
-    if (isset($data['discounts']))
-        $model->setDiscount(Arr::get($data, 'discounts', []));
 
     event(new UpdateMedia($model, $data));//Event to Update media
     return $model ? $model->update((array)$data) : false;

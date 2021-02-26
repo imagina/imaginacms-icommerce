@@ -36,10 +36,6 @@ class CategoryTransformer extends JsonResource
 
         $filter = json_decode($request->filter);
 
-        if(is_module_enabled('Discountable')){
-            $data['discounts'] = \Modules\Discountable\Transformers\DiscountTransformer::collection($this->whenLoaded('discounts'));
-        }
-
         // Return data with available translations
         if (isset($filter->allTranslations) && $filter->allTranslations) {
             // Get langs avaliables
