@@ -6,6 +6,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Option;
 use Modules\Icommerce\Entities\OptionValue;
+use Modules\Icommerce\Entities\ProductableEntity;
 use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Events\ProductWasUpdated;
@@ -134,7 +135,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         $query->where('status', ($filter->status ? 1 : 0));
       }
-  
+
       if (isset($filter->ids) && !empty($filter->ids)) {
         is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
         $query->whereIn('icommerce__products.id', $filter->ids);
@@ -255,13 +256,13 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if(isset($filter->productType) && !empty($filter->productType)){
 
         $type = $filter->productType;
-      
+
         if($type=="searchable")
           $query->where("price",0);
 
         if($type=="affordable")
           $query->where("price",">",0);
-      
+
       }
 
       if (isset($filter->isCall) && !empty($filter->isCall)) {
@@ -332,11 +333,11 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
   public function getItem($criteria, $params = false)
   {
-   
+
     //Initialize query
     $query = $this->model->query();
     $priceListEnable = is_module_enabled('Icommercepricelist');
- 
+
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
         $includeDefault = ['category','categories','manufacturer','translations','files','productOptions','discount'];
@@ -425,7 +426,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== REQUEST ==*/
     return $query->first();
-    
+
   }
 
   public function create($data)
@@ -455,6 +456,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       if (isset($data['tags']))
         $product->setTags(Arr::get($data, 'tags', []));
+
     }
 
     //Event to ADD media
@@ -483,31 +485,31 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $model = $query->where($field ?? 'id', $criteria)->first();
 
     if ($model) {
-      $model->update($data);
+        $model->update($data);
 
-      // sync tables
-      $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
+        // sync tables
+        $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$model->category_id]));
 
-      $priceListEnable = is_module_enabled('Icommercepricelist');
+        $priceListEnable = is_module_enabled('Icommercepricelist');
 
-      if($priceListEnable) {
-          if (isset($data['price_lists']))
-              $model->priceLists()->sync(Arr::get($data, 'price_lists', []));
-      }
-
-
-      if (isset($data['related_products']))
-        $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
+        if ($priceListEnable) {
+            if (isset($data['price_lists']))
+                $model->priceLists()->sync(Arr::get($data, 'price_lists', []));
+        }
 
 
-      if (isset($data['tags']))
-        $model->tags()->sync(Arr::get($data, 'tags', []));
+        if (isset($data['related_products']))
+            $model->relatedProducts()->sync(Arr::get($data, 'related_products', []));
 
-      //Event to Update media
-      event(new UpdateMedia($model, $data));
 
-      event(new ProductWasUpdated($model));
-      return $model;
+        if (isset($data['tags']))
+            $model->tags()->sync(Arr::get($data, 'tags', []));
+
+        //Event to Update media
+        event(new UpdateMedia($model, $data));
+
+        event(new ProductWasUpdated($model));
+        return $model;
     }
 
     return false;

@@ -81,6 +81,12 @@ class ProductTransformer extends BaseApiTransformer
             $data["discount"] = new ProductDiscountTransformer($discount);
         }
 
+        if(is_module_enabled('Icommercepricelist')){
+            $data['priceLists'] = \Modules\Icommercepricelist\Transformers\PriceListTransformer::collection($this->whenLoaded('priceLists'));
+        }else{
+            $data['priceLists'] = [];
+        }
+
         /*RELATIONSHIPS*/
         // Tax Class
         $this->ifRequestInclude('addedBy') ?

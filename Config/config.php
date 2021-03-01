@@ -3,21 +3,21 @@
 return [
   'name' => 'Icommerce',
   'frontendModuleName' => 'qcommerce',
-  
+
   /*
    |--------------------------------------------------------------------------
    | Default layout for the notification module
    |--------------------------------------------------------------------------
    */
   'defaultEmailLayout' => 'notification::emails.layouts.default',
-  
+
   /*
    |--------------------------------------------------------------------------
    | Default content layout in the notification module
    |--------------------------------------------------------------------------
    */
   'defaultEmailContent' => 'notification::emails.contents.default',
-  
+
   /*
    |--------------------------------------------------------------------------
    | Order Statuses to seed in the order status table
@@ -81,21 +81,21 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define routes to sites with old routes
    |--------------------------------------------------------------------------
    */
   'useOldRoutes' => false,
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define the default product rating
    |--------------------------------------------------------------------------
    */
   'defaultProductRating' => 5,
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define the different item types to the products
@@ -115,7 +115,7 @@ return [
       'title' => 'icommerce::itemtypes.types.other',
     ],
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define format money to the product price frontend
@@ -126,7 +126,7 @@ return [
     'dec_point' => '',
     'housands_sep' => '.'
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | add: custom product includes
@@ -134,30 +134,29 @@ return [
    |--------------------------------------------------------------------------
    */
   'includes' => [
-    'ProductTransformer' => [
-      'priceLists' => [
-        'path' => 'Modules\Icommercepricelist\Transformers\PriceListTransformer', //this is the transformer path
+    'product' => [
+      /*'posts' => [
+        'path' => 'Modules\Iblog\Transformers\PostTransformer', //this is the transformer path
         'multiple' => true, //if is one-to-many, multiple must be set to true
-      ],
+      ],*/
     ]
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | add: product relations like users relations style
    |--------------------------------------------------------------------------
    */
   'relations' => [
-    /*
+
     'product'=>[
-      'priceLists' => function () {
-        return $this->belongsToMany(Modules\Icommercepricelist\Entities\PriceList::class, Modules\Icommercepricelist\Entities\ProductList::class)
-          ->withPivot('price')
-          ->withTimestamps();
-      },
-    ]*/
+      //This is an productable relation. This relation must have same index as much as "productable product" crud field is called
+      /*'posts' => function(){
+            return $this->morphedByMany(Modules\Iblog\Entities\Post::class, 'productable','icommerce__productable', 'product_id', 'productable_id');
+      }*/
+    ]
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define config to the mediaFillable trait for each entity
@@ -199,7 +198,7 @@ return [
       'quaternaryimage' => 'single',
     ]
   ],
-  
+
     /*
    |--------------------------------------------------------------------------
    | Define config to the orderBy in the index page
@@ -250,7 +249,7 @@ return [
       ]
     ],
   ],
-  
+
    /*
    |--------------------------------------------------------------------------
    | Layout Products - Index
@@ -279,7 +278,7 @@ return [
       ],
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Custom Includes Before Filters
@@ -293,7 +292,7 @@ return [
     ]
     */
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Filters to the index page
@@ -408,8 +407,8 @@ return [
       'classes' => 'col-12'
     ]
   ],
-  
-  
+
+
   /*
   |--------------------------------------------------------------------------
   | Widgets Components
@@ -429,7 +428,7 @@ return [
       ]
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Extra Footer Partials
@@ -447,7 +446,7 @@ return [
       ]
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Define the options to the user menu component
@@ -465,7 +464,7 @@ return [
       "title" => "icommerce::orders.title.orders",
       "routeName" => "icommerce.store.order.index",
       "icon" => "fa fa-bars",
-    
+
     ],
     [
       "title" => "icommerce::wishlists.title.wishlists",
@@ -473,15 +472,16 @@ return [
       "icon" => "fa fa-heart",
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Define Notifiable config to conect to the notification  Module
   |--------------------------------------------------------------------------
   */
   'notifiable' => [
+
     [ // Order Entity
-      
+
       'title' => 'Order',
       'entityName' => 'Modules\\Icommerce\\Entities\\Order',
       'events' => [
@@ -491,7 +491,7 @@ return [
         ]
       ],
       "conditions" => [
-      
+
       ],
       "settings" => [
         "email" => [
@@ -500,9 +500,9 @@ return [
         ],
       ],
     ]
-  
+
   ],
-  
+
   /*
     |--------------------------------------------------------------------------
     | Define custom middlewares to apply to the all frontend routes

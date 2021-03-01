@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Ihelpers\Events\CreateMedia;
@@ -257,6 +258,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
+
     event(new UpdateMedia($model, $data));//Event to Update media
     return $model ? $model->update((array)$data) : false;
   }

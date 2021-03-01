@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class Product extends Model implements TaggableInterface
 {
 	use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
-	
+
 	protected $table = 'icommerce__products';
 	protected static $entityNamespace = 'asgardcms/product';
 	private $user;
@@ -62,14 +62,14 @@ class Product extends Model implements TaggableInterface
 		'sort_order',
 		'is_call'
 	];
-	
+
 	protected $presenter = ProductPresenter::class;
 	protected $casts = [
 		'options' => 'array'
 	];
 	protected $width = ['files'];
 	private $auth;
-	
+
 	public function __construct(array $attributes = [])
 	{
 		$this->auth = Auth::user();
@@ -82,63 +82,63 @@ class Product extends Model implements TaggableInterface
 		}
 		return $this->belongsTo(Store::class);
 	}
-	
+
 	public function addedBy()
 	{
 		$driver = config('asgard.user.config.driver');
-		
+
 		return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'added_by_id');
 	}
-	
+
 	public function stockStatus()
 	{
 		$stockStatus = new StockStatus();
 		return $stockStatus->get($this->stock_status);
 	}
-	
+
 	public function category()
 	{
 		return $this->belongsTo(Category::class)->with('translations');
 	}
-	
+
 	public function taxClass()
 	{
 		return $this->belongsTo(TaxClass::class);
 	}
-	
+
 	public function categories()
 	{
 		return $this->belongsToMany(Category::class, 'icommerce__product_category')->withTimestamps()->with('translations');
 	}
-	
+
 	public function orderItems()
 	{
 		return $this->hasMany(OrderItem::class, 'product_id');
 	}
-	
+
 	public function manufacturer()
 	{
 		return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
 	}
-	
+
 	public function discounts()
 	{
 		return $this->hasMany(ProductDiscount::class);
 	}
-	
+
 	public function productOptions()
 	{
 		return $this->belongsToMany(Option::class, 'icommerce__product_option')
 			->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required')
 			->withTimestamps();
 	}
-	
+
 	public function optionValues()
 	{
 		return $this->hasMany(ProductOptionValue::class);
-		
+
 	}
-	
+
 	public function relatedProducts()
 	{
 		return $this->belongsToMany(
@@ -147,7 +147,7 @@ class Product extends Model implements TaggableInterface
 			'product_id', 'related_id'
 		)->withTimestamps();
 	}
-	
+
 	public function orders()
 	{
 		return $this->belongsToMany(Order::class, 'icommerce__order_item')
@@ -155,96 +155,96 @@ class Product extends Model implements TaggableInterface
 			->withTimestamps()
 			->using(OrderItem::class);
 	}
-	
+
 	public function wishlists()
 	{
 		return $this->hasMany(Wishlist::class);
 	}
-	
+
 	public function coupons()
 	{
 		return $this->belongsToMany(Coupon::class, 'icommerce__coupon_product')->withTimestamps();
 	}
-	
+
 	public function parent()
 	{
 		return $this->belongsTo('Modules\Icommerce\Entities\Product', 'parent_id');
 	}
-	
+
 	public function children()
 	{
 		return $this->hasMany('Modules\Icommerce\Entities\Product', 'parent_id')
 			->orderBy('order_weight', 'desc')
 			->orderBy('created_at', 'desc');
 	}
-	
+
 	public function comments()
 	{
 		return $this->hasMany(Comment::class);
 	}
-	
+
 	public function carts()
 	{
 		return $this->hasMany(CartProduct::class);
 	}
-	
+
 	protected function setQuantityAttribute($value)
 	{
-		
+
 		if (!empty($value)) {
 			$this->attributes['quantity'] = $value;
 		} else {
 			$this->attributes['quantity'] = 0;
 		}
-		
+
 	}
-	
+
 	protected function setPriceAttribute($value)
 	{
-		
+
 		if (!empty($value)) {
 			$this->attributes['price'] = $value;
 		} else {
 			$this->attributes['price'] = 0;
 		}
-		
+
 	}
-	
+
 	protected function setMinimumAttribute($value)
 	{
-		
+
 		if (!empty($value)) {
 			$this->attributes['minimum'] = $value;
 		} else {
 			$this->attributes['minimum'] = 1;
 		}
-		
+
 	}
-	
+
 	protected function setSkuAttribute($value)
 	{
-		
+
 		if (!empty($value)) {
 			$this->attributes['sku'] = $value;
 		} else {
 			$this->attributes['sku'] = uniqid("s");
 		}
-		
+
 	}
-	
-	
+
+
 	public function setOptionsAttribute($value)
 	{
 		$this->attributes['options'] = json_encode($value);
 	}
-	
-	
+
+
 	public function getOptionsAttribute($value)
 	{
 		return json_decode($value);
 	}
-	
-	
+
+
 	protected function setRatingAttribute($value)
 	{
 		$defaultRating = config("asgard.icommerce.config.defaultProductRating");
@@ -253,16 +253,15 @@ class Product extends Model implements TaggableInterface
 		} else {
 			$this->attributes['rating'] = 5;
 		}
-		
+
 	}
-	
-	
+
+
 	public function discount()
 	{
-		
-		
+
+
 		$user = $this->auth;
-		
 		$userId = $user->id ?? 0;
 		//dd($userId);
 		$departments = [];
@@ -275,50 +274,50 @@ class Product extends Model implements TaggableInterface
 
 		// return one Discount
 		return $this->hasOne(ProductDiscount::class)
-   
-			
+
+
 			//where the discount not belongs to the exclude departments
 			//or where the exclude departments of the discount is Null - for all Users
 			->where(function ($query) use ($departments) {
 				foreach ($departments as $departmentId) {
-					$query->whereRaw("(" . $departmentId . " not in (REPLACE(REPLACE(REPLACE(exclude_departments, '\"', ''), '[', ''), ']', '')))");
+					$query->whereRaw("(" . $departmentId . " not in (REPLACE(REPLACE(REPLACE(exclude_departments, '\'', ''), '[', ''), ']', '')))");
 				}
 				$query->orWhere('exclude_departments', "[]");
 				$query->orWhereNull('exclude_departments');
-				
+
 				if(empty($departments)){
           $query->orWhereRaw("(0 in (REPLACE(REPLACE(REPLACE(include_departments, '\"', ''), '[', ''), ']', '')))");
         }
 			})
-			
-			
+
+
 			//where the discount  belongs to the include departments
 			//or where the exclude departments of the discount is Null - for all Users
 			->where(function ($query) use ($departments) {
 				foreach ($departments as $departmentId) {
-					$query->whereRaw("(" . $departmentId . " in (REPLACE(REPLACE(REPLACE(include_departments, '\"', ''), '[', ''), ']', '')))");
+					$query->whereRaw("(" . $departmentId . " in (REPLACE(REPLACE(REPLACE(include_departments, '\'', ''), '[', ''), ']', '')))");
 				}
 				$query->orWhere('include_departments', '["0"]');
 				$query->orWhere('include_departments', "[]");
 				$query->orWhereNull('include_departments');
 			})
-			
+
 			// ordered by priority
 			->orderBy('priority', 'desc')
-			
+
 			// ordered by created_at
 			->orderBy('created_at', 'asc')
-			
+
 			// where the quantity_sold be less than quantity available for the discount
 			->whereRaw('quantity_sold < icommerce__product_discounts.quantity')
-			
+
 			// where now is between date_end and date_start
 			->where('date_end', '>=', date('Y-m-d'))
 			->where('date_start', '<=', date('Y-m-d'));
-		
+
 	}
-	
-	
+
+
 	public function getSecondaryImageAttribute()
 	{
 		$thumbnail = $this->files->where('zone', 'secondaryimage')->first();
@@ -335,11 +334,11 @@ class Product extends Model implements TaggableInterface
 		}
 		return json_decode(json_encode($image));
 	}
-	
+
 	public function getMainImageAttribute()
 	{
 		$thumbnail = $this->files->where('zone', 'mainimage')->first();
-		
+
 		if (!$thumbnail) {
 			if (isset($this->options->mainimage)) {
 				$image = [
@@ -359,12 +358,12 @@ class Product extends Model implements TaggableInterface
 			];
 		}
 		return json_decode(json_encode($image));
-		
+
 	}
-	
+
 	public function getGalleryAttribute()
 	{
-		
+
 		$gallery = $this->filesByZone('gallery')->get();
 		$response = [];
 		foreach ($gallery as $img) {
@@ -374,27 +373,27 @@ class Product extends Model implements TaggableInterface
 				'alt' => $img->alt ?? null
 			]);
 		}
-		
+
 		return json_decode(json_encode($response));
 	}
-	
+
 	/**
 	 * URL product
 	 * @return string
 	 */
 	public function getUrlAttribute()
 	{
-		
+
 		$useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-		
+
 		if ($useOldRoutes)
 			return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.' . $this->category->slug . '.product', [$this->slug]);
 		else
 			return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.show', $this->slug);
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Is New product
 	 * @return number
@@ -409,18 +408,18 @@ class Product extends Model implements TaggableInterface
 		if ($days <= $daysEnabledForNewProducts) {
 			$isNew = true;
 		}
-		
+
 		return $isNew;
 	}
-	
+
 	public function getPriceAttribute($value)
 	{
 		$price = $value;
 		$auth = $this->auth;
-		
+
 		$priceList = is_module_enabled('Icommercepricelist');
 		$setting = json_decode(request()->get('setting'));
-		
+
 		if (isset($auth->id) && $priceList && !isset($setting->fromAdmin)) {
 			if ($this->priceLists) {
 				foreach ($this->priceLists as $pList) {
@@ -441,7 +440,7 @@ class Product extends Model implements TaggableInterface
 		}
 		return $price;
 	}
-	
+
 	function priceLists(){
 		if(is_module_enabled('Icommercepricelist')) {
 			return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
@@ -450,6 +449,6 @@ class Product extends Model implements TaggableInterface
 		}
 		return collect([]);
 	}
-	
-	
+
+
 }

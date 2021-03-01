@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 class Category extends Model
 {
   use Translatable, NamespacedEntity, MediaRelation, NodeTrait;
-  
+
   protected $table = 'icommerce__categories';
   protected static $entityNamespace = 'asgardcms/icommerceCategory';
   public $translatedAttributes = [
@@ -34,29 +34,29 @@ class Category extends Model
     'status',
     'sort_order'
   ];
-  
-  
+
+
   protected $width = ['files'];
-  
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function parent()
   {
     return $this->belongsTo(Category::class, 'parent_id');
   }
-  
+
   public function children()
   {
     return $this->hasMany(Category::class, 'parent_id');
   }
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__product_category')->withTimestamps();
   }
-  
+
   public function ownProducts()
   {
     return $this->hasMany(Product::class)->where(function ($query) {
@@ -65,12 +65,12 @@ class Category extends Model
     })->where("status", 1)
       ->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0) or (stock_status = 0))");
   }
-  
+
   public function manufacturers()
   {
     return $this->belongsToMany(Manufacturer::class, 'icommerce__products')->withTimestamps();
   }
-  
+
   public function store()
   {
     if (is_module_enabled('Marketplace')) {
@@ -78,7 +78,7 @@ class Category extends Model
     }
     return $this->belongsTo(Store::class);
   }
-  
+
   public function getUrlAttribute()
   {
     $url = "";
@@ -108,9 +108,16 @@ class Category extends Model
     }
     return $url;
   }
-  
-  
-  
+
+  public function urlManufacturer(Manufacturer $manufacturer)
+  {
+    $url = "";
+    $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
+    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.categoryManufacturer', [$this->slug, $manufacturer->slug]);
+    }
+    return $url;
+  }
   public function getOptionsAttribute($value)
   {
     try {
@@ -119,7 +126,7 @@ class Category extends Model
       return json_decode($value);
     }
   }
-  
+
   public function getMainImageAttribute()
   {
     $thumbnail = $this->files->where('zone', 'mainimage')->first();
@@ -143,7 +150,7 @@ class Category extends Model
     }
     return json_decode(json_encode($image));
   }
-  
+
   public function getSecondaryImageAttribute()
   {
     $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
@@ -160,7 +167,7 @@ class Category extends Model
     }
     return json_decode(json_encode($image));
   }
-  
+
   public function getTertiaryImageAttribute()
   {
     $thumbnail = $this->files->where('zone', 'tertiaryimage')->first();
@@ -177,27 +184,27 @@ class Category extends Model
     }
     return json_decode(json_encode($image));
   }
-  
+
   public function getLftName()
   {
     return 'lft';
   }
-  
+
   public function getRgtName()
   {
     return 'rgt';
   }
-  
+
   public function getDepthName()
   {
     return 'depth';
   }
-  
+
   public function getParentIdName()
   {
     return 'parent_id';
   }
-  
+
   // Specify parent id attribute mutator
   public function setParentAttribute($value)
   {

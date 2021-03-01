@@ -68,7 +68,7 @@ return [
         'entityId' => null
       ]
     ],
-    
+
     ],
   //Extra field to crud product categories
   'manufacturers' => [
@@ -98,5 +98,25 @@ return [
   //Extra field to crud product categories
   'taxClasses' => [],
   //Extra field to crud product categories
-  'taxRates' => []
+  'taxRates' => [],
+  //Extra field to crud products
+  'products' => [
+      //productable extra fields. We recommend you adding a custom relation in config like "productable" in section "relations" > "products", and also a custom include in the section "includes" > "products"
+      'productables' => [
+          /*'posts' => [
+              'loadOptions' => [
+                  'apiRoute' => 'apiRoutes.qblog.posts',
+                  'select' => [ 'label' => 'title', 'id' => 'id' ],
+              ],
+              'value' => [], //If the field is not multiple, it must be null. Else, it must be an empty array
+              'type' => 'select', //It's recommended to use select or multiselect field types
+              'props' => [
+                  'label' => 'Entradas',
+                  'multiple' => true,
+              ],
+              'entity' => "Modules\\Iblog\\Entities\\Post", //the productable item must have an entity
+          ],*/
+      ]
+  ] ,
+
 ];
