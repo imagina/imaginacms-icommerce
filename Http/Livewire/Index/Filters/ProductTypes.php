@@ -13,7 +13,7 @@ class ProductTypes extends Component
     public $isExpanded;
     public $show;
 
-    protected $listeners = ['productListRendered'];
+    protected $listeners = ['itemListRendered'];
 
     public function mount(){
 
@@ -32,9 +32,16 @@ class ProductTypes extends Component
 
         //\Log::info("Selected Type: ".json_encode($this->selectedType));
 
+         $this->emit('getData',[
+            'filters' => [
+                'isCall' => (boolean)$this->selectedType
+            ]
+        ]);
+        /*
         $this->emit('updateFilter',[
           'isCall' => (boolean)$this->selectedType
         ]);
+        */
        
         $this->isExpanded = true;
     }
@@ -51,14 +58,14 @@ class ProductTypes extends Component
     * Listener - Product List Rendered 
     *
     */
-    public function productListRendered($params){
+    public function itemListRendered($params){
 
 
         $resultShowFilter = $this->getProductRepository()->getProductTypes(json_decode(json_encode($params)));
 
         // Validation from URL
-        if(isset($params["filter"]["isCall"])){
-            $this->selectedType = $params["filter"]["isCall"];
+        if(isset($params["filter"][$this->repoAttribute])){
+            $this->selectedType = $params["filter"][$this->repoAttribute];
             $this->show = true;
         }
 

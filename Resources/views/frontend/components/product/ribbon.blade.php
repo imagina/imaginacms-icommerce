@@ -1,8 +1,8 @@
-<div id="productRibbon">
+<div class="productRibbon">
 
   <!--Ribbon Sold out-->
   @if(($product->quantity <= 0 && $product->subtract) || (!$product->stock_status))
-    <div id="ribbonSoldOut" class="ribbonContent">
+    <div class="ribbonSoldOut ribbonContent">
       <div class="asideRibbon">
         <div class="ribbonLabel">{{trans('icommerce::products.alerts.sold out')}}</div>
       </div>
@@ -10,7 +10,7 @@
 
     <!--Ribbon Product new-->
   @elseif($product->is_new)
-    <div id="ribbonNewProduct" class="ribbonContent">
+    <div class="ribbonNewProduct ribbonContent">
       <div class="asideRibbon">
         <div class="ribbonLabel"><b>{{trans('icommerce::products.alerts.new')}}</b></div>
         <div class="ribbonLabel">{{trans('icommerce::products.single')}}</div>
@@ -19,7 +19,7 @@
   @endif
 <!--Ribbon discount-->
   @if(isset($discount) && $discount)
-    <div id="ribbonDiscount" class="ribbonContent">
+    <div class="ribbonDiscount ribbonContent">
       <div class="asideRibbon">
         @if($discount && ($discount->criteria == 'fixed'))
           <b><i class="fa fa-tags"></i></b>
