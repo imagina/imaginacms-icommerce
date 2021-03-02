@@ -450,5 +450,4 @@ class Product extends Model implements TaggableInterface
 		return collect([]);
 	}
 
-
 }
