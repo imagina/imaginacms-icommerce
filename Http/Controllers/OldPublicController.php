@@ -60,6 +60,9 @@ class OldPublicController extends BasePublicController
     $params = $this->_paramsRequest($request,$category->id);
     
     $products = $this->product->getItemsBy($params);
+  
+    $configFilters = config("asgard.icommerce.config.filters");
+    $configFilters["categories"]["itemSelected"] = $category;
     
     $ptpl = "icommerce.category.{$category->parent_id}%.index";
     if ($category->parent_id != 0 && view()->exists($ptpl)) {
@@ -84,7 +87,9 @@ class OldPublicController extends BasePublicController
     $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
     
     $gallery = $this->getGalleryCategory($category);
-   
+  
+    config(["asgard.icommerce.config.filters" => $configFilters]);
+    
     return view($tpl, compact('category','products','paginate','categoryBreadcrumb','gallery'));
   }
   

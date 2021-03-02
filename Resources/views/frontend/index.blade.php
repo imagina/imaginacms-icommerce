@@ -40,8 +40,13 @@
           @endif
           
           {{-- Filters --}}
+          {{--
           @include('icommerce::frontend.index.filters',[
             "categoryBreadcrumb" => $categoryBreadcrumb])
+          --}}
+
+          <livewire:isite::filters :filters="config('asgard.icommerce.config.filters')"/>
+          
 
           {{-- Extra Widgets --}}
           @if(config("asgard.icommerce.config.widgets"))
@@ -75,10 +80,18 @@
             @include('icommerce::frontend.partials.children-categories-index-section',["category" => $category ?? null])
           @endif
 
-          <livewire:icommerce::product-list
-            :category="$category ?? null" 
-            :manufacturer="$manufacturer ?? null" />
-
+          
+          <livewire:isite::items-list 
+            moduleName="Icommerce"
+            itemComponentName="icommerce::product-list-item" 
+            entityName="Product"
+            :params="[
+            'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
+            'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
+            'take' => setting('icommerce::product-per-page',null,12)]"
+            :configOrderBy="config('asgard.icommerce.config.orderBy')"
+            :configLayoutIndex="config('asgard.icommerce.config.layoutIndex')"/>
+          
           <hr>
         
         </div>

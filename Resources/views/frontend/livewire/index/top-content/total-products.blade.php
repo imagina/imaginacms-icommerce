@@ -3,7 +3,7 @@
 		{{trans('icommerce::frontend.index.we found')}}:
 	</label>
 	<label class="infor mb-0">
-		{{$totalProducts}}
+		{{$totalItems}}
 		{{trans('icommerce::products.plural')}}
 	</label>
 </div>

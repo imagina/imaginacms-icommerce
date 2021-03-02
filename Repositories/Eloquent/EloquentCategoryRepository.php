@@ -135,19 +135,40 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             return $query->get();
         }
     }
+  
+    
+  public function getItemsByForTheTreeFilter($params)
+  {
+    $categories = $this->getItemsBy($params);
 
+    if (isset($params->filter->manufacturers) && !empty($params->filter->manufacturers)) {
+      $params->filter->manufacturers = null;
+  
+      $categoriesWithoutManufacturersFilter = $this->getItemsBy($params);
+ 
+      $parents = [];
+      foreach ($categories as $category) {
+        $this->getParents($category, $parents, $categoriesWithoutManufacturersFilter);
+      }
+  
+      $categories = collect($parents)->merge($categories)->keyBy("id");
+    }
+    
+    return $categories;
+  }
+  
     public function getItem($criteria, $params = false)
     {
         // INITIALIZE QUERY
         $query = $this->model->query();
 
         /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include)) {//If Request all relationships
+        if (in_array('*', $params->include ?? [])) {//If Request all relationships
             $query->with([]);
         } else {//Especific relationships
             $includeDefault = ['translations'];//Default relationships
             if (isset($params->include))//merge relations with default relationships
-                $includeDefault = array_merge($includeDefault, $params->include);
+                $includeDefault = array_merge($includeDefault, $params->include ?? []);
             $query->with($includeDefault);//Add Relationships to query
         }
 
@@ -172,9 +193,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
           $query->where('locale', $filter->locale)
             ->where($field, $criteria);
         });
-      else
+      else{
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
+      }
+      
 
     }
 
@@ -257,6 +280,16 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     $model = $query->where($field ?? 'id', $criteria)->first();
     event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     $model ? $model->delete() : false;
+  }
+  
+  private function getParents($categoryManufacturer, &$parents = [], $categories)
+  {
+    foreach ($categories as $category) {
+      if ($categoryManufacturer->parent_id == $category->id) {
+        array_push($parents, $category);
+        $this->getParents($category, $parents, $categories);
+      }
+    }
   }
 
 }

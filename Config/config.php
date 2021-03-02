@@ -301,31 +301,87 @@ return [
   'filters' => [
     'categories' => [
       'title' => 'icommerce::categories.plural',
+      'name' => 'categories',
       /*
-       * Mode for render:
-       *  allTree
-       *  allFamilyOfTheSelectedNode
-       *  onlyLeftAndRightOfTheSelectedNode
+       * Types of Title:
+       *  itemSelected
+       *  titleOfTheConfig - default
        */
-      'mode' => 'allTree',
+      'typeTitle' => 'titleOfTheConfig',
+      /*
+       * Types of Modes for render:
+       *  allTree - default
+       *  allFamilyOfTheSelectedNode (Need NodeTrait implemented - laravel-nestedset package)
+       *  onlyLeftAndRightOfTheSelectedNode (Need NodeTrait implemented - laravel-nestedset package)
+       */
+      'renderMode' => 'allTree',
       'status' => true,
       'isExpanded' => true,
-    ],
+      'type' => 'tree',
+      'repository' => 'Modules\Icommerce\Repositories\CategoryRepository',
+      'entityClass' => 'Modules\Icommerce\Entities\Category',
+      'emitTo' => null,
+      'repoAction' => null,
+      'repoAttribute' => null,
+      'listener' => null,
+      'repoMethod' => 'getItemsByForTheTreeFilter',
+      /*
+      * Layouts available:
+      *  ttys
+      *  alnat
+       * default - default
+      */
+      'layout' => 'default',
+      'classes' => 'col-12'
+     ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
-      'status' => true
+      'name' => 'range-prices',
+      'status' => true,
+      'isExpanded' => true,
+      'type' => 'range',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'itemsListGetData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'priceRange',
+      'listener' => 'itemListRendered',
+      'repoMethod' => 'getPriceRange',
+      'layout' => 'range-layout-1',
+      'classes' => 'col-12',
+      'step' => 10000
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
+      'name' => 'manufacturers',
       'status' => true,
       'isExpanded' => false,
+      'type' => 'checkbox',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'itemsListGetData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'manufacturers',
+      'listener' => 'itemListRendered',
+      'repoMethod' => 'getManufacturers',
+      'layout' => 'checkbox-layout-1',
+      'classes' => 'col-12'
     ],
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
-      'status' => true
+      'name' => 'product-options',
+      'status' => true,
+      'type' => 'checkbox',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'itemsListGetData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'optionValues',
+      'listener' => 'itemListRendered',
+      'repoMethod' => 'getProductOptions',
+      'layout' => 'icommerce::frontend.livewire.index.filters.product-options.index',
+      'classes' => 'col-12'
     ],
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
+      'name' => 'product-types',
       'status' => true,
       'isExpanded' => false,
       'options' => [
@@ -339,7 +395,16 @@ return [
           'value' => 1,
           'status' => true
         ],
-      ]
+      ],
+      'type' => 'radio',
+      'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
+      'emitTo' => 'itemsListGetData',
+      'repoAction' => 'filter',
+      'repoAttribute' => 'isCall',
+      'listener' => 'itemListRendered',
+      'repoMethod' => 'getProductTypes',
+      'layout' => 'radio-layout-1',
+      'classes' => 'col-12'
     ]
   ],
 
