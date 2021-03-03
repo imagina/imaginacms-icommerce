@@ -298,48 +298,7 @@ class PublicController extends BaseApiController
     }
     return view($tpl,["cart" => new CartTransformer($cart),"currency" => $currency, "title" => $title]);
   }
-  
-  public function wishlist()
-  {
-    $tpl = 'icommerce::frontend.wishlist.index';
-    $ttpl = 'icommerce.wishlist.index';
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
-    return view($tpl);
-  }
-  
-  // view products by category
-  public function search(Request $request)
-  {
-    
-    $tpl = 'icommerce::frontend.search';
-    $ttpl = 'icommerce.search';
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
-    $category=$request->input('category')??null;
-    $params=$this->_paramsRequest($request,$category);
-    
-    $products = $this->product->getItemsBy($params);
-    
-    $products=ProductTransformer::collection($products);
-    
-    $paginate=(object)[
-      "total" => $products->total(),
-      "lastPage" => $products->lastPage(),
-      "perPage" => $products->perPage(),
-      "currentPage" => $products->currentPage()
-    ];
-    
-    return view($tpl, compact('products','paginate', 'category'));
-    
-  }
-  // view products by category
-  public function test(Request $request)
-  {
-    
 
-    
-  }
   
   private function _paramsRequest(&$params)
   {

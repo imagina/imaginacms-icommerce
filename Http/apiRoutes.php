@@ -27,9 +27,6 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
 //======  CART PRODUCTS
   require('ApiRoutes/cartProductRoutes.php');
 
-//======  WISHLISTS
-  require('ApiRoutes/wishlistRoutes.php');
-
 //======  TAX CLASSES
   require('ApiRoutes/taxClassRoutes.php');
 

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 {{-- Meta --}}
-@include('icommerce::frontend.index.meta')
+@include('icommerce::frontend.partials.index.meta')
 
 
 @section('content')
@@ -38,12 +38,6 @@
 
             @endforeach
           @endif
-          
-          {{-- Filters --}}
-          {{--
-          @include('icommerce::frontend.index.filters',[
-            "categoryBreadcrumb" => $categoryBreadcrumb])
-          --}}
 
           <livewire:isite::filters :filters="config('asgard.icommerce.config.filters')"/>
           
@@ -108,4 +102,4 @@
 @stop
 
 {{-- VUEJS SCRIPTS--}}
-@include('icommerce::frontend.index.scripts')
+@include('icommerce::frontend.partials.index.scripts')

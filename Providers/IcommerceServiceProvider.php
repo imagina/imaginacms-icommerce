@@ -56,7 +56,6 @@ class IcommerceServiceProvider extends ServiceProvider
       $event->load('couponcategories', Arr::dot(trans('icommerce::couponcategories')));
       $event->load('couponproducts', Arr::dot(trans('icommerce::couponproducts')));
       $event->load('couponhistories', Arr::dot(trans('icommerce::couponhistories')));
-      $event->load('wishlists', Arr::dot(trans('icommerce::wishlists')));
       $event->load('payments', Arr::dot(trans('icommerce::payments')));
       $event->load('shippings', Arr::dot(trans('icommerce::shippings')));
       $event->load('taxrates', Arr::dot(trans('icommerce::taxrates')));
@@ -357,18 +356,6 @@ class IcommerceServiceProvider extends ServiceProvider
       }
     );
     $this->app->bind(
-      'Modules\Icommerce\Repositories\WishlistRepository',
-      function () {
-        $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentWishlistRepository(new \Modules\Icommerce\Entities\Wishlist());
-
-        if (!config('app.cache')) {
-          return $repository;
-        }
-
-        return new \Modules\Icommerce\Repositories\Cache\CacheWishlistDecorator($repository);
-      }
-    );
-    $this->app->bind(
       'Modules\Icommerce\Repositories\TransactionRepository',
       function () {
         $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentTransactionRepository(new \Modules\Icommerce\Entities\Transaction());
@@ -571,7 +558,6 @@ class IcommerceServiceProvider extends ServiceProvider
     Livewire::component('icommerce::filter-range-prices', \Modules\Icommerce\Http\Livewire\Index\Filters\RangePrices::class);
     Livewire::component('icommerce::filter-manufacturers', \Modules\Icommerce\Http\Livewire\Index\Filters\Manufacturers::class);
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
-    Livewire::component('icommerce::wishlist', \Modules\Icommerce\Http\Livewire\Wishlist::class);
     Livewire::component('icommerce::filter-product-options', \Modules\Icommerce\Http\Livewire\Index\Filters\ProductOptions::class);
     Livewire::component('icommerce::filter-product-types', \Modules\Icommerce\Http\Livewire\Index\Filters\ProductTypes::class);
   }

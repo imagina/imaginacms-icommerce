@@ -101,7 +101,7 @@
           </a>
           
           <!-- BUTTON WISHLIST -->
-          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist"
+          <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})" class="btn btn-wishlist"
              v-if="!products_children">
             <span>AGREGAR A LA LISTA</span>
             <i class="fa fa-heart-o ml-1"></i>
@@ -121,7 +121,7 @@
           <a href="{{url('/contacto')}}" class=" btn-comprar btn btn-secondary text-white">{{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}</a>
     
           <!-- BUTTON WISHLIST -->
-          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})" class="btn btn-wishlist"
+          <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})" class="btn btn-wishlist"
              v-if="!products_children">
             <span>AGREGAR A LA LISTA</span>
             <i class="fa fa-heart-o ml-1"></i>

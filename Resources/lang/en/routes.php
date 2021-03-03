@@ -7,7 +7,6 @@ return [
       'category' => 'store/c/{categorySlug}',
       'manufacturer' => 'store/m/{manufacturerSlug}',
       'categoryManufacturer' => 'store/c/{categorySlug}/m/{manufacturerSlug}',
-      'wishlist' => 'store/wishlist',
       'offers' => 'store/offers',
     ],
     

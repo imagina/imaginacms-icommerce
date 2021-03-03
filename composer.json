@@ -12,7 +12,8 @@
         "willvincent/laravel-rateable": "^2.3",
         "imagina/icurrency-module": "v8.x-dev",
         "imagina/icommercecheckmo-module": "v8.x-dev",
-        "imagina/icommerceagree-module": "v8.x-dev"
+        "imagina/icommerceagree-module": "v8.x-dev",
+        "imagina/wishlistable-module": "v8.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",
