@@ -45,18 +45,24 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
                         ->orWhere('created_at', 'like', '%' . $filter->search . '%');
                 });
             }
+  
+            //add filter by store
             if (isset($filter->store)) {
                 $query->where('store_id', $filter->store);
             }
-
+  
+            //add filter by showMenu
             if (isset($filter->showMenu)&& is_bool($filter->showMenu)) {
                 $query->where('show_menu', $filter->showMenu);
             }
-
+  
+            //add filter by ids
             if (isset($filter->ids)) {
                 is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
                 $query->whereIn('icommerce__categories.id', $filter->ids);
             }
+  
+            //add filter by manufacturers
             if (isset($filter->manufacturers) && $filter->manufacturers) {
                 is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
                 $query->whereHas('products', function ($query) use ($filter){
