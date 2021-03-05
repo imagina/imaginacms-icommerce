@@ -16,7 +16,6 @@
       {{$product->summary}}
     </div>
   @endif
-  @endif
   
   @if(!$product->is_call)
     @if(isset($discount) && $discount)
