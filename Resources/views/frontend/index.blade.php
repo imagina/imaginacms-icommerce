@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 {{-- Meta --}}
-@include('icommerce::frontend.index.meta')
+@include('icommerce::frontend.partials.index.meta')
 
 
 @section('content')
@@ -38,12 +38,6 @@
 
             @endforeach
           @endif
-          
-          {{-- Filters --}}
-          {{--
-          @include('icommerce::frontend.index.filters',[
-            "categoryBreadcrumb" => $categoryBreadcrumb])
-          --}}
 
           <livewire:isite::filters :filters="config('asgard.icommerce.config.filters')"/>
           
@@ -83,7 +77,8 @@
           
           <livewire:isite::items-list 
             moduleName="Icommerce"
-            itemComponentName="icommerce::product-list-item" 
+            itemComponentName="icommerce::product-list-item"
+            itemComponentNamespace="Modules\Icommerce\View\Components\ProductListItem"
             entityName="Product"
             :params="[
             'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
@@ -108,4 +103,4 @@
 @stop
 
 {{-- VUEJS SCRIPTS--}}
-@include('icommerce::frontend.index.scripts')
+@include('icommerce::frontend.partials.index.scripts')

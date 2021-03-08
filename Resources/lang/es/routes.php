@@ -8,7 +8,6 @@ return [
       'category' => 'tienda/c/{categorySlug}',
       'manufacturer' => 'tienda/m/{manufacturerSlug}',
       'categoryManufacturer' => 'tienda/c/{categorySlug}/m/{manufacturerSlug}',
-      'wishlist' => 'tienda/lista-de-deseos',
       'offers' => 'tienda/ofertas',
     ],
     

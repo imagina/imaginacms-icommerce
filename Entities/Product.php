@@ -156,11 +156,6 @@ class Product extends Model implements TaggableInterface
 			->using(OrderItem::class);
 	}
 
-	public function wishlists()
-	{
-		return $this->hasMany(Wishlist::class);
-	}
-
 	public function coupons()
 	{
 		return $this->belongsToMany(Coupon::class, 'icommerce__coupon_product')->withTimestamps();

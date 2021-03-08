@@ -163,13 +163,6 @@ return [
         'edit' => 'icommerce::couponhistories.edit resource',
         'destroy' => 'icommerce::couponhistories.destroy resource',
     ],
-    'icommerce.wishlists' => [
-        'manage' => 'icommerce::wishlists.manage resource',
-        'index' => 'icommerce::wishlists.list resource',
-        'create' => 'icommerce::wishlists.create resource',
-        'edit' => 'icommerce::wishlists.edit resource',
-        'destroy' => 'icommerce::wishlists.destroy resource',
-    ],
     'icommerce.payments' => [
         'manage' => 'icommerce::payments.manage resource',
         'index' => 'icommerce::payments.list resource',

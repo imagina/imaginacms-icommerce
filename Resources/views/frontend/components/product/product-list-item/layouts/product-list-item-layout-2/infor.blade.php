@@ -17,7 +17,8 @@
              class="btn btn-warning btn-circle text-white mx-2 rounded-circle cursor-pointer">
             <i class="fa fa-search"></i>
           </a>
-          <a onClick="window.livewire.emit('addToWishList',{{$product->id}})"
+          
+          <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
              class="btn btn-warning btn-circle text-white mx-2 rounded-circle cursor-pointer">
             <i class="fa fa-heart-o"></i>
           

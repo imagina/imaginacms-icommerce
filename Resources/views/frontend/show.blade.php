@@ -19,15 +19,15 @@
 
             <div class="col-lg-6 mb-5">
 
-              @include('icommerce::frontend.widgets.gallery')
+              @include('icommerce::frontend.partials.show.gallery')
   
-              @include('icommerce::frontend.products.share')
+              @include('icommerce::frontend.partials.show.share')
 
             </div>
 
             <div class="col-lg-6 mb-5">
               
-              @include('icommerce::frontend.widgets.information')
+              @include('icommerce::frontend.partials.show.information')
               
             </div>
 
@@ -52,7 +52,7 @@
                   <div class="tab-content border">
                     <div class="tab-pane active " id="descripcion" role="tabpanel">
                       <div class="p-3 p-md-5">
-                        @includeFirst(['icommerce::frontend.products.tabs'])
+                        @include('icommerce::frontend.partials.show.tabs')
                       </div>
 
                     </div>
@@ -76,7 +76,7 @@
 
       <div class="col-12">
 
-        @include('icommerce::frontend.products.related-products')
+        @include('icommerce::frontend.partials.show.related-products')
 
       </div>
 

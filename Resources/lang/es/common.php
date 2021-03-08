@@ -39,6 +39,8 @@ return [
   ],
 
   'messages' => [
+    'field required' => 'El campo es requerido',
+    'min 2 characters' => 'El campo debe contener mínimo dos caracteres',
     'title is required' => 'El título es requerido',
     'title min 2' => 'El título debe contener mínimo dos caracteres',
     'description is required' => 'La descripción es requerida',

@@ -37,7 +37,7 @@
               <i class="fa fa-shopping-basket"></i>
             </a>
           @endif
-          <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{$product->id}})">
+          <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
             <i class="fa fa-heart-o"></i>
           </a>
         </div>
