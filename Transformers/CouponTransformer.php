@@ -25,9 +25,12 @@ class CouponTransformer extends JsonResource
       'quantityTotalCustomer' => $this->when($this->quantity_total_customer, $this->quantity_total_customer),
       'status' => $this->status,
       'product' => $this->when($this->product_id, new ProductTransformer($this->whenLoaded('product'))),
-      'category' => $this->when($this->category_id, new CategoryTransformer($this->whenLoaded('category'))),
+      //'category' => $this->when($this->category_id, new CategoryTransformer($this->whenLoaded('category'))),
+      'categories' => CategoryTransformer::collection($this->whenLoaded('categories')),
       'minimumAmount' => (float)$this->minimum_amount,
       'minimumQuantityProducts' => (int)$this->minimum_quantity_products,
+      'excludeDepartments' => $this->exclude_departments,
+      'includeDepartments' => $this->include_departments,
     ];
 
     return $data;

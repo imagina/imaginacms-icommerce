@@ -15,7 +15,7 @@ class validateCoupons
    * @param $cart
    * @return $discount
    */
-  public function validateCode ($couponCode, $cartId, $storeId) {
+  public function validateCode ($couponCode, $cartId, $storeId=null) {
 
     // Get coupon
     $coupon = Coupon::where( 'code', $couponCode)->where('store_id',$storeId)->orWhere('store_id',null)->first();
@@ -32,12 +32,16 @@ class validateCoupons
 
     // validate if the coupon is valid (Dates)
     $now = date('Y-m-d');
-    if ( !( $now >= $coupon->date_start ) ){
+
+    if ( !( $now >= $coupon->date_start->format('Y-m-d') ) ){
       return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon not started'));
     }
-    if ( !( $now <= $coupon->date_end ) ){
+    //\Log::info("validacion: fecha 1");
+
+    if ( !( $now <= $coupon->date_end->format('Y-m-d') ) ){
       return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon expired'));
     }
+    //\Log::info("validacion: fecha 2");
 
     // Validate the number of times the coupon has been used
     if($coupon->quantity_total>0){//If quantity total == 0 is infinite
@@ -45,6 +49,7 @@ class validateCoupons
         return $this->setResponseMessages(trans('icommerce::coupons.messages.maximum used coupons'));
       }
     }
+    //\Log::info("validacion: the number of times the coupon has been used");
 
     // Validate the number of times the coupon has been used by the logged in user
     if($coupon->quantity_total_customer>0){
@@ -52,6 +57,7 @@ class validateCoupons
         return $this->setResponseMessages(trans('icommerce::coupons.messages.maximum coupons per user used'));
       }
     }
+    //\Log::info("validacion: the number of times the coupon has been used by the logged in user");
 
     // Get Cart data
     $cart = Cart::find( $cartId );
@@ -60,17 +66,20 @@ class validateCoupons
     if ( $cart == null ){
       return $this->setResponseMessages(trans('icommerce::coupons.messages.cart not exists'));
     }
+    //\Log::info("cart validation");
 
     // Validate if cart has items
     if ( count($cart->products ) < 1){
       return $this->setResponseMessages(trans('icommerce::coupons.messages.cart without items'));
     }
+    //\Log::info("cart validation: if cart has items");
 
     // Coupon for order (1 coupon for all items of the order)
     if ( $coupon->type == 1 ){
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cart->total);
       return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for order'), $discount, 1);
     }
+    //\Log::info("coupon type: 1");
 
     // Coupon for product (2: coupon for specific product)
     if ( $coupon->type == 2 && $coupon->product_id ){
@@ -78,6 +87,7 @@ class validateCoupons
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
       return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for product'), $discount, 1);
     }
+    //\Log::info("coupon type: 2");
 
     // Coupon for category (3: coupon for product in a category specific)
     if ( $coupon->type == 3 && $coupon->category_id ){
@@ -85,6 +95,7 @@ class validateCoupons
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
       return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for category'), $discount, 1);
     }
+    //\Log::info("coupon type: 3");
 
     // Default response
     return $this->setResponseMessages();

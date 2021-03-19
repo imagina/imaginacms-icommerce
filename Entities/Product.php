@@ -156,10 +156,12 @@ class Product extends Model implements TaggableInterface
 			->using(OrderItem::class);
 	}
 
+	/*
 	public function coupons()
 	{
 		return $this->belongsToMany(Coupon::class, 'icommerce__coupon_product')->withTimestamps();
 	}
+	*/
 
 	public function parent()
 	{
@@ -183,6 +185,18 @@ class Product extends Model implements TaggableInterface
 		return $this->hasMany(CartProduct::class);
 	}
 
+
+	/*
+    * Polimorphy Relations
+    */
+	public function coupons()
+    {
+        return $this->morphToMany(Coupon::class,'couponable','icommerce__couponables');
+    }
+
+	/*
+    * Mutators / Accessors
+    */
 	protected function setQuantityAttribute($value)
 	{
 

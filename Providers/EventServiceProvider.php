@@ -18,6 +18,11 @@ use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Events\ProductWasUpdated;
 use Modules\Icommerce\Events\UpdateProductable;
 
+use Modules\Icommerce\Events\CouponWasCreated;
+use Modules\Icommerce\Events\CouponWasUpdated;
+use Modules\Icommerce\Events\CouponIsDeleting;
+use Modules\Icommerce\Events\Handlers\HandleCouponable;
+
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
@@ -43,6 +48,15 @@ class EventServiceProvider extends ServiceProvider
         ],
         DeleteProductable::class => [
             HandleProductable::class
+        ],
+        CouponWasCreated::class => [
+            HandleCouponable::class
+        ],
+        CouponWasUpdated::class => [
+            HandleCouponable::class
+        ],
+        CouponIsDeleting::class => [
+            HandleCouponable::class
         ],
     ];
 }

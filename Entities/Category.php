@@ -79,6 +79,17 @@ class Category extends Model
     return $this->belongsTo(Store::class);
   }
 
+  /*
+  * Polimorphy Relations
+  */
+  public function coupons()
+  {
+    return $this->morphToMany(Coupon::class, 'couponable','icommerce__couponables');
+  }
+
+  /*
+  * Mutators / Accessors
+  */
   public function getUrlAttribute()
   {
     $url = "";

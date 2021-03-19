@@ -30,13 +30,18 @@ class Coupon extends Model
         'options',
         'minimum_amount',
         'minimum_quantity_products',
+        'exclude_departments',
+        'include_departments'
     ];
 
 
 
     protected $casts = [
-        'options' => 'array'
+        'options' => 'array',
+        'exclude_departments' => 'array',
+        'include_departments' => 'array'
     ];
+
 
     public function store()
     {
@@ -73,6 +78,46 @@ class Coupon extends Model
         return $this->hasMany(CouponOrderHistory::class);
     }
 
+
+    /*
+    * Mutators / Accessors
+    */
+    public function setExcludeDepartmentsAttribute($value)
+    {
+        $this->attributes['exclude_departments'] = json_encode($value);
+    }
+
+    public function getExcludeDepartmentsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setIncludeDepartmentsAttribute($value)
+    {
+        $this->attributes['include_departments'] = json_encode($value);
+    }
+
+    public function getIncludeDepartmentsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    /*
+    * Polimorphy Relations
+    */
+    public function products()
+    {
+        return $this->morphedByMany(Product::class, 'couponable','icommerce__couponables');
+    }
+
+    public function categories()
+    {
+        return $this->morphedByMany(Category::class, 'couponable','icommerce__couponables');
+    }
+
+    /*
+    * Attributes
+    */
     public function getUsesTotalAttribute()
     {
         return $this->has('orders')->count();
@@ -86,6 +131,39 @@ class Coupon extends Model
         return $this->whereHas('orders', function ($query) {
             $query->where('icommerce__coupon_order_history.customer_id', Auth::id());
         })->count();
+    }
+
+    public function getIsValidAttribute(){
+
+        // Validate if coupon active (0 is ID for inactive coupons)
+        if ( $this->status == 0 ){
+            return false;
+        }
+
+        // validate if the coupon is valid (Dates)
+        $now = date('Y-m-d');
+        if ( !( $now >= $this->date_start) ){
+            return false;
+        }
+        if ( !( $now <= $this->date_end) ){
+            return false;
+        }
+
+        // Validate the number of times the coupon has been used
+        if($this->quantity_total>0){//If quantity total == 0 is infinite
+          if ( $this->usesTotal >= $this->quantity_total ){
+            return false;
+          }
+        }
+
+        // Validate the number of times the coupon has been used by the logged in user
+        if($this->quantity_total_customer>0){
+          if ( $this->usesTotalPerUser >= $this->quantity_total_customer ){
+            return false;
+          }
+        }
+
+        return true;
     }
 
 }
