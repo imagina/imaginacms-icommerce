@@ -7,12 +7,12 @@ $router->group(['prefix' => '/coupons'/*,'middleware' => ['auth:api']*/], functi
 
   $router->get('/coupons-validate', [
     'as' => $locale . 'api.icommerce.coupons.validate',
-    'uses' => 'CouponApiController@validateCoupon'
+    'uses' => 'CouponApiController@validateCoupon',
     'middleware' => ['auth:api']
   ]);
   $router->post('/', [
     'as' => $locale . 'api.icommerce.coupons.create',
-    'uses' => 'CouponApiController@create'
+    'uses' => 'CouponApiController@create',
     'middleware' => ['auth:api']
   ]);
   $router->get('/', [
@@ -21,12 +21,12 @@ $router->group(['prefix' => '/coupons'/*,'middleware' => ['auth:api']*/], functi
   ]);
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.coupons.update',
-    'uses' => 'CouponApiController@update'
+    'uses' => 'CouponApiController@update',
     'middleware' => ['auth:api']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.coupons.delete',
-    'uses' => 'CouponApiController@delete'
+    'uses' => 'CouponApiController@delete',
     'middleware' => ['auth:api']
   ]);
   $router->get('/{criteria}', [
