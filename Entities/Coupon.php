@@ -28,7 +28,7 @@ class Coupon extends Model
         'quantity_total_customer',
         'status',
         'options',
-        'minimum_amount',
+        'minimum_order_amount',
         'minimum_quantity_products',
         'exclude_departments',
         'include_departments'
