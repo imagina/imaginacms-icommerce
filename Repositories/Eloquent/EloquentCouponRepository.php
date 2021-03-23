@@ -14,7 +14,7 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
 
         // RELATIONSHIPS
         $defaultInclude = [];
-        $query->with(array_merge($defaultInclude, $params->include));
+        $query->with(array_merge($defaultInclude, $params->include ?? []));
 
         // FILTERS
         if ($params->filter) {
@@ -64,12 +64,12 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
         $query = $this->model->query();
 
         /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include)) {//If Request all relationships
+        if (in_array('*', $params->include ?? [])) {//If Request all relationships
             $query->with(['store','product','category','customer','orders','couponHistories']);
         } else {//Especific relationships
             $includeDefault = [];//Default relationships
             if (isset($params->include))//merge relations with default relationships
-                $includeDefault = array_merge($includeDefault, $params->include);
+                $includeDefault = array_merge($includeDefault, $params->include ?? []);
             $query->with($includeDefault);//Add Relationships to query
         }
 

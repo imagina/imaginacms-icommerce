@@ -95,6 +95,19 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
 
   public function create($data){
+    
+    $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
+    $product = $productRepository->getItem($data["product_id"]);
+  
+    if (!isset($product->id)) {
+      throw new \Exception("Invalid product", 400);
+    }
+    if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $data["product_option_values"])) {
+      throw new \Exception("Missing required product options", 400);
+    }
+    if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $data["product_option_values"])) {
+      throw new \Exception("Missing required product options", 400);
+    }
 
     // if the request has product without options
     $cartProduct = $this->findByAttributesOrOptions($data);
@@ -224,5 +237,24 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     }
 
     return $cartProduct ?? false;
+  }
+  
+  
+  private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues)
+  {
+    
+    $allRequiredOptionsOk = true;
+    foreach ($productOptions as $productOption) {
+      $optionOk = true;
+      if ($productOption->pivot->required) {
+        $optionOk = false;
+        foreach ($productOptionValues as $productOptionValue) {
+          $productOption->id == $productOptionValue["optionId"] ? $optionOk = true : false;
+        }
+      }
+      !$optionOk ? $allRequiredOptionsOk = false : false;
+    }
+    
+    return $allRequiredOptionsOk;
   }
 }

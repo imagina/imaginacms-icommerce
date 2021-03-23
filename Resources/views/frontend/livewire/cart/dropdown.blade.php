@@ -7,7 +7,7 @@
       @if($cart->products->count())
         <h4 class="dropdown-header mb-0 font-weight-bold text-center">
           {{trans('icommerce::cart.articles.cart')}} ({{$cart->products->count()}})
-          <i class="fa fa-trash text-muted float-right" title="Vaciar carrito" v-on:click="clear_cart()"></i>
+          <i class="fa fa-trash text-muted float-right" title="Vaciar carrito" wire:click="deleteCart"></i>
         </h4>
       @else
         <h5 class="dropdown-header mb-0 font-weight-bold text-center" v-else>

@@ -76,36 +76,6 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table">
-              <th>{{trans('icommerce::orders.table.payment address')}}</th>
-              <th>{{trans('icommerce::orders.table.shipping address')}}</th>
-              <tr>
-                <td>
-                  {{$order->payment_first_name}}<br>
-                  {{$order->payment_last_name}}<br>
-                  {{$order->payment_address_1}}<br>
-                  @if(!empty ($order->payment_address_2))
-                    {{$order->payment_address_2}}<br>
-                  @endif
-                  {{$order->payment_city}}<br>
-                  {{$order->paymentDepartment ? $order->paymentDepartment->translations[0]->name : ''}}<br>
-                  {{$order->paymentCountry ? $order->paymentCountry->translations[0]->name : ''}}
-                </td>
-                <td>
-                  {{$order->shipping_first_name}}<br>
-                  {{$order->shipping_last_name}}<br>
-                  {{$order->shipping_address_1}}<br>
-                  @if(!empty ($order->shipping_address_2))
-                    {{$order->shipping_address_2}}<br>
-                  @endif
-                  {{$order->shipping_city}}<br>
-                  {{$order->shippingDepartment ? $order->shippingDepartment->translations[0]->name : ''}}<br>
-                  {{$order->shippingCountry ? $order->shippingCountry->translations[0]->name : ''}}
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="table-responsive">
             <table class="table ">
               <th>{{trans('icommerce::orders.table.product')}}</th>
               <th>{{trans('icommerce::orders.table.sku')}}</th>

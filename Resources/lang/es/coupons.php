@@ -6,6 +6,9 @@ return [
     'edit resource' => 'Edit coupons',
     'destroy resource' => 'Destroy coupons',
     'title' => [
+        'addCoupon' => 'Añadir cupón',
+        'aplyCoupon' => 'Aplicar',
+        'typeCoupon' => 'Ingresa el código',
         'coupons' => 'Coupon',
         'create coupon' => 'Create a coupon',
         'edit coupon' => 'Edit a coupon',

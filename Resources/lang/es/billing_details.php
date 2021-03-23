@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title'             => 'Detalles de facturación',
+    'title'             => 'Dirección de facturación',
     'form'              => [
       'first_name'       => 'Nombres',
       'last_name'        => 'Apellidos',

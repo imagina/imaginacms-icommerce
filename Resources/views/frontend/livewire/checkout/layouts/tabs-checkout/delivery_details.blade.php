@@ -9,14 +9,14 @@
         <label class="form-check-label">
             <input type="checkbox"
                    class="form-check-input"
-                   name="sameDeliveryBilling"
-                   id="sameDeliveryBilling"
+                   name="sameShippingAndBillingAddresses"
+                   id="sameShippingAndBillingAddresses"
                    data-toggle="collapse"
                    href="#collapseShippingAddress"
                    aria-expanded="false"
                    aria-controls="collapseShippingAddress"
                    checked
-                   v-model="sameDeliveryBilling">
+                   v-model="sameShippingAndBillingAddresses">
             {{ trans('icommerce::delivery_details.same_delivery_billing') }}
         </label>
     </div>

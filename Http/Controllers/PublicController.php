@@ -281,9 +281,7 @@ class PublicController extends BaseApiController
   {
     $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
     
-    $tpl = "icommerce::frontend.checkout.layouts.$layout.index";
-    $ttpl = 'icommerce.checkout.index';
-    if (view()->exists($ttpl)) $tpl = $ttpl;
+    $tpl = "icommerce::frontend.checkout.index";
   
     $cart = request()->session()->get('cart');
     if(isset($cart->id)) {

@@ -16,7 +16,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
 
         // RELATIONSHIPS
         $defaultInclude = [];
-        $query->with(array_merge($defaultInclude, $params->include));
+        $query->with(array_merge($defaultInclude, $params->include ?? []));
 
         // FILTERS
         if ($params->filter) {
@@ -55,7 +55,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
         if (isset($params->page) && $params->page) {
             return $query->paginate($params->take);
         } else {
-            $params->take ? $query->take($params->take) : false;//Take
+          (isset($params->take) && $params->take) ? $query->take($params->take) : false;//Take
             return $query->get();
         }
     }

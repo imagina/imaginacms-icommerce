@@ -60,7 +60,8 @@ class Product extends Model implements TaggableInterface
 		'featured',
 		'sum_rating',
 		'sort_order',
-		'is_call'
+		'is_call',
+		'item_type_id'
 	];
 
 	protected $presenter = ProductPresenter::class;
@@ -119,6 +120,12 @@ class Product extends Model implements TaggableInterface
 	public function manufacturer()
 	{
 		return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
+	}
+
+
+	public function itemType()
+	{
+		return $this->belongsTo(ItemType::class);
 	}
 
 	public function discounts()
@@ -254,8 +261,7 @@ class Product extends Model implements TaggableInterface
 
 	public function discount()
 	{
-
-
+	 
 		$user = $this->auth;
 		$userId = $user->id ?? 0;
 		//dd($userId);
@@ -405,6 +411,32 @@ class Product extends Model implements TaggableInterface
 		}
 
 		return $isNew;
+	}
+
+
+	/**
+	 * Is New product
+	 * @return number
+	 */
+	public function getIsAvailableAttribute()
+	{
+		$isAvailable = false;
+	
+		$availableDate = new \DateTime($this->date_available);
+		$now = new \DateTime(date('Y-m-d'));
+		
+
+		if($this->status){
+      if($now >= $availableDate){ // if the date is available
+        if($this->stock_status){ // if it's in stock
+          if(($this->subtract && $this->quantity) || !$this->subtract){ //if its subtrack of stock and has quantity or isn't subtrack
+            $isAvailable = true;
+          }
+        }
+      }
+    }
+		
+		return $isAvailable;
 	}
 
 	public function getPriceAttribute($value)

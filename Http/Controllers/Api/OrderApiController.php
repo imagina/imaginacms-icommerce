@@ -140,7 +140,6 @@ class OrderApiController extends BaseApiController
      */
     public function create(Request $request)
     {
-     
         $this->user = app('Modules\Iprofile\Repositories\UserApiRepository');
         $this->cart = app('Modules\Icommerce\Repositories\CartRepository');
         $this->paymentMethod = app('Modules\Icommerce\Repositories\PaymentMethodRepository');

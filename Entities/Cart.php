@@ -46,5 +46,21 @@ class Cart extends Model
     {
         return $this->products->count();
     }
+    
+    public function getRequireShippingAttribute(){
+  
+  
+      $requireShipping = false;
+  
+      if ($this->products->isNotEmpty()) {
+        foreach ($this->products as $cartProduct) {
+          if ($cartProduct->product->shipping) {
+            $requireShipping = true;
+          }
+        }
+      }
+     return $requireShipping;
+     
+    }
 
 }

@@ -3,21 +3,19 @@
     <div class="col">
       <div class="row m-0">
         <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-3 py-2">
-          4
+          {{$step}}
         </div>
-        <h3 class="d-flex align-items-center">
+        <h3 class="d-flex align-items-center h5">
           {{ trans('icommerce::shippingmethods.title.shippingmethods') }}
-          <div v-if="updatingData">
-            &nbsp;
-            <i class="fa fa-spinner fa-pulse"></i>
-          </div>
+
         </h3>
       
       </div>
       
       <table id="shippingList" class="table my-2">
         <tbody>
-        <tr class="shipping-item" v-for="(ship, index) in shippingMethods">
+        @foreach($shippingMethods as $key => $shippingMethod)
+        <tr class="shipping-item">
           <td >
             <div
               class="card-header collapsed bg-white border-0"
@@ -26,21 +24,22 @@
               <label class="mb-0">
                 <input type="radio"
                        data-parent="#shippingList" data-toggle="collapse"
-                       :data-target="'#shipping'+index" aria-expanded="true"
-                       :aria-controls="'shipping'+index"
-                       v-model="shipping_name" :value="ship.name">
+                       data-target="#shipping{{$key}}" aria-expanded="true"
+                       aria-controls="shipping{{$key}}"
+                       wire:model="shippingMethodSelected" value="{{$shippingMethod->id}}">
                 <a class="card-title">
-                  @{{ship.title | capitalize}}
+                  {{ ucfirst($shippingMethod->title)}}
                 </a>
               </label>
             </div>
-            <div :id="'shipping'+index" class="collapse" role="tabpanel" :aria-labelledby="'shipping'+index">
+            <div id="shipping{{$key}}" class="collapse" role="tabpanel" aria-labelledby="shipping{{$key}}">
               <div class="card-block">
-                @{{ship.description}}
+                {{$shippingMethod->description}}
               </div>
             </div>
           </td>
         </tr>
+        @endforeach
         </tbody>
       </table>
       <input type="hidden" name="shipping_method" id="shipping_method" :value="shipping_method">
