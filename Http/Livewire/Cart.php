@@ -74,7 +74,7 @@ class Cart extends Component
   {
     
     try {
-      
+      $product = $this->productRepository()->getItem($productId);
           $data = [
             "cart_id" => $this->cart->id,
             "product_id" => $productId,
