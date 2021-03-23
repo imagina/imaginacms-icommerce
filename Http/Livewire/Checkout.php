@@ -38,6 +38,7 @@ class Checkout extends Component
   public $shippingMethodSelected;
   public $paymentMethodSelected;
   public $couponSelected;
+  public $couponDiscount;
   public $sameShippingAndBillingAddresses;
   public $locale;
   public $update;
@@ -460,6 +461,7 @@ class Checkout extends Component
     
     return $shippingMethod;
   }
+ 
   
   /**
    * @return
@@ -519,17 +521,19 @@ class Checkout extends Component
     if (!isset($coupon->id)) {
       $this->alert('warning', trans('icommerce::coupons.messages.coupon not exist'), config("asgard.isite.config.livewireAlerts"));
     }else{
-      if(!$coupon->isValid){
+      if(!$coupon->isRunning){
         $this->alert('warning', trans('icommerce::coupons.messages.coupon inactive'), config("asgard.isite.config.livewireAlerts"));
+      }elseif(!$coupon->canUse){
+        $this->alert('warning', trans('icommerce::coupons.messages.cantUseThisCoupon'), config("asgard.isite.config.livewireAlerts"));
       }else{
-        $this->couponSelected = $coupon->id;
-
+   
         $validateCoupons = new SupportCoupon();
         $result = $validateCoupons->getDiscount($coupon, $this->cart->id);
-
-        if($result->status==1)
-          $discount = $result->discount;
-       
+        
+        if( $result->status == 1 ){
+          $this->couponSelected = $coupon;
+          $this->couponDiscount = $result;
+        }
       }
     }
     

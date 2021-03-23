@@ -22,6 +22,10 @@ class HandleCouponable
 
          	if(isset($data['products']))
          		$this->updateItemsIds('products',$data,$entity,'Modules\Icommerce\Entities\Product');
+
+          if(isset($data['manufacturers']))
+            $this->updateItemsIds('manufacturers',$data,$entity,'Modules\Icommerce\Entities\Manufacturer');
+
         }else{
           $this->deleteItemsIds($entity);
         }
@@ -51,6 +55,10 @@ class HandleCouponable
 
       if($entity->products->count()>0){
         $entity->products()->detach();
+      }
+
+      if($entity->manufacturers->count()>0){
+        $entity->manufacturers()->detach();
       }
 
     }

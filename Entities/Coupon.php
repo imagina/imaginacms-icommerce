@@ -115,6 +115,11 @@ class Coupon extends Model
         return $this->morphedByMany(Category::class, 'couponable','icommerce__couponables');
     }
 
+    public function manufacturers()
+    {
+        return $this->morphedByMany(Manufacturer::class, 'couponable','icommerce__couponables');
+    }
+
     /*
     * Attributes
     */
