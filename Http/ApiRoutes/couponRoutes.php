@@ -17,7 +17,7 @@ $router->group(['prefix' => '/coupons'/*,'middleware' => ['auth:api']*/], functi
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.coupons.index',
-    'uses' => 'CouponApiController@index',
+    'uses' => 'CouponApiController@index'
   ]);
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.coupons.update',

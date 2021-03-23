@@ -4,9 +4,15 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Repositories\CouponRepository;
+use Illuminate\Support\Arr;
+
+use Modules\Icommerce\Events\CouponWasCreated;
+use Modules\Icommerce\Events\CouponWasUpdated;
+use Modules\Icommerce\Events\CouponIsDeleting;
 
 class EloquentCouponRepository extends EloquentBaseRepository implements CouponRepository
 {
+
     public function getItemsBy($params)
     {
         // INITIALIZE QUERY
@@ -73,6 +79,7 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
             $query->with($includeDefault);//Add Relationships to query
         }
 
+
         /*== FILTER ==*/
         if (isset($params->filter)) {
             $filter = $params->filter;
@@ -80,9 +87,9 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
             if (isset($filter->field))//Filter by specific field
                 $field = $filter->field;
 
-
             // find by specific attribute or by id
             $query->where($field ?? 'id', $criteria);
+
         }
 
         /*== FIELDS ==*/
@@ -91,6 +98,62 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
 
         /*== REQUEST ==*/
         return $query->first();
+
+    }
+
+    public function create($data)
+    {
+
+        $entity = $this->model->create($data);
+
+        if($entity){
+
+            event(new CouponWasCreated($entity,$data));
+
+        }
+
+        return $entity;
+
+    }
+
+    public function update($model,$data)
+    {
+
+        $model->update($data);
+        
+        if($model){
+            event(new CouponWasUpdated($model,$data));
+        }
+        
+        return $model;
+
+    }
+
+    public function destroy($model)
+    {
+
+        event(new CouponIsDeleting($model));
+
+        $model->delete();
+        
+    }
+
+    /**
+    * @param $filter = {"field":"code","criteria":123456}
+    * @return $coupon or null
+    */
+    public function validateCoupon($params){
+
+        $criteria = $params->filter->criteria;
+        $result = null;
+       
+        // Get Coupon
+        $coupon = $this->getItem($criteria, $params);
+        
+        if(!empty($coupon) && $coupon->isValid)
+             $result = $coupon;
+        
+        return $result;
 
     }
 
