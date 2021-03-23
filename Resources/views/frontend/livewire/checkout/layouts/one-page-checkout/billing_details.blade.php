@@ -7,6 +7,11 @@
     <h3 class="d-flex align-items-center my-1 h5">
       {{ trans('icommerce::billing_details.title') }}
     </h3>
+  
+    @if($errors->has('billingAddress'))
+      <br/>
+      <span class="alert alert-danger" role="alert">{{ $errors->first('billingAddress') }}</span>
+    @endif
   </div>
   
   

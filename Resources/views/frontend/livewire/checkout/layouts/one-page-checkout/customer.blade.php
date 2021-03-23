@@ -7,31 +7,50 @@
     </div>
     <h3 class="d-flex align-items-center my-1 h5">
       {{ trans('icommerce::customer.title') }}
+  
     </h3>
+  
+    @if($errors->has('userId'))
+      <br/>
+      <span class="alert alert-danger" role="alert">{{ $errors->first('userId') }}</span>
+    @endif
   </div>
   
   <div id="customerData" class="collapse show" role="tablist" aria-multiselectable="true">
     <hr class="my-2"/>
     @guest
+    
+      <div class="card mb-0 border-0">
+        <div class="card-header bg-white" role="tab" id="headingLogin"
+             data-toggle="collapse" href="#collapseLogin" aria-expanded="false"
+             style="cursor: pointer;"
+        >
+          <label class="form-check-label" style="cursor: pointer;">
+          
+            {{ trans('icommerce::customer.sub_titles.im_client') }}
+          </label>
+        </div>
+        <div id="collapseLogin" class="collapse show" role="tabpanel" aria-labelledby="headingLogin">
+          <div class="card-block my-3">
+            <!-- FORMULARIO -->
+            <div class="alert alert-danger d-none" id="loginAlert"></div>
+          
+            @include('iprofile::frontend.widgets.login',["embedded" => true, "route" => $locale . '.icommerce.store.checkout', "register" => false])
+        
+          </div>
+        </div>
+      </div>
+      
     <div class="card mb-0 border-0" >
       <div class="card-header bg-white" role="tab" id="headingRegister"
+           data-toggle="collapse" href="#collapseRegister" aria-expanded="false"
            style="cursor: pointer;">
         <label class="form-check-label" style="cursor: pointer;">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus"
-               fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-          </svg>
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash" fill="currentColor"
-               xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-          </svg>
-          
           {{ trans('icommerce::customer.sub_titles.new_client') }}
         </label>
       </div>
       
-      <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingRegister">
+      <div id="collapseRegister" class="collapse " role="tabpanel" aria-labelledby="headingRegister">
         <div class="card-block">
           <div class="card mb-0 border-0">
             
@@ -51,34 +70,6 @@
     </div>
     
 
-      <div class="card mb-0 border-0">
-        <div class="card-header bg-white" role="tab" id="headingLogin"
-             style="cursor: pointer;"
-        >
-          <label class="form-check-label" style="cursor: pointer;">
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus"
-                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd"
-                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash" fill="currentColor"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-            </svg>
-          
-            {{ trans('icommerce::customer.sub_titles.im_client') }}
-          </label>
-        </div>
-        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingLogin">
-          <div class="card-block my-3">
-            <!-- FORMULARIO -->
-            <div class="alert alert-danger d-none" id="loginAlert"></div>
-          
-            @include('iprofile::frontend.widgets.login',["embedded" => true, "route" => $locale . '.icommerce.store.checkout', "register" => false])
-        
-          </div>
-        </div>
-      </div>
     @endguest
     
     @auth

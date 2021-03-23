@@ -9,6 +9,11 @@
                 <h3 class="d-flex align-items-center h5">
                     {{ trans('icommerce::paymentmethods.title.paymentmethods') }}
                 </h3>
+    
+                @if($errors->has('paymentMethod'))
+                    <br/>
+                    <span class="alert alert-danger" role="alert">{{ $errors->first('paymentMethod') }}</span>
+                @endif
             </div>
 
 

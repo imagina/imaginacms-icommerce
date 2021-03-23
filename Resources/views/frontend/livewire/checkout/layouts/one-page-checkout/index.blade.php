@@ -95,9 +95,8 @@
       Livewire.on('orderCreated', orderData => {
         if(orderData.external) {
           window.open(orderData.redirectRoute)
-        }else{
-          window.location.replace(orderData.url)
         }
+        window.location.replace(orderData.url)
       })
     </script>
     @stop

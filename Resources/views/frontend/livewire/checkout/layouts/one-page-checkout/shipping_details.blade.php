@@ -6,6 +6,11 @@
     <h3 class="d-flex align-items-center h5">
       {{ trans('icommerce::delivery_details.title') }}
     </h3>
+  
+    @if($errors->has('shippingAddress'))
+      <br/>
+      <span class="alert alert-danger" role="alert">{{ $errors->first('shippingAddress') }}</span>
+    @endif
   </div>
   
   <hr class="my-2"/>

@@ -15,6 +15,7 @@ use Modules\Icommerce\Transformers\PaymentMethodTransformer;
 use Modules\Icommerce\Transformers\ShippingMethodTransformer;
 use Modules\Iprofile\Transformers\AddressTransformer;
 use Illuminate\Support\Facades\Validator;
+use Modules\Icommerce\Support\Coupon as SupportCoupon;
 
 class Checkout extends Component
 {
@@ -40,7 +41,6 @@ class Checkout extends Component
   public $sameShippingAndBillingAddresses;
   public $locale;
   public $update;
-  public $couponCode;
   
   protected $addresses;
   protected $products;
@@ -70,11 +70,10 @@ class Checkout extends Component
     
   }
   
-  /*
-  |--------------------------------------------------------------------------
-  | Inits
-  |--------------------------------------------------------------------------
-  */
+  
+  //|--------------------------------------------------------------------------
+  //| Inits
+  //|--------------------------------------------------------------------------
   /**
    *
    */
@@ -234,11 +233,10 @@ class Checkout extends Component
   }
   
   
-  /*
-   |--------------------------------------------------------------------------
-   | Livewire Events
-   |--------------------------------------------------------------------------
-   */
+  
+  //|--------------------------------------------------------------------------
+  //| Livewire Events
+  //|--------------------------------------------------------------------------
   /**
    *
    */
@@ -274,11 +272,9 @@ class Checkout extends Component
   }
   
   
-  /*
-   |--------------------------------------------------------------------------
-   | Event's Action
-   |--------------------------------------------------------------------------
-   */
+  //|--------------------------------------------------------------------------
+  //| Event's Action
+  //|--------------------------------------------------------------------------
   /**
    *
    */
@@ -310,11 +306,10 @@ class Checkout extends Component
     
   }
   
-  /*
-   |--------------------------------------------------------------------------
-   | Repositories
-   |--------------------------------------------------------------------------
-   */
+  
+  //|--------------------------------------------------------------------------
+  //| Repositories
+  //|--------------------------------------------------------------------------
   /**
    * @return paymentMethodRepository
    */
@@ -370,11 +365,10 @@ class Checkout extends Component
     return app('Modules\Icommerce\Services\OrderService');
   }
   
-  /*
-  |--------------------------------------------------------------------------
-  | Supports
-  |--------------------------------------------------------------------------
-  */
+  
+  //|--------------------------------------------------------------------------
+  //| Supports
+  //|--------------------------------------------------------------------------
   /**
    * @return orderSupport
    */
@@ -383,11 +377,10 @@ class Checkout extends Component
     return app('Modules\Icommerce\Support\Order');
   }
   
-  /*
-  |--------------------------------------------------------------------------
-  | Properties
-  |--------------------------------------------------------------------------
-  */
+  
+  //|--------------------------------------------------------------------------
+  //| Properties
+  //|--------------------------------------------------------------------------
   /**
    * Computed Property - billingAddress
    * @return mixed
@@ -455,15 +448,12 @@ class Checkout extends Component
   {
     $shippingMethod = null;
     
-    if (isset($this->user->id)) {
+    if (isset($this->user->id) && !empty($this->shippingMethodSelected)) {
       
-      if (!empty($this->shippingMethodSelected)) {
         $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
-      } else {
-        
-        if (!isset($shippingMethod->id) && $this->shippingMethods->count()) {
-          $shippingMethod = $this->shippingMethods->first();
-        }
+    }else{
+      if ($this->shippingMethods->count()) {
+        $shippingMethod = $this->shippingMethods->first();
       }
     }
     if (isset($shippingMethod->id)) $this->shippingMethodSelected = $shippingMethod->id;
@@ -487,7 +477,7 @@ class Checkout extends Component
     //added tax - pending feature
     //-----------------------------------------------------------------------------------------------------------------
     
-    //subtracted coupon - pending feature
+    //subtracted coupon amount
     //-----------------------------------------------------------------------------------------------------------------
     
     return $total;
@@ -500,27 +490,23 @@ class Checkout extends Component
   {
     $paymentMethod = null;
     
-    if (isset($this->user->id)) {
-      
-      if (!empty($this->paymentMethodSelected)) {
+    if (isset($this->user->id) && !empty($this->paymentMethodSelected)) {
         $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
-      } else {
-        
-        if (!isset($paymentMethod->id) && $this->paymentMethods->count()) {
-          $paymentMethod = $this->paymentMethods->first();
-        }
+    }else{
+      if ($this->paymentMethods->count()) {
+        $paymentMethod = $this->paymentMethods->first();
       }
     }
+    
     if (isset($paymentMethod->id)) $this->paymentMethodSelected = $paymentMethod->id;
     
     return $paymentMethod;
   }
   
-  /*
-  |--------------------------------------------------------------------------
-  | Custom Actions
-  |--------------------------------------------------------------------------
-  */
+  
+  //|--------------------------------------------------------------------------
+  //| Custom Actions
+  //|--------------------------------------------------------------------------
   /**
    * @param $couponCode
    */
@@ -537,6 +523,13 @@ class Checkout extends Component
         $this->alert('warning', trans('icommerce::coupons.messages.coupon inactive'), config("asgard.isite.config.livewireAlerts"));
       }else{
         $this->couponSelected = $coupon->id;
+
+        $validateCoupons = new SupportCoupon();
+        $result = $validateCoupons->getDiscount($coupon, $this->cart->id);
+
+        if($result->status==1)
+          $discount = $result->discount;
+       
       }
     }
     
@@ -553,6 +546,8 @@ class Checkout extends Component
     $this->initShippingMethods();
     $this->getBillingAddressProperty();
     $this->getShippingAddressProperty();
+    $this->getPaymentMethodProperty();
+    $this->getShippingMethodProperty();
   }
   
   /**
@@ -560,23 +555,44 @@ class Checkout extends Component
    */
   public function submit(Request $request)
   {
-    
-    $validatedData = Validator::make(
-      [
-        'userId' => $this->user->id ?? null,
-        'billingAddress' => $this->billingAddressSelected,
-        'shippingAddress' => $this->shippingAddressSelected,
-        'paymentMethod' => $this->paymentMethodSelected,
-        'shippingMethod' => $this->shippingMethodSelected,
-        ],
-      [
-        'userId' => 'required',
-        'billingAddress' => 'required',
-        'shippingAddress' => 'required',
-        'paymentMethod' => 'required',
-        'shippingMethod' => 'required',
-      ]
+    try {
+      $validatedData = Validator::make(
+        array_merge([
+          'userId' => $this->user->id ?? null,
+          'billingAddress' => $this->billingAddressSelected,
+          'paymentMethod' => $this->paymentMethodSelected,
+        ], ($this->requireShippingMethod ? [
+          'shippingMethod' => $this->shippingMethodSelected,
+          'shippingAddress' => $this->shippingAddressSelected,
+        ] : [] )),
+        array_merge([
+          'userId' => 'required',
+          'billingAddress' => 'required',
+          'paymentMethod' => 'required',
+        ],($this->requireShippingMethod ? [
+          'shippingMethod' => 'required',
+          'shippingAddress' => 'required',
+        ] : [])),
+        array_merge([
+          'userId.required' => trans("icommerce::checkout.alerts.login_order"),
+          'billingAddress.required' => trans("icommerce::checkout.messages.billing_address"),
+          'paymentMethod.required' => trans("icommerce::checkout.messages.payment_method")
+        ], ($this->requireShippingMethod ? [
+          'shippingMethod.required' => trans("icommerce::checkout.messages.shipping_method"),
+          'shippingAddress.required' => trans("icommerce::checkout.messages.shipping_address"),
+        ] : [])),
         )->validate();
+      
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      // Do your thing and use $validator here
+      $validator = $e->validator;
+
+      $this->alert('warning', trans("icommerce::checkout.alerts.missing_fields"), config("asgard.isite.config.livewireAlerts"));
+      
+      // Once you're done, re-throw the exception
+      throw $e;
+    }
+   
   
     $orderService = app("Modules\Icommerce\Services\OrderService");
     $data = [];
@@ -602,11 +618,10 @@ class Checkout extends Component
     }
   }
   
-  /*
-  |--------------------------------------------------------------------------
-  | Render
-  |--------------------------------------------------------------------------
-  */
+  
+  //|--------------------------------------------------------------------------
+  //| Render
+  //|--------------------------------------------------------------------------
   /**
    * @return mixed
    */

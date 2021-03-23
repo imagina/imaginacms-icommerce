@@ -207,7 +207,7 @@
                                 <div class="col-8 text-right">
                                     <p>
 
-                                        {{$paymentMethod->title }}
+                                        {{$paymentMethod->title ?? trans("icommerce::paymentmethods.messages.noPaymentMethodSelected") }}
 
                                     </p>
                                 </div>

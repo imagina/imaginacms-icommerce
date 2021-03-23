@@ -9,7 +9,10 @@
           {{ trans('icommerce::shippingmethods.title.shippingmethods') }}
 
         </h3>
-      
+        @if($errors->has('shippingMethod'))
+          <br/>
+          <span class="alert alert-danger" role="alert">{{ $errors->first('shippingMethod') }}</span>
+        @endif
       </div>
       
       <table id="shippingList" class="table my-2">
