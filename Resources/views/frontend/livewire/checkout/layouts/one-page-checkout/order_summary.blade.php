@@ -115,7 +115,29 @@
                                     </p>
                                 </div>
                             </div>
-
+    
+                            <!--  COUPON | CODE AND AMOUNT -->
+                            @if(isset($couponSelected->id))
+                            <div class="row">
+                                <div class="col-4">
+                                    <p>
+                                    <div>{{ trans('icommerce::order_summary.coupon') }}</div>
+                                    </p>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <p>
+                                        <div>
+                                            {{ trans('icommerce::order_summary.couponCode') }}
+                                            {{$couponSelected->code }}
+                                            <br>
+                                                {{ isset($currency) ? $currency->symbol_left : '$'}} {{ "(".formatMoney($couponDiscount->discount).")" }} {{isset($currency) ? $currency->symbol_right : ''}}
+                                          
+                                        </div>
+                                     
+                                        </p>
+                                </div>
+                            </div>
+                            @endif
                             <!--
                           Añadir  próxima sección de impuestos en esta parte
                           -->

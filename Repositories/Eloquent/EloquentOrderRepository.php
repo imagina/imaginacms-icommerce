@@ -116,7 +116,7 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       if(in_array('*',$params->include ?? [])){//If Request all relationships
         $query->with([]);
       }else{//Especific relationships
-        $includeDefault = ['customer','addedBy','orderItems','orderHistory','transactions',
+        $includeDefault = ['customer','addedBy','orderItems','orderHistory','transactions','coupons',
           'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'];//Default relationships
         if (isset($params->include))//merge relations with default relationships
           $includeDefault = array_merge($includeDefault, $params->include ?? []);

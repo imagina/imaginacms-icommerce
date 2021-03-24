@@ -113,6 +113,14 @@
                 <td
                   class="text-right">{{$currency->symbol_left}}  {{formatMoney($subtotal) }} {{$currency->symbol_right}}</td>
               </tr>
+              @if($order->coupon_total > 0)
+              <tr class="couponTotal">
+                @php($coupon = $order->coupons->first())
+                <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.coupon')}} ({{$coupon->code}} - {{$coupon->type_discount ? $coupon->discount ."%" : $currency->symbol_left.' '.formatMoney($coupon->discount).' '.$currency->symbol_right }})</td>
+                <td
+                  class="text-right"> - {{$currency->symbol_left}}  {{formatMoney($order->coupon_total) }} {{$currency->symbol_right}}</td>
+              </tr>
+              @endif
               <tr class="shippingTotal">
                 <td colspan="4"
                     class="text-right font-weight-bold">{{trans('icommerce::orders.table.shipping_method')}}</td>

@@ -158,6 +158,12 @@ class Order extends Model
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.show',["orderId" => $this->id, "orderKey" => $this->key]);
     }
 
+
+    public function getCouponTotalAttribute()
+    {
+      return $this->coupons->sum('pivot.amount');
+    }
+
     public function setOptionsAttribute($value)
     {
         $this->attributes['options'] = json_encode($value);

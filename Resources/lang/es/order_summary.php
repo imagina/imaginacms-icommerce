@@ -10,6 +10,8 @@ return [
     'total'         => 'TOTAL DE LA ORDEN',
     'submit'        => 'Procesar Orden',
     'sending'       => 'Enviando',
+    'coupon'       => 'Cupón Aplicado',
+    'couponCode'       => 'Código de Cupón',
     'freeshipping'  => 'Envío gratuito',
     'tax'           => 'IMPUESTO',
     'shipping_cero' => 'no seleccionado',
