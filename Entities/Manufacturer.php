@@ -45,6 +45,14 @@ class Manufacturer extends Model
   {
     return $this->hasMany(Product::class);
   }
+
+  /*
+  * Polimorphy Relations
+  */
+  public function coupons()
+  {
+    return $this->morphToMany(Coupon::class, 'couponable','icommerce__couponables');
+  }
   
   public function getOptionsAttribute($value)
   {

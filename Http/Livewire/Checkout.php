@@ -461,7 +461,6 @@ class Checkout extends Component
     
     return $shippingMethod;
   }
- 
   
   /**
    * @return

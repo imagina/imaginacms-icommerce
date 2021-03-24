@@ -34,6 +34,8 @@ return [
       "coupon whit discount for order"=>"Cupón de descuento por orden",
       "coupon whit discount for product"=>"Cupón de descuento por producto",
       "coupon whit discount for category"=>"Cupón de descuento por categoría de producto",
+      "coupon not apply product" => "El Cupón no aplica para ninguna de los productos de tu carrito",
+      "coupon apply" => "El Cupón es aplicable"
     ],
     'validation' => [
     ],
