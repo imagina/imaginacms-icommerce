@@ -66,6 +66,7 @@ class Order extends Model
         'ip',
         'user_agent',
         'key',
+        'require_shipping',
         'options'
     ];
 
@@ -98,7 +99,7 @@ class Order extends Model
 
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->hasMany(OrderItem::class);
     }
 
     public function coupons()
@@ -155,6 +156,12 @@ class Order extends Model
     public function getUrlAttribute()
     {
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.show',["orderId" => $this->id, "orderKey" => $this->key]);
+    }
+
+
+    public function getCouponTotalAttribute()
+    {
+      return $this->coupons->sum('pivot.amount');
     }
 
     public function setOptionsAttribute($value)

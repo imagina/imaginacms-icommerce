@@ -68,6 +68,7 @@ class OrderTransformer extends JsonResource
       'ip' => $this->when($this->ip, $this->ip),
       'userAgent' => $this->when($this->user_agent, $this->user_agent),
       'key' => $this->when($this->key, $this->key),
+      'requireShipping' => $this->require_shipping ? '1' : '0',
       'options' => $this->when($this->options, $this->options),
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
@@ -142,49 +143,63 @@ class OrderTransformer extends JsonResource
     
     $customerAddressExtraFields = json_decode(setting("iprofile::userAddressesExtraFields", null, "[]"));
     
-    $customerShippingAddressBlock = [
-      'title' =>  trans("iprofile::addresses.form.shipping"),
-      'values' => [
-        [
-          "label" => trans("iprofile::addresses.form.name"),
-          "value" => $this->shipping_first_name." ".$this->shipping_last_name
-        ],
-        [
-          'label' =>  trans("iprofile::frontend.form.shipping_address"),
-          'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
-            ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
+    if($this->require_shipping){
+      $customerShippingAddressBlock = [
+        'title' =>  trans('icommerce::orders.table.shipping address'),
+        'values' => [
+          [
+            "label" => trans("iprofile::addresses.form.name"),
+            "value" => $this->shipping_first_name." ".$this->shipping_last_name
+          ],
+          [
+            'label' =>  trans("iprofile::frontend.form.shipping_address"),
+            'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
+              ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
+          ]
         ]
-      ]
-    ];
+      ];
   
-    $orderShippingExtraFields = $this->options->shippingAddress ?? [];
-    
-    if (!empty($orderShippingExtraFields)) {
-      foreach ($customerAddressExtraFields as $extraField) {
-        if ($extraField->active) {
-          if (isset($orderShippingExtraFields->{$extraField->field})) {
-            if($extraField->field == "documentType"){
-              $documentNumber = $orderShippingExtraFields->documentNumber ?? '';
-             
-              array_push($customerShippingAddressBlock["values"],[
-                "label" => trans("iprofile::addresses.form.identification"),
-                "value" => $orderShippingExtraFields->{$extraField->field} . " " . $documentNumber
-              ]);
-            }else{
-              array_push($customerShippingAddressBlock["values"],[
-                "label" => trans("iprofile::addresses.form.$extraField->field"),
-                "value" => $orderShippingExtraFields->{$extraField->field}
-              ]);
+      $orderShippingExtraFields = $this->options->shippingAddress ?? [];
+  
+      if (!empty($orderShippingExtraFields)) {
+        foreach ($customerAddressExtraFields as $extraField) {
+          if ($extraField->active) {
+            if (isset($orderShippingExtraFields->{$extraField->field})) {
+              if($extraField->field == "documentType"){
+                $documentNumber = $orderShippingExtraFields->documentNumber ?? '';
+            
+                array_push($customerShippingAddressBlock["values"],[
+                  "label" => trans("iprofile::addresses.form.identification"),
+                  "value" => $orderShippingExtraFields->{$extraField->field} . " " . $documentNumber
+                ]);
+              }else{
+                array_push($customerShippingAddressBlock["values"],[
+                  "label" => trans("iprofile::addresses.form.$extraField->field"),
+                  "value" => $orderShippingExtraFields->{$extraField->field}
+                ]);
+              }
             }
           }
         }
       }
+    }else{
+      $customerShippingAddressBlock = [
+        'title' =>  trans('icommerce::orders.table.shipping address'),
+        'values' => [
+          [
+            "label" => "",
+            "value" => trans('icommerce::orders.messages.orderNotRequireShipping')
+          ]
+          ]
+          
+      ];
     }
+   
     
     array_push($item["informationBlocks"],$customerShippingAddressBlock);
     
     $customerBillingAddressBlock = [
-      'title' => trans("iprofile::addresses.form.billing"),
+      'title' => trans('icommerce::orders.table.payment address'),
       'values' => [
         [
           "label" => trans("iprofile::addresses.form.name"),
@@ -226,6 +241,10 @@ class OrderTransformer extends JsonResource
 			'title' => 'Pago y método de envío',
 			'values' => [
 				['label' => 'Método de pago', 'value' => $item['paymentMethod']],
+				[
+				  'label' => 'Método de envío', 'value' => !$this->require_shipping ? trans('icommerce::orders.messages.orderNotRequireShipping')
+          : (!empty($item['shippingMethod']) ? $item['shippingMethod'] : '-')
+        ]
 				
 			]
 		];

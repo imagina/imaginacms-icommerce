@@ -76,36 +76,6 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table">
-              <th>{{trans('icommerce::orders.table.payment address')}}</th>
-              <th>{{trans('icommerce::orders.table.shipping address')}}</th>
-              <tr>
-                <td>
-                  {{$order->payment_first_name}}<br>
-                  {{$order->payment_last_name}}<br>
-                  {{$order->payment_address_1}}<br>
-                  @if(!empty ($order->payment_address_2))
-                    {{$order->payment_address_2}}<br>
-                  @endif
-                  {{$order->payment_city}}<br>
-                  {{$order->paymentDepartment ? $order->paymentDepartment->translations[0]->name : ''}}<br>
-                  {{$order->paymentCountry ? $order->paymentCountry->translations[0]->name : ''}}
-                </td>
-                <td>
-                  {{$order->shipping_first_name}}<br>
-                  {{$order->shipping_last_name}}<br>
-                  {{$order->shipping_address_1}}<br>
-                  @if(!empty ($order->shipping_address_2))
-                    {{$order->shipping_address_2}}<br>
-                  @endif
-                  {{$order->shipping_city}}<br>
-                  {{$order->shippingDepartment ? $order->shippingDepartment->translations[0]->name : ''}}<br>
-                  {{$order->shippingCountry ? $order->shippingCountry->translations[0]->name : ''}}
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="table-responsive">
             <table class="table ">
               <th>{{trans('icommerce::orders.table.product')}}</th>
               <th>{{trans('icommerce::orders.table.sku')}}</th>
@@ -143,6 +113,14 @@
                 <td
                   class="text-right">{{$currency->symbol_left}}  {{formatMoney($subtotal) }} {{$currency->symbol_right}}</td>
               </tr>
+              @if($order->coupon_total > 0)
+              <tr class="couponTotal">
+                @php($coupon = $order->coupons->first())
+                <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.coupon')}} ({{$coupon->code}} - {{$coupon->type_discount ? $coupon->discount ."%" : $currency->symbol_left.' '.formatMoney($coupon->discount).' '.$currency->symbol_right }})</td>
+                <td
+                  class="text-right"> - {{$currency->symbol_left}}  {{formatMoney($order->coupon_total) }} {{$currency->symbol_right}}</td>
+              </tr>
+              @endif
               <tr class="shippingTotal">
                 <td colspan="4"
                     class="text-right font-weight-bold">{{trans('icommerce::orders.table.shipping_method')}}</td>

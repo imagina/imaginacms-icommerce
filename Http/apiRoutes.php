@@ -68,4 +68,7 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
   //======  STORES
   require('ApiRoutes/storeRoutes.php');
 
+  //======  ITEM TYPES
+  require('ApiRoutes/itemTypeRoutes.php');
+
 });

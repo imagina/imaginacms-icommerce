@@ -61,6 +61,7 @@ class Product extends Model implements TaggableInterface
 		'sum_rating',
 		'sort_order',
 		'is_call',
+		'item_type_id',
         'entity_id',
         'entity_type',
 	];
@@ -128,6 +129,12 @@ class Product extends Model implements TaggableInterface
 		return $this->belongsTo(Manufacturer::class, 'manufacturer_id');
 	}
 
+
+	public function itemType()
+	{
+		return $this->belongsTo(ItemType::class);
+	}
+
 	public function discounts()
 	{
 		return $this->hasMany(ProductDiscount::class);
@@ -163,10 +170,12 @@ class Product extends Model implements TaggableInterface
 			->using(OrderItem::class);
 	}
 
+	/*
 	public function coupons()
 	{
 		return $this->belongsToMany(Coupon::class, 'icommerce__coupon_product')->withTimestamps();
 	}
+	*/
 
 	public function parent()
 	{
@@ -190,6 +199,18 @@ class Product extends Model implements TaggableInterface
 		return $this->hasMany(CartProduct::class);
 	}
 
+
+	/*
+    * Polimorphy Relations
+    */
+	public function coupons()
+    {
+        return $this->morphToMany(Coupon::class,'couponable','icommerce__couponables');
+    }
+
+	/*
+    * Mutators / Accessors
+    */
 	protected function setQuantityAttribute($value)
 	{
 
@@ -261,7 +282,6 @@ class Product extends Model implements TaggableInterface
 
 	public function discount()
 	{
-
 
 		$user = $this->auth;
 		$userId = $user->id ?? 0;
@@ -412,6 +432,32 @@ class Product extends Model implements TaggableInterface
 		}
 
 		return $isNew;
+	}
+
+
+	/**
+	 * Is New product
+	 * @return number
+	 */
+	public function getIsAvailableAttribute()
+	{
+		$isAvailable = false;
+
+		$availableDate = new \DateTime($this->date_available);
+		$now = new \DateTime(date('Y-m-d'));
+
+
+		if($this->status){
+      if($now >= $availableDate){ // if the date is available
+        if($this->stock_status){ // if it's in stock
+          if(($this->subtract && $this->quantity) || !$this->subtract){ //if its subtrack of stock and has quantity or isn't subtrack
+            $isAvailable = true;
+          }
+        }
+      }
+    }
+
+		return $isAvailable;
 	}
 
 	public function getPriceAttribute($value)

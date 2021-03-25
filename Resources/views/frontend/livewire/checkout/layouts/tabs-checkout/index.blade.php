@@ -1,91 +1,171 @@
 @extends('layouts.master')
 
 @section('content')
-  <!-- preloader -->
+    <!-- preloader -->
+    <div id="checkout" class="page checkout checkout-tabs">
+
+        <x-isite::breadcrumb>
+            <li class="breadcrumb-item active" aria-current="page">{{$title }}</li>
+        </x-isite::breadcrumb>
 
 
-
-  <div id="checkout" class="page checkout">
-
-    <x-isite::breadcrumb>
-      <li class="breadcrumb-item active" aria-current="page">{{$title }}</li>
-    </x-isite::breadcrumb>
-
-
-
-
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <div class="text-title text-center mb-5">
-            <h1 class="title">{{ $title }}</h1>
-          </div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="text-title text-center mb-5">
+                        <h1 class="title">{{$title }}</h1>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-    </div>
-
-    <div v-if="loadingCart || !quantity" id="content_preloader">
-      <div id="preloader"></div>
-    </div>
-    <!-- ======== @Region: #content ======== -->
-    <div id="content" class="pb-5">
-      <div class="container">
-
-        <div v-if="quantity > 0 && !loadingCart">
-          <div class="row">
-            <div class="col py-2">
-              <a class="btn btn-success waves-effect waves-light"
-                 href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
-            </div>
-          </div>
-
-          <div class="currency">
-            <input v-if="currency" type="hidden" name="currency_id" :value="currency.id">
-            <input v-if="currency" type="hidden" name="currency_code" :value="currency.code">
-            <input v-if="currency" type="hidden" name="currency_value" :value="currency.value">
-          </div>
-          <div class="row">
-
-            <div class="col-12 col-md-6 col-lg-4">
-              @include('icommerce::frontend.checkout.layouts.one-page-checkout.customer')
-
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-              @include('icommerce::frontend.checkout.layouts.one-page-checkout.billing_details')
-              @include('icommerce::frontend.checkout.layouts.one-page-checkout.delivery_details')
-
-            </div>
-            <div class="col-12 col-md-12 col-lg-4">
-
-              @include('icommerce::frontend.checkout.layouts.one-page-checkout.shipping_methods')
-              @include('icommerce::frontend.checkout.layouts.one-page-checkout.payment')
-              @include('icommerce::frontend.checkout.layouts.one-page-checkout.order_summary')
-
-            </div>
-
-          </div>
-
-          <div class="row">
-            <div class="col py-2">
-              <a class="btn btn-success" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
-            </div>
-          </div>
+        <div v-if="loadingCart" id="content_preloader">
+            <div id="preloader"></div>
         </div>
-        <div v-else class="row">
-          <div class="alert alert-primary" role="alert">
-            {{ trans('icommerce::checkout.no_products_1') }}
-            <a href="{{ url('/') }}" class="alert-link">
-              {{ trans('icommerce::checkout.no_products_here') }}
-            </a>
-            {{ trans('icommerce::checkout.no_products_2') }}
-          </div>
+        <!-- ======== @Region: #content ======== -->
+        <div id="content">
+            <div class="container-xl" v-if="quantity > 0 && !loadingCart">
+                <hr>
+                <div class="currency">
+                  <input v-if="currency" type="hidden" name="currency_id" :value="currency.id">
+                  <input v-if="currency" type="hidden" name="currency_code" :value="currency.code">
+                  <input v-if="currency" type="hidden" name="currency_value" :value="currency.value">
+                </div>
+                <div class="row">
+                    <div class="col pb-5">
+
+                        <div class="wizard-checkout">
+                            <div class="wizard-checkout-inner">
+                                <ul class="nav nav-tabs nav-justified @guest guest @endguest" role="tablist">
+                                    <li role="presentation" class="uno nav-item active">
+                                        <a class="nav-link" href="#step1" data-toggle="tab" aria-controls="step1" role="tab"
+                                           aria-expanded="true">
+                                            <span class="round-tab">1</span> Datos Personales
+                                        </a>
+                                    </li>
+                                    <li role="presentation" class="dos nav-item disabled">
+                                        <a class="nav-link" href="#step2" data-toggle="tab" aria-controls="step2" role="tab"
+                                           aria-expanded="false">
+                                            <span class="round-tab">2</span> Formas de Pago
+                                        </a>
+                                    </li>
+                                    <li role="presentation" class="tres nav-item disabled">
+                                        <a class="nav-link" href="#step3" data-toggle="tab" aria-controls="step3" role="tab">
+                                            <span class="round-tab">3</span> Metodos de Envio
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
 
 
+                            <div class="tab-content">
+                                <div class="tab-pane active" role="tabpanel" id="step1">
+                                    <div class="tab-content-in py-3 mb-4">
+                                        @include('icommerce::frontend.checkout.layouts.tabs-checkout.customer')
+                                    </div>
+                                    <div class="text-right">
+                                        <a class="btn btn-outline-primary font-weight-bold mb-3" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
+                                        @auth
+                                            <button type="button" class="btn btn-dark next-step mb-3">
+                                                <i class="fa fa-share d-block d-md-none"></i> <span class="d-none d-md-block">Siguiente</span>
+                                            </button>
+                                        @endauth
+                                        @guest
+                                            <div class="btn btn-light border font-weight-bold mb-3 start-step">Debe autenticarse para continuar</div>
+                                        @endguest
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" role="tabpanel" id="step2">
+                                    <div class="tab-content-in py-3 mb-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                @include('icommerce::frontend.checkout.layouts.tabs-checkout.billing_details')
+                                            </div>
+                                            <div class="col-md-6">
+                                                @include('icommerce::frontend.checkout.layouts.tabs-checkout.payment')
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-right">
+                                        <a class="btn btn-outline-primary font-weight-bold mb-3" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
+
+                                        @auth
+                                            <button type="button" class="btn btn-dark prev-step mb-3">
+                                                <i class="fa fa-reply d-block d-md-none"></i> <span class="d-none d-md-block">Anterior</span>
+                                            </button>
+                                            <button type="button" class="btn btn-dark next-step mb-3">
+                                                <i class="fa fa-share d-block d-md-none"></i> <span class="d-none d-md-block">Siguiente</span>
+                                            </button>
+
+                                        @endauth
+
+                                        @guest
+                                            <div class="btn btn-light border font-weight-bold mb-3 start-step">Debe autenticarse para continuar</div>
+                                        @endguest
+
+
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" role="tabpanel" id="step3">
+                                    <div class="tab-content-in py-3 mb-4">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                @include('icommerce::frontend.checkout.layouts.tabs-checkout.delivery_details')
+                                            </div>
+                                            <div class="col-md-6">
+                                                @include('icommerce::frontend.checkout.layouts.tabs-checkout.shipping_methods')
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="text-right">
+                                        <a class="btn btn-outline-primary font-weight-bold mb-3" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
+
+                                        @auth
+                                            <button type="button" class="btn btn-dark prev-step mb-3">
+                                                <i class="fa fa-reply d-block d-md-none"></i> <span class="d-none d-md-block">Anterior</span>
+                                            </button>
+                                        @endauth
+
+                                        @guest
+                                            <div class="btn btn-light border font-weight-bold mb-3 start-step">Debe autenticarse para continuar</div>
+                                        @endguest
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 pb-5">
+                      @include('icommerce::frontend.checkout.layouts.tabs-checkout.order_summary')
+                    </div>
+                </div>
+            </div>
+            <div v-else class="container">
+              <div class="row">
+                <div class="col-12">
+                  <div class="alert alert-primary" role="alert">
+                    {{ trans('icommerce::checkout.no_products_1') }}
+                    <a href="{{ url('/') }}" class="alert-link">
+                      {{ trans('icommerce::checkout.no_products_here') }}
+                    </a>
+                    {{ trans('icommerce::checkout.no_products_2') }}
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 @stop
 @section('scripts')
 
@@ -97,11 +177,60 @@
           src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
   <!--<script src="https://lifemedical.imaginacolombia.com/modules/icommerce/js/json/index.js"></script>-->
   <script src="https://cdn.jsdelivr.net/npm/v-mask/dist/v-mask.min.js"></script>
+
   <script type="text/javascript">
     Vue.use(VueMask.VueMaskPlugin);
+
+    $(document).ready(function () {
+        $('.wizard-checkout .nav-tabs > li a[title]').tooltip();
+
+        //Wizard
+        $('.wizard-checkout a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target);
+            if (target.parent().hasClass('disabled')) {
+                return false;
+            }
+        });
+
+        $(".wizard-checkout .next-step").click(function (e) {
+            var active = $('.wizard-checkout .nav-tabs li.active');
+            active.next().removeClass('disabled');
+            nextTab(active);
+        });
+        $(".wizard-checkout .prev-step").click(function (e) {
+            var active = $('.wizard-checkout .nav-tabs li.active');
+            prevTab(active);
+        });
+        $(".wizard-checkout .start-step").click(function (e) {
+            var active = $('.wizard-checkout .nav-tabs li.dos');
+            $('.wizard-checkout .nav-tabs li:first-child a').tab('show');
+            prevTab(active);
+        });
+
+
+        $('.wizard-checkout .nav-tabs').on('click', 'li', function () {
+            $('.wizard-checkout .nav-tabs li.active').removeClass('active');
+            $(this).addClass('active');
+        });
+
+    });
+
+    function nextTab(elem) {
+        $(elem).next().find('a[data-toggle="tab"]').click();
+        console.log(elem);
+    }
+
+    function prevTab(elem) {
+        $(elem).prev().find('a[data-toggle="tab"]').click();
+    }
+
+
+
   </script>
 
   <script type="text/javascript">
+
+
     const {required, requiredIf,minLength} = window.validators
     var checkout = new Vue({
       el: '#checkout',
@@ -169,7 +298,7 @@
           },
           selectedShippingAddress: {
             requiredIf: requiredIf(() => {
-              return !checkout.sameDeliveryBilling
+              return !checkout.sameShippingAndBillingAddresses
             })
           },
         },
@@ -269,7 +398,7 @@
         shipping_method: '',
         shipping_amount: 0,
         guestOrCustomer1: true,
-        sameDeliveryBilling: true,
+        sameShippingAndBillingAddresses: true,
         weight: 0,
         countries: [],
         cities:[],
@@ -344,24 +473,24 @@
 
           if (newVal) {
             this.customerLoginToggle = false
-            $("#collapseOne").collapse('show');
-            $("#collapseTwo").collapse('hide');
+            $("#check-register").collapse('show');
+            $("#check-login").collapse('hide');
           } else {
             this.customerLoginToggle = true
-            $("#collapseOne").collapse('hide');
-            $("#collapseTwo").collapse('show');
+            $("#check-register").collapse('hide');
+            $("#check-login").collapse('show');
           }
         },
         customerLoginToggle(newVal) {
 
           if (newVal) {
             this.customerRegisterToggle = false
-            $("#collapseTwo").collapse('show');
-            $("#collapseOne").collapse('hide');
+            $("#check-login").collapse('show');
+            $("#check-register").collapse('hide');
           } else {
             this.customerRegisterToggle = true
             $("#collapseTwo").collapse('hide');
-            $("#collapseOne").collapse('show');
+            $("#check-login").collapse('show');
           }
         }
       },
@@ -568,7 +697,7 @@
             let addressBilling =  this.user.addresses.find(address => address.id == this.form.selectedBillingAddress)
             let addressShipping =  this.user.addresses.find(address => address.id == this.form.selectedShippingAddress)
 
-            if(this.sameDeliveryBilling)
+            if(this.sameShippingAndBillingAddresses)
               addressShipping = addressBilling
 
 

@@ -176,7 +176,6 @@ class OrderApiController extends BaseApiController
           $data["customer"] = $customer;
         }
 
-
         //Get Payment Method
         $payment = $this->paymentMethod->find($data['payment_method_id']);
         $data["paymentMethod"] = $payment;

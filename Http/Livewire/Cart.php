@@ -19,51 +19,52 @@ class Cart extends Component
   public $icon;
   private $params;
   private $request;
-  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart','deleteCart','refreshCart'];
+  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart'];
   
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart')
   {
-
+    
     
     $this->layout = $layout;
     $this->icon = $icon;
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
-
-   //$this->refreshCart();
+    
+    //$this->refreshCart();
   }
   
-  public function refreshCart(){
+  public function refreshCart()
+  {
     
     $cart = request()->session()->get('cart');
-    
-    if (isset($cart->id)) {
+
+    if (isset($cart->id) && $cart->status == 1) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
     }
-  
+    
     if (isset($this->cart->id)) {
       
       $user = Auth::user();
       $data = [];
-      if(isset($user->id) && empty($this->cart->user_id)){
+      if (isset($user->id) && empty($this->cart->user_id)) {
         $data["user_id"] = $user->id;
         $this->cart->user_id = $data["user_id"];
         $this->cart->save();
         $this->updateCart();
       }
-    
+      
     } else {
       $data = [];
       $data["ip"] = request()->ip();
       $data["session_id"] = session('_token');
       
       $user = Auth::user();
-    
-      if(isset($user->id))
-        $data["user_id"] = $user->id;
       
+      if (isset($user->id))
+        $data["user_id"] = $user->id;
+    
       //Create item
       $this->cart = $this->cartRepository()->create($data);
-    
+
     }
     request()->session()->put('cart', $this->cart);
     
@@ -72,52 +73,39 @@ class Cart extends Component
   public function addToCart($productId, $quantity = 1, $productOptionValues = [])
   {
     
-    $product = $this->productRepository()->getItem($productId);
+    try {
+      $product = $this->productRepository()->getItem($productId);
+          $data = [
+            "cart_id" => $this->cart->id,
+            "product_id" => $productId,
+            "quantity" => $quantity,
+            "product_option_values" => $productOptionValues
+          ];
+          
+          $this->cartProductRepository()->create($data);
+          $this->updateCart();
+          
+          $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
     
-    if (!isset($product->id)) {
-      $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
       
-    } else {
-      if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $productOptionValues)) {
-        $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
-        
-        $this->redirect($product->url);
-        
-      }else{
+    } catch (\Exception $e) {
+      
+      switch($e->getMessage()){
+        case 'Invalid product':
+          $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
+          break;
   
-        $data = [
-          "cart_id" => $this->cart->id,
-          "product_id" => $productId,
-          "quantity" => $quantity,
-          "product_option_values" => $productOptionValues
-        ];
-        
-        $this->cartProductRepository()->create($data);
-        $this->updateCart();
-  
-        $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
-  
+        case 'Missing required product options':
+          $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
+          $this->redirect($product->url);
+          break;
       }
-    }
-  }
-  
-  private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues)
-  {
-    
-    $allRequiredOptionsOk = true;
-    foreach ($productOptions as $productOption) {
-      $optionOk = true;
-      if ($productOption->pivot->required) {
-        $optionOk = false;
-        foreach ($productOptionValues as $productOptionValue) {
-          $productOption->id == $productOptionValue["optionId"] ? $optionOk = true : false;
-        }
-      }
-      !$optionOk ? $allRequiredOptionsOk = false : false;
+   
     }
     
-    return $allRequiredOptionsOk;
+    
   }
+  
   
   public function deleteFromCart($cartProductId)
   {
@@ -134,7 +122,10 @@ class Cart extends Component
   {
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartRepository()->deleteBy($this->cart->id, $params);
+    $this->cart = null;
     request()->session()->put('cart', null);
+
+    $this->refreshCart();
   }
   
   public function updateCart()
@@ -142,9 +133,10 @@ class Cart extends Component
     
     $params = json_decode(json_encode(["include" => []]));
     $this->cart = $this->cartRepository()->getItem($this->cart->id, $params);
-
+    
     request()->session()->put('cart', $this->cart);
     
+    $this->emit("cartUpdated", $this->cart);
     
   }
   
