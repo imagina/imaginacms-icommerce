@@ -63,7 +63,7 @@ class OrderApiController extends BaseApiController
     {
         $this->order = $order;
         $this->store =app('Modules\Icommerce\Repositories\StoreRepository');
-        
+
     }
 
     /**
@@ -140,7 +140,7 @@ class OrderApiController extends BaseApiController
      */
     public function create(Request $request)
     {
-     
+
         $this->user = app('Modules\Iprofile\Repositories\UserApiRepository');
         $this->cart = app('Modules\Icommerce\Repositories\CartRepository');
         $this->paymentMethod = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
@@ -154,7 +154,7 @@ class OrderApiController extends BaseApiController
 
         $data = $request['attributes'] ?? [];//Get data
 
-        
+
         //Break if the data is empty
         if (!count($data)) throw new \Exception('The some errors in the data sent', 400);
 
@@ -175,6 +175,7 @@ class OrderApiController extends BaseApiController
           $customer = $this->user->find($data["customer_id"]);
           $data["customer"] = $customer;
         }
+
 
         //Get Payment Method
         $payment = $this->paymentMethod->find($data['payment_method_id']);
@@ -250,7 +251,7 @@ class OrderApiController extends BaseApiController
         }
 
         $data["orderID"] = $order->id;
-  
+
         // Event To create OrderItems, OrderOptions, next send email
         try {
           event(new OrderWasCreated($order, $data['orderItems']));
@@ -262,7 +263,7 @@ class OrderApiController extends BaseApiController
         $paymentData = $this->validateResponseApi(
           app($payment->options->init)->init(new Request($data))
         );
-  
+
         $updateCart = $this->cart->update($cart,['status'=>2]);
         //Response
         $response = ["data" => [
@@ -299,14 +300,14 @@ class OrderApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
             $data = $request->input('attributes');
-         
+
             // Data Order History
             $supportOrderHistory = new orderHistorySupport($data["status_id"], 1);
             $dataOrderHistory = $supportOrderHistory->getData();
             $data["orderHistory"] = $dataOrderHistory;
 
             $data = Arr::only($data, ['status_id', 'options', 'orderHistory']);
-            
+
             //Request to Repository
             $dataEntity = $this->order->getItem($criteria, $params);
 
@@ -315,7 +316,7 @@ class OrderApiController extends BaseApiController
 
 
             $order = $this->order->update($dataEntity, $data);
-         
+
             $response = ['data' => new OrderTransformer($order)];
 
             \DB::commit(); //Commit to Data Base
@@ -328,22 +329,22 @@ class OrderApiController extends BaseApiController
                 "notify" => 1,
                 "status" => $data["status_id"]
               ]);
-              
+
                 event(new OrderStatusHistoryWasCreated($orderStatusHistory));
             }
-  
-  
+
+
 
         } catch (\Exception $e) {
           \Log::error($e->getMessage());
-         
+
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $this->getErrorMessage($e)];
 
 
         }
-        
+
         return response()->json($response, $status ?? 200);
 
     }

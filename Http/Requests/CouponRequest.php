@@ -13,15 +13,8 @@ class CouponRequest extends BaseFormRequest
           'discount' => 'required|min:2',
           'date_start' => 'required',
           'date_end' => 'required',
-          'type' => 'required',
+          'type_discount' => 'required',
           'status' => 'required'
-        ];
-    }
-
-    public function translationRules()
-    {
-        return [
-          'title' => 'required|min:2',
         ];
     }
 
@@ -60,8 +53,6 @@ class CouponRequest extends BaseFormRequest
     {
         return [
           // title
-          'title.required' => trans('icommerce::common.messages.field required'),
-          'title.min:2' => trans('icommerce::common.messages.min 2 characters'),
 
         ];
     }

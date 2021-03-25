@@ -60,7 +60,9 @@ class Product extends Model implements TaggableInterface
 		'featured',
 		'sum_rating',
 		'sort_order',
-		'is_call'
+		'is_call',
+        'entity_id',
+        'entity_type',
 	];
 
 	protected $presenter = ProductPresenter::class;
@@ -75,6 +77,11 @@ class Product extends Model implements TaggableInterface
 		$this->auth = Auth::user();
 		parent::__construct($attributes);
 	}
+
+    public function entity(){
+        return $this->belongsTo(app($this->entity_type),'entity_id');
+    }
+
 	public function store()
 	{
 		if (is_module_enabled('Marketplace')) {

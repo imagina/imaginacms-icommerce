@@ -5,19 +5,21 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Modules\Ihelpers\Traits\Relationable;
 
 class Coupon extends Model
 {
+    use Relationable;
 
     protected $table = 'icommerce__coupons';
 
     protected $fillable = [
         'code',
         'type',
-        'category_id',
+        /*'category_id',
         'product_id',
         'customer_id',
-        'store_id',
+        'store_id',*/
         'discount',
         'type_discount',
         'logged',
@@ -86,6 +88,26 @@ class Coupon extends Model
         return $this->whereHas('orders', function ($query) {
             $query->where('icommerce__coupon_order_history.customer_id', Auth::id());
         })->count();
+    }
+
+    public function setExcludeDepartmentsAttribute($value)
+    {
+        $this->attributes['exclude_departments'] = json_encode($value);
+    }
+
+    public function getExcludeDepartmentsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setIncludeDepartmentsAttribute($value)
+    {
+        $this->attributes['include_departments'] = json_encode($value);
+    }
+
+    public function getIncludeDepartmentsAttribute($value)
+    {
+        return json_decode($value);
     }
 
 }
