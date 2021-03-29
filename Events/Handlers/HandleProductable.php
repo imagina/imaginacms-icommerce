@@ -11,25 +11,30 @@ class HandleProductable
     public function handle($event = null, $data = [])
     {
         $entity = $event->getEntity();
-        $productable = Arr::get($event->getSubmissionData(), 'productable', null);
-        if(!empty($productable)){
-            if(is_array($productable)) {
-                $productablesToSync = [];
-                foreach ($productable as $product){
-                    $productablesToSync[$product] = [
-                        'productable_type' => get_class($entity),
-                    ];
+        $productId = Arr::get($event->getSubmissionData(), 'product_id', null);
+        if(!empty($productId)){
+            $entityType = get_class($entity);
+            if (is_module_enabled('Icommerce')) {
+                $params = json_decode(json_encode(['filter' => ['field' => 'entity_id']]));
+                $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id,$params);
+                if($productWithPlan){
+                    $productWithPlan->entity_id = 0;
+                    $productWithPlan->entity_type = null;
+                    $productWithPlan->save();
                 }
-                $entity->products()->sync($productablesToSync);
-            }else{
-                $entity->products()->sync([
-                    $productable => [
-                        'productable_type' => get_class($entity),
-                    ]
-                ]);
+                $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($productId, false);
+                $product->entity_id = $entity->id;
+                $product->entity_type = $entityType;
+                $product->save();
             }
         }else{
-            $entity->products()->sync([]);
+            $params = json_decode(json_encode(['filter' => ['field' => 'entity_id']]));
+            $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id,$params);
+            if($productWithPlan){
+                $productWithPlan->entity_id = 0;
+                $productWithPlan->entity_type = null;
+                $productWithPlan->save();
+            }
         }
     }
 
