@@ -10,6 +10,7 @@ class ProductListItem extends Component
   
   public $product;
   public $productListLayout;
+  public $productAspect;
   public $view;
   public $addToCartWithQuantity;
   
@@ -19,12 +20,13 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item, $itemListLayout = null, $layout = null, $addToCartWithQuantity = null,
-                              $parentAttributes = null)
+                              $parentAttributes = null, $productAspect = null)
   {
     $this->product = $item;
     $this->productListLayout = $itemListLayout;
     $this->addToCartWithQuantity = $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity',null,false);
     $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
+    $this->productAspect = $productAspect ?? setting('icommerce::productAspect', null, '1-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
   
     if(!empty($parentAttributes))

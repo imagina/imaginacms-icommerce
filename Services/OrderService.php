@@ -8,6 +8,7 @@ use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Support\OrderHistory as orderHistorySupport;
 use Modules\Icommerce\Support\OrderItem as orderItemSupport;
+use Modules\Icommerce\Support\Coupon as validateCoupons;
 use Modules\Iprofile\Repositories\UserApiRepository;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class OrderService
   public function create($data)
   {
     \DB::beginTransaction();
-    try {
+   // try {
       $orderData = [];
       $orderData["options"] = [];
       $total = [];
@@ -174,6 +175,32 @@ class OrderService
           $orderData["options"]["billingAddress"] = $billingAddress->options;
         }
       }
+  
+      /*
+     |--------------------------------------------------------------------------
+     | getting discount from a coupon
+     |--------------------------------------------------------------------------
+     */
+      $coupon = null;
+      $couponResult = null;
+      if (isset($data["coupon"]->id)) {
+        $coupon = $data["coupon"];
+      }else{
+        $couponRepository = app("Modules\Icommerce\Repositories\CouponRepository");
+        if(isset($data["couponCode"])){
+          $params = ["filter" => ["field" => "code"]];
+          $coupon = $couponRepository->getItem($data["couponCode"],json_decode(json_encode($params)));
+        }elseif(isset($data["couponId"])){
+          $coupon = $couponRepository->getItem($data["couponId"],json_decode(json_encode([])));
+        }
+      }
+      if(isset($coupon->id)){
+        $validateCoupons = new validateCoupons();
+        $couponResult = $validateCoupons->getDiscount($coupon, $cart->id);
+        if($couponResult->status == 1){
+          $total -= $couponResult->discount;
+        }
+      }
       
       /*
       |--------------------------------------------------------------------------
@@ -289,16 +316,27 @@ class OrderService
       $dataResponse = [
         "order" => $order,
         "orderId" => $order->id,
-        "orderID" => $order->id,
+        "orderID" => $order->id, //TODO: fix icommerce extra methods because there are waiting the orderId like orderID
         "url" => $order->url,
         "key" => $order->key
       ];
+      
+      
+      /*
+      |--------------------------------------------------------------------------
+      | Redeem Coupon
+      |--------------------------------------------------------------------------
+      */
+      if(isset($couponResult->status) && $couponResult->status){
+          $validateCoupons->redeemCoupon($coupon->id, $order->id, $customer->id, $couponResult->discount);
+      }
+      
+      
       /*
       |--------------------------------------------------------------------------
       | Getting payment Data
       |--------------------------------------------------------------------------
       */
-      //TODO: fix icommerce extra methods because there are waiting the orderId like orderID
       $paymentData = json_decode(app($paymentMethod->options->init)->init(new Request($dataResponse))->content())->data;
       $dataResponse = array_merge($dataResponse, collect($paymentData)->toArray());
       
@@ -318,10 +356,10 @@ class OrderService
       //Response
       $response = $dataResponse;
       \DB::commit(); //Commit to Data Base
-    } catch (\Exception $e) {
+   /* } catch (\Exception $e) {
       \DB::rollback();//Rollback to Data Base
       $response = ["errors" => $e->getMessage()];
-    }
+    }*/
     
     //Return response
     return $response;

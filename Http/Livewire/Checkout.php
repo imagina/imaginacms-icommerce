@@ -48,7 +48,7 @@ class Checkout extends Component
   protected $shippingMethods;
   protected $couponDiscount;
   
-  public function mount(Request $request, $layout = 'one-page-checkout', $order = null, $cart = null,
+  public function mount(Request $request, $layout = null, $order = null, $cart = null,
                         $orderId = null, $cartId = null, $currency = null, $currencyId = null)
   {
     
@@ -57,7 +57,8 @@ class Checkout extends Component
     $this->sameShippingAndBillingAddresses = true;
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
-    $this->layout = $layout;
+
+    $this->layout = $layout ?? setting("icommerce::checkoutLayout");
     
     $this->initTitle();
     $this->initUser();
@@ -67,7 +68,7 @@ class Checkout extends Component
     $this->initCurrency($currency, $currencyId);
     $this->load();
     
-    $this->view = "icommerce::frontend.livewire.checkout.layouts." . ($this->layout ?? 'one-page-checkout') . ".index";
+    $this->view = "icommerce::frontend.livewire.checkout.index";
     
   }
   
@@ -119,7 +120,7 @@ class Checkout extends Component
   {
     
     $this->step = 1;
-    if (isset($user->id))
+    if (isset($this->user->id))
       $this->step = 2;
     
   }
@@ -512,6 +513,10 @@ class Checkout extends Component
   //|--------------------------------------------------------------------------
   //| Custom Actions
   //|--------------------------------------------------------------------------
+  public function setStep($step){
+    $this->step = $step;
+  }
+  
   /**
    * @param $couponCode
    */
@@ -576,6 +581,7 @@ class Checkout extends Component
   public function submit(Request $request)
   {
     try {
+      
       $validatedData = Validator::make(
         array_merge([
           'userId' => $this->user->id ?? null,

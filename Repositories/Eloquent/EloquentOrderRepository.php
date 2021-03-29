@@ -53,6 +53,11 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       if (isset($filter->status)){
           $query->where('status_id', $filter->status);
       }
+      //add filter by ids
+      if (isset($filter->ids)) {
+        is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
+        $query->whereIn('icommerce__orders.id', $filter->ids);
+      }
 
       if (isset($filter->store)){
         $query->where('store_id', $filter->store);

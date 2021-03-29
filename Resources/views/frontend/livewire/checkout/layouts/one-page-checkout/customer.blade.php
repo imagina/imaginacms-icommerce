@@ -71,48 +71,8 @@
     
 
     @endguest
-    
-    @auth
-      <div class='card mb-0 border-0'>
-        <div class='d-block'>
-          @if(Auth::user())
-            @php
-              $mainImage=\Modules\Iprofile\Entities\Field::where('user_id',Auth::user()->id)->where('name','mainImage')->first();
-          
-            @endphp
-            <div id="imgProfile" class="mb-5 text-center">
-              @if($mainImage)
-                <img id="mainImage" class="img-fluid rounded-circle bg-white" src="{{ url($mainImage->value) }}" alt="Logo">
-              @else
-                <img id="mainImage" class="img-fluid rounded-circle bg-white" src="{{url('modules/iprofile/img/default.jpg')}}" alt="Logo">
-            
-              @endif
-            </div>
-          @endif
-        </div>
-        <div class='d-block'>
-          {{ trans('icommerce::customer.logged.name') }}<strong> {{$user->present()->fullname}}</strong>
-        </div>
-        <div class='d-block'>
-          {{ trans('icommerce::customer.logged.email') }} <strong>{{$user->email}}</strong>
-        </div>
-      
-        <hr>
-      <!-- <div class="d-block text-right">
-      <i class="fa fa-id-card-o mr-2"></i>
-      <a href="{{url('/account')}}">{{ trans('icommerce::customer.logged.view_profile') }} </a>
-
-    </div>
-    <div class="d-block text-right">
-    <i class="fa fa-pencil-square-o mr-2"></i>
-    <a href="{{url('/account/profile')}}">{{ trans('icommerce::customer.logged.edit_profile') }} </a>
-  </div>
-  <div class="d-block text-right">
-  <a href="{{url('/checkout/logout')}}">{{ trans('icommerce::customer.logged.logout') }} </a>
-</div> -->
-    
-      </div>
-    @endauth
+  
+    @include("icommerce::frontend.livewire.checkout.partials.customer-logged")
 
  
     </div>
