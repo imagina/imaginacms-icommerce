@@ -97,7 +97,7 @@ class TaxRateApiController extends BaseApiController
       $taxRate = $this->taxRate->create($data);
 
       //Response
-      $response = ["data" => new TaxRateTransformer($category)];
+      $response = ["data" => new TaxRateTransformer($taxRate)];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
       \DB::rollback();//Rollback to Data Base
