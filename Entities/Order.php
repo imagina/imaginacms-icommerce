@@ -66,7 +66,8 @@ class Order extends Model
         'ip',
         'user_agent',
         'key',
-        'options'
+        'options',
+        'returned_stock'
     ];
 
 

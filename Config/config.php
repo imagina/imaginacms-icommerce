@@ -27,58 +27,72 @@ return [
     '1' => [
       'id' => 1,
       'title' => 'icommerce::orderstatuses.statuses.pending',
+      'returnStock' => false,
     ],
     '2' => [
       'id' => 2,
       'title' => 'icommerce::orderstatuses.statuses.shipped',
+      'returnStock' => false,
     ],
     '3' => [
       'id' => 3,
       'title' => 'icommerce::orderstatuses.statuses.canceled',
+      'returnStock' => true,
     ],
     '4' => [
       'id' => 4,
       'title' => 'icommerce::orderstatuses.statuses.completed',
+      'returnStock' => false,
     ],
     '5' => [
       'id' => 5,
       'title' => 'icommerce::orderstatuses.statuses.denied',
+      'returnStock' => true,
     ],
     '6' => [
       'id' => 6,
       'title' => 'icommerce::orderstatuses.statuses.canceledreversal',
+      'returnStock' => false,
     ],
     '7' => [
       'id' => 7,
       'title' => 'icommerce::orderstatuses.statuses.failed',
+      'returnStock' => true,
     ],
     '8' => [
       'id' => 8,
       'title' => 'icommerce::orderstatuses.statuses.refunded',
+      'returnStock' => true,
     ],
     '9' => [
       'id' => 9,
       'title' => 'icommerce::orderstatuses.statuses.reserved',
+      'returnStock' => false,
     ],
     '10' => [
       'id' => 10,
       'title' => 'icommerce::orderstatuses.statuses.chargeback',
+      'returnStock' => false,
     ],
-    '11' => [
+    /*'11' => [
       'id' => 11,
       'title' => 'icommerce::orderstatuses.statuses.pending',
-    ],
+      'returnStock' => false,
+    ],*/
     '12' => [
       'id' => 12,
       'title' => 'icommerce::orderstatuses.statuses.voided',
+      'returnStock' => false,
     ],
     '13' => [
       'id' => 13,
       'title' => 'icommerce::orderstatuses.statuses.processed',
+      'returnStock' => false,
     ],
     '14' => [
       'id' => 14,
       'title' => 'icommerce::orderstatuses.statuses.expired',
+      'returnStock' => true,
     ],
   ],
 
