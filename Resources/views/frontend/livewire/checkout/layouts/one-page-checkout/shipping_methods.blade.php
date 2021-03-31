@@ -15,40 +15,7 @@
         @endif
       </div>
       
-      <table id="shippingList" class="table my-2">
-        <tbody>
-        @foreach($shippingMethods as $key => $shippingMethod)
-        <tr class="shipping-item">
-          <td >
-            <div
-              class="card-header collapsed bg-white border-0"
-              role="tab"
-              id="headingOne">
-              <label class="mb-0">
-                <input type="radio"
-                       data-parent="#shippingList" data-toggle="collapse"
-                       data-target="#shipping{{$key}}" aria-expanded="true"
-                       aria-controls="shipping{{$key}}"
-                       wire:model="shippingMethodSelected" value="{{$shippingMethod->id}}">
-                <a class="card-title">
-                  {{ ucfirst($shippingMethod->title)}}
-                </a>
-              </label>
-            </div>
-            <div id="shipping{{$key}}" class="collapse" role="tabpanel" aria-labelledby="shipping{{$key}}">
-              <div class="card-block">
-                {{$shippingMethod->description}}
-              </div>
-            </div>
-          </td>
-        </tr>
-        @endforeach
-        </tbody>
-      </table>
-      <input type="hidden" name="shipping_method" id="shipping_method" :value="shipping_method">
-      <input type="hidden" name="shipping_code" id="shipping_code" :value="shipping_method">
-      <input type="hidden" name="shipping_amount" id="shipping_amount" :value="shipping_amount">
-      <input type="hidden" name="shipping_value" id="shipping_value" value="">
+     @include("icommerce::frontend.livewire.checkout.partials.shipping-methods-list")
     </div>
   </div>
 </div>

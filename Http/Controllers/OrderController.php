@@ -67,7 +67,7 @@ class OrderController extends BasePublicController
         $products = [];
         if (isset($order) && !empty($order)) {
             if ($order->shipping_amount>0){
-                $subtotal = $order->total - $order->shipping_amount;
+                $subtotal = $order->total + $order->coupon_total - $order->shipping_amount;
             }else{
                 $subtotal = $order->total;
             }

@@ -16,15 +16,17 @@ class Cart extends Component
   public $cart;
   public $view;
   public $layout;
+  public $showButton;
   public $icon;
   private $params;
   private $request;
   protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart'];
   
-  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart')
+  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart', $showButton = true)
   {
     
-    
+
+    $this->showButton = $showButton;
     $this->layout = $layout;
     $this->icon = $icon;
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";

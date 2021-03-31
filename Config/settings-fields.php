@@ -197,6 +197,25 @@ return [
       ]
     ]
   ],
+  'productAspect' => [
+    'value' => "1-1",
+    'name' => 'icommerce::productAspect',
+    'group' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'Relación de Aspecto',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => '1 : 1','value' => "1-1"],
+        ['label' => '4 : 3','value' => "4-3"],
+      ]
+    ]
+  ],
   'product-add-to-cart-with-quantity' => [
     'name' => 'icommerce::product-add-to-cart-with-quantity',
     'value' => "0",

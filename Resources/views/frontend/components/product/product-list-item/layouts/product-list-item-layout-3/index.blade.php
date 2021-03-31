@@ -3,14 +3,14 @@
   @include('icommerce::frontend.components.product.meta')
   
   
-  
-  @if(isset($productListLayout) && $productListLayout=='one')
+ 
+  @if(isset($itemListLayout) && $itemListLayout=='one')
     <div class="row product-list-layout-one">
       
       <div class="col-6">
         <div class="position-relative">
         @include('icommerce::frontend.components.product.ribbon')
-        <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
+        <div class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden">
           <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                                 :mediaFiles="$product->mediaFiles()"/>
         </div>
@@ -22,7 +22,7 @@
     </div>
   @else
     @include('icommerce::frontend.components.product.ribbon')
-    <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
+    <div class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden">
       <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                             :mediaFiles="$product->mediaFiles()"/>
     </div>
