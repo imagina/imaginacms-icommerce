@@ -4,7 +4,7 @@
         <label class="mb-0">
           <input type="radio" class="form-check-input" name="payment_method"
                  value="{{$shippingMethod->id}}"
-                 wire:model="paymentMethodSelected">
+                 wire:model.defer="paymentMethodSelected">
     
           {{$shippingMethod->title}}
         </label>

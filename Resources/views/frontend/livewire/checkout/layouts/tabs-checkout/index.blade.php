@@ -74,7 +74,7 @@
                   @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.billing_details')
                 </div>
                 <div class="col-md-6">
-                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.payment_methods')
+                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.payment-methods')
                 </div>
               </div>
             </div>
