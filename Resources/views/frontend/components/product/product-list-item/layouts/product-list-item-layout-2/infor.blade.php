@@ -2,9 +2,9 @@
   
   <div class="card-product">
     <div class="cursor-pointer position-relative">
-      @if(!isset($productListLayout) || $productListLayout!='one')
+      @if(!isset($itemListLayout) || $itemListLayout!='one')
         
-        <div class="bg-img d-flex justify-content-center align-items-center overflow-hidden">
+        <div class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden">
           <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                                  :mediaFiles="$product->mediaFiles()"/>
         </div>
