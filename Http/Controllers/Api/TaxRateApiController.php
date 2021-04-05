@@ -62,17 +62,16 @@ class TaxRateApiController extends BaseApiController
   public function show($criteria, Request $request)
   {
     try {
+      $params = $this->getParamsRequest($request);
       //Request to Repository
-      $taxRate = $this->taxRate->getItem($criteria,$this->getParamsRequest($request));
+      $taxRate = $this->taxRate->getItem($criteria, $params);
 
       //Break if no found item
-      if (!$tax) throw new \Exception('Item not found', 404);
+      if (!$taxRate) throw new \Exception('Item not found', 404);
 
       //Response
-      $response = ["data" => new TaxRateTransformer($tax)];
+      $response = ["data" => new TaxRateTransformer($taxRate)];
 
-      //If request pagination add meta-page
-      $params->page ? $response["meta"] = ["page" => $this->pageTransformer($tax)] : false;
     } catch (\Exception $e) {
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
@@ -118,14 +117,12 @@ class TaxRateApiController extends BaseApiController
     \DB::beginTransaction(); //DB Transaction
     try {
 
-      $this->taxRate->updateBy($criteria, $request->all(), $this->getParamsRequest($request));
+      $data = $request->input('attributes') ?? [];//Get data
 
-      $dataEntity = $this->taxRate->getItem($criteria, $params);
+      $params = $this->getParamsRequest($request);
 
-      if (!$dataEntity) throw new Exception('Item not found', 204);
+      $this->taxRate->updateBy($criteria, $data, $params);
 
-      //Request to Repository
-      $this->taxRate->update($dataEntity, $data);
       //Response
       $response = ["data" => 'Item Updated'];
       \DB::commit();//Commit to DataBase

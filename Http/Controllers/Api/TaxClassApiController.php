@@ -86,9 +86,9 @@ class TaxClassApiController extends BaseApiController
   {
     try {
 
-            $data = $request->input('attributes') ?? [];//Get data
-            $this->validateRequestApi(new TaxClassRequest($data));
-            $taxClass = $this->taxClass->create($data);
+      $data = $request->input('attributes') ?? [];//Get data
+      $this->validateRequestApi(new TaxClassRequest($data));
+      $taxClass = $this->taxClass->create($data);
 
       $response = ['data' => $taxClass];
 

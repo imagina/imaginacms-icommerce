@@ -34,7 +34,7 @@ class OrderItem extends Model
   ];
 
   public function entity(){
-     return $this->belongsTo(app($this->entity_type),'entity_id');
+     return $this->belongsTo($this->entity_type,'entity_id');
   }
 
   public function orderOption(){
