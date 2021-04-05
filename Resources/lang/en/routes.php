@@ -18,8 +18,11 @@ return [
       'index' => 'store/manufacturers',
       'show' => 'store/manufacturers/{manufacturerSlug}',
     ],
-    
-    'checkout' => 'store/checkout',
+  
+    'checkout' => [
+      'create' => 'store/checkout',
+      'update' => 'store/checkout/{orderId}',
+    ],
     'order' => [
       'index' => 'store/orders',
       'show' => 'store/orders/{orderId}/{orderKey}'

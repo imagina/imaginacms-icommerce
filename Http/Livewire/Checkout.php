@@ -174,7 +174,7 @@ class Checkout extends Component
    */
   private function initCart($cart = null, $cartId = null)
   {
-    
+  
     if (isset($cart->id)) {
       $this->cart = $cart;
     } else {

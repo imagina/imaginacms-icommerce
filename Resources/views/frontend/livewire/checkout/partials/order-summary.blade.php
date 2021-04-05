@@ -35,6 +35,9 @@
                                     <div class="item_carting px-3 w-100 row m-0">
                                         <hr class="mt-0 mb-3 w-100">
 
+                                    @php($mediaFiles = $cartProduct->product->mediaFiles())
+                                    @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
+                                    @if($withImage)
                                         <!-- imagen -->
                                         <div class="col-3 px-0 mb-3">
                                             <div class="img-product-cart">
@@ -46,9 +49,10 @@
                                                         :mediaFiles="$cartProduct->product->mediaFiles()"/>
                                             </div>
                                         </div>
+                                        @endif
 
                                         <!-- descripción -->
-                                        <div class="col-9">
+                                        <div class="{{$withImage ? 'col-9' : 'col-12'}}">
 
                                             <!-- titulo -->
                                             <h6 class="mb-2 w-100 __title">
@@ -142,6 +146,7 @@
                           Añadir  próxima sección de impuestos en esta parte
                           -->
 
+                        @if($requireShippingMethod)
                             <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
                             <div class="row">
                                 <div class="col-4">
@@ -167,6 +172,7 @@
                                         </p>
                                 </div>
                             </div>
+                            @endif
                         </div>
 
                         <hr class="mt-0 mb-1"/>

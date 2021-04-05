@@ -20,7 +20,10 @@ return [
       'show' => 'tienda/marcas/{manufacturerSlug}',
     ],
     
-    'checkout' => 'tienda/checkout',
+    'checkout' => [
+      'create' => 'tienda/checkout',
+      'update' => 'tienda/checkout/{orderId}',
+    ],
     'order' => [
       'index' => 'tienda/ordenes',
       'show' => 'tienda/ordenes/{orderId}/{orderKey}'

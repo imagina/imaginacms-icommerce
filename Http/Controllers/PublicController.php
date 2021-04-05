@@ -10,6 +10,7 @@ use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Currency;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
+use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Transformers\CartTransformer;
 use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
@@ -27,6 +28,7 @@ class PublicController extends BaseApiController
 {
   protected $auth;
   private $product;
+  private $order;
   private $category;
   private $manufacturer;
   private $currency;
@@ -36,6 +38,7 @@ class PublicController extends BaseApiController
   public function __construct(
     ProductRepository $product,
     CategoryRepository $category,
+    OrderRepository $order,
     ManufacturerRepository $manufacturer,
     CurrencyRepository $currency,
     PaymentMethodRepository $payments,
@@ -44,6 +47,7 @@ class PublicController extends BaseApiController
   {
     parent::__construct();
     $this->product = $product;
+    $this->order = $order;
     $this->category = $category;
     $this->manufacturer = $manufacturer;
     $this->currency = $currency;
@@ -295,6 +299,27 @@ class PublicController extends BaseApiController
       $title =  trans('icommerce::checkout.title');
     }
     return view($tpl,["cart" => new CartTransformer($cart),"currency" => $currency, "title" => $title]);
+  }
+  public function checkoutUpdate($orderId)
+  {
+    $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
+    
+    $tpl = "icommerce::frontend.checkout.index";
+  
+    $cart = request()->session()->get('cart');
+    if(isset($cart->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }
+    $currency = Currency::where("default_currency",1)->first();
+    
+    $order = $this->order->getItem($orderId);
+    
+    if(setting("icommerce::customCheckoutTitle")){
+      $title = setting("icommerce::customCheckoutTitle");
+    }else{
+      $title =  trans('icommerce::checkout.title');
+    }
+    return view($tpl,["cart" => new CartTransformer($cart),"currency" => $currency, "title" => $title, "order" => $order]);
   }
 
   

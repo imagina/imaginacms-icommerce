@@ -22,6 +22,8 @@ class OrderItem extends Model
     'tax',
     'reward',
     'options',
+    'entity_type',
+    'entity_id',
     'discount'
   ];
 

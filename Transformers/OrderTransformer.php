@@ -197,7 +197,7 @@ class OrderTransformer extends JsonResource
    
     
     array_push($item["informationBlocks"],$customerShippingAddressBlock);
-    
+
     $customerBillingAddressBlock = [
       'title' => trans('icommerce::orders.table.payment address'),
       'values' => [

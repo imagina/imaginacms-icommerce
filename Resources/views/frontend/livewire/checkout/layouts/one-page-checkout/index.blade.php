@@ -12,11 +12,11 @@
   </div>
   
   <div class="col-12 col-md-6 col-lg-4">
-    @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.billing_details')
+    @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.billing-details')
     
     @php($step = 3)
     @if($requireShippingMethod)
-      @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.shipping_details')
+      @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.shipping-details')
       @php($step++)
     @endif
   </div>
@@ -24,12 +24,12 @@
   <div class="col-12 col-md-12 col-lg-4">
     
     @if($requireShippingMethod)
-      @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.shipping_methods')
+      @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.shipping-methods')
       @php($step++)
     @endif
     
-    @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.payment_methods')
-    @include('icommerce::frontend.livewire.checkout.partials.order_summary')
+    @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.payment-methods')
+    @include('icommerce::frontend.livewire.checkout.partials.order-summary')
   
   </div>
 

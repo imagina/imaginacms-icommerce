@@ -71,7 +71,7 @@
             <div class="tab-content-in py-3 mb-4">
               <div class="row">
                 <div class="col-md-6">
-                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.billing_details')
+                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.billing-details')
                 </div>
                 <div class="col-md-6">
                   @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.payment-methods')
@@ -109,10 +109,10 @@
               
               <div class="row">
                 <div class="col-md-6">
-                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.shipping_details')
+                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.shipping-details')
                 </div>
                 <div class="col-md-6">
-                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.shipping_methods')
+                  @include('icommerce::frontend.livewire.checkout.layouts.tabs-checkout.shipping-methods')
                 </div>
               </div>
             
@@ -145,7 +145,7 @@
     
     </div>
     <div class="col-md-4 pb-5">
-      @include('icommerce::frontend.livewire.checkout.partials.order_summary')
+      @include('icommerce::frontend.livewire.checkout.partials.order-summary')
     </div>
   </div>
 

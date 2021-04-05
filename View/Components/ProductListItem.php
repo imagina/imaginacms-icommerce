@@ -43,7 +43,7 @@ class ProductListItem extends Component
   /**
    * Get the view / contents that represent the component.
    *
-   * @return \Illuminate\Contracts\View\View|string
+   * @return \Illuminate\Codntracts\View\View|string
    */
   public function render()
   {

@@ -46,9 +46,15 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
       'uses' => 'PublicController@show',
     ]);
     
-    $router->get(trans('icommerce::routes.store.checkout'), [
+    $router->get(trans('icommerce::routes.store.checkout.create'), [
       'as' => $locale . '.icommerce.store.checkout',
       'uses' => 'PublicController@checkout',
+      'middleware' => 'doNotCacheResponse'
+    ]);
+    
+    $router->get(trans('icommerce::routes.store.checkout.update'), [
+      'as' => $locale . '.icommerce.store.checkout.update',
+      'uses' => 'PublicController@checkoutUpdate',
       'middleware' => 'doNotCacheResponse'
     ]);
     

@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Http\Controllers\Api;
 // Requests & Response
 use Modules\Icommerce\Entities\OrderStatusHistory;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
+use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -329,6 +330,9 @@ class OrderApiController extends BaseApiController
               ]);
               
                 event(new OrderStatusHistoryWasCreated($orderStatusHistory));
+                
+                if($data["status_id"] == 13) // Processed
+                  event(new OrderWasProcessed($order));
             }
   
   
