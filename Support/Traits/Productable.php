@@ -24,8 +24,15 @@ trait Productable
             ->withTimestamps();
     }
 
-    public function product(){
-        return $this->products()->first();
+    public function getProductAttribute(){
+        return $this->products->first();
+    }
+
+    public function getProductableAttribute(){
+        $classNamespace = get_class($this);
+        $classNamespaceExploded = explode('\\',strtolower($classNamespace));
+        $productableField = config('asgard.'.strtolower($classNamespaceExploded[1]).'.crud-fields.'.$classNamespaceExploded[3].'s.productable') ?? [];
+        return $productableField['props']['multiple'] === true ? $this->products->pluck('id') : ($this->product->id ?? null);
     }
 
 }

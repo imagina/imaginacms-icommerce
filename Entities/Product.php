@@ -61,7 +61,9 @@ class Product extends Model implements TaggableInterface
 		'sum_rating',
 		'sort_order',
 		'is_call',
-		'item_type_id'
+		'item_type_id',
+        'entity_id',
+        'entity_type',
 	];
 
 	protected $presenter = ProductPresenter::class;
@@ -76,6 +78,11 @@ class Product extends Model implements TaggableInterface
 		$this->auth = Auth::user();
 		parent::__construct($attributes);
 	}
+
+    public function entity(){
+        return $this->belongsTo($this->entity_type,'entity_id');
+    }
+
 	public function store()
 	{
 		if (is_module_enabled('Marketplace')) {
@@ -275,7 +282,7 @@ class Product extends Model implements TaggableInterface
 
 	public function discount()
 	{
-	 
+
 		$user = $this->auth;
 		$userId = $user->id ?? 0;
 		//dd($userId);
@@ -435,10 +442,10 @@ class Product extends Model implements TaggableInterface
 	public function getIsAvailableAttribute()
 	{
 		$isAvailable = false;
-	
+
 		$availableDate = new \DateTime($this->date_available);
 		$now = new \DateTime(date('Y-m-d'));
-		
+
 
 		if($this->status){
       if($now >= $availableDate){ // if the date is available
@@ -449,7 +456,7 @@ class Product extends Model implements TaggableInterface
         }
       }
     }
-		
+
 		return $isAvailable;
 	}
 
