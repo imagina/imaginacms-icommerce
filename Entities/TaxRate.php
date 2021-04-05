@@ -37,9 +37,9 @@ class TaxRate extends Model
     }
 
 
-        public function taxClass()
-        {
-          return $this->belongsTo(TaxClass::class,'tax_class_id');
-        }
+    public function taxClass()
+    {
+      return $this->belongsTo(TaxClass::class,'tax_class_id');
+    }
 
 }
