@@ -73,13 +73,14 @@
           @if(setting("icommerce::showCategoryChildrenIndexHeader"))
             @include('icommerce::frontend.partials.children-categories-index-section',["category" => $category ?? null])
           @endif
-
           
           <livewire:isite::items-list 
             moduleName="Icommerce"
             itemComponentName="icommerce::product-list-item"
             itemComponentNamespace="Modules\Icommerce\View\Components\ProductListItem"
+            :itemComponentAttributes="['category' => $category ?? null, 'manufacturer' => $manufacturer ?? null]"
             entityName="Product"
+            :title="(isset($category->id) ? $category->title : '').(isset($manufacturer->id) ? (isset($category->id) ? ' / ' : '').$manufacturer->name : '')"
             :params="[
             'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
