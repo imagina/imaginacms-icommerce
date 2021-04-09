@@ -35,16 +35,17 @@ class Coupon
     // Coupon for order (1 coupon for all items of the order)
     if ( $coupon->type == 1 ){
 
-       \Log::info("COUPON - ALL ITEMS");
+       //\Log::info("COUPON - ALL ITEMS");
 
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cart->total);
-      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for order'), $discount, 1);
+
+      $allDiscounts = $this->getDiscountByProducts($cart,$discount);
+
+      return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for order'), $discount, 1,$allDiscounts);
 
     }else{
 
-      \Log::info("COUPON - CHECK OTHERS VALIDATIONS");
-
-      //$total = $this->calcTotal($coupon, $cart);
+      //\Log::info("COUPON - CHECK OTHERS VALIDATIONS");
 
       $result = $this->calcTotal($coupon, $cart);
       $total = $result['total'];
@@ -256,6 +257,33 @@ class Coupon
     );
 
     return $discountProduct;
+
+  }
+
+  /**
+  * Get Discount By Product Just Case $coupon->type = 1 (all items of the order) needed to Taxes
+  * @param $cart
+  * @param $totalDiscount
+  * @return array (Product Id , Discount)
+  */
+  public function getDiscountByProducts($cart,$totalDiscount){
+
+    $discounts = [];
+
+    $discountByProduct = $totalDiscount / $cart->products->count();
+
+    foreach ($cart->products as $cartProduct){
+
+       $discountProduct = array(
+        "productId" => $cartProduct->id, 
+        "discount" => $discountByProduct
+      );
+
+      array_push($discounts, $discountProduct);
+
+    }
+
+    return $discounts;
 
   }
 
