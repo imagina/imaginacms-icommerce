@@ -34,18 +34,26 @@ class Coupon
 
     // Coupon for order (1 coupon for all items of the order)
     if ( $coupon->type == 1 ){
+
+       \Log::info("COUPON - ALL ITEMS");
+
       $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cart->total);
       return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon whit discount for order'), $discount, 1);
+
     }else{
 
-     
-      $total = $this->calcTotal($coupon, $cart);
+      \Log::info("COUPON - CHECK OTHERS VALIDATIONS");
+
+      //$total = $this->calcTotal($coupon, $cart);
+
+      $result = $this->calcTotal($coupon, $cart);
+      $total = $result['total'];
 
         if($total>0){
 
           $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $total);
 
-          return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon apply'), $discount, 1);
+          return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon apply'), $discount, 1,$result['discounts']);
         }else{
            return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon not apply product'), 0, 0);
         }
@@ -83,6 +91,8 @@ class Coupon
    
     $total = 0;
 
+    //\Log::info("COUPON - CALC TOTAL");
+
     if($coupon->categories->isNotEmpty()){
       $couponCategories = $this->getAllCategories($coupon->categories);
       $couponIdsCategories = $couponCategories->pluck('id')->toArray();
@@ -97,26 +107,44 @@ class Coupon
     
     $productsIds = [];
 
+    $discounts = [];
+    $i=0;
+
     foreach ($cart->products as $cartProduct){
       
+      //\Log::info("------ CHECK CART PRODUCT ------");
+
       // Validations to Categories
       if($coupon->categories->isNotEmpty()){
+        //\Log::info("COUPON CATEGORIES");
         $productIdsCategories = $cartProduct->product->categories->pluck('id')->toArray();
         $intersections = array_intersect($couponIdsCategories, $productIdsCategories);
 
         if(!empty($intersections)){
           array_push($productsIds, $cartProduct->id);
+
+          //\Log::info("COUPON - TOTAL CART PRODUCT:".$cartProduct->total);
+
+          $discounts[$i] = $this->applyDiscount($coupon,$cartProduct);
+          $i++;
+
           $total += $cartProduct->total;
         }
       }
 
        // Validations to Manufacturers
       if($coupon->manufacturers->isNotEmpty()){
-
+        //\Log::info("COUPON MANUFACTURERS");
         $productIdManufacturer = $cartProduct->product->manufacturer->id;
 
         if(in_array($productIdManufacturer,$couponIdsManufacturers) && !in_array($cartProduct->id, $productsIds)){
            array_push($productsIds, $cartProduct->id);
+
+           //\Log::info("COUPON - TOTAL CART PRODUCT:".$cartProduct->total);
+
+          $discounts[$i] = $this->applyDiscount($coupon,$cartProduct);
+          $i++;
+
            $total += $cartProduct->total;
         }
 
@@ -124,16 +152,27 @@ class Coupon
 
        // Validations to Product
       if($coupon->products->isNotEmpty()){
-
+        //\Log::info("COUPON PRODUCTS");
         if(in_array($cartProduct->product->id,$couponIdsProducts) && !in_array($cartProduct->id, $productsIds)){
            array_push($productsIds, $cartProduct->id);
+
+          //\Log::info("COUPON - TOTAL CART PRODUCT:".$cartProduct->total);
+
+          $discounts[$i] = $this->applyDiscount($coupon,$cartProduct);
+          $i++;
+
            $total += $cartProduct->total;
         }
 
       }
      
     }
-    return $total;
+
+    $result['total']=$total;
+    $result['discounts'] = $discounts;
+
+    return $result;
+    //return $total;
   }
 
   /**
@@ -144,6 +183,9 @@ class Coupon
    * @return $discount
    */
   private function calcDiscount ( $typeDiscount, $value, $total ) {
+
+    //\Log::info("COUPON - CALC DISCOUNT - TOTAL: ".$total);
+
     // 0 = Fix value
     if ( $typeDiscount == 0 ){
       return $value;
@@ -162,11 +204,12 @@ class Coupon
    * @param $discount
    * @return []
    */
-  private function setResponseMessages ( $message = 'Error', $discount = 0, $status = 0) {
+  private function setResponseMessages ( $message = 'Error', $discount = 0, $status = 0,$allDiscounts = null) {
     return (object)[
       'status' => $status,
       'message' => $message,
-      'discount' => $discount
+      'discount' => $discount,
+      'allDiscounts' => $allDiscounts
     ];
   }
 
@@ -195,6 +238,25 @@ class Coupon
    */
   public function getCouponByCode ($code) {
     return CouponEntity::where( 'code', $code )->first();
+  }
+
+  /**
+  * Apply Discount
+  * @param $coupon
+  * @param $cartProduct
+  * @return array (Product Id , Discount)
+  */
+  public function applyDiscount($coupon,$cartProduct){
+
+    $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cartProduct->total);
+
+    $discountProduct = array(
+      "productId" => $cartProduct->id, 
+      "discount" => $discount
+    );
+
+    return $discountProduct;
+
   }
 
 }

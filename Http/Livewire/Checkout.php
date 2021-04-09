@@ -537,6 +537,7 @@ class Checkout extends Component
         
         $validateCoupons = new SupportCoupon();
         $result = $validateCoupons->getDiscount($coupon, $this->cart->id);
+
         
         if( $result->status == 1 ){
           $this->alert('success', trans('icommerce::coupons.messages.couponApplied'), config("asgard.isite.config.livewireAlerts"));
