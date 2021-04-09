@@ -18,9 +18,11 @@ class HandleProductable
                 $params = json_decode(json_encode(['filter' => ['field' => 'entity_id']]));
                 $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id,$params);
                 if($productWithPlan){
-                    $productWithPlan->entity_id = 0;
-                    $productWithPlan->entity_type = null;
-                    $productWithPlan->save();
+                    if($productWithPlan->entity_type == $entityType) {
+                        $productWithPlan->entity_id = 0;
+                        $productWithPlan->entity_type = null;
+                        $productWithPlan->save();
+                    }
                 }
                 $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($productId, false);
                 $product->entity_id = $entity->id;
