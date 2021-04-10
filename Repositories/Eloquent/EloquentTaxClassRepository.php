@@ -12,23 +12,23 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
     $query->with(array_merge($defaultInclude, $params->include));
-    
+
     // FILTERS
     if ($params->filter) {
       $filter = $params->filter;
-      
+
       //set language translation
       if (isset($params->filter->locale))
         \App::setLocale($filter->locale ?? null);
       $lang = \App::getLocale();
-      
+
       //add filter by search
       if (isset($filter->search)) {
-        
+
         //find search in columns
         $query->where(function ($query) use ($filter, $lang) {
           $query->whereHas('translations', function ($query) use ($filter, $lang) {
@@ -40,11 +40,11 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
         });
       }
     }
-    
+
     //*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
+
     /*== REQUEST ==*/
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
@@ -53,40 +53,42 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
       return $query->get();
     }
   }
-  
+
   public function getItem($criteria, $params)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     $query->where('id', $criteria);
-    
+
     // RELATIONSHIPS
     $includeDefault = ['translations'];
     $query->with(array_merge($includeDefault, $params->include));
-    
+
     // FILTERS
     //set language translation
     if (isset($params->filter->locale))
       \App::setLocale($params->filter->locale ?? null);
-    
+
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
     }
     return $query->first();
-    
+
   }
-  
+
   public function create($data)
   {
-    
-    $tagClass = $this->model->create($data);
-  
+    $rates = Arr::get($data, 'rates', []);
+
+    unset($data['rates']);
+
+    $taxClass = $this->model->create($data);
     // sync tables
-    $tagClass->rates()->sync(Arr::get($data, 'rates', []));
-    
-    
+    $taxClass->rates()->sync($rates);
+
+
     return $tagClass;
   }
 
@@ -120,6 +122,6 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
         return $model;
     }
 
-  
- 
+
+
 }
