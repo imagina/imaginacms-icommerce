@@ -20,13 +20,15 @@ class OrderService
     OrderRepository $order,
     CartRepository $cart,
     CartProductRepository $cartProduct,
-    UserApiRepository $user
+    UserApiRepository $user,
+    CartService $cartService
   )
   {
     $this->order = $order;
     $this->cart = $cart;
     $this->cartProduct = $cartProduct;
     $this->user = $user;
+    $this->cartService = $cartService;
   }
   
   /**
@@ -94,17 +96,7 @@ class OrderService
     | Validate cart or create a new
     |--------------------------------------------------------------------------
     */
-    if (isset($data['cartId'])) {
-      $cart = $this->cart->find($data['cartId']);
-    } elseif (isset($data['cart']->id)) {
-      $cart = $data['cart'];
-    } elseif (isset($data["products"])) {
-     
-      $cartService = app("Modules\Icommerce\Services\CarService");
-  
-      $cart = $cartService->create(["products" => $data["products"], "customerId" => $customer->id]);
-      
-    }
+    $cart = $this->cartService->create($data);
     
     //Break if cart no found
     if (!isset($cart->id)) throw new \Exception('There are an error with the cart', 400);

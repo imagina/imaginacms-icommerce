@@ -62,8 +62,8 @@ class Product extends Model implements TaggableInterface
 		'sort_order',
 		'is_call',
 		'item_type_id',
-        'entity_id',
-        'entity_type',
+    'entity_id',
+    'entity_type',
 	];
 
 	protected $presenter = ProductPresenter::class;
@@ -111,7 +111,7 @@ class Product extends Model implements TaggableInterface
 
 	public function taxClass()
 	{
-		return $this->belongsTo(TaxClass::class);
+		return $this->belongsTo(TaxClass::class)->with('translations')->with('rates');
 	}
 
 	public function categories()
@@ -489,7 +489,7 @@ class Product extends Model implements TaggableInterface
 		return $price;
 	}
 
-	function priceLists(){
+	public function priceLists(){
 		if(is_module_enabled('Icommercepricelist')) {
 			return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
 				->withPivot(['price','id'])
@@ -497,5 +497,28 @@ class Product extends Model implements TaggableInterface
 		}
 		return collect([]);
 	}
+	
+	public function tax($couponDiscount = 0){
+	  
+    $taxes = [];
+    $rates = $this->taxClass->rates ?? [];
+
+    foreach ($rates as $rate){
+  
+      array_push($taxes, [
+        "rateId" => $rate->id,
+        "productId" => $this->id,
+        "tax" => $rate->calcTax(($this->discount->price ?? $this->price) - $couponDiscount),
+        "rateName" => $rate->name,
+        "rate" => $rate->rate,
+        "rateType" => $rate->type,
+      ]);
+      
+    }
+    
+	  return $taxes;
+	}
+	
+	
 
 }

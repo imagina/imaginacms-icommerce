@@ -14,6 +14,7 @@ return [
     'couponCode'       => 'Código de Cupón',
     'freeshipping'  => 'Envío gratuito',
     'tax'           => 'IMPUESTO',
+    'taxes'           => 'Impuestos',
     'shipping_cero' => 'no seleccionado',
     'shipping_not_selected' => 'No seleccionado',
 

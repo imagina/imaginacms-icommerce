@@ -25,7 +25,8 @@
         "paymentMethod" => $this->paymentMethod,
         "shippingAddress" => $this->shippingAddress,
         "shippingMethod" => $this->shippingMethod,
-        "total" => $this->total
+        "totalTaxes" => $this->totalTaxes,
+        "total" => $this->total,
         ])
       </div>
     @else

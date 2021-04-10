@@ -142,9 +142,29 @@
                                 </div>
                             </div>
                             @endif
-                            <!--
-                          Añadir  próxima sección de impuestos en esta parte
-                          -->
+                          
+                            @if(!empty($totalTaxes))
+                            <!--  TAXES  -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p>
+                                        <div>{{ trans('icommerce::order_summary.taxes') }}</div>
+                                        </p>
+                                    </div>
+                                    @foreach($totalTaxes as $totalTax)
+                                    <div class="col-5">
+                                 
+                                        <div>{{ $totalTax["rateName"] ."  (".$totalTax['rate'].")"  }}</div>
+                                  
+                                    </div>
+                                    <div class="col-7 text-right">
+                               
+                                            {{ isset($currency) ? $currency->symbol_left : '$'}}{{formatMoney($totalTax["totalTax"])}}{{isset($currency) ? $currency->symbol_right : ''}}
+                                      
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @endif
 
                         @if($requireShippingMethod)
                             <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
