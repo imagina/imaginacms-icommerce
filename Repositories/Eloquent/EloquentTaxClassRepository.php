@@ -89,7 +89,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     $taxClass->rates()->sync($rates);
 
 
-    return $tagClass;
+    return $taxClass;
   }
 
     public function updateBy($criteria, $data, $params){
