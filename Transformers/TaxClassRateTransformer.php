@@ -9,7 +9,6 @@ class TaxClassRateTransformer extends JsonResource
   public function toArray($request)
   {
     $data =  [
-      'taxClassId' => (int)$this->when($this->pivot->tax_class_id, $this->pivot->tax_class_id),
       'taxRateId' => (int)$this->when($this->pivot->tax_rate_id, $this->pivot->tax_rate_id),
       'based' => $this->when($this->pivot->based, $this->pivot->based),
       'priority' => (string)$this->pivot->priority ?? '0',
