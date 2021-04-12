@@ -12,8 +12,8 @@ class TaxClassRateTransformer extends JsonResource
       'taxRateId' => $this->when($this->tax_rate_id, $this->tax_rate_id),
       'based' => $this->when($this->based, $this->based),
       'priority' => (string)$this->priority ?? '0',
-      'taxRate' => $this->whenLoaded('taxRate'),
-      'taxClass' => $this->whenLoaded('taxClass'),
+      'taxRate' => new TaxRateTransformer($this->whenLoaded('taxRate')),
+      'taxClass' => new TaxClassTransformer($this->whenLoaded('taxClass')),
     ];
 
 
