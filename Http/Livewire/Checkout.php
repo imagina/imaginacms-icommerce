@@ -5,8 +5,10 @@ namespace Modules\Icommerce\Http\Livewire;
 use \Illuminate\Session\SessionManager;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use Modules\Icommerce\Entities\CartProduct;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Currency;
+use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +29,7 @@ class Checkout extends Component
   public $view;
   public $layout;
   public $order;
+  
   public $cart;
   public $currency;
   public $requireShippingMethod;
@@ -43,6 +46,7 @@ class Checkout extends Component
   public $update;
   protected $addresses;
   
+  protected $taxes;
   protected $products;
   protected $paymentMethods;
   protected $shippingMethods;
@@ -54,6 +58,7 @@ class Checkout extends Component
     
     $this->couponSelected = null;
     $this->couponCode = null;
+    $this->taxes = [];
     $this->sameShippingAndBillingAddresses = true;
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
@@ -174,27 +179,21 @@ class Checkout extends Component
    */
   private function initCart($cart = null, $cartId = null)
   {
-  
-    if (isset($cart->id)) {
-      $this->cart = $cart;
-    } else {
+    
       $cart = request()->session()->get('cart');
       
       if (isset($cart->id) && $cart->status == 1) {
         
         $this->cart = $this->cartRepository()->getItem($cart->id);
         
-      } elseif (!empty($cartId)) {
-        
-        $this->cart = $this->cartRepository()->getItem($cartId);
-        
-      } else {
-        $this->cart = null;
+      } else{
+        $this->cart = $this->cartService()->create(["cart" => $cart, "cartId" => $cartId]);
       }
-    }
+    
     
     if(isset($this->cart->id)){
       $this->requireShippingMethod = $this->cart->require_shipping;
+      
     }
     
   }
@@ -212,9 +211,14 @@ class Checkout extends Component
     } else {
       $this->currency = Currency::where("default_currency", 1)->first();
     }
+  }
+  
+  private function initTaxes(){
     
+    $this->taxes = $this->cartService()->totalTaxes(["cart" => $this->cart, "couponDiscounts" => $this->couponDiscount->allDiscounts ?? []]);
     
   }
+  
   
   /**
    *
@@ -366,6 +370,13 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Services\OrderService');
   }
+  /**
+   * @return orderService
+   */
+  private function cartService()
+  {
+    return app('Modules\Icommerce\Services\CartService');
+  }
   
   
   //|--------------------------------------------------------------------------
@@ -452,7 +463,7 @@ class Checkout extends Component
     
     if (isset($this->user->id) && !empty($this->shippingMethodSelected)) {
       
-        $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
+      $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
     }else{
       if ($this->shippingMethods->count()) {
         $shippingMethod = $this->shippingMethods->first();
@@ -462,6 +473,29 @@ class Checkout extends Component
     
     return $shippingMethod;
   }
+  
+  /**
+   * @return
+   */
+  public function getTotalTaxesProperty()
+  {
+    $totalTaxes = [];
+    
+    foreach ($this->taxes as $productTaxes){
+      foreach ($productTaxes as $productTax){
+        $totalTaxes[$productTax["rateId"]] = [
+          "rateId" => $productTax["rateId"],
+          "rateName" => $productTax["rateName"],
+          "rate" => $productTax["rateType"] == 1 ? round($productTax["rate"])."%" : (isset($this->currency->id) ? $this->currency->symbol_left : '$') .formatMoney($productTax["rate"]). (isset($this->currency->id) ? $this->currency->symbol_right : ''),
+          "totalTax" => ($totalTaxes[$productTax["rateId"]]["totalTax"] ?? 0) + $productTax["tax"]
+        ];
+      }
+    }
+
+    return $totalTaxes;
+  }
+  
+  
   
   /**
    * @return
@@ -478,13 +512,17 @@ class Checkout extends Component
     if(isset($this->couponSelected->id)){
       $total -= $this->couponDiscount->discount ?? 0;
     }
+  
+    //added taxes
+    //-----------------------------------------------------------------------------------------------------------------
+    foreach ($this->totalTaxes as $totalTax){
+      $total += $totalTax["totalTax"];
+    }
     
     //added shipping method total
     $total += $this->shippingMethod->calculations->price ?? 0;
     
-    //added tax - pending feature
-    //-----------------------------------------------------------------------------------------------------------------
-    
+  
     
     return $total;
   }
@@ -526,24 +564,34 @@ class Checkout extends Component
     $params = ["filter" => ["field" => "code"]];
     $coupon = $this->couponRepository()->getItem($couponCode, json_decode(json_encode($params)));
     
+    //validate if the coupon exist
     if (!isset($coupon->id)) {
       $this->alert('warning', trans('icommerce::coupons.messages.coupon not exist'), config("asgard.isite.config.livewireAlerts"));
     }else{
+      //validate if the coupon its running yet
       if(!$coupon->running){
         $this->alert('warning', trans('icommerce::coupons.messages.coupon inactive'), config("asgard.isite.config.livewireAlerts"));
+        //validate if the coupon can be used by de user logged
       }elseif(!$coupon->canUse){
         $this->alert('warning', trans('icommerce::coupons.messages.cantUseThisCoupon'), config("asgard.isite.config.livewireAlerts"));
       }else{
-        
+  
+        //coupon Support
         $validateCoupons = new SupportCoupon();
+        //getting the discount details by the products in the cart
         $result = $validateCoupons->getDiscount($coupon, $this->cart->id);
 
-        
+        //if the coupon return status 1 the coupon its applied
         if( $result->status == 1 ){
+
           $this->alert('success', trans('icommerce::coupons.messages.couponApplied'), config("asgard.isite.config.livewireAlerts"));
           $this->couponSelected = $coupon;
           $this->couponDiscount = $result;
+          $this->initTaxes();
+          $this->getTotalTaxesProperty();
+  
         }else{
+          //if the coupon return status 0 the coupon cant be applied
           $this->alert('warning', trans($result->message), config("asgard.isite.config.livewireAlerts"));
         }
       }
@@ -573,7 +621,9 @@ class Checkout extends Component
     $this->getPaymentMethodProperty();
     $this->getShippingMethodProperty();
     $this->getCouponDiscount();
-    
+    $this->initTaxes();
+    $this->getTotalTaxesProperty();
+  
   }
   
   /**
