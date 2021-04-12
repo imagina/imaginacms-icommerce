@@ -19,5 +19,16 @@ class TaxClassRate extends Model
       'based',
       'priority'
     ];
-    
+
+    public function taxRate()
+    {
+        return $this->belongsTo(TaxRate::class);
+    }
+
+    public function taxClass()
+    {
+        return $this->belongsTo(TaxClass::class);
+    }
+
+
 }
