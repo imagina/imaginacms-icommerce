@@ -35,7 +35,7 @@ class ProductListItem extends Component
   
   private function getParentAttributes($parentAttributes){
     
-    isset($parentAttributes["productListLayout"]) ? $this->productListLayout = $parentAttributes["productListLayout"] : false;
+    isset($parentAttributes["itemListLayout"]) ? $this->itemListLayout = $parentAttributes["itemListLayout"] : false;
     isset($parentAttributes["addToCartWithQuantity"]) ? $this->addToCartWithQuantity = $parentAttributes["addToCartWithQuantity"] : false;
     
   }

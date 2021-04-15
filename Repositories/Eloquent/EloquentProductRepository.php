@@ -265,7 +265,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       }
 
-      if (isset($filter->isCall) && !empty($filter->isCall)) {
+      if (isset($filter->isCall)) {
         $query->where("is_call", $filter->isCall);
       }
 

@@ -486,7 +486,10 @@ class Checkout extends Component
         $totalTaxes[$productTax["rateId"]] = [
           "rateId" => $productTax["rateId"],
           "rateName" => $productTax["rateName"],
-          "rate" => $productTax["rateType"] == 1 ? round($productTax["rate"])."%" : (isset($this->currency->id) ? $this->currency->symbol_left : '$') .formatMoney($productTax["rate"]). (isset($this->currency->id) ? $this->currency->symbol_right : ''),
+          "rate" => $productTax["rateType"] == 1 ? round($productTax["rate"])."%" :
+            (isset($this->currency->id) ? $this->currency->symbol_left : '$') .
+            formatMoney($productTax["rate"]).
+            (isset($this->currency->id) ? $this->currency->symbol_right : ''),
           "totalTax" => ($totalTaxes[$productTax["rateId"]]["totalTax"] ?? 0) + $productTax["tax"]
         ];
       }
