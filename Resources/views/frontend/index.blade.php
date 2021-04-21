@@ -78,7 +78,6 @@
             moduleName="Icommerce"
             itemComponentName="icommerce::product-list-item"
             itemComponentNamespace="Modules\Icommerce\View\Components\ProductListItem"
-            :itemComponentAttributes="['category' => $category ?? null, 'manufacturer' => $manufacturer ?? null]"
             entityName="Product"
             :title="(isset($category->id) ? $category->title : '').(isset($manufacturer->id) ? (isset($category->id) ? ' / ' : '').$manufacturer->name : '')"
             :description="isset($category->options->descriptionIndex) && !empty($category->options->descriptionIndex) ? $category->options->descriptionIndex : null "
