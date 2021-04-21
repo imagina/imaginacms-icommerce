@@ -42,15 +42,6 @@ class PaymentMethodTransformer extends JsonResource
 
   //TODO falta que en el basequasar se haga un update de los forms de estos métodos para poder editar los options directamente y no tener que sacar estos campos a primer nivel
     switch($this->name){
-            case 'icommercepaypal':
-                $data = array_merge($data, [
-          'clientid' => $this->when($this->options,$this->options->clientid),
-          'clientsecret' => $this->when($this->options,$this->options->clientsecret),
-                    'mode' => $this->when($this->options, $this->options->mode)
-                ]);
-
-                break;
-
             case 'icommercepayu':
                 $data = array_merge($data, [
           'merchantId' => $this->when($this->options,$this->options->merchantId??null),

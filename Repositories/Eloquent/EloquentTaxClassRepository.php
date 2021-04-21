@@ -86,7 +86,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
 
     $taxClass = $this->model->create($data);
     // sync tables
-    $taxClass->rates()->sync($rates);
+    $taxClass->rates()->createMany($rates);
 
 
     return $taxClass;
@@ -117,7 +117,8 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
             // sync tables
             if($rates)
                 //$model->rates()->detach();
-                $model->rates()->sync($rates);
+                $model->rates()->delete();
+                $model->rates()->createMany($rates);
         }
         return $model;
     }
