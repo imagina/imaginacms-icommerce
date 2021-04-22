@@ -2,7 +2,7 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Modules\Isite\Http\Controllers\Api\FieldsApiController;
+use Modules\Isite\Http\Controllers\Api\ConfigApiController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -34,8 +34,8 @@ class ShippingMethodTransformer extends JsonResource
         if (isset($this->parent_name) && !empty($this->parent_name))
           $config = "crud-fields." . ucfirst($data['parentName']) . ".formFields";
 
-        $fieldsController = new FieldsApiController();
-        $data['crudFields'] = $fieldsController->validateResponseApi($fieldsController->index(new Request([
+        $configController = new ConfigApiController();
+        $data['crudFields'] = $configController->validateResponseApi($configController->index(new Request([
             'filter' => json_encode(['configFieldName' => $config])
         ])));
     }
