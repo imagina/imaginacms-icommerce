@@ -21,3 +21,72 @@
     }
 }
 }
+
+.cartLayout3 {
+
+  .modal-cart {
+    .modal-dialog {
+      position: fixed;
+      margin: auto;
+      width: 320px;
+      height: 100%;
+      right: -320px;
+      -webkit-transform: translate3d(0%, 0, 0);
+      -ms-transform: translate3d(0%, 0, 0);
+      -o-transform: translate3d(0%, 0, 0);
+      transform: translate3d(0%, 0, 0) !important;
+      -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+      -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+      -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+      transition: opacity 0.3s linear, right 0.3s ease-out !important;
+    }
+
+    .modal-content {
+      height: 100%;
+      overflow-y: auto;
+      border-radius: 0 !important;
+    }
+    .modal-header {
+      padding: 1rem;
+      text-align: center;
+      img {
+        height: 100px;
+        object-fit: contain;
+        width: auto;
+      }
+      .close {
+        font-size: 23px;
+      }
+      .h5, h5 {
+        font-size: 1rem;
+      }
+    }
+    .modal-body {
+      padding: 0 1rem;
+    }
+    .modal-footer {
+      display: block;
+      background-color: #e9ecef;
+      padding: 0;
+    }
+    .modal-footer > * {
+      margin: 0;
+    }
+
+    .modal-dialog-scrollable {
+      max-height: calc(100%) !important;
+    }
+    .modal-dialog-scrollable .modal-content {
+      max-height: calc(100vh) !important;
+    }
+
+    &.show .modal-dialog {
+      right: 0;
+    }
+  }
+
+  .cart-remove {
+    font-size: 14px;
+  }
+
+}
