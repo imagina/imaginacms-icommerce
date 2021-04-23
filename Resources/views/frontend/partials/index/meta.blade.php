@@ -3,7 +3,7 @@
     
     @php
     if(isset($category->id)){
-        $title = $category->meta_title ?? $category->title . (isset($manufacturer->id) ? " - ".$manufacturer->meta_title ?? $manufacturer->title : '');
+        $title = $category->meta_title ?? $category->title . (isset($manufacturer->id) ? " - ".$manufacturer->meta_title ?? $manufacturer->name : '');
         $description = $category->meta_description ?? $category->description . (isset($manufacturer->id) ? " - ".$manufacturer->meta_description ?? $manufacturer->description : '');
         
           $mediaFiles = $category->mediaFiles();
@@ -72,5 +72,6 @@
 @stop
 
 @section('title')
-  {{isset($category->title)? $category->title : isset($manufacturer->title) ? $manufacturer->title : trans("icommerce::routes.store.index.index")}}  | @parent
+  
+  {{(isset($category->id)) ? ($category->title . (isset($manufacturer) ? " - ". $manufacturer->name : '')) : (isset($manufacturer) ?  $manufacturer->name : "")}}  | @parent
 @stop
