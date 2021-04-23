@@ -44,6 +44,7 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
     $router->get(trans('icommerce::routes.store.show.product'), [
       'as' => $locale . '.icommerce.store.show',
       'uses' => 'PublicController@show',
+      'middleware' => 'doNotCacheResponse'
     ]);
     
     $router->get(trans('icommerce::routes.store.checkout.create'), [

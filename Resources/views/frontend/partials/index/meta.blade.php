@@ -73,5 +73,5 @@
 
 @section('title')
   
-  {{(isset($category->id)) ? ($category->title . (isset($manufacturer) ? " - ". $manufacturer->name : '')) : (isset($manufacturer) ?  $manufacturer->name : "")}}  | @parent
+  {{(isset($category->id)) ? ($category->title . (isset($manufacturer) ? " - ". $manufacturer->name : '')) : (isset($manufacturer) ?  $manufacturer->name : trans("icommerce::routes.store.index.index"))}}  | @parent
 @stop
