@@ -86,7 +86,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             if (isset($filter->order)) {
                 $orderByField = $filter->order->field ?? 'created_at';//Default field
                 $orderWay = $filter->order->way ?? 'desc';//Default way
-                $query->orderBy($orderByField, $orderWay);//Add order to query
+                $query->orderBy("icommerce__categories.".$orderByField, $orderWay);//Add order to query
             }
             if (isset($filter->store)) {
                 $query->where("store_id", $filter->store);
@@ -120,7 +120,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
             foreach ($order as $orderObject) {
                 if (isset($orderObject->field) && isset($orderObject->way))
-                    $query->orderBy($orderObject->field, $orderObject->way);
+                    $query->orderBy("icommerce__categories.".$orderObject->field, $orderObject->way);
             }
         } else {
           $query->orderBy('sort_order', 'desc');//Add order to query

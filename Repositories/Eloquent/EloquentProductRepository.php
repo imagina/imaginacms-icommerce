@@ -121,7 +121,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
 
       //Filter by stock status
-      if (isset($filter->stockStatus)) {
+      if (isset($filter->stockStatus)&& !empty($filter->stockStatus)) {
         if ($filter->stockStatus)
           $query->where('quantity', ">", 0);
         else {
@@ -131,7 +131,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
 
       //Filter by stock status
-      if (isset($filter->status)) {
+      if (isset($filter->status) && !empty($filter->status)) {
 
         $query->where('status', ($filter->status ? 1 : 0));
       }
@@ -228,7 +228,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where("featured", $filter->visible);
       }
 
-      if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut)) {
+      if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut) && $filter->soonToSoldOut) {
         $query->where("quantity", "<=", setting("icommerce::productMinimumQuantityToNotify"))
         ->where("quantity","!=",0)
         ->where("subtract",1);
@@ -247,7 +247,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         }
       }
 
-      if (isset($filter->withDiscount) && is_bool($filter->withDiscount)) {
+      if (isset($filter->withDiscount) && is_bool($filter->withDiscount) && $filter->withDiscount) {
 
         $query->has('discount');
 
