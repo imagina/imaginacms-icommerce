@@ -40,7 +40,7 @@ class OrderService
   public function create($data)
   {
     \DB::beginTransaction();
-    // try {
+     try {
     $orderData = [];
     $orderData["options"] = [];
     $total = [];
@@ -331,10 +331,10 @@ class OrderService
     //Response
     $response = $dataResponse;
     \DB::commit(); //Commit to Data Base
-    /* } catch (\Exception $e) {
+     } catch (\Exception $e) {
        \DB::rollback();//Rollback to Data Base
        $response = ["errors" => $e->getMessage()];
-     }*/
+     }
     
     //Return response
     return $response;

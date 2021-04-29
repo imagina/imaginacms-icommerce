@@ -114,7 +114,17 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     $model = $query->first();
 
     if($model) {
+      if (isset($data["default_currency"]) && $data["default_currency"]) {
+        $defaultCurrency = $this->findByAttributes(["default_currency" => true]);
+        if (isset($defaultCurrency->id)) {
+          $defaultCurrency->default_currency = false;
+          $defaultCurrency->save();
+        }
+      }
+      
       $model->update($data);
+      
+      
     }
     return $model;
   }

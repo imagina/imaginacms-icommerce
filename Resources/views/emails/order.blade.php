@@ -83,11 +83,13 @@
         
         $rest = 0;
   
-        if(!empty($order->shipping_amount))
+        if(!empty($order->shipping_amount)){
             $rest = $order->shipping_amount;
+        }
 
-        if(!empty($order->tax_amount))
+        if(!empty($order->tax_amount)){
             $rest = $rest + $order->tax_amount;
+        }
       
 
         $subtotal = $order->total + $order->coupon_total - $rest;

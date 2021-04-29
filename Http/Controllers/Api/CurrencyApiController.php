@@ -113,40 +113,43 @@ class CurrencyApiController extends BaseApiController
     return response()->json($response, $status ?? 200);
   }
 
-  /**
-   * Update the specified resource in storage.
-   * @param  Request $request
-   * @return Response
-   */
-  public function update($criteria, Request $request)
-  {
-    try {
-
-      \DB::beginTransaction();
-
-      $params = $this->getParamsRequest($request);
-
-      $data = $request->all();
-
-      //Validate Request
-      $this->validateRequestApi(new CurrencyRequest($data));
+  
+    /**
+       * UPDATE ITEM
+       *
+       * @param $criteria
+       * @param Request $request
+       * @return mixed
+       */
+      public function update($criteria, Request $request)
+      {
+        \DB::beginTransaction(); //DB Transaction
+        try {
+          //Get data
+          $data = $request->input('attributes');
+    
+          //Validate Request
+          //$this->validateRequestApi(new CurrencyRequest((array)$data));
+    
+          //Get Parameters from URL.
+          $params = $this->getParamsRequest($request);
+    
+          //Request to Repository
+          $currency = $this->currency->updateBy($criteria, $data, $params);
+    
+          //Response
+          $response = ['data' => new CurrencyTransformer($currency)];
+          \DB::commit();//Commit to DataBase
+        } catch (\Exception $e) {
+          \DB::rollback();//Rollback to Data Base
+          $status = $this->getStatusError($e->getCode());
+          $response = ["errors" => $e->getMessage()];
+        }
+        
+        //Return response
+        return response()->json($response, $status ?? 200);
+      }
       
-      $currency = $this->currency->updateBy($criteria, $data,$params);
-
-      $response = ['data' => new CurrencyTransformer($currency)];
-
-      \DB::commit(); //Commit to Data Base
-
-    } catch (\Exception $e) {
-
-      \Log::error($e->getMessage());
-      \DB::rollback();//Rollback to Data Base
-      $status = $this->getStatusError($e->getCode());
-      $response = ["errors" => $e->getMessage()];
-
-    }
-    return response()->json($response, $status ?? 200);
-  }
 
   /**
    * Remove the specified resource from storage.

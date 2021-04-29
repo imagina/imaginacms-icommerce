@@ -27,6 +27,7 @@ class SaveOrderItems
         }
         $order = $event->order;
         $items = $event->items;
+        
         foreach ($items as $item) {
           $cartProductOptionsValues = $item["productOptionValues"];
           unset($item["productOptionValues"]);
