@@ -45,23 +45,23 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
                         ->orWhere('created_at', 'like', '%' . $filter->search . '%');
                 });
             }
-  
+
             //add filter by store
             if (isset($filter->store)) {
                 $query->where('store_id', $filter->store);
             }
-  
+
             //add filter by showMenu
             if (isset($filter->showMenu)&& is_bool($filter->showMenu)) {
                 $query->where('show_menu', $filter->showMenu);
             }
-  
+
             //add filter by ids
             if (isset($filter->ids)) {
                 is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
                 $query->whereIn('icommerce__categories.id', $filter->ids);
             }
-  
+
             //add filter by manufacturers
             if (isset($filter->manufacturers) && $filter->manufacturers) {
                 is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
@@ -124,7 +124,6 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             }
         } else {
           $query->orderBy('sort_order', 'desc');//Add order to query
-          $query->leftJoin("icommerce__category_translations as ct", "ct.category_id", "icommerce__categories.id")->orderBy('ct.title', 'asc');
         }
 
         /*== FIELDS ==*/
@@ -141,28 +140,28 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             return $query->get();
         }
     }
-  
-    
+
+
   public function getItemsByForTheTreeFilter($params)
   {
     $categories = $this->getItemsBy($params);
 
     if (isset($params->filter->manufacturers) && !empty($params->filter->manufacturers)) {
       $params->filter->manufacturers = null;
-  
+
       $categoriesWithoutManufacturersFilter = $this->getItemsBy($params);
- 
+
       $parents = [];
       foreach ($categories as $category) {
         $this->getParents($category, $parents, $categoriesWithoutManufacturersFilter);
       }
-  
+
       $categories = collect($parents)->merge($categories)->keyBy("id");
     }
-    
+
     return $categories;
   }
-  
+
     public function getItem($criteria, $params = false)
     {
         // INITIALIZE QUERY
@@ -203,7 +202,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
       }
-      
+
 
     }
 
@@ -287,7 +286,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     $model ? $model->delete() : false;
   }
-  
+
   private function getParents($categoryManufacturer, &$parents = [], $categories)
   {
     foreach ($categories as $category) {
