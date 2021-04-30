@@ -121,7 +121,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
 
       //Filter by stock status
-      if (isset($filter->stockStatus)&& !empty($filter->stockStatus)) {
+      if (isset($filter->stockStatus)) {
         if ($filter->stockStatus)
           $query->where('quantity', ">", 0);
         else {
@@ -131,7 +131,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
 
       //Filter by stock status
-      if (isset($filter->status) && !empty($filter->status)) {
+      if (isset($filter->status)) {
 
         $query->where('status', ($filter->status ? 1 : 0));
       }

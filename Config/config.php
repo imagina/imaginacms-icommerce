@@ -464,7 +464,7 @@ return [
     [
       "title" => "icommerce::orders.title.orders",
       "routeName" => "icommerce.store.order.index",
-      "quasarUrl" => '/ipanel/#/auth/login/',
+      "quasarUrl" => '/ipanel/#/store/orders/',
       "icon" => "fa fa-bars",
 
     ]
