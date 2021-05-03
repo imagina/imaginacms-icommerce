@@ -7,6 +7,9 @@ return [
     'destroy resource' => 'Destroy coupons',
     'title' => [
         'coupons' => 'Coupon',
+        'addCoupon' => 'Add coupon',
+        'aplyCoupon' => 'Apply',
+        'typeCoupon' => 'Type the code',
         'create coupon' => 'Create a coupon',
         'edit coupon' => 'Edit a coupon',
     ],
