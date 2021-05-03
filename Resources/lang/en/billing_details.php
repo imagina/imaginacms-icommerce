@@ -1,20 +1,20 @@
 <?php
 
 return [
-    'title'             => 'billing details',
+    'title'             => 'Billing Details',
     'form'              => [
       'first_name'       => 'First Name',
       'last_name'        => 'Last Name',
     	'expand_form'      => 'Expand Form',
     	'company'          => 'Company',
-      'company_nit'      => 'N.I.T Company',
+        'company_nit'      => 'Company Tax ID',
     	'address1'         => 'Address 1',
     	'address2'         => 'Address 2',
     	'city'             => 'City',
     	'post_code'        => 'Postal Code',
     	'country'          => 'Country',
     	'state'            => 'State / Province',
-      'email'            => 'Email',
+        'email'            => 'Email',
     	'place_holder'  =>[
     		'company'      => 'Enter Company Name',
     	],

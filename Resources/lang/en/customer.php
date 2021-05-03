@@ -1,37 +1,38 @@
 <?php
 
 return [
-    'title'                    => 'Datos del Cliente',
+    'title'                    => 'Customer Data',
     'sub_titles'        => [
-    	'new_client'           => 'Nuevo Cliente',
-    	'register_account'     => 'Registrar Cuenta',
-    	'guest_client'         => 'Comprar como Invitado',
-    	'im_client'            => 'Soy Cliente',
+    	'new_client'           => 'New Client',
+    	'register_account'     => 'Register new Account',
+    	'guest_client'         => 'Buy as Guest',
+    	'im_client'            => "I'm a client",
     ],
     'form'              => [
-    	'first_name'           => 'Nombre',
-    	'last_name'            => 'Apellido',
-    	'email'                => 'Correo Electrónico',
-    	'phone'                => 'Teléfono',
-    	'paswd'                => 'Clave',
-    	'paswd_confirm'        => 'Confirmación Clave',
-      'person_legal'         => '¿Eres personal jurídico?',
+    	'first_name'           => 'First Name',
+    	'last_name'            => 'Last Name',
+    	'email'                => 'E-mail',
+    	'phone'                => 'Phone',
+        'confirmPolytics'        => 'I\'ve read and accepted the <a rel="nofollow" href=":url">Privacy Policy</a>.',
+    	'paswd'                => 'Password',
+    	'paswd_confirm'        => 'Confirm Password',
+      'person_legal'         => '¿Are you Legal Person?',
       'no'              => 'No',
-      'yes'              => 'Si'
+      'yes'              => 'Yes'
     ],
     'logged'            => [
-    	'name'                 => 'Nombre:',
-    	'email'                => 'Correo:',
-    	'view_profile'         => 'Ver Perfil',
-    	'edit_profile'         => 'Editar Perfil',
-    	'logout'               => 'Salir',
-      'kind_person'          => 'Que tipo de persona eres?',
-      'person_natural'   => 'Persona natural',
-      'person_legal'   => 'Persona jurídica',
-      'nit'              => 'NIT'
+    	'name'                 => 'Name:',
+    	'email'                => 'E-mail:',
+    	'view_profile'         => 'View Profile',
+    	'edit_profile'         => 'Edit Profile',
+    	'logout'               => 'Logout',
+      'kind_person'          => 'What kind of people are you?',
+      'person_natural'   => 'Natural Person',
+      'person_legal'   => 'Legal Person',
+      'nit'              => 'Tax ID'
     ],
     'messages'      => [
-        'email_used'       => 'Error: El correo electronico del usuario ya esta siendo usado',
-        'enter'            => 'Entre',
+        'email_used'       => 'Error: This email is already used by another user',
+        'enter'            => 'Enter',
     ],
 ];
