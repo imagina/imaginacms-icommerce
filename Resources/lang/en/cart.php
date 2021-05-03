@@ -29,6 +29,7 @@ return [
         'proceed_to_checkout'   => 'Proceed to pay',
         'view_cart'             => 'See cart',
         'checkout'              => 'Checkout',
+        'add_to_cart'           => 'Add to cart',
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'You have no items in your shopping cart. click',

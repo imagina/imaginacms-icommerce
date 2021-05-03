@@ -10,7 +10,7 @@
     <!-- BUTTON ADD -->
     <div class="add-to-cart-button">
       <a wire:click="$emit('addCartWithQuantity',$event)" class="btn btn-primary add-to-cart-with-quantity-button" data-pid="{{$product->id}}">
-        <i class="fa fa-shopping-cart"></i>Comprar
+        <i class="fa fa-shopping-cart"></i>{{trans('icommerce::cart.button.add_to_cart')}}
       </a>
     </div>
   
