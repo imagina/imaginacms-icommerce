@@ -97,7 +97,7 @@
                 </g>
               </svg>
             </div>
-            COMPRAR
+            {{trans('icommerce::cart.button.add_to_cart')}}
           </a>
           
           <!-- BUTTON WISHLIST -->

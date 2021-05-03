@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'single' => 'Category',
+    'plural' => 'Categories',
     'list resource' => 'List categories',
     'create resource' => 'Create categories',
     'edit resource' => 'Edit categories',
