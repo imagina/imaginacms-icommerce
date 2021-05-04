@@ -6,7 +6,7 @@ return [
     'edit resource' => 'Edit shippingmethods',
     'destroy resource' => 'Destroy shippingmethods',
     'title' => [
-        'shippingmethods' => 'ShippingMethod',
+        'shippingmethods' => 'Shipping Methods',
         'create shippingmethod' => 'Create a shippingmethod',
         'edit shippingmethod' => 'Edit a shippingmethod',
     ],

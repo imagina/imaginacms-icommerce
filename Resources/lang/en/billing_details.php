@@ -10,6 +10,7 @@ return [
         'company_nit'      => 'Company Tax ID',
     	'address1'         => 'Address 1',
     	'address2'         => 'Address 2',
+        'telephone'         => 'Telephone',
     	'city'             => 'City',
     	'post_code'        => 'Postal Code',
     	'country'          => 'Country',

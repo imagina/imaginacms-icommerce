@@ -6,7 +6,7 @@ return [
     'edit resource' => 'Edit paymentmethods',
     'destroy resource' => 'Destroy paymentmethods',
     'title' => [
-        'paymentmethods' => 'PaymentMethod',
+        'paymentmethods' => 'Payment Methods',
         'create paymentmethod' => 'Create a paymentmethod',
         'edit paymentmethod' => 'Edit a paymentmethod',
     ],
@@ -24,6 +24,7 @@ return [
     ],
     'messages' => [
         'no payment methods' => 'No payment methods',
+        'noPaymentMethodSelected' => 'No Payment Method selected',
     ],
     'validation' => [
     ],

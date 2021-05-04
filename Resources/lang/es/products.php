@@ -50,17 +50,17 @@ return [
         'file product size max'     => 'Tamaño Máximo',
         'file product formats'      => 'Formatos',
         'subproducts'               => 'Sub Productos',
-        'image'                     => 'Image',
+        'image'                     => 'Imágen',
         'related_products'          => 'Productos Relacionados',
         'search'                    => 'Buscar',
         'additional'                => 'Adicional',
         'purchasable'               => 'Producto Comprable',
         'freeshipping'              => 'Producto con Freeshipping',
+        'order_weight'              => 'Peso de la Orden',
         'select option'             => 'Selecciona una opción',
         'manufacturer'              => 'Fabricante',
         'certificate'               => 'Certificado',
-        'data_sheet'                => 'Ficha técnica'
-
+        'data_sheet'                => 'Ficha técnica',
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',
@@ -126,6 +126,5 @@ return [
         'Select Filecompatible files CSV, XLSX'=>'Seleccionar archivos compatibles con archivos CSV, XLSX',
         'Image folder path'=>'Ruta de la carpeta de imágenes',
         'Submit'=>'Importar'
-
     ]
 ];
