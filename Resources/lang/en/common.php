@@ -19,7 +19,8 @@ return [
     'form' => [
     ],
     'pages' => [
-      'index' => 'Index Page'
+      'index' => 'Index Page',
+      'checkout' => 'Checkout Page',
     ],
     'filters' => [
       'title' => 'Filters',
@@ -84,6 +85,7 @@ return [
         'tax' => 'Impuesto',
         'orderitemsTax' => 'Tasa en OrderItems',
         'emails' => 'Email del Webmaster',
+        'usersToNotify' => 'Users to Notify',
         'fromemail' => 'Email',
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',
@@ -93,12 +95,19 @@ return [
         'customIndexDescription' => 'Page Index - Description',
         'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
         'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
+        'customIndexContactLabel' => 'Title for Contact Button',
+        'customCheckoutTitle' => 'Title for Checkout',
         'product'=>[
             'group' => 'Product',
             'layout' => 'Product Layout',
+            'minimumQuantityToNotify' => 'Minimum quantity to notify low stock',
         ],
         'product-price-list-enable' => 'Enable',
+        'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',
 
+    ],
+    'settingHints' => [
+        'emails' => "Type the email and press enter key"
     ],
     'uri' => 'icommerce',
     'emailSubject' => [

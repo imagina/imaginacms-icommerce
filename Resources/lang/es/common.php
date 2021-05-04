@@ -106,7 +106,7 @@ return [
       'minimumQuantityToNotify' => 'Cantidad mínima para notificar inventario bajo',
     ],
     'product-price-list-enable' => 'Activar',
-    'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad(Product Item)',
+    'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',
 
   ],
   'settingHints' => [
