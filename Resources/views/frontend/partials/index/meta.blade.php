@@ -1,11 +1,11 @@
 @section('meta')
   @if(isset($category->id) || isset($manufacturer->id))
-    
+
     @php
     if(isset($category->id)){
         $title = $category->meta_title ?? $category->title . (isset($manufacturer->id) ? " - ".$manufacturer->meta_title ?? $manufacturer->name : '');
         $description = $category->meta_description ?? $category->description . (isset($manufacturer->id) ? " - ".$manufacturer->meta_description ?? $manufacturer->description : '');
-        
+
           $mediaFiles = $category->mediaFiles();
           $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
           if(!$withImage){
@@ -19,33 +19,33 @@
           }else{
             $image = $mediaFiles->mainimage->path;
           }
-          
+
           $type = isset($manufacturer->id) ? "branch" : "category";
-          
+
           $url = $category->url;
     }elseif(isset($manufacturer->id)){
        $title =$manufacturer->meta_title ?? $manufacturer->title;
         $description = $manufacturer->meta_description ?? $manufacturer->description;
-            
+
               $mediaFiles = $manufacturer->mediaFiles();
               $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
               if($withImage){
                 $image = $mediaFiles->mainimage->path;
               }
-              
+
               $type = "branch";
-              
+
               $url = $manufacturer->url;
     }
-    
+
     @endphp
-    
-    
+
+
     <meta name="description" content="{{$description}}">
     <!-- Schema.org para Google+ -->
     <meta itemprop="name" content="{{$title}}">
     <meta itemprop="description" content="{{$description}}">
-    
+
     @if($withImage)
     <meta itemprop="image" content=" {{url($image)}}">
     <meta property="og:image" content="{{url($image) }}"/>
@@ -72,6 +72,6 @@
 @stop
 
 @section('title')
-  
-  {{(isset($category->id)) ? ($category->title . (isset($manufacturer) ? " - ". $manufacturer->name : '')) : (isset($manufacturer) ?  $manufacturer->name : trans("icommerce::routes.store.index.index"))}}  | @parent
+
+  {{(isset($category->id)) ? ($category->title . (isset($manufacturer) ? " - ". $manufacturer->name : '')) : (isset($manufacturer) ?  $manufacturer->name : ucfirst(trans("icommerce::routes.store.index.index")))}}  | @parent
 @stop

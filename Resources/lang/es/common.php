@@ -21,7 +21,7 @@ return [
   'pages' => [
     'index' => 'Página Principal',
     'checkout' => 'Página Checkout',
-    
+
   ],
   'filters' => [
     'title' => 'Filtrar',

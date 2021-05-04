@@ -20,15 +20,15 @@
             <div class="col-lg-6 mb-5">
 
               @include('icommerce::frontend.partials.show.gallery')
-  
+
               @include('icommerce::frontend.partials.show.share')
 
             </div>
 
             <div class="col-lg-6 mb-5">
-              
+
               @include('icommerce::frontend.partials.show.information')
-              
+
             </div>
 
             <div class="col-lg-12 mb-5">
@@ -37,11 +37,11 @@
                   <ul class="nav nav-tabs border-left border-right border-top" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active" data-toggle="tab" href="#descripcion"
-                         role="tab">Detalles del Productos</a>
+                         role="tab">{{ trans('icommerce::products.title.productDetails') }}</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" data-toggle="tab" href="#comentarios"
-                         role="tab">Comentarios </a>
+                         role="tab">{{ trans('icommerce::products.title.comments') }}</a>
                     </li>
                   </ul>
                 </div>
@@ -68,7 +68,7 @@
               </div>
             </div>
 
-            
+
 
           </div>
         </div>
@@ -84,7 +84,7 @@
 
     {{-- Extra Footer End Page --}}
     @include('icommerce::frontend.partials.extra-footer')
-    
+
   </div>
 @stop
 
