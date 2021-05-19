@@ -24,10 +24,15 @@
               <a href="{{$category->url}}">
               <h2 class="text-white">{{$category->title}}</h2>
               </a>
-              <button class="btn-custom text-center text-white text-uppercase bg-transparent border-0"
+              @if($showDescription)
+              <div class="description">
+                {!! $category->description!!}
+              </div>
+              @endif
+              <button class="btn btn-custom text-center text-white bg-transparent border-0"
                       type="button" >
                 <i class="fa fa-arrow-circle-right mr-1" aria-hidden="true/"></i>
-                Ver productos
+                {{trans('icommerce::categories.button.show_products')}}
               </button>
             </figcaption>
           </figure>

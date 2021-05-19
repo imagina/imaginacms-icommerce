@@ -12,16 +12,18 @@ class CategoryList extends Component
   public $params;
   public $layout;
   public $view;
+  public $showDescription;
   /**
    * Create a new component instance.
    *
    * @return void
    */
-  public function __construct($params,$layout)
+  public function __construct($params,$layout,$showDescription = false)
   {
     $this->params = $params;
     $this->layout = $layout;
     $this->view = "icommerce::frontend.components.category.category-list.layouts." . $layout.".index";
+    $this->showDescription = $showDescription;
   
   }
   

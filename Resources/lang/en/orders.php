@@ -9,9 +9,19 @@ return [
         'orders' => 'Order',
         'create order' => 'Create a order',
         'edit order' => 'Edit a order',
+        'single_order_title'=>'Order',
+        'confirmation_single_order_title'=>'Order Confirmation',
+        'myOrders'=>'My Orders',
+        'detail order'=> 'Order Detail'
+    ],
+    'breadcrumb'=>[
+        'single_order'=>'Service Order',
+        'title'=>'Orders'
     ],
     'button' => [
         'create order' => 'Create a order',
+        'Back_to_order_list'=>'Quit',
+        'Back_to_profile'=>'Back to profile'
     ],
     'table' => [
         'id'                => 'ID',
@@ -37,12 +47,12 @@ return [
         'additional'        => 'Additional',
         'date added'        => 'Date added',
         'comment'           => 'Comment',
-        'status'            => 'Status',
         'customer notified' => 'Customer notified',
         'add order history' => 'Add an order history',
         'yes'               => 'Yes',
         'customer notify'   => 'Notify customer',
         'shipping_method'   => 'Shipping Method',
+        'payment_method' => 'Payment Method',
     ],
     'form' => [
     ],
@@ -54,7 +64,12 @@ return [
         'user details'=>'User details',
         'shipping method'=>'Shipping method: ',
         'order status'=>'Order Status: ',
-        'rights'=>'All Rights Reserved by '
+        'order error' => 'Oops!. There was an unexpected error generating your order, please try again later',
+        'order success' => 'Your order has been successful, please check your e-mail.',
+        'orderNotRequireShipping' => 'This order does not require shipping',
+        'rights'=>'All Rights Reserved by ',
+         'notificationOrder' => 'Order Notification',
+        'statusChanged' => 'Your order <b>#:orderId</b> has been updated to the status: <strong>:statusName</strong>',
     ],
     'validation' => [
     ],

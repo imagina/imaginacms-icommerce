@@ -55,13 +55,11 @@ return [
     'additional'                => 'Additional',
     'purchasable'               => 'Product Purchasable',
     'freeshipping'              => 'Product with Freeshipping',
-    'order_weight'              => 'Order Products',
+    'order_weight'              => 'Order Weight',
     'select option'             => 'Select an option',
     'manufacturer'              => 'Manufacturer',
     'certificate'               => 'Certificate',
-    'data_sheet'                => 'Data sheet'
-
-
+    'data_sheet'                => 'Data sheet',
   ],
   'categories'        => [
     'free_shipping'             => 'Products with free shipping',
@@ -87,6 +85,8 @@ return [
     'shopping'              => 'SHOPPING',
     'details'               => 'DETAILS',
     'reviews'               => 'REVIEWS',
+    'productSoldOut'      => 'Your product: <b>:name</b> se ha <b>agotado</b>',
+    'productLowStock'      => '<b>:units</b> unit(s) remaining from your product <b>:name</b>',
   ],
   'validation'        => [
     'error delete'          => 'Error: You can\'t delete this product because it has associated elements',
@@ -121,6 +121,5 @@ return [
     'Select Filecompatible files CSV, XLSX'=>'Select File Compatible files CSV, XLSX',
     'Image folder path'=>'Image folder path',
     'Submit'=>'Import'
-
   ]
 ];

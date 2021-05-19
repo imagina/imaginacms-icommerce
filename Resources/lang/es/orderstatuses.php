@@ -33,7 +33,6 @@ return [
         'refunded'          => 'Reintegrado',
         'reserved'          => 'Reservado',
         'chargeback'        => 'Contracargo',
-        'pending'           => 'Pendiente',
         'voided'            => 'Vacio',
         'processed'         => 'Procesado',
         'expired'           => 'Expirado',

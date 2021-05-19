@@ -119,7 +119,7 @@
                                     </p>
                                 </div>
                             </div>
-    
+
                             <!--  COUPON | CODE AND AMOUNT -->
                             @if(isset($couponSelected->id))
                             <div class="row">
@@ -135,14 +135,14 @@
                                             {{$couponSelected->code }}
                                             <br>
                                                 {{ isset($currency) ? $currency->symbol_left : '$'}} {{ "(".formatMoney($couponDiscount->discount).")" }} {{isset($currency) ? $currency->symbol_right : ''}}
-                                          
+
                                         </div>
-                                     
+
                                         </p>
                                 </div>
                             </div>
                             @endif
-                          
+
                             @if(!empty($totalTaxes))
                             <!--  TAXES  -->
                                 <div class="row">
@@ -153,14 +153,14 @@
                                     </div>
                                     @foreach($totalTaxes as $totalTax)
                                     <div class="col-5">
-                                 
+
                                         <div>{{ $totalTax["rateName"] ."  (".$totalTax['rate'].")"  }}</div>
-                                  
+
                                     </div>
                                     <div class="col-7 text-right">
-                               
+
                                             {{ isset($currency) ? $currency->symbol_left : '$'}}{{formatMoney($totalTax["totalTax"])}}{{isset($currency) ? $currency->symbol_right : ''}}
-                                      
+
                                     </div>
                                     @endforeach
                                 </div>
@@ -248,15 +248,11 @@
                             <!--  PAYMENT METHOD | TITLE AND DESCRIPTION -->
                             <div class="row">
                                 <div class="col-4">
-                                    <p>
                                     <div>{{ trans('icommerce::order_summary.payment') }}</div>
-                                    </p>
                                 </div>
                                 <div class="col-8 text-right">
                                     <p>
-
                                         {{$paymentMethod->title ?? trans("icommerce::paymentmethods.messages.noPaymentMethodSelected") }}
-
                                     </p>
                                 </div>
                             </div>
