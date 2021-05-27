@@ -533,7 +533,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $model ? $model->delete() : false;
 
     //Event to Delete media
-    event(new DeleteMedia($model->id, get_class($model)));
+    
+    if(isset($model->id))
+      event(new DeleteMedia($model->id, get_class($model)));
   }
 
   /**

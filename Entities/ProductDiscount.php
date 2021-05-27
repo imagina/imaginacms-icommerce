@@ -111,7 +111,7 @@ class ProductDiscount extends Model
     return $this->belongsTo(Department::class);
   }
 
-  private function calcDiscount($value)
+  public function calcDiscount($value)
   {
     if ($this->criteria == 'fixed') {
       return ($this->discount);

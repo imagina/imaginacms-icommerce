@@ -64,6 +64,7 @@ class Product extends Model implements TaggableInterface
 		'item_type_id',
     'entity_id',
     'entity_type',
+    'custom_url',
 	];
 
 	protected $presenter = ProductPresenter::class;
@@ -405,14 +406,15 @@ class Product extends Model implements TaggableInterface
 	 */
 	public function getUrlAttribute()
 	{
-
+   
+	  if(!empty($this->custom_url)) return $this->custom_url;
+	  
 		$useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
 
 		if ($useOldRoutes)
 			return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.' . $this->category->slug . '.product', [$this->slug]);
 		else
 			return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.show', $this->slug);
-
 
 	}
 
