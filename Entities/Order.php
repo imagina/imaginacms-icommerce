@@ -155,7 +155,12 @@ class Order extends Model
 
     public function getUrlAttribute()
     {
+      $panel = config("asgard.iprofile.config.panel") ?? 'blade';
+      if($panel == 'blade')
         return \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.show',["orderId" => $this->id, "orderKey" => $this->key]);
+      else{
+        return \URL::to('/ipanel/#/store/orders/'.$this->id);
+      }
     }
 
 
