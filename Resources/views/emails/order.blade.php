@@ -38,7 +38,7 @@
     </tr>
     </thead>
     <tbody>
-    
+
     @php
       $orderOptions = $order->orderOption;
       $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD');
@@ -50,7 +50,7 @@
           <a href="{{$product->product->url}}">
             <h4>{{$product->title}}</h4>
           </a>
-          
+
           <!--Show item options-->
           @if($productOptionText->count())
             <div class="text-muted" style="font-size: 13px">({{
@@ -75,14 +75,14 @@
         <br>
       </td>
     </tr>
-    
+
     <tr class="subtotal">
       <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.subtotal')}}</td>
-      
+
       @php
-        
+
         $rest = 0;
-  
+
         if(!empty($order->shipping_amount)){
             $rest = $order->shipping_amount;
         }
@@ -90,12 +90,12 @@
         if(!empty($order->tax_amount)){
             $rest = $rest + $order->tax_amount;
         }
-      
+
 
         $subtotal = $order->total + $order->coupon_total - $rest;
-      
+
       @endphp
-      
+
       <td colspan="2"
           style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($subtotal,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
     </tr>
@@ -107,7 +107,7 @@
           class="text-right"> - {{$currency->symbol_left}}  {{formatMoney($order->coupon_total) }} {{$currency->symbol_right}}</td>
       </tr>
     @endif
-    
+
     @if(!empty($order->shipping_amount))
       <tr class="shippingTotal">
         <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.shipping_method')}}</td>
@@ -115,7 +115,7 @@
             style="text-align: right">{{$order->shipping_method}} {{ $order->shipping_amount>0 ? ' - '.number_format($order->shipping_amount,2,".",",") : ''}}{{$order->currency->symbol_right ?? ''}}</td>
       </tr>
     @endif
-    
+
     @if(!empty($order->tax_amount) && $order->tax_amount!=0)
       <tr class="taxAmount">
         <td colspan="3" style="text-align: right">{{trans('icommerce::order_summary.tax')}}</td>
@@ -123,8 +123,8 @@
             style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->tax_amount,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
       </tr>
     @endif
-    
-    
+
+
     <tr class="total">
       <td colspan="3" style="text-align: right">Total</td>
       <td colspan="2"
@@ -134,11 +134,14 @@
   </table>
 </div>
 
-@php
-  $orderTransformed = collect(new \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with(['customer','addedBy','orderItems','orderHistory','transactions',
-          'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'])->where("id",$order->id)->first()))->toArray();
-  $informationBlocks = $orderTransformed["informationBlocks"];
-@endphp
+<?php
+
+    $orderTransformed = collect(new \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with(['customer','addedBy','orderItems','orderHistory','transactions',
+            'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'])->where("id",$order->id)->first()))->toArray();
+
+
+    $informationBlocks = $orderTransformed["informationBlocks"];
+?>
 
 <div class="user-information">
   <div class="row" style=" width: 100%; display: inline-block;
@@ -157,9 +160,3 @@
     @endforeach
   </div>
 </div>
-   
-
-
-
-
-

@@ -8,6 +8,7 @@ use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Currency;
+use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Icommerce\Repositories\OrderRepository;
