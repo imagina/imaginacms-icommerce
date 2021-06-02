@@ -437,6 +437,7 @@ return [
   */
   'extraFooter' => [
     'carouselBestSellers' => [
+      'type' => "owlCarousel",
       'status' => false,
       'id' => "extraBestSellers",
       'title' => 'Lo que necesitas aqui',
@@ -445,6 +446,14 @@ return [
         'params' => ['filter' => ['featured' => true]],
         'responsive' => [0 => ['items' => 1], 640 => ['items' => 2], 992 => ['items' => 4]]
       ]
+    ],
+    'customSection' => [
+      'type' => "view",
+      'status' => false,
+      'id' => "extraCustom",
+      'title' => 'Lo que necesitas aqui',
+      'subTitle' => 'Los Más Vendidos',
+      'view' => "icommerce.partials.extra-footer"
     ]
   ],
 

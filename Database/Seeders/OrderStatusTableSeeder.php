@@ -26,20 +26,18 @@ class OrderStatusTableSeeder extends Seeder
       $statusTrans = $status['title'];
       
       foreach (['en', 'es'] as $locale) {
-        
-        if ($locale == 'en') {
-          $status['title'] = trans($statusTrans, [], $locale);
-          $statusCreated = OrderStatusTranslation::where("title",$status['title'])->where("locale",$locale)->first();
-          if(!isset($statusCreated->id))
-            $orderStatus = OrderStatus::create($status);
-        } else {
-          $title = trans($statusTrans, [], $locale);
-          $statusCreated = OrderStatusTranslation::where("title",$title)->where("locale",$locale)->first();
-          if(!isset($statusCreated->id)){
-            $orderStatus->translateOrNew($locale)->title = $title;
-            $orderStatus->save();
-          }
-          
+  
+        $data = [
+          "id" => $status['id'],
+          $locale => [
+            "title" => $status['title'],
+          ]
+        ];
+        $orderStatus = OrderStatus::find($status['id']);
+        if(isset($orderStatus->id)){
+          $orderStatus->update($data);
+        }else{
+          $orderStatus = OrderStatus::create($data);
         }
         
       }//End Foreach
