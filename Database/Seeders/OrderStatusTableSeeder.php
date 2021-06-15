@@ -30,7 +30,7 @@ class OrderStatusTableSeeder extends Seeder
         $data = [
           "id" => $status['id'],
           $locale => [
-            "title" => $status['title'],
+            "title" => trans($status['title'], [], $locale),
           ]
         ];
         $orderStatus = OrderStatus::find($status['id']);
