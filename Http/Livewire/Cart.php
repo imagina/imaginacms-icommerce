@@ -16,11 +16,12 @@ class Cart extends Component
   public $cart;
   public $view;
   public $layout;
+  public $productToQuote;
   public $showButton;
   public $icon;
   private $params;
   private $request;
-  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart'];
+  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote'];
   
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart', $showButton = true)
   {
@@ -34,6 +35,9 @@ class Cart extends Component
     //$this->refreshCart();
   }
   
+  //|--------------------------------------------------------------------------
+  //| Livewire Events
+  //|--------------------------------------------------------------------------
   public function refreshCart()
   {
     
@@ -142,11 +146,19 @@ class Cart extends Component
     
   }
   
-  public function render()
+  public function makeQuote($productId)
   {
-    return view($this->view);
+  
+    $productToQuote = $this->productRepository()->getItem($productId);
+    
+    $this->dispatchBrowserEvent('productToQuoteModal',["productName" => $productToQuote->name]);
+
+    
   }
   
+  //|--------------------------------------------------------------------------
+  //| Repositories
+  //|--------------------------------------------------------------------------
   /**
    * @return cartRepository
    */
@@ -171,5 +183,11 @@ class Cart extends Component
     return app('Modules\Icommerce\Repositories\ProductRepository');
   }
   
-  
+  //|--------------------------------------------------------------------------
+  //| Render
+  //|--------------------------------------------------------------------------
+  public function render()
+  {
+    return view($this->view);
+  }
 }
