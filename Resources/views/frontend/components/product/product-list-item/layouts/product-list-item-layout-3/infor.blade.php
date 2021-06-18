@@ -36,9 +36,19 @@
   @endif
   
   @if(!$product->is_call && $product->stock_status)
-    <a onClick="window.livewire.emit('addToCart',{{$product->id}})" class="cart text-primary cursor-pointer">
-      Añadir al carrito
-    </a>
+    @switch(setting("icommerce::addToCartButtonAction"))
+      @case("add-to-cart")
+      <a onClick="window.livewire.emit('addToCart',{{$product->id}})" class="cart text-primary cursor-pointer">
+        Añadir al carrito
+      </a>
+      @break
+      @case("go-to-show-view")
+      <a href="{{$product->url}}" class="cart text-primary cursor-pointer">
+        Añadir al carrito
+      </a>
+      @break
+    @endswitch
+  
   @else
     <a href="{{ URL::to('/contacto') }}" class="cart text-primary cursor-pointer">
       {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}

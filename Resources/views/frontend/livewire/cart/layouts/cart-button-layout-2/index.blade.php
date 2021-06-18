@@ -7,6 +7,7 @@
   @endif
 </div>
 
+@include("icommerce::frontend.livewire.cart.quoteModal")
 
 @section('scripts-owl')
 @parent

@@ -27,15 +27,29 @@
         
         <div class="bottom">
           @if(!$product->is_call && $product->stock_status)
-            <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
-               class="btn btn-warning px-4 text-white cursor-pointer">
-              <i class="fa fa-shopping-basket"></i>
-              COMPRAR
-            </a>
+            @switch(setting("icommerce::addToCartButtonAction"))
+              @case("add-to-cart")
+              <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
+                 class="btn btn-warning px-4 text-white cursor-pointer">
+                <i class="fa fa-shopping-basket"></i>
+                COMPRAR
+              </a>
+              @break
+              @case("go-to-show-view")
+              <a href="{{$product->url}}"
+                 class="btn btn-warning px-4 text-white cursor-pointer">
+                <i class="fa fa-shopping-basket"></i>
+                COMPRAR
+              </a>
+              @break
+            @endswitch
+            
+           
           @else
-            <a href="/contacto" class="btn btn-warning px-4 text-white cursor-pointer">
+            <a onClick="window.livewire.emit('makeQuote',{{$product->id}})" class="btn btn-warning px-4 text-white cursor-pointer" >
               <i class="fa fa-envelope"></i> {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
             </a>
+           
           @endif
         </div>
       
@@ -75,4 +89,5 @@
       @include("icommerce::frontend.components.product.addToCartWithQuantity")
     @endif
   </div>
+  
 </div>
