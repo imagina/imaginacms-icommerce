@@ -33,9 +33,19 @@
         
         <div class="buttons">
           @if(!$product->is_call && $product->stock_status)
-            <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}})">
-              <i class="fa fa-shopping-basket"></i>
-            </a>
+            @switch(setting("icommerce::addToCartButtonAction"))
+              @case("add-to-cart")
+              <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}})">
+                <i class="fa fa-shopping-basket"></i>
+              </a>
+              @break
+              @case("go-to-show-view")
+              <a class="add-cart" href="{{$product->url}}">
+                <i class="fa fa-shopping-basket"></i>
+              </a>
+              @break
+              @endswitch
+            
           @endif
           <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
             <i class="fa fa-heart-o"></i>

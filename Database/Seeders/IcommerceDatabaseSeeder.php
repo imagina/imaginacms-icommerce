@@ -21,5 +21,6 @@ class IcommerceDatabaseSeeder extends Seeder
         $this->call(CurrencyTableSeeder::class);
         $this->call(StoreTableSeeder::class);
         $this->call(NotificationRulesTableSeeder::class);
+        $this->call(IformQuoteTableSeeder::class);
     }
 }

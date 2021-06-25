@@ -25,7 +25,6 @@
     document.addEventListener("DOMContentLoaded", function () {
 
       window.addEventListener('productToQuoteModal', event => {
-
         // Bricklayer needed
 
         $("#inputproductName").val(event.detail.productName);
