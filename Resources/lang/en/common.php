@@ -19,7 +19,8 @@ return [
     'form' => [
     ],
     'pages' => [
-      'index' => 'Index Page'
+      'index' => 'Index Page',
+      'checkout' => 'Checkout Page',
     ],
     'filters' => [
       'title' => 'Filters',
@@ -84,6 +85,7 @@ return [
         'tax' => 'Impuesto',
         'orderitemsTax' => 'Tasa en OrderItems',
         'emails' => 'Email del Webmaster',
+        'usersToNotify' => 'Users to Notify',
         'fromemail' => 'Email',
         'countryTax' => 'Pais donde la tasa sera aplicada',
         'countryDefault' => 'Pais por Defecto',
@@ -93,12 +95,19 @@ return [
         'customIndexDescription' => 'Page Index - Description',
         'filterRangePricesStep' => 'Filtro Rango de Precios - Step',
         'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
+        'customIndexContactLabel' => 'Title for Contact Button',
+        'customCheckoutTitle' => 'Title for Checkout',
         'product'=>[
             'group' => 'Product',
             'layout' => 'Product Layout',
+            'minimumQuantityToNotify' => 'Minimum quantity to notify low stock',
         ],
         'product-price-list-enable' => 'Enable',
+        'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',
 
+    ],
+    'settingHints' => [
+        'emails' => "Type the email and press enter key"
     ],
     'uri' => 'icommerce',
     'emailSubject' => [
@@ -109,41 +118,41 @@ return [
         'history' => 'Estado de la orden',
     ],
     'emailIntro' => [
-        'failed' => 'Reporte del Sistema de Pagos: Transaccion Fallida',
-        'complete' => 'Reporte del Sistema de Pagos: Transaccion Completa',
-        'refunded' => 'Reporte del Sistema de Pagos: Transaccion Rechazada',
-        'pending' => 'Reporte del Sistema de Pagos: Transaccion Pendiente',
+        'failed' => 'Payment System report: Transaction Failed',
+        'complete' => 'Payment System report: Transaction Completed',
+        'refunded' => 'Payment System report: Transaction Rejected',
+        'pending' => 'Payment System report: Transaction Pending',
         'history' => 'El estado de la orden ha cambiado',
     ],
     'emailMsg' => [
-        'order' => 'Orden',
-        'success' => 'Fue procesada satisfactoriamente',
-        'articles' => 'Articulos',
-        'comment' => 'Comentario',
-        'orderurl' => 'Si desea ver el estado de su orden en cualquier momento, por favor ve siguiente link: '
+        'order' => 'Order',
+        'success' => 'Was proccessed successfully',
+        'articles' => 'Articles',
+        'comment' => 'Comment',
+        'orderurl' => 'If you wish to see your order status at any time, please go to the next link: '
     ],
     'payuSubject' => [
-        'signError' => 'Reporte del Sistema de Pagos: Error en Firma',
+        'signError' => 'Payment System report: Signature Error',
     ],
     'payuIntro' => [
-        'signError' => 'Reporte del Sistema de Pagos: Error en Firma',
+        'signError' => 'Payment System report: Signature Error',
     ],
     'sort' => [
-        'title' => 'Ordenar Por',
-        'all' => 'Todas',
-        'name_a_z' => 'Nombre (A - Z)',
-        'name_z_a' => 'Nombre (Z - A)',
-        'price_low_high' => 'Precio: bajo a alto',
-        'price_high_low' => 'Precio alto a bajo',
+        'title' => 'Order by',
+        'all' => 'All',
+        'name_a_z' => 'Name (A - Z)',
+        'name_z_a' => 'Name (Z - A)',
+        'price_low_high' => 'Price: lower to higher',
+        'price_high_low' => 'Price: higher to lower',
         'recently' => 'More Recently',
     ],
     'range' => [
-        'title' => 'Rango de Precio',
+        'title' => 'Price Range',
     ],
     'product-type' => [
         'title' => 'Product Type',
-        'searchable' => 'Consultable',
-        'affordable' => 'Comprable'
+        'searchable' => 'Searchable',
+        'affordable' => 'Afrrodable'
     ],
     'pagination' => [
         'previous' => 'Anterior',

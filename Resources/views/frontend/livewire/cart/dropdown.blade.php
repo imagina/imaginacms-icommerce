@@ -18,17 +18,17 @@
       <!-- articulos en el carrito -->
       @if($cart->products->count())
         @foreach($cart->products as $cartProduct)
- 
+
           <div class="item_carting px-3 w-100 row m-0">
             <hr class="mt-0 mb-3 w-100">
-        
+
             <!-- imagen -->
             <div class="col-3 px-0 mb-3">
               <div class="img-product-cart">
-                <x-media::single-image 
-                  :alt="$cartProduct->product->name" 
-                  :title="$cartProduct->product->name" 
-                  :url="$cartProduct->product->url" 
+                <x-media::single-image
+                  :alt="$cartProduct->product->name"
+                  :title="$cartProduct->product->name"
+                  :url="$cartProduct->product->url"
                   :isMedia="true"
                   :mediaFiles="$cartProduct->product->mediaFiles()"/>
               </div>
@@ -36,7 +36,7 @@
 
             <!-- descripción -->
             <div class="col-9">
-              
+
               <!-- titulo -->
               <h6 class="mb-2 w-100 __title">
                 <a href="{{$cartProduct->product->url}}">
@@ -56,7 +56,7 @@
                 {{trans('icommerce::cart.table.price_per_unit')}}: {{isset($currency) ? $currency->symbol_left : '$'}}
                 {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
               </p>
-              
+
               <!-- boton para eliminar-->
               <div style="width: 20px;  position: absolute; right: -7px; top: 0;">
                 <a class="close cart-remove text-danger" style="font-size: 1rem;"
@@ -67,11 +67,11 @@
               </div>
 
             </div>
-          
+
           </div>
         @endforeach
       @endif
-    
+
       <!-- FOOTER CARTING -->
       @if($cart->products->count())
         <div class="dropdown-footer text-center">
@@ -88,10 +88,9 @@
           <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.checkout') }}" tabindex="-1" class="btn btn-warning btn-sm mx-1 text-white">
             {{trans('icommerce::cart.button.view_cart')}}
           </a>
-        
+
         </div>
       @endif
 
     </div>
-  
 </div>

@@ -1,5 +1,5 @@
 <div class="information">
-  
+
   <!-- CATEGORY -->
   <div class="category text-uppercase" v-if="product.category">
     @{{product.category.title}}
@@ -9,15 +9,15 @@
   <!-- TITLE -->
   <h1 class="name">@{{product.name}}</h1>
   <!-- END TITLE -->
-  
+
   <!-- REFERENCE -->
   <div v-if="product.reference" class="reference my-2"><span
       class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}
   </div>
-  
+
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
-  
+
   <!-- PRICE -->
   @if(!$product->is_call)
     <div class="price " v-if="products_children === false && product.price >0.00">
@@ -28,7 +28,7 @@
         {{isset($currency->id) ? $currency->symbol_right : ''}}
       </span>
         @if(isset($product->discount->price))
-          <br><span class="price-desc h6 pl-3">Antes: <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
+          <br><span class="price-desc h6 pl-3">{{ trans('icommerce::products.alerts.beforeDiscount') }} <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
         @endif
       </div>
     </div>
@@ -36,7 +36,7 @@
 <!-- END PRICE -->
   <!-- OPCIONES DE PRODUCTO -->
   <select-product-options v-model="productOptionsSelected" v-bind:options="productOptions"></select-product-options>
-  
+
   <div class=" align-items-center mb-4" v-if="product.pdf">
     <a v-bind:href="product.pdf"
        class="btn btn-outline-light text-dark">
@@ -44,7 +44,7 @@
       {{trans('icommerce::products.messages.product_brochure')}}
     </a>
   </div>
-  
+
   <div v-if="product.isCall=='0' && product.stockStatus" class="add-cart" >
     <hr>
     <div class="row">
@@ -99,15 +99,15 @@
             </div>
             {{trans('icommerce::cart.button.add_to_cart')}}
           </a>
-          
+
           <!-- BUTTON WISHLIST -->
           <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})" class="btn btn-wishlist"
              v-if="!products_children">
-            <span>AGREGAR A LA LISTA</span>
+            <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
             <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
-       
+
       </div>
     </div>
     <hr>
@@ -120,7 +120,6 @@
         <div>
           <a onClick="window.livewire.emit('makeQuote',{{$product->id}})" class=" btn-comprar btn btn-secondary text-white">
             {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}</a>
-    
           <!-- BUTTON WISHLIST -->
           <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})" class="btn btn-wishlist"
              v-if="!products_children">
@@ -128,14 +127,14 @@
             <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
- 
+
       </div>
     </div>
     <hr>
   </div>
   <div v-else>
     <p class="label d-inline-block px-3 py-2 mb-0">Producto Agotado </p>
-    
+
     <hr>
   </div>
 
