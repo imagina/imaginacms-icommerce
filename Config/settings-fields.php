@@ -289,4 +289,23 @@ return [
       ]
     ]
   ],
+  'addToCartButtonAction' => [
+    'value' => 'add-to-cart',
+    'name' => 'icommerce::addToCartButtonAction',
+    'group' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'Acción del botón añadir al carrito',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Add to Cart','value' => 'add-to-cart'],
+        ['label' => 'go to Show view','value' => 'go-to-show-view'],
+      ]
+    ]
+  ],
 ];

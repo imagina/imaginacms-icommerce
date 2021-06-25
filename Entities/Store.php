@@ -18,6 +18,7 @@ class Store extends Model
         'country_id',
         'province_id',
         'city_id',
+        'user_id',
         'polygon',
         'options',
     ];
@@ -31,7 +32,13 @@ class Store extends Model
   {
     return $this->belongsTo(City::class, 'city_id');
   }
-
+  
+  public function user()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+  }
+  
   public function country()
   {
     return $this->belongsTo(Country::class, 'country_id');
