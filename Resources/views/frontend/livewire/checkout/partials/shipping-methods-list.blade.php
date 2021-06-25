@@ -4,8 +4,8 @@
         <label class="mb-0">
           <input type="radio" class="form-check-input" name="shipping_method"
                  value="{{$shippingMethod->id}}"
-                 wire:model.defer="paymentMethodSelected">
-    
+                 wire:model.defer="shippingMethodSelected">
+
           {{$shippingMethod->title}}
         </label>
         @php($mediaFiles = $shippingMethod->mediaFiles())
