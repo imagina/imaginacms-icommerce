@@ -53,15 +53,15 @@
         <div class="input-group my-2 my-md-0">
           <div class="input-group-prepend">
             <button class="btn btn-outline-light font-weight-bold " field="quantity" type="button"
-                    v-on:click="quantity >= 2 ? quantity-- : false">
+                    v-on:click="quantity-- ">
               <i class="fa fa-angle-left" aria-hidden="true"></i>
             </button>
           </div>
           <input type="text" class="form-control text-center quantity"
-                 name="quantity" v-model="quantity" readonly>
+                 name="quantity" v-model="quantity">
           <div class="input-group-append">
             <button class="btn btn-outline-light font-weight-bold" field="quantity" type="button"
-                    v-on:click="quantity < product.quantity ? quantity++ : false">
+                    v-on:click="quantity++">
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </button>
           </div>

@@ -81,21 +81,27 @@ class Cart extends Component
     
     try {
       $product = $this->productRepository()->getItem($productId);
-          $data = [
-            "cart_id" => $this->cart->id,
-            "product_id" => $productId,
-            "quantity" => $quantity,
-            "product_option_values" => $productOptionValues
-          ];
-          
-          $this->cartProductRepository()->create($data);
-          $this->updateCart();
-          
-          $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
-    
+      
+      if(isset($product->id)){
+        $data = [
+          "cart_id" => $this->cart->id,
+          "product_id" => $productId,
+          "quantity" => $quantity,
+          "product_option_values" => $productOptionValues
+        ];
+  
+        $this->cartProductRepository()->create($data);
+        $this->updateCart();
+  
+        $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+  
+      }else{
+        $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+      }
+      
       
     } catch (\Exception $e) {
-      
+
       switch($e->getMessage()){
         case 'Invalid product':
           $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
@@ -104,6 +110,10 @@ class Cart extends Component
         case 'Missing required product options':
           $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
           $this->redirect($product->url);
+          break;
+          
+        case 'Product Quantity Unavailable':
+          $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable',["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
       }
    

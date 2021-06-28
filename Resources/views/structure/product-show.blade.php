@@ -260,7 +260,6 @@
             this.productOptionsSelected.options
           );
           
-          vue_show_commerce.quantity = 1;
           vue_show_commerce.sending_data = false;
           
         },

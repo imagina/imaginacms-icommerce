@@ -32,14 +32,14 @@
               <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
                  class="btn btn-warning px-4 text-white cursor-pointer">
                 <i class="fa fa-shopping-basket"></i>
-                COMPRAR
+                {{trans("icommerce::products.button.addToCartItemList")}}
               </a>
               @break
               @case("go-to-show-view")
               <a href="{{$product->url}}"
                  class="btn btn-warning px-4 text-white cursor-pointer">
                 <i class="fa fa-shopping-basket"></i>
-                COMPRAR
+                {{trans("icommerce::products.button.addToCartItemList")}}
               </a>
               @break
             @endswitch

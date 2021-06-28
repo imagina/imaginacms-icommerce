@@ -16,6 +16,7 @@ return [
   ],
   'button' => [
     'create product' => 'Create a product',
+    'addToCartItemList' => "Buy"
   ],
   'table'             => [
     'title'                     => 'Title',

@@ -44,6 +44,7 @@ return [
         'can_not_add' => 'You must add at least one product to the cart',
         'not_existence' => 'You cannot add more since it exceeds the existence in the inventory',
         'min_exceeded' => 'Quantity must be at least 1',
+        'quantity_unavailable' => 'There are :quantity units left of the product you want',
     ],
 
 ];

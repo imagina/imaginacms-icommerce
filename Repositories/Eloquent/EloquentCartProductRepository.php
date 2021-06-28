@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Modules\Icommerce\Entities\Cart;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 // Entities
@@ -102,15 +103,18 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
     }
-    if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $data["product_option_values"])) {
-      throw new \Exception("Missing required product options", 400);
-    }
+ 
     if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $data["product_option_values"])) {
       throw new \Exception("Missing required product options", 400);
     }
 
     // if the request has product without options
     $cartProduct = $this->findByAttributesOrOptions($data);
+  
+  
+    if (!$this->productHasValidQuantity($product,$product->optionValues, $data, $cartProduct)) {
+      throw new \Exception("Product Quantity Unavailable", 400);
+    }
 
     //if not found product into cart with the same options
     if(!$cartProduct) {
@@ -256,5 +260,58 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     }
     
     return $allRequiredOptionsOk;
+  }
+  
+  private function productHasValidQuantity($product, $productOptionsValues, $data, $cartProduct)
+  {
+    $validQuantity = true;
+  
+    $cartProductQuantity = 0;
+   
+    //buscamos los productos que ya estén añadidos al carrito actual
+    if(isset($cartProduct->id)){
+      $cartProducts = $cartProduct->cart->products;
+    }else{
+      $cart = Cart::find($data["cart_id"]);
+      $cartProducts = $cart->products;
+    }
+  
+    //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
+      foreach ($cartProducts as $cartSingleProduct){
+        if($cartSingleProduct->product_id == $data["product_id"]) {
+          $cartProductQuantity+= $cartSingleProduct->quantity;
+        }
+      }
+      
+    $quantity = $data["quantity"] + $cartProductQuantity;
+
+    if($product->subtract){ // si el producto se substrae de inventario
+  
+      // si la cantidad del producto no alcanza para lo solicitado
+      if($product->quantity < $quantity){
+        $validQuantity = false;
+      }else{
+        if(!empty($data["product_option_values"])){ // si están añadiendo el producto con opciones
+          foreach ($data["product_option_values"] as $productOptionValue) { // recorriendo las opciones añadidas
+        
+            foreach ($productOptionsValues as $productOptionsValue) { // recorriendo las options values del producto
+              
+              //si el value del producto se debe substraer de inventario y coincide con el que se está añadiendo al carrito
+             if($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValue["optionValueId"]){
+  
+               //dd($quantity,$productOptionsValue->subtract,$productOptionValue["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValue["optionValueId"]);
+               //si la cantidad de unidades para el valor de opcion no alcanza para lo solicitado
+              if($productOptionsValue->quantity < $quantity){
+                //dd($productOptionsValue->quantity,$quantity);
+                $validQuantity = false;
+              }
+             }
+            }
+          }
+        }
+      }
+    }
+    //dd($quantity,$productOptionsValues,$data,$cartProduct);
+    return $validQuantity;
   }
 }
