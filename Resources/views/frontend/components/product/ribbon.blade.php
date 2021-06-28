@@ -26,7 +26,7 @@
         @else
           <b>{{round($discount->discount) ?? 0}}%</b>
         @endif
-        <div class="ribbonLabel">DTO.</div>
+        <div class="ribbonLabel">{{ trans('icommerce::products.alerts.withDiscount') }}</div>
       </div>
     </div>
   @endif

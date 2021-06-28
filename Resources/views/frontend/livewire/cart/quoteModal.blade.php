@@ -8,7 +8,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <x-iforms::form :id="setting('icommerce::icommerceQuoteForm')" :fieldsParams="['productName' => ['disabled' => 'disabled']]" />
+          @php
+            $quoteFormId = setting('icommerce::icommerceQuoteForm',null,null);
+          @endphp
+          @if($quoteFormId)
+            <x-iforms::form :id="$quoteFormId" :fieldsParams="['productName' => ['readonly' => 'readonly']]" />
+          @endif
         </div>
       </div>
     </div>
@@ -20,7 +25,6 @@
     document.addEventListener("DOMContentLoaded", function () {
 
       window.addEventListener('productToQuoteModal', event => {
-        
         // Bricklayer needed
 
         $("#inputproductName").val(event.detail.productName);

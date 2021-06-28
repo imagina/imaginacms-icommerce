@@ -14,6 +14,9 @@ return [
         'products'          => 'Productos',
         'create product'    => 'Crear un producto',
         'edit product'      => 'Editar un producto',
+        'productDetails' => 'Detalles del Producto',
+        'comments' => 'Comentarios',
+        'related' => 'Relacionados',
     ],
     'button'            => [
         'create product'    => 'Crear un producto',
@@ -113,7 +116,8 @@ return [
         'sold out'      => 'Agotado',
         'productSoldOut'      => 'Producto Agotado',
         'productLowStock'      => 'Producto con bajo inventario',
-
+        'withDiscount'       => 'DTO.',
+        'beforeDiscount'     => 'Antes:',
     ],
     'bulkload'=>[
         'success migrate from product' => 'productos migrados con éxito, la actualización se realiza en unos instantes',

@@ -13,6 +13,9 @@ return [
     'products' => 'Product',
     'create product' => 'Create a product',
     'edit product' => 'Edit a product',
+    'productDetails' => 'Product Details',
+    'comments' => 'Comments',
+    'related' => 'Related',
   ],
   'button' => [
     'create product' => 'Create a product',
@@ -109,6 +112,8 @@ return [
     'no_zero'       => 'The product can\'t be less than 0',
     'new'           => 'New',
     'sold out'      => 'Sold out',
+    'withDiscount'       => 'OFF',
+    'beforeDiscount'     => 'Before:',
   ],
   'bulkload'=>[
     'success migrate from product' => 'success migrate from product',
