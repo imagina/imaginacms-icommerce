@@ -104,7 +104,10 @@ return [
         ],
         'product-price-list-enable' => 'Enable',
         'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',
-
+        'cart' => [
+          'group' => 'Cart',
+          'canAddIsCallProductsIntoCart' => 'Can Add Is Call Products Into Cart'
+        ]
     ],
     'settingHints' => [
         'emails' => "Type the email and press enter key"

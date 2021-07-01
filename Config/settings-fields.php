@@ -308,4 +308,16 @@ return [
       ]
     ]
   ],
+  'canAddIsCallProductsIntoCart' => [
+    'name' => 'icommerce::canAddIsCallProductsIntoCart',
+    'value' => "0",
+    'type' => 'checkbox',
+    'columns' => 'col-12 col-md-6',
+    'group' => 'icommerce::common.settings.cart.group',
+    'props' => [
+      'label' => 'icommerce::common.settings.cart.canAddIsCallProductsIntoCart',
+      'trueValue' => "1",
+      'falseValue' => "0",
+    ],
+  ],
 ];

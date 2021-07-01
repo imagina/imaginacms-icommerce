@@ -96,24 +96,28 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
 
   public function create($data){
-    
+
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
     $product = $productRepository->getItem($data["product_id"]);
   
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
     }
- 
+
+    // validate required options
     if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $data["product_option_values"])) {
       throw new \Exception("Missing required product options", 400);
     }
 
     // if the request has product without options
     $cartProduct = $this->findByAttributesOrOptions($data);
-  
-  
-    if (!$this->productHasValidQuantity($product,$product->optionValues, $data, $cartProduct)) {
-      throw new \Exception("Product Quantity Unavailable", 400);
+    
+    //validate setting canAddIsCallProductsIntoCart
+    if(!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])){
+      // validate valid quantity
+      if (!$this->productHasValidQuantity($product,$product->optionValues, $data, $cartProduct)) {
+        throw new \Exception("Product Quantity Unavailable", 400);
+      }
     }
 
     //if not found product into cart with the same options
@@ -216,6 +220,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       // find product into cart by attributes
       $cartProduct = CartProduct::where('cart_id',$data['cart_id'])
         ->where('product_id', $data['product_id'])
+       // ->where('is_call', $data['is_call'] ?? false)
         ->has('productOptionValues', 0)->first();
     }else{
       // get options from front
@@ -224,6 +229,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       // find product into cart where has the same options
       $cartProducts = CartProduct::where('cart_id',$data['cart_id'])
         ->where('product_id', $data['product_id'])
+       // ->where('is_call', $data['is_call'] ?? false)
         ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
           $query->whereIn("product_option_value_id",$productOptionValuesIdsFront);
         })->get();

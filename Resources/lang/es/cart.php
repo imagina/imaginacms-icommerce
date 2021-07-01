@@ -30,6 +30,7 @@ return [
         'view_cart'             => 'Ver Carrito',
         'checkout'              => 'Finalizar Pedido',
         'add_to_cart'           => 'Agregar',
+        'addToCartForQuote'     => 'Agregar para cotización',
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'No tienes artículos en tú carrito de compras. haz Click ',

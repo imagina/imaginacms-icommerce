@@ -34,7 +34,7 @@
         <div class="buttons">
           @if(!$product->is_call && $product->stock_status)
             @switch(setting("icommerce::addToCartButtonAction"))
-              @case("add-to-cart")
+              @case("add-to-cart") @default
               <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}})">
                 <i class="fa fa-shopping-basket"></i>
               </a>

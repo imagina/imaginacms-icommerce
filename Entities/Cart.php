@@ -36,6 +36,13 @@ class Cart extends Model
     {
         return $this->hasMany(CartProduct::class);
     }
+  
+  public function productsToCheckout()
+  {
+    return $this->hasMany(CartProduct::class)->whereHas("product",function ($query){
+      $query->where("icommerce__products.is_call",false);
+    })->where("icommerce__cart_product.is_call",false);
+  }
 
     public function getTotalAttribute()
     {

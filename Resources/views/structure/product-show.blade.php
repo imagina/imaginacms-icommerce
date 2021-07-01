@@ -52,6 +52,7 @@
       data: {
         path: '{{ route('api.icommerce.products.show',[$product->id]) }}',
         product: '',
+        canAddIsCallProductsIntoCart: {{setting("icommerce::canAddIsCallProductsIntoCart")}},
         product_gallery: [],
         products: [],
         products_children: false,

@@ -26,7 +26,7 @@
         </div>
         
         <div class="bottom">
-          @if(!$product->is_call && $product->stock_status)
+          @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status)
             @switch(setting("icommerce::addToCartButtonAction"))
               @case("add-to-cart")
               <a onClick="window.livewire.emit('addToCart',{{$product->id}})"

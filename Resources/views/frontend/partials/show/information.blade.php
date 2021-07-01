@@ -1,5 +1,5 @@
 <div class="information">
-
+  
   <!-- CATEGORY -->
   <div class="category text-uppercase" v-if="product.category">
     @{{product.category.title}}
@@ -9,15 +9,15 @@
   <!-- TITLE -->
   <h1 class="name">@{{product.name}}</h1>
   <!-- END TITLE -->
-
+  
   <!-- REFERENCE -->
   <div v-if="product.reference" class="reference my-2"><span
       class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: @{{product.reference}}
   </div>
-
+  
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
-
+  
   <!-- PRICE -->
   @if(!$product->is_call)
     <div class="price " v-if="products_children === false && product.price >0.00">
@@ -36,7 +36,7 @@
 <!-- END PRICE -->
   <!-- OPCIONES DE PRODUCTO -->
   <select-product-options v-model="productOptionsSelected" v-bind:options="productOptions"></select-product-options>
-
+  
   <div class=" align-items-center mb-4" v-if="product.pdf">
     <a v-bind:href="product.pdf"
        class="btn btn-outline-light text-dark">
@@ -44,10 +44,13 @@
       {{trans('icommerce::products.messages.product_brochure')}}
     </a>
   </div>
-
-  <div v-if="product.isCall=='0' && product.stockStatus" class="add-cart" >
+  
+  <div v-if="(product.isCall=='0' || canAddIsCallProductsIntoCart) && product.stockStatus" class="add-cart">
     <hr>
     <div class="row">
+      <div class="col-12">
+        {{$product->quantity}} Disponibles
+      </div>
       <!-- BUTTON QUANTITY -->
       <div class="col col-md-4">
         <div class="input-group my-2 my-md-0">
@@ -97,44 +100,53 @@
                 </g>
               </svg>
             </div>
-            {{trans('icommerce::cart.button.add_to_cart')}}
+            @if(setting("icommerce::canAddIsCallProductsIntoCart") && $product->is_call)
+            {{trans('icommerce::cart.button.addToCartForQuote')}}
+            @else
+              {{trans('icommerce::cart.button.add_to_cart')}}
+            @endif
           </a>
-
+          
           <!-- BUTTON WISHLIST -->
-          <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})" class="btn btn-wishlist"
-             v-if="!products_children">
+          <a
+            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+            class="btn btn-wishlist"
+            v-if="!products_children">
             <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
             <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
-
+      
       </div>
     </div>
     <hr>
   </div>
   <!-- BUTTON CONSULT -->
-  <div v-else-if="product.isCall=='1'" class="add-cart" >
+  <div v-else-if="product.isCall=='1'" class="add-cart">
     <hr>
     <div class="row">
       <div class="col my-2 my-md-0">
         <div>
-          <a onClick="window.livewire.emit('makeQuote',{{$product->id}})" class=" btn-comprar btn btn-secondary text-white">
+          <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
+             class=" btn-comprar btn btn-secondary text-white">
             {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}</a>
           <!-- BUTTON WISHLIST -->
-          <a onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})" class="btn btn-wishlist"
-             v-if="!products_children">
+          <a
+            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+            class="btn btn-wishlist"
+            v-if="!products_children">
             <span>AGREGAR A LA LISTA</span>
             <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
-
+      
       </div>
     </div>
     <hr>
   </div>
   <div v-else>
     <p class="label d-inline-block px-3 py-2 mb-0">Producto Agotado </p>
-
+    
     <hr>
   </div>
 

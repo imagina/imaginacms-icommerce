@@ -107,6 +107,10 @@ return [
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',
+    'cart' => [
+      'group' => 'Carrito',
+      'canAddIsCallProductsIntoCart' => 'Habilitar añadir productos para cotizar al carrito'
+    ]
 
   ],
   'settingHints' => [
