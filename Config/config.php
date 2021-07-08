@@ -149,7 +149,7 @@ return [
    */
   'relations' => [
 
-    'product'=>[
+    'product' => [
       //This is an productable relation. This relation must have same index as much as "productable product" crud field is called
       /*'posts' => function(){
             return $this->morphedByMany(Modules\Iblog\Entities\Post::class, 'productable','icommerce__productable', 'product_id', 'productable_id');
@@ -199,12 +199,12 @@ return [
     ]
   ],
 
-  
-    /*
-   |--------------------------------------------------------------------------
-   | Define config to the orderBy in the index page
-   |--------------------------------------------------------------------------
-   */
+
+  /*
+ |--------------------------------------------------------------------------
+ | Define config to the orderBy in the index page
+ |--------------------------------------------------------------------------
+ */
   'orderBy' => [
     'default' => 'recently',
     'options' => [
@@ -251,11 +251,11 @@ return [
     ],
   ],
 
-   /*
-   |--------------------------------------------------------------------------
-   | Layout Products - Index
-   |--------------------------------------------------------------------------
-   */
+  /*
+  |--------------------------------------------------------------------------
+  | Layout Products - Index
+  |--------------------------------------------------------------------------
+  */
   'layoutIndex' => [
     'default' => 'four',
     'options' => [
@@ -334,7 +334,7 @@ return [
       */
       'layout' => 'default',
       'classes' => 'col-12'
-     ],
+    ],
     'range-prices' => [
       'title' => 'icommerce::common.range.title',
       'name' => 'range-prices',
@@ -516,5 +516,18 @@ return [
     |--------------------------------------------------------------------------
     | example: 'logged.in' , 'auth.basic', 'throttle'
     */
-  'middlewares' => []
+  'middlewares' => [],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Define all the exportable available
+  |--------------------------------------------------------------------------
+  */
+  'exportable' => [
+    "orders" => [
+      'moduleName' => "Icommerce",
+      'fileName' => "Orders",
+      'exportName' => "OrdersExport"
+    ]
+  ]
 ];
