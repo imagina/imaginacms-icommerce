@@ -67,7 +67,9 @@ class Order extends Model
         'user_agent',
         'key',
         'require_shipping',
-        'options'
+        'options',
+        'suscription_id',
+        'suscription_token'
     ];
 
 
