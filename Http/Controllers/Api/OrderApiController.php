@@ -306,7 +306,7 @@ class OrderApiController extends BaseApiController
             $dataOrderHistory = $supportOrderHistory->getData();
             $data["orderHistory"] = $dataOrderHistory;
 
-            $data = Arr::only($data, ['status_id', 'options', 'orderHistory']);
+            $data = Arr::only($data, ['status_id', 'options', 'orderHistory','suscription_id','suscription_token']);
 
             //Request to Repository
             $dataEntity = $this->order->getItem($criteria, $params);

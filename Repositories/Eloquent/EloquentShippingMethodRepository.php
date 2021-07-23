@@ -90,23 +90,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     public function update($model, $data)
     {
       
-        // init
-        $options['init'] = $model->options->init;
-
-        // Extra Options
-        foreach ($model->options as $key => $value) {
-            if ($key != "init") {
-                $options[$key] = $data[$key];
-                unset($data[$key]);
-            }
-        }
-
-        $data['options'] = $options;
-
         $model->update($data);
+
         event(new UpdateMedia($model, $data));
-        // Sync Data
-        $model->geozones()->sync(Arr::get($data, 'geozones', []));
 
         return $model;
 

@@ -20,6 +20,7 @@ class Cart
         "length" => $cartProduct->product->lenght,
         "width" => $cartProduct->product->width,
         "height" => $cartProduct->product->height,
+        "weight" => $cartProduct->product->weight,
         "freeshipping" => $cartProduct->product->freeshipping,
         "quantity" => $cartProduct->quantity
       ]);
