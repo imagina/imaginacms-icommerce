@@ -461,7 +461,7 @@ class Checkout extends Component
   {
     $shippingMethod = null;
     
-    if (isset($this->user->id) && !empty($this->shippingMethodSelected)) {
+    if (!empty($this->shippingMethodSelected)) {
       
       $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
     }else{
@@ -537,7 +537,7 @@ class Checkout extends Component
   {
     $paymentMethod = null;
     
-    if (isset($this->user->id) && !empty($this->paymentMethodSelected)) {
+    if (!empty($this->paymentMethodSelected)) {
         $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
     }else{
       if ($this->paymentMethods->count()) {
