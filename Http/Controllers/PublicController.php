@@ -9,6 +9,7 @@ use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Icommerce\Entities\Category;
 use Modules\Icommerce\Entities\Currency;
 use Modules\Icommerce\Entities\Order;
+use Modules\Icommerce\Http\Livewire\Cart;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Icommerce\Repositories\OrderRepository;
@@ -383,5 +384,21 @@ class PublicController extends BaseApiController
     return $gallery;
 
   }
-  
+
+  public function quoteLayout(){
+
+    $cart = \Modules\Icommerce\Entities\Cart::find(60);
+    $customerData = [
+
+    ];
+    return view("icommerce::frontend.livewire.cart.pdf.pdf",["cart" => $cart]);
+  }
+
+
+  public function quoteEmail(){
+
+    $order = \Modules\Icommerce\Entities\Order::find(6);
+
+    return view("icommerce::emails.order",["data" => ["order" => $order]]);
+  }
 }

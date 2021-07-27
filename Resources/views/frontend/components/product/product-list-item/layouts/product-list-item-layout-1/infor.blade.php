@@ -35,7 +35,7 @@
           @if(!$product->is_call && $product->stock_status)
             @switch(setting("icommerce::addToCartButtonAction"))
               @case("add-to-cart") @default
-              <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}})">
+              <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)">
                 <i class="fa fa-shopping-basket"></i>
               </a>
               @break
@@ -44,7 +44,13 @@
                 <i class="fa fa-shopping-basket"></i>
               </a>
               @break
-              @endswitch
+            @endswitch
+            @switch(setting("icommerce::addToCartQuoteButtonAction"))
+              @case("add-to-cart-quote")
+              <a class="add-cart" onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true)">
+                <i class="fa fa-file"></i>
+              </a>
+            @endswitch
             
           @endif
           <a class="wishlist" onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">

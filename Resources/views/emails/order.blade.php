@@ -1,11 +1,12 @@
 @php
   $order = $data["order"];
+
 @endphp
 <div>
   <h1 class="title" style="text-align: center;
         width: 80%;
         font-size: 30px;
-        margin: 12px auto;">{{trans('icommerce::orders.title.single_order_title')}} # {{$order->id}}</h1>
+        margin: 12px auto;">{{$order->type == "quote" ? trans("icommerce::orders.title.quote") : trans('icommerce::orders.title.single_order_title')}} # {{$order->id}}</h1>
   
   <p style="text-align: center; margin: 0;"> {{trans("icommerce::orders.table.status")}}: {{$order->status->title}}</p>
 

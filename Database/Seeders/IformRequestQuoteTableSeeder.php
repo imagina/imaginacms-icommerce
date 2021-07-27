@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
 
-class IformQuoteTableSeeder extends Seeder
+class IformRequestQuoteTableSeeder extends Seeder
 {
   /**
    * Run the database seeds.
@@ -16,7 +16,7 @@ class IformQuoteTableSeeder extends Seeder
   public function run()
   {
     Model::unguard();
-    
+
     $formRepository = app("Modules\Iforms\Repositories\FormRepository");
     $blockRepository = app("Modules\Iforms\Repositories\BlockRepository");
     $fieldRepository = app("Modules\Iforms\Repositories\FieldRepository");
@@ -29,33 +29,48 @@ class IformQuoteTableSeeder extends Seeder
       "include" => [],
       "fields" => [],
     ];
-    $form = $formRepository->getItem("icommerce_quote_form", json_decode(json_encode($params)));
+    $form = $formRepository->getItem("icommerce_cart_quote_form", json_decode(json_encode($params)));
     if(!isset($form->id)) {
-      
+
       $form = $formRepository->create([
-        "title" => trans("icommerce::quote.productForm.form.title.single"),
-        "system_name" => "icommerce_quote_form",
+        "title" => trans("icommerce::quote.productForm.form.title.complex"),
+        "system_name" => "icommerce_cart_quote_form",
         "active" => true
       ]);
-  
+
       $block = $blockRepository->create([
         "form_id" => $form->id
       ]);
-      
+
       $fieldRepository->create([
         "form_id" => $form->id,
         "block_id" => $block->id,
         "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.name.label",[],"es"),
+          "label" => trans("icommerce::quote.productForm.fields.firstName.label",[],"es"),
         ],
         "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.name.label",[],"en"),
+          "label" => trans("icommerce::quote.productForm.fields.firstName.label",[],"en"),
         ],
         "type" => 1,
-        "name" => "fullName",
+        "name" => "first_name",
         "required" => true,
       ]);
-  
+
+
+      $fieldRepository->create([
+        "form_id" => $form->id,
+        "block_id" => $block->id,
+        "es" => [
+          "label" => trans("icommerce::quote.productForm.fields.lastName.label",[],"es"),
+        ],
+        "en" => [
+          "label" => trans("icommerce::quote.productForm.fields.lastName.label",[],"en"),
+        ],
+        "type" => 1,
+        "name" => "last_name",
+        "required" => true,
+      ]);
+
       $fieldRepository->create([
         "form_id" => $form->id,
         "block_id" => $block->id,
@@ -69,7 +84,7 @@ class IformQuoteTableSeeder extends Seeder
         "name" => "email",
         "required" => true,
       ]);
-  
+
       $fieldRepository->create([
         "form_id" => $form->id,
         "block_id" => $block->id,
@@ -83,20 +98,7 @@ class IformQuoteTableSeeder extends Seeder
         "name" => "telephone",
         "required" => true,
       ]);
-      $fieldRepository->create([
-        "form_id" => $form->id,
-        "block_id" => $block->id,
-        "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.productName.label",[],"es"),
-        ],
-        "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.productName.label",[],"en"),
-        ],
-        "type" => 1,
-        "name" => "productName",
-        "required" => true,
-      ]);
-  
+
       $fieldRepository->create([
         "form_id" => $form->id,
         "block_id" => $block->id,
@@ -107,11 +109,11 @@ class IformQuoteTableSeeder extends Seeder
           "label" => trans("icommerce::quote.productForm.fields.additionalInformation.label",[],"en"),
         ],
         "type" => 2,
-        "name" => "additionalInformation",
+        "name" => "additional_information",
         "required" => true,
       ]);
-      $settingRepository->createOrUpdate(["icommerce::icommerceQuoteForm" =>  $form->id]);
+      $settingRepository->createOrUpdate(["icommerce::icommerceCartQuoteForm" =>  $form->id]);
     }
-    
+
   }
 }

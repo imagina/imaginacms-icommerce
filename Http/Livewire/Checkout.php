@@ -363,6 +363,10 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\ShippingMethodRepository');
   }
+
+  //|--------------------------------------------------------------------------
+  //| Services
+  //|--------------------------------------------------------------------------
   /**
    * @return orderService
    */

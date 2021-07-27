@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7bb28a96-9910-42ad-bb83-c8b1e95c7aa1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Migrations/2021_06_30_150334_add_is_call_in_cart_product_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Migrations/2021_07_06_090304_add_type_in_orders_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/Seeders/IformRequestQuoteTableSeeder.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/lang/en/pdf.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/lang/es/pdf.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/pdf/pdf.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/requestquote.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/View/Components/PDF/PdfCustomHeader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/settings-fields.php" beforeDir="false" afterPath="$PROJECT_DIR$/Config/settings-fields.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/Seeders/IcommerceDatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Seeders/IcommerceDatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/Seeders/IformQuoteTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Seeders/IformQuoteTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/Cart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/CartProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/CartProduct.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entities/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Http/Controllers/PublicController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Controllers/PublicController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Http/Livewire/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Livewire/Cart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Http/Livewire/Checkout.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/Livewire/Checkout.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Http/frontendRoutes.php" beforeDir="false" afterPath="$PROJECT_DIR$/Http/frontendRoutes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Eloquent/EloquentCartProductRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/lang/en/cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/lang/en/cart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/lang/en/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/lang/en/orders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/lang/en/quote.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/lang/en/quote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/lang/es/cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/lang/es/cart.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/lang/es/orders.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/lang/es/orders.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/lang/es/quote.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/lang/es/quote.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/scss/product/product-layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/scss/product/product-layout.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/emails/order.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/emails/order.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/cart/dropdown.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/cart/dropdown.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/components/product/addToCartWithQuantity.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/components/product/addToCartWithQuantity.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/components/product/product-list-item/layouts/product-list-item-layout-1/infor.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/components/product/product-list-item/layouts/product-list-item-layout-1/infor.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/components/product/product-list-item/layouts/product-list-item-layout-2/infor.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/components/product/product-list-item/layouts/product-list-item-layout-2/infor.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/components/product/product-list-item/layouts/product-list-item-layout-3/infor.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/components/product/product-list-item/layouts/product-list-item-layout-3/infor.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/dropdown.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/dropdown.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-1/button.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-1/button.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-2/button.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-2/button.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-2/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-2/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-3/button.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-3/button.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-3/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-3/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-3/total.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/layouts/cart-button-layout-3/total.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/quoteModal.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/frontend/livewire/cart/quoteModal.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/views/structure/product-show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/views/structure/product-show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/OrderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/Services/OrderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Transformers/OrderTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/Transformers/OrderTransformer.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="imaginacms-icommerce" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Resources/views/frontend/livewire/cart/pdf/pdf.blade.php" root0="SKIP_INSPECTION" root1="SKIP_INSPECTION" root2="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Http/Controllers/PublicController.php" root0="SKIP_INSPECTION" root1="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Http/Livewire/Cart.php" root0="SKIP_INSPECTION" root1="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectId" id="1uUqauH3mN9F9z3WfFgA7YOU91p" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="two.files.diff.last.used.folder" value="$PROJECT_DIR$/../Icommerce" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\imagina\Backend\Quote\imaginacms-icommerce\Resources\views\frontend\livewire\cart" />
+      <recent name="C:\imagina\Backend\Quote\imaginacms-icommerce\Resources\views\frontend\livewire" />
+      <recent name="C:\imagina\Backend\Quote\imaginacms-icommerce\Resources\views\frontend\livewire\cart\quote" />
+      <recent name="C:\imagina\Backend\Quote\imaginacms-icommerce\Resources\views\frontend\pdf" />
+      <recent name="C:\imagina\Backend\Quote\imaginacms-icommerce\Resources\views" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7bb28a96-9910-42ad-bb83-c8b1e95c7aa1" name="Default Changelist" comment="" />
+      <created>1624730581559</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1624730581559</updated>
+      <workItem from="1624730583113" duration="1962000" />
+      <workItem from="1625147771248" duration="18268000" />
+      <workItem from="1625177478886" duration="4582000" />
+      <workItem from="1625234181807" duration="14714000" />
+      <workItem from="1625263674711" duration="2182000" />
+      <workItem from="1625265949836" duration="1262000" />
+      <workItem from="1625324430799" duration="10673000" />
+      <workItem from="1625579108203" duration="24551000" />
+      <workItem from="1625665555259" duration="24431000" />
+      <workItem from="1625753402656" duration="1106000" />
+      <workItem from="1625775768922" duration="6000" />
+      <workItem from="1625782675442" duration="737000" />
+      <workItem from="1625838696198" duration="1212000" />
+      <workItem from="1625843821736" duration="2481000" />
+      <workItem from="1625848393208" duration="1079000" />
+      <workItem from="1625859990965" duration="3552000" />
+      <workItem from="1625868348302" duration="1639000" />
+      <workItem from="1625927066156" duration="13503000" />
+      <workItem from="1626098100166" duration="158000" />
+      <workItem from="1626099276827" duration="21734000" />
+      <workItem from="1626184448966" duration="26237000" />
+      <workItem from="1626273681054" duration="7802000" />
+      <workItem from="1626358750278" duration="2130000" />
+      <workItem from="1626443880027" duration="1813000" />
+      <workItem from="1626713439660" duration="1966000" />
+      <workItem from="1626877320103" duration="1788000" />
+      <workItem from="1626882531448" duration="7005000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1935" y="45" width="886" height="683" key="#Deployment" timestamp="1626715420732">
+      <screen x="1600" y="0" width="1366" height="728" />
+    </state>
+    <state x="392" y="92" width="886" height="683" key="#Deployment/0.0.1600.860@0.0.1600.860" timestamp="1625753921051" />
+    <state x="392" y="92" key="#Deployment/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626362970361" />
+    <state x="1935" y="45" key="#Deployment/1600.0.1366.728/0.0.1600.860@1600.0.1366.728" timestamp="1626715420732" />
+    <state x="569" y="233" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1625581797032">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="569" y="233" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1600.860@0.0.1600.860" timestamp="1625581797032" />
+    <state x="438" y="29" key="CommitChangelistDialog2" timestamp="1624732710260">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="438" y="29" key="CommitChangelistDialog2/0.0.1600.860@0.0.1600.860" timestamp="1624732710260" />
+    <state x="92" y="92" width="1416" height="676" key="DiffContextDialog" timestamp="1625938454817">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="92" y="92" width="1416" height="676" key="DiffContextDialog/0.0.1600.860@0.0.1600.860" timestamp="1625692774278" />
+    <state x="92" y="92" width="1416" height="676" key="DiffContextDialog/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1625938454817" />
+    <state x="100" y="100" width="1400" height="657" key="DirDiffDialog" timestamp="1625327697204">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="100" y="100" width="1400" height="657" key="DirDiffDialog/0.0.1600.860@0.0.1600.860" timestamp="1625327697204" />
+    <state x="580" y="189" key="FileChooserDialogImpl" timestamp="1626444884396">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="580" y="189" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1625697709010" />
+    <state x="580" y="189" key="FileChooserDialogImpl/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626444884396" />
+    <state x="634" y="353" key="NewPhpFileDialog" timestamp="1626190805681">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="634" y="353" key="NewPhpFileDialog/0.0.1600.860@0.0.1600.860" timestamp="1625693972345" />
+    <state x="634" y="353" key="NewPhpFileDialog/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626190805681" />
+    <state x="301" y="72" key="SettingsEditor" timestamp="1625085665940">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="301" y="72" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1625085665940" />
+    <state x="392" y="163" key="Vcs.Push.Dialog.v2" timestamp="1625094415436">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="392" y="163" key="Vcs.Push.Dialog.v2/0.0.1600.860@0.0.1600.860" timestamp="1625094415436" />
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1625694725182">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1600.860@0.0.1600.860" timestamp="1625694725182" />
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1626214410262">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1600.860@0.0.1600.860" timestamp="1625334511353" />
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.FileHistoryDialog/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626214410262" />
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1626214970556">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.1600.860@0.0.1600.860" timestamp="1625092912431" />
+    <state x="92" y="92" width="1416" height="676" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626214970556" />
+    <state x="1811" y="0" width="932" height="815" maximized="true" key="dock-window-1" timestamp="1625927831484">
+      <screen x="1600" y="0" width="1366" height="728" />
+    </state>
+    <state x="1811" y="0" width="932" height="815" maximized="true" key="dock-window-1/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1625927831484" />
+    <state x="1685" y="138" width="985" height="557" key="find.popup" timestamp="1626715218617">
+      <screen x="1600" y="0" width="1366" height="728" />
+    </state>
+    <state x="496" y="163" width="756" height="536" key="find.popup/0.0.1600.860@0.0.1600.860" timestamp="1625693861281" />
+    <state x="99" y="163" width="1153" height="657" key="find.popup/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626293524368" />
+    <state x="1685" y="138" width="985" height="557" key="find.popup/1600.0.1366.728/0.0.1600.860@1600.0.1366.728" timestamp="1626715218617" />
+    <state x="685" y="167" key="ftp.server.browser" timestamp="1625085689566">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="685" y="167" key="ftp.server.browser/0.0.1600.860@0.0.1600.860" timestamp="1625085689566" />
+    <state x="470" y="221" key="git4idea.merge.GitPullDialog" timestamp="1625082301769">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="470" y="221" key="git4idea.merge.GitPullDialog/0.0.1600.860@0.0.1600.860" timestamp="1625082301769" />
+    <state x="456" y="195" key="run.anything.popup" timestamp="1625086444264">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="456" y="195" key="run.anything.popup/0.0.1600.860@0.0.1600.860" timestamp="1625086444264" />
+    <state x="1995" y="152" width="574" height="574" key="search.everywhere.popup" timestamp="1626715369961">
+      <screen x="1600" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1625608935826" />
+    <state x="463" y="180" width="672" height="678" key="search.everywhere.popup/1600.0.1366.728/0.0.1600.860@0.0.1600.860" timestamp="1626105987099" />
+    <state x="1995" y="152" width="574" height="574" key="search.everywhere.popup/1600.0.1366.728/0.0.1600.860@1600.0.1366.728" timestamp="1626715369961" />
+  </component>
+</project>

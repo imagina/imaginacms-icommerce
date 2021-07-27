@@ -19,17 +19,19 @@ class Cart extends Component
   public $productToQuote;
   public $showButton;
   public $icon;
+  public $iconquote;
   private $params;
   private $request;
-  protected $listeners = ['addToCart', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote'];
+  protected $listeners = ['addToCart', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote','requestQuote','submitQuote'];
   
-  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart', $showButton = true)
+  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',$iconquote = 'fas fa-file-alt', $showButton = true)
   {
     
 
     $this->showButton = $showButton;
     $this->layout = $layout;
     $this->icon = $icon;
+    $this->iconquote = $iconquote;
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     
     //$this->refreshCart();
@@ -76,7 +78,7 @@ class Cart extends Component
     
   }
   
-  public function addToCart($productId, $quantity = 1, $productOptionValues = [])
+  public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
   {
     
     try {
@@ -87,7 +89,8 @@ class Cart extends Component
           "cart_id" => $this->cart->id,
           "product_id" => $productId,
           "quantity" => $quantity,
-          "product_option_values" => $productOptionValues
+          "product_option_values" => $productOptionValues,
+          "is_call" => $isCall
         ];
   
         $this->cartProductRepository()->create($data);
@@ -121,8 +124,6 @@ class Cart extends Component
     
     
   }
-  
-  
   public function deleteFromCart($cartProductId)
   {
     $params = json_decode(json_encode(["include" => []]));
@@ -155,15 +156,71 @@ class Cart extends Component
     $this->emit("cartUpdated", $this->cart);
     
   }
-  
+
+  public function download()
+  {
+    $Viewdownload = 'icommerce::frontend.livewire.cart.pdf.pdf';
+
+
+    $contain = [
+      'cart' => $this->cart,
+    ];
+
+    //Esa variable contain. Si está seguro de que le llega a la vista? por que el pdf
+    //no le está generando nada de lo que tiene que ver con esa variable "cart"
+
+    $pdf = \PDF::loadView($Viewdownload, [      'cart' => $this->cart    ])->save(storage_path('app/exports/') . 'cotización.pdf');
+
+    return \Storage::disk('exports')->download('cotización.pdf');
+  }
+
+  public function requestQuote()
+  {
+    $this->dispatchBrowserEvent('QuoteModal',[]);
+  }
+
+  public function submitQuote($data)
+  {
+    $order =[
+      "first_name" => $data["first_name"] ?? "",
+      "last_name" => $data["last_name"] ?? "",
+      "email" => $data["email"] ?? "",
+      "telephone" => $data["telephone"] ?? "",
+      "type" => "quote"
+    ];
+
+    if(isset($data["first_name"])) unset($data["first_name"]);
+    if(isset($data["last_name"])) unset($data["last_name"]);
+    if(isset($data["email"])) unset($data["email"]);
+    if(isset($data["telephone"])) unset($data["telephone"]);
+    if(isset($data["form_id"])) unset($data["form_id"]);
+    if(isset($data["_token"])) unset($data["_token"]);
+
+    $order["options"] = ["quoteForm" => $data];
+
+    $order["cart"] = $this->cart;
+
+    $order = $this->orderService()->create($order);
+
+    $Viewdownload = 'icommerce::frontend.livewire.cart.pdf.pdf';
+
+    $contain = [
+      'data' => ['order' => $order["order"]],
+      'content' => "icommerce::emails.order"
+    ];
+
+    $pdf = \PDF::loadView($Viewdownload, $contain)->save(storage_path('app/exports/') . 'cotización.pdf');;
+
+    return \Storage::disk('exports')->download('cotización.pdf');
+  }
+
   public function makeQuote($productId)
   {
-  
+
     $productToQuote = $this->productRepository()->getItem($productId);
     
     $this->dispatchBrowserEvent('productToQuoteModal',["productName" => $productToQuote->name]);
 
-    
   }
   
   //|--------------------------------------------------------------------------
@@ -192,7 +249,17 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\ProductRepository');
   }
-  
+  //|--------------------------------------------------------------------------
+  //| Services
+  //|--------------------------------------------------------------------------
+  /**
+   * @return orderService
+   */
+  private function orderService()
+  {
+    return app('Modules\Icommerce\Services\OrderService');
+  }
+
   //|--------------------------------------------------------------------------
   //| Render
   //|--------------------------------------------------------------------------
@@ -200,4 +267,48 @@ class Cart extends Component
   {
     return view($this->view);
   }
+
+  public function hydrate()
+  {
+    $this->load();
+  }
+
+  protected function load()
+  {
+
+  }
+
+  //|--------------------------------------------------------------------------
+  //| Properties
+  //|--------------------------------------------------------------------------
+  public function getContainIsCallProperty(): bool
+  {
+    $isCall = false;
+
+    foreach ($this->cart->products as $cartProduct){
+
+      if($cartProduct->is_call) $isCall = true;
+      if($cartProduct->product->is_call) $isCall = true;
+
+    }
+
+    return $isCall;
+  }
+
+  /**
+   * @return
+   */
+  public function getNotContainIsCallProperty()
+  {
+    $notIsCall = false;
+
+    foreach ($this->cart->products as $cartProduct){
+
+      if(!$cartProduct->is_call && !$cartProduct->product->is_call) $notIsCall = true;
+
+    }
+
+    return $notIsCall;
+  }
+
 }

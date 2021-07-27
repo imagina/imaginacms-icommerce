@@ -38,7 +38,7 @@
   @if(!$product->is_call && $product->stock_status)
     @switch(setting("icommerce::addToCartButtonAction"))
       @case("add-to-cart")
-      <a onClick="window.livewire.emit('addToCart',{{$product->id}})" class="cart text-primary cursor-pointer">
+      <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)" class="cart text-primary cursor-pointer">
         Añadir al carrito
       </a>
       @break
@@ -47,6 +47,12 @@
         Añadir al carrito
       </a>
       @break
+    @endswitch
+    @switch(setting("icommerce::addToCartQuoteButtonAction"))
+      @case("add-to-cart-quote")
+      <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true)" class="cart text-primary cursor-pointer">
+        Añadir para cotizacion
+      </a>
     @endswitch
   
   @else

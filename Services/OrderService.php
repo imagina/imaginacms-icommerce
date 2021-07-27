@@ -44,7 +44,13 @@ class OrderService
     $orderData = [];
     $orderData["options"] = [];
     $total = [];
-    
+       /*
+      |--------------------------------------------------------------------------
+      | Add order type
+      |--------------------------------------------------------------------------
+      */
+       $orderData["type"] = $data["type"] ?? null;
+
     /*
     |--------------------------------------------------------------------------
     | Validate customer and addedBy user
@@ -70,7 +76,8 @@ class OrderService
     }
     
     //Break if the data is empty
-    if (!isset($customer->id) || !isset($addedBy->id)) throw new \Exception('Missing customer or addedBy user', 400);
+     if(!isset($data["type"]) || (isset($data["type"]) && !$data["type"]=="quote"))
+       if(!isset($customer->id) || !isset($addedBy->id)) throw new \Exception('Missing customer or addedBy user', 400);
     
     /*
     |--------------------------------------------------------------------------
@@ -78,19 +85,24 @@ class OrderService
     |--------------------------------------------------------------------------
     */
     
-    $orderData["customer_id"] = $customer->id;
-    $orderData["added_id"] = $addedBy->id;
+    $orderData["customer_id"] = $customer->id ?? null;
+    $orderData["added_id"] = $addedBy->id ?? null;
     
-    $orderData["first_name"] = $customer->first_name;
-    $orderData["last_name"] = $customer->last_name;
-    $orderData["email"] = $customer->email;
-    
-    $telephone = $customer->fields()->where("name", "cellularPhone")->first();
-    $orderData["telephone"] = $telephone->value ?? "";
-    
-    //Getting user addresses
-    $addresses = $customer->addresses()->get() ?? [];
-    
+    $orderData["first_name"] = $customer->first_name ?? $data["first_name"] ?? null;
+    $orderData["last_name"] = $customer->last_name ?? $data["last_name"] ?? null;
+    $orderData["email"] = $customer->email  ?? $data["email"] ?? null;
+
+    if(isset($customer->id)){
+      $telephone = $customer->fields()->where("name", "cellularPhone")->first();
+      $orderData["telephone"] = $telephone->value ?? "";
+
+      //Getting user addresses
+      $addresses = $customer->addresses()->get() ?? [];
+    }else{
+      $orderData["telephone"] = $data["telephone"] ?? null;
+      $addresses = [];
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Validate cart or create a new
@@ -101,7 +113,7 @@ class OrderService
     //Break if cart no found
     if (!isset($cart->id)) throw new \Exception('There are an error with the cart', 400);
     
-    $total = $cart->total;
+    $total = ($orderData["type"] == "quote") ? $cart->products->sum('total') : $cart->total;
     /*
     |--------------------------------------------------------------------------
     | getting shipping address if issset in the data
@@ -316,7 +328,7 @@ class OrderService
     }
     
     
-    if (isset($paymentMethod->id))
+    //if (isset($paymentMethod->id))
       // Event To create OrderItems, OrderOptions, next send email
       try {
         event(new OrderWasCreated($order, $orderData['orderItems']));

@@ -287,7 +287,7 @@ return [
         ['label' => 'One Page Checkout','value' => 'one-page-checkout'],
         ['label' => 'Tabs Checkout','value' => 'tabs-checkout'],
       ]
-    ]
+    ],
   ],
   'addToCartButtonAction' => [
     'value' => 'add-to-cart',
@@ -305,19 +305,93 @@ return [
       'options' => [
         ['label' => 'Add to Cart','value' => 'add-to-cart'],
         ['label' => 'go to Show view','value' => 'go-to-show-view'],
+        ['label' => 'Add to Cart Quote','value' => 'add-to-cart-quote'],
       ]
     ]
   ],
-  'canAddIsCallProductsIntoCart' => [
-    'name' => 'icommerce::canAddIsCallProductsIntoCart',
-    'value' => "0",
-    'type' => 'checkbox',
-    'columns' => 'col-12 col-md-6',
-    'group' => 'icommerce::common.settings.cart.group',
-    'props' => [
-      'label' => 'icommerce::common.settings.cart.canAddIsCallProductsIntoCart',
-      'trueValue' => "1",
-      'falseValue' => "0",
+      'addToCartQuoteButtonAction' => [
+        'value' => 'add-to-cart-quote',
+        'name' => 'icommerce::addToCartQuoteButtonAction',
+        'group' => 'icommerce::common.settings.product.group',
+        'type' => 'select',
+        'columns' => 'col-6',
+        'props' => [
+          'label' => 'Acción del botón añadir a la cotizacion',
+          'useInput' => false,
+          'useChips' => false,
+          'multiple' => false,
+          'hideDropdownIcon' => true,
+          'newValueMode' => 'add-unique',
+          'options' => [
+            ['label' => 'Add to Cart Quote','value' => 'add-to-cart-quote'],
+          ]
+        ]
+      ],
+    'pdfLogoHeader' => [
+      'value' => "logo1",
+      'name' => 'icommerce::pdfLogoHeader',
+      'group' => 'icommerce::pdf.settings.pdf.group',
+      'type' => 'select',
+      'columns' => 'col-6',
+      'props' => [
+        'label' => 'Logotipo para encabezado de documentos PDF',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+          ['label' => 'Logotipo 1','value' => "logo1"],
+          ['label' => 'Logotipo 2','value' => "logo2"],
+          ['label' => 'logotipo 3','value' => "logo3"],
+        ]
+      ]
     ],
-  ],
-];
+    'pdfLogoFooter' => [
+      'value' => "logo1",
+      'name' => 'icommerce::pdfLogoFooter',
+      'group' => 'icommerce::pdf.settings.pdf.group',
+      'type' => 'select',
+      'columns' => 'col-6',
+      'props' => [
+        'label' => 'Logotipo para pie de pagina de documentos PDF',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+          ['label' => 'Logotipo 1','value' => "logo1"],
+          ['label' => 'Logotipo 2','value' => "logo2"],
+          ['label' => 'logotipo 3','value' => "logo3"],
+        ]
+      ]
+    ],
+    'pdfCustomHeader' => [
+      'value' => null,
+      'name' => 'icommerce::pdfCustomHeader',
+      'group' => 'icommerce::pdf.settings.pdf.group',
+      'type' => 'html',
+      'props' => [
+        'label' => 'PDF header',
+      ]
+    ],
+    'pdfCustomFooter' => [
+      'value' => null,
+      'name' => 'icommerce::pdfCustomFooter',
+      'group' => 'icommerce::pdf.settings.pdf.group',
+      'type' => 'html',
+      'props' => [
+        'label' => 'PDF Footer',
+      ]
+    ],
+    'pdfCustomProduct' => [
+      'value' => null,
+      'name' => 'icommerce::pdfCustomProduct',
+      'group' => 'icommerce::pdf.settings.pdf.group',
+      'type' => 'html',
+      'props' => [
+        'label' => 'Aviso productos PDF',
+      ]
+    ],
+  ];

@@ -70,6 +70,7 @@ class Order extends Model
         'options',
         'suscription_id',
         'suscription_token'
+        'type',
     ];
 
 

@@ -29,7 +29,7 @@
           @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status)
             @switch(setting("icommerce::addToCartButtonAction"))
               @case("add-to-cart")
-              <a onClick="window.livewire.emit('addToCart',{{$product->id}})"
+              <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)"
                  class="btn btn-warning px-4 text-white cursor-pointer">
                 <i class="fa fa-shopping-basket"></i>
                 {{trans("icommerce::products.button.addToCartItemList")}}
@@ -42,8 +42,16 @@
                 {{trans("icommerce::products.button.addToCartItemList")}}
               </a>
               @break
+              @endswitch
+              @switch(setting("icommerce::addToCartQuoteButtonAction"))
+              @case("add-to-cart-quote")
+              <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true )"
+                 class="btn btn-warning px-4 text-white cursor-pointer">
+                <i class="fa fa-file"></i>
+                {{trans("icommerce::products.button.addToCartItemList")}}
+              </a>
             @endswitch
-            
+
            
           @else
             <a onClick="window.livewire.emit('makeQuote',{{$product->id}})" class="btn btn-warning px-4 text-white cursor-pointer" >
