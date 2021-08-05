@@ -1,23 +1,23 @@
 <?php
 
 return [
-    'title'                 => 'Dirección de entrega',
-    'same_delivery_billing' => 'Mi dirección de Entrega y Facturación son las mismas.',
+    'title'                 => 'Delivery Details',
+    'same_delivery_billing' => 'My Delivery and Billing address are the same',
     'form'          => [
-    	'first_name'        => 'Nombre',
-    	'last_name'         => 'Apellido',
-    	'company'           => 'Compañia',
-    	'address1'          => 'Dirección 1',
-    	'address2'          => 'Dirección 2',
-    	'city'              => 'Ciudad',
-    	'post_code'         => 'Código Postal',
-    	'country'           => 'País',
-    	'state'             => 'Estado/Provincia',
-        'select_option'     => 'Seleccione opción',
-        'select_country'    => 'Seleccione país',
+    	'first_name'        => 'First Name',
+    	'last_name'         => 'Last Name',
+    	'company'           => 'Company',
+    	'address1'          => 'Address 1',
+    	'address2'          => 'Address 2',
+    	'city'              => 'City',
+    	'post_code'         => 'Postal Code',
+    	'country'           => 'Country',
+    	'state'             => 'State / Province',
+        'select_option'     => 'Select an option',
+        'select_country'    => 'Select a country',
     ],
     'address'       => [
-        'old_address'       => 'Quiero usar mi dirección existente',
-        'new_address'       => 'Quiero usar una nueva dirección',
+        'old_address'       => 'I want to use an existing Address',
+        'new_address'       => 'I want to use a new address',
     ],
 ];
