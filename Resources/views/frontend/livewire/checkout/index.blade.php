@@ -1,9 +1,9 @@
 <div id="checkout" class="page checkout checkout-tabs">
-  
+
   <x-isite::breadcrumb>
     <li class="breadcrumb-item active" aria-current="page">{{$title }}</li>
   </x-isite::breadcrumb>
-  
+
   <div class="container">
     <div class="row">
       <div class="col">
@@ -13,21 +13,21 @@
       </div>
     </div>
   </div>
-  
+
   <!-- ======== @Region: #content ======== -->
   <div id="content" class="pb-5 position-relative">
     @include('isite::frontend.partials.preloader')
     @if(!$cartEmpty)
       <div class="container">
-      @include("icommerce::frontend.livewire.checkout.layouts.$layout.index",
-      [
-        "billingAddress" => $this->billingAddress,
-        "paymentMethod" => $this->paymentMethod,
-        "shippingAddress" => $this->shippingAddress,
-        "shippingMethod" => $this->shippingMethod,
-        "totalTaxes" => $this->totalTaxes,
-        "total" => $this->total,
-        ])
+        @include("icommerce::frontend.livewire.checkout.layouts.$layout.index",
+        [
+          "billingAddress" => $this->billingAddress,
+          "paymentMethod" => $this->paymentMethod,
+          "shippingAddress" => $this->shippingAddress,
+          "shippingMethod" => $this->shippingMethod,
+          "totalTaxes" => $this->totalTaxes,
+          "total" => $this->total,
+          ])
       </div>
     @else
       <div class="container">
@@ -53,10 +53,18 @@
   @parent
   <script>
     Livewire.on('orderCreated', orderData => {
-      if(orderData.external) {
-        window.open(orderData.redirectRoute)
+      //Redirect to Cordova mode
+      if (navigator.userAgent.match(/Cordova/i)) {
+        //Redirect to payment method
+        if (orderData.external) window.open(encodeURI(orderData.redirectRoute), '_system', 'location=yes')
+        //Redirect to order page TODO: check fix to work with cordova
+        //window.open(orderData.url, '_self')
+      } else {//Redirect web browser mode
+        //Redirect to payment method
+        if (orderData.external) window.open(orderData.redirectRoute)
+        //Redirect to order page
+        window.location.replace(orderData.url)
       }
-      window.location.replace(orderData.url)
     })
   </script>
 @stop
