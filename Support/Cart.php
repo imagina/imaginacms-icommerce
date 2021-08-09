@@ -17,7 +17,7 @@ class Cart
         "product_id" => $cartProduct->product_id,
         "total" => $cartProduct->product->price * $cartProduct->quantity,
         "reference" => $cartProduct->product->reference,
-        "length" => $cartProduct->product->lenght,
+        "length" => $cartProduct->product->length,
         "width" => $cartProduct->product->width,
         "height" => $cartProduct->product->height,
         "weight" => $cartProduct->product->weight,
