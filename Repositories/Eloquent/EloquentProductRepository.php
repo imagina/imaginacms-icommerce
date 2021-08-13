@@ -217,9 +217,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       if (isset($filter->order) && !empty($filter->order)) {
         $orderByField = $filter->order->field ?? 'created_at';//Default field
         $orderWay = $filter->order->way ?? 'desc';//Default way
-        if ($orderByField == "slug") {
+        if (in_array($orderByField, ["slug","name"])) {
           $query->join('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
-          $query->orderBy('translations.slug', $orderWay);
+          $query->orderBy("translations.{$orderByField}", $orderWay);
         } else
           $query->orderBy($orderByField, $orderWay);//Add order to query
       }
@@ -533,7 +533,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     $model ? $model->delete() : false;
 
     //Event to Delete media
-    
+
     if(isset($model->id))
       event(new DeleteMedia($model->id, get_class($model)));
   }

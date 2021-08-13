@@ -86,7 +86,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             if (isset($filter->order)) {
                 $orderByField = $filter->order->field ?? 'created_at';//Default field
                 $orderWay = $filter->order->way ?? 'desc';//Default way
-                $query->orderBy("icommerce__categories.".$orderByField, $orderWay);//Add order to query
+
+                if (in_array($orderByField, ["slug","title"])) {
+                  $query->join('icommerce__category_translations as translations', 'translations.category_id', '=', 'icommerce__categories.id');
+                  $query->orderBy("translations.{$orderByField}", $orderWay);
+                } else $query->orderBy("icommerce__categories.".$orderByField, $orderWay);//Add order to query
             }
             if (isset($filter->store)) {
                 $query->where("store_id", $filter->store);
