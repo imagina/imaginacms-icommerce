@@ -88,10 +88,12 @@
                 <button type="button" class="btn btn-dark prev-step mb-3">
                   <i class="fa fa-reply d-block d-md-none"></i> <span class="d-none d-md-block">Anterior</span>
                 </button>
+              
+              @if($requireShippingMethod)
                 <button type="button" class="btn btn-dark next-step mb-3">
                   <i class="fa fa-share d-block d-md-none"></i> <span class="d-none d-md-block">Siguiente</span>
                 </button>
-              
+              @endif
               @endauth
               
               @guest
