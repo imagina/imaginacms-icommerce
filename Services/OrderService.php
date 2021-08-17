@@ -183,8 +183,15 @@ class OrderService
     if (isset($data["shippingMethod"]->id) || isset($data["shippingMethodId"])) {
       $shippingMethodRepository = app("Modules\Icommerce\Repositories\ShippingMethodRepository");
       
-      
-      $shippingMethods = $shippingMethodRepository->getCalculations(["cart_id" => $cart->id ?? null], json_decode(json_encode([])));
+     
+      $dataCalculations = [
+        "cart_id" => $cart->id ?? null,
+        "shippingAddressId" => $data["shippingAddress"]->id
+      ];
+
+      $shippingMethods = $shippingMethodRepository->getCalculations($dataCalculations, json_decode(json_encode([])));
+
+      //$shippingMethods = $shippingMethodRepository->getCalculations(["cart_id" => $cart->id ?? null], json_decode(json_encode([])));
       
       $shippingMethod = $shippingMethods->where("id", $data["shippingMethod"]->id ?? $data["shippingMethodId"])->first();
       
