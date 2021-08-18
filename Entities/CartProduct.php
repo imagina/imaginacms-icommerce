@@ -55,23 +55,19 @@ class CartProduct extends Model
   
   public function getTotalAttribute()
   {
-    if(!$this->product->is_call){
       $priceBase = $this->product->discount->price ?? $this->product->price;
-      $subtotal = floatval($priceBase) * intval($this->quantity);
-      $totalOptions = 0;
+        $subtotal = floatval($priceBase) * intval($this->quantity);
+        $totalOptions = 0;
 
-      foreach ($this->productOptionValues as $productOptionValue) {
-        $price = 0;
-        $price = floatval($productOptionValue->price) * intval($this->quantity);
+        foreach ($this->productOptionValues as $productOptionValue) {
+          $price = 0;
+          $price = floatval($productOptionValue->price) * intval($this->quantity);
 
-        $productOptionValue->price_prefix == '+' ? $totalOptions += $price : $totalOptions -= $price;
+          $productOptionValue->price_prefix == '+' ? $totalOptions += $price : $totalOptions -= $price;
 
       }
 
       return $subtotal + $totalOptions;
-    }else{
-      return 0;
-    }
 
   }
   

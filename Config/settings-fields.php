@@ -16,8 +16,8 @@ return [
       'clearable' => true,
     ],
   ],
-  
-  
+
+
   'form-emails' => [
     'name' => 'icommerce::form-emails',
     'value' => [],
@@ -33,7 +33,7 @@ return [
       'label' => 'icommerce::common.settings.emails'
     ],
   ],
-  
+
 
   'product-per-page' => [
     'name' => 'icommerce::product-per-page',
@@ -62,12 +62,12 @@ return [
     'type' => 'input',
     'columns' => 'col-12',
     'props' => [
-      'label' => 'icommerce::common.settings.customIndexDescription',   
+      'label' => 'icommerce::common.settings.customIndexDescription',
       'type' => 'textarea',
-      'rows' => 3  
+      'rows' => 3
     ],
   ],
-  
+
   'customIndexContactLabel' => [
     'name' => 'icommerce::customIndexContactLabel',
     'value' => 'Contáctenos',
@@ -94,8 +94,8 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'Categoria Activa','value' => 'carousel-category-active'],
-        ['label' => 'Categoria Padre','value' => 'carousel-category-parent'],
+        ['label' => 'Categoria Activa', 'value' => 'carousel-category-active'],
+        ['label' => 'Categoria Padre', 'value' => 'carousel-category-parent'],
       ]
     ]
   ],
@@ -117,7 +117,7 @@ return [
       'label' => 'Mostrar Categorías Hijas en el header del Index'
     ]
   ],
-  
+
   'categoryChildrenIndexHeader' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
@@ -131,12 +131,12 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'Palabra Categoria','value' => 'basic'],
-        ['label' => 'Titulo de la Categoria','value' => 'category-title'],
+        ['label' => 'Palabra Categoria', 'value' => 'basic'],
+        ['label' => 'Titulo de la Categoria', 'value' => 'category-title'],
       ]
     ]
   ],
-  
+
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
@@ -150,8 +150,8 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'Palabra Categoria','value' => 'basic'],
-        ['label' => 'Titulo de la Categoria','value' => 'category-title'],
+        ['label' => 'Palabra Categoria', 'value' => 'basic'],
+        ['label' => 'Titulo de la Categoria', 'value' => 'category-title'],
       ]
     ]
   ],
@@ -191,9 +191,9 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'Product List Layout 1','value' => 'product-list-item-layout-1'],
-        ['label' => 'Product List Layout 2','value' => 'product-list-item-layout-2'],
-        ['label' => 'Product List Layout 3','value' => 'product-list-item-layout-3']
+        ['label' => 'Product List Layout 1', 'value' => 'product-list-item-layout-1'],
+        ['label' => 'Product List Layout 2', 'value' => 'product-list-item-layout-2'],
+        ['label' => 'Product List Layout 3', 'value' => 'product-list-item-layout-3']
       ]
     ]
   ],
@@ -211,8 +211,8 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => '1 : 1','value' => "1-1"],
-        ['label' => '4 : 3','value' => "4-3"],
+        ['label' => '1 : 1', 'value' => "1-1"],
+        ['label' => '4 : 3', 'value' => "4-3"],
       ]
     ]
   ],
@@ -253,9 +253,9 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'Default','value' => ''],
-        ['label' => 'Style TTYS','value' => 'filter-categories-style-1'],
-        ['label' => 'Style ALNAT','value' => 'filter-categories-style-2'],
+        ['label' => 'Default', 'value' => ''],
+        ['label' => 'Style TTYS', 'value' => 'filter-categories-style-1'],
+        ['label' => 'Style ALNAT', 'value' => 'filter-categories-style-2'],
       ]
     ]
   ],
@@ -284,8 +284,8 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'One Page Checkout','value' => 'one-page-checkout'],
-        ['label' => 'Tabs Checkout','value' => 'tabs-checkout'],
+        ['label' => 'One Page Checkout', 'value' => 'one-page-checkout'],
+        ['label' => 'Tabs Checkout', 'value' => 'tabs-checkout'],
       ]
     ],
   ],
@@ -296,102 +296,53 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-      'label' => 'Acción del botón añadir al carrito',
+      'label' => 'icommerce::common.settings.product.addToCartButtonAction',
       'useInput' => false,
       'useChips' => false,
       'multiple' => false,
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-        ['label' => 'Add to Cart','value' => 'add-to-cart'],
-        ['label' => 'go to Show view','value' => 'go-to-show-view'],
-        ['label' => 'Add to Cart Quote','value' => 'add-to-cart-quote'],
+        ['label' => 'Add to Cart', 'value' => 'add-to-cart'],
+        ['label' => 'go to Show view', 'value' => 'go-to-show-view'],
+        ['label' => 'Add to Cart Quote', 'value' => 'add-to-cart-quote'],
       ]
     ]
   ],
-      'addToCartQuoteButtonAction' => [
-        'value' => 'add-to-cart-quote',
-        'name' => 'icommerce::addToCartQuoteButtonAction',
-        'group' => 'icommerce::common.settings.product.group',
-        'type' => 'select',
-        'columns' => 'col-6',
-        'props' => [
-          'label' => 'Acción del botón añadir a la cotizacion',
-          'useInput' => false,
-          'useChips' => false,
-          'multiple' => false,
-          'hideDropdownIcon' => true,
-          'newValueMode' => 'add-unique',
-          'options' => [
-            ['label' => 'Add to Cart Quote','value' => 'add-to-cart-quote'],
-          ]
-        ]
-      ],
-    'pdfLogoHeader' => [
-      'value' => "logo1",
-      'name' => 'icommerce::pdfLogoHeader',
-      'group' => 'icommerce::pdf.settings.pdf.group',
-      'type' => 'select',
-      'columns' => 'col-6',
-      'props' => [
-        'label' => 'Logotipo para encabezado de documentos PDF',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-          ['label' => 'Logotipo 1','value' => "logo1"],
-          ['label' => 'Logotipo 2','value' => "logo2"],
-          ['label' => 'logotipo 3','value' => "logo3"],
-        ]
+  'addToCartQuoteButtonAction' => [
+    'value' => 'add-to-cart-quote',
+    'name' => 'icommerce::addToCartQuoteButtonAction',
+    'group' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.addToCartQuoteButtonAction',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Add to Cart Quote', 'value' => 'add-to-cart-quote'],
       ]
-    ],
-    'pdfLogoFooter' => [
-      'value' => "logo1",
-      'name' => 'icommerce::pdfLogoFooter',
-      'group' => 'icommerce::pdf.settings.pdf.group',
-      'type' => 'select',
-      'columns' => 'col-6',
-      'props' => [
-        'label' => 'Logotipo para pie de pagina de documentos PDF',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-          ['label' => 'Logotipo 1','value' => "logo1"],
-          ['label' => 'Logotipo 2','value' => "logo2"],
-          ['label' => 'logotipo 3','value' => "logo3"],
-        ]
-      ]
-    ],
-    'pdfCustomHeader' => [
-      'value' => null,
-      'name' => 'icommerce::pdfCustomHeader',
-      'group' => 'icommerce::pdf.settings.pdf.group',
-      'type' => 'html',
-      'props' => [
-        'label' => 'PDF header',
-      ]
-    ],
-    'pdfCustomFooter' => [
-      'value' => null,
-      'name' => 'icommerce::pdfCustomFooter',
-      'group' => 'icommerce::pdf.settings.pdf.group',
-      'type' => 'html',
-      'props' => [
-        'label' => 'PDF Footer',
-      ]
-    ],
-    'pdfCustomProduct' => [
-      'value' => null,
-      'name' => 'icommerce::pdfCustomProduct',
-      'group' => 'icommerce::pdf.settings.pdf.group',
-      'type' => 'html',
-      'props' => [
-        'label' => 'Aviso productos PDF',
-      ]
-    ],
-  ];
+    ]
+  ],
+  'showButtonToQuoteInStore' => [
+    'value' => false,
+    'name' => 'icommerce::showButtonToQuoteInStore',
+    'type' => 'checkbox',
+    'group' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.showButtonToQuoteInStore'
+    ]
+  ],
+  'showButtonThatGeneratesPdfOfTheCart' => [
+    'value' => false,
+    'name' => 'icommerce::showButtonThatGeneratesPdfOfTheCart',
+    'type' => 'checkbox',
+    'group' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
+    ]
+  ],
+];
