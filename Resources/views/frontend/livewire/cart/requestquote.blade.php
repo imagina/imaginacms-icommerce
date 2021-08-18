@@ -12,8 +12,7 @@
           $quoteFormId = setting('icommerce::icommerceCartQuoteForm',null,null);
         @endphp
         @if($quoteFormId)
-          <x-iforms::form :id="$quoteFormId" livewireSubmitEvent="submitQuote"/>
-
+          <x-iforms::form :id="$quoteFormId" livewireSubmitEvent="submitQuote" formId="quoteForm"/>
         @endif
       </div>
     </div>

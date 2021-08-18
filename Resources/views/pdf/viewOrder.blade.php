@@ -55,7 +55,6 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
       <tr class="product-order">
         <td>
-          <a href="{{$product->product->url}}">
             <h4>{{$product->title}}</h4>
           </a>
 
