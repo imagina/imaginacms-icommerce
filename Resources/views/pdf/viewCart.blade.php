@@ -54,7 +54,7 @@
     <h6 class="font-weight-bold">
       {{trans('icommerce::cart.table.total')}}
       <span class="text-primary">
-         {{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney( $cart->total )}} {{isset($currency) ? $currency->symbol_right : ''}}
+         {{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney( $cart->products->sum('total') )}} {{isset($currency) ? $currency->symbol_right : ''}}
             </span>
     </h6>
   </div>
