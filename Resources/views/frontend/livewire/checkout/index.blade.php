@@ -61,9 +61,10 @@
         //window.open(orderData.url, '_self')
       } else {//Redirect web browser mode
         //Redirect to payment method
-        if (orderData.external) window.open(orderData.redirectRoute)
+        if (orderData.external) window.location.replace(orderData.redirectRoute)
+        else window.location.replace(orderData.url)
         //Redirect to order page
-        window.location.replace(orderData.url)
+        
       }
     })
   </script>
