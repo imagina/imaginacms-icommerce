@@ -69,7 +69,8 @@ class Order extends Model
         'require_shipping',
         'options',
         'suscription_id',
-        'suscription_token'
+        'suscription_token',
+        'type'
     ];
 
 

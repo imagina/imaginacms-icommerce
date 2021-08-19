@@ -46,7 +46,7 @@ class Cart extends Model
 
     public function getTotalAttribute()
     {
-        return $this->products->sum('total');
+        return $this->products->where("is_call",false)->sum('total');
     }
 
     public function getQuantityAttribute()

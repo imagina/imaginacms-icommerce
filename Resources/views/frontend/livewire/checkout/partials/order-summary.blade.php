@@ -184,8 +184,8 @@
                                         <div>
                                             {{$shippingMethod->title }}
                                             <br>
-                                            @if($shippingMethod->calculations->priceshow)
-                                                {{ isset($currency) ? $currency->symbol_left : '$'}} {{ "(".formatMoney($shippingMethod->calculations->price).")" }} {{isset($currency) ? $currency->symbol_right : ''}}
+                                            @if(isset($shippingMethod->calculations->priceshow) && $shippingMethod->calculations->priceshow)
+                                                {{ isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($shippingMethod->calculations->price) }} {{isset($currency) ? $currency->symbol_right : ''}}
                                             @endif
                                         </div>
                                         @endif

@@ -10,7 +10,7 @@
       @endif
     </span>
     
-    <i class="{{$icon}}"></i>
+    <i class="{{$icon,$iconquote}}"></i>
   </div>
 
 </a>

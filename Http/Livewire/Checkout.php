@@ -166,10 +166,21 @@ class Checkout extends Component
   public function initShippingMethods()
   {
     
+    \Log::info('Module Icommerce: INIT SHIPPING METHODS');
+
     $params = [];
     $data = ["cart_id" => $this->cart->id ?? null];
-  
+
+    $data['shippingAddressId'] = $this->shippingAddressSelected;
+
     $this->shippingMethods = $this->shippingMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
+
+
+    // Validate if the Shipping Method selected has an status error to deactivated
+    $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
+    if(isset($shippingMethod->id) && $shippingMethod->calculations->status=="error")
+      $this->shippingMethodSelected = null;
+          
     
   }
   
@@ -248,6 +259,7 @@ class Checkout extends Component
    */
   public function hydrate()
   {
+    \Log::info('Module Icommerce: HYDRATE');
     $this->load();
   }
   
@@ -257,6 +269,9 @@ class Checkout extends Component
    */
   public function updated($name, $value)
   {
+
+    \Log::info('Module Icommerce: UPDATED');
+
 
     switch ($name) {
       case 'sameShippingAndBillingAddresses':
@@ -274,6 +289,9 @@ class Checkout extends Component
         }
         break;
     }
+
+    // Added Fix Bug 
+    $this->initShippingMethods();
     
   }
   
@@ -363,6 +381,10 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\ShippingMethodRepository');
   }
+
+  //|--------------------------------------------------------------------------
+  //| Services
+  //|--------------------------------------------------------------------------
   /**
    * @return orderService
    */
@@ -618,9 +640,13 @@ class Checkout extends Component
     $this->initAddresses();
     $this->initProducts();
     $this->initPaymentMethods();
-    $this->initShippingMethods();
+    
     $this->getBillingAddressProperty();
     $this->getShippingAddressProperty();
+
+    // Fixed Bug first request selected address
+    $this->initShippingMethods();
+
     $this->getPaymentMethodProperty();
     $this->getShippingMethodProperty();
     $this->getCouponDiscount();

@@ -22,5 +22,6 @@ class IcommerceDatabaseSeeder extends Seeder
         $this->call(StoreTableSeeder::class);
         $this->call(NotificationRulesTableSeeder::class);
         $this->call(IformQuoteTableSeeder::class);
+        $this->call(IformRequestQuoteTableSeeder::class);
     }
 }

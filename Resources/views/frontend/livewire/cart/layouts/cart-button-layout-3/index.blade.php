@@ -1,5 +1,7 @@
 <div class="cartLayout3" >
 
+    @include("icommerce::frontend.livewire.cart.requestquote")
+
     @include("icommerce::frontend.livewire.cart.layouts.$layout.button")
 
 
@@ -32,7 +34,7 @@
                 <div class="modal-footer p-0 m-0 border-0">
 
                     @if(isset($cart->id))
-                        @include("icommerce::frontend.livewire.cart.layouts.$layout.total")
+                        @include("icommerce::frontend.livewire.cart.layouts.$layout.total",["containIsCall" => $this->containIsCall,"notContainIsCall" => $this->notContainIsCall])
                     @endif
 
                 </div>

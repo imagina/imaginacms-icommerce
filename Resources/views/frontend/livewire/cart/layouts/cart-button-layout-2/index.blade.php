@@ -1,4 +1,4 @@
-<div id="cartLayout2" class="dropdown  {{!$showButton ? 'd-none' : ''}}">
+<div id="cartLayout2" class="dropdown {{!$showButton ? 'd-none' : ''}}">
 
   @include("icommerce::frontend.livewire.cart.layouts.$layout.button")
 

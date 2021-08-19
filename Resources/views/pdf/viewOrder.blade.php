@@ -1,11 +1,21 @@
 @php
   $order = $data["order"];
+
 @endphp
+<?php
+
+$orderTransformed = collect(new \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with(['customer', 'addedBy', 'orderItems', 'orderHistory', 'transactions',
+  'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'])->where("id", $order->id)->first()))->toArray();
+
+
+$informationBlocks = $orderTransformed["informationBlocks"];
+?>
 <div>
   <h1 class="title" style="text-align: center;
         width: 80%;
         font-size: 30px;
-        margin: 12px auto;">{{trans('icommerce::orders.title.single_order_title')}} # {{$order->id}}</h1>
+        margin: 12px auto;">{{$order->type == "quote" ? trans("icommerce::orders.title.quote") : trans('icommerce::orders.title.single_order_title')}}
+    # {{$order->id}}</h1>
 
   <p style="text-align: center; margin: 0;"> {{trans("icommerce::orders.table.status")}}: {{$order->status->title}}</p>
 
@@ -19,14 +29,14 @@
   <a href='{{$order->url}}'
      style="text-decoration: none;
        background-color: {{Setting::get('isite::brandSecondary')}};
-       padding: 10px;
-       margin: 10px 0;
+       padding: 5px;
+       margin: 5px 5px;
        color: white;"
      target="_blank">{{trans("icommerce::orders.table.details")}}: #{{$order->id}}</a>
 </div>
 <br>
 <div class="table-products" style="margin-bottom: 15px; font-size: 10px">
-  <table style="width: 100%;border-collapse: collapse;">
+  <table style="width: 95%;border-collapse: collapse;">
     <thead style="background-color: #eee;">
     <tr>
       <th>{{trans('icommerce::orders.table.product')}}</th>
@@ -37,7 +47,6 @@
     </tr>
     </thead>
     <tbody>
-
     @php
       $orderOptions = $order->orderOption;
       $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD');
@@ -46,7 +55,6 @@
       @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
       <tr class="product-order">
         <td>
-          <a href="{{$product->product->url}}">
             <h4>{{$product->title}}</h4>
           </a>
 
@@ -79,14 +87,20 @@
       <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.subtotal')}}</td>
 
       @php
+
         $rest = 0;
+
         if(!empty($order->shipping_amount)){
             $rest = $order->shipping_amount;
         }
+
         if(!empty($order->tax_amount)){
             $rest = $rest + $order->tax_amount;
         }
+
+
         $subtotal = $order->total + $order->coupon_total - $rest;
+
       @endphp
 
       <td colspan="2"
@@ -122,36 +136,25 @@
       </tr>
     @endif
 
-
     <tr class="total">
       <td colspan="3" style="text-align: right">Total</td>
       <td colspan="2"
           style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->total,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
     </tr>
+    <tr class="user-information">
+      <td class="row" style=" width: 100%; display: inline-block;
+        text-align: left;">
+      @foreach($informationBlocks as $block)
+        <td class="col" style="  width: 47%;
+        float: left;
+        padding: 0 15px;">
+          <h4>{{ $block["title"] }}</h4>
+          @foreach($block["values"] as $item)
+            <p><b>{{ $item["label"] }}:</b> {!! $item["value"] !!}</p>
+          @endforeach
+        </td>
+      @endforeach
+    </tr>
     </tbody>
   </table>
-</div>
-
-<?php
-$orderTransformed = collect(new \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with(['customer', 'addedBy', 'orderItems', 'orderHistory', 'transactions',
-  'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'])->where("id", $order->id)->first()))->toArray();
-$informationBlocks = $orderTransformed["informationBlocks"];
-?>
-
-<div class="user-information">
-  <div class="row" style=" width: 100%; display: inline-block;
-      margin-bottom: 60px;
-      text-align: left;">
-    @foreach($informationBlocks as $block)
-      <div class="col" style="  width: 43%;
-      display: block;
-      float: left;
-      padding: 0 15px;">
-        <h4>{{ $block["title"] }}</h4>
-        @foreach($block["values"] as $item)
-          <p><b>{{ $item["label"] }}:</b> {!! $item["value"] !!}</p>
-        @endforeach
-      </div>
-    @endforeach
-  </div>
 </div>

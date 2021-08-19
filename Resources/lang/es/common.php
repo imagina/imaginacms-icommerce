@@ -104,6 +104,10 @@ return [
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
       'minimumQuantityToNotify' => 'Cantidad mínima para notificar inventario bajo',
+      'showButtonToQuoteInStore' => 'Mostrar boton para cotizar en la tienda',
+      'addToCartQuoteButtonAction' => 'Acción del botón añadir a la cotización',
+      'addToCartButtonAction' => 'Acción del botón añadir al carrito',
+      'showButtonThatGeneratesPdfOfTheCart' => 'Mostrar botón que genera un PDF del carrito'
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',
