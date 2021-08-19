@@ -10,6 +10,7 @@ return [
         'create order' => 'Create a order',
         'edit order' => 'Edit a order',
         'single_order_title'=>'Order',
+        'quote' => 'Quote',
         'confirmation_single_order_title'=>'Order Confirmation',
         'myOrders'=>'My Orders',
         'detail order'=> 'Order Detail'

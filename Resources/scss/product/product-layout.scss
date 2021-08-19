@@ -153,7 +153,10 @@
     color: #929292;
     @include font-size(22px);
   }
-  
+  .iconquote {
+    color: #929292;
+    @include font-size(22px);
+  }
   .cart {
     @include font-size(10px);
     display: none;
@@ -270,6 +273,11 @@
     
     
     .icon {
+      @include font-size(22px);
+    }
+
+    .iconquote {
+      color: #929292;
       @include font-size(22px);
     }
     

@@ -30,6 +30,9 @@ return [
         'view_cart'             => 'See cart',
         'checkout'              => 'Checkout',
         'add_to_cart'           => 'Add to cart',
+        'add_to_cart_quote'     => 'Add to quote',
+        'download_pdf'          => 'Download PDF',
+        'request_quote'         => 'Request Quote'
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'You have no items in your shopping cart. click',

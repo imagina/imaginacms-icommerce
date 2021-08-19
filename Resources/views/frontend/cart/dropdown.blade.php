@@ -47,10 +47,8 @@
             </a>
           </div>
         </div>
-
-
       </div>
-
+      </div>
       <!-- FOOTER CARTING -->
       <div class="dropdown-footer text-center" v-if="articles">
         <hr class="mt-1 mb-3">
@@ -58,16 +56,13 @@
         <h6 class="font-weight-bold">
           {{trans('icommerce::cart.table.total')}}
           <span class="text-primary">
-         @{{ currencySymbolLeft + ''}} @{{total | numberFormat}} @{{'' +currencySymbolRight }}
-          </span>
+             @{{ currencySymbolLeft + ''}} @{{total | numberFormat}} @{{'' +currencySymbolRight }}
+              </span>
         </h6>
         <!-- botones-->
         <a href="{{ url('checkout') }}" tabindex="-1" class="btn btn-warning btn-sm mx-1 text-white">
           {{trans('icommerce::cart.button.view_cart')}}
         </a>
-
-
-      </div>
 
     </div>
 

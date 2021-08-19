@@ -220,7 +220,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       // find product into cart by attributes
       $cartProduct = CartProduct::where('cart_id',$data['cart_id'])
         ->where('product_id', $data['product_id'])
-       // ->where('is_call', $data['is_call'] ?? false)
+        ->where('is_call', $data['is_call'] ?? false)
         ->has('productOptionValues', 0)->first();
     }else{
       // get options from front
@@ -229,7 +229,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       // find product into cart where has the same options
       $cartProducts = CartProduct::where('cart_id',$data['cart_id'])
         ->where('product_id', $data['product_id'])
-       // ->where('is_call', $data['is_call'] ?? false)
+        ->where('is_call', $data['is_call'] ?? false)
         ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
           $query->whereIn("product_option_value_id",$productOptionValuesIdsFront);
         })->get();

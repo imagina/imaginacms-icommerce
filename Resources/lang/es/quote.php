@@ -1,19 +1,31 @@
 <?php
 
 return [
-    'productForm' => [
-      "title" => "Cotización de producto",
+    'form' => [
+      "title" => [
+        "product"=> "Cotización de producto",
+        "cart"=> "Datos para la Cotización",
+        ],
       "form" => [
-        "title" => "Formulario de Cotización de un Producto",
+        "title" => [
+          "single" => "Cotización de Producto",
+          "complex" => "Cotización de Carrito"
+        ],
       ],
       "fields" => [
         "name" => [
           "label" => "Nombre Completo",
         ],
+        "firstName" => [
+          "label" => "Nombres",
+        ],
+        "lastName" => [
+          "label" => "Apellidos",
+        ],
         "email" => [
           "label" => "Correo Electrónico",
         ],
-        "phone" => [
+        "telephone" => [
           "label" => "Teléfono",
         ],
         "productName" => [

@@ -1,27 +1,39 @@
 <?php
 
 return [
-    'productForm' => [
-      "title" => "Product Quote",
+    'form' => [
+      "title" => [
+        "product"=> "Product Quote",
+        "cart"=> "Quote Information",
+      ],
       "form" => [
-        "title" => "Icommerce Product Quote Form",
+        "title" => [
+          "single" => "Product Quote",
+          "complex" => "Cart Quote"
+        ],
       ],
       "fields" => [
-        "name" => [
-          "label" => "Full Name",
-        ],
-        "email" => [
-          "label" => "Email",
-        ],
-        "phone" => [
-          "label" => "Phone",
-        ],
-        "productName" => [
-          "label" => "Product Name",
-        ],
-        "additionalInformation" => [
-          "label" => "Additional info",
-        ]
+          "name" => [
+            "label" => "Full Name",
+          ],
+          "firstName" => [
+            "label" => "First Name",
+          ],
+          "lastName" => [
+            "label" => "Last Name",
+          ],
+          "email" => [
+            "label" => "Email",
+          ],
+          "telephone" => [
+            "label" => "Phone",
+          ],
+          "productName" => [
+            "label" => "Product Name",
+          ],
+          "additionalInformation" => [
+            "label" => "Additional info",
+          ]
       ],
     ],
   
