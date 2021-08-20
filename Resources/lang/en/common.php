@@ -54,6 +54,7 @@ return [
     'unpublished' => 'On hold',
   ],
   'status_text' => 'Status',
+  'download' => 'Download',
   'image' => 'Picture',
   'categories' => 'Categories:',
   'title' => 'Title',
