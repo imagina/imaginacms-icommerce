@@ -1,4 +1,5 @@
 <div class="product-layout product-layout-3 card-product">
+  <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
   @php($discount = $product->discount ?? null)
   @include('icommerce::frontend.components.product.meta')
   
