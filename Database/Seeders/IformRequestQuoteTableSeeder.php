@@ -33,7 +33,7 @@ class IformRequestQuoteTableSeeder extends Seeder
     if(!isset($form->id)) {
 
       $form = $formRepository->create([
-        "title" => trans("icommerce::quote.productForm.form.title.complex"),
+        "title" => trans("icommerce::quote.form.form.title.complex"),
         "system_name" => "icommerce_cart_quote_form",
         "active" => true
       ]);
