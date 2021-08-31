@@ -13,6 +13,8 @@ class ProductListItem extends Component
   public $productAspect;
   public $view;
   public $addToCartWithQuantity;
+  public $editLink;
+  public $tooltipEditLink;
   
   /**
    * Create a new component instance.
@@ -20,7 +22,7 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item, $itemListLayout = null, $layout = null, $addToCartWithQuantity = null,
-                              $parentAttributes = null, $productAspect = null)
+                              $parentAttributes = null, $productAspect = null, $editLink , $tooltipEditLink)
   {
     $this->product = $item;
     $this->itemListLayout = $itemListLayout;
@@ -28,6 +30,8 @@ class ProductListItem extends Component
     $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->productAspect = $productAspect ?? setting('icommerce::productAspect', null, '1-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
+    $this->editLink = $editLink;
+    $this->tooltipEditLink = $tooltipEditLink;
   
     if(!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
