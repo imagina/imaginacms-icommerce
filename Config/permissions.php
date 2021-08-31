@@ -248,6 +248,13 @@ return [
         'edit' => 'icommerce::paymentmethodgeozones.edit resource',
         'destroy' => 'icommerce::paymentmethodgeozones.destroy resource',
     ],
+  'icommerce.quotes' => [
+    'manage' => 'icommerce::quotes.manage resource',
+    'index' => 'icommerce::quotes.list resource',
+    'create' => 'icommerce::quotes.create resource',
+    'edit' => 'icommerce::quotes.edit resource',
+    'destroy' => 'icommerce::quotes.destroy resource',
+  ],
 // append
 
 
