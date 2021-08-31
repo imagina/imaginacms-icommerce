@@ -100,6 +100,7 @@ return [
     'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
     'customIndexContactLabel' => 'Título para el Botón de Contacto',
     'customCheckoutTitle' => 'Título para el Checkout',
+    'icommerceCartQuoteForm' => 'Formulario para Registro de Cotización',
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',

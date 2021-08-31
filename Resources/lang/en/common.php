@@ -98,6 +98,7 @@ return [
     'daysEnabledForNewProducts' => 'days enabled for new products ',
     'customIndexContactLabel' => 'Title for Contact Button',
     'customCheckoutTitle' => 'Title for Checkout',
+    'icommerceCartQuoteForm' => 'Quote Form',
     'product' => [
       'group' => 'Product',
       'layout' => 'Product Layout',

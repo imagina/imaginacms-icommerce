@@ -345,4 +345,20 @@ return [
       'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
     ]
   ],
+  
+  'icommerceCartQuoteForm' => [
+    'name' => 'icommerce::icommerceCartQuoteForm',
+    'value' => [],
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.qform.forms',
+      'select' => ['label' => 'title', 'id' => 'id'],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.settings.icommerceCartQuoteForm',
+      'multiple' => false,
+      'clearable' => true,
+    ],
+  ],
 ];
