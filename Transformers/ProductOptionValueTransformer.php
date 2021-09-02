@@ -22,7 +22,7 @@ class ProductOptionValueTransformer extends JsonResource
       'parentOptionValueId' => $this->when($this->parent_option_value_id,$this->parent_option_value_id),
       'parentOptionValue' => $this->parentOptionValue ? $this->parentOptionValue->description : '-',
       'quantity' => $this->when(isset($this->quantity), $this->quantity),
-      'subtract' => $this->when($this->subtract, $this->subtract),
+      'subtract' => $this->when(isset($this->subtract), $this->subtract),
       'price' => $this->when(isset($this->price), Currency::convert($this->price)),
       'pricePrefix' => $this->when($this->price_prefix, $this->price_prefix),
       'points' => $this->when(isset($this->points), $this->points),
