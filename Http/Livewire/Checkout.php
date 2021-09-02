@@ -304,12 +304,21 @@ class Checkout extends Component
    */
   public function addressAdded($address)
   {
+
+   
+    //\Log::info('Module Icommerce: ADDRESS ADDED');
+    
     $this->initAddresses();
     switch ($address["type"]) {
       case 'billing':
         if (isset($address["id"])) {
           $this->billingAddressSelected = $address["id"];
         }
+
+        if($this->sameShippingAndBillingAddresses){
+          $this->shippingAddressSelected = $this->billingAddressSelected;
+        }
+
         break;
       
       case 'shipping':
@@ -318,6 +327,9 @@ class Checkout extends Component
         }
         break;
     }
+
+    // Added Fix Bug 
+    $this->initShippingMethods();
     
   }
   
