@@ -28,6 +28,10 @@
           @if(config("asgard.icommerce.config.customIncludesBeforeFilters"))
             @foreach(config("asgard.icommerce.config.customIncludesBeforeFilters") as $custom)
 
+                @if(in_array("store",$custom['show']))
+                  @include($custom['view'])
+                @endif
+
                 @if(in_array("manufacturer",$custom['show']) && isset($manufacturer->id))
                   @include($custom['view'])
                 @endif
@@ -39,8 +43,27 @@
             @endforeach
           @endif
 
+          {{-- FILTERS --}}
           <livewire:isite::filters :filters="config('asgard.icommerce.config.filters')"/>
-          
+
+          {{-- Custom Includes --}}
+          @if(config("asgard.icommerce.config.customIncludesAfterFilters"))
+            @foreach(config("asgard.icommerce.config.customIncludesAfterFilters") as $custom)
+
+                @if(in_array("store",$custom['show']))
+                  @include($custom['view'])
+                @endif
+
+                @if(in_array("manufacturer",$custom['show']) && isset($manufacturer->id))
+                  @include($custom['view'])
+                @endif
+
+                @if(in_array("category",$custom['show']) && isset($category->id))
+                  @include($custom['view'])
+                @endif
+
+            @endforeach
+          @endif
 
           {{-- Extra Widgets --}}
           @if(config("asgard.icommerce.config.widgets"))
