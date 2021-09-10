@@ -57,9 +57,7 @@ trait Productable
      */
     public function products()
     {
-        return $this->morphToMany(Product::class, 'productable', 'icommerce__productable')
-            ->withPivot('productable_type')
-            ->withTimestamps();
+        return $this->morphMany(Product::class, 'entity');
     }
 
     public function getProductAttribute(){
