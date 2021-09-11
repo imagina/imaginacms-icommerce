@@ -4,8 +4,10 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
+use Modules\Icommerce\Support\Cart as cartSupport;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
+use Illuminate\Http\Request;
 
 class EloquentPaymentMethodRepository extends EloquentBaseRepository implements PaymentMethodRepository
 {
@@ -99,6 +101,64 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
         return $model;
 
     }
-
+  
+  
+  /**
+   *
+   * @param $request
+   * @return Response
+   */
+  
+  public function getCalculations($data, $params)
+  {
+    
+    /* Init query */
+    $query = $this->model->query();
+    
+    /* Check actives */
+    $query->where("status", 1);
+    
+    /* Filters */
+    if (isset($params->filter) && $params->filter) {
+      $filter = $params->filter;
+      
+      if (isset($filter->geozones)) {
+        $query->whereIn("geozone_id", $filter->geozones);
+      }
+    }
+    
+    /* Run query*/
+    $methods = $query->get();
+    
+    if (isset($methods) && $methods->count() > 0) {
+      // Search Cart
+      $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
+      
+      if (isset($data['cart_id'])) {
+        $cart = $cartRepository->find($data['cart_id']);
+        // Fix data cart products
+        $supportCart = new cartSupport();
+        $dataCart = $supportCart->fixProductsAndTotal($cart);
+        // Add products to request
+        $data['products'] = $dataCart['products'];
+      }
+      foreach ($methods as $key => $method) {
+        $methodApiController = app($method->options->init);
+        if(method_exists($methodApiController,"calculations")){
+          try {
+            $results = $methodApiController->calculations(new Request ($data));
+            $resultData = $results->getData();
+            $method->calculations = $resultData;
+          } catch (\Exception $e) {
+            $resultData["msj"] = "error";
+            $resultData["items"] = $e->getMessage();
+            $method->calculations = $resultData;
+          }
+        }
+       
+      }
+    }
+    return $methods;
+  }
 
 }

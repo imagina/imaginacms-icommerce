@@ -155,9 +155,21 @@ class Checkout extends Component
   {
     
     $params = ["filter" => ["status" => 1]];
-  
-    $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
+    $data = ["cart_id" => $this->cart->id ?? null];
     
+  
+    $this->paymentMethods = $this->paymentMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
+    
+    // Validate if the Shipping Method selected has an status error to deactivated
+    $paymentMethod = $this->paymentMethods->where("id",$this->paymentMethodSelected)->first();
+    
+    if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+      $this->paymentMethodSelected = null;
+    }
+    
+  
+  
+  
   }
   
   /**
@@ -178,6 +190,7 @@ class Checkout extends Component
 
     // Validate if the Shipping Method selected has an status error to deactivated
     $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
+    
     if(isset($shippingMethod->id) && $shippingMethod->calculations->status=="error")
       $this->shippingMethodSelected = null;
           
@@ -292,6 +305,7 @@ class Checkout extends Component
 
     // Added Fix Bug 
     $this->initShippingMethods();
+    $this->initPaymentMethods();
     
   }
   
@@ -580,7 +594,10 @@ class Checkout extends Component
     }
     
     if (isset($paymentMethod->id)) $this->paymentMethodSelected = $paymentMethod->id;
-    
+  
+    if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+      $this->paymentMethodSelected = $paymentMethod = null;
+    }
     return $paymentMethod;
   }
   
@@ -651,16 +668,20 @@ class Checkout extends Component
   {
     $this->initAddresses();
     $this->initProducts();
-    $this->initPaymentMethods();
+    
     
     $this->getBillingAddressProperty();
     $this->getShippingAddressProperty();
 
     // Fixed Bug first request selected address
     $this->initShippingMethods();
-
+    $this->initPaymentMethods();
+    
     $this->getPaymentMethodProperty();
     $this->getShippingMethodProperty();
+  
+    
+    
     $this->getCouponDiscount();
     $this->initTaxes();
     $this->getTotalTaxesProperty();
