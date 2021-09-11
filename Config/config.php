@@ -289,7 +289,7 @@ return [
     /*
     'manufacturerCard' => [
       'view' => "icommerce.partials.manufacturer-card",
-      'show' => ['manufacturer'] //category, manufacturer
+      'show' => ['store','manufacturer','category']
     ]
     */
   ],
@@ -407,6 +407,20 @@ return [
       'layout' => 'radio-layout-1',
       'classes' => 'col-12'
     ]
+  ],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Custom Includes After Filters
+  |--------------------------------------------------------------------------
+  */
+  'customIncludesAfterFilters' => [
+    /*
+    'manufacturerCard' => [
+      'view' => "icommerce.partials.manufacturer-card",
+      'show' => ['manufacturer'] //category, manufacturer
+    ]
+    */
   ],
 
 

@@ -436,7 +436,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if ($product) {
 
       // sync tables
-      $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
+      if (isset($data['categories']))
+        $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
       $priceListEnable = is_module_enabled('Icommercepricelist');
 

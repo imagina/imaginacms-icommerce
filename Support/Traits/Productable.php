@@ -13,15 +13,51 @@ use Modules\Icommerce\Entities\Product;
 trait Productable
 {
 
+
+
+    /**
+    * Boot trait method
+    */
+    public static function bootProductable()
+    {
+        //Listen event after create model
+        static::createdWithBindings(function ($model) {
+          $model->createProduct();
+        });
+
+    }
+
+    /**
+    * Create a Product
+    */
+    public function createProduct(){
+
+        // Data to Create
+        $dataToCreate = [
+            'name' => $this->title,
+            'slug' => $this->slug,
+            'description' => $this->description,
+            'summary' => $this->summary ?? substr($this->description, 0, 150),
+            'price' => $this->price,
+            'status' => 1,
+            'stock_status' => 1,
+            'quantity' => 999999,
+            'entity_id' => $this->id,
+            'entity_type' => get_class($this) 
+        ];
+
+        // Create Product
+        $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->create($dataToCreate);
+    }
+
+
     /**
      * Make the Productable morph relation
      * @return object
      */
     public function products()
     {
-        return $this->morphToMany(Product::class, 'productable', 'icommerce__productable')
-            ->withPivot('productable_type')
-            ->withTimestamps();
+        return $this->morphMany(Product::class, 'entity');
     }
 
     public function getProductAttribute(){
