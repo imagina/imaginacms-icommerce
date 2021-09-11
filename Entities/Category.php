@@ -32,7 +32,8 @@ class Category extends Model
     'featured',
     'store_id',
     'status',
-    'sort_order'
+    'sort_order',
+    'external_id',
   ];
 
 

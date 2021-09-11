@@ -65,6 +65,7 @@ class Product extends Model implements TaggableInterface
     'entity_id',
     'entity_type',
     'custom_url',
+    'external_id',
 	];
 
 	protected $presenter = ProductPresenter::class;
