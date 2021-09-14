@@ -154,11 +154,9 @@ class Checkout extends Component
   public function initPaymentMethods()
   {
     
-    $params = ["filter" => ["status" => 1]];
-    $data = ["cart_id" => $this->cart->id ?? null];
-    
+    $params = ["filter" => ["status" => 1,"withCalculations" => true, "cartId" => $this->cart->id ?? null]];
   
-    $this->paymentMethods = $this->paymentMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
+    $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
     
     // Validate if the Shipping Method selected has an status error to deactivated
     $paymentMethod = $this->paymentMethods->where("id",$this->paymentMethodSelected)->first();

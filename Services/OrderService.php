@@ -192,6 +192,10 @@ class OrderService
       
       $shippingMethod = $shippingMethods->where("id", $data["shippingMethod"]->id ?? $data["shippingMethodId"])->first();
       
+      if(isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status == "error"){
+        throw new \Exception($shippingMethod->calculations->msj ?? "Error with the Shipping Method", 400);
+      }
+      
       if (isset($shippingMethod->id)) {
         $orderData["shipping_method"] = $shippingMethod->title;
         $orderData["shipping_code"] = $shippingMethod->id;
@@ -207,13 +211,17 @@ class OrderService
      | getting payment method if issset in the data
      |--------------------------------------------------------------------------
      */
-    if (isset($data["paymentMethod"]->id)) {
-      $paymentMethod = $data["paymentMethod"];
-    } else {
-      if (isset($data["paymentMethodId"]) && !empty($data["paymentMethodId"])) {
+    if (isset($data["paymentMethod"]->id) || isset($data["paymentMethodId"])) {
+    
         $paymentMethodRepository = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
-        $paymentMethod = $paymentMethodRepository->getItem($data["paymentMethodId"]);
-      }
+  
+        $paymentMethods = $paymentMethodRepository->getCalculations(["cartId" => $cart->id]);
+        
+        $paymentMethod = $paymentMethods->where("id",$data["paymentMethod"]->id ?? $data["paymentMethodId"])->first();
+        
+        if(isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+          throw new \Exception($paymentMethod->calculations->msj ?? "Error with the Payment Method", 400);
+        }
     }
     
     if (isset($paymentMethod->id)) {
@@ -292,6 +300,7 @@ class OrderService
     //Create order
     $order = $this->order->create($orderData);
     $dataResponse = [
+      "cart" => $this->cart,
       "order" => $order,
       "orderId" => $order->id,
       "orderID" => $order->id, //TODO: fix icommerce extra methods because there are waiting the orderId like orderID

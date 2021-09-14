@@ -47,8 +47,49 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
             if (isset($filter->status)) {
               $query->where('status', $filter->status);
             }
-
+            
+            if(isset($filter->withCalculations)){
+  
+              $query->where('status', 1);
+              /* Init query */
+              $items = $query->get();
+  
+              if (isset($items) && $items->count() > 0) {
+                $data = [];
+    
+                if (isset($filter->cartId)) {
+                  // Add products to request
+                  $data['cartId'] = $filter->cartId;
+                }
+                foreach ($items as $key => $method) {
+                  $methodApiController = app($method->options->init);
+                  if(method_exists($methodApiController,"calculations")){
+                    try {
+                      $results = $methodApiController->calculations(new Request ($data));
+                      $resultData = $results->getData();
+                      $method->calculations = $resultData;
+                    } catch (\Exception $e) {
+                      $resultData["msj"] = "error";
+                      $resultData["items"] = $e->getMessage();
+                      $method->calculations = $resultData;
+                    }
+                  }
+                }
+              }
+              return $items;
+            }
         }
+  
+      if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+      } else {
+        //pre-filter status
+        $query->where("status", 1);
+        
+      }
+      
+      
+      
         /*== FIELDS ==*/
         if (isset($params->fields) && count($params->fields))
             $query->select($params->fields);
@@ -94,71 +135,39 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
 
     public function update($model, $data)
     {
-        $model->update($data);
-
-        event(new UpdateMedia($model, $data));
+  
+      $model->update($data);
+   
+      //event(new UpdateMedia($model, $data));
 
         return $model;
 
     }
   
-  
-  /**
-   *
-   * @param $request
-   * @return Response
-   */
-  
-  public function getCalculations($data, $params)
-  {
+    public function updateBy($criteria, $data, $params = false)
+      {
+        /*== initialize query ==*/
+        $query = $this->model->query();
     
-    /* Init query */
-    $query = $this->model->query();
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+          $filter = $params->filter;
     
-    /* Check actives */
-    $query->where("status", 1);
-    
-    /* Filters */
-    if (isset($params->filter) && $params->filter) {
-      $filter = $params->filter;
-      
-      if (isset($filter->geozones)) {
-        $query->whereIn("geozone_id", $filter->geozones);
-      }
-    }
-    
-    /* Run query*/
-    $methods = $query->get();
-    
-    if (isset($methods) && $methods->count() > 0) {
-      // Search Cart
-      $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-      
-      if (isset($data['cart_id'])) {
-        $cart = $cartRepository->find($data['cart_id']);
-        // Fix data cart products
-        $supportCart = new cartSupport();
-        $dataCart = $supportCart->fixProductsAndTotal($cart);
-        // Add products to request
-        $data['products'] = $dataCart['products'];
-      }
-      foreach ($methods as $key => $method) {
-        $methodApiController = app($method->options->init);
-        if(method_exists($methodApiController,"calculations")){
-          try {
-            $results = $methodApiController->calculations(new Request ($data));
-            $resultData = $results->getData();
-            $method->calculations = $resultData;
-          } catch (\Exception $e) {
-            $resultData["msj"] = "error";
-            $resultData["items"] = $e->getMessage();
-            $method->calculations = $resultData;
-          }
+          //Update by field
+          if (isset($filter->field))
+            $field = $filter->field;
         }
-       
+    
+        /*== REQUEST ==*/
+        $model = $query->where($field ?? 'id', $criteria)->first();
+        
+        if(isset($model->id)){
+          $model->update((array)$data);
+          event(new UpdateMedia($model, $data));
+          return $model;
+        }else{
+          return  false;
+        }
       }
-    }
-    return $methods;
-  }
 
 }
