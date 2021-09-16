@@ -1,19 +1,10 @@
 <section id="categoryList2" class="category-list container-fluid">
   <div class="row mx-0">
-  @foreach($categories as $index => $category)
+    @php($index = 0)
+  @foreach($categories as $key => $category)
     @if($category->status)
-      @php
-        if ($index != 2 && $index != 3) {
-           $col = 'col-md-6';
-        } elseif ($index == 2) {
-           $col = 'col-md-7';
-        } elseif ($index == 3) {
-           $col = 'col-md-5';
-        }
-      @endphp
       
-      <div class="{{$col}} category-list-2__item position-relative">
-       
+      <div class="{{$columns[$index%count($columns)]}} category-list-2__item position-relative">
           <figure>
             <x-media::single-image :alt="$category->title" :title="$category->title" :url="$category->url" :isMedia="true"
                                    :mediaFiles="$category->mediaFiles()" imgClasses="cover-img"/>
@@ -39,6 +30,7 @@
    
       </div>
    @endif
+      @php($index++)
   @endforeach
   </div>
 </section>

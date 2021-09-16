@@ -41,8 +41,8 @@ class SendOrder
         $emailTo = explode(',', setting('icommerce::form-emails'));
       
       //Emails from users selected in the setting usersToNotify
-      $usersToNotity = json_decode(setting("icommerce::usersToNotify", null, "[]"));
-      $users = User::whereIn("id", $usersToNotity)->get();
+      $usersToNotify = json_decode(setting("icommerce::usersToNotify", null, "[]"));
+      $users = User::whereIn("id", $usersToNotify)->get();
       $emailTo = array_merge($emailTo, $users->pluck('email')->toArray());
       
       //By last, gets the Email of the user in the order
