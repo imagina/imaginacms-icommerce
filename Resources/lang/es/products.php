@@ -75,6 +75,8 @@ return [
         'all_products_by_manufacturer'  => 'Todos los productos por fabricante...',
     ],
     'form' => [
+      'available' => 'Disponibles',
+      'outOfStock' => 'Producto Agotado'
     ],
 
     'messages'          => [

@@ -19,7 +19,7 @@ class CategoryList extends Component
    *
    * @return void
    */
-  public function __construct($params,$layout,$showDescription = false, $columns = ["col-12 col-md-6","col-12 col-md-6","col-12 col-md-7", "col-12 col-md-5"])
+  public function __construct($params,$layout,$showDescription = false, $columns = ["col-12 col-md-6","col-12 col-md-6","col-12 col-md-5", "col-12 col-md-7"])
   {
     $this->params = $params;
     $this->layout = $layout;

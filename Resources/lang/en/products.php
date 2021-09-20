@@ -73,7 +73,9 @@ return [
     'products_by_manufacturer'      => 'Products by manufacturer',
     'all_products_by_manufacturer'  => 'All products by manufacturer...',
   ],
-  'form'              => [
+  'form' => [
+    'available' => 'Available',
+    'outOfStock' => 'Out of stock'
   ],
   'messages'          => [
     'error delete product'  => 'The product could not be deleted',
