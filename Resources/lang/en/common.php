@@ -18,6 +18,11 @@ return [
   ],
   'form' => [
   ],
+  'formFields' => [
+    'minimum Amount' => 'Minimum amount',
+    'maximum Amount' => 'Maximum amount',
+    'excludedUsersForMaximumAmount' => 'Excluded users for maximum amount',
+  ],
   'pages' => [
     'index' => 'Index Page',
     'checkout' => 'Checkout Page',
@@ -46,6 +51,8 @@ return [
     'min 2 characters' => 'Minimum of 2 characters',
   ],
   'validation' => [
+    'maximumAmount' => "The order total exceed the maximum amount available (:maximumAmount) for this payment method",
+    'maximumAmount' => "The order total must be greater than: (:maximumAmount) for this payment method"
   ],
   'status' => [
     'draft' => 'Draft',
