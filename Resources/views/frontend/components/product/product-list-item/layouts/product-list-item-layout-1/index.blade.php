@@ -1,7 +1,5 @@
-<div class="product-layout product-layout-1">
-  <div class="relative-position">
+<div class="product-layout product-layout-1 position-relative">
     <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
-  </div>
   @php($discount = $product->discount ?? null)
   @include('icommerce::frontend.components.product.meta')
 
