@@ -18,6 +18,11 @@ return [
   ],
   'form' => [
   ],
+  'formFields' => [
+    'minimum Amount' => 'Monto Minimo',
+    'maximum Amount' => 'Monto Maximo',
+    'excludedUsersForMaximumAmount' => 'Usuarios excluidos del monto máximo',
+  ],
   'pages' => [
     'index' => 'Página Principal',
     'checkout' => 'Página Checkout',
@@ -48,6 +53,8 @@ return [
     'no products' => 'No existen productos disponibles',
   ],
   'validation' => [
+    'maximumAmount' => "El Monto de la orden excede el máximo permitido (:maximumAmount) para este método de pago",
+    'minimumAmount' => "El Monto de la orden debe ser mayor a: (:minimumAmount) para este método de pago"
   ],
   'status' => [
     'draft' => 'Borrador',
