@@ -8,7 +8,7 @@ interface ProductRepository extends BaseRepository
 {
   public function getItemsBy($params);
 
-  public function getItem($criteria, $params);
+  public function getItem($criteria, $params = false);
 
   public function updateBy($criteria, $data, $params);
   

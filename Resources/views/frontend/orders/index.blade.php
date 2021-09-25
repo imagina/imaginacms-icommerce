@@ -74,7 +74,7 @@
 
 @section('scripts')
   @parent
-  <script type="text/javascript">
+  <script type="text/javascript" defer>
     $(document).ready(function () {
       $("table .clickable-row").click(function () {
         window.location = $(this).data("href");

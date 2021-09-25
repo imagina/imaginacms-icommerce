@@ -90,7 +90,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript" defer>
 import _cloneDeep from 'lodash.clonedeep'
 
 export default {

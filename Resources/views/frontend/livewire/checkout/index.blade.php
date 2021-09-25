@@ -51,7 +51,7 @@
 
 @section("scripts")
   @parent
-  <script>
+  <script type="text/javascript" defer>
     Livewire.on('orderCreated', orderData => {
       //Redirect to Cordova mode
       if (navigator.userAgent.match(/Cordova/i)) {

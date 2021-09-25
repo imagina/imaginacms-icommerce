@@ -489,8 +489,8 @@ return [
       "routeName" => "icommerce.store.order.index",
       "quasarUrl" => '/ipanel/#/store/orders/',
       "icon" => "fa fa-bars",
-
-    ]
+  
+    ],
   ],
 
   /*

@@ -32,7 +32,7 @@
 @section('scripts-owl')
    @parent
 
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
 
       	var body = document.body;
 

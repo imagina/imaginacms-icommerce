@@ -49,7 +49,18 @@ class CachePaymentMethodDecorator extends BaseCacheDecorator implements PaymentM
     
     return $this->repository->create($data);
   }
-
+  
+  /**
+   * update a resource
+   *
+   * @return mixed
+   */
+  public function updateBy($criteria, $data, $params)
+  {
+    $this->clearCache();
+    
+    return $this->repository->updateBy($criteria, $data, $params);
+  }
   
   
 }

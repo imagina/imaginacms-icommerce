@@ -44,7 +44,7 @@
 
 @section('scripts')
   @parent
-  <script>
+  <script type="text/javascript" defer>
     /********* VUE ***********/
     var vue_show_commerce = new Vue({
       el: '#content_show_commerce',

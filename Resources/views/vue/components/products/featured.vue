@@ -33,7 +33,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/javascript" defer>
     export default {
         props:[
             'categories',

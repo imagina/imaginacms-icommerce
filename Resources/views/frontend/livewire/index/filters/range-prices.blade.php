@@ -51,9 +51,9 @@
 @section('scripts')
 @parent
 
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" defer></script>
 
-	<script>
+	<script type="text/javascript" defer>
 	jQuery(document).ready(function($) {
 		/*
 		* Create Slider Range Price
