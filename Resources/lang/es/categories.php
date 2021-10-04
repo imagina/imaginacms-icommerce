@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'single' => 'Categoria',
-    'plural' => 'Categorias',
+    'single' => 'Categoría',
+    'plural' => 'Categorías',
     'list resource' => 'Lista de categorías',
     'create resource' => 'Crear categorías',
     'edit resource' => 'Editar categorías',
