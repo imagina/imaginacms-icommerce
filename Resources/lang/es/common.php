@@ -19,6 +19,7 @@ return [
   'form' => [
   ],
   'formFields' => [
+    'mode' => 'Modo',
     'minimum Amount' => 'Monto Minimo',
     'maximum Amount' => 'Monto Maximo',
     'excludedUsersForMaximumAmount' => 'Usuarios excluidos del monto máximo',
