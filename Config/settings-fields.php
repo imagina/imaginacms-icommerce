@@ -178,6 +178,7 @@ return [
     ],
   ],
   'productListItemLayout' => [
+    "onlySuperAdmin" => true,
     'value' => 'product-list-item-layout-1',
     'name' => 'icommerce::productListItemLayout',
     'group' => 'icommerce::common.settings.product.group',
@@ -198,6 +199,7 @@ return [
     ]
   ],
   'productAspect' => [
+    "onlySuperAdmin" => true,
     'value' => "1-1",
     'name' => 'icommerce::productAspect',
     'group' => 'icommerce::common.settings.product.group',
@@ -217,6 +219,7 @@ return [
     ]
   ],
   'product-add-to-cart-with-quantity' => [
+    "onlySuperAdmin" => true,
     'name' => 'icommerce::product-add-to-cart-with-quantity',
     'value' => "0",
     'type' => 'checkbox',
@@ -290,6 +293,7 @@ return [
     ],
   ],
   'addToCartButtonAction' => [
+    "onlySuperAdmin" => true,
     'value' => 'add-to-cart',
     'name' => 'icommerce::addToCartButtonAction',
     'group' => 'icommerce::common.settings.product.group',
@@ -310,6 +314,7 @@ return [
     ]
   ],
   'addToCartQuoteButtonAction' => [
+    "onlySuperAdmin" => true,
     'value' => 'add-to-cart-quote',
     'name' => 'icommerce::addToCartQuoteButtonAction',
     'group' => 'icommerce::common.settings.product.group',
@@ -328,6 +333,7 @@ return [
     ]
   ],
   'showButtonToQuoteInStore' => [
+    "onlySuperAdmin" => true,
     'value' => false,
     'name' => 'icommerce::showButtonToQuoteInStore',
     'type' => 'checkbox',
@@ -337,6 +343,7 @@ return [
     ]
   ],
   'showButtonThatGeneratesPdfOfTheCart' => [
+    "onlySuperAdmin" => true,
     'value' => false,
     'name' => 'icommerce::showButtonThatGeneratesPdfOfTheCart',
     'type' => 'checkbox',
@@ -347,6 +354,7 @@ return [
   ],
   
   'icommerceCartQuoteForm' => [
+    "onlySuperAdmin" => true,
     'name' => 'icommerce::icommerceCartQuoteForm',
     'value' => [],
     'type' => 'select',
