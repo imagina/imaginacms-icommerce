@@ -38,7 +38,8 @@ return [
   'product-per-page' => [
     'name' => 'icommerce::product-per-page',
     'value' => 12,
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
     'props' => [
@@ -48,7 +49,8 @@ return [
   'customIndexTitle' => [
     'name' => 'icommerce::customIndexTitle',
     'value' => '',
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
     'props' => [
@@ -58,7 +60,8 @@ return [
   'customIndexDescription' => [
     'name' => 'icommerce::customIndexDescription',
     'value' => '',
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'type' => 'input',
     'columns' => 'col-12',
     'props' => [
@@ -71,7 +74,8 @@ return [
   'customIndexContactLabel' => [
     'name' => 'icommerce::customIndexContactLabel',
     'value' => 'Contáctenos',
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'type' => 'input',
     'columns' => 'col-6',
     'props' => [
@@ -83,7 +87,8 @@ return [
   'carouselIndexCategory' => [
     'value' => 'carousel-category-active',
     'name' => 'icommerce::carouselIndexCategory',
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -103,7 +108,8 @@ return [
     'value' => false,
     'name' => 'icommerce::showBreadcrumbSidebar',
     'type' => 'checkbox',
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'props' => [
       'label' => 'Mostrar breadcrumb en Sidebar'
     ]
@@ -112,7 +118,8 @@ return [
     'value' => false,
     'name' => 'icommerce::showCategoryChildrenIndexHeader',
     'type' => 'checkbox',
-    'group' => 'icommerce::common.pages.index',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
     'props' => [
       'label' => 'Mostrar Categorías Hijas en el header del Index'
     ]
@@ -121,7 +128,8 @@ return [
   'categoryChildrenIndexHeader' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
-    'group' => 'icommerce::common.filters.categories.group',
+    'groupName' => 'categoryFilter',
+    'groupTitle' => 'icommerce::common.filters.categories.group',
     'type' => 'select',
     'props' => [
       'label' => 'Titulo a mostrar',
@@ -140,7 +148,8 @@ return [
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
-    'group' => 'icommerce::common.filters.categories.group',
+    'groupName' => 'categoryFilter',
+    'groupTitle' => 'icommerce::common.filters.categories.group',
     'type' => 'select',
     'props' => [
       'label' => 'Titulo a mostrar',
@@ -157,7 +166,8 @@ return [
   ],
   'filterRangePricesStep' => [
     'name' => 'icommerce::filterRangePricesStep',
-    'group' => 'icommerce::common.filters.priceRange.group',
+    'groupName' => 'priceRangeFilter',
+    'groupTitle' => 'icommerce::common.filters.priceRange.group',
     'value' => 20000,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
@@ -181,7 +191,8 @@ return [
     "onlySuperAdmin" => true,
     'value' => 'product-list-item-layout-1',
     'name' => 'icommerce::productListItemLayout',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
     'columns' => 'col-12 col-md-6',
     'props' => [
@@ -202,7 +213,8 @@ return [
     "onlySuperAdmin" => true,
     'value' => "1-1",
     'name' => 'icommerce::productAspect',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
     'columns' => 'col-12 col-md-6',
     'props' => [
@@ -224,7 +236,8 @@ return [
     'value' => "0",
     'type' => 'checkbox',
     'columns' => 'col-12 col-md-6',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
       'label' => 'icommerce::common.settings.product-add-to-cart-with-quantity',
       'trueValue' => "1",
@@ -234,7 +247,8 @@ return [
 
   'productMinimumQuantityToNotify' => [
     'name' => 'icommerce::productMinimumQuantityToNotify',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'value' => 3,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
@@ -245,7 +259,8 @@ return [
   'filterCategoriesStyle' => [
     'value' => '',
     'name' => 'icommerce::filterCategoriesStyle',
-    'group' => 'icommerce::common.filters.categories.group',
+    'groupName' => 'categoryFilter',
+    'groupTitle' => 'icommerce::common.filters.categories.group',
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -265,7 +280,8 @@ return [
   'customCheckoutTitle' => [
     'name' => 'icommerce::customCheckoutTitle',
     'value' => '',
-    'group' => 'icommerce::common.pages.checkout',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
     'type' => 'input',
     'columns' => 'col-6',
     'props' => [
@@ -276,7 +292,8 @@ return [
   'checkoutLayout' => [
     'value' => 'one-page-checkout',
     'name' => 'icommerce::checkoutLayout',
-    'group' => 'icommerce::common.pages.checkout',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -296,7 +313,8 @@ return [
     "onlySuperAdmin" => true,
     'value' => 'add-to-cart',
     'name' => 'icommerce::addToCartButtonAction',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -317,7 +335,8 @@ return [
     "onlySuperAdmin" => true,
     'value' => 'add-to-cart-quote',
     'name' => 'icommerce::addToCartQuoteButtonAction',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -337,7 +356,8 @@ return [
     'value' => false,
     'name' => 'icommerce::showButtonToQuoteInStore',
     'type' => 'checkbox',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
       'label' => 'icommerce::common.settings.product.showButtonToQuoteInStore'
     ]
@@ -347,7 +367,8 @@ return [
     'value' => false,
     'name' => 'icommerce::showButtonThatGeneratesPdfOfTheCart',
     'type' => 'checkbox',
-    'group' => 'icommerce::common.settings.product.group',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
       'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
     ]
