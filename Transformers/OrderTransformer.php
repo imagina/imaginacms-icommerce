@@ -31,6 +31,7 @@ class OrderTransformer extends JsonResource
       'paymentFirstName' => $this->when($this->payment_first_name, $this->payment_first_name),
       'url' => $this->url,
       'paymentLastName' => $this->when($this->payment_last_name, $this->payment_last_name),
+      'paymentTelephone' => $this->when($this->payment_telephone, $this->payment_telephone),
       'paymentCompany' => $this->when($this->payment_company, $this->payment_company),
       'paymentAddress1' => $this->when($this->payment_address_1, $this->payment_address_1),
       'paymentAddress2' => $this->when($this->payment_address_2, $this->payment_address_2),
@@ -44,6 +45,7 @@ class OrderTransformer extends JsonResource
       'paymentMethod' => $this->when($this->payment_method, $this->payment_method),
       'shippingFirstName' => $this->when($this->shipping_first_name, $this->shipping_first_name),
       'shippingLastName' => $this->when($this->shipping_last_name, $this->shipping_last_name),
+      'shippingTelephone' => $this->when($this->shipping_telephone, $this->shipping_telephone),
       'shippingCompany' => $this->when($this->shipping_company, $this->shipping_company),
       'shippingAddress1' => $this->when($this->shipping_address_1, $this->shipping_address_1),
       'shippingAddress2' => $this->when($this->shipping_address_2, $this->shipping_address_2),
@@ -82,7 +84,7 @@ class OrderTransformer extends JsonResource
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions'))
     ];
-
+    
     //Add information blocks
     $item['informationBlocks'] = [
       [
@@ -95,34 +97,31 @@ class OrderTransformer extends JsonResource
         ]
       ]
     ];
-
-        $customerBlockInfo = [
-          'title' => 'Información del cliente',
-          'values' => [
-            [
-              'label' => trans("iprofile::addresses.form.name"),
-              'value' => isset($this->customer->id) ? $item['customer']->present()->fullname : $this->first_name.' '.$this->last_name
-            ],
-            [
-              'label' => trans("iprofile::frontend.form.email"),
-              'value' => $item['customer']->email ?? $this->email
-            ],
-            [
-              'label' => trans("iprofile::frontend.form.cellularPhone"),
-              'value' => $item['telephone'] ?? $this->telephone
-            ],
-          ]
-        ];
-
+    
+    $customerBlockInfo = [
+      'title' => 'Información del cliente',
+      'values' => [
+        [
+          'label' => trans("iprofile::addresses.form.name"),
+          'value' => isset($this->customer->id) ? $item['customer']->present()->fullname : $this->first_name.' '.$this->last_name
+        ],
+        [
+          'label' => trans("iprofile::frontend.form.email"),
+          'value' => $item['customer']->email ?? $this->email
+        ],
+      
+      ]
+    ];
+    
     if(isset($this->customer->id)) {
-
+      
       $customerFields = $item['customer']->fields;
-        $customerRegisterExtraFields = json_decode(setting("iprofile::registerExtraFields", null, "[]"));
+      $customerRegisterExtraFields = json_decode(setting("iprofile::registerExtraFields", null, "[]"));
       if (!empty($customerFields)) {
         foreach ($customerRegisterExtraFields as $extraField) {
           if ($extraField->active) {
             $customerField = $customerFields->where("name", $extraField->field)->first();
-
+            
             if (!empty($customerField)) {
               if ($extraField->type == "documentType") {
                 $documentNumber = $customerFields->where("name", "documentNumber")->first();
@@ -136,15 +135,15 @@ class OrderTransformer extends JsonResource
                   "value" => $customerField->value
                 ]);
               }
-
+              
             }
           }
         }
         array_push($item['informationBlocks'], $customerBlockInfo);
       }
-
+      
       $customerAddressExtraFields = json_decode(setting("iprofile::userAddressesExtraFields", null, "[]"));
-
+      
       if ($this->require_shipping) {
         $customerShippingAddressBlock = [
           'title' => trans('icommerce::orders.table.shipping address'),
@@ -157,19 +156,24 @@ class OrderTransformer extends JsonResource
               'label' => trans("iprofile::frontend.form.shipping_address"),
               'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
                 ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
+            ],
+            [
+              'label' => trans("iprofile::frontend.form.cellularPhone"),
+              'value' => "{$item['shippingTelephone']}"
             ]
+          
           ]
         ];
-
+        
         $orderShippingExtraFields = $this->options->shippingAddress ?? [];
-
+        
         if (!empty($orderShippingExtraFields)) {
           foreach ($customerAddressExtraFields as $extraField) {
             if ($extraField->active) {
               if (isset($orderShippingExtraFields->{$extraField->field})) {
                 if ($extraField->field == "documentType") {
                   $documentNumber = $orderShippingExtraFields->documentNumber ?? '';
-
+                  
                   array_push($customerShippingAddressBlock["values"], [
                     "label" => trans("iprofile::addresses.form.identification"),
                     "value" => $orderShippingExtraFields->{$extraField->field} . " " . $documentNumber
@@ -193,13 +197,13 @@ class OrderTransformer extends JsonResource
               "value" => trans('icommerce::orders.messages.orderNotRequireShipping')
             ]
           ]
-
+        
         ];
       }
-
-
+      
+      
       array_push($item["informationBlocks"], $customerShippingAddressBlock);
-
+      
       $customerBillingAddressBlock = [
         'title' => trans('icommerce::orders.table.payment address'),
         'values' => [
@@ -211,10 +215,14 @@ class OrderTransformer extends JsonResource
             'label' => trans("iprofile::frontend.form.billing_address"),
             'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, {$item['paymentCity']}, " .
               ($item['paymentDepartment']->name ?? '') . ", " . ($item['paymentCountry']->name ?? '')
+          ],
+          [
+            'label' => trans("iprofile::frontend.form.cellularPhone"),
+            'value' => "{$item['paymentTelephone']}"
           ]
         ]
       ];
-
+      
       $orderBillingExtraFields = $this->options->billingAddress ?? [];
       if (!empty($orderBillingExtraFields)) {
         foreach ($customerAddressExtraFields as $extraField) {
@@ -237,12 +245,12 @@ class OrderTransformer extends JsonResource
         }
       }
       array_push($item["informationBlocks"], $customerBillingAddressBlock);
-
+      
     }else{
-
+      
       if($this->type == "quote"){
         $formRepository = app("Modules\Iforms\Repositories\FormRepository");
-
+        
         $params = [
           "filter" => [
             "field" => "system_name",
@@ -253,10 +261,10 @@ class OrderTransformer extends JsonResource
         $formQuote = $formRepository->getItem("icommerce_cart_quote_form", json_decode(json_encode($params)));
         if(isset($this->options->quoteForm) && !empty($this->options->quoteForm) && isset($formQuote->id)) {
           $formFields = $formQuote->fields;
-
+          
           !is_array($this->options->quoteForm) ? $this->options->quoteForm = [$this->options->quoteForm] : false;
           foreach ($this->options->quoteForm as $key => $quoteField){
-
+            
             $field = $formFields->where("name",$key)->first();
             array_push($customerBlockInfo["values"], [
               "label" => $field->label,
@@ -265,12 +273,12 @@ class OrderTransformer extends JsonResource
           }
         }
       }
-
+      
       array_push($item['informationBlocks'], $customerBlockInfo);
     }
-
+    
     if(isset($this->payment_code) && !empty($this->payment_code)) {
-
+      
       $paymentInfo = [
         'title' => 'Pago y método de envío',
         'values' => [
@@ -279,22 +287,22 @@ class OrderTransformer extends JsonResource
             'label' => 'Método de envío', 'value' => !$this->require_shipping ? trans('icommerce::orders.messages.orderNotRequireShipping')
             : (!empty($item['shippingMethod']) ? $item['shippingMethod'] : '-')
           ]
-
+        
         ]
       ];
-
+      
       $paymentMethod = PaymentMethod::find($item['paymentCode']);
-
+      
       if (isset($paymentMethod->description) && !empty($paymentMethod->description)) {
         array_push($paymentInfo["values"],
           ['label' => 'Descripción del método', 'value' => $paymentMethod->description]);
       }
-
+      
       array_push($item['informationBlocks'],
         $paymentInfo
       );
     }
-
+    
     return $item;
   }
 }

@@ -132,6 +132,7 @@ class OrderService
         $orderData["shipping_zip_code"] = $shippingAddress->zip_code ?? "";
         $orderData["shipping_country_code"] = $shippingAddress->country;
         $orderData["shipping_zone"] = $shippingAddress->state;
+        $orderData["shipping_telephone"] = $shippingAddress->telephone ?? "";
         $orderData["options"]["shippingAddress"] = $shippingAddress->options;
       }
     }
@@ -155,6 +156,7 @@ class OrderService
         $orderData["payment_zip_code"] = $billingAddress->zip_code ?? "";
         $orderData["payment_country"] = $billingAddress->country;
         $orderData["payment_zone"] = $billingAddress->state;
+        $orderData["payment_telephone"] = $billingAddress->telephone ?? "";
         $orderData["options"]["billingAddress"] = $billingAddress->options;
       }
     }
