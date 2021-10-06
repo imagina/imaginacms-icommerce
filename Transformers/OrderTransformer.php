@@ -159,7 +159,7 @@ class OrderTransformer extends JsonResource
             ],
             [
               'label' => trans("iprofile::frontend.form.cellularPhone"),
-              'value' => "{$item['shippingTelephone']}"
+              'value' => $item['shippingTelephone'] ?? ''
             ]
           
           ]
@@ -218,7 +218,7 @@ class OrderTransformer extends JsonResource
           ],
           [
             'label' => trans("iprofile::frontend.form.cellularPhone"),
-            'value' => "{$item['paymentTelephone']}"
+            'value' => $item['paymentTelephone'] ?? ''
           ]
         ]
       ];
