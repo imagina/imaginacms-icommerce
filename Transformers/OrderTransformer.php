@@ -154,7 +154,7 @@ class OrderTransformer extends JsonResource
             ],
             [
               'label' => trans("iprofile::frontend.form.shipping_address"),
-              'value' => "{$item['shippingFirstName']}, {$item['shippingLastName']}, {$item['shippingAddress1']}, {$item['shippingCity']}, " .
+              'value' => ($item['shippingFirstName'] ?? '').", ".($item['shippingLastName'] ?? '').", ".($item['shippingAddress1'] ?? '').", ".($item['shippingCity'] ?? '').", " .
                 ($item['shippingDepartment']->name ?? '') . ", " . ($item['shippingCountry']->name ?? '')
             ],
             [
