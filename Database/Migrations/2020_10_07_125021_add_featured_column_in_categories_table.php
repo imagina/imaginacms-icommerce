@@ -26,7 +26,9 @@ class AddFeaturedColumnInCategoriesTable extends Migration
     public function down()
     {
         Schema::table('icommerce__categories', function (Blueprint $table) {
-          $table->dropColumn('featured');
+          if(Schema::hasColumn('icommerce__categories','featured')) {
+            $table->dropColumn('featured');
+          }
         });
     }
 }

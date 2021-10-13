@@ -70,7 +70,9 @@ class UpdateOrderColumnsTable extends Migration
     public function down()
     {
         Schema::table('icommerce__orders', function (Blueprint $table) {
+          if(Schema::hasColumn('icommerce__orders','require_shipping')) {
             $table->dropColumn('require_shipping');
+          }
         });
     }
 }

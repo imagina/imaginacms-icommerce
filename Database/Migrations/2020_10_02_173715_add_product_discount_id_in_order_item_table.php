@@ -14,14 +14,14 @@ class AddProductDiscountIdInOrderItemTable extends Migration
   public function up()
   {
     Schema::table('icommerce__order_item', function (Blueprint $table) {
-      
+
       $table->integer('product_discount_id')->unsigned()->nullable();
       $table->foreign('product_discount_id')->references('id')->on('icommerce__product_discounts')->onDelete('cascade');
-      
+
       $table->text('discount')->nullable();
     });
   }
-  
+
   /**
    * Reverse the migrations.
    *
@@ -30,9 +30,13 @@ class AddProductDiscountIdInOrderItemTable extends Migration
   public function down()
   {
     Schema::table('icommerce__order_item', function (Blueprint $table) {
-      $table->dropColumn('product_discount_id');
-      $table->dropColumn('discount');
-      $table->dropForeign('icommerce__order_item_product_discount_id_foreign');
+      if(Schema::hasColumn('icommerce__order_item','product_discount_id')) {
+        //$table->dropForeign(['product_discount_id']);
+        $table->dropColumn('product_discount_id');
+      }
+      if(Schema::hasColumn('icommerce__order_item','discount')) {
+        $table->dropColumn('discount');
+      }
     });
   }
 }

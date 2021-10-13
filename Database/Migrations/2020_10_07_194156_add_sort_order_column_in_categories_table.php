@@ -17,7 +17,7 @@ class AddSortOrderColumnInCategoriesTable extends Migration
       $table->integer('sort_order')->default(0);
     });
   }
-  
+
   /**
    * Reverse the migrations.
    *
@@ -26,7 +26,9 @@ class AddSortOrderColumnInCategoriesTable extends Migration
   public function down()
   {
     Schema::table('icommerce__categories', function (Blueprint $table) {
-      $table->dropColumn('sort_order');
+      if(Schema::hasColumn('icommerce__categories','sort_order')) {
+        $table->dropColumn('sort_order');
+      }
     });
   }
 }

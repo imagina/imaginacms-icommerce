@@ -27,8 +27,10 @@ class AddDepartmentFieldInDiscountTable extends Migration
     public function down()
     {
         Schema::table('icommerce__product_discounts', function (Blueprint $table) {
-          $table->dropForeign('icommerce__product_discounts_department_id_foreign');
-          $table->dropColumn('department_id');
+          if(Schema::hasColumn('icommerce__product_discounts','department_id')) {
+            $table->dropForeign('icommerce__product_discounts_department_id_foreign');
+            $table->dropColumn('department_id');
+          }
         });
     }
 }

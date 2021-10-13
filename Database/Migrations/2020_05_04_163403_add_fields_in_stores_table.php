@@ -39,14 +39,24 @@ class AddFieldsInStoresTable extends Migration
     public function down()
     {
         Schema::table('icommerce__stores', function (Blueprint $table) {
-          $table->dropColumn('country_id');
-          $table->dropColumn('province_id');
-          $table->dropColumn('city_id');
-          $table->dropColumn('options');
-          $table->dropColumn('polygon');
-          $table->dropForeign('icommerce__stores_country_id_foreign');
-          $table->dropForeign('icommerce__stores_province_id_foreign');
-          $table->dropForeign('icommerce__stores_city_id_foreign');
+          if(Schema::hasColumn('icommerce__stores','country_id')) {
+            $table->dropForeign(['country_id']);
+            $table->dropColumn('country_id');
+          }
+          if(Schema::hasColumn('icommerce__stores','province_id')) {
+            $table->dropForeign(['province_id']);
+            $table->dropColumn('province_id');
+          }
+          if(Schema::hasColumn('icommerce__stores','city_id')) {
+            $table->dropForeign(['city_id']);
+            $table->dropColumn('city_id');
+          }
+          if(Schema::hasColumn('icommerce__stores','options')) {
+            $table->dropColumn('options');
+          }
+          if(Schema::hasColumn('icommerce__stores','polygon')) {
+            $table->dropColumn('polygon');
+          }
         });
     }
 }

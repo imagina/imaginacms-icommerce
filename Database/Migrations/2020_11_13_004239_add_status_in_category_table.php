@@ -26,7 +26,9 @@ class AddStatusInCategoryTable extends Migration
     public function down()
     {
         Schema::table('icommerce__categories', function (Blueprint $table) {
-					$table->dropColumn('status');
+          if(Schema::hasColumn('icommerce__categories','status')) {
+            $table->dropColumn('status');
+          }
         });
     }
 }

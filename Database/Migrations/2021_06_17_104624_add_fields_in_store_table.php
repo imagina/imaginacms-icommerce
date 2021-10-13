@@ -14,10 +14,10 @@ class AddFieldsInStoreTable extends Migration
     public function up()
     {
         Schema::table('icommerce__stores', function (Blueprint $table) {
-          
+
           $table->integer('user_id')->unsigned()->nullable();
           $table->foreign('user_id')->references('id')->on(config('auth.table', 'users'))->onDelete('restrict');
-          
+
         });
     }
 
@@ -29,8 +29,10 @@ class AddFieldsInStoreTable extends Migration
     public function down()
     {
         Schema::table('icommerce__stores', function (Blueprint $table) {
-          $table->dropColumn('user_id');
-          $table->dropForeign('user_id');
+          if(Schema::hasColumn('icommerce__stores','user_id')) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+          }
         });
     }
 }

@@ -26,7 +26,9 @@ class AddSortOrderInProductTable extends Migration
     public function down()
     {
       Schema::table('icommerce__products', function (Blueprint $table) {
-        $table->dropColumn('sort_order');
+        if(Schema::hasColumn('icommerce__products','sort_order')) {
+          $table->dropColumn('sort_order');
+        }
       });
     }
 }
