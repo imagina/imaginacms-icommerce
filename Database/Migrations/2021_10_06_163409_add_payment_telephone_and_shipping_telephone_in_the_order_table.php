@@ -27,8 +27,8 @@ class AddPaymentTelephoneAndShippingTelephoneInTheOrderTable extends Migration
     public function down()
     {
         Schema::table('icommerce__orders', function (Blueprint $table) {
-          $table->dropColumn('external_id');
-          $table->dropColumn('external_id');
+          $table->dropColumn('payment_telephone');
+          $table->dropColumn('shipping_telephone');
         });
     }
 }
