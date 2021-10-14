@@ -22,32 +22,45 @@ trait Productable
     {
         //Listen event after create model
         static::createdWithBindings(function ($model) {
-          $model->createProduct();
+          $model->syncProduct();
+        });
+
+        static::updatedWithBindings(function ($model) {
+          $model->syncProduct();
         });
 
     }
 
+    
     /**
-    * Create a Product
+    * Sync Product
     */
-    public function createProduct(){
+    public function syncProduct(){
 
-        // Data to Create
-        $dataToCreate = [
+        \Log::info('Icommerce: Trait Productable - Entity ID:'.$this->id);
+
+        $data = [
             'name' => $this->title,
             'slug' => $this->slug,
             'description' => $this->description,
             'summary' => $this->summary ?? substr($this->description, 0, 150),
             'price' => $this->price,
-            'status' => 1,
-            'stock_status' => 1,
-            'quantity' => 999999,
+            'status' => $this->status ?? 1,
+            'stock_status' => $this->stock_status ?? 1,
+            'quantity' => $this->quantity ?? 999999,
             'entity_id' => $this->id,
-            'entity_type' => get_class($this) 
+            'entity_type' => get_class($this)
         ];
 
-        // Create Product
-        $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->create($dataToCreate);
+        \Log::info('Icommerce: Trait Productable - Data:'.json_encode($data));
+
+        $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->where('entity_id',$this->id)->first();
+
+        if($product)
+            $product->update($data);
+        else
+            $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->create($data);
+        
     }
 
 
