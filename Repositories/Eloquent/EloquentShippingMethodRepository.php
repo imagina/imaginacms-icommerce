@@ -59,7 +59,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         }
     }
 
-    public function getItem($criteria, $params)
+    public function getItem($criteria, $params = null)
     {
         // INITIALIZE QUERY
         $query = $this->model->query();
@@ -68,10 +68,10 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
         // RELATIONSHIPS
         $includeDefault = [];
-        $query->with(array_merge($includeDefault, $params->include));
+        $query->with(array_merge($includeDefault, $params->include ?? []));
 
         // FIELDS
-        if ($params->fields) {
+        if (isset($params->fields)) {
             $query->select($params->fields);
         }
         return $query->first();
@@ -140,6 +140,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         }
         foreach ($methods as $key => $method) {
           try {
+            $data["methodId"] = $method->id;
             $results = app($method->options->init)->init(new Request ($data));
             $resultData = $results->getData();
             $method->calculations = $resultData;
