@@ -1,14 +1,14 @@
 <div id="checkout" class="page checkout checkout-tabs">
 
   <x-isite::breadcrumb>
-    <li class="breadcrumb-item active" aria-current="page">{{$title }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{$title}}</li>
   </x-isite::breadcrumb>
 
   <div class="container">
     <div class="row">
       <div class="col">
         <div class="text-title text-center mb-5">
-          <h1 class="title">{{$title }}</h1>
+          <h1 class="title">{{$title}}</h1>
         </div>
       </div>
     </div>

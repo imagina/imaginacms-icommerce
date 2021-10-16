@@ -2,7 +2,7 @@
 
     @php
       $disableMethod=false;
-      if($shippingMethod->calculations->status=="error")
+      if(isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status=="error")
         $disableMethod = true;
       
     @endphp
