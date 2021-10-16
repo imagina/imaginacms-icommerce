@@ -59,24 +59,37 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         }
     }
 
-    public function getItem($criteria, $params = null)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
-
-        $query->where('id', $criteria);
-
-        // RELATIONSHIPS
-        $includeDefault = [];
-        $query->with(array_merge($includeDefault, $params->include ?? []));
-
-        // FIELDS
-        if (isset($params->fields)) {
-            $query->select($params->fields);
+    public function getItem($criteria, $params = false)
+        {
+          //Initialize query
+          $query = $this->model->query();
+    
+        /*== RELATIONSHIPS ==*/
+        if(in_array('*',$params->include)){//If Request all relationships
+          $query->with([]);
+        }else{//Especific relationships
+          $includeDefault = [];//Default relationships
+          if (isset($params->include))//merge relations with default relationships
+            $includeDefault = array_merge($includeDefault, $params->include);
+          $query->with($includeDefault);//Add Relationships to query
         }
-        return $query->first();
-
-    }
+    
+          /*== FILTER ==*/
+          if (isset($params->filter)) {
+            $filter = $params->filter;
+    
+            if (isset($filter->field))//Filter by specific field
+              $field = $filter->field;
+          }
+    
+          /*== FIELDS ==*/
+          if (isset($params->fields) && count($params->fields))
+            $query->select($params->fields);
+    
+          /*== REQUEST ==*/
+          return $query->where($field ?? 'id', $criteria)->first();
+        }
+        
 
     public function create($data)
     {
