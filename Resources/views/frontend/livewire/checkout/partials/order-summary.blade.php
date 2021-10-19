@@ -46,6 +46,7 @@
                                                         :title="$cartProduct->product->name"
                                                         :url="$cartProduct->product->url"
                                                         :isMedia="true"
+                                                        imgClasses="img-fluid"
                                                         :mediaFiles="$cartProduct->product->mediaFiles()"/>
                                             </div>
                                         </div>
