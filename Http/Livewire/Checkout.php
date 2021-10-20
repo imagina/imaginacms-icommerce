@@ -189,7 +189,7 @@ class Checkout extends Component
     // Validate if the Shipping Method selected has an status error to deactivated
     $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
     
-    if(isset($shippingMethod->id) && $shippingMethod->calculations->status=="error")
+    if(isset($shippingMethod->id) && isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status=="error")
       $this->shippingMethodSelected = null;
           
     
