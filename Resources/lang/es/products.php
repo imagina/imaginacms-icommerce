@@ -17,6 +17,7 @@ return [
         'productDetails' => 'Detalles del Producto',
         'comments' => 'Comentarios',
         'related' => 'Relacionados',
+        'reviews' => 'Revisiones',
     ],
     'button'            => [
         'create product'    => 'Crear un producto',

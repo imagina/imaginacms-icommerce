@@ -373,6 +373,18 @@ return [
       'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
     ]
   ],
+
+  'showReviewsProduct' => [
+    "onlySuperAdmin" => true,
+    'value' => false,
+    'name' => 'icommerce::showReviewsProduct',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'label' => 'icommerce::common.settings.product.showReviewsProduct'
+    ]
+  ],
   
   'icommerceCartQuoteForm' => [
     "onlySuperAdmin" => true,

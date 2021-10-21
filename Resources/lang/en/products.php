@@ -16,6 +16,7 @@ return [
     'productDetails' => 'Product Details',
     'comments' => 'Comments',
     'related' => 'Related',
+    'reviews' => 'Reviews',
   ],
   'button' => [
     'create product' => 'Create a product',
