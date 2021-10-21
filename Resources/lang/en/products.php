@@ -64,6 +64,7 @@ return [
     'manufacturer'              => 'Manufacturer',
     'certificate'               => 'Certificate',
     'data_sheet'                => 'Data sheet',
+    'points'                    => 'Points',
   ],
   'categories'        => [
     'free_shipping'             => 'Products with free shipping',

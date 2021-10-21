@@ -65,6 +65,7 @@ return [
         'manufacturer'              => 'Fabricante',
         'certificate'               => 'Certificado',
         'data_sheet'                => 'Ficha técnica',
+        'points'                    => 'Puntos',
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',
