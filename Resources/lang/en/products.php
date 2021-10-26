@@ -16,6 +16,7 @@ return [
     'productDetails' => 'Product Details',
     'comments' => 'Comments',
     'related' => 'Related',
+    'reviews' => 'Reviews',
   ],
   'button' => [
     'create product' => 'Create a product',
@@ -64,6 +65,7 @@ return [
     'manufacturer'              => 'Manufacturer',
     'certificate'               => 'Certificate',
     'data_sheet'                => 'Data sheet',
+    'points'                    => 'Points',
   ],
   'categories'        => [
     'free_shipping'             => 'Products with free shipping',

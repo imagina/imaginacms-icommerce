@@ -17,6 +17,7 @@ return [
         'productDetails' => 'Detalles del Producto',
         'comments' => 'Comentarios',
         'related' => 'Relacionados',
+        'reviews' => 'Revisiones',
     ],
     'button'            => [
         'create product'    => 'Crear un producto',
@@ -65,6 +66,7 @@ return [
         'manufacturer'              => 'Fabricante',
         'certificate'               => 'Certificado',
         'data_sheet'                => 'Ficha técnica',
+        'points'                    => 'Puntos',
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',

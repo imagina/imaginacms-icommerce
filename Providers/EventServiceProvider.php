@@ -11,9 +11,11 @@ use Modules\Icommerce\Events\Handlers\SendOrder;
 use Modules\Icommerce\Events\Handlers\SaveOrderItems;
 use Modules\Icommerce\Events\Handlers\DiscountStockProducts;
 use Modules\Icommerce\Events\Handlers\UpdateOrderStatus;
+use Modules\Icommerce\Events\Handlers\SavePoints;
 use Modules\Icommerce\Events\OrderWasCreated;
 use Modules\Icommerce\Events\OrderWasUpdated;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
+use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Events\ProductWasUpdated;
 use Modules\Icommerce\Events\UpdateProductable;
@@ -35,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderStatusHistoryWasCreated::class => [
             UpdateOrderStatus::class,
+        ],
+        OrderWasProcessed::class => [
+            SavePoints::class,
         ],
         ProductWasCreated::class => [
         ],

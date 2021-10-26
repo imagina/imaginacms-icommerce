@@ -114,7 +114,8 @@ return [
       'showButtonToQuoteInStore' => 'Show button to quote in store',
       'addToCartQuoteButtonAction' => 'Add to quote button action',
       'addToCartButtonAction' => 'Add to cart button action',
-      'showButtonThatGeneratesPdfOfTheCart' => 'Show button that generates a PDF of the cart'
+      'showButtonThatGeneratesPdfOfTheCart' => 'Show button that generates a PDF of the cart',
+      'showReviewsProduct' => 'Mostrar revisiones del producto',
     ],
     'product-price-list-enable' => 'Enable',
     'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',

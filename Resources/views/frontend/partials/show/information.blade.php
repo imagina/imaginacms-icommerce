@@ -152,5 +152,12 @@
     
     <hr>
   </div>
+  
+  @if(is_module_enabled('Ipoint') && $product->points>0)
+    <div class="points py-1 d-flex">
+      <label>{{trans("icommerce::products.table.points")}}:</label>
+      <div class="num-points mx-1">{{$product->points}}</div>
+    </div>
+  @endif
 
 </div>
