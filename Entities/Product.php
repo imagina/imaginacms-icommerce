@@ -15,10 +15,11 @@ use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
 use willvincent\Rateable\Rateable;
 use Illuminate\Support\Facades\Auth;
+use Modules\Icommerce\Support\Traits\WithComments;
 
 class Product extends Model implements TaggableInterface
 {
-	use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable;
+	use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable, WithComments;
 
 	protected $table = 'icommerce__products';
 	protected static $entityNamespace = 'asgardcms/product';
