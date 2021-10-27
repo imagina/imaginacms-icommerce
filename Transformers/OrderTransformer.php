@@ -120,11 +120,21 @@ class OrderTransformer extends JsonResource
       if (!empty($customerFields)) {
         foreach ($customerRegisterExtraFields as $extraField) {
           if ($extraField->active) {
-            $customerField = $customerFields->where("name", $extraField->field)->first();
+            if ($extraField->type == "documentType"){
+              $customerField = $customerFields->filter(function($field) use ($extraField){
+                return strstr($field->name, $extraField->field) ||
+                  strstr($field->name, "user_type_id");
+              })->first();
+            }
+            else $customerField = $customerFields->where("name", $extraField->field)->first();
             
             if (!empty($customerField)) {
               if ($extraField->type == "documentType") {
-                $documentNumber = $customerFields->where("name", "documentNumber")->first();
+                $documentNumber = $customerFields->filter(function($field){
+                  return strstr($field->name, "documentNumber") ||
+                    strstr($field->name, "identification");
+                })->first();
+          
                 array_push($customerBlockInfo["values"], [
                   "label" => trans("iprofile::addresses.form.identification"),
                   "value" => $customerField->value . " " . $documentNumber->value
