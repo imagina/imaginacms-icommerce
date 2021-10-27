@@ -283,6 +283,11 @@ class OrderService
       $orderData["currency_code"] = $currency->code;
       $orderData["currency_value"] = $currency->value;
     }
+  
+  //validate options
+       if(isset($data["options"])){
+         $orderData["options"] = array_merge($orderData["options"],$data["options"]);
+       }
     
     /*
     |--------------------------------------------------------------------------
@@ -292,7 +297,6 @@ class OrderService
     $orderData["require_shipping"] = $cart->require_shipping;
     $orderData["status_id"] = 1;
     $orderData["total"] = $total;
-    $orderData["options"] = $data["options"] ?? "";
    $orderData["type"] = $data["type"] ?? null;
     $orderData["user_agent"] = request()->header('User-Agent');
     $orderData["ip"] = request()->ip();//Set Ip from request
@@ -308,7 +312,7 @@ class OrderService
     $supportOrderItem = new orderItemSupport();
     $dataOrderItem = $supportOrderItem->fixData($cart->products);
     $orderData["orderItems"] = $dataOrderItem;
-    
+
     //Create order
     $order = $this->order->create($orderData);
     $dataResponse = [
