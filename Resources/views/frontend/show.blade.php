@@ -78,11 +78,7 @@
                       <div class="tab-pane" id="reviews" role="tabpanel">
                         <div class="p-3 p-md-5">
 
-                          @include('icommerce::frontend.partials.show.reviews',['entity' => $product])
-
-                          {{--
-                          <x-icomments::comments :model="$product" :approved="true" />
-                          --}}
+                          @include('icommerce::frontend.partials.show.reviews',['product' => $product])
 
                         </div>
                       </div>
