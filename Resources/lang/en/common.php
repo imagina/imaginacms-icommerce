@@ -107,6 +107,7 @@ return [
     'customIndexContactLabel' => 'Title for Contact Button',
     'customCheckoutTitle' => 'Title for Checkout',
     'icommerceCartQuoteForm' => 'Quote Form',
+    'chatByOrderEnable' => 'Enable chat by order',
     'product' => [
       'group' => 'Product',
       'layout' => 'Product Layout',

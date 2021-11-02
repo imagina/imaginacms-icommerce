@@ -109,6 +109,7 @@ return [
     'customIndexContactLabel' => 'Título para el Botón de Contacto',
     'customCheckoutTitle' => 'Título para el Checkout',
     'icommerceCartQuoteForm' => 'Formulario para Registro de Cotización',
+    'chatByOrderEnable' => 'Habilitar chat por orden de compra',
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
