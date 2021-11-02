@@ -184,8 +184,7 @@ class Checkout extends Component
     $data['shippingAddressId'] = $this->shippingAddressSelected;
 
     $this->shippingMethods = $this->shippingMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
-
-
+    
     // Validate if the Shipping Method selected has an status error to deactivated
     $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
     
@@ -511,9 +510,11 @@ class Checkout extends Component
       
       $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
     }else{
-      if ($this->shippingMethods->count()) {
+     
+      if ($this->shippingMethods->count() && $this->shippingMethods->count() == 1) {
         $shippingMethod = $this->shippingMethods->first();
       }
+      
     }
     if (isset($shippingMethod->id)) $this->shippingMethodSelected = $shippingMethod->id;
     
@@ -586,7 +587,7 @@ class Checkout extends Component
     if (!empty($this->paymentMethodSelected)) {
         $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
     }else{
-      if ($this->paymentMethods->count()) {
+      if ($this->paymentMethods->count() && $this->paymentMethods->count() == 1) {
         $paymentMethod = $this->paymentMethods->first();
       }
     }
