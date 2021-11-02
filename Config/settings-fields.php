@@ -353,35 +353,41 @@ return [
   ],
   'showButtonToQuoteInStore' => [
     "onlySuperAdmin" => true,
-    'value' => false,
+    'value' => "0",
     'name' => 'icommerce::showButtonToQuoteInStore',
     'type' => 'checkbox',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
       'label' => 'icommerce::common.settings.product.showButtonToQuoteInStore'
     ]
   ],
   'showButtonThatGeneratesPdfOfTheCart' => [
     "onlySuperAdmin" => true,
-    'value' => false,
+    'value' => "0",
     'name' => 'icommerce::showButtonThatGeneratesPdfOfTheCart',
     'type' => 'checkbox',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
       'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
     ]
   ],
   
   'showReviewsProduct' => [
     "onlySuperAdmin" => true,
-    'value' => false,
+    'value' => "0",
     'name' => 'icommerce::showReviewsProduct',
     'type' => 'checkbox',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
       'label' => 'icommerce::common.settings.product.showReviewsProduct'
     ]
   ],
