@@ -77,7 +77,9 @@
                     @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Icomments'))
                       <div class="tab-pane" id="reviews" role="tabpanel">
                         <div class="p-3 p-md-5">
-                          @include('icommerce::frontend.partials.show.reviews',['entity' => $product])
+
+                          @include('icommerce::frontend.partials.show.reviews',['product' => $product])
+
                         </div>
                       </div>
                     @endif
