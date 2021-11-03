@@ -18,6 +18,11 @@
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
   
+  <!-- RATING -->
+  @if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
+    <x-rateable::rating :model="$product"/>
+  @endif
+
   <!-- PRICE -->
   @if(!$product->is_call)
     <div class="price " v-if="products_children === false && product.price >0.00">
@@ -154,16 +159,11 @@
     
     <hr>
   </div>
-
-  <!-- RATING -->
-  @if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
-    <x-rateable::rating :model="$product"/>
-  @endif
   
+  <!-- Points Product -->
   @if(is_module_enabled('Ipoint') && $product->points>0)
     <div class="points py-1 d-flex">
-      <label>{{trans("icommerce::products.table.points")}}:</label>
-      <div class="num-points mx-1">{{$product->points}}</div>
+      <label class="font-weight-bold">{{trans("icommerce::products.table.points win",['points' => $product->points])}}</label>
     </div>
   @endif
 
