@@ -13,7 +13,7 @@ use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
-use willvincent\Rateable\Rateable;
+use Modules\Rateable\Traits\Rateable;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Traits\WithComments;
 

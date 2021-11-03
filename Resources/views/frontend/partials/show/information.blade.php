@@ -51,6 +51,7 @@
       <div class="col-12">
         {{$product->quantity}} {{trans("icommerce::products.form.available")}}
       </div>
+
       <!-- BUTTON QUANTITY -->
       <div class="d-inline-flex align-items-center p-1">
         <div class="input-group ">
@@ -70,6 +71,7 @@
           </div>
         </div>
       </div>
+
       <div class="d-inline-flex align-items-center p-1">
         <!-- BUTTON ADD -->
         <div>
@@ -152,6 +154,11 @@
     
     <hr>
   </div>
+
+  <!-- RATING -->
+  @if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
+    <x-rateable::rating :model="$product"/>
+  @endif
   
   @if(is_module_enabled('Ipoint') && $product->points>0)
     <div class="points py-1 d-flex">
