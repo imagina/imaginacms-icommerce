@@ -19,9 +19,7 @@
   <div class="options">@{{product.summary}}</div>
   
   <!-- RATING -->
-  @if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
-    <x-rateable::rating :model="$product"/>
-  @endif
+  @include('icommerce::frontend.partials.show.rating')
 
   <!-- PRICE -->
   @if(!$product->is_call)
@@ -161,10 +159,6 @@
   </div>
   
   <!-- Points Product -->
-  @if(is_module_enabled('Ipoint') && $product->points>0)
-    <div class="points py-1 d-flex">
-      <label class="font-weight-bold">{{trans("icommerce::products.table.points win",['points' => $product->points])}}</label>
-    </div>
-  @endif
+  @include('icommerce::frontend.partials.show.points')
 
 </div>
