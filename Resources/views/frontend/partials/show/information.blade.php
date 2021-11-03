@@ -18,6 +18,9 @@
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
   
+  <!-- RATING -->
+  @include('icommerce::frontend.partials.show.rating')
+
   <!-- PRICE -->
   @if(!$product->is_call)
     <div class="price " v-if="products_children === false && product.price >0.00">
@@ -51,6 +54,7 @@
       <div class="col-12">
         {{$product->quantity}} {{trans("icommerce::products.form.available")}}
       </div>
+
       <!-- BUTTON QUANTITY -->
       <div class="d-inline-flex align-items-center p-1">
         <div class="input-group ">
@@ -70,6 +74,7 @@
           </div>
         </div>
       </div>
+
       <div class="d-inline-flex align-items-center p-1">
         <!-- BUTTON ADD -->
         <div>
@@ -153,11 +158,7 @@
     <hr>
   </div>
   
-  @if(is_module_enabled('Ipoint') && $product->points>0)
-    <div class="points py-1 d-flex">
-      <label>{{trans("icommerce::products.table.points")}}:</label>
-      <div class="num-points mx-1">{{$product->points}}</div>
-    </div>
-  @endif
+  <!-- Points Product -->
+  @include('icommerce::frontend.partials.show.points')
 
 </div>

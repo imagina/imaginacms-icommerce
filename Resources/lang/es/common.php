@@ -119,6 +119,7 @@ return [
       'addToCartButtonAction' => 'Acción del botón añadir al carrito',
       'showButtonThatGeneratesPdfOfTheCart' => 'Mostrar botón que genera un PDF del carrito',
       'showReviewsProduct' => 'Mostrar revisiones del producto',
+      'showRatingProduct' => 'Mostrar rating del producto',
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',

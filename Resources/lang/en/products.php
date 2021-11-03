@@ -66,6 +66,7 @@ return [
     'certificate'               => 'Certificate',
     'data_sheet'                => 'Data sheet',
     'points'                    => 'Points',
+    'points win'                => 'Earn :points Points for purchasing this product',
   ],
   'categories'        => [
     'free_shipping'             => 'Products with free shipping',

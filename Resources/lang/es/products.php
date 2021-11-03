@@ -67,6 +67,7 @@ return [
         'certificate'               => 'Certificado',
         'data_sheet'                => 'Ficha técnica',
         'points'                    => 'Puntos',
+        'points win'                => 'Gana :points Puntos por comprar este producto',
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',
