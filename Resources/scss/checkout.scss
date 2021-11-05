@@ -22,12 +22,6 @@
     height: auto !important;
   }
   
-  .item_carting {
-    img {
-      font-size: 1px;
-    }
-  }
-  
   .ckeckout-subtitle {
     @include font-size(18px);
     color: $primary;
