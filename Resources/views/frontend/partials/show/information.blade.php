@@ -19,7 +19,9 @@
   <div class="options">@{{product.summary}}</div>
   
   <!-- RATING -->
-  @include('icommerce::frontend.partials.show.rating')
+  @if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
+    @include('icommerce::frontend.partials.show.rating')
+  @endif
 
   <!-- PRICE -->
   @if(!$product->is_call)

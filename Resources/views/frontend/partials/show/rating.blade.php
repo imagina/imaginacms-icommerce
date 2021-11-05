@@ -1,3 +1,3 @@
-@if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
+<div class="product-rating">
     <x-rateable::rating :model="$product"/>
-@endif
+</div>

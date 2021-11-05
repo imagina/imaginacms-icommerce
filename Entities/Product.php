@@ -13,7 +13,7 @@ use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
-use Modules\Rateable\Traits\Rateable;
+use Modules\Isite\Traits\Rateable;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Traits\WithComments;
 
@@ -54,7 +54,7 @@ class Product extends Model implements TaggableInterface
 		'subtract',
 		'minimum',
 		'reference',
-		'rating',
+		//'rating',
 		'freeshipping',
 		'order_weight',
 		'store_id',
@@ -266,7 +266,7 @@ class Product extends Model implements TaggableInterface
 		return json_decode($value);
 	}
 
-
+	/*
 	protected function setRatingAttribute($value)
 	{
 		$defaultRating = config("asgard.icommerce.config.defaultProductRating");
@@ -277,6 +277,7 @@ class Product extends Model implements TaggableInterface
 		}
 
 	}
+	*/
 
 
 	public function discount()
