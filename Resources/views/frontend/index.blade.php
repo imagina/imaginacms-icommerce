@@ -109,6 +109,7 @@
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
             'take' => setting('icommerce::product-per-page',null,12)]"
             :configOrderBy="config('asgard.icommerce.config.orderBy')"
+            :pagination="config('asgard.icommerce.config.pagination')"
             :configLayoutIndex="config('asgard.icommerce.config.layoutIndex')"/>
           
           <hr>
