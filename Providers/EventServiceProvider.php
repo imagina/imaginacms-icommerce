@@ -6,6 +6,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 use Modules\Icommerce\Events\CreateProductable;
 use Modules\Icommerce\Events\DeleteProductable;
+use Modules\Icommerce\Events\Handlers\CreateChatByOrder;
+use Modules\Icommerce\Events\Handlers\CreateSubOrders;
 use Modules\Icommerce\Events\Handlers\HandleProductable;
 use Modules\Icommerce\Events\Handlers\SendOrder;
 use Modules\Icommerce\Events\Handlers\SaveOrderItems;
@@ -27,41 +29,44 @@ use Modules\Icommerce\Events\Handlers\HandleCouponable;
 
 class EventServiceProvider extends ServiceProvider
 {
-    protected $listen = [
-        OrderWasCreated::class => [
-            SaveOrderItems::class,
-            SendOrder::class
-        ],
-        OrderWasUpdated::class => [
-            SendOrder::class
-        ],
-        OrderStatusHistoryWasCreated::class => [
-            UpdateOrderStatus::class,
-        ],
-        OrderWasProcessed::class => [
-            SavePoints::class,
-        ],
-        ProductWasCreated::class => [
-        ],
-        ProductWasUpdated::class => [
-        ],
-        CreateProductable::class => [
-           HandleProductable::class
-        ],
-        UpdateProductable::class => [
-            HandleProductable::class
-        ],
-        DeleteProductable::class => [
-            HandleProductable::class
-        ],
-        CouponWasCreated::class => [
-            HandleCouponable::class
-        ],
-        CouponWasUpdated::class => [
-            HandleCouponable::class
-        ],
-        CouponIsDeleting::class => [
-            HandleCouponable::class
-        ],
-    ];
+  protected $listen = [
+    OrderWasCreated::class => [
+      SaveOrderItems::class,
+      SendOrder::class,
+      CreateChatByOrder::class,
+      CreateSubOrders::class
+    ],
+    OrderWasUpdated::class => [
+      SendOrder::class
+    ],
+    OrderStatusHistoryWasCreated::class => [
+      UpdateOrderStatus::class,
+    ],
+    OrderWasProcessed::class => [
+      SavePoints::class,
+     
+    ],
+    ProductWasCreated::class => [
+    ],
+    ProductWasUpdated::class => [
+    ],
+    CreateProductable::class => [
+      HandleProductable::class
+    ],
+    UpdateProductable::class => [
+      HandleProductable::class
+    ],
+    DeleteProductable::class => [
+      HandleProductable::class
+    ],
+    CouponWasCreated::class => [
+      HandleCouponable::class
+    ],
+    CouponWasUpdated::class => [
+      HandleCouponable::class
+    ],
+    CouponIsDeleting::class => [
+      HandleCouponable::class
+    ],
+  ];
 }

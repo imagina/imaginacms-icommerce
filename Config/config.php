@@ -354,7 +354,7 @@ return [
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
       'name' => 'manufacturers',
-      'status' => true,
+      'status' => false,
       'isExpanded' => false,
       'type' => 'checkbox',
       'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
@@ -369,7 +369,7 @@ return [
     'product-options' => [
       'title' => 'icommerce::productoptions.plural',
       'name' => 'product-options',
-      'status' => true,
+      'status' => false,
       'type' => 'checkbox',
       'repository' => 'Modules\Icommerce\Repositories\ProductRepository',
       'emitTo' => 'itemsListGetData',
@@ -383,7 +383,7 @@ return [
     'product-types' => [
       'title' => 'icommerce::common.product-type.title',
       'name' => 'product-types',
-      'status' => true,
+      'status' => false,
       'isExpanded' => false,
       'options' => [
         'affordable' => [
@@ -559,5 +559,18 @@ return [
       'fileName' => "Orders",
       'exportName' => "OrdersExport"
     ]
+  ],
+  
+  /*
+ |--------------------------------------------------------------------------
+ | Define config to the tenant with central data by model
+ |--------------------------------------------------------------------------
+ */
+  
+  'tenantWithCentralData' => [
+    'categories' => false,
+    'carts' => false,
+    'paymentMethods' => false,
+    'shippingMethods' => false,
   ]
 ];

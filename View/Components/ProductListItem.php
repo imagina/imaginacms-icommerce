@@ -25,6 +25,7 @@ class ProductListItem extends Component
                               $parentAttributes = null, $productAspect = null, $editLink , $tooltipEditLink)
   {
     $this->product = $item;
+  
     $this->itemListLayout = $itemListLayout;
     $this->addToCartWithQuantity = $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity',null,false);
     $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');

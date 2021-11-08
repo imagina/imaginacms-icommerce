@@ -10,10 +10,11 @@ use Modules\Media\Support\Traits\MediaRelation;
 use TypiCMS\NestableTrait;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Str;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Category extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, NodeTrait;
+  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant;
 
   protected $table = 'icommerce__categories';
   protected static $entityNamespace = 'asgardcms/icommerceCategory';
@@ -35,14 +36,22 @@ class Category extends Model
     'sort_order',
     'external_id',
   ];
-
-
+  
+  public $tenantWithCentralData = false;
   protected $width = ['files'];
 
   protected $casts = [
     'options' => 'array'
   ];
+  
+  public function __construct(array $attributes = [])
+  {
+    $this->tenantWithCentralData = config("asgard.icommerce.config.tenantWithCentralData.categories");
+    parent::__construct($attributes);
+    
+  }
 
+  
   public function parent()
   {
     return $this->belongsTo(Category::class, 'parent_id');
@@ -113,7 +122,8 @@ class Category extends Model
           break;
           
           default:
-            $url = \URL::route($currentLocale . '.icommerce.store.index.category', $this->slug);
+            
+            $url = tenant_route(request()->getHost(), $currentLocale . '.icommerce.store.index.category',[$this->slug]);
             break;
         }
       }

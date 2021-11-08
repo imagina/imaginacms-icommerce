@@ -143,6 +143,11 @@ class Order extends Model
     return $this->belongsTo(Currency::class);
   }
   
+  public function conversation()
+  {
+    return $this->hasOne("Modules\Ichat\Entities\Conversation","entity_id");
+  }
+  
   public function transactions()
   {
     return $this->hasMany(Transaction::class);

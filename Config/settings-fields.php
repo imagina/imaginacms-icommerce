@@ -434,4 +434,5 @@ return [
       'label' => 'icommerce::common.settings.chatByOrderEnable'
     ]
   ],
+  
 ];
