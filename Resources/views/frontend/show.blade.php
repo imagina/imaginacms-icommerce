@@ -44,7 +44,7 @@
                          role="tab">{{ trans('icommerce::products.title.comments') }}</a>
                     </li>
 
-                    @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Icomments'))
+                    @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Rateable') && is_module_enabled('Icomments'))
                       <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#reviews"
                            role="tab">{{ trans('icommerce::products.title.reviews') }}</a>
@@ -74,7 +74,7 @@
                       </div>
                     </div>
 
-                    @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Icomments'))
+                    @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Rateable') && is_module_enabled('Icomments'))
                       <div class="tab-pane" id="reviews" role="tabpanel">
                         <div class="p-3 p-md-5">
 
