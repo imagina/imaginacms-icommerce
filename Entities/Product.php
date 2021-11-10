@@ -15,14 +15,13 @@ use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Tag\Traits\TaggableTrait;
 use Modules\Isite\Traits\Rateable;
 use Illuminate\Support\Facades\Auth;
-use Modules\Isite\Traits\WithComments;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Isite\Entities\Organization;
 use Illuminate\Support\Str;
 
 class Product extends Model implements TaggableInterface
 {
-  use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable, BelongsToTenant, WithComments;
+  use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait, Rateable, Relationable, BelongsToTenant;
   
   protected $table = 'icommerce__products';
   protected static $entityNamespace = 'asgardcms/product';
