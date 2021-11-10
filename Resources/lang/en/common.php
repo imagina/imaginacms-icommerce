@@ -118,6 +118,7 @@ return [
       'showButtonThatGeneratesPdfOfTheCart' => 'Show button that generates a PDF of the cart',
       'showReviewsProduct' => 'Show product reviews',
       'showRatingProduct' => 'Show product rating',
+      'showRatingInReviewsProduct' => 'Show rating in product reviews',
     ],
     'product-price-list-enable' => 'Enable',
     'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',
