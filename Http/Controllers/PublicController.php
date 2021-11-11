@@ -27,6 +27,9 @@ use Modules\Isite\Entities\Organization;
 use Route;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
+//Services
+use Modules\Icommerce\Services\ProductService;
+
 class PublicController extends BaseApiController
 {
   protected $auth;
@@ -37,6 +40,7 @@ class PublicController extends BaseApiController
   private $currency;
   private $payments;
   private $shippings;
+  private $productService;
   
   public function __construct(
     ProductRepository $product,
@@ -45,7 +49,8 @@ class PublicController extends BaseApiController
     ManufacturerRepository $manufacturer,
     CurrencyRepository $currency,
     PaymentMethodRepository $payments,
-    ShippingMethodRepository $shippings
+    ShippingMethodRepository $shippings,
+    ProductService $productService
   )
   {
     parent::__construct();
@@ -56,6 +61,7 @@ class PublicController extends BaseApiController
     $this->currency = $currency;
     $this->payments = $payments;
     $this->shippings = $shippings;
+    $this->productService = $productService;
   }
   
   // view products by category
@@ -285,11 +291,14 @@ class PublicController extends BaseApiController
       config(["asgard.icommerce.config.filters" => $configFilters]);
     }
     
+    $currency = Currency::where("default_currency", 1)->first();
+    $schemaScript = $this->productService->createSchemaScript($product,$currency);
+
     if ($product) {
       $category = $product->category;
       $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
       
-      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization'));
+      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript'));
       
     } else {
       return response()->view('errors.404', [], 404);
