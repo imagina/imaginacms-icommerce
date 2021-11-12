@@ -38,7 +38,7 @@
 
 @section('scripts')
 @parent
-<script type="text/javascript">
+<script type="text/javascript" defer>
     document.addEventListener('DOMContentLoaded', function () {
 		window.livewire.emit('productListRendered',{!! json_encode($params) !!});
     });

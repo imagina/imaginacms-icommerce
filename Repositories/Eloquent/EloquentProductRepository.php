@@ -29,7 +29,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];
+        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount','organization'];
         if($priceListEnable)
             $includeDefault[] = 'priceLists';
         $query->with($includeDefault);
@@ -136,9 +136,9 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where('status', ($filter->status ? 1 : 0));
       }
 
-      if (isset($filter->ids) && !empty($filter->ids)) {
-        is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
-        $query->whereIn('icommerce__products.id', $filter->ids);
+      if (isset($filter->id) && !empty($filter->id)) {
+        is_array($filter->id) ? true : $filter->id = [$filter->id];
+        $query->whereIn('icommerce__products.id', $filter->id);
       }
 
       // add filter by Categories 1 or more than 1, in array/*
@@ -287,6 +287,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       //pre-filter quantity and subtract
       $query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
+      
+      //pre-filter if the organization is enabled (organization status = 1)
+      $query->where(function ($query) {
+        $query->whereNull("organization_id")
+          ->orWhere(function ($query) {
+            $query->whereHas("organization", function ($query){
+              $query->where("isite__organizations.status",1);
+            });
+          });
+      });
     }
 
 
@@ -340,7 +350,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-        $includeDefault = ['category','categories','manufacturer','translations','files','productOptions','discount'];
+        $includeDefault = ['category','categories','manufacturer','translations','files','productOptions','discount','organization'];
         if($priceListEnable)
             $includeDefault[] = 'priceLists';
         $query->with($includeDefault);
@@ -436,7 +446,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     if ($product) {
 
       // sync tables
-      $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
+      if (isset($data['categories']))
+        $product->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$product->category_id]));
 
       $priceListEnable = is_module_enabled('Icommercepricelist');
 

@@ -1,6 +1,6 @@
 @section('scripts-owl')
 
-  <script>
+  <script type="text/javascript" defer>
     jQuery(document).ready(function($) {
   
       window.addEventListener('productToQuoteModal', event => {

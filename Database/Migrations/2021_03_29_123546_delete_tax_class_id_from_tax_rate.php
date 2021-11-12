@@ -27,7 +27,9 @@ class DeleteTaxClassIdFromTaxRate extends Migration
     public function down()
     {
         Schema::table('icommerce__tax_rates', function (Blueprint $table) {
+          if(!Schema::hasColumn('icommerce__tax_rates','tax_class_id')) {
             $table->integer('tax_class_id')->unsigned();
+          }
         });
     }
 }

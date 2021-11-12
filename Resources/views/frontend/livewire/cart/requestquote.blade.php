@@ -21,7 +21,7 @@
 
 @section('scripts-owl')
   @parent
-  <script>
+  <script type="text/javascript" defer
     document.addEventListener("DOMContentLoaded", function () {
 
       window.addEventListener('QuoteModal', event => {

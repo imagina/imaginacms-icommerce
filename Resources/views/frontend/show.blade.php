@@ -43,6 +43,15 @@
                       <a class="nav-link" data-toggle="tab" href="#comentarios"
                          role="tab">{{ trans('icommerce::products.title.comments') }}</a>
                     </li>
+
+                    @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Rateable') && is_module_enabled('Icomments'))
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#reviews"
+                           role="tab">{{ trans('icommerce::products.title.reviews') }}</a>
+                      </li>
+                    @endif
+
+
                   </ul>
                 </div>
               </div>
@@ -50,12 +59,13 @@
               <div class="row">
                 <div class="col-12">
                   <div class="tab-content border">
+
                     <div class="tab-pane active " id="descripcion" role="tabpanel">
                       <div class="p-3 p-md-5">
                         @include('icommerce::frontend.partials.show.tabs')
                       </div>
-
                     </div>
+
                     <div class="tab-pane" id="comentarios" role="tabpanel">
                       <div class="p-3 p-md-5">
                         <div class="fb-comments w-100" v-bind:data-href="product.url" data-numposts="5"
@@ -63,6 +73,17 @@
                         <div id="fb-root"></div>
                       </div>
                     </div>
+
+                    @if(setting('icommerce::showReviewsProduct') && is_module_enabled('Rateable') && is_module_enabled('Icomments'))
+                      <div class="tab-pane" id="reviews" role="tabpanel">
+                        <div class="p-3 p-md-5">
+
+                          @include('icommerce::frontend.partials.show.reviews',['product' => $product])
+
+                        </div>
+                      </div>
+                    @endif
+
                   </div>
                 </div>
               </div>
@@ -90,7 +111,7 @@
 
 @section('scripts')
   @parent
-  <script>(function (d, s, id) {
+  <script type="text/javascript" defer>(function (d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s);

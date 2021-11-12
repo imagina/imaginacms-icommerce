@@ -51,6 +51,27 @@ if (!function_exists('icommerce_getTotalWeight')) {
 
 }
 
+if (!function_exists('icommerce_geCategories')) {
+  
+  function icommerce_geCategories($options = array())
+  {
+    
+    $default_options = array(
+      'take' => 12, //Numero de posts a obtener,
+      'order' => ['field'=>'created_at','way'=>'desc'],//orden de llamado
+      "filter" => ['status' => 1]
+    );
+    
+    $options = array_merge_recursive($default_options, $options);
+    
+    $categoryRepository=app('Modules\Icommerce\Repositories\CategoryRepository');
+    $params=json_decode(json_encode($options));
+    
+    return $categoryRepository->getItemsBy($params);
+    
+  }
+}
+
 /**
  * Get Total Dimensions from All Products in the cart
  *

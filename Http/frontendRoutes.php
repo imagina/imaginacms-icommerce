@@ -10,15 +10,7 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
   /** @var Router $router */
   Route::group(['prefix' => LaravelLocalization::setLocale(),
     'middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
-
-    $router->get("tienda/quoteLayout", [
-      'uses' => 'PublicController@quoteLayout',
-    ]);
-
-
-    $router->get("tienda/quoteEmail", [
-      'uses' => 'PublicController@quoteEmail',
-    ]);
+    
     $router->get(trans('icommerce::routes.store.index.index'), [
       'as' => $locale . '.icommerce.store.index',
       'uses' => 'PublicController@index',
@@ -53,13 +45,13 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
     $router->get(trans('icommerce::routes.store.show.product'), [
       'as' => $locale . '.icommerce.store.show',
       'uses' => 'PublicController@show',
-      'middleware' => 'doNotCacheResponse'
+      'middleware' => ['doNotCacheResponse']
     ]);
     
     $router->get(trans('icommerce::routes.store.checkout.create'), [
       'as' => $locale . '.icommerce.store.checkout',
       'uses' => 'PublicController@checkout',
-      'middleware' => 'doNotCacheResponse'
+      'middleware' => ['doNotCacheResponse']
     ]);
     
     $router->get(trans('icommerce::routes.store.checkout.update'), [

@@ -51,7 +51,7 @@
 
 @section('scripts-owl')
   @parent
-  <script>
+  <script type="text/javascript" defer>
 
     $(document).ready(function () {
 

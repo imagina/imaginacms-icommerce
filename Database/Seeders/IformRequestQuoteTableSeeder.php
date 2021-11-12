@@ -33,7 +33,7 @@ class IformRequestQuoteTableSeeder extends Seeder
     if(!isset($form->id)) {
 
       $form = $formRepository->create([
-        "title" => trans("icommerce::quote.productForm.form.title.complex"),
+        "title" => trans("icommerce::quote.form.form.title.complex"),
         "system_name" => "icommerce_cart_quote_form",
         "active" => true
       ]);
@@ -46,10 +46,10 @@ class IformRequestQuoteTableSeeder extends Seeder
         "form_id" => $form->id,
         "block_id" => $block->id,
         "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.firstName.label",[],"es"),
+          "label" => trans("icommerce::quote.form.fields.firstName.label",[],"es"),
         ],
         "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.firstName.label",[],"en"),
+          "label" => trans("icommerce::quote.form.fields.firstName.label",[],"en"),
         ],
         "type" => 1,
         "name" => "first_name",
@@ -61,10 +61,10 @@ class IformRequestQuoteTableSeeder extends Seeder
         "form_id" => $form->id,
         "block_id" => $block->id,
         "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.lastName.label",[],"es"),
+          "label" => trans("icommerce::quote.form.fields.lastName.label",[],"es"),
         ],
         "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.lastName.label",[],"en"),
+          "label" => trans("icommerce::quote.form.fields.lastName.label",[],"en"),
         ],
         "type" => 1,
         "name" => "last_name",
@@ -75,10 +75,10 @@ class IformRequestQuoteTableSeeder extends Seeder
         "form_id" => $form->id,
         "block_id" => $block->id,
         "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.email.label",[],"es"),
+          "label" => trans("icommerce::quote.form.fields.email.label",[],"es"),
         ],
         "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.email.label",[],"en"),
+          "label" => trans("icommerce::quote.form.fields.email.label",[],"en"),
         ],
         "type" => 4,
         "name" => "email",
@@ -89,10 +89,10 @@ class IformRequestQuoteTableSeeder extends Seeder
         "form_id" => $form->id,
         "block_id" => $block->id,
         "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.telephone.label",[],"es"),
+          "label" => trans("icommerce::quote.form.fields.telephone.label",[],"es"),
         ],
         "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.telephone.label",[],"en"),
+          "label" => trans("icommerce::quote.form.fields.telephone.label",[],"en"),
         ],
         "type" => 10,
         "name" => "telephone",
@@ -103,10 +103,10 @@ class IformRequestQuoteTableSeeder extends Seeder
         "form_id" => $form->id,
         "block_id" => $block->id,
         "es" => [
-          "label" => trans("icommerce::quote.productForm.fields.additionalInformation.label",[],"es"),
+          "label" => trans("icommerce::quote.form.fields.additionalInformation.label",[],"es"),
         ],
         "en" => [
-          "label" => trans("icommerce::quote.productForm.fields.additionalInformation.label",[],"en"),
+          "label" => trans("icommerce::quote.form.fields.additionalInformation.label",[],"en"),
         ],
         "type" => 2,
         "name" => "additional_information",

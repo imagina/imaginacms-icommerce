@@ -32,6 +32,10 @@ class CreateIcommerceTaxClassesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('icommerce__tax_classes');
+      Schema::table('icommerce__tax_rates', function (Blueprint $table) {
+          //$table->dropForeign(['tax_class_id']);
+      });
+
+      Schema::dropIfExists('icommerce__tax_classes');
     }
 }

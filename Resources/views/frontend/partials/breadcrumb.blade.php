@@ -1,11 +1,17 @@
 <x-isite::breadcrumb>
 	<li class="breadcrumb-item text-capitalize store-index" aria-current="page">
 		@if(isset($category->id) || isset($manufacturer->id))
-			<a href="{{\URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index')}}">
+			<a href="{{tenant_route(request()->getHost(), \LaravelLocalization::getCurrentLocale() . '.icommerce.store.index')}}">
 				{{ trans('icommerce::routes.store.index.index') }}
+				@isset($organization->id)
+					{{$organization->title}}
+					@endisset
 			</a>
 		@else
 			{{ trans('icommerce::routes.store.index.index') }}
+			@isset($organization->id)
+				{{$organization->title}}
+			@endisset
 		@endif
 	</li>
 	

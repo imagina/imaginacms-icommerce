@@ -39,8 +39,8 @@ class CartService
   {
   
     $needTobeCreated = true;
-    if (isset($data['cartId'])) {
-      $cart = $this->cart->find($data['cartId']);
+    if (isset($data['cartId']) || isset($data['cart_id'])) {
+      $cart = $this->cart->find($data['cartId'] ?? $data['cart_id']);
       $needTobeCreated = false;
     } elseif (isset($data['cart']->id)) {
       $cart = $data['cart'];

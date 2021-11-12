@@ -154,10 +154,20 @@ class Checkout extends Component
   public function initPaymentMethods()
   {
     
-    $params = ["filter" => ["status" => 1]];
+    $params = ["filter" => ["status" => 1,"withCalculations" => true, "cartId" => $this->cart->id ?? null]];
   
     $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
     
+    // Validate if the Shipping Method selected has an status error to deactivated
+    $paymentMethod = $this->paymentMethods->where("id",$this->paymentMethodSelected)->first();
+    
+    if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+      $this->paymentMethodSelected = null;
+    }
+    
+  
+  
+  
   }
   
   /**
@@ -174,11 +184,11 @@ class Checkout extends Component
     $data['shippingAddressId'] = $this->shippingAddressSelected;
 
     $this->shippingMethods = $this->shippingMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
-
-
+    
     // Validate if the Shipping Method selected has an status error to deactivated
     $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
-    if(isset($shippingMethod->id) && $shippingMethod->calculations->status=="error")
+    
+    if(isset($shippingMethod->id) && isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status=="error")
       $this->shippingMethodSelected = null;
           
     
@@ -292,6 +302,7 @@ class Checkout extends Component
 
     // Added Fix Bug 
     $this->initShippingMethods();
+    $this->initPaymentMethods();
     
   }
   
@@ -304,12 +315,21 @@ class Checkout extends Component
    */
   public function addressAdded($address)
   {
+
+   
+    //\Log::info('Module Icommerce: ADDRESS ADDED');
+    
     $this->initAddresses();
     switch ($address["type"]) {
       case 'billing':
         if (isset($address["id"])) {
           $this->billingAddressSelected = $address["id"];
         }
+
+        if($this->sameShippingAndBillingAddresses){
+          $this->shippingAddressSelected = $this->billingAddressSelected;
+        }
+
         break;
       
       case 'shipping':
@@ -318,6 +338,9 @@ class Checkout extends Component
         }
         break;
     }
+
+    // Added Fix Bug 
+    $this->initShippingMethods();
     
   }
   
@@ -487,9 +510,11 @@ class Checkout extends Component
       
       $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
     }else{
-      if ($this->shippingMethods->count()) {
+     
+      if ($this->shippingMethods->count() && $this->shippingMethods->count() == 1) {
         $shippingMethod = $this->shippingMethods->first();
       }
+      
     }
     if (isset($shippingMethod->id)) $this->shippingMethodSelected = $shippingMethod->id;
     
@@ -562,13 +587,16 @@ class Checkout extends Component
     if (!empty($this->paymentMethodSelected)) {
         $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
     }else{
-      if ($this->paymentMethods->count()) {
+      if ($this->paymentMethods->count() && $this->paymentMethods->count() == 1) {
         $paymentMethod = $this->paymentMethods->first();
       }
     }
     
     if (isset($paymentMethod->id)) $this->paymentMethodSelected = $paymentMethod->id;
-    
+  
+    if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+      $this->paymentMethodSelected = $paymentMethod = null;
+    }
     return $paymentMethod;
   }
   
@@ -639,16 +667,20 @@ class Checkout extends Component
   {
     $this->initAddresses();
     $this->initProducts();
-    $this->initPaymentMethods();
+    
     
     $this->getBillingAddressProperty();
     $this->getShippingAddressProperty();
 
     // Fixed Bug first request selected address
     $this->initShippingMethods();
-
+    $this->initPaymentMethods();
+    
     $this->getPaymentMethodProperty();
     $this->getShippingMethodProperty();
+  
+    
+    
     $this->getCouponDiscount();
     $this->initTaxes();
     $this->getTotalTaxesProperty();

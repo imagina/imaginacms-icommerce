@@ -17,6 +17,7 @@ return [
         'productDetails' => 'Detalles del Producto',
         'comments' => 'Comentarios',
         'related' => 'Relacionados',
+        'reviews' => 'Revisiones',
     ],
     'button'            => [
         'create product'    => 'Crear un producto',
@@ -65,6 +66,8 @@ return [
         'manufacturer'              => 'Fabricante',
         'certificate'               => 'Certificado',
         'data_sheet'                => 'Ficha técnica',
+        'points'                    => 'Puntos',
+        'points win'                => 'Gana :points Puntos por comprar este producto',
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',
@@ -75,6 +78,8 @@ return [
         'all_products_by_manufacturer'  => 'Todos los productos por fabricante...',
     ],
     'form' => [
+      'available' => 'Disponibles',
+      'outOfStock' => 'Producto Agotado'
     ],
 
     'messages'          => [

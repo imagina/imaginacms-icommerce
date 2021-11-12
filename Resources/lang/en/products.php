@@ -16,6 +16,7 @@ return [
     'productDetails' => 'Product Details',
     'comments' => 'Comments',
     'related' => 'Related',
+    'reviews' => 'Reviews',
   ],
   'button' => [
     'create product' => 'Create a product',
@@ -64,6 +65,8 @@ return [
     'manufacturer'              => 'Manufacturer',
     'certificate'               => 'Certificate',
     'data_sheet'                => 'Data sheet',
+    'points'                    => 'Points',
+    'points win'                => 'Earn :points Points for purchasing this product',
   ],
   'categories'        => [
     'free_shipping'             => 'Products with free shipping',
@@ -73,7 +76,9 @@ return [
     'products_by_manufacturer'      => 'Products by manufacturer',
     'all_products_by_manufacturer'  => 'All products by manufacturer...',
   ],
-  'form'              => [
+  'form' => [
+    'available' => 'Available',
+    'outOfStock' => 'Out of stock'
   ],
   'messages'          => [
     'error delete product'  => 'The product could not be deleted',

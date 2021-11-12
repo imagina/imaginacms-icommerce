@@ -49,7 +49,6 @@ class Cart extends Component
     if (isset($cart->id) && $cart->status == 1) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
     }
-
     if (isset($this->cart->id)) {
 
       $user = Auth::user();
@@ -65,6 +64,7 @@ class Cart extends Component
       $data = [];
       $data["ip"] = request()->ip();
       $data["session_id"] = session('_token');
+      $data["status"] = 1;
 
       $user = Auth::user();
 

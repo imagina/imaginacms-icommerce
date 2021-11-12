@@ -44,12 +44,6 @@ class OrderService
     $orderData = [];
     $orderData["options"] = [];
     $total = [];
-       /*
-      |--------------------------------------------------------------------------
-      | Add order type
-      |--------------------------------------------------------------------------
-      */
-       $orderData["type"] = $data["type"] ?? null;
 
     /*
     |--------------------------------------------------------------------------
@@ -62,8 +56,6 @@ class OrderService
       
     } elseif (isset($data["customerId"])) {
       $customer = $this->user->find($data["customerId"]);
-    } else {
-      $customer = \Auth::user();
     }
     
     //Validating AddedBy
@@ -77,7 +69,10 @@ class OrderService
     
     //Break if the data is empty
      if(!isset($data["type"]) || (isset($data["type"]) && !$data["type"]=="quote"))
-       if(!isset($customer->id) || !isset($addedBy->id)) throw new \Exception('Missing customer or addedBy user', 400);
+       if(!isset($customer->id) || !isset($addedBy->id)){
+         \Log::info("[ERROR/Exception]:: Missing customer or addedBy user | OrderService::73");
+         throw new \Exception('Missing customer or addedBy user', 400);
+       }
     
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +81,7 @@ class OrderService
     */
     
     $orderData["customer_id"] = $customer->id ?? null;
-    $orderData["added_id"] = $addedBy->id ?? null;
+    $orderData["added_by_id"] = $addedBy->id ?? null;
     
     $orderData["first_name"] = $customer->first_name ?? $data["first_name"] ?? null;
     $orderData["last_name"] = $customer->last_name ?? $data["last_name"] ?? null;
@@ -111,9 +106,12 @@ class OrderService
     $cart = $this->cartService->create($data);
     
     //Break if cart no found
-    if (!isset($cart->id)) throw new \Exception('There are an error with the cart', 400);
+    if (!isset($cart->id)){
+      \Log::info("[ERROR/Exception]:: There are an error with the cart | OrderService::110");
+      throw new \Exception('There are an error with the cart', 400);
+    }
     
-    $total = ($orderData["type"] == "quote") ? $cart->products->sum('total') : $cart->total;
+    $total = (($data["type"] ?? '') == "quote") ? $cart->products->sum('total') : $cart->total;
     /*
     |--------------------------------------------------------------------------
     | getting shipping address if issset in the data
@@ -134,6 +132,7 @@ class OrderService
         $orderData["shipping_zip_code"] = $shippingAddress->zip_code ?? "";
         $orderData["shipping_country_code"] = $shippingAddress->country;
         $orderData["shipping_zone"] = $shippingAddress->state;
+        $orderData["shipping_telephone"] = $shippingAddress->telephone ?? "";
         $orderData["options"]["shippingAddress"] = $shippingAddress->options;
       }
     }
@@ -157,6 +156,7 @@ class OrderService
         $orderData["payment_zip_code"] = $billingAddress->zip_code ?? "";
         $orderData["payment_country"] = $billingAddress->country;
         $orderData["payment_zone"] = $billingAddress->state;
+        $orderData["payment_telephone"] = $billingAddress->telephone ?? "";
         $orderData["options"]["billingAddress"] = $billingAddress->options;
       }
     }
@@ -186,7 +186,7 @@ class OrderService
         $total -= $couponResult->discount;
       }
     }
-    
+
     /*
     |--------------------------------------------------------------------------
     | getting shipping method if issset in the data
@@ -196,16 +196,14 @@ class OrderService
       $shippingMethodRepository = app("Modules\Icommerce\Repositories\ShippingMethodRepository");
       
      
-      $dataCalculations = [
-        "cart_id" => $cart->id ?? null,
-        "shippingAddressId" => $data["shippingAddress"]->id
-      ];
-
-      $shippingMethods = $shippingMethodRepository->getCalculations($dataCalculations, json_decode(json_encode([])));
-
-      //$shippingMethods = $shippingMethodRepository->getCalculations(["cart_id" => $cart->id ?? null], json_decode(json_encode([])));
+      $shippingMethods = $shippingMethodRepository->getCalculations(["cart_id" => $cart->id ?? null], json_decode(json_encode([])));
       
       $shippingMethod = $shippingMethods->where("id", $data["shippingMethod"]->id ?? $data["shippingMethodId"])->first();
+      
+      if(isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status == "error"){
+        \Log::info("[ERROR/Exception]::". $shippingMethod->calculations->msj ?? "Error with the Shipping Method");
+        throw new \Exception($shippingMethod->calculations->msj ?? "Error with the Shipping Method", 400);
+      }
       
       if (isset($shippingMethod->id)) {
         $orderData["shipping_method"] = $shippingMethod->title;
@@ -222,21 +220,28 @@ class OrderService
      | getting payment method if issset in the data
      |--------------------------------------------------------------------------
      */
-    if (isset($data["paymentMethod"]->id)) {
-      $paymentMethod = $data["paymentMethod"];
-    } else {
-      if (isset($data["paymentMethodId"]) && !empty($data["paymentMethodId"])) {
-        $paymentMethodRepository = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
-        $paymentMethod = $paymentMethodRepository->getItem($data["paymentMethodId"]);
-      }
-    }
+    if (isset($data["paymentMethod"]->id) || isset($data["paymentMethodId"])) {
     
+        $paymentMethodRepository = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
+  
+        $params = ["filter" => ["status" => 1,"withCalculations" => true, "cartId" => $cart->id ?? null]];
+    
+        $paymentMethods = $paymentMethodRepository->getItemsBy(json_decode(json_encode($params)));
+  
+        $paymentMethod = $paymentMethods->where("id",$data["paymentMethod"]->id ?? $data["paymentMethodId"])->first();
+
+        if(isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+          \Log::info("[ERROR/Exception]::". $paymentMethod->calculations->msj ?? "Error with the Payment Method");
+          throw new \Exception($paymentMethod->calculations->msj ?? "Error with the Payment Method", 400);
+        }
+    }
+  
     if (isset($paymentMethod->id)) {
       $orderData["payment_code"] = $paymentMethod->id;
       $orderData["payment_method"] = $paymentMethod->title;
       
     }
-    
+ 
     /*
     |--------------------------------------------------------------------------
     | getting currency if issset in the data
@@ -278,6 +283,11 @@ class OrderService
       $orderData["currency_code"] = $currency->code;
       $orderData["currency_value"] = $currency->value;
     }
+  
+  //validate options
+       if(isset($data["options"])){
+         $orderData["options"] = array_merge($orderData["options"],$data["options"]);
+       }
     
     /*
     |--------------------------------------------------------------------------
@@ -287,7 +297,7 @@ class OrderService
     $orderData["require_shipping"] = $cart->require_shipping;
     $orderData["status_id"] = 1;
     $orderData["total"] = $total;
-    $orderData["options"] = $data["options"] ?? "";
+   $orderData["type"] = $data["type"] ?? null;
     $orderData["user_agent"] = request()->header('User-Agent');
     $orderData["ip"] = request()->ip();//Set Ip from request
     $orderData['key'] = substr(md5(date("Y-m-d H:i:s") . request()->ip()), 0, 20);
@@ -302,10 +312,11 @@ class OrderService
     $supportOrderItem = new orderItemSupport();
     $dataOrderItem = $supportOrderItem->fixData($cart->products);
     $orderData["orderItems"] = $dataOrderItem;
-    
+
     //Create order
     $order = $this->order->create($orderData);
     $dataResponse = [
+      "cart" => $this->cart,
       "order" => $order,
       "orderId" => $order->id,
       "orderID" => $order->id, //TODO: fix icommerce extra methods because there are waiting the orderId like orderID

@@ -128,13 +128,12 @@ class PaymentMethodApiController extends BaseApiController
 
           //Get Parameters from URL.
           $params = $this->getParamsRequest($request);
-          $entity = $this->paymentMethod->getItem($criteria, $params);
-
 
           //Request to Repository
-          $result = $this->paymentMethod->update($entity, $data);
+          $result = $this->paymentMethod->updateBy($criteria, $data, $params);
+  
         //Response
-        $response = ["data" => $result->id];
+        $response = ["data" =>$result];
         \DB::commit();//Commit to DataBase
       } catch (\Exception $e) {
         \DB::rollback();//Rollback to Data Base

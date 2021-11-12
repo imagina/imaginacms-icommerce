@@ -26,7 +26,9 @@ class AddParentInShippingMethodsTable extends Migration
     public function down()
     {
         Schema::table('icommerce__shipping_methods', function (Blueprint $table) {
-			$table->dropColumn('parent_name');
+          if(Schema::hasColumn('icommerce__shipping_methods','parent_name')) {
+            $table->dropColumn('parent_name');
+          }
         });
     }
 }

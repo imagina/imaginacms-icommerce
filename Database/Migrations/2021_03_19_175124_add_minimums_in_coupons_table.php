@@ -27,8 +27,12 @@ class AddMinimumsInCouponsTable extends Migration
     public function down()
     {
         Schema::table('icommerce__coupons', function (Blueprint $table) {
-          $table->dropColumn('minimum_order_amount');
-          $table->dropColumn('minimum_quantity_products');
+          if(Schema::hasColumn('icommerce__coupons','minimum_order_amount')) {
+            $table->dropColumn('minimum_order_amount');
+          }
+          if(Schema::hasColumn('icommerce__coupons','minimum_quantity_products')) {
+            $table->dropColumn('minimum_quantity_products');
+          }
         });
     }
 }

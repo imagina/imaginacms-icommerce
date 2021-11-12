@@ -18,6 +18,12 @@ return [
   ],
   'form' => [
   ],
+  'formFields' => [
+    'mode' => 'Modo',
+    'minimum Amount' => 'Monto Minimo',
+    'maximum Amount' => 'Monto Maximo',
+    'excludedUsersForMaximumAmount' => 'Usuarios excluidos del monto máximo',
+  ],
   'pages' => [
     'index' => 'Página Principal',
     'checkout' => 'Página Checkout',
@@ -48,6 +54,8 @@ return [
     'no products' => 'No existen productos disponibles',
   ],
   'validation' => [
+    'maximumAmount' => "El Monto de la orden excede el máximo permitido (:maximumAmount) para este método de pago",
+    'minimumAmount' => "El Monto de la orden debe ser mayor a: (:minimumAmount) para este método de pago"
   ],
   'status' => [
     'draft' => 'Borrador',
@@ -100,6 +108,8 @@ return [
     'daysEnabledForNewProducts' => 'días habilitados para productos nuevos ',
     'customIndexContactLabel' => 'Título para el Botón de Contacto',
     'customCheckoutTitle' => 'Título para el Checkout',
+    'icommerceCartQuoteForm' => 'Formulario para Registro de Cotización',
+    'chatByOrderEnable' => 'Habilitar chat por orden de compra',
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
@@ -107,7 +117,10 @@ return [
       'showButtonToQuoteInStore' => 'Mostrar boton para cotizar en la tienda',
       'addToCartQuoteButtonAction' => 'Acción del botón añadir a la cotización',
       'addToCartButtonAction' => 'Acción del botón añadir al carrito',
-      'showButtonThatGeneratesPdfOfTheCart' => 'Mostrar botón que genera un PDF del carrito'
+      'showButtonThatGeneratesPdfOfTheCart' => 'Mostrar botón que genera un PDF del carrito',
+      'showReviewsProduct' => 'Mostrar revisiones del producto',
+      'showRatingProduct' => 'Mostrar rating del producto',
+      'showRatingInReviewsProduct' => 'Mostrar rating en las revisiones del producto',
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',

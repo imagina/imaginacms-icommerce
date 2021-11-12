@@ -50,7 +50,8 @@
               <div class="card-block my-3 checkout-register">
                 <div class="alert alert-danger d-none" id="registerAlert"></div>
                 <div class="formUser">
-                  @includeFirst(['iprofile.widgets.register','iprofile::frontend.widgets.register'],["embedded" => true, "route" => $locale . '.icommerce.checkout'])
+         
+                  @includeFirst(['iprofile.widgets.register','iprofile::frontend.widgets.register'],["embedded" => true, "route" => $locale . '.icommerce.store.checkout'])
                 </div>
               </div>
 

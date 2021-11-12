@@ -1,10 +1,17 @@
 @foreach($paymentMethods as $key => $paymentMethod)
+
+  @php
+    $disableMethod=false;
+    if(isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error")
+      $disableMethod = true;
+
+  @endphp
   <div class="card mb-0 border-0">
     <div class="card-header bg-white" role="tab" id="headingOne">
       <label class="mb-0">
         <input type="radio" class="form-check-input" name="payment_method"
                value="{{$paymentMethod->id}}"
-               wire:model="paymentMethodSelected">
+               wire:model="paymentMethodSelected" @if($disableMethod) disabled @endif>
         
         {{$paymentMethod->title}}
       </label>
@@ -19,4 +26,12 @@
     </div>
   
   </div>
+
+  @if($disableMethod)
+    <div class="shipping-method-error">
+      <div class="alert alert-danger" role="alert">
+        {{$paymentMethod->calculations->msj}}
+      </div>
+    </div>
+  @endif
 @endforeach

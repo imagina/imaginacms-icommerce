@@ -18,6 +18,11 @@
   <!-- SUMMARY -->
   <div class="options">@{{product.summary}}</div>
   
+  <!-- RATING -->
+  @if(is_module_enabled('Rateable') && setting('icommerce::showRatingProduct'))
+    @include('icommerce::frontend.partials.show.rating')
+  @endif
+
   <!-- PRICE -->
   @if(!$product->is_call)
     <div class="price " v-if="products_children === false && product.price >0.00">
@@ -49,11 +54,12 @@
     <hr>
     <div class="row">
       <div class="col-12">
-        {{$product->quantity}} Disponibles
+        {{$product->quantity}} {{trans("icommerce::products.form.available")}}
       </div>
+
       <!-- BUTTON QUANTITY -->
-      <div class="col col-md-4">
-        <div class="input-group my-2 my-md-0">
+      <div class="d-inline-flex align-items-center p-1">
+        <div class="input-group ">
           <div class="input-group-prepend">
             <button class="btn btn-outline-light font-weight-bold " field="quantity" type="button"
                     v-on:click="quantity-- ">
@@ -70,7 +76,8 @@
           </div>
         </div>
       </div>
-      <div class="col my-2 my-md-0">
+
+      <div class="d-inline-flex align-items-center p-1">
         <!-- BUTTON ADD -->
         <div>
           <a v-on:click="addCart(product)" class="btn-comprar btn btn-primary text-white">
@@ -107,16 +114,19 @@
             @endif
           </a>
           
-          <!-- BUTTON WISHLIST -->
-          <a
-            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
-            class="btn btn-wishlist"
-            v-if="!products_children">
-            <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
-            <i class="fa fa-heart-o ml-1"></i>
-          </a>
+         
         </div>
       
+      </div>
+      <div class="d-inline-flex align-items-center p-1">
+        <!-- BUTTON WISHLIST -->
+        <a
+          onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+          class="btn btn-wishlist mx-2"
+          v-if="!products_children">
+          <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
+          <i class="fa fa-heart-o ml-1"></i>
+        </a>
       </div>
     </div>
     <hr>
@@ -135,7 +145,7 @@
             onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
             class="btn btn-wishlist"
             v-if="!products_children">
-            <span>AGREGAR A LA LISTA</span>
+            <span id="addToTheListSpan">{{trans("wishlistable::wishlistables.button.addToList")}}</span>
             <i class="fa fa-heart-o ml-1"></i>
           </a>
         </div>
@@ -145,9 +155,12 @@
     <hr>
   </div>
   <div v-else>
-    <p class="label d-inline-block px-3 py-2 mb-0">Producto Agotado </p>
+    <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
     
     <hr>
   </div>
+  
+  <!-- Points Product -->
+  @include('icommerce::frontend.partials.show.points')
 
 </div>

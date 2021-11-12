@@ -18,6 +18,12 @@ return [
   ],
   'form' => [
   ],
+  'formFields' => [
+    'mode' => 'Mode',
+    'minimum Amount' => 'Minimum amount',
+    'maximum Amount' => 'Maximum amount',
+    'excludedUsersForMaximumAmount' => 'Excluded users for maximum amount',
+  ],
   'pages' => [
     'index' => 'Index Page',
     'checkout' => 'Checkout Page',
@@ -46,6 +52,8 @@ return [
     'min 2 characters' => 'Minimum of 2 characters',
   ],
   'validation' => [
+    'maximumAmount' => "The order total exceed the maximum amount available (:maximumAmount) for this payment method",
+    'maximumAmount' => "The order total must be greater than: (:maximumAmount) for this payment method"
   ],
   'status' => [
     'draft' => 'Draft',
@@ -98,6 +106,8 @@ return [
     'daysEnabledForNewProducts' => 'days enabled for new products ',
     'customIndexContactLabel' => 'Title for Contact Button',
     'customCheckoutTitle' => 'Title for Checkout',
+    'icommerceCartQuoteForm' => 'Quote Form',
+    'chatByOrderEnable' => 'Enable chat by order',
     'product' => [
       'group' => 'Product',
       'layout' => 'Product Layout',
@@ -105,7 +115,10 @@ return [
       'showButtonToQuoteInStore' => 'Show button to quote in store',
       'addToCartQuoteButtonAction' => 'Add to quote button action',
       'addToCartButtonAction' => 'Add to cart button action',
-      'showButtonThatGeneratesPdfOfTheCart' => 'Show button that generates a PDF of the cart'
+      'showButtonThatGeneratesPdfOfTheCart' => 'Show button that generates a PDF of the cart',
+      'showReviewsProduct' => 'Show product reviews',
+      'showRatingProduct' => 'Show product rating',
+      'showRatingInReviewsProduct' => 'Show rating in product reviews',
     ],
     'product-price-list-enable' => 'Enable',
     'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',

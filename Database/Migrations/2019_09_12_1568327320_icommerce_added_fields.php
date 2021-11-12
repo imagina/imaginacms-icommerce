@@ -49,4 +49,13 @@ class IcommerceAddedFields extends Migration
             $table->integer('store_id')->unsigned()->nullable();
         });
     }
+
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+  }
 }

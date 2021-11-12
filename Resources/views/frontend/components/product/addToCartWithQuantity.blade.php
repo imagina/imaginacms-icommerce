@@ -31,7 +31,7 @@
   @once
 @section('scripts-owl')
   @parent
-  <script>
+  <script type="text/javascript" defer>
 
     function icommerce_incrementValue(e) {
       e.preventDefault();
