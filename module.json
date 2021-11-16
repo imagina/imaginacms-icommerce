@@ -5,7 +5,7 @@
     "keywords": ["ecommerce", "module", "asgardCMS", "imagina"],
     "version": "1.2.0",
     "active": 1,
-    "order": 1,
+    "priority": 1,
     "providers": [
         "Modules\\Icommerce\\Providers\\EventServiceProvider",
         "Modules\\Icommerce\\Providers\\IcommerceServiceProvider",

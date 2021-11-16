@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\CategoryRepository;
 use Modules\Icommerce\Entities\Category;
+use Illuminate\Support\Str;
 
 // class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
 class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
@@ -46,7 +47,7 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
                     $slug = "";
                     // Search by id
                     $category = $this->category->find($category_id);
-                    $slug = str_slug($title, '-');
+                    $slug = Str::slug($title, '-');
 
                     //data
                     $param = [
@@ -85,7 +86,7 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
 
                 }//if isset title
             } catch (\Exception $e) {
-                \Log::error($e);
+                \Log::error($e->getMessage());
                 // dd($e->getMessage());
             }
 
@@ -128,7 +129,7 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
             // 3. Return the path
             return $destination_path;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
         }
     }
 

@@ -6,7 +6,15 @@ use Illuminate\Http\Request;
 use Log;
 use Mockery\CountValidator\Exception;
 use Modules\Core\Http\Controllers\BasePublicController;
+use Modules\Icommerce\Entities\Category;
+use Modules\Icommerce\Entities\Currency;
+use Modules\Icommerce\Entities\Order;
+use Modules\Icommerce\Http\Livewire\Cart;
 use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Icommerce\Repositories\ManufacturerRepository;
+use Modules\Icommerce\Repositories\OrderRepository;
+use Modules\Icommerce\Transformers\CartTransformer;
+use Modules\Icommerce\Transformers\CategoryTransformer;
 use Modules\Icurrency\Repositories\CurrencyRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
 use Modules\Icommerce\Repositories\ProductRepository;
@@ -15,97 +23,284 @@ use Modules\Iprofile\Repositories\UserApiRepository;
 use Modules\Icommerce\Transformers\PaymentMethodTransformer;
 use Modules\Icommerce\Transformers\ShippingMethodTransformer;
 use Modules\Icommerce\Transformers\ProductTransformer;
+use Modules\Isite\Entities\Organization;
 use Route;
+use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
-class PublicController extends BasePublicController
+//Services
+use Modules\Icommerce\Services\ProductService;
+
+class PublicController extends BaseApiController
 {
   protected $auth;
   private $product;
+  private $order;
   private $category;
+  private $manufacturer;
   private $currency;
   private $payments;
   private $shippings;
+  private $productService;
   
   public function __construct(
     ProductRepository $product,
     CategoryRepository $category,
+    OrderRepository $order,
+    ManufacturerRepository $manufacturer,
     CurrencyRepository $currency,
     PaymentMethodRepository $payments,
-    ShippingMethodRepository $shippings
+    ShippingMethodRepository $shippings,
+    ProductService $productService
   )
   {
     parent::__construct();
     $this->product = $product;
+    $this->order = $order;
     $this->category = $category;
+    $this->manufacturer = $manufacturer;
     $this->currency = $currency;
     $this->payments = $payments;
     $this->shippings = $shippings;
+    $this->productService = $productService;
   }
   
   // view products by category
   public function index(Request $request)
   {
+    $argv = explode("/", $request->path());
+    $slug = end($argv);
     
-    $slug = \Request::path();
+    $tpl = 'icommerce::frontend.index';
+    
+    $category = null;
+    
+    $categoryBreadcrumb = [];
+    $carouselImages = [];
+    
+    $gallery = [];
+    
+    $configFilters = config("asgard.icommerce.config.filters");
+    
+    
+    $organization = null;
+    if (isset(tenant()->id)) {
+      $organization = tenant();
+      $configFilters["categories"]["params"] = ["filter" => ["organizations" => $organization->id]];
+      config(["asgard.icommerce.config.filters" => $configFilters]);
+    }
+    
+    if ($slug && $slug != trans('icommerce::routes.store.index.index')) {
+      
+      $category = $this->category->findBySlug($slug);
+      
+      if (isset($category->id)) {
+        $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
+        
+        $ptpl = "icommerce.category.{$category->parent_id}%.index";
+        if ($category->parent_id != 0 && view()->exists($ptpl)) {
+          $tpl = $ptpl;
+        }
+        
+        $ctpl = "icommerce.category.{$category->id}.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+        
+        $ctpl = "icommerce.category.{$category->id}%.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+        
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($category);
+        
+        // Carousel Right over ProductList with settings to images categories
+        $gallery = $this->getGalleryCategory($category);
+        
+        $configFilters["categories"]["itemSelected"] = $category;
+        
+      } else {
+        return response()->view('errors.404', [], 404);
+      }
+      
+      
+    } else {
+      //Default breadcrumb
+      $configFilters["categories"]["breadcrumb"] = [];
+    }
+    
+    
+    config(["asgard.icommerce.config.filters" => $configFilters]);
+    
+    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization'));
+  }
+  
+  // view products by manufacturer
+  public function indexManufacturer(Request $request)
+  {
+    $argv = explode("/", $request->path());
+    $slug = end($argv);
+    
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
     
-    $category = $this->category->findBySlug($slug);
+    $manufacturer = null;
     
-    $params=$this->_paramsRequest($request,$category->id);
+    $categoryBreadcrumb = [];
+    $carouselImages = [];
     
-    $products = $this->product->getItemsBy($params);
-    
-    $ptpl = "icommerce.category.{$category->parent_id}%.index";
-    if ($category->parent_id != 0 && view()->exists($ptpl)) {
-      $tpl = $ptpl;
+    if ($slug && $slug != trans('icommerce::routes.store.index')) {
+      
+      $manufacturer = $this->manufacturer->findBySlug($slug);
+      
+      if (isset($manufacturer->id)) {
+        
+        //Remove manufacturer filters of this index, its not necessary
+        $configFilters = config("asgard.icommerce.config.filters");
+        unset($configFilters["manufacturers"]);
+        
+        $configFilters["categories"]["params"] = ["filter" => ["manufacturers" => $manufacturer->id]];
+        config(["asgard.icommerce.config.filters" => $configFilters]);
+        
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+        
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+        
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($manufacturer);
+        
+        
+      } else {
+        return response()->view('errors.404', [], 404);
+      }
+      
     }
     
-    $ctpl = "icommerce.category.{$category->id}.index";
-    if (view()->exists($ctpl)) $tpl = $ctpl;
+    //$dataRequest = $request->all();
     
-    $ctpl = "icommerce.category.{$category->id}%.index";
-    if (view()->exists($ctpl)) $tpl = $ctpl;
-    
-    $paginate=(object)[
-      "total" => $products->total(),
-      "lastPage" => $products->lastPage(),
-      "perPage" => $products->perPage(),
-      "currentPage" => $products->currentPage()
-    ];
-    
-    $products=ProductTransformer::collection($products);
-    
-    return view($tpl, compact('category','products','paginate'));
+    return view($tpl, compact('manufacturer', 'categoryBreadcrumb', 'carouselImages'));
+  }  // view products by manufacturer
+  
+  public function indexOffers(Request $request)
+  {
+    $argv = explode("/", $request->path());
     
     
+    $tpl = 'icommerce::frontend.index';
+    $ttpl = 'icommerce.index';
+    
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    
+    $withDiscount = false;
+    
+    if ($slug && $slug != trans('icommerce::routes.store.index')) {
+      
+      $withDiscount = true;
+      
+    }
+    
+    return view($tpl, compact('withDiscount'));
   }
   
-  // Informacion de Producto
-  public function show($slug)
+  // view products by category
+  public function indexCategoryManufacturer(Request $request, $categorySlug, $manufacturerSlug)
   {
+    $argv = explode("/", $request->path());
+    
+    $tpl = 'icommerce::frontend.index';
+    $ttpl = 'icommerce.index';
+    
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+    
+    $manufacturer = null;
+    $category = null;
+    
+    $categoryBreadcrumb = [];
+    $carouselImages = [];
+    
+    if ($categorySlug && $manufacturerSlug) {
+      
+      $manufacturer = $this->manufacturer->findBySlug($manufacturerSlug);
+      
+      $category = $this->category->findBySlug($categorySlug);
+      
+      
+      if (isset($category->id) && isset($manufacturer->id)) {
+        
+        $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
+        
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+        
+        $ctpl = "icommerce.manufacturer.{$manufacturer->id}%.index";
+        if (view()->exists($ctpl)) $tpl = $ctpl;
+        
+        // Carousel Top
+        $carouselImages = $this->getImagesToCarousel($manufacturer);
+        
+        
+        //Remove manufacturer filters of this index, its not necessary
+        $configFilters = config("asgard.icommerce.config.filters");
+        unset($configFilters["manufacturers"]);
+        
+        $configFilters["categories"]["params"] = ["filter" => ["manufacturers" => $manufacturer->id]];
+        $configFilters["categories"]["itemSelected"] = $category;
+        config(["asgard.icommerce.config.filters" => $configFilters]);
+        
+        
+      } else {
+        return response()->view('errors.404', [], 404);
+      }
+      
+    }
+    
+    //$dataRequest = $request->all();
+    
+    return view($tpl, compact('category', 'manufacturer', 'categoryBreadcrumb', 'carouselImages'));
+  }
+  
+  /**
+   * Show product
+   * @param Request $request
+   * @return mixed
+   */
+  public function show(Request $request)
+  {
+    $argv = explode("/", $request->path());
+    $slug = end($argv);
     
     $tpl = 'icommerce::frontend.show';
     $ttpl = 'icommerce.show';
     if (view()->exists($ttpl)) $tpl = $ttpl;
+    
     $params = json_decode(json_encode(
       [
-        "include" => explode(",","translations,category,categories,tags,addedBy"),
+        "include" => explode(",", "translations,category,categories,tags,addedBy"),
         "filter" => [
           "field" => "slug"
         ]
       ]
     ));
     
-    $product = $this->product->getItem($slug,$params);
+    $product = $this->product->getItem($slug, $params);
     
-    if($product){
-      $category= $product->category;
-      return view($tpl, compact('product','category'));
+    $organization = null;
+    if (isset(tenant()->id)) {
+      $organization = tenant();
+      $configFilters["categories"]["params"] = ["filter" => ["organizations" => $organization->id]];
+      config(["asgard.icommerce.config.filters" => $configFilters]);
+    }
+    
+    $currency = Currency::where("default_currency", 1)->first();
+    $schemaScript = $this->productService->createSchemaScript($product,$currency);
+
+    if ($product) {
+      $category = $product->category;
+      $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
       
-    }else{
+      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript'));
+      
+    } else {
       return response()->view('errors.404', [], 404);
     }
     
@@ -113,70 +308,138 @@ class PublicController extends BasePublicController
   
   public function checkout()
   {
-    $tpl = 'icommerce::frontend.checkout.index';
-    $ttpl = 'icommerce.checkout.index';
-    if (view()->exists($ttpl)) $tpl = $ttpl;
-    return view($tpl);
+    $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
+    
+    $tpl = "icommerce::frontend.checkout.index";
+    
+    $cart = request()->session()->get('cart');
+    if (isset($cart->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }
+    $currency = Currency::where("default_currency", 1)->first();
+    
+    if (setting("icommerce::customCheckoutTitle")) {
+      $title = setting("icommerce::customCheckoutTitle");
+    } else {
+      $title = trans('icommerce::checkout.title');
+    }
+    return view($tpl, ["cart" => new CartTransformer($cart), "currency" => $currency, "title" => $title]);
   }
   
-  public function wishlist()
+  public function checkoutUpdate($orderId)
   {
-    $tpl = 'icommerce::frontend.wishlist.index';
-    $ttpl = 'icommerce.wishlist.index';
+    $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
     
-    if (view()->exists($ttpl)) $tpl = $ttpl;
-    return view($tpl);
+    $tpl = "icommerce::frontend.checkout.index";
+    
+    $cart = request()->session()->get('cart');
+    if (isset($cart->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }
+    $currency = Currency::where("default_currency", 1)->first();
+    
+    $order = $this->order->getItem($orderId);
+    
+    if (setting("icommerce::customCheckoutTitle")) {
+      $title = setting("icommerce::customCheckoutTitle");
+    } else {
+      $title = trans('icommerce::checkout.title');
+    }
+    return view($tpl, ["cart" => new CartTransformer($cart), "currency" => $currency, "title" => $title, "order" => $order]);
   }
   
-  // view products by category
-  public function search(Request $request)
-  {
-    
-    $tpl = 'icommerce::frontend.search';
-    $ttpl = 'icommerce.search';
-    
-    if (view()->exists($ttpl)) $tpl = $ttpl;
-    $category=$request->input('category')??null;
-    $params=$this->_paramsRequest($request,$category);
-    
-    $products = $this->product->getItemsBy($params);
-    
-    $products=ProductTransformer::collection($products);
-    
-    $paginate=(object)[
-      "total" => $products->total(),
-      "lastPage" => $products->lastPage(),
-      "perPage" => $products->perPage(),
-      "currentPage" => $products->currentPage()
-    ];
-    
-    return view($tpl, compact('products','paginate', 'category'));
-    
-    
-  }
   
-  private function _paramsRequest($request,$category)
+  private function _paramsRequest(&$params)
   {
-    
-    $maxPrice=$request->input('maxPrice')??100000000000000000000000000000;
-    $minPrice=$request->input('minPrice')??0;
-    $options=$request->input('options')??null;
-    $manufacturer=$request->input('manufacturer')??null;
-    $search=$request->input('search')??$request->input('q')??null;
-    $currency=$request->input('currency')??null;
-    $order=["field"=>$request->input('orderField')??"created_at","way"=>$request->input('orderWay')??"desc"];
-    
+    //$params->take = $params->take ?? setting("")
     //Return params
     $params = (object)[
       "page" => is_numeric($request->input('page')) ? $request->input('page') : 1,
       "take" => is_numeric($request->input('take')) ? $request->input('take') :
         ($request->input('page') ? 12 : null),
-      "include" =>[],
-      "filter" => json_decode(json_encode(['categories'=>$category,'manufacturers'=>$manufacturer,'priceRange'=>['from'=>$minPrice,'to'=>$maxPrice],'search'=>$search,'order'=>$order,'status'=>1])),
+      "include" => [],
+      "filter" => json_decode(json_encode(['categories' => $category, 'manufacturers' => $manufacturer, 'priceRange' => ['from' => $minPrice, 'to' => $maxPrice], 'search' => $search, 'order' => $order, 'status' => 1])),
     ];
-    //Set locale to filter
-    $params->filter->locale = \App::getLocale();
+    
     return $params;//Response
   }
   
+  
+  /**
+   * Get Images to carousel top index
+   *
+   */
+  private function getImagesToCarousel($entity)
+  {
+    
+    $carouselImages = [];
+    
+    $mediaFiles = $entity->mediaFiles();
+    
+    if (isset($mediaFiles->carouseltopindeximages) && count($mediaFiles->carouseltopindeximages) > 0) {
+      $carouselImages = $mediaFiles->carouseltopindeximages;
+    }
+    
+    return $carouselImages;
+  }
+  
+  
+  /**
+   * Get Images to gallery top Category
+   *
+   */
+  private function getGalleryCategory($category)
+  {
+    
+    $gallery = [];
+    
+    $typeGallery = setting('icommerce::carouselIndexCategory', null, 'carousel-category-active');
+    if (isset($category->id)) {
+      
+      if ($category->parent_id != null && $typeGallery == "carousel-category-parent") {
+        $category = Category::whereAncestorOf($category)->whereNull("parent_id")->first();
+      }
+      
+      $mediaFiles = $category->mediaFiles();
+      if (isset($mediaFiles->carouselindeximage)) {
+        $gallery = $mediaFiles->carouselindeximage;
+      }
+      
+    }
+    
+    return $gallery;
+    
+  }
+  
+  private function getCategoryBreadcrumb($category)
+  {
+    if (config("asgard.icommerce.config.tenantWithCentralData.categories")) {
+      $query = Category::whereAncestorOf($category->id,true);
+    //  dd($query->toSql(),$query->getBindings());
+      
+      return CategoryTransformer::collection($query->get());
+    } else {
+      return CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+    }
+    
+  }
+  
+  public function quoteLayout()
+  {
+    
+    $cart = \Modules\Icommerce\Entities\Cart::find(60);
+    $customerData = [
+    
+    ];
+    return view("icommerce::frontend.livewire.cart.pdf.pdf", ["cart" => $cart]);
+  }
+  
+  
+  public function quoteEmail()
+  {
+    
+    $order = \Modules\Icommerce\Entities\Order::find(6);
+    
+    return view("icommerce::emails.order", ["data" => ["order" => $order]]);
+  }
 }

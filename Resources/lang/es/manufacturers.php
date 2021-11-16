@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'single' => 'Marca',
+    'plural' => 'Marcas',
     'list resource' => 'List manufacturers',
     'create resource' => 'Create manufacturers',
     'edit resource' => 'Edit manufacturers',
@@ -18,6 +20,7 @@ return [
     'form' => [
     ],
     'messages' => [
+        'no-manufacturers-associated' => 'No existen marcas asociadas con los productos mostrados'
     ],
     'validation' => [
     ],

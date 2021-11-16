@@ -1,41 +1,11 @@
 @extends('layouts.master')
 
 @section('meta')
-  <meta name="title" content="{{$product->meta_title??$product->name}}">
-  <meta name="keywords" content="{{$product->meta_keyword ?? ''}}">
-  <meta name="description" content="{{$product->meta_description??$product->summary}}">
-  <meta name="robots"
-        content="{{$product->options->meta_robots??'INDEX,FOLLOW'}}">
-  <!-- Schema.org para Google+ -->
-  <meta itemprop="name"
-        content="{{$product->meta_title??$product->name}}">
-  <meta itemprop="description"
-        content="{{$product->meta_description??$product->summary}}">
-  <meta itemprop="image"
-        content=" {{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
-  <!-- Open Graph para Facebook-->
 
-  <meta property="og:title"
-        content="{{$product->meta_title??$product->name}}"/>
-  <meta property="og:type" content="article"/>
-  <meta property="og:url" content="{{$product->url}}"/>
-  <meta property="og:image"
-        content="{{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}"/>
-  <meta property="og:description"
-        content="{{$product->meta_description??$product->summary}}"/>
-  <meta property="og:site_name" content="{{Setting::get('core::site-name') }}"/>
-  <meta property="og:locale" content="{{config('asgard.iblog.config.oglocal')}}">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="{{ Setting::get('core::site-name') }}">
-  <meta name="twitter:title"
-        content="{{$product->meta_title??$product->name}}">
-  <meta name="twitter:description"
-        content="{{$product->meta_description??$product->summary}}">
-  <meta name="twitter:creator" content="">
-  <meta name="twitter:image:src"
-        content="{{url($product->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
-
+  @include('icommerce::structure.meta-social')
+  
+  {!! $schemaScript !!}
+  
 @stop
 
 @section('title')
@@ -44,7 +14,7 @@
 
 @section('scripts')
   @parent
-  <script>
+  <script type="text/javascript" defer>
     /********* VUE ***********/
     var vue_show_commerce = new Vue({
       el: '#content_show_commerce',
@@ -52,6 +22,7 @@
       data: {
         path: '{{ route('api.icommerce.products.show',[$product->id]) }}',
         product: '',
+        canAddIsCallProductsIntoCart: '{{setting("icommerce::canAddIsCallProductsIntoCart")}}',
         product_gallery: [],
         products: [],
         products_children: false,
@@ -90,6 +61,7 @@
       created: function () {
         this.$nextTick(function () {
           this.get_product();
+          
           //this.getProducts();
           setTimeout(function () {
             $('#content_preloader').fadeOut(1000, function () {
@@ -113,15 +85,15 @@
             responseType: 'json',
             url: "{{ route('api.icommerce.products.index') }}",
             params: {
-              include: 'categories,productOptions,optionValues,category,wishlists',
+              include: 'categories,productOptions,optionValues,category',
             }
           }).then(response => {
             vue_show_commerce.products = response.data.data;
             vue_show_commerce.products.forEach(function (valor, indice, array) {
-
-
+              
+              
               if (vue_show_commerce.product.id == valor.id) {
-
+                
                 if ((indice - 1) > 0) {
                   vue_show_commerce.prev = vue_show_commerce.url + '/' + vue_show_commerce.products[indice - 1].slug;
                 }
@@ -130,11 +102,12 @@
                 }
               }
             });
-
+            
           });
-
-
+          
+          
         },
+        
         /* actualizar precio de producto */
         update_product: function (indexOption, indexValue) {
           // console.log(indexOption, indexValue);
@@ -151,10 +124,8 @@
               }
             }
           } else {
-
+          
           }
-
-          console.warn(this.productOptValueSelected)
         },
         /* obtiene los productos */
         get_product: function () {
@@ -163,19 +134,18 @@
             responseType: 'json',
             url: this.path,
             params: {
-              include: 'categories,productOptions,optionValues,category,wishlists,relatedProducts',
+              include: 'categories,productOptions,optionValues,category,relatedProducts',
             }
           }).then(function (response) {
-
+            
             vue_show_commerce.product = response.data.data;
             vue_show_commerce.categories = response.data.data.categories.reverse();
             vue_show_commerce.video = response.data.data.options.video;
             vue_show_commerce.product_gallery = response.data.data.gallery;
             vue_show_commerce.currency = "$";
-            vue_show_commerce.relatedProducts = response.data.data.relatedProducts;
             vue_show_commerce.get_product_options();
           });
-
+          
         },
         get_product_options: function () {
           axios({
@@ -190,7 +160,7 @@
             vue_show_commerce.productOptions = vue_show_commerce.builTree(response.data.data)
           });
         },
-
+        
         builTree(elements, parentId = 0) {
           var branch = [];
           elements.forEach(element => {
@@ -203,10 +173,10 @@
               branch.push(record);
             }
           })
-
+          
           return branch;
         },
-
+        
         /*change quantity, product children*/
         check_children: function (tr, operation, product) {
           (operation === '+') ?
@@ -221,51 +191,50 @@
               this.alerta("{{trans('icommerce::products.alerts.no_zero')}}", "warning")
             :
             false;
-
+          
           this.save_product_children(product.quantity_cart, product);
         },
-
+        
         /*save/update/delete product for add to cart*/
         save_product_children: function (quantity, product) {
           var products = this.products_children_cart;
           var pos = -1;
-
+          
           if (Array.isArray(products.length) && products.length >= 1) ;
           {
             $.each(products, function (index, item) {
               item.id === product.id ? pos = index : false;
             });
           }
-
+          
           if (parseInt(quantity)) { /*add/update item*/
             pos >= 0 ?
               this.products_children_cart[pos] = product :
               this.products_children_cart.push(product);
-
+            
           } else if (!parseInt(quantity) && pos !== -1) {/*delete item*/
             this.products_children_cart.splice(pos, 1);
           }
         },
-
+        
         /*agrega el producto al carro de compras*/
         addCart: function (data) {
           //Validate if options required is selected
           if (this.productOptionsSelected.required)
             return toastr.error("Faltan opciones requeridas por seleccionar");
-
+          
           vue_show_commerce.sending_data = true;
-          vue_carting.addItemCart(
+          
+          window.livewire.emit('addToCart',
             data.id,
-            data.name,
-            (data.price + this.productOptionsSelected.total),
             this.quantity,
             this.productOptionsSelected.options
           );
-          vue_show_commerce.quantity = 1;
+          
           vue_show_commerce.sending_data = false;
-
+          
         },
-
+        
         /* products wishlist */
         get_wishlist: function () {
           if (this.user) {
@@ -284,8 +253,8 @@
             })
           }
         },
-
-
+        
+        
         /* product add wishlist */
         addWishList: function (item) {
           if (this.user) {
@@ -310,7 +279,7 @@
             this.alerta("Por Favor, Inicie Sesion", "warning");
           }
         },
-
+        
         /*check if exist product in wisthlist*/
         check_wisht_list: function (id) {
           var response = false;
@@ -332,7 +301,7 @@
             vue_show_commerce.count_comments = response.data.count_comments;
           });
         },
-
+        
         /*alertas*/
         alerta: function (menssage, type) {
           toastr.options = {

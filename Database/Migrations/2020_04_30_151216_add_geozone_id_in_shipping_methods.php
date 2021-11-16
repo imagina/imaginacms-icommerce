@@ -27,8 +27,10 @@ class AddGeozoneIdInShippingMethods extends Migration
     public function down()
     {
         Schema::table('icommerce__shipping_methods', function (Blueprint $table) {
-          $table->dropForeign('icommerce__shipping_methods_geozone_id_foreign');
-          $table->dropColumn('geozone_id');
+          if(Schema::hasColumn('icommerce__shipping_methods','geozone_id')) {
+            $table->dropForeign('icommerce__shipping_methods_geozone_id_foreign');
+            $table->dropColumn('geozone_id');
+          }
         });
     }
 }

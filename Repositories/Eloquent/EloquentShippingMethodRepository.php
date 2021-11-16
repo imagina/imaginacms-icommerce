@@ -12,6 +12,7 @@ use Modules\Icommerce\Support\Cart as cartSupport;
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {
@@ -23,7 +24,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
 
         // RELATIONSHIPS
         $defaultInclude = [];
-        $query->with(array_merge($defaultInclude, $params->include));
+        $query->with(array_merge($defaultInclude, $params->include ??[]));
 
         // FILTERS
         if ($params->filter) {
@@ -37,6 +38,12 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
                     ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
                     ->orWhere('created_at', 'like', '%' . $filter->search . '%');
             }
+            //add filter by status
+            if (isset($filter->status)) {
+                //find search in columns
+                $query->where('status', $filter->status);
+                
+            }
 
         }
         /*== FIELDS ==*/
@@ -47,29 +54,42 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         if (isset($params->page) && $params->page) {
             return $query->paginate($params->take);
         } else {
-            $params->take ? $query->take($params->take) : false;//Take
+          (isset($params->take) && $params->take) ? $query->take($params->take) : false;//Take
             return $query->get();
         }
     }
 
-    public function getItem($criteria, $params)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
-
-        $query->where('id', $criteria);
-
-        // RELATIONSHIPS
-        $includeDefault = [];
-        $query->with(array_merge($includeDefault, $params->include));
-
-        // FIELDS
-        if ($params->fields) {
-            $query->select($params->fields);
+    public function getItem($criteria, $params = false)
+        {
+          //Initialize query
+          $query = $this->model->query();
+    
+        /*== RELATIONSHIPS ==*/
+        if(in_array('*',$params->include ?? [])){//If Request all relationships
+          $query->with([]);
+        }else{//Especific relationships
+          $includeDefault = [];//Default relationships
+          if (isset($params->include))//merge relations with default relationships
+            $includeDefault = array_merge($includeDefault, $params->include ?? []);
+          $query->with($includeDefault);//Add Relationships to query
         }
-        return $query->first();
-
-    }
+    
+          /*== FILTER ==*/
+          if (isset($params->filter)) {
+            $filter = $params->filter;
+    
+            if (isset($filter->field))//Filter by specific field
+              $field = $filter->field;
+          }
+    
+          /*== FIELDS ==*/
+          if (isset($params->fields) && count($params->fields))
+            $query->select($params->fields);
+    
+          /*== REQUEST ==*/
+          return $query->where($field ?? 'id', $criteria)->first();
+        }
+        
 
     public function create($data)
     {
@@ -83,23 +103,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     public function update($model, $data)
     {
       
-        // init
-        $options['init'] = $model->options->init;
-
-        // Extra Options
-        foreach ($model->options as $key => $value) {
-            if ($key != "init") {
-                $options[$key] = $data[$key];
-                unset($data[$key]);
-            }
-        }
-
-        $data['options'] = $options;
-
         $model->update($data);
+
         event(new UpdateMedia($model, $data));
-        // Sync Data
-        $model->geozones()->sync(array_get($data, 'geozones', []));
 
         return $model;
 
@@ -112,7 +118,7 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
      * @return Response
      */
 
-    public function getCalculations($request, $params)
+    public function getCalculations($data, $params)
     {
 
       /* Init query */
@@ -133,11 +139,12 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
       /* Run query*/
       $methods = $query->get();
 
-      if (isset($methods) && count($methods) > 0) {
+      if (isset($methods) && $methods->count() > 0) {
         // Search Cart
         $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-        if (isset($data->products['cart_id'])) {
-            $cart = $cartRepository->find($request->products['cart_id']);
+        
+        if (isset($data['cart_id'])) {
+            $cart = $cartRepository->find($data['cart_id']);
             // Fix data cart products
             $supportCart = new cartSupport();
             $dataCart = $supportCart->fixProductsAndTotal($cart);
@@ -146,7 +153,8 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         }
         foreach ($methods as $key => $method) {
           try {
-            $results = app($method->options->init)->init($request);
+            $data["methodId"] = $method->id;
+            $results = app($method->options->init)->init(new Request ($data));
             $resultData = $results->getData();
             $method->calculations = $resultData;
           } catch (\Exception $e) {

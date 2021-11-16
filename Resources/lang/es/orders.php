@@ -10,6 +10,9 @@ return [
         'create order' => 'Crear un pedido',
         'edit order' => 'Editar un pedido',
         'single_order_title'=>'Orden de Compra',
+        'quote' => 'Cotización',
+        'confirmation_single_order_title'=>'Confirmación de orden de compra',
+        'myOrders'=>'Mis Ordenes',
         'detail order'=> 'Detalle de  la Orden'
     ],
     'breadcrumb'=>[
@@ -32,7 +35,7 @@ return [
         'details' => 'Detalles del pedido',
         'customer details' => 'Datos del Cliente',
         'others details' => 'Otros detalles',
-        'order' => 'Order',
+        'order' => 'Orden',
         'payment address' => 'Dirección de facturación',
         'shipping address' => 'Dirección de envío',
         'product' => 'Producto',
@@ -62,8 +65,12 @@ return [
         'user details' => 'Detalles del usuario',
         'shipping method' => 'Método de envío:',
         'order status' => 'Estado del pedido:',
-        'rights' => 'Todos los derechos reservados por',
+        'order error' => 'Ups!. Hubo un error inesperado generando su orden, por favor intenta mas tarde',
+        'order success' => 'Tu pedido se ha realizado con éxito, por favor verifica tu correo electrónico.',
+        'orderNotRequireShipping' => 'Esta orden no requiere envío',
+        'rights' => 'Todos los derechos reservados por ',
         'notificationOrder' => 'Notificación Orden de compra',
+        'statusChanged' => 'su orden <b>#:orderId</b> fue actualizada a estado: <strong>:statusName</strong>',
     ],
     'validation' => [
     ],

@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Repositories\OrderHistoryRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
@@ -68,6 +69,10 @@ class EloquentOrderHistoryRepository extends EloquentBaseRepository implements O
 
     $orderhistory = $this->model->create($data);
     event(new OrderStatusHistoryWasCreated($data));
+  
+    if($orderhistory->status == 13) {// Processed
+      event(new OrderWasProcessed($orderhistory->order));
+    }
 
     return $orderhistory;
   }

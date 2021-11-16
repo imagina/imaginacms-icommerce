@@ -2,10 +2,10 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icommerce\Transformers\OptionTransformer;
 
-class OptionValueTransformer extends Resource
+class OptionValueTransformer extends JsonResource
 {
   public function toArray($request)
   {
@@ -14,7 +14,7 @@ class OptionValueTransformer extends Resource
       'description' => $this->description,
       'optionId' => $this->when($this->option_id,$this->option_id),
       'sortOrder' => $this->when($this->sort_order,$this->sort_order),
-      'options' => $this->when($this->options,$this->options),
+      'options' => $this->options,
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
       'option' => new OptionTransformer($this->whenLoaded('option')),

@@ -29,6 +29,10 @@ return [
         'proceed_to_checkout'   => 'Proceder a pagar',
         'view_cart'             => 'Ver Carrito',
         'checkout'              => 'Finalizar Pedido',
+        'add_to_cart'           => 'Agregar',
+        'add_to_cart_quote'     => 'Agregar cotizacion',
+        'download_pdf'          => 'Descargar PDF',
+        'request_quote'         => 'Solicitar cotizacion'
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'No tienes artículos en tú carrito de compras. haz Click ',
@@ -37,9 +41,13 @@ return [
     ],
     'message' => [
         'add' => 'Producto agregado al carrito',
+        'invalid_product' => 'Product inválido, no es posible agregarlo al carrito',
+        'product_with_required_options' => 'Este producto tiene algunas opciones requeridas',
+        'remove' => 'Producto removido del carrito',
         'can_not_add' => 'Debes agregar al menos un productos al carrito',
         'not_existence' => 'No puedes agregar mas ya que excede la existencia en el inventario',
         'min_exceeded' => 'La cantidad no puede ser menor a 1',
+        'quantity_unavailable' => 'Quedan :quantity unidades del producto que deseas',
     ],
 
 ];

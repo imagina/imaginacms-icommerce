@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
@@ -17,8 +18,9 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     $query = $this->model->query();
 
     // RELATIONSHIPS
-    $defaultInclude = ['customer','addedBy'];
-    $query->with(array_merge($defaultInclude, $params->include));
+    $defaultInclude = ['customer','addedBy', 'paymentCountry', 'shippingCountry', 'shippingDepartment',
+      'paymentDepartment'];
+    $query->with(array_merge($defaultInclude, $params->include ?? []));
 
     // FILTERS
     if($params->filter) {
@@ -50,6 +52,11 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       }
       if (isset($filter->status)){
           $query->where('status_id', $filter->status);
+      }
+      //add filter by ids
+      if (isset($filter->ids)) {
+        is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
+        $query->whereIn('icommerce__orders.id', $filter->ids);
       }
 
       if (isset($filter->store)){
@@ -100,8 +107,8 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
     } else {
-      // $params->take ?? $query->take($params->take);//Take
-      return $query->get();
+      (isset($params->take) && $params->take) ?? $query->take($params->take);//Take
+ 
     }
   }
 
@@ -111,12 +118,13 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
         $query = $this->model->query();
 
       /*== RELATIONSHIPS ==*/
-      if(in_array('*',$params->include)){//If Request all relationships
+      if(in_array('*',$params->include ?? [])){//If Request all relationships
         $query->with([]);
       }else{//Especific relationships
-        $includeDefault = ['customer','addedBy','orderItems','orderHistory','transactions'];//Default relationships
+        $includeDefault = ['customer','addedBy','orderItems','orderHistory','transactions','coupons',
+          'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'];//Default relationships
         if (isset($params->include))//merge relations with default relationships
-          $includeDefault = array_merge($includeDefault, $params->include);
+          $includeDefault = array_merge($includeDefault, $params->include ?? []);
         $query->with($includeDefault);//Add Relationships to query
       }
 
@@ -152,10 +160,9 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
     // Create Order History
     $order->orderHistory()->create($data['orderHistory']);
-
-
-
-
+  
+    event(new OrderStatusHistoryWasCreated($order));
+  
     return $order;
 
   }

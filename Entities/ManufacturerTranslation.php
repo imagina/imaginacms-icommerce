@@ -17,6 +17,8 @@ class ManufacturerTranslation extends Model
         'name',
         'slug',
         'description',
+        'meta_title',
+        'meta_description',
         'translatable_options'
     ];
     protected $casts = [

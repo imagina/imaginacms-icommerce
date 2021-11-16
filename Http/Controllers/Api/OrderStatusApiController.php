@@ -45,6 +45,7 @@ class OrderStatusApiController extends BaseApiController
 
     } catch (\Exception $e) {
       //Message Error
+      \Log::error($e->getMessage());
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -70,6 +71,7 @@ class OrderStatusApiController extends BaseApiController
       ];
 
     } catch (\Exception $e) {
+      \Log::error($e->getMessage());
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -91,7 +93,7 @@ class OrderStatusApiController extends BaseApiController
       $response = ['data' => ''];
 
     } catch (\Exception $e) {
-
+      \Log::error($e->getMessage());
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -122,8 +124,7 @@ class OrderStatusApiController extends BaseApiController
       \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
-
-      \Log::error($e);
+      \Log::error($e->getMessage());
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
@@ -146,6 +147,7 @@ class OrderStatusApiController extends BaseApiController
       $response = ['data' => ''];
 
     } catch (\Exception $e) {
+      \Log::error($e->getMessage());
       $status = 500;
       $response = [
         'errors' => $e->getMessage()

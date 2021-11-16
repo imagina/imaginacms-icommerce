@@ -7,7 +7,7 @@ return [
         'title'             => 'Cart',
         'my_cart'           => 'My cart',
         'your_cart'         => 'Your shopping cart',
-        'view_cart'         => 'See small car',
+        'view_cart'         => 'See cart',
     ],
     'articles'      => [
         'cart'              => 'Shopping cart',
@@ -27,8 +27,12 @@ return [
     'button'    => [
         'continue_shopping'   	=> 'Continue buying',
         'proceed_to_checkout'   => 'Proceed to pay',
-        'view_cart'             => 'See small car',
-        'checkout'              => 'Finalizar Pedido',
+        'view_cart'             => 'See cart',
+        'checkout'              => 'Checkout',
+        'add_to_cart'           => 'Add to cart',
+        'add_to_cart_quote'     => 'Add to quote',
+        'download_pdf'          => 'Download PDF',
+        'request_quote'         => 'Request Quote'
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'You have no items in your shopping cart. click',
@@ -37,9 +41,13 @@ return [
     ],
     'message' => [
         'add' => 'Product added to cart',
+        'invalid_product' => 'Invalid product, it\'s not possible adding it to cart',
+        'product_with_required_options' => 'This product have some required options',
+        'remove' => 'Product removed from the cart',
         'can_not_add' => 'You must add at least one product to the cart',
         'not_existence' => 'You cannot add more since it exceeds the existence in the inventory',
-        'min_exceeded' => 'La cantidad no puede ser menor a 1',
+        'min_exceeded' => 'Quantity must be at least 1',
+        'quantity_unavailable' => 'There are :quantity units left of the product you want',
     ],
 
 ];

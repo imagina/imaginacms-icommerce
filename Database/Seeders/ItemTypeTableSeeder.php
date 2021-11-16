@@ -26,21 +26,18 @@ class ItemTypeTableSeeder extends Seeder
       $statusTrans = $type['title'];
       
       foreach (['en', 'es'] as $locale) {
-        
-        if ($locale == 'en') {
-          $type['title'] = trans($statusTrans, [], $locale);
-          $typeCreated = ItemTypeTranslation::where("title",$type['title'])->where("locale",$locale)->first();
-          if(!isset($typeCreated->id))
-            $itemType = ItemType::create($type);
-        } else {
-          $title = trans($statusTrans, [], $locale);
-          $typeCreated = ItemTypeTranslation::where("title",$title)->where("locale",$locale)->first();
-          
-          if(!isset($typeCreated->id)){
-            $itemType->translateOrNew($locale)->title = $title;
-            $itemType->save();
-          }
-          
+  
+        $data = [
+          "id" => $type['id'],
+          $locale => [
+            "title" => $type['title'],
+          ]
+        ];
+        $itemType = ItemType::find($type['id']);
+        if(isset($itemType->id)){
+          $itemType->update($data);
+        }else{
+          $itemType = ItemType::create($data);
         }
         
       }//End Foreach

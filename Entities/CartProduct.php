@@ -2,7 +2,7 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Dimsav\Translatable\Translatable;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Icommerce\Entities\Product;
 
@@ -14,6 +14,7 @@ class CartProduct extends Model
     'cart_id',
     'product_id',
     'quantity',
+    'is_call',
     'options'
 
   ];
@@ -33,53 +34,69 @@ class CartProduct extends Model
     return $this->belongsTo(Product::class);
   }
 
-    public function productOptionValues()
-    {
-        return $this->belongsToMany(ProductOptionValue::class, 'icommerce__cart_product_options')->withTimestamps();
+  public function productOptionValues()
+  {
+    return $this->belongsToMany(ProductOptionValue::class, 'icommerce__cart_product_options')->withTimestamps();
 
+  }
+
+
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
+
+
+  public function getOptionsAttribute($value)
+  {
+    return json_decode($value);
+  }
+
+
+  public function getTotalAttribute()
+  {
+    if (!$this->product->is_call) {
+      $priceBase = $this->product->discount->price ?? $this->product->price;
+      $subtotal = floatval($priceBase) * intval($this->quantity);
+      $totalOptions = 0;
+
+      foreach ($this->productOptionValues as $productOptionValue) {
+        $price = 0;
+        $price = floatval($productOptionValue->price) * intval($this->quantity);
+
+        $productOptionValue->price_prefix == '+' ? $totalOptions += $price : $totalOptions -= $price;
+
+      }
+
+      return $subtotal + $totalOptions;
+    } else {
+      return 0;
     }
 
-    public function getTotalAttribute()
-    {
-        $priceBase = $this->product->price - ($this->product->discount->totalDiscount ?? 0 ) + $this->product->present()->totalTaxes;
-        $subtotal = floatval($priceBase) * intval($this->quantity);
-        $totalOptions = 0;
+  }
 
-        foreach($this->productOptionValues as $productOptionValue){
-          $price = 0;
-          $price = floatval($productOptionValue->price) * intval($this->quantity);
+  public function getPriceUnitAttribute()
+  {
+    $priceBase = $this->product->discount->price ?? $this->product->price;
+    $subtotal = floatval($priceBase);
+    $totalOptions = 0;
 
-          if($productOptionValue->price_prefix == '+')
-            $totalOptions += $price;
-          else
-            $totalOptions -= $price;
-        }
+    foreach ($this->productOptionValues as $productOptionValue) {
+      $price = 0;
+      $price = floatval($productOptionValue->price);
 
-        return $subtotal + $totalOptions;
+      if ($productOptionValue->price_prefix == '+')
+        $totalOptions += $price;
+      else
+        $totalOptions -= $price;
     }
 
-    public function getPriceUnitAttribute()
-    {
-        $priceBase = $this->product->price - ($this->product->discount->totalDiscount ?? 0 ) + $this->product->present()->totalTaxes;
-        $subtotal = floatval($priceBase);
-        $totalOptions = 0;
+    return $subtotal + $totalOptions;
+  }
 
-        foreach($this->productOptionValues as $productOptionValue){
-          $price = 0;
-          $price = floatval($productOptionValue->price);
-
-          if($productOptionValue->price_prefix == '+')
-            $totalOptions += $price;
-          else
-            $totalOptions -= $price;
-        }
-
-        return $subtotal + $totalOptions;
-    }
-
-    public function getNameProductAttribute()
-    {
-        return Product::find($this->product_id)->name;
-    }
+  public function getNameProductAttribute()
+  {
+    return Product::find($this->product_id)->name;
+  }
 
 }

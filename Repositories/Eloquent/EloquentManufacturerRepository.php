@@ -2,22 +2,36 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Ihelpers\Events\CreateMedia;
+use Modules\Ihelpers\Events\DeleteMedia;
+use Modules\Ihelpers\Events\UpdateMedia;
 
 class EloquentManufacturerRepository extends EloquentBaseRepository implements ManufacturerRepository
 {
-  public function getItemsBy($params)
+  public function getItemsBy($params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
     
     // RELATIONSHIPS
-    $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude, $params->include));
+    //$defaultInclude = ['translations'];
+    //$query->with(array_merge($defaultInclude, $params->include));
+
+    /*== RELATIONSHIPS ==*/
+    if (in_array('*', $params->include ?? [])) {//If Request all relationships
+      $query->with(['translations']);
+    } else {//Especific relationships
+      $includeDefault = ['translations','files'];//Default relationships
+      if (isset($params->include))//merge relations with default relationships
+        $includeDefault = array_merge($includeDefault, $params->include);
+      $query->with($includeDefault);//Add Relationships to query
+    }
     
     // FILTERS
-    if ($params->filter) {
+    if (isset($params->filter)) {
       $filter = $params->filter;
       
       //get language translation
@@ -43,15 +57,45 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
       }
     }
   
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+    } else {
+    
+      //pre-filter status
+      $query->where("status", 1);
+    }
+    
+		// ORDER
+		if (isset($params->order) && $params->order) {
+		
+			$order = is_array($params->order) ? $params->order : [$params->order];
+		
+			foreach ($order as $orderObject) {
+				if (isset($orderObject->field) && isset($orderObject->way))
+				{
+					if (in_array($orderObject->field, $this->model->translatedAttributes)) {
+						$query->join('icommerce__manufacturer_trans as translations', 'translations.manufacturer_id', '=', 'icommerce__manufacturers.id');
+						$query->orderBy("translations.$orderObject->field", $orderObject->way);
+					} else
+						$query->orderBy($orderObject->field, $orderObject->way);
+				}
+			
+			}
+		}else{
+      $query->orderBy('sort_order', 'desc');//Add order to query
+      $query->leftJoin("icommerce__manufacturer_trans as mt", "mt.manufacturer_id", "icommerce__manufacturers.id")
+        ->orderBy('mt.name', 'asc');
+    }
+		
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
+
     /*== REQUEST ==*/
     if (isset($params->page) && $params->page) {
       return $query->paginate($params->take);
     } else {
-      $params->take ? $query->take($params->take) : false;//Take
+      isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
       return $query->get();
     }
   }
@@ -64,24 +108,50 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     $query->where('id', $criteria);
     
     // RELATIONSHIPS
-    $includeDefault = ['translations'];
+    $includeDefault = ['translations','files'];
     $query->with(array_merge($includeDefault, $params->include));
     
     // FIELDS
     if ($params->fields) {
       $query->select($params->fields);
     }
+    
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+    } else {
+    
+      //pre-filter status
+      $query->where("status", 1);
+    }
+    
     return $query->first();
     
   }
   
+  /**
+   * Find a resource by the given slug
+   *
+   * @param  string $slug
+   * @return object
+   */
+  public function findBySlug($slug)
+  {
+    if (method_exists($this->model, 'translations')) {
+      return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
+        $q->where('slug', $slug);
+      })->with('translations')->firstOrFail();
+    }
+    
+    return $this->model->where('slug', $slug)->with('translations')->first();
+  }
   
   public function create($data)
   {
     
     $manufacturer = $this->model->create($data);
-    
-    
+  
+    //Event to ADD media
+    event(new CreateMedia($manufacturer, $data));
     return $manufacturer;
   }
   
@@ -106,6 +176,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
   
     if($model) {
       $model->update($data);
+      event(new UpdateMedia($model, $data));//Event to Update media
     }
     return $model;
     
@@ -131,6 +202,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
   
     if($model) {
       $model->delete();
+      event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     }
   }
 }

@@ -2,44 +2,56 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Dimsav\Translatable\Translatable;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 class TaxRate extends Model
 {
-    use Translatable;
-
-    protected $table = 'icommerce__tax_rates';
-    public $translatedAttributes = [
-        'name'
-    ];
-    protected $fillable = [
-        'rate',
-        'type',
-        'geozone_id',
-        'customer',
-        'tax_class_id',
-        'store_id'
-    ];
-
-
-    public function store()
-    {
-        if (is_module_enabled('Marketplace')) {
-            return $this->belongsTo('Modules\Marketplace\Entities\Store');
-        }
-        return $this->belongsTo(Store::class);
+  use Translatable;
+  
+  protected $table = 'icommerce__tax_rates';
+  public $translatedAttributes = [
+    'name'
+  ];
+  protected $fillable = [
+    'rate',
+    'type',
+    'geozone_id',
+    'customer',
+    'tax_class_id',
+    'store_id'
+  ];
+  
+  
+  public function store()
+  {
+    if (is_module_enabled('Marketplace')) {
+      return $this->belongsTo('Modules\Marketplace\Entities\Store');
     }
+    return $this->belongsTo(Store::class);
+  }
+  
+  public function geozone()
+  {
+    return $this->belongsTo('Modules\Ilocations\Entities\Geozones', 'geozone_id');
+  }
+  
+  
+  public function taxClass()
+  {
+    return $this->belongsTo(TaxClass::class, 'tax_class_id');
+  }
+  
+  
+  public function calcTax($value)
+  {
 
-    public function geozone()
-    {
-        return $this->belongsTo('Modules\Ilocations\Entities\Geozones', 'geozone_id');
+    if ($this->type == 2) {
+      return ($this->rate);
     }
-
-
-        public function taxClass()
-        {
-          return $this->belongsTo(TaxClass::class,'tax_class_id');
-        }
-
+    
+    if ($this->type == 1) {
+      return floatval(($value * $this->rate) / 100);
+    }
+  }
 }

@@ -2,20 +2,18 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaxClassRateTransformer extends Resource
+class TaxClassRateTransformer extends JsonResource
 {
   public function toArray($request)
   {
     $data =  [
-      'id' => $this->id,
-      'taxClassId' => (int)$this->when($this->pivot->tax_class_id, $this->pivot->tax_class_id),
-      'taxRateId' => (int)$this->when($this->pivot->tax_rate_id, $this->pivot->tax_rate_id),
-      'based' => $this->when($this->pivot->based, $this->pivot->based),
-      'priority' => $this->when($this->pivot->priority, $this->pivot->priority),
-      'createdAt' => $this->when($this->pivot->created_at, $this->pivot->created_at),
-      'updatedAt' => $this->when($this->pivot->updated_at, $this->pivot->updated_at),
+      'taxRateId' => $this->when($this->tax_rate_id, $this->tax_rate_id),
+      'based' => $this->when($this->based, $this->based),
+      'priority' => (string)$this->priority ?? '0',
+      'taxRate' => new TaxRateTransformer($this->whenLoaded('taxRate')),
+      'taxClass' => new TaxClassTransformer($this->whenLoaded('taxClass')),
     ];
 
 

@@ -31,7 +31,7 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
    *
    * @return object
    */
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     return $this->remember(function () use ($criteria, $params) {
       return $this->repository->getItem($criteria, $params);
@@ -73,6 +73,41 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
     
     return $this->repository->deleteBy($criteria, $params);
   }
+  
+  /**
+   * Min and Max Price
+   *
+   * @return collection
+   */
+  public function getPriceRange($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getPriceRange($params);
+    });
+  }
 
+  /**
+   * Get Manufactures From Products Filtered
+   *
+   * @return collection
+   */
+  public function getManufacturers($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getManufacturers($params);
+    });
+  }
+
+  /**
+   * Get Product Options From Products Filtered
+   *
+   * @return collection
+   */
+  public function getProductOptions($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getProductOptions($params);
+    });
+  }
 
 }

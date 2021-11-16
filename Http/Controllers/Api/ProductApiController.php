@@ -61,7 +61,6 @@ class ProductApiController extends BaseApiController
         try {
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
-
             //Request to Repository
             $products = $this->product->getItemsBy($params);
 
@@ -71,7 +70,7 @@ class ProductApiController extends BaseApiController
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($products)] : false;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = [
                 "errors" => $e->getMessage()
@@ -106,7 +105,7 @@ class ProductApiController extends BaseApiController
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = [
                 "errors" => $e->getMessage()
@@ -131,7 +130,7 @@ class ProductApiController extends BaseApiController
 
             //Validate Request
             $this->validateRequestApi(new CreateProductRequest($data));
-  
+
             //Create item
             $product = $this->product->create($data);
 
@@ -139,7 +138,7 @@ class ProductApiController extends BaseApiController
             $response = ["data" => new ProductTransformer($product)];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -159,22 +158,22 @@ class ProductApiController extends BaseApiController
     {
         \DB::beginTransaction(); //DB Transaction
         try {
-          //Get data
+            //Get data
             $data = $request->input('attributes') ?? [];
-            
+
             $this->validateRequestApi(new UpdateProductRequest($data));
-  
-          //Get Parameters from URL.
+
+            //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
             //Request to Repository
             $this->product->updateBy($criteria, $data, $params);
-            
+
             //Response
             $response = ["data" => 'Item Updated'];
             \DB::commit();//Commit to DataBase
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -198,16 +197,12 @@ class ProductApiController extends BaseApiController
             $params = $this->getParamsRequest($request);
 
 
-            $dataEntity = $this->product->getItem($criteria, $params);
+            //Request to Repository
+            $this->product->deleteBy($criteria, $params);
 
-            if (!$dataEntity) throw new \Exception('Item not found', 204);
-            $product = $this->product->destroy($dataEntity);
-            $response = [
-                "data" => $product
-            ];
             \DB::commit();
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -249,7 +244,7 @@ class ProductApiController extends BaseApiController
             $product->ratings()->save($rating);
             $product->update(['sum_rating' => $oldRating + $data['rating']]);
 
-            $checkbox = $this->setting->get('points-per-rating-product-checkbox');
+            $checkbox = $this->setting->get('iredeems::points-per-rating-product-checkbox');
             if ($checkbox) {
                 $points = $this->setting->get('iredeems::points-per-rating-product');
 
@@ -268,7 +263,7 @@ class ProductApiController extends BaseApiController
             $response = ["data" => 'Item Updated', 'store' => 'asd'];
             \DB::commit();//Commit to DataBase
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];

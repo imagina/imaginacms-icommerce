@@ -2,9 +2,9 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TagTransformer extends Resource
+class TagTransformer extends JsonResource
 {
   public function toArray($request)
   {

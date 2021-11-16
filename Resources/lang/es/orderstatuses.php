@@ -22,6 +22,7 @@ return [
     'validation' => [
     ],
     'statuses' => [
+        'pending'           => 'Pendiente',
         'processing'        => 'Procesando',
         'shipped'           => 'Enviado',
         'canceled'          => 'Cancelado',
@@ -32,7 +33,6 @@ return [
         'refunded'          => 'Reintegrado',
         'reserved'          => 'Reservado',
         'chargeback'        => 'Contracargo',
-        'pending'           => 'Pendiente',
         'voided'            => 'Vacio',
         'processed'         => 'Procesado',
         'expired'           => 'Expirado',

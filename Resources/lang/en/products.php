@@ -13,9 +13,14 @@ return [
     'products' => 'Product',
     'create product' => 'Create a product',
     'edit product' => 'Edit a product',
+    'productDetails' => 'Product Details',
+    'comments' => 'Comments',
+    'related' => 'Related',
+    'reviews' => 'Reviews',
   ],
   'button' => [
     'create product' => 'Create a product',
+    'addToCartItemList' => "Buy"
   ],
   'table'             => [
     'title'                     => 'Title',
@@ -55,13 +60,13 @@ return [
     'additional'                => 'Additional',
     'purchasable'               => 'Product Purchasable',
     'freeshipping'              => 'Product with Freeshipping',
-    'order_weight'              => 'Order Products',
+    'order_weight'              => 'Order Weight',
     'select option'             => 'Select an option',
     'manufacturer'              => 'Manufacturer',
     'certificate'               => 'Certificate',
-    'data_sheet'                => 'Data sheet'
-
-
+    'data_sheet'                => 'Data sheet',
+    'points'                    => 'Points',
+    'points win'                => 'Earn :points Points for purchasing this product',
   ],
   'categories'        => [
     'free_shipping'             => 'Products with free shipping',
@@ -71,7 +76,9 @@ return [
     'products_by_manufacturer'      => 'Products by manufacturer',
     'all_products_by_manufacturer'  => 'All products by manufacturer...',
   ],
-  'form'              => [
+  'form' => [
+    'available' => 'Available',
+    'outOfStock' => 'Out of stock'
   ],
   'messages'          => [
     'error delete product'  => 'The product could not be deleted',
@@ -87,6 +94,8 @@ return [
     'shopping'              => 'SHOPPING',
     'details'               => 'DETAILS',
     'reviews'               => 'REVIEWS',
+    'productSoldOut'      => 'Your product: <b>:name</b> se ha <b>agotado</b>',
+    'productLowStock'      => '<b>:units</b> unit(s) remaining from your product <b>:name</b>',
   ],
   'validation'        => [
     'error delete'          => 'Error: You can\'t delete this product because it has associated elements',
@@ -106,6 +115,10 @@ return [
     'no_add_cart'   => 'Can\'t add the product, try again please',
     'no_more'       => 'The product doesn\'t have any more inventory',
     'no_zero'       => 'The product can\'t be less than 0',
+    'new'           => 'New',
+    'sold out'      => 'Sold out',
+    'withDiscount'       => 'OFF',
+    'beforeDiscount'     => 'Before:',
   ],
   'bulkload'=>[
     'success migrate from product' => 'success migrate from product',
@@ -119,6 +132,5 @@ return [
     'Select Filecompatible files CSV, XLSX'=>'Select File Compatible files CSV, XLSX',
     'Image folder path'=>'Image folder path',
     'Submit'=>'Import'
-
   ]
 ];

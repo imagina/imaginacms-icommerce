@@ -45,7 +45,7 @@ class ManufacturerApiController extends BaseApiController
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($manufacturers)] : false;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -78,7 +78,7 @@ class ManufacturerApiController extends BaseApiController
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -109,7 +109,7 @@ class ManufacturerApiController extends BaseApiController
             $response = ["data" => new ManufacturerTransformer($manufacturer)];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -134,18 +134,14 @@ class ManufacturerApiController extends BaseApiController
 
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
-
-            $dataEntity = $this->manufacturer->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 204);
-
+            
             //Request to Repository
-            $this->manufacturer->update($dataEntity, $data);
+            $this->manufacturer->updateBy($criteria, $data, $params);
             //Response
             $response = ["data" => 'Item Updated'];
             \DB::commit();//Commit to DataBase
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -167,20 +163,14 @@ class ManufacturerApiController extends BaseApiController
         try {
             //Get params
             $params = $this->getParamsRequest($request);
-
-
-            $dataEntity = $this->manufacturer->getItem($criteria, $params);
-
-            if (!$dataEntity) throw new Exception('Item not found', 204);
-
-            //call Method delete
-            $this->manufacturer->destroy($dataEntity);
+            
+            $dataEntity = $this->manufacturer->deleteBy($criteria, $params);
 
             //Response
             $response = ["data" => "Item deleted"];
             \DB::commit();//Commit to Data Base
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];

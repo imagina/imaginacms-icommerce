@@ -2,10 +2,10 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icurrency\Support\Facades\Currency;
 
-class CartProductTransformer extends Resource
+class CartProductTransformer extends JsonResource
 {
   public function toArray($request)
   {

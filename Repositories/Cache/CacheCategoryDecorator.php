@@ -27,6 +27,18 @@ class CacheCategoryDecorator extends BaseCacheDecorator implements CategoryRepos
   }
 
   /**
+   * List or resources
+   *
+   * @return collection
+   */
+  public function getItemsByForTheTreeFilter($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getItemsByForTheTreeFilter($params);
+    });
+  }
+
+  /**
    * find a resource by id or slug
    *
    * @return object

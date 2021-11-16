@@ -86,9 +86,9 @@ class TaxClassApiController extends BaseApiController
   {
     try {
 
-            $data = $request->input('attributes') ?? [];//Get data
-            $this->validateRequestApi(new TaxClassRequest($data));
-            $taxClass = $this->taxClass->create($data);
+      $data = $request->input('attributes') ?? [];//Get data
+      $this->validateRequestApi(new TaxClassRequest($data));
+      $taxClass = $this->taxClass->create($data);
 
       $response = ['data' => $taxClass];
 
@@ -127,7 +127,7 @@ class TaxClassApiController extends BaseApiController
       $response = ["data" => 'Item Updated'];
       \DB::commit();//Commit to DataBase
     } catch (\Exception $e) {
-      \Log::error($e);
+      \Log::error($e->getMessage());
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];

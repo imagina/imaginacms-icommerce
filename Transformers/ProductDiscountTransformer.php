@@ -2,11 +2,11 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Iprofile\Transformers\DepartmentTransformer;
 
 
-class ProductDiscountTransformer extends Resource
+class ProductDiscountTransformer extends JsonResource
   {
   public function toArray($request)
     {
@@ -24,6 +24,8 @@ class ProductDiscountTransformer extends Resource
         'discount' => $this->when($this->discount, $this->discount),
         'criteria' => $this->when($this->criteria, $this->criteria),
         'departmentId' => $this->when($this->department_id, $this->department_id),
+        'excludeDepartments' => $this->exclude_departments,
+        'includeDepartments' => $this->include_departments,
         'department' => new DepartmentTransformer($this->whenLoaded('department')),
         'dateStart' => $this->when($this->date_start, $this->date_start),
         'dateEnd' => $this->when($this->date_end, $this->date_end),

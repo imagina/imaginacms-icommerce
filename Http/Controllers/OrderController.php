@@ -6,6 +6,7 @@ use Modules\Core\Http\Controllers\BasePublicController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Icommerce\Transformers\OrderTransformer;
 use Modules\User\Contracts\Authentication;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
@@ -55,25 +56,26 @@ class OrderController extends BasePublicController
     {
         $tpl = 'icommerce::frontend.orders.show';
         $ttpl = 'icommerce.orders.show';
-   
+
         if (view()->exists($ttpl)) $tpl = $ttpl;
-        if (!isset($request->key)) {
+        if (!isset($request->orderKey)) {
             $user = $this->auth->user();
-            $order = $this->order->getItem($request->id,(object)["filter"=>(object)["customer"=>$user->id],"include"=>[]]);
+            $order = $this->order->getItem($request->orderId,(object)["filter"=>(object)["customer"=>$user->id],"include"=>[]]);
         }else
-            $order = $this->order->getItem($request->key,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);
+            $order = $this->order->getItem($request->orderKey,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);
 
         $products = [];
         if (isset($order) && !empty($order)) {
             if ($order->shipping_amount>0){
-                $subtotal = $order->total - $order->shipping_amount;
+                $subtotal = $order->total + $order->coupon_total - $order->shipping_amount;
             }else{
                 $subtotal = $order->total;
             }
             if ($order->tax_amount){
                 $subtotal = $subtotal - $order->tax_amount;
             }
-            return view($tpl, compact('order', 'user','subtotal'));
+          $order = new OrderTransformer($order);
+            return view($tpl, compact('order','subtotal'));
 
         } else
             return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));

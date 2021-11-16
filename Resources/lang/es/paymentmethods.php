@@ -23,7 +23,8 @@ return [
     'form' => [
     ],
     'messages' => [
-        'no payment methods' => 'No payment methods',
+        'no payment methods' => 'no payment methods',
+        'noPaymentMethodSelected' => 'No hay método de pago seleccionado',
     ],
     'validation' => [
     ],

@@ -91,7 +91,7 @@ class TransactionApiController extends BaseApiController
     try {
       //Get data
       $data = $request->input('attributes');
-      
+  
       //Create item
       $transaction = $this->transaction->create($data);
       
@@ -99,9 +99,10 @@ class TransactionApiController extends BaseApiController
       $response = ["data" => $transaction ];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
+      \Log::error($e->getMessage());
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
-      $response = ["errors" => $e->getMessage()];
+      $response = ["errors" => $this->getErrorMessage($e)];
     }
     //Return response
     return response()->json($response, $status ?? 200);
@@ -122,6 +123,7 @@ class TransactionApiController extends BaseApiController
       $response = ['data' => $data];
       
     } catch (\Exception $e) {
+      \Log::error($e->getMessage());
       $status = 500;
       $response = [
         'errors' => $e->getMessage()
@@ -143,6 +145,7 @@ class TransactionApiController extends BaseApiController
       $response = ['data' => ''];
       
     } catch (\Exception $e) {
+      \Log::error($e->getMessage());
       $status = 500;
       $response = [
         'errors' => $e->getMessage()

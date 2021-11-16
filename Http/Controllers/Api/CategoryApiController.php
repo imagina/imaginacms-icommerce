@@ -102,7 +102,7 @@ class CategoryApiController extends BaseApiController
         try {
             $data = $request->input('attributes') ?? [];//Get data
             //Validate Request
-          
+
             $this->validateRequestApi(new CreateCategoryRequest($data));
 
             //Create item
@@ -127,8 +127,8 @@ class CategoryApiController extends BaseApiController
      */
     public function update($criteria, Request $request)
     {
-      
-      
+
+
         \DB::beginTransaction();
         try {
             $params = $this->getParamsRequest($request);
@@ -136,7 +136,7 @@ class CategoryApiController extends BaseApiController
 
             //Validate Request
             $this->validateRequestApi(new UpdateCategoryRequest($data));
-            
+
             //Update data
             $category = $this->category->updateBy($criteria, $data,$params);
 

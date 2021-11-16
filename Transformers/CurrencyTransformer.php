@@ -2,9 +2,9 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class CurrencyTransformer extends Resource
+class CurrencyTransformer extends JsonResource
 {
   public function toArray($request)
   {
@@ -12,29 +12,29 @@ class CurrencyTransformer extends Resource
       'id' => $this->when($this->id,$this->id),
       'name' => $this->when($this->name,$this->name),
       'code' => $this->when($this->code,$this->code),
-      'symbol_left' => $this->when($this->symbol_left,$this->symbol_left),
-      'symbol_right' => $this->when($this->symbol_right,$this->symbol_right),
-      'decimal_place' => $this->when($this->decimal_place,$this->decimal_place),
+      'symbolLeft' => $this->when($this->symbol_left,$this->symbol_left),
+      'symbolRight' => $this->when($this->symbol_right,$this->symbol_right),
+      'decimalPlace' => $this->when(isset($this->decimal_place),(int)$this->decimal_place),
+      'defaultCurrency' => $this->when(isset($this->default_currency),(int)$this->default_currency),
       'value' => $this->when($this->value,$this->value),
       'status' => $this->when($this->status,$this->status),
       'options' => $this->when($this->options,$this->options),
-      'created_at' => $this->when($this->created_at,$this->created_at),
-      'updated_at' => $this->when($this->updated_at,$this->updated_at),
+      'createdAt' => $this->when($this->created_at,$this->created_at),
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at),
       
     ];
   
     $filter = json_decode($request->filter);
   
     // Return data with available translations
-    if (isset($filter->allTranslations) && $filter->allTranslations){
-    
+    if (isset($filter->allTranslations) && $filter->allTranslations) {
       // Get langs avaliables
       $languages = \LaravelLocalization::getSupportedLocales();
     
-      foreach ($languages as  $key => $value){
-        if ($this->hasTranslation($key)) {
-          $data['translates'][$key]['title'] = $this->translate("$key")['title'];
-        }
+      foreach ($languages as $lang => $value) {
+        $data[$lang]['name'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['name'] : '';
+      
       }
     }
     return $data;

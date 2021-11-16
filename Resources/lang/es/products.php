@@ -7,15 +7,21 @@ return [
     'list resource'         => 'Listar productos',
     'create resource'       => 'Crear productos',
     'edit resource'         => 'Editar productos',
+    'edit'         => 'Editar producto',
     'destroy resource'      => 'Eliminar productos',
     'bulkload import' => 'Importación masiva',
     'title'             => [
         'products'          => 'Productos',
         'create product'    => 'Crear un producto',
         'edit product'      => 'Editar un producto',
+        'productDetails' => 'Detalles del Producto',
+        'comments' => 'Comentarios',
+        'related' => 'Relacionados',
+        'reviews' => 'Revisiones',
     ],
     'button'            => [
         'create product'    => 'Crear un producto',
+        'addToCartItemList' => "Comprar"
     ],
     'table' => [
         'title'                     => 'Titulo',
@@ -49,17 +55,19 @@ return [
         'file product size max'     => 'Tamaño Máximo',
         'file product formats'      => 'Formatos',
         'subproducts'               => 'Sub Productos',
-        'image'                     => 'Image',
+        'image'                     => 'Imágen',
         'related_products'          => 'Productos Relacionados',
         'search'                    => 'Buscar',
         'additional'                => 'Adicional',
         'purchasable'               => 'Producto Comprable',
         'freeshipping'              => 'Producto con Freeshipping',
+        'order_weight'              => 'Peso de la Orden',
         'select option'             => 'Selecciona una opción',
         'manufacturer'              => 'Fabricante',
         'certificate'               => 'Certificado',
-        'data_sheet'                => 'Ficha técnica'
-
+        'data_sheet'                => 'Ficha técnica',
+        'points'                    => 'Puntos',
+        'points win'                => 'Gana :points Puntos por comprar este producto',
     ],
     'categories'        => [
         'free_shipping'             => 'Productos con envío gratuito',
@@ -70,6 +78,8 @@ return [
         'all_products_by_manufacturer'  => 'Todos los productos por fabricante...',
     ],
     'form' => [
+      'available' => 'Disponibles',
+      'outOfStock' => 'Producto Agotado'
     ],
 
     'messages'          => [
@@ -86,6 +96,8 @@ return [
         'shopping'                  => 'COMPRANDO',
         'details'                   => 'DETALLES',
         'reviews'                   => 'RESEÑAS',
+        'productSoldOut'      => 'Tu producto: <b>:name</b> se ha <b>agotado</b>',
+        'productLowStock'      => 'Te queda(n) <b>:units</b> unidad(es) del producto <b>:name</b>',
     ],
     'validation'        => [
         'error delete'              => 'Error: No se puede eliminar  este producto porque tiene elementos asociados',
@@ -104,7 +116,13 @@ return [
         'add_cart'      => 'Producto agregado al carro',
         'no_add_cart'   => 'Producto no agregado al carro, por favor intente de nuevo',
         'no_more'       => 'No hay mas productos en inventario',
-        'no_zero'       => 'El producto no puede ser menor a 0'
+        'no_zero'       => 'El producto no puede ser menor a 0',
+        'new'           => 'Nuevo',
+        'sold out'      => 'Agotado',
+        'productSoldOut'      => 'Producto Agotado',
+        'productLowStock'      => 'Producto con bajo inventario',
+        'withDiscount'       => 'DTO.',
+        'beforeDiscount'     => 'Antes:',
     ],
     'bulkload'=>[
         'success migrate from product' => 'productos migrados con éxito, la actualización se realiza en unos instantes',
@@ -118,6 +136,5 @@ return [
         'Select Filecompatible files CSV, XLSX'=>'Seleccionar archivos compatibles con archivos CSV, XLSX',
         'Image folder path'=>'Ruta de la carpeta de imágenes',
         'Submit'=>'Importar'
-
     ]
 ];

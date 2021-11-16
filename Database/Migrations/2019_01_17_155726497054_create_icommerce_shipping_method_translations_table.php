@@ -34,7 +34,9 @@ class CreateIcommerceShippingMethodTranslationsTable extends Migration
     public function down()
     {
         Schema::table('icommerce__shipping_method_translations', function (Blueprint $table) {
+          if(Schema::hasColumn('icommerce__shipping_method_translations','shippingmethod_id')) {
             $table->dropForeign(['shippingmethod_id']);
+          }
         });
         Schema::dropIfExists('icommerce__shipping_method_translations');
     }

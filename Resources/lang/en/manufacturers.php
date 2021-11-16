@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'single' => 'Manufacturer',
+    'plural' => 'Manufacturers',
     'list resource' => 'List manufacturers',
     'create resource' => 'Create manufacturers',
     'edit resource' => 'Edit manufacturers',
@@ -18,6 +20,7 @@ return [
     'form' => [
     ],
     'messages' => [
+        'no-manufacturers-associated' => 'There are no manufacturers associated with the products shown'
     ],
     'validation' => [
     ],

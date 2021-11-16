@@ -1,0 +1,73 @@
+@import "modules/icommerce/index";
+@import "modules/icommerce/filters/categories";
+@import "modules/icommerce/filters/range-prices";
+@import "modules/icommerce/filters/manufacturers";
+@import "modules/icommerce/product/product-aspect";
+@import "modules/icommerce/product/product-layout";
+@import "modules/icommerce/product/product-ribbon";
+@import "modules/icommerce/product/product-options";
+@import "modules/icommerce/category/category-list";
+@import "modules/icommerce/header/category";
+@import "modules/icommerce/header/searcher";
+@import "modules/icommerce/header/nav";
+@import "modules/icommerce/header/cart";
+@import "modules/icommerce/show";
+@import "modules/icommerce/orders/show";
+@import "modules/icommerce/cart";
+@import "modules/icommerce/checkout";
+
+
+
+.loading{
+  .capa{
+    top: 0;
+    left: 0;
+    background-color: rgba(255,255,255,0.7);
+    z-index: 9;
+  }
+}
+
+.cursor-pointer{
+	cursor: pointer;
+}
+
+.owl-carousel{
+	.card-product{
+		.bg-img{
+			figure{
+				margin-bottom: 0px;
+				picture{
+					img{
+						max-height: 230px;
+					}
+				}
+			}
+		}
+	}
+}
+
+/* =========== PRELOADER ============ */
+#content_preloader {
+	position: absolute;
+	z-index: 999999999;
+	background-color: white;
+	height: 100%;
+	width: 100%;
+}
+#preloader {
+	width: 70px;
+	height: 70px;
+	border: 10px solid $light;
+	border-top: 10px solid $primary;
+	border-radius: 50%;
+	animation-name: girar;
+	animation-duration: 0.80s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	
+	position: absolute;
+	left:50%;
+	margin-left: -42.5px;  /* 50% del ancho de la div en px */
+	
+	top: 30%;
+}

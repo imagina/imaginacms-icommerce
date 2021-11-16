@@ -48,6 +48,7 @@ class CouponApiController extends BaseApiController
 
         } catch (\Exception $e) {
             //Message Error
+          \Log::error($e->getMessage());
             $status = 500;
             $response = [
                 'errors' => $e->getMessage()
@@ -68,31 +69,17 @@ class CouponApiController extends BaseApiController
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
-            if (isset($params->filter->validate) && $params->filter->validate) {
-                if (isset($params->filter->cart) || $params->filter->store) {
-                    $validateCoupon = new validateCoupons();
-                    $data = $validateCoupon->validateCode($criteria, $params->filter->cart, $params->filter->store);
+            //Request to Repository
+            $coupon = $this->coupon->getItem($criteria, $params);
 
-                    $response = ["data" => $data];
+            //Break if no found item
+            if (!$coupon) throw new \Exception('Item not found', 404);
 
-                } else {
-                    $response = ["data" => ['message' => trasn('icommerce::coupons.messages.coupon not exist'),'status'=>0,'discount'=>0]];
-                }
+            //Response
+            $response = ["data" => new CouponTransformer($coupon)];
 
-
-            } else {
-
-                //Request to Repository
-                $coupon = $this->coupon->getItem($criteria, $params);
-
-                //Break if no found item
-                if (!$coupon) throw new Exception('Item not found', 404);
-
-                //Response
-                $response = ["data" => new CouponTransformer($coupon)];
-            }
         } catch (\Exception $e) {
-            \Log::error($e);
+          \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
         }
@@ -122,7 +109,7 @@ class CouponApiController extends BaseApiController
 
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \Log::error($e);
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -139,24 +126,32 @@ class CouponApiController extends BaseApiController
      */
     public function update($criteria, Request $request)
     {
+
         \DB::beginTransaction();
+
         try {
+
             $params = $this->getParamsRequest($request);
-            $data = $request->input('attributes');
+
+            $data = $request->input('attributes') ?? [];
+
             //Validate Request
             $this->validateRequestApi(new CouponRequest($data));
+
             //Update data
             //Request to Repository
             $entity = $this->coupon->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$entity) throw new Exception('Item not found', 404);
+            if (!$entity) throw new \Exception('Item not found', 404);
 
             $coupon = $this->coupon->update($entity, $data);
             //Response
             $response = ['data' => 'Item Updated'];
             \DB::commit(); //Commit to Data Base
+
         } catch (\Exception $e) {
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -171,23 +166,24 @@ class CouponApiController extends BaseApiController
     public function delete($criteria, Request $request)
     {
         \DB::beginTransaction();
+
         try {
+
             $params = $this->getParamsRequest($request);
-            $data = $request->input('attributes');
-            //Validate Request
-            $this->validateRequestApi(new CouponRequest($data));
-            //Update data
+           
             //Request to Repository
             $entity = $this->coupon->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$entity) throw new Exception('Item not found', 404);
+            if (!$entity) throw new \Exception('Item not found', 404);
 
             $coupon = $this->coupon->destroy($entity);
             //Response
             $response = ['data' => 'Item Deleted'];
             \DB::commit(); //Commit to Data Base
+
         } catch (\Exception $e) {
+          \Log::error($e->getMessage());
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
             $response = ["errors" => $e->getMessage()];
@@ -195,13 +191,28 @@ class CouponApiController extends BaseApiController
         return response()->json($response, $status ?? 200);
     }
 
+
+    /**
+     * Validate Coupon.
+     * @return Response
+     */
     public function validateCoupon(Request $request)
     {
         try {
+
             $params = $this->getParamsRequest($request);
-            $validateCoupons = new validateCoupons();
-            $response = $validateCoupons->validateCode($params->filter->couponCode, $params->filter->cartId);
+
+            //Request to Repository
+            $coupon = $this->coupon->validateCoupon($params);
+
+            //Break if no found item
+            if (!$coupon) throw new \Exception('Item not found', 404);
+
+            //Response
+            $response = ["data" => new CouponTransformer($coupon)];
+
         } catch (\Exception $exception) {
+          \Log::error($exception->getMessage());
             $status = 500;
             $response = [
                 'errors' => $exception->getMessage()

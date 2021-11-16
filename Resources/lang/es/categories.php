@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'single' => 'Categoría',
+    'plural' => 'Categorías',
     'list resource' => 'Lista de categorías',
     'create resource' => 'Crear categorías',
     'edit resource' => 'Editar categorías',
@@ -12,6 +14,7 @@ return [
     ],
     'button' => [
         'create category' => 'Crea una categoría',
+        'show_products' => 'ver productos'
     ],
     'table' => [
     ],

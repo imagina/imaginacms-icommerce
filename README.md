@@ -114,26 +114,6 @@ Order updated
 ```
 
 
-
-
-
-
-
-
-# End Points Wishlists
-
-##### Get all Wishlists
-```GET ``` ```/api/icommerce/v3/wishlists```
-N: filter optional = ```?filter={"user":1}```
-##### Get a Wishlist
-```GET``` ```/api/icommerce/v3/wishlists/n```
-##### Create Wishlist (all data inside "attribute" array)
-```POST``` ```/api/icommerce/v3/wishlists```
-##### Update Wishlist
-```PUT``` ```/api/icommerce/v3/wishlists/n```
-##### Delete Wishlist
-```DELETE``` ```/api/icommerce/v3/wishlists/n```
-
 # End Points Tags
 
 ##### Get all Tags

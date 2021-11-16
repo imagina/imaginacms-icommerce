@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Icommerce\Entities\Product;
+use Illuminate\Support\Str;
 
 class ProductsImport implements ToCollection, WithChunkReading, WithHeadingRow
 {
@@ -80,7 +81,7 @@ class ProductsImport implements ToCollection, WithChunkReading, WithHeadingRow
                 $param = [
                   'id'=>$product_id,
                   'name'=>$title,
-                   'slug'=>str_slug($title),
+                   'slug'=>Str::slug($title),
                    'description'=>$description,
                    'summary'=>$summary,
                    'options'=>$options,
@@ -158,7 +159,7 @@ class ProductsImport implements ToCollection, WithChunkReading, WithHeadingRow
             // 3. Return the path
             return $destination_path;
         } catch (\Exception $e) {
-            \Log::error($e);
+            \Log::error($e->getMessage());
         }
     }
 
