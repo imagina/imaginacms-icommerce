@@ -4,7 +4,9 @@
 
   @include('icommerce::structure.meta-social')
   
-  {!! $schemaScript !!}
+  @if(isset($schemaScript))
+    {!! $schemaScript !!}
+  @endif
   
 @stop
 
