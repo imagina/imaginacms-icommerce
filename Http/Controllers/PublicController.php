@@ -291,10 +291,11 @@ class PublicController extends BaseApiController
       config(["asgard.icommerce.config.filters" => $configFilters]);
     }
     
-    $currency = Currency::where("default_currency", 1)->first();
-    $schemaScript = $this->productService->createSchemaScript($product,$currency);
-
     if ($product) {
+
+      $currency = Currency::where("default_currency", 1)->first();
+      $schemaScript = $this->productService->createSchemaScript($product,$currency);
+
       $category = $product->category;
       $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
       
