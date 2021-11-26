@@ -23,10 +23,10 @@ class ProductService
         }
 
         // Validate rateable
-        if(is_module_enabled('Rateable') && $product->timesRated>0){
+        if(is_module_enabled('Rateable') && $product->timesRated()>0){
             $rating["@type"] = "AggregateRating";
-            $rating["ratingValue"] = round($product->averageRating,2);
-            $rating["ratingCount"] = $product->timesRated;
+            $rating["ratingValue"] = round($product->averageRating(),2);
+            $rating["ratingCount"] = $product->timesRated();
             $schema["aggregateRating"] = $rating;
         }
 
