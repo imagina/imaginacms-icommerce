@@ -333,7 +333,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       return $query;
     } else
       if (isset($params->page) && $params->page) {
-        return $query->paginate($params->take);
+        //return $query->paginate($params->take);
+        return $query->paginate($params->take, ['*'], null, $params->page);
       } else {
         isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
         return $query->get();
