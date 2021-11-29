@@ -22,6 +22,7 @@ class PaymentMethod extends Model
         'name',
         'options',
         'store_id',
+        'payout',
         'geozone_id',
         'parent_name'
     ];

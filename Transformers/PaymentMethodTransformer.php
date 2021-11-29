@@ -24,6 +24,7 @@ class PaymentMethodTransformer extends JsonResource
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
       'activevalue' => $this->active,
+      'payout' => $this->payout ? 1 : 0,
       'mediaFiles' => $this->mediaFiles()
     ];
 
