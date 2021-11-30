@@ -6,9 +6,11 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Media\Support\Traits\MediaRelation;
 
+use Modules\Iforms\Support\Traits\Formeable;
+
 class PaymentMethod extends Model
 {
-    use Translatable, MediaRelation;
+    use Translatable, MediaRelation, Formeable;
 
     public $translatedAttributes = [
         'title',
