@@ -53,7 +53,7 @@
   <div v-if="(product.isCall=='0' || canAddIsCallProductsIntoCart) && product.stockStatus" class="add-cart">
     <hr>
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 quantity-available">
         {{$product->quantity}} {{trans("icommerce::products.form.available")}}
       </div>
 
