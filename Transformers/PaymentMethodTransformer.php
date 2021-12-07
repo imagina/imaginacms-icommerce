@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Transformers;
 
+use Modules\Iforms\Transformers\FormTransformer;
 use Modules\Isite\Http\Controllers\Api\ConfigsApiController;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,9 @@ class PaymentMethodTransformer extends JsonResource
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
       'activevalue' => $this->active,
       'payout' => $this->payout ? 1 : 0,
-      'mediaFiles' => $this->mediaFiles()
+      'mediaFiles' => $this->mediaFiles(),
+      'form' => new FormTransformer($this->form),
+      'formId' => $this->form ? $this->form->id : null,
     ];
 
     // Add Crud Fields from Payment Method
