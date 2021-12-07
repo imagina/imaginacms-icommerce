@@ -16,7 +16,7 @@
       class="ref-label">{{trans("icommerce::products.table.reference")}}</span>: {{$product->reference}}
   </div>
   @endif
-  
+
   <!-- SUMMARY -->
   <div class="options">{{$product->summary}}</div>
   
@@ -88,7 +88,7 @@
     <hr>
   </div>
   @endif
-  
+
   <!-- Points Product -->
   @include('icommerce::frontend.partials.show.points')
 

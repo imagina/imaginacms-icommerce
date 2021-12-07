@@ -14,6 +14,7 @@ use Modules\Icommerce\Events\Handlers\SaveOrderItems;
 use Modules\Icommerce\Events\Handlers\DiscountStockProducts;
 use Modules\Icommerce\Events\Handlers\UpdateOrderStatus;
 use Modules\Icommerce\Events\Handlers\SavePoints;
+use Modules\Icommerce\Events\OrderIsCreating;
 use Modules\Icommerce\Events\OrderWasCreated;
 use Modules\Icommerce\Events\OrderWasUpdated;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
@@ -30,8 +31,11 @@ use Modules\Icommerce\Events\Handlers\HandleCouponable;
 class EventServiceProvider extends ServiceProvider
 {
   protected $listen = [
+    OrderIsCreating::class => [
+      SaveOrderItems::class
+    ],
     OrderWasCreated::class => [
-      SaveOrderItems::class,
+      //SaveOrderItems::class,
       SendOrder::class,
       CreateChatByOrder::class,
       CreateSubOrders::class

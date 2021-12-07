@@ -4,6 +4,7 @@
 namespace Modules\Icommerce\Services;
 
 use Modules\Icommerce\Events\OrderWasCreated;
+use Modules\Icommerce\Events\OrderIsCreating;
 use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Icommerce\Support\OrderHistory as orderHistorySupport;
@@ -306,6 +307,14 @@ class OrderService
       }
       
       
+    // Event To create OrderItems, OrderOptions
+    try {
+        event(new OrderIsCreating($order, $orderData['orderItems']));
+        
+    } catch (\Exception $e) {
+        \Log::error("error: " . $e->getMessage() . "\n" . $e->getFile() . "\n" . $e->getLine() . $e->getTraceAsString());
+    }
+
       /*
       |--------------------------------------------------------------------------
       | Getting payment Data
