@@ -1,7 +1,7 @@
 <?php
 
 namespace Modules\Icommerce\Events\Handlers;
-
+use Modules\Isite\Entities\Organization;
 
 class CreateChatByOrder
 {
@@ -23,14 +23,22 @@ class CreateChatByOrder
         array_push($users, [
           "user_id" => $tenant->user_id
           ]);
-      }
-      $usersToNotify = json_decode(setting("icommerce::usersToNotify",null,"[]"));
-      
-      foreach ($usersToNotify as $userId){
+      }elseif(isset($order->organization_id) && !empty($order->organization_id)){
+        $organization = Organization::find($order->organization_id);
         array_push($users, [
-          "user_id" => $userId
+          "user_id" => $organization->user_id
         ]);
+      }else{
+  
+        $usersToNotify = json_decode(setting("icommerce::usersToNotify",null,"[]"));
+        foreach ($usersToNotify as $userId){
+          array_push($users, [
+            "user_id" => $userId
+          ]);
+        }
       }
+      
+     
       
       $data = [
         'entity_id' => $order->id,
