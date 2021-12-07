@@ -15,8 +15,8 @@ class DiscountStockProducts
     {
         $order = $event->order;
         
-        //Order is Proccesed
-        if($order->status_id==13){
+        //Order is Proccesed and no es una sub orden entonces si descuente de inventario, las subordenes no vuelven a descontar los productos
+        if($order->status_id==13 && !$order->parent_id){
 
             foreach($order->orderItems as $item){
 
