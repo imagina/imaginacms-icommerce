@@ -44,6 +44,7 @@ class Checkout extends Component
   public $sameShippingAndBillingAddresses;
   public $locale;
   public $update;
+  public $organization;
   protected $addresses;
   
   protected $taxes;
@@ -51,6 +52,8 @@ class Checkout extends Component
   protected $paymentMethods;
   protected $shippingMethods;
   protected $couponDiscount;
+  
+
   
   public function mount(Request $request, $layout = null, $order = null, $cart = null,
                         $orderId = null, $cartId = null, $currency = null, $currencyId = null)
@@ -67,6 +70,7 @@ class Checkout extends Component
     
     $this->initTitle();
     $this->initUser();
+    $this->initOrganization();
     $this->initStep();
     $this->initOrder($order, $orderId);
     $this->initCart($cart, $cartId);
@@ -148,6 +152,15 @@ class Checkout extends Component
     
   }
   
+  public function initOrganization(){
+  
+    $this->organization = null;
+    if (function_exists('tenant') && isset(tenant()->id)) {
+      $this->organization = tenant();
+    }
+    
+  }
+  
   /**
    *
    */
@@ -164,10 +177,6 @@ class Checkout extends Component
     if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
       $this->paymentMethodSelected = null;
     }
-    
-  
-  
-  
   }
   
   /**
@@ -182,9 +191,9 @@ class Checkout extends Component
     $data = ["cart_id" => $this->cart->id ?? null];
 
     $data['shippingAddressId'] = $this->shippingAddressSelected;
-
+ 
     $this->shippingMethods = $this->shippingMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
-    
+ 
     // Validate if the Shipping Method selected has an status error to deactivated
     $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
     
@@ -282,7 +291,6 @@ class Checkout extends Component
 
     \Log::info('Module Icommerce: UPDATED');
 
-
     switch ($name) {
       case 'sameShippingAndBillingAddresses':
         if ($value) {
@@ -299,10 +307,6 @@ class Checkout extends Component
         }
         break;
     }
-
-    // Added Fix Bug 
-    $this->initShippingMethods();
-    $this->initPaymentMethods();
     
   }
   
@@ -315,9 +319,6 @@ class Checkout extends Component
    */
   public function addressAdded($address)
   {
-
-   
-    //\Log::info('Module Icommerce: ADDRESS ADDED');
     
     $this->initAddresses();
     switch ($address["type"]) {
@@ -339,7 +340,7 @@ class Checkout extends Component
         break;
     }
 
-    // Added Fix Bug 
+    // Initializing shipping methods sending the new addresses selected if there are another calculations by each shipping method
     $this->initShippingMethods();
     
   }
@@ -675,16 +676,16 @@ class Checkout extends Component
     // Fixed Bug first request selected address
     $this->initShippingMethods();
     $this->initPaymentMethods();
-    
+
     $this->getPaymentMethodProperty();
     $this->getShippingMethodProperty();
-  
+
     
     
     $this->getCouponDiscount();
     $this->initTaxes();
     $this->getTotalTaxesProperty();
-  
+
   }
   
   /**
@@ -745,6 +746,7 @@ class Checkout extends Component
     $data["coupon"] = $this->couponSelected;
 
     if(!isset($this->order->id)){
+  
       $orderData = $orderService->create($data);
 
       if(isset($orderData["orderId"])){
