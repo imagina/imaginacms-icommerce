@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
+use Modules\Icommerce\Entities\ProductOptionValue;
 use Modules\Icommerce\Repositories\ProductOptionValueRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 //Events media
@@ -126,8 +127,9 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
     //Event to ADD media
     event(new CreateMedia($productOptionValue, $data));
   
-    if(!empty($productOptionValue->parent_option_value_id)){
-      $parent = $productOptionValue->parentProductOptionValue;
+    if(!empty($productOptionValue->parent_prod_opt_val_id)){
+      $parent = ProductOptionValue::find($productOptionValue->parent_prod_opt_val_id);
+
       //Verificacion y posible actualizacion de status y stock de padre
       $parent->updateStockByChildren();
     

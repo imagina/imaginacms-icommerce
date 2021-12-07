@@ -71,3 +71,166 @@
 	
 	top: 30%;
 }
+
+#content_index_commerce {
+	
+	.store-header {
+		
+		.store-card {
+			background-color: $primary;
+			color: $white;
+			border-radius: 15px 0 0 15px;
+			@include media-breakpoint-down(md) {
+				text-align: center;
+				border-radius: 15px 15px 0 0;
+			}
+			
+			.card-body { padding: 2rem; }
+			
+			.store-logo img {
+				height: 130px;
+				width: 130px;
+				border: 3px solid $white;
+				border-radius: 50%;
+			}
+			.store-raiting {
+				font-size: 15px;
+			}
+			
+			.store-name {
+				font-size: 20px;
+				line-height: 20px;
+				position: relative;
+				margin-bottom: 15px;
+				&:before {
+					content: '';
+					height: 1px;
+					width: 50px;
+					background-color: #B3D3E9;
+					left: 0;
+					bottom: -10px;
+					position: absolute;
+				}
+			}
+			
+			.store-followers {
+				color: #B3D3E9;
+				font-size: 16px;
+				margin-bottom: 15px;
+			}
+			
+			.btn-store {
+				font-size: 15px;
+				border: 2px solid $white;
+				border-radius: 20px;
+				color: $white;
+				padding: 5px 20px;
+			}
+			
+			.store-social {
+				font-size: 16px;
+				a {
+					margin-right: 20px;
+					color: $white;
+					position: relative;
+					i {
+						font-size: 15px;
+					}
+					
+					&:hover {
+						color: #B3D3E9;
+					}
+					&:not(:last-child):before {
+						content: '';
+						height: 80%;
+						width: 1px;
+						background-color: #B3D3E9;;
+						position: absolute;
+						right: -9px;
+						top: 50%;
+						transform: translateY(-50%);
+					}
+				}
+				.btn-group {
+					vertical-align: initial;
+					.number-whatsapp a {
+						color: $primary;
+						width: 100% !important;
+						height: 100% !important;
+						border: 0 !important;
+						border-radius: 0 !important;
+						margin: 0;
+					}
+				}
+			}
+		}
+		.store-slider {
+			overflow: hidden;
+			.slider-component, .owl-item img{
+				height: 290px !important;
+				border-radius: 0 15px 15px 0;
+				@include media-breakpoint-down(md) {
+					border-radius: 0 0 15px 15px;
+				}
+			}
+			.carousel-caption {
+				display: none !important;
+			}
+			.owl-dots {
+				.owl-dot span {
+					height: 10px;
+					width: 10px;
+					border-radius: 50%;
+				}
+			}
+			.owl-nav {
+				.owl-prev, .owl-next {
+					font-size: 20px;
+					position: relative;
+					color: $primary;
+					width: 25px;
+					height: 50px;
+					margin: 0;
+					i {
+						position: relative;
+					}
+					&:before {
+						content: '';
+						background-color: $white;
+						position: absolute;
+						width: 50px;
+						height: 50px;
+						z-index: 0;
+						top: 0;
+						border-radius: 0 15px 0 15px;
+						transform: rotate(45deg);
+					}
+				}
+				.owl-prev:before {
+					left: -25px;
+				}
+				.owl-next:before {
+					right: -25px;
+				}
+			}
+		}
+	}
+	#storeTab {
+		.nav-tabs .nav-link {
+			font-size: 18px;
+			border: 0;
+			border-radius:0;
+			color: #525266;
+			padding: 0.5rem 1.5rem;
+		}
+		.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+			border-bottom: 3px solid $primary;
+			color: $primary;
+		}
+		.tab-pane {
+			padding: 25px 0;
+		}
+	}
+	
+	
+}

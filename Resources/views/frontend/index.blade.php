@@ -89,6 +89,10 @@
         {{-- Top Content , Products, Pagination --}}
         <div class="col-lg-9">
          
+          @isset(tenant()->id)
+            @include("icommerce::frontend.partials.index.organization-header")
+          @endisset
+          
           @if(isset($gallery) && !empty($gallery))
             @include('icommerce::frontend.partials.carousel-index-image')
           @endif

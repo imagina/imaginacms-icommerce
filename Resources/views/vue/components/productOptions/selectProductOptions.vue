@@ -115,7 +115,6 @@ export default {
   data() {
     return {
       section: {},
-      section: {},
       optionsList: []
     }
   },

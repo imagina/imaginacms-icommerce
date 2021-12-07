@@ -15,6 +15,7 @@ class OrderItem
 
       array_push($products, [
         "product_id" => (int)$item->product_id,
+        "organization_id" => $item->product->organization_id ?? null,
         "title" => $item->product->name,
         "reference" => $item->product->sku,
         "quantity" => (int)$item->quantity,

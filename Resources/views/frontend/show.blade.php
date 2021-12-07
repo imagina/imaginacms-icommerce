@@ -3,10 +3,6 @@
 @section('content')
   @parent
   <div class="page show show-product show-product-{{$product->id}}">
-    <div id="content_preloader">
-      <div id="preloader"></div>
-    </div>
-
     <div id="content_show_commerce">
 
       {{-- Banner Top--}}

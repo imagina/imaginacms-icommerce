@@ -74,6 +74,7 @@ class OrderTransformer extends JsonResource
       'suscriptionId' => $this->when($this->suscription_id, $this->suscription_id),
       'suscriptionToken' => $this->when($this->suscription_token, $this->suscription_token),
       'options' => $this->when($this->options, $this->options),
+      'organizationId' => $this->when($this->organization_id, $this->organization_id),
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
       'histories' => OrderHistoryTransformer::collection($this->orderHistory),

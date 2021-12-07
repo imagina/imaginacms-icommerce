@@ -25,31 +25,27 @@
 </div>
 -->
 
-<div class="description" v-html="product.description">
-    <h3>DESCRIPCION:</h3><p>@{{ product.description }}</p>
+<div class="description">
+    <h3>DESCRIPCION:</h3><p>{!! $product->description !!}</p>
 </div>
 
 <div class="icommerce-options ">
-    <p class="icommerce-option" v-if="product.manufacturer"><b>
-            {{trans('icommerce::products.table.manufacturer')}}:</b> <span>@{{product.manufacturer}}</span>
+    
+    @isset($product->manufacturer->id)
+    <p class="icommerce-option"><b>
+            {{trans('icommerce::products.table.manufacturer')}}:</b> <span>{{$product->manufacturer->name}}</span>
     </p>
     
+    @endisset
     
-    <p class="icommerce-option" v-if="product.pdf">
+    @isset($product->pdf)
+    <p class="icommerce-option" >
         
-        <a v-bind:href="product.pdf" target="_blank" class="d-block icommerce-pdf">
+        <a href="{{$product->pdf}}" target="_blank" class="d-block icommerce-pdf">
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
             <span>{{trans('icommerce::products.messages.product_brochure')}}</span>
         </a>
     </p>
+        @endisset
 </div>
 
-<div class="pt-3 pt-md-5 text-center" v-if="video">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="embed-responsive embed-responsive-16by9">
-                <div v-html="video"></div>
-            </div>
-        </div>
-    </div>
-</div>

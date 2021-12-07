@@ -23,7 +23,7 @@ class Cart extends Component
   public $iconquote;
   private $params;
   private $request;
-  protected $listeners = ['addToCart', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
+  protected $listeners = ['addToCart','addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart', $iconquote = 'fas fa-file-alt', $showButton = true)
   {
@@ -78,7 +78,14 @@ class Cart extends Component
     request()->session()->put('cart', $this->cart);
 
   }
+  
+  
+  public function addToCartWithOptions($data){
 
+    $this->addToCart($data["productId"],$data["quantity"],$data["productOptionValues"]);
+    
+  }
+  
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
   {
 
