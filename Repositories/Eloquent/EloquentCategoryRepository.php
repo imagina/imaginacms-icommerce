@@ -11,6 +11,7 @@ use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Kalnoy\Nestedset\Collection;
 
 //Events media
 
@@ -203,7 +204,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       $categories = collect($parents)->merge($categories)->keyBy("id");
     }
     
-    return $categories;
+    return new Collection($categories);
   }
   
   public function getItem($criteria, $params = false)
