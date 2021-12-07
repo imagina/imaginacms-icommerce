@@ -47,16 +47,16 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
             if (isset($filter->status)) {
               $query->where('status', $filter->status);
             }
-            
+
             if(isset($filter->withCalculations)){
-  
+
               $query->where('status', 1);
               /* Init query */
               $items = $query->get();
-  
+
               if (isset($items) && $items->count() > 0) {
                 $data = [];
-    
+
                 if (isset($filter->cartId)) {
                   // Add products to request
                   $data['cartId'] = $filter->cartId;
@@ -79,17 +79,17 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
               return $items;
             }
         }
-  
+
       if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
-    
+
       } else {
         //pre-filter status
         $query->where("status", 1);
-        
+
       }
-      
-      
-      
+
+
+
         /*== FIELDS ==*/
         if (isset($params->fields) && count($params->fields))
             $query->select($params->fields);
@@ -109,7 +109,9 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
         // INITIALIZE QUERY
         $query = $this->model->query();
 
-        $query->where('id', $criteria);
+        //Check field name to criteria
+        if (isset($params->filter->field)) $query->where($params->filter->field, $criteria);
+        else $query->where('id', $criteria);
 
         // RELATIONSHIPS
         $includeDefault = [];
@@ -135,32 +137,32 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
 
     public function update($model, $data)
     {
-  
+
       $model->update($data);
-   
+
       //event(new UpdateMedia($model, $data));
 
         return $model;
 
     }
-  
+
     public function updateBy($criteria, $data, $params = false)
       {
         /*== initialize query ==*/
         $query = $this->model->query();
-    
+
         /*== FILTER ==*/
         if (isset($params->filter)) {
           $filter = $params->filter;
-    
+
           //Update by field
           if (isset($filter->field))
             $field = $filter->field;
         }
-    
+
         /*== REQUEST ==*/
         $model = $query->where($field ?? 'id', $criteria)->first();
-        
+
         if(isset($model->id)){
           $model->update((array)$data);
           event(new UpdateMedia($model, $data));
