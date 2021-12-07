@@ -16,6 +16,7 @@ class ProductOptionValue extends Model
     'option_id',
     'option_value_id',
     'parent_option_value_id',
+    'parent_prod_opt_val_id',
     'quantity',
     'subtract',
     'price',
@@ -45,6 +46,12 @@ class ProductOptionValue extends Model
     return $this->belongsTo(ProductOption::class);
   }
   
+  
+  public function parentProductOptionValue()
+  {
+    return $this->belongsTo(ProductOptionValue::class,'parent_prod_opt_val_id');
+  }
+  
   //************* OJO DUDAS PROBAR ********************
   public function option()
   {
@@ -67,14 +74,16 @@ class ProductOptionValue extends Model
     return $this->hasMany(OrderOption::class);
   }
 
-  public function parentProductOptionValue()
-  {
-    return $this->belongsTo($this, 'parent_option_value_id');
+  
+  public function getAvailableAttribute(){
+    
+    return $this->stock_status && (($this->substract && $this->quantity) || !$this->substract);
+    
   }
 
   public function childrenProductOptionValue()
   {
-    return $this->hasMany($this,  'parent_option_value_id', 'id');
+    return $this->hasMany($this,  'parent_prod_opt_val_id', 'id');
   }
 
   public function updateStockByChildren()
