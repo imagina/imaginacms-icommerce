@@ -90,14 +90,19 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       
     }
   
-    // if has permission
-    $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
+    // if has permission show-others
     $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
   
     if(!$showOthersPermission){
       $query->where('customer_id', $params->user->id);
     }
   
+    // if has permission show SubOrders
+    $showParentOrdersPermission = $params->permissions['icommerce.orders.show-parent-orders'] ?? false; // show orders of others
+  
+    if(!$showParentOrdersPermission){
+      $query->whereNotNull('parent_id');
+    }
   
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))

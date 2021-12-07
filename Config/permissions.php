@@ -82,6 +82,7 @@ return [
       'index-all' => 'icommerce::orders.list-all resource',
       'show' => 'icommerce::orders.show resource',
       'show-others' => 'icommerce::orders.show-others resource',
+      'show-parent-orders' => 'icommerce::orders.show-parent-orders resource',
         'create' => 'icommerce::orders.create resource',
         'edit' => 'icommerce::orders.edit resource',
         'destroy' => 'icommerce::orders.destroy resource',

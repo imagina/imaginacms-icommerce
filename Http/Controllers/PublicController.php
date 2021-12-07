@@ -317,6 +317,12 @@ class PublicController extends BaseApiController
     if (isset($cart->id)) {
       $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
     }
+  
+    $organization = null;
+    if (isset(tenant()->id)) {
+      $organization = tenant();
+    }
+    
     $currency = Currency::where("default_currency", 1)->first();
     
     if (setting("icommerce::customCheckoutTitle")) {
@@ -324,7 +330,7 @@ class PublicController extends BaseApiController
     } else {
       $title = trans('icommerce::checkout.title');
     }
-    return view($tpl, ["cart" => new CartTransformer($cart), "currency" => $currency, "title" => $title]);
+    return view($tpl, ["cart" => new CartTransformer($cart), "currency" => $currency, "title" => $title, "organization" => $organization]);
   }
   
   public function checkoutUpdate($orderId)

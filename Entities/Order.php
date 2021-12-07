@@ -6,6 +6,7 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Ilocations\Entities\Country;
 use Modules\Ilocations\Entities\Province;
+use Modules\Isite\Entities\Organization;
 
 class Order extends Model
 {
@@ -13,6 +14,8 @@ class Order extends Model
   protected $table = 'icommerce__orders';
   
   protected $fillable = [
+    'parent_id',
+    'cart_id',
     'invoice_nro',
     'invoice_prefix',
     'total',
@@ -71,6 +74,7 @@ class Order extends Model
     'require_shipping',
     'options',
     'suscription_id',
+    'organization_id',
     'suscription_token',
     'type'
   ];
@@ -107,6 +111,11 @@ class Order extends Model
     return $this->hasMany(OrderItem::class);
   }
   
+  public function children()
+  {
+    return $this->hasMany(Order::class,"parent_id");
+  }
+  
   public function coupons()
   {
     return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
@@ -128,6 +137,11 @@ class Order extends Model
   public function status()
   {
     return $this->belongsTo(OrderStatus::class, 'status_id');
+  }
+  
+  public function organization()
+  {
+    return $this->belongsTo(Organization::class);
   }
   
   public function store()

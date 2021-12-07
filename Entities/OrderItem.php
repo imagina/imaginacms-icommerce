@@ -24,6 +24,7 @@ class OrderItem extends Model
     'options',
     'entity_type',
     'entity_id',
+    'organization_id',
     'discount'
   ];
 

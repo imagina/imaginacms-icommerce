@@ -149,7 +149,7 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       padding: 0 15px;">
         <h4>{{ $block["title"] }}</h4>
         @foreach($block["values"] as $item)
-          <p><b>{{ $item["label"] }}:</b> {!! $item["value"] !!}</p>
+          <p><b>{{ $item["label"] ?? "" }}:</b> {!! $item["value"] ?? "" !!}</p>
         @endforeach
       </div>
     @endforeach
