@@ -151,8 +151,14 @@ class Product extends Model implements TaggableInterface
     return $this->hasMany(ProductDiscount::class);
   }
   
+  public function optionsPivot(){
+  
+    return $this->hasMany(ProductOption::class);
+  }
+  
   public function productOptions()
   {
+    
     return $this->belongsToMany(Option::class, 'icommerce__product_option')
       ->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required')
       ->withTimestamps();

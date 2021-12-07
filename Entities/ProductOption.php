@@ -4,12 +4,14 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Kalnoy\Nestedset\NodeTrait;
 
 class ProductOption extends Model
 {
-
+  use NodeTrait;
+  
   protected $table = 'icommerce__product_option';
-
+  
   protected $with = ["productOptionValues"];
   
   protected $fillable = [
@@ -21,30 +23,49 @@ class ProductOption extends Model
     'required',
     'sort_order'
   ];
-
+  
   public function option()
   {
     return $this->belongsTo(Option::class);
   }
-
+  
   public function parent()
   {
     return $this->belongsTo(Option::class, 'parent_id');
   }
-
+  
   public function product()
   {
     return $this->belongsTo(Product::class);
   }
-
+  
   public function productOptionValues()
   {
     return $this->hasMany(ProductOptionValue::class);
   }
-
+  
   public function orderOptions()
   {
     return $this->hasMany(OrderOption::class);
   }
-
+  
+  public function getLftName()
+  {
+    return 'lft';
+  }
+  
+  public function getRgtName()
+  {
+    return 'rgt';
+  }
+  
+  public function getDepthName()
+  {
+    return 'depth';
+  }
+  
+  public function getParentIdName()
+  {
+    return 'parent_id';
+  }
 }
