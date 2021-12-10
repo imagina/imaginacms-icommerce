@@ -326,7 +326,7 @@ class OrderService
       }
       
       
-      // Event To create OrderItems, OrderOptions, next send email
+      // Event To send email
       try {
         event(new OrderWasCreated($order, $orderData['orderItems']));
         
