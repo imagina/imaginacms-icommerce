@@ -179,7 +179,7 @@
     }
     
     .price, .icon {
-      color: $primary;
+      color: var(--primary);
     }
   }
 }
@@ -193,7 +193,7 @@
       top: 70px;
       position: absolute;
       right: 0;
-      background: $secondary;
+      background: var(--secondary);
       padding: 5px;
       font-weight: bold;
       @include font-size(13px);
@@ -202,7 +202,7 @@
     .new {
       position: absolute;
       color: #fff;
-      background: $secondary;
+      background: var(--secondary);
       padding: 5px;
       font-weight: bold;
       @include font-size(13px);

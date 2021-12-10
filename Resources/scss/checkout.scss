@@ -24,7 +24,7 @@
   
   .ckeckout-subtitle {
     @include font-size(18px);
-    color: $primary;
+    color: var(--primary);
   }
   
   .item_carting-product-name {
@@ -107,13 +107,13 @@
       > li.active > a,
       > li.active > a:hover,
       > li.active > a:focus {
-        color: $primary;
+        color: var(--primary);
         font-weight: 600;
         cursor: default;
         border: 0;
         border-bottom-color: transparent;
         .round-tab {
-          background-color: $primary;
+          background-color: var(--primary);
         }
       }
       @media (max-width: 1200px) {
@@ -132,11 +132,11 @@
       display: none;
     }
     .collapse.show {
-      border-top: 1px solid $primary;
+      border-top: 1px solid var(--primary);
     }
     .next-step {
-      background-color: $primary;
-      border-color: $primary;
+      background-color: var(--primary);
+      border-color: var(--primary);
       min-height: 38px;
     }
     
@@ -148,7 +148,7 @@
   }
   
   .ckeckout-subtitle-primary {
-    background-color: $primary;
+    background-color: var(--primary);
     color: #fff;
     text-align: center;
     padding: .5rem 1rem;

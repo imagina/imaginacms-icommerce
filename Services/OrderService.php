@@ -307,7 +307,7 @@ class OrderService
       }
       
       
-    // Event To create OrderItems, OrderOptions
+    // Event emit the prev order
     try {
         event(new OrderIsCreating($order, $orderData['orderItems']));
         

@@ -342,7 +342,7 @@
         &:hover {
           box-shadow: none;
           .bg-img {
-            border: 3px solid $primary;
+            border: 3px solid var(--primary);
           }
           .card-overlay {
             right: 0;

@@ -58,7 +58,7 @@
     a {
       color: #333333;
       &:hover {
-        color: $primary !important;
+        color: var(--primary) !important;
         font-weight: bold !important;
       }
     }
@@ -117,7 +117,7 @@
         padding: .7rem 1rem;
         height: 45px;
         &:before {
-          color: $primary;
+          color: var(--primary);
           content: "•";
         }
       }
@@ -134,7 +134,7 @@
           content: none;
         }
         &:before {
-          color: $primary;
+          color: var(--primary);
           content: "•";
         }
       }
@@ -149,7 +149,7 @@
         content: none;
       }
       &:before {
-        color: $primary;
+        color: var(--primary);
         content: "•";
       }
       @include media-breakpoint-down(md) {
@@ -187,7 +187,7 @@
 
       > .link-desktop {
         font-size: 22px;
-        background-color: $secondary;
+        background-color: var(--secondary);
         border-radius: 100px;
         height: 66px;
 
@@ -203,8 +203,8 @@
         .text-href {
           color: $white;
           img {
-            background-color: darken($secondary, 10%);
-            border: 3px solid lighten($secondary, 15%);
+            background-color: darken(var(--secondary), 10%);
+            border: 3px solid lighten(var(--secondary), 15%);
             border-radius: 50%;
             width: 66px;
             height: 66px;
@@ -225,7 +225,7 @@
         display: block;
         position: relative;
         font-size: 22px;
-        background-color: $secondary;
+        background-color: var(--secondary);
         border-radius: 100px;
         border-bottom: 0;
         height: 66px;
@@ -233,8 +233,8 @@
           color: $white;
         }
         img {
-          background-color: darken($secondary, 10%);
-          border: 3px solid lighten($secondary, 15%);
+          background-color: darken(var(--secondary), 10%);
+          border: 3px solid lighten(var(--secondary), 15%);
           border-radius: 50%;
           width: 66px;
           height: 66px;
@@ -279,11 +279,11 @@
       }
       &.category-selected {
         > .link-desktop, > .link-childless {
-          background-color: $primary;
+          background-color: var(--primary);
 
           img {
-            background-color: darken($primary, 10%);
-            border-color: saturate($primary, 25%);
+            background-color: darken(var(--primary), 10%);
+            border-color: saturate(var(--primary), 25%);
           }
         }
       }
@@ -291,14 +291,14 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        background-color: $secondary;
+        background-color: var(--secondary);
         color: $white;
         border-radius: 100px;
         font-size: 22px;
         padding: 20px 20px 20px 75px;
         img {
-          background-color: darken($secondary, 5%);
-          border: 3px solid saturate($secondary, 25%);
+          background-color: darken(var(--secondary), 5%);
+          border: 3px solid saturate(var(--secondary), 25%);
           border-radius: 50%;
           width: 66px;
           height: 66px;
@@ -313,7 +313,7 @@
       .link-desktop, .link-movil {
         .text-href, .text-collapsable {
           &:before {
-            color: $primary;
+            color: var(--primary);
             content: "•";
           }
         }
@@ -321,7 +321,7 @@
           color: #333333;
           font-weight: 500;
           &:hover {
-            color: $primary;
+            color: var(--primary);
           }
         }
         .icon-href {
@@ -332,7 +332,7 @@
         color: #333333;
         font-weight: 500;
         &:hover {
-          color: $primary;
+          color: var(--primary);
         }
       }
     }
