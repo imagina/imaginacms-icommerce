@@ -203,8 +203,8 @@
         .text-href {
           color: $white;
           img {
-            background-color: darken(var(--secondary), 10%);
-            border: 3px solid lighten(var(--secondary), 15%);
+            background-color: var(--secondary);
+            border: 3px solid var(--secondary);
             border-radius: 50%;
             width: 66px;
             height: 66px;
@@ -233,8 +233,8 @@
           color: $white;
         }
         img {
-          background-color: darken(var(--secondary), 10%);
-          border: 3px solid lighten(var(--secondary), 15%);
+          background-color: var(--secondary);
+          border: 3px solid var(--secondary);
           border-radius: 50%;
           width: 66px;
           height: 66px;
@@ -282,8 +282,8 @@
           background-color: var(--primary);
 
           img {
-            background-color: darken(var(--primary), 10%);
-            border-color: saturate(var(--primary), 25%);
+            background-color: var(--primary);
+            border-color: var(--primary);
           }
         }
       }
@@ -297,8 +297,8 @@
         font-size: 22px;
         padding: 20px 20px 20px 75px;
         img {
-          background-color: darken(var(--secondary), 5%);
-          border: 3px solid saturate(var(--secondary), 25%);
+          background-color: var(--secondary);
+          border: 3px solid var(--secondary);
           border-radius: 50%;
           width: 66px;
           height: 66px;
