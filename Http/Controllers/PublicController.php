@@ -426,7 +426,7 @@ class PublicController extends BaseApiController
       
       return CategoryTransformer::collection($query->get());
     } else {
-      return CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
+      return CategoryTransformer::collection(Category::defaultOrder()->ancestorsAndSelf($category->id));
     }
     
   }
