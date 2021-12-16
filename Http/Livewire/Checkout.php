@@ -693,6 +693,9 @@ class Checkout extends Component
    */
   public function submit(Request $request)
   {
+
+    \Log::info('Icommerce: Livewire|Checkout|Submit - INIT');
+
     try {
       
       $validatedData = Validator::make(
@@ -747,6 +750,8 @@ class Checkout extends Component
 
     if(!isset($this->order->id)){
   
+      \Log::info('Icommerce: Livewire|Checkout|Submit|OrderService Create');
+      
       $orderData = $orderService->create($data);
 
       if(isset($orderData["orderId"])){
@@ -755,8 +760,11 @@ class Checkout extends Component
         $this->emit("deleteCart");
       }else{
         $this->alert('warning', trans('icommerce::orders.messages.order error'), config("asgard.isite.config.livewireAlerts"));
+        \Log::info('Icommerce: Livewire|Checkout|Submit|Error: Order Data:'.json_encode($orderData));
       }
     }
+
+    \Log::info('Icommerce: Livewire|Checkout|Submit - END');
   }
   
   
