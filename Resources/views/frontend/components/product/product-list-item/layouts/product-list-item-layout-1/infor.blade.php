@@ -24,7 +24,8 @@
       </div>
     @else
       <div class="col">
-        <a href="{{ URL::to('/contacto') }}" class="btn btn-warning px-4 text-white cursor-pointer">
+        <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
+           class="btn btn-warning px-4 text-white cursor-pointer">
           {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
         </a>
       </div>

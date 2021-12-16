@@ -109,7 +109,18 @@ return [
     'customIndexContactLabel' => 'Título para el Botón de Contacto',
     'customCheckoutTitle' => 'Título para el Checkout',
     'icommerceCartQuoteForm' => 'Formulario para Registro de Cotización',
+    'letMeKnowProductIsAvailableForm' => 'Formulario para Avisar cuando un Producto esté disponible',
     'chatByOrderEnable' => 'Habilitar chat por orden de compra',
+    'tenant' => [
+      'group' => 'Inquilinos',
+      'tenantWithCentralData' => 'Entidades con data central',
+      'entities' => [
+        'categories' => 'Categorías',
+        'carts' => 'Carritos',
+        'paymentMethods' => 'Métodos de Pago',
+        'shippingMethods' => 'Métodos de Envío'
+      ],
+    ],
     'product'=>[
       'group' => 'Producto',
       'layout' => 'Layout del Producto',

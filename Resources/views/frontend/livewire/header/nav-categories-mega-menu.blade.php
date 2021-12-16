@@ -86,12 +86,10 @@
 
         var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         if (width <= 992) {
-          console.log('xs');
           $('#ulNavItem').addClass("navbar-nav");
           $('#ulNavItem').removeClass("dropdown-menu");
           $('#modalBody').append($("#ulNavItem"));
         } else {
-          console.log('not-xs');
           $('#ulNavItem').removeClass("navbar-nav");
           $('#ulNavItem').addClass("dropdown-menu");
           $('#liNavItem').append($("#ulNavItem"));

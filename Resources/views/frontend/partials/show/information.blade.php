@@ -85,6 +85,16 @@
   @else
   <div>
     <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
+
+    @php
+      $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null);
+    @endphp
+    @if($productAvailableForm)
+      <br>
+      <br>
+      <span class="text-primary">{{trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title")}}</span>
+      <x-iforms::form :id="$productAvailableForm" :fieldsParams="['productName' => ['readonly' => 'readonly', 'value' => $product->name]]" />
+    @endif
     <hr>
   </div>
   @endif

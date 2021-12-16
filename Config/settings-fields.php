@@ -409,6 +409,24 @@ return [
     ],
   ],
 
+  
+  'letMeKnowProductIsAvailableForm' => [
+    "onlySuperAdmin" => true,
+    'name' => 'icommerce::letMeKnowProductIsAvailableForm',
+    'value' => [],
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.qform.forms',
+      'select' => ['label' => 'title', 'id' => 'id'],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.settings.letMeKnowProductIsAvailableForm',
+      'multiple' => false,
+      'clearable' => true,
+    ],
+  ],
+
   'showRatingProduct' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -449,4 +467,26 @@ return [
     ]
   ],
   
+  'tenantWithCentralData' => [
+    'value' => [],
+    'name' => 'icommerce::tenantWithCentralData',
+    'groupName' => 'tenantConfiguration',
+    'groupTitle' => 'icommerce::common.settings.tenant.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.tenant.tenantWithCentralData',
+      'useInput' => false,
+      'useChips' => true,
+      'multiple' => true,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'icommerce::common.settings.tenant.entities.categories', 'value' => 'categories'],
+        ['label' => 'icommerce::common.settings.tenant.entities.carts', 'value' => 'carts'],
+        ['label' => 'icommerce::common.settings.tenant.entities.paymentMethods', 'value' => 'paymentMethods'],
+        ['label' => 'icommerce::common.settings.tenant.entities.shippingMethods', 'value' => 'shippingMethods'],
+      ]
+    ]
+  ],
 ];

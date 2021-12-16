@@ -107,7 +107,18 @@ return [
     'customIndexContactLabel' => 'Title for Contact Button',
     'customCheckoutTitle' => 'Title for Checkout',
     'icommerceCartQuoteForm' => 'Quote Form',
+    'letMeKnowProductIsAvailableForm' => 'Let me know when the product is available Form',
     'chatByOrderEnable' => 'Enable chat by order',
+    'tenant' => [
+      'group' => 'Tenants',
+      'tenantWithCentralData' => 'Entities with central data',
+      'entities' => [
+        'categories' => 'Categories',
+        'carts' => 'Carts',
+        'paymentMethods' => 'Payment Methods',
+        'shippingMethods' => 'Shipping Methods'
+      ],
+    ],
     'product' => [
       'group' => 'Product',
       'layout' => 'Product Layout',

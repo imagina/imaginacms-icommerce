@@ -24,7 +24,7 @@
             <div class="col-lg-6 mb-5">
 
               @include('icommerce::frontend.partials.show.information')
-
+              @includeFirst(["icommerce.partials.show.custom-extra-information","icommerce::frontend.partials.show.custom-extra-information"])
             </div>
 
             <div class="col-lg-12 mb-5">

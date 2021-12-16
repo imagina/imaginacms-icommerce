@@ -5,6 +5,16 @@
       font-size: 2.25rem;
     }
   }
+  
+  #icommerce_let_me_know_when_product_is_av{
+    .productName{
+      display: none;
+    }
+  }
+  
+  input.quantity{
+    max-width: 100px;
+  }
 
   .bg-image {
     .img-mini {

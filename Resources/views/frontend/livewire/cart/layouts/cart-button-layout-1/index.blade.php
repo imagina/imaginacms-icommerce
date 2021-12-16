@@ -5,9 +5,6 @@
   @if(isset($cart->id))
     @include('icommerce::frontend.livewire.cart.dropdown')
   @endif
-
-  @include("icommerce::frontend.livewire.cart.quoteModal")
-
 </div>
 
 @include("icommerce::frontend.livewire.cart.quoteModal")
