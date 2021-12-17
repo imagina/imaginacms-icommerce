@@ -64,7 +64,7 @@
 
                     <div class="tab-pane" id="comentarios" role="tabpanel">
                       <div class="p-3 p-md-5">
-                        <div class="fb-comments w-100" v-bind:data-href="product.url" data-numposts="5"
+                        <div class="fb-comments w-100" data-href="{{$product->url}}" data-numposts="5"
                              data-width="100%"></div>
                         <div id="fb-root"></div>
                       </div>

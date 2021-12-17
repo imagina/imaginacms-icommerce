@@ -1,5 +1,5 @@
 
-<!--
+<!--TODO falta verificar qué hacer con este codigo comentado hecho en vue
 <div>
     <h6 class="options" v-if="product.weight || product.length || product.width || product.heigth">TAMAÑO:</h6>
     <p class="icommerce-option" v-if="product.weight"> {{trans('icommerce::products.table.weight')}}

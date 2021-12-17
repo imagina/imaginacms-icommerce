@@ -3,7 +3,6 @@
   <!-- CATEGORY -->
   <div class="category text-uppercase" >
     {{$product->category->title}}
-    {{-- <span v-if="product.categories.lenght" v-for="item in product.categories">/@{{item.title}}</span> --}}
   </div>
   <!-- END CATEGORIES -->
   <!-- TITLE -->
@@ -42,9 +41,6 @@
 @endif
 <!-- END PRICE -->
 
-
-{{--  <select-product-options v-model="productOptionsSelected" v-bind:options="productOptions"></select-product-options>--}}
-{{--  --}}
   @if($product->pdf)
   <div class=" align-items-center mb-4" >
     <a href="{{$product->pdf}}"

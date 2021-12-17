@@ -130,6 +130,3 @@
   </div>
 
 @stop
-
-{{-- VUEJS SCRIPTS--}}
-@include('icommerce::frontend.partials.index.scripts')
