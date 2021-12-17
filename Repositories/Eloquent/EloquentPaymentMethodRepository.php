@@ -79,7 +79,18 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
               return $items;
             }
         }
-
+  
+      if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
+        $model = $this->model;
+    
+        $query->withoutTenancy();
+        $query->where(function ($query) use ($model) {
+          $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+            ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
+        });
+      }
+  
+  
       if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
 
       } else {
