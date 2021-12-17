@@ -8,6 +8,7 @@ $router->group(['prefix' => '/order-status-history'/*,'middleware' => ['auth:api
   $router->post('/', [
     'as' => $locale . 'api.icommerce.order-status-history.create',
     'uses' => 'OrderStatusHistoryApiController@create',
+    'middleware' => ['auth:api','can:icommerce.orderhistories.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.order-status-history.index',
@@ -16,10 +17,12 @@ $router->group(['prefix' => '/order-status-history'/*,'middleware' => ['auth:api
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.order-status-history.update',
     'uses' => 'OrderStatusHistoryApiController@update',
+    'middleware' => ['auth:api','can:icommerce.orderhistories.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.order-status-history.delete',
     'uses' => 'OrderStatusHistoryApiController@delete',
+    'middleware' => ['auth:api','can:icommerce.orderhistories.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.order-status-history.show',

@@ -8,7 +8,7 @@ $router->group(['prefix' => '/item-types'/*,'middleware' => ['auth:api']*/], fun
   $router->post('/', [
     'as' => $locale . 'api.icommerce.item-types.create',
     'uses' => 'ItemTypeApiController@create',
-    'middleware' => ['auth:api']
+    'middleware' => ['auth:api','can:icommerce.itemtypes.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.item-types.index',
@@ -17,12 +17,12 @@ $router->group(['prefix' => '/item-types'/*,'middleware' => ['auth:api']*/], fun
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.item-types.update',
     'uses' => 'ItemTypeApiController@update',
-    'middleware' => ['auth:api']
+    'middleware' => ['auth:api','can:icommerce.itemtypes.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.item-types.delete',
     'uses' => 'ItemTypeApiController@delete',
-    'middleware' => ['auth:api']
+    'middleware' => ['auth:api','can:icommerce.itemtypes.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.item-types.show',

@@ -8,6 +8,7 @@ $router->group(['prefix' => '/product-option'/*,'middleware' => ['auth:api']*/],
     $router->post('/', [
         'as' => 'api.icommerce.product-option.create',
         'uses' => 'ProductOptionApiController@create',
+       'middleware' => ['auth:api','can:icommerce.productoptions.create']
     ]);
     $router->get('/', [
         'as' => 'api.icommerce.product-option.index',
@@ -16,10 +17,12 @@ $router->group(['prefix' => '/product-option'/*,'middleware' => ['auth:api']*/],
     $router->put('/{criteria}', [
         'as' => 'api.icommerce.product-option.update',
         'uses' => 'ProductOptionApiController@update',
+       'middleware' => ['auth:api','can:icommerce.productoptions.edit']
     ]);
     $router->delete('/{criteria}', [
         'as' => 'api.icommerce.product-option.delete',
         'uses' => 'ProductOptionApiController@delete',
+       'middleware' => ['auth:api','can:icommerce.productoptions.destroy']
     ]);
     $router->get('/{criteria}', [
         'as' => 'api.icommerce.product-option.show',
@@ -29,6 +32,7 @@ $router->group(['prefix' => '/product-option'/*,'middleware' => ['auth:api']*/],
     $router->post('/order', [
       'as' => 'api.icommerce.product-option.order',
       'uses' => 'ProductOptionApiController@updateOrder',
+       'middleware' => ['auth:api','can:icommerce.productoptions.edit']
     ]);
 
 });

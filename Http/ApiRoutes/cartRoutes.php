@@ -8,6 +8,7 @@ $router->group(['prefix' => '/carts'/*,'middleware' => ['auth:api']*/], function
   $router->post('/', [
     'as' => $locale . 'api.icommerce.carts.create',
     'uses' => 'CartApiController@create',
+     'middleware' => ['auth:api','can:icommerce.cart.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.carts.index',
@@ -16,10 +17,12 @@ $router->group(['prefix' => '/carts'/*,'middleware' => ['auth:api']*/], function
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.carts.update',
     'uses' => 'CartApiController@update',
+     'middleware' => ['auth:api','can:icommerce.cart.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.carts.delete',
     'uses' => 'CartApiController@delete',
+     'middleware' => ['auth:api','can:icommerce.cart.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.carts.show',
