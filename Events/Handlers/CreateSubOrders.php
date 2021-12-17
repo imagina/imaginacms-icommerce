@@ -3,6 +3,8 @@
 namespace Modules\Icommerce\Events\Handlers;
 
 
+use Modules\Icommerce\Entities\PaymentMethod;
+
 class CreateSubOrders
 {
   
@@ -15,11 +17,24 @@ class CreateSubOrders
     
     if (!isset($order->parent_id) || empty($order->parent_id)) {
       $organizations = $order->orderItems->pluck("organization_id")->toArray();
-      
+  
       // recorriendo cada org id en los items de la orden
       foreach ($organizations as $organizationId) {
-        
+    
         $organizationOrderItems = $order->orderItems->where("organization_id", $organizationId);
+    
+        $tenantWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+  
+        //si los métodos de pago están centralizados entonces las subordenes se deben pagar con wallet
+        if(in_array("paymentMethods",$tenantWithCentralData)){
+          $paymentMethod = PaymentMethod::where("name","icredit")->first();
+          
+          //reventamos error para prevenir que un marketplace con metodos centralizados no tenga la wallet instalada
+          if(!isset($paymentMethod->id)) throw new \Exception("The Module Icredit it's required when the payment methods are centralized",400);
+        }else{
+          // de lo contrario las ordenes hijas quedan con el mismo método de pago de la orden padre
+          $paymentMethod = PaymentMethod::find($order->payment_code);
+        }
         
         $coupon = $order->coupons->first();
         $data = [
@@ -52,7 +67,7 @@ class CreateSubOrders
           "shipping_code" => $order->shipping_code,
           "shipping_amount" => $order->shipping_amount,
           "paymentCode" => $order->paymentCode,
-          "paymentMethod" => $order->paymentMethod,
+          "paymentMethod" => $paymentMethod,
           "currency_id" => $order->currency_id,
           "currency_code" => $order->currency_code,
           "currency_value" => $order->currency_value,
@@ -65,7 +80,7 @@ class CreateSubOrders
         
         
       }
-      
+  
     }
     
     
