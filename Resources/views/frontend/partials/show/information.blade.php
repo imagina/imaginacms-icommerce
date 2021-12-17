@@ -9,7 +9,7 @@
   <!-- TITLE -->
   <h1 class="name">{{$product->name}}</h1>
   <!-- END TITLE -->
-  Producto Agotado
+
   <!-- REFERENCE -->
   @if($product->reference)
   <div class="reference my-2"><span

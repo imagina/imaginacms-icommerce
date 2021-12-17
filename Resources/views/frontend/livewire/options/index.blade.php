@@ -19,7 +19,7 @@
       <div class="col-12">
         {{$product->quantity}} {{trans("icommerce::products.form.available")}}
       </div>
-      
+
       <!-- BUTTON QUANTITY -->
       <div class="d-inline-flex align-items-center p-1">
         <div class="input-group ">
@@ -39,11 +39,11 @@
           </div>
         </div>
       </div>
-      
+
       <div class="d-inline-flex align-items-center p-1">
         <!-- BUTTON ADD -->
         <div>
-          <a wire:click="addToCart" class="btn-comprar btn btn-primary text-white">
+          <a wire:click.prevent="addToCart" href="#" class="btn-comprar btn btn-primary text-white">
             <div class="d-inline-block mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.83 32.84">
                 <g data-name="Capa 2">

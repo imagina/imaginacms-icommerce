@@ -72,3 +72,54 @@
     }
   }
 }
+
+#recursiveListOptionsComponent .content-option {
+  padding: 10px 0px;
+}
+
+#recursiveListOptionsComponent .title-option {
+  text-transform: capitalize;
+  font-size: 14px;
+  text-align: left;
+}
+
+#recursiveListOptionsComponent .box-color {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px 15px 5px 0;
+}
+
+#recursiveListOptionsComponent .box-color-active:before {
+  display: inline-block;
+  content: '';
+  height: 40px;
+  width: 40px;
+  border: 2px solid #3a8051;
+  border-radius: 50%;
+  margin-left: -5px;
+  margin-top: -5px;
+}
+
+#recursiveListOptionsComponent .box-image {
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px 15px 5px 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+#recursiveListOptionsComponent .box-image-active:before {
+  display: inline-block;
+  content: '';
+  height: 60px;
+  width: 60px;
+  border: 2px solid #3a8051;
+  margin-left: -5px;
+  margin-top: -5px;
+}
