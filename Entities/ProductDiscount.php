@@ -5,10 +5,11 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iprofile\Entities\Department;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ProductDiscount extends Model
 {
-
+  use BelongsToTenant;
   protected $table = 'icommerce__product_discounts';
 
   protected $fillable = [

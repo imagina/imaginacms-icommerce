@@ -46,7 +46,8 @@ class Category extends Model
   
   public function __construct(array $attributes = [])
   {
-    $this->tenantWithCentralData = config("asgard.icommerce.config.tenantWithCentralData.categories");
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+    $this->tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
     parent::__construct($attributes);
     
   }

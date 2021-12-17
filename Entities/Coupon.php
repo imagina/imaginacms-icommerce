@@ -5,10 +5,11 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Coupon extends Model
 {
-
+  use BelongsToTenant;
   protected $table = 'icommerce__coupons';
 
   protected $fillable = [

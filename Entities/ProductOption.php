@@ -5,10 +5,11 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ProductOption extends Model
 {
-  use NodeTrait;
+  use NodeTrait, BelongsToTenant;
   
   protected $table = 'icommerce__product_option';
   

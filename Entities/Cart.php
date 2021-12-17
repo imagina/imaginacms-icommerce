@@ -33,7 +33,8 @@ class Cart extends Model
   
   public function __construct(array $attributes = [])
   {
-    $this->tenantWithCentralData = config("asgard.icommerce.config.tenantWithCentralData.carts");
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+    $this->tenantWithCentralData = in_array("carts",$entitiesWithCentralData);
     parent::__construct($attributes);
     
   }

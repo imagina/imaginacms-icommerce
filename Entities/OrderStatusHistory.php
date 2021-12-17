@@ -4,10 +4,11 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class OrderStatusHistory extends Model
 {
-  
+  use BelongsToTenant;
   protected $table = 'icommerce__order_status_history';
 
   protected $fillable = [

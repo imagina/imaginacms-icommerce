@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Media\Entities\File;
 use Modules\Core\Traits\NamespacedEntity;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class OptionValue extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation;
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
 
   protected $table = 'icommerce__option_values';
   public $translatedAttributes = [

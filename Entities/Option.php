@@ -4,10 +4,11 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Option extends Model
 {
-    use Translatable;
+    use Translatable, BelongsToTenant;
 
     protected $table = 'icommerce__options';
     public $translatedAttributes = [
@@ -18,7 +19,6 @@ class Option extends Model
         'sort_order',
         'options'
     ];
-
 
     protected $casts = [
         'options' => 'array'

@@ -4,10 +4,11 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ProductOptionValue extends Model
 {
-
+  use BelongsToTenant;
   protected $table = 'icommerce__product_option_value';
 
   protected $fillable = [

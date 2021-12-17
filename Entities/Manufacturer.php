@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Media\Support\Traits\MediaRelation;
 use Illuminate\Support\Str;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Manufacturer extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation;
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
   
   protected $table = 'icommerce__manufacturers';
   public $translatedAttributes = [
