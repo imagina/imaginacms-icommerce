@@ -143,6 +143,8 @@ class OrderApiController extends BaseApiController
     public function create(Request $request)
     {
 
+        \Log::info('Icommerce: OrderApiController|Create');
+
       $this->orderService = app('Modules\Icommerce\Services\OrderService');
       
       \DB::beginTransaction();
@@ -168,6 +170,8 @@ class OrderApiController extends BaseApiController
         $response = ["errors" => $e->getMessage(), 'line' => $e->getLine(), 'trace' => $e->getTrace()];
       }
 
+      \Log::info('Icommerce: OrderApiController|Create|END');
+
       return response()->json($response, $status ?? 200);
     }
 
@@ -178,6 +182,8 @@ class OrderApiController extends BaseApiController
      */
     public function update($criteria, Request $request)
     {
+
+        \Log::info('Icommerce: OrderApiController|Update');
         try {
 
             \DB::beginTransaction();
@@ -191,7 +197,7 @@ class OrderApiController extends BaseApiController
             $dataOrderHistory = $supportOrderHistory->getData();
             $data["orderHistory"] = $dataOrderHistory;
 
-            $data = Arr::only($data, ['status_id', 'options', 'orderHistory','suscription_id','suscription_token']);
+            $data = Arr::only($data, ['status_id', 'options', 'orderHistory','suscription_id','suscription_token','comment']);
 
             //Request to Repository
             $dataEntity = $this->order->getItem($criteria, $params);
@@ -209,11 +215,15 @@ class OrderApiController extends BaseApiController
             event(new OrderWasUpdated($order));
 
             if (isset($data["orderHistory"])) {
-              $orderStatusHistory = OrderStatusHistory::create([
-                "order_id" => $order->id,
-                "notify" => 1,
-                "status" => $data["status_id"]
-              ]);
+
+                \Log::info('Icommerce: OrderApiController|Update|CreateOrderHistory');
+
+                $orderStatusHistory = OrderStatusHistory::create([
+                    "order_id" => $order->id,
+                    "notify" => 1,
+                    "status" => $data["status_id"],
+                    "comment" => $data["comment"] ?? null
+                ]);
 
                 event(new OrderStatusHistoryWasCreated($orderStatusHistory));
                 
@@ -232,6 +242,8 @@ class OrderApiController extends BaseApiController
 
 
         }
+
+        \Log::info('Icommerce: OrderApiController|Update|END');
 
         return response()->json($response, $status ?? 200);
 

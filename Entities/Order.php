@@ -111,6 +111,11 @@ class Order extends Model
     return $this->hasMany(OrderItem::class);
   }
   
+  public function parent()
+  {
+    return $this->belongsTo(Order::class, 'parent_id');
+  }
+
   public function children()
   {
     return $this->hasMany(Order::class,"parent_id");
