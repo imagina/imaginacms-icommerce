@@ -8,7 +8,7 @@ $router->group(['prefix' => '/product-option-values'/*,'middleware' => ['auth:ap
   $router->post('/', [
     'as' => $locale . 'api.icommerce.product-option-values.create',
     'uses' => 'ProductOptionValueApiController@create',
-     'middleware' => ['auth:api','can:icommerce.productoptionvalues.create']
+     'middleware' => ['auth:api','auth-can:icommerce.productoptionvalues.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.product-option-values.index',
@@ -17,12 +17,12 @@ $router->group(['prefix' => '/product-option-values'/*,'middleware' => ['auth:ap
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.product-option-values.update',
     'uses' => 'ProductOptionValueApiController@update',
-     'middleware' => ['auth:api','can:icommerce.productoptionvalues.edit']
+     'middleware' => ['auth:api','auth-can:icommerce.productoptionvalues.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.product-option-values.delete',
     'uses' => 'ProductOptionValueApiController@delete',
-     'middleware' => ['auth:api','can:icommerce.productoptionvalues.destroy']
+     'middleware' => ['auth:api','auth-can:icommerce.productoptionvalues.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.product-option-values.show',

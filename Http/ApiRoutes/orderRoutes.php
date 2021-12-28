@@ -8,22 +8,22 @@ $router->group(['prefix' => '/orders'/*,'middleware' => ['auth:api']*/], functio
   $router->post('/', [
     'as' => $locale . 'api.icommerce.orders.create',
     'uses' => 'OrderApiController@create',
-    'middleware' => ['auth:api','can:icommerce.orders.create']
+    'middleware' => ['auth:api','auth-can:icommerce.orders.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.orders.index',
     'uses' => 'OrderApiController@index',
-    'middleware' => ['auth:api','can:icommerce.orders.index']
+    'middleware' => ['auth:api','auth-can:icommerce.orders.index']
   ]);
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.orders.update',
     'uses' => 'OrderApiController@update',
-    'middleware' => ['auth:api','can:icommerce.orders.edit']
+    'middleware' => ['auth:api','auth-can:icommerce.orders.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.orders.delete',
     'uses' => 'OrderApiController@delete',
-    'middleware' => ['auth:api','can:icommerce.orders.destroy']
+    'middleware' => ['auth:api','auth-can:icommerce.orders.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.orders.show',

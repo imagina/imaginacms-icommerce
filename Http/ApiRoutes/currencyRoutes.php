@@ -8,7 +8,7 @@ $router->group(['prefix' => '/currencies'/*,'middleware' => ['auth:api']*/], fun
   $router->post('/', [
     'as' => $locale . 'api.icommerce.currencies.create',
     'uses' => 'CurrencyApiController@create',
-     'middleware' => ['auth:api','can:icommerce,currencies.create']
+     'middleware' => ['auth:api','auth-can:icommerce,currencies.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.currencies.index',
@@ -17,12 +17,12 @@ $router->group(['prefix' => '/currencies'/*,'middleware' => ['auth:api']*/], fun
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.currencies.update',
     'uses' => 'CurrencyApiController@update',
-     'middleware' => ['auth:api','can:icommerce,currencies.edit']
+     'middleware' => ['auth:api','auth-can:icommerce,currencies.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.currencies.delete',
     'uses' => 'CurrencyApiController@delete',
-     'middleware' => ['auth:api','can:icommerce,currencies.destroy']
+     'middleware' => ['auth:api','auth-can:icommerce,currencies.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.currencies.show',

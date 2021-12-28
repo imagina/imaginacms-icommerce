@@ -8,7 +8,7 @@ $router->group(['prefix' => '/options'/*,'middleware' => ['auth:api']*/], functi
   $router->post('/', [
     'as' => $locale . 'api.icommerce.options.create',
     'uses' => 'OptionApiController@create',
-    'middleware' => ['auth:api','can:icommerce.options.create']
+    'middleware' => ['auth:api','auth-can:icommerce.options.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.options.index',
@@ -17,12 +17,12 @@ $router->group(['prefix' => '/options'/*,'middleware' => ['auth:api']*/], functi
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.options.update',
     'uses' => 'OptionApiController@update',
-    'middleware' => ['auth:api','can:icommerce.options.edit']
+    'middleware' => ['auth:api','auth-can:icommerce.options.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.options.delete',
     'uses' => 'OptionApiController@delete',
-    'middleware' => ['auth:api','can:icommerce.options.destroy']
+    'middleware' => ['auth:api','auth-can:icommerce.options.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.options.show',

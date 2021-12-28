@@ -8,7 +8,7 @@ $router->group(['prefix' => '/shipping-methods'/*,'middleware' => ['auth:api']*/
   $router->post('/', [
     'as' => $locale . 'api.icommerce.shipping-methods.create',
     'uses' => 'ShippingMethodApiController@create',
-    'middleware' => ['auth:api','can:icommerce.shipping-methods.create']
+    'middleware' => ['auth:api','auth-can:icommerce.shipping-methods.create']
   ]);
   $router->get('/', [
     'as' => $locale . 'api.icommerce.shipping-methods.index',
@@ -17,12 +17,12 @@ $router->group(['prefix' => '/shipping-methods'/*,'middleware' => ['auth:api']*/
   $router->put('/{criteria}', [
     'as' => $locale . 'api.icommerce.shipping-methods.update',
     'uses' => 'ShippingMethodApiController@update',
-    'middleware' => ['auth:api','can:icommerce.shipping-methods.edit']
+    'middleware' => ['auth:api','auth-can:icommerce.shipping-methods.edit']
   ]);
   $router->delete('/{criteria}', [
     'as' => $locale . 'api.icommerce.shipping-methods.delete',
     'uses' => 'ShippingMethodApiController@delete',
-    'middleware' => ['auth:api','can:icommerce.shipping-methods.destroy']
+    'middleware' => ['auth:api','auth-can:icommerce.shipping-methods.destroy']
   ]);
   $router->get('/{criteria}', [
     'as' => $locale . 'api.icommerce.shipping-methods.show',
