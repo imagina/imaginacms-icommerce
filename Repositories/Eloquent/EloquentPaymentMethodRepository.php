@@ -60,6 +60,9 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
                 if (isset($filter->cartId)) {
                   // Add products to request
                   $data['cartId'] = $filter->cartId;
+                  // Add extra params
+                  if(isset($params->extra))
+                    $data['extra'] = $params->extra;
                 }
                 foreach ($items as $key => $method) {
                   $methodApiController = app($method->options->init);
