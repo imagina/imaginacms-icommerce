@@ -68,7 +68,7 @@ class EloquentOrderHistoryRepository extends EloquentBaseRepository implements O
   {
 
     $orderhistory = $this->model->create($data);
-    event(new OrderStatusHistoryWasCreated($data));
+    event(new OrderStatusHistoryWasCreated($orderhistory));
   
     if($orderhistory->status == 13) {// Processed
       event(new OrderWasProcessed($orderhistory->order));
