@@ -12,8 +12,9 @@ class CreateSubOrders
   public function handle($event = null)
   {
     
-    
     $order = $event->order;
+
+    \Log::info('Icommerce: Events|Handlers|CreateSubOrders|OrderId: '.$order->id);
     
     if (!isset($order->parent_id) || empty($order->parent_id)) {
       $organizations = $order->orderItems->pluck("organization_id")->toArray();
@@ -83,7 +84,7 @@ class CreateSubOrders
   
     }
     
-    
+
   }
   
 }

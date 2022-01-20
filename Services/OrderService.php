@@ -41,6 +41,7 @@ class OrderService
   public function create($data)
   {
     \DB::beginTransaction();
+    \Log::info('Icommerce: Services|OrderService|Init');
     try {
       $orderData = [];
       $orderData["options"] = [];
@@ -220,6 +221,11 @@ class OrderService
         $paymentMethodRepository = app('Modules\Icommerce\Repositories\PaymentMethodRepository');
         
         $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $cart->id ?? null]];
+
+        //Extra params 
+        // Parent to know is Parent Order in Payment Method
+        if(isset($data["parentId"]) && !is_null($data["parentId"]))
+          $params["extra"]['parentId'] = $data["parentId"];
         
         $paymentMethods = $paymentMethodRepository->getItemsBy(json_decode(json_encode($params)));
         
@@ -351,6 +357,7 @@ class OrderService
       $response = ["errors" => $e->getMessage()];
     }
     
+    \Log::info('Icommerce: Services|OrderService|End');
     //Return response
     return $response;
   }

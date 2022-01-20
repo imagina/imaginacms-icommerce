@@ -185,7 +185,7 @@ class Checkout extends Component
   public function initShippingMethods()
   {
     
-    \Log::info('Module Icommerce: INIT SHIPPING METHODS');
+    \Log::info('Icommerce: Livewire|Checkout|InitShippingMethods');
 
     $params = [];
     $data = ["cart_id" => $this->cart->id ?? null];
@@ -278,7 +278,7 @@ class Checkout extends Component
    */
   public function hydrate()
   {
-    \Log::info('Module Icommerce: HYDRATE');
+    \Log::info('Icommerce: Livewire|Checkout|Hydrate');
     $this->load();
   }
   
@@ -289,7 +289,7 @@ class Checkout extends Component
   public function updated($name, $value)
   {
 
-    \Log::info('Module Icommerce: UPDATED');
+    \Log::info('Icommerce: Livewire|Checkout|Updated');
 
     switch ($name) {
       case 'sameShippingAndBillingAddresses':
