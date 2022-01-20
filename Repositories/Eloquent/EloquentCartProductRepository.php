@@ -97,7 +97,8 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
 
   public function create($data){
-
+  
+    $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
     $product = $productRepository->getItem($data["product_id"]);
   
