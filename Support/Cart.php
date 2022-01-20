@@ -10,7 +10,7 @@ class Cart
     
     $products = [];
     
-    foreach ($cart->products as $cartProduct) {
+    foreach ($cart->products ?? [] as $cartProduct) {
       array_push($products, [
         "title" => $cartProduct->product->name,
         "price" => $cartProduct->product->price,
