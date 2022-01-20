@@ -36,6 +36,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     if (isset($params->filter)) {
       $filter = $params->filter;
       
+      //add filter by id
+      if(isset($filter->id)){
+        !is_array($filter->id) ? $filter->id = [$filter->id] : false;
+        $query->whereIn("icommerce__categories.id",$filter->id);
+      }
+      
       //add filter by search
       if (isset($filter->search)) {
         //find search in columns
