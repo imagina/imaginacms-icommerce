@@ -446,7 +446,7 @@ class Product extends Model implements TaggableInterface
   
   /**
    * Is New product
-   * @return number
+   * @return boolean
    */
   public function getIsNewAttribute()
   {
@@ -460,6 +460,17 @@ class Product extends Model implements TaggableInterface
     }
     
     return $isNew;
+  }
+  
+  /**
+   * Is Sold Out
+   * @return boolean
+   */
+  public function getIsSoldOutAttribute()
+  {
+  
+    return ($this->quantity <= 0 && $this->subtract) || (!$this->stock_status);
+  
   }
   
   
