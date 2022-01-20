@@ -32,7 +32,6 @@ class UpdateOrderStatus
       $data = $event->order;
       if (isset($data['order_id']) && isset($data['status'])) {
         $order = Order::where('id', $data['order_id']);
-        $order->update(['status_id' => $data['status']]);
       }
       
       if (isset($data) && $data['notify']) {

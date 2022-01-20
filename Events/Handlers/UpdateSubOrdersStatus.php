@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Events\Handlers;
 
 use Illuminate\Http\Request;
+use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Entities\OrderStatusHistory;
 use Modules\Icommerce\Entities\PaymentMethod;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
@@ -16,10 +17,13 @@ class UpdateSubOrdersStatus
   {
     
     
-    $order = $event->order;
+    $data = $event->order;
+    if (isset($data['order_id']) && isset($data['status'])) {
+      $order = Order::where('id', $data['order_id']);
+    }
    
     //solo si es una orden padre se entra a buscar las hijas para actualizarlas todas
-    if (!isset($order->parent_id) || empty($order->parent_id) && $order->children->isNotEmpty()) {
+    if (isset($order->id) && (!isset($order->parent_id) || (empty($order->parent_id) && $order->children->isNotEmpty()))) {
       
       foreach ($order->children as $subOrder) {
         
