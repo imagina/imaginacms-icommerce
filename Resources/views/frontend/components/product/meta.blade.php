@@ -2,4 +2,6 @@
  <meta itemprop="sku" content="{{$product->sku}}">
  <meta itemprop="description" content="{{$product->summary}}">
  <meta itemprop="image" content="{{$product->mediaFiles()->mainimage->path}}">
- <meta itemprop="brand" content="{{$product->manufacturer}}">
+ @isset($product->manufacturer->name)
+ <meta itemprop="brand" content="{{$product->manufacturer->name}}">
+@endisset

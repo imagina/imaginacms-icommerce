@@ -1,4 +1,5 @@
-<div class="product-layout product-layout-3 card-product position-relative">
+<div class="product-layout product-layout-3 card-product position-relative"  style="padding: {{$externalPadding}}px;
+        border-radius: {{$borderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
     <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
   @php($discount = $product->discount ?? null)
   @include('icommerce::frontend.components.product.meta')
@@ -13,8 +14,10 @@
           @include('icommerce::frontend.components.product.ribbon')
           <div
             class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden">
-            <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-                                   :mediaFiles="$product->mediaFiles()"/>
+            <x-media::single-image
+              :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+              :mediaFiles="$product->mediaFiles()"
+              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
           </div>
         </div>
       </div>
@@ -25,10 +28,13 @@
   @else
     @include('icommerce::frontend.components.product.ribbon')
     <div class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden">
-      <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-                             :mediaFiles="$product->mediaFiles()"/>
+      <x-media::single-image
+        :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+        :mediaFiles="$product->mediaFiles()"
+        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif
 
+    @include('icommerce::frontend.components.product.global-inline-css')
 </div>
