@@ -44,6 +44,7 @@ class ProductListItem extends Component
   public $contentTitleFontSize;
   public $contentTitleToUppercase;
   public $contentCategoryFontSize;
+  public $contentCategoryEnable;
   public $contentCategoryToUppercase;
   public $contentPriceFontSize;
   
@@ -83,6 +84,7 @@ class ProductListItem extends Component
                               $addToCartWithQuantityMarginBottom = null,
                               $contentTitleFontSize = null,
                               $contentTitleToUppercase = false,
+                              $contentCategoryEnable = null,
                               $contentCategoryFontSize = 8,
                               $contentCategoryToUppercase = true,
                               $contentPriceFontSize = 8,
@@ -124,6 +126,7 @@ class ProductListItem extends Component
     $this->addToCartWithQuantityMarginBottom = $addToCartWithQuantityMarginBottom ?? setting('icommerce::productAddToCartWithQuantityMarginBottom', null, 0);
     $this->contentTitleFontSize = $contentTitleFontSize ?? setting('icommerce::productContentTitleFontSize', null, 14);
     $this->contentTitleToUppercase = $contentTitleToUppercase ?? setting('icommerce::productContentTitleToUppercase', null, false);
+    $this->contentCategoryEnable = $contentCategoryEnable ?? setting('icommerce::productContentCategoryEnable', null, true);
     $this->contentCategoryFontSize = $contentCategoryFontSize ?? setting('icommerce::productContentCategoryFontSize', null, 8);
     $this->contentCategoryToUppercase = $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true);
     $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);

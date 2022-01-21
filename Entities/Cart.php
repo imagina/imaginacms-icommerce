@@ -33,8 +33,10 @@ class Cart extends Model
   
   public function __construct(array $attributes = [])
   {
+    try{
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
     $this->tenantWithCentralData = in_array("carts",$entitiesWithCentralData);
+    }catch(\Exception $e){}
     parent::__construct($attributes);
     
   }

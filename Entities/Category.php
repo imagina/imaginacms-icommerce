@@ -12,7 +12,8 @@ use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class Category extends Model
+class
+Category extends Model
 {
   use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant;
 
@@ -46,8 +47,10 @@ class Category extends Model
   
   public function __construct(array $attributes = [])
   {
+    try{
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
     $this->tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
+    }catch(\Exception $e){}
     parent::__construct($attributes);
     
   }

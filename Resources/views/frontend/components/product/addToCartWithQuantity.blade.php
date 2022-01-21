@@ -6,11 +6,13 @@
                      margin-bottom: {{$addToCartWithQuantityMarginBottom}}px !important;">
             <!-- BUTTON QUANTITY -->
             <div class="number-input form-group mb-0 col-6 no-padding input-group quantity-selector">
-                <input wire:click="$emit('decrementValue',$event)" type="button" value="-" class="button-minus"
-                       data-field="quantity">
-                <input type="number" step="1" value="1" name="quantity" class="quantity-field form-control">
-                <input wire:click="$emit('incrementValue',$event)" type="button" value="+" class="button-plus"
-                       data-field="quantity">
+                <button wire:click="$emit('decrementValue',$event)" type="button" class="button-minus"
+                        data-field="quantity">
+                  <i class="fa fa-minus" aria-hidden="true"></i>
+                </button>
+                <input type="number" step="1" value="1" min="1" name="quantity" class="quantity-field form-control">
+                <button wire:click="$emit('incrementValue',$event)" type="button" class="button-plus"
+                        data-field="quantity"><i class="fa fa-plus" aria-hidden="true"></i></button>
             </div>
 
             <!-- BUTTON ADD -->

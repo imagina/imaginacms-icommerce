@@ -903,6 +903,20 @@ return [
     ]
   ],
   
+  'productContentCategoryEnable' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::productContentCategoryEnable',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productContentCategoryEnable'
+    ]
+  ],
+  
   'productContentCategoryToUppercase' => [
     "onlySuperAdmin" => true,
     'value' => "1",

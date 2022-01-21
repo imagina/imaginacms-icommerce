@@ -38,8 +38,13 @@ class PaymentMethod extends Model
   
   public function __construct(array $attributes = [])
   {
-    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
-    $this->tenantWithCentralData = in_array("paymentMethods", $entitiesWithCentralData);
+    try{
+      if (!\App::runningInConsole()) {
+        $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
+        $this->tenantWithCentralData = in_array("paymentMethods", $entitiesWithCentralData);
+      }
+    }catch(\Exception $e){}
+    
     parent::__construct($attributes);
   }
   

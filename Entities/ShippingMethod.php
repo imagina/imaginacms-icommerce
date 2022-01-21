@@ -35,8 +35,10 @@ class ShippingMethod extends Model
   
   public function __construct(array $attributes = [])
   {
+    try{
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
     $this->tenantWithCentralData = in_array("shippingMethods", $entitiesWithCentralData);
+    }catch(\Exception $e){}
     parent::__construct($attributes);
   }
   

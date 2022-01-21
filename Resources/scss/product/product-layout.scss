@@ -60,7 +60,7 @@
   
   .add-to-cart-with-quantity {
     .quantity-selector {
-      input,
+      button,
       textarea {
         border: 1px solid #eeeeee;
         box-sizing: border-box;
@@ -69,14 +69,25 @@
         padding: 0px 10px;
         text-align: center;
         height: 30px;
+        line-height: 30px;
         flex: unset;
+        i{
+          font-size: 12px;
+        }
       }
       
       .quantity-field {
-        width: 45px;
+        height: 30px;
+        width: 50px;
+        border-color: #eee;
+        text-align: center;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+        }
       }
-      
-      input[type="button"] {
+  
+      button[type="button"] {
         -webkit-appearance: button;
         cursor: pointer;
         background-color: transparent;
@@ -87,18 +98,13 @@
         }
       }
       
-      input::-webkit-outer-spin-button,
-      input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-      }
-      
       .input-group {
         clear: both;
         margin: 15px 0;
         position: relative;
       }
       
-      .input-group input[type='button'] {
+      .input-group button {
         background-color: #eeeeee;
         min-width: 38px;
         width: auto;
