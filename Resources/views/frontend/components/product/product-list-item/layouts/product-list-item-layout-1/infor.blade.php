@@ -31,14 +31,6 @@
               class="d-inline-block">{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
           @endif
         </div>
-      
-      </div>
-    @else
-      <div class="col">
-        <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
-           class="btn btn-warning px-4 text-white cursor-pointer">
-          {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
-        </a>
       </div>
     @endif
     @if((!$addToCartWithQuantity || $withTextInAddToCart) && !Str::contains($buttonsPosition, 'in-photo') && !Str::contains($buttonsPosition, 'after-content'))

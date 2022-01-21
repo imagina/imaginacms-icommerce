@@ -79,6 +79,7 @@
       .quantity-field {
         height: 30px;
         width: 50px;
+        flex: unset;
         border-color: #eee;
         text-align: center;
         &::-webkit-outer-spin-button,
