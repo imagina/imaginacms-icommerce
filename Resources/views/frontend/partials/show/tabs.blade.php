@@ -26,7 +26,7 @@
 -->
 
 <div class="description">
-    <h3>DESCRIPCION:</h3><p>{!! $product->description !!}</p>
+    <p>{!! $product->description !!}</p>
 </div>
 
 <div class="icommerce-options ">
