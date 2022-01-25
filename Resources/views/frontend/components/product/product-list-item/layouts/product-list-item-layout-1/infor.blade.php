@@ -23,7 +23,8 @@
     @if(!$product->is_call)
       <div class="col col-price @if(!$withTextInAddToCart || $buttonsPosition!="in-content") w-100 @endif">
         <div class="price"
-             style="font-size: {{$contentPriceFontSize}}px;">
+             style="font-size: {{$contentPriceFontSize}}px;
+               font-weight: {{$contentPriceFontWeight}};">
           {{isset($currency) ? $currency->symbol_left : '$'}}
           {{formatMoney($discount->price ?? $product->price)}}
           @if(isset($discount) && $discount)

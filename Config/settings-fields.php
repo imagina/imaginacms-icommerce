@@ -943,4 +943,27 @@ return [
       'label' => 'icommerce::common.settings.productContentPriceFontSize'
     ]
   ],
+  
+  'contentPriceFontWeight' => [
+    'value' => 'normal',
+    'name' => 'icommerce::contentPriceFontWeight',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'Precio Negrita (Weight)',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Texto en negrita', 'value' => 'bold'],
+        ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+        ['label' => 'Texto de peso normal', 'value' => 'normal'],
+        ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+      ]
+    ]
+  ],
 ];

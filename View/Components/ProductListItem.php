@@ -47,6 +47,7 @@ class ProductListItem extends Component
   public $contentCategoryEnable;
   public $contentCategoryToUppercase;
   public $contentPriceFontSize;
+  public $contentPriceFontWeight;
   
   /**
    * Create a new component instance.
@@ -88,6 +89,7 @@ class ProductListItem extends Component
                               $contentCategoryFontSize = 8,
                               $contentCategoryToUppercase = true,
                               $contentPriceFontSize = 8,
+                              $contentPriceFontWeight = null,
                               $parentAttributes = null,
                               $editLink,
                               $tooltipEditLink)
@@ -130,6 +132,7 @@ class ProductListItem extends Component
     $this->contentCategoryFontSize = $contentCategoryFontSize ?? setting('icommerce::productContentCategoryFontSize', null, 8);
     $this->contentCategoryToUppercase = $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true);
     $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);
+    $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
     $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
     $this->editLink = $editLink;
