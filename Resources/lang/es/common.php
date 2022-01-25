@@ -133,6 +133,8 @@ return [
     'productContentCategoryFontSize' => 'Tamaño de la categoría',
     'productContentCategoryToUppercase' => 'Activar Mayúsculas para la categoría',
     'productContentPriceFontSize' => 'Tamaño del Precio',
+    'productContentTitleNumberOfCharacters' => 'Cantidad de caracteres para el título',
+    'productContentTitleMaxHeight' => 'Altura máxima/Mínima para el título',
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',

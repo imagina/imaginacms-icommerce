@@ -748,8 +748,10 @@ return [
         ['label' => 'Bordes a los lados', 'value' => 'borders'],
         ['label' => 'Sin bordes', 'value' => 'without-borders'],
         ['label' => 'Botones Redondos', 'value' => 'rounded'],
+        ['label' => 'Botones Semi-cuadrados', 'value' => 'semi-square'],
         ['label' => 'Botones Cuadrados', 'value' => 'square'],
         ['label' => 'Botones Outline Redondos', 'value' => 'outline rounded'],
+        ['label' => 'Botones Outline Semi-cuadrados', 'value' => 'outline semi-square'],
         ['label' => 'Botones Outline Cuadrados', 'value' => 'outline square'],
       ]
     ]
@@ -863,6 +865,19 @@ return [
       'label' => 'icommerce::common.settings.productAddToCartWithQuantityMarginBottom'
     ]
   ],
+  'productContentTitleMaxHeight' => [
+    "onlySuperAdmin" => true,
+    'value' => 18,
+    'name' => 'icommerce::productContentTitleMaxHeight',
+    'type' => 'input',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'type' => "number",
+      'label' => 'icommerce::common.settings.productContentTitleMaxHeight'
+    ]
+  ],
+  
   'productContentTitleFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 14,
@@ -873,6 +888,19 @@ return [
     'props' => [
       'type' => "number",
       'label' => 'icommerce::common.settings.productContentTitleFontSize'
+    ]
+  ],
+  
+  'productContentTitleNumberOfCharacters' => [
+    "onlySuperAdmin" => true,
+    'value' => 80,
+    'name' => 'icommerce::productContentTitleNumberOfCharacters',
+    'type' => 'input',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'type' => "number",
+      'label' => 'icommerce::common.settings.productContentTitleNumberOfCharacters'
     ]
   ],
   
@@ -966,4 +994,6 @@ return [
       ]
     ]
   ],
+  
+
 ];

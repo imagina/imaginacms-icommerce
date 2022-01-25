@@ -4,8 +4,9 @@
   
   <a class="title" href="{{$product->url}}"
      style="font-size: {{$contentTitleFontSize}}px;
+       height: {{$contentTitleMaxHeight}}px;
      @if($contentTitleToUppercase)text-transform: uppercase; @endif">
-    {{$product->name}}
+    {!! Str::limit( $product->name, $contentTitleNumberOfCharacters) !!}
   </a>
   @if($contentCategoryEnable)
     <div class="category"

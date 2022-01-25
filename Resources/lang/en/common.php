@@ -131,6 +131,8 @@ return [
     'productContentCategoryFontSize' => 'Category font size',
     'productContentCategoryToUppercase' => 'Enable Category uppercase',
     'productContentPriceFontSize' => 'Price font size',
+    'productContentTitleNumberOfCharacters' => 'Title number of characters',
+    'productContentTitleMaxHeight' => 'Min/Max height title',
   
     'tenant' => [
       'group' => 'Tenants',

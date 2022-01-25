@@ -42,6 +42,8 @@ class ProductListItem extends Component
   public $addToCartWithQuantityPaddingY;
   public $addToCartWithQuantityMarginBottom;
   public $contentTitleFontSize;
+  public $contentTitleMaxHeight;
+  public $contentTitleNumberOfCharacters;
   public $contentTitleToUppercase;
   public $contentCategoryFontSize;
   public $contentCategoryEnable;
@@ -84,6 +86,8 @@ class ProductListItem extends Component
                               $addToCartWithQuantityPaddingY = null,
                               $addToCartWithQuantityMarginBottom = null,
                               $contentTitleFontSize = null,
+                              $contentTitleMaxHeight = null,
+                              $contentTitleNumberOfCharacters = null,
                               $contentTitleToUppercase = false,
                               $contentCategoryEnable = null,
                               $contentCategoryFontSize = 8,
@@ -127,6 +131,8 @@ class ProductListItem extends Component
     $this->addToCartWithQuantityPaddingY = $addToCartWithQuantityPaddingY ?? setting('icommerce::productAddToCartWithQuantityPaddingY', null, 0);
     $this->addToCartWithQuantityMarginBottom = $addToCartWithQuantityMarginBottom ?? setting('icommerce::productAddToCartWithQuantityMarginBottom', null, 0);
     $this->contentTitleFontSize = $contentTitleFontSize ?? setting('icommerce::productContentTitleFontSize', null, 14);
+    $this->contentTitleMaxHeight = $contentTitleMaxHeight ?? setting('icommerce::productContentTitleMaxHeight', null, 14);
+    $this->contentTitleNumberOfCharacters = $contentTitleNumberOfCharacters ?? setting('icommerce::productContentTitleNumberOfCharacters', null, 100);
     $this->contentTitleToUppercase = $contentTitleToUppercase ?? setting('icommerce::productContentTitleToUppercase', null, false);
     $this->contentCategoryEnable = $contentCategoryEnable ?? setting('icommerce::productContentCategoryEnable', null, true);
     $this->contentCategoryFontSize = $contentCategoryFontSize ?? setting('icommerce::productContentCategoryFontSize', null, 8);
