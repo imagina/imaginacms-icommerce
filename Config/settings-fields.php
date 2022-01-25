@@ -944,9 +944,9 @@ return [
     ]
   ],
   
-  'contentPriceFontWeight' => [
+  'productContentPriceFontWeight' => [
     'value' => 'normal',
-    'name' => 'icommerce::contentPriceFontWeight',
+    'name' => 'icommerce::productContentPriceFontWeight',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
