@@ -1,22 +1,22 @@
 @if($product->price>0 && $product->stock_status && $product->quantity)
     <div class="col no-padding">
-        <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center"
+        <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-between"
              style="padding-left: {{$addToCartWithQuantityPaddingX}}px; padding-right: {{$addToCartWithQuantityPaddingX}}px;
                      padding-top: {{$addToCartWithQuantityPaddingY}}px; padding-bottom: {{$addToCartWithQuantityPaddingY}}px;
                      margin-bottom: {{$addToCartWithQuantityMarginBottom}}px !important;">
             <!-- BUTTON QUANTITY -->
-            <div class="number-input form-group mb-0 col-6 no-padding input-group quantity-selector">
+            <div class="number-input input-group quantity-selector">
                 <button wire:click="$emit('decrementValue',$event)" type="button" class="button-minus"
                         data-field="quantity">
                   <i class="fa fa-minus" aria-hidden="true"></i>
                 </button>
-                <input type="number" step="1" value="1" min="1" name="quantity" class="quantity-field form-control">
+                <input type="number" step="1" value="1" min="1" name="quantity" class="quantity-field d-inline-block form-control">
                 <button wire:click="$emit('incrementValue',$event)" type="button" class="button-plus"
                         data-field="quantity"><i class="fa fa-plus" aria-hidden="true"></i></button>
             </div>
 
             <!-- BUTTON ADD -->
-            <div class="add-to-cart-button buttons {{$buttonsLayout}} form-group mb-0 col-6 no-padding text-right">
+            <div class="add-to-cart-button buttons {{$buttonsLayout}} text-xs-center text-md-right">
                 <a wire:click="$emit('addCartWithQuantity',$event)"
                    class="btn btn-primary btn-sm add-to-cart-with-quantity-button"
                    data-pid="{{$product->id}}">

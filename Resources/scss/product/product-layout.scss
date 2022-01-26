@@ -60,6 +60,14 @@
   
   .add-to-cart-with-quantity {
     .quantity-selector {
+      width: -webkit-max-content;
+      width: -moz-max-content;
+      width: max-content;
+      margin: 2px 0;
+      @include media-breakpoint-down(xs) {
+        margin: 2px auto;
+      }
+      
       button,
       textarea {
         border: 1px solid #eeeeee;
@@ -78,7 +86,7 @@
       
       .quantity-field {
         height: 30px;
-        width: 50px;
+        width: 45px;
         flex: unset;
         border-color: #eee;
         text-align: center;
@@ -144,7 +152,12 @@
       
       
     }
-    
+    .add-to-cart-button{
+      margin: 2px 0;
+      @include media-breakpoint-down(xs) {
+        margin: 2px auto;
+      }
+    }
     a {
       border-radius: 0px;
     }
@@ -161,7 +174,6 @@
     
     .number-input {
       width: max-content;
-      margin: 4px auto;
       
       .button-minus, .button-plus {
         font-size: 15px;
@@ -191,7 +203,6 @@
     }
     
     .add-to-cart-button {
-      margin: 4px auto;
       
       a {
         border-radius: 26px;
