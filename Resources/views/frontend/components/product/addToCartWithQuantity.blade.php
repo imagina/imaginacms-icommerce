@@ -16,9 +16,9 @@
             </div>
 
             <!-- BUTTON ADD -->
-            <div class="add-to-cart-button buttons {{$buttonsLayout}} text-xs-center text-md-right">
+            <div class="add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
                 <a wire:click="$emit('addCartWithQuantity',$event)"
-                   class="btn btn-primary btn-sm add-to-cart-with-quantity-button"
+                   class="btn btn-primary btn-sm add-cart add-to-cart-with-quantity-button"
                    data-pid="{{$product->id}}">
                     @if($withIconInAddToCart)
                         <i class="fa {{$addToCartIcon}}"></i>
