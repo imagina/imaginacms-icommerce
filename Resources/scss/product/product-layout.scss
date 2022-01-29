@@ -21,32 +21,6 @@
   @return unquote('linear-gradient(to top,rgba(255, 255, 255,'+ $opacity +'),rgba(255, 255, 255,' + $opacity + ')) ' + $variable);
 }
 
-.btn-primary {
-  color: white;
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
-
-.btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:visited,
-.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
-  color: white;
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
-
-
-.btn-outline-primary {
-  color: var(--primary);
-  border-color: var(--primary);
-}
-
-.btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:focus, .btn-outline-primary:visited,
-.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
-  color: white;
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
-
 .no-padding {
   padding: 0 !important;
   margin: 0 !important;

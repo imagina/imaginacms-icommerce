@@ -21,7 +21,7 @@ class Options extends Component
   public $quantity;
   public $optionsSelected;
   
-  protected $listeners = ['updateOption'];
+  protected $listeners = ['updateOption','addToCartOptions'];
   
   public function mount(Request $request, $product)
   {
@@ -65,10 +65,10 @@ class Options extends Component
   /**
    *
    */
-  public function addToCart()
+  public function addToCartOptions($data)
   {
 
-    $this->emit('addToCartWithOptions', ["productId" =>$this->product->id,"quantity" => $this->quantity,"productOptionValues" => $this->optionsSelected]);
+    $this->emit('addToCartWithOptions', ["productId" =>$this->product->id,"quantity" => $data["quantity"],"productOptionValues" => $this->optionsSelected]);
     
   }
  
@@ -87,26 +87,6 @@ class Options extends Component
     
   }
   
-  //|--------------------------------------------------------------------------
-  //| Actions
-  //|--------------------------------------------------------------------------
-  /**
-   * @param $prefix
-   */
-  public function setQuantity($prefix)
-  {
-    
-    switch ($prefix) {
-      
-      case '+':
-        $this->quantity++;
-        break;
-      case '-':
-        $this->quantity--;
-        break;
-      
-    }
-  }
   
   //|--------------------------------------------------------------------------
   //| Render
