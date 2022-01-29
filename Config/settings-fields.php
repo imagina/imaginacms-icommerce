@@ -669,6 +669,19 @@ return [
       ]
     ]
   ],
+  'productWishlistEnable' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::productWishlistEnable',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productWishlistEnable'
+    ]
+  ],
   'productWishlistIcon' => [
     'value' => 'fa-heart-o',
     'name' => 'icommerce::productWishlistIcon',

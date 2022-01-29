@@ -21,6 +21,7 @@ class ProductListItem extends Component
   public $discountRibbonStyle;
   public $addToCartWithQuantityStyle;
   public $addToCartIcon;
+  public $wishlistEnable;
   public $wishlistIcon;
   public $discountPosition;
   public $externalPadding;
@@ -71,6 +72,7 @@ class ProductListItem extends Component
                               $externalShadowOnHover = null,
                               $externalShadowOnHoverColor = null,
                               $addToCartIcon = null,
+                              $wishlistEnable = null,
                               $wishlistIcon = null,
                               $addToCartWithQuantityStyle = null,
                               $withTextInAddToCart = null,
@@ -116,6 +118,7 @@ class ProductListItem extends Component
     $this->externalShadowOnHover = $externalShadowOnHover ?? setting('icommerce::productExternalShadowOnHover', null, true);
     $this->externalShadowOnHoverColor = $externalShadowOnHoverColor ?? setting('icommerce::productExternalShadowOnHoverColor', null, "rgba(0, 0, 0, 0.15)");
     $this->addToCartIcon = $addToCartIcon ?? setting('icommerce::productAddToCartIcon', null, "fa-shopping-cart");
+    $this->wishlistEnable = $wishlistEnable ?? setting('icommerce::productWishlistEnable', null, true);
     $this->wishlistIcon = $wishlistIcon ?? setting('icommerce::productWishlistIcon', null, "fa-heart-o");
     $this->addToCartWithQuantityStyle = $addToCartWithQuantityStyle ?? setting('icommerce::productAddToCartWithQuantityStyle', null, "square");
     $this->withTextInAddToCart = $withTextInAddToCart ?? setting('icommerce::productWithTextInAddToCart', null, true);

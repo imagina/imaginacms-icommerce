@@ -49,7 +49,7 @@
             @endif
         </a>
     @endif
-    @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity))
+    @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && $wishlistEnable)
         <a class="wishlist btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
             <i class="fa {{$wishlistIcon}}"></i>

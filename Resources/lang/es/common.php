@@ -135,6 +135,7 @@ return [
     'productContentPriceFontSize' => 'Tamaño del Precio',
     'productContentTitleNumberOfCharacters' => 'Cantidad de caracteres para el título',
     'productContentTitleMaxHeight' => 'Altura máxima/Mínima para el título',
+    'productWishlistEnable' => 'Habilitar botón wishlist',
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',

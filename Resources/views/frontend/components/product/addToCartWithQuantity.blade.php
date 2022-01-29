@@ -28,7 +28,7 @@
                     @endif
                 </a>
 
-                @if(!$withTextInAddToCart)
+                @if(!$withTextInAddToCart && $wishlistEnable)
                     <a class="wishlist btn btn-primary btn-sm ml-1"
                        onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
                         <i class="fa fa-heart-o"></i>

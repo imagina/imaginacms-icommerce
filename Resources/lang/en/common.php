@@ -133,6 +133,7 @@ return [
     'productContentPriceFontSize' => 'Price font size',
     'productContentTitleNumberOfCharacters' => 'Title number of characters',
     'productContentTitleMaxHeight' => 'Min/Max height title',
+    'productWishlistEnable' => 'Enable wishlist button',
   
     'tenant' => [
       'group' => 'Tenants',
