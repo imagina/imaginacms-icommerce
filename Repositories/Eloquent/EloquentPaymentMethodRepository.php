@@ -48,6 +48,10 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
               $query->where('status', $filter->status);
             }
 
+            if (isset($filter->payout)) {
+              $query->where('payout', $filter->payout);
+            }
+
             if(isset($filter->withCalculations)){
 
               $query->where('status', 1);
