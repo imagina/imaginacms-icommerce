@@ -48,6 +48,9 @@ class CartService
       if(!isset($cart->id)){
         $needTobeCreated = true;
       }
+    }elseif(isset($data['userId'])){
+      $cart = $this->cart->getItem($data['userId'],json_decode(json_encode(["filter" => ["field" => "user_id","status" => 1]])));
+      $needTobeCreated = false;
     }
     
     if($needTobeCreated){
