@@ -77,7 +77,7 @@ class ProductListItem extends Component
                               $addToCartWithQuantityStyle = null,
                               $withTextInAddToCart = null,
                               $withIconInAddToCart = null,
-                              $addToCartWithQuantity = false,
+                              $addToCartWithQuantity = null,
                               $showButtonsOnMouseHover = false,
                               $buttonsLayout = null,
                               $buttonsPosition = null,
