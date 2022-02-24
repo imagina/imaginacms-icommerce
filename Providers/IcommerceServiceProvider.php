@@ -84,6 +84,7 @@ class IcommerceServiceProvider extends ServiceProvider
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings'), "asgard.icommerce.settings");
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'settings-fields'), "asgard.icommerce.settings-fields");
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'permissions'), "asgard.icommerce.permissions");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'cmsPages'), "asgard.icommerce.cmsPages");
     //$this->app[TagManager::class]->registerNamespace(new Product());
     $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
@@ -451,7 +452,7 @@ class IcommerceServiceProvider extends ServiceProvider
         return new \Modules\Icommerce\Repositories\Cache\CacheRelatedProductDecorator($repository);
       }
     );
- 
+
     $this->app->bind(
       'Modules\Icommerce\Repositories\PaymentMethodRepository',
       function () {
