@@ -29,12 +29,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount','organization'];
+        $includeDefault = ['category','translations','files','discount','organization'];
         if($priceListEnable)
             $includeDefault[] = 'priceLists';
         $query->with($includeDefault);
     } else {//Especific relationships
-        $includeDefault = ['category','categories','manufacturer','translations', 'store','files','productOptions','discount'];//Default relationships
+        $includeDefault = ['category','translations','files','discount','organization'];//Default relationships
         if (isset($params->include))//merge relations with default relationships
             $includeDefault = array_merge($includeDefault, $params->include ?? []);
         if($priceListEnable){
@@ -297,6 +297,11 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
             });
           });
       });
+      
+      $query->whereHas('category', function ($query) {
+        $query->where("icommerce__categories.status", "!=", 0);
+        //->where("iblog__categories.internal", "!=", 1);
+      });
     }
 
 
@@ -326,8 +331,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-
-    //dd($query->toSql());
+//if(isset($filter->search))
+//    dd($query->toSql(),$query->getBindings());
     /*== REQUEST ==*/
     if (isset($params->onlyQuery) && $params->onlyQuery) {
       return $query;
@@ -340,8 +345,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $query->get();
       }
   }
-
-
+  
   public function getItem($criteria, $params = false)
   {
 
