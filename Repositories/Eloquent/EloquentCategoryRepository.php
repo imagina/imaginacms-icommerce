@@ -24,7 +24,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with([]);
+      $query->with(['translations', 'files']);
     } else {//Especific relationships
       $includeDefault = ['translations', 'files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
@@ -156,9 +156,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     /*== FIELDS ==*/
     if (isset($params->fields) && is_array($params->fields) && count($params->fields) && $params->fields)
       $query->select($params->fields);
+  
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+    $tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
     
-    
-    if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
+    if ($tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
       
       $query->withoutTenancy();
@@ -220,9 +222,9 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with([]);
+      $query->with(['translations', 'files']);
     } else {//Especific relationships
-      $includeDefault = ['translations'];//Default relationships
+      $includeDefault = ['translations', 'files'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
       $query->with($includeDefault);//Add Relationships to query
