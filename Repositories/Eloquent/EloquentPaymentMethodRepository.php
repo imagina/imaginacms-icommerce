@@ -9,6 +9,8 @@ use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Http\Request;
 
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+
 class EloquentPaymentMethodRepository extends EloquentBaseRepository implements PaymentMethodRepository
 {
     public function getItemsBy($params)
