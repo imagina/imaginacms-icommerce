@@ -59,8 +59,8 @@ class ProductTransformer extends BaseApiTransformer
       'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
       'optionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('optionValues')),
       'relatedProducts' => ProductTransformer::collection($this->whenLoaded('relatedProducts')),
-      'mainImage' => $this->mainImage,
-      'gallery' => $this->gallery,
+     // 'mainImage' => $this->mainImage,
+     // 'gallery' => $this->gallery,
       'storeId' => $this->store_id,
       //'averageRating' => (float)$this->averageRating ?? 0,
       'featured' => $this->featured ? '1' : '0',
@@ -69,7 +69,7 @@ class ProductTransformer extends BaseApiTransformer
       'url' => $this->url ?? '#',
       //'productDiscounts' => $this->discounts()->pluck('discount_id'),
       // totalDiscounts deprecated, bad way to calculate discounts
-      'totalDiscounts' => $this->present()->totalDiscounts,
+      //'totalDiscounts' => $this->present()->totalDiscounts,
       'isCall' => $this->is_call ? '1' : '0',
       'customUrl' => $this->when($this->custom_url, $this->custom_url),
       
