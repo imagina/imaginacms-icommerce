@@ -161,9 +161,10 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     if (isset($methods) && $methods->count() > 0) {
       // Search Cart
       $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-      
+  
       if (isset($data['cart_id'])) {
-        $cart = $cartRepository->find($data['cart_id']);
+        $cart = $cartRepository->getItem($data['cart_id']);
+       
         // Fix data cart products
         $supportCart = new cartSupport();
         $dataCart = $supportCart->fixProductsAndTotal($cart);

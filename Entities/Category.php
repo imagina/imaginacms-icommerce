@@ -38,23 +38,11 @@ Category extends Model
     'external_id',
   ];
   
-  public $tenantWithCentralData = false;
-  protected $width = ['files'];
+  protected $width = ['files','translations'];
 
   protected $casts = [
     'options' => 'array'
   ];
-  
-  public function __construct(array $attributes = [])
-  {
-    try{
-    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
-    $this->tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
-    }catch(\Exception $e){}
-    parent::__construct($attributes);
-    
-  }
-
   
   public function parent()
   {
