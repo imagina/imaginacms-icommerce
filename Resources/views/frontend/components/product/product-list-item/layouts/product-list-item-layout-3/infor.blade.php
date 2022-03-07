@@ -60,7 +60,7 @@
     
         @else
             <a href="{{ URL::to('/contacto') }}" class="cart text-primary cursor-pointer">
-                {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
+                {{$customIndexContactLabel}}
             </a>
         @endif
     </div>

@@ -3,8 +3,8 @@
 	<div class="content position-relative">
 		@include('icommerce::frontend.partials.preloader')
 		
-		@if($options && count($options)>0)
-			@foreach($options as $key => $option)
+		@if($this->options && count($this->options)>0)
+			@foreach($this->options as $key => $option)
 				
 				@include('icommerce::frontend.livewire.index.filters.product-options.option',
 					['option'=> $option]

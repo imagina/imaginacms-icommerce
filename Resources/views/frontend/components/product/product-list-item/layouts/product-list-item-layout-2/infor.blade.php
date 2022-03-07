@@ -78,7 +78,7 @@
           @else
             <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
                class="btn btn-primary btn-sm">
-              <i class="fa fa-envelope"></i> {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
+              <i class="fa fa-envelope"></i> {{$customIndexContactLabel}}
             </a>
           
           @endif
