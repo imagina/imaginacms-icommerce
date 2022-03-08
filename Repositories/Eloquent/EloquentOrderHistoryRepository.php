@@ -6,6 +6,7 @@ use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Repositories\OrderHistoryRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
+use Modules\Icommerce\Events\OrderWasUpdated;
 
 class EloquentOrderHistoryRepository extends EloquentBaseRepository implements OrderHistoryRepository
 {
