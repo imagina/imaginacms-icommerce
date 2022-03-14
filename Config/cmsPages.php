@@ -30,7 +30,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.products"
+          "icommerce_cms_admin_products"
         ],
         "recommendations" => [
           "name" => "commerceProduct"
@@ -50,7 +50,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.products"
+          "icommerce_cms_admin_products"
         ],
         "recommendations" => [
           "name" => "commerceProduct"
@@ -71,7 +71,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.products"
+          "icommerce_cms_admin_products"
         ]
       ]
     ],
@@ -89,7 +89,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.products"
+          "icommerce_cms_admin_products"
         ]
       ]
     ],
@@ -117,8 +117,8 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.products",
-          "qcommerce.options"
+          "icommerce_cms_admin_products",
+          "icommerce_cms_admin_options"
         ]
       ]
     ],
@@ -202,7 +202,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.orders"
+          "icommerce_cms_admin_orders"
         ]
       ]
     ],
@@ -315,7 +315,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.coupons"
+          "icommerce_cms_admin_coupons"
         ]
       ]
     ],
@@ -332,7 +332,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.coupons"
+          "icommerce_cms_admin_coupons"
         ]
       ]
     ],
@@ -409,7 +409,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.quotes"
+          "icommerce_cms_admin_quotes"
         ]
       ]
     ]
@@ -443,7 +443,7 @@ return [
       "subHeader" => [
         "refresh" => true,
         "breadcrumb" => [
-          "qcommerce.orders"
+          "icommerce_cms_admin_orders"
         ]
       ]
     ]
