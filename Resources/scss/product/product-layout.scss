@@ -133,7 +133,7 @@
       }
     }
     a {
-      border-radius: 0px;
+      /*border-radius: 0px;*/
     }
   }
   
@@ -176,7 +176,7 @@
       }
     }
     
-    .add-to-cart-button {
+    /*.add-to-cart-button {
       
       a {
         border-radius: 26px;
@@ -198,7 +198,7 @@
           }
         }
       }
-    }
+    }*/
     
     @include media-breakpoint-down(lg) {
       justify-content: center;

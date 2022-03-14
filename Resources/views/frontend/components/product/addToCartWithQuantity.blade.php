@@ -15,10 +15,10 @@
                         data-field="quantity"><i class="fa fa-plus" aria-hidden="true"></i></button>
             </div>
 
-            <!-- BUTTON ADD -->
+            <!-- BUTTON ADD  -->
             <div class="add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
                 <a wire:click="$emit('addCartWithQuantity',$event)"
-                   class="btn btn-primary btn-sm add-cart add-to-cart-with-quantity-button"
+                   class="btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm add-cart add-to-cart-with-quantity-button"
                    data-pid="{{$product->id}}">
                     @if($withIconInAddToCart)
                         <i class="fa {{$addToCartIcon}}"></i>
@@ -29,7 +29,7 @@
                 </a>
 
                 @if(!$withTextInAddToCart && $wishlistEnable)
-                    <a class="wishlist btn btn-primary btn-sm ml-1"
+                    <a class=" wishlist btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm ml-1"
                        onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
                         <i class="fa fa-heart-o"></i>
                     </a>
@@ -40,7 +40,7 @@
             @if(setting("icommerce::showButtonToQuoteInStore"))
                 <div class="add-to-cart-quote-button">
                     <a wire:click="$emit('addCartQuoteWithQuantity',$event)"
-                       class="btn btn-primary btn-sm add-to-cart-quote-with-quantity-button"
+                       class="2 btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm add-to-cart-quote-with-quantity-button"
                        data-pid="{{$product->id}}">
                         <i class="fas fa-file-alt"></i>{{trans('icommerce::cart.button.add_to_cart_quote')}}
                     </a>
