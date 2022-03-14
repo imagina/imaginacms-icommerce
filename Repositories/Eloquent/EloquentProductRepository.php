@@ -16,7 +16,7 @@ use Modules\Ihelpers\Events\DeleteMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 //Events media
 
 class EloquentProductRepository extends EloquentBaseRepository implements ProductRepository
@@ -437,6 +437,19 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
     if (!isset($params->filter->field)) {
       $query->where('id', $criteria);
+    }
+  
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+    $tenantWithCentralData = in_array("products",$entitiesWithCentralData);
+  
+    if ($tenantWithCentralData && isset(tenant()->id)) {
+      $model = $this->model;
+    
+      $query->withoutTenancy();
+      $query->where(function ($query) use ($model) {
+        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
+      });
     }
 
     /*== REQUEST ==*/

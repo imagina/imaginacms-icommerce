@@ -303,7 +303,8 @@ class OrderTransformer extends JsonResource
         ]
       ];
       
-      $paymentMethod = PaymentMethod::find($item['paymentCode']);
+      $paymentRepository = app("Modules\Icommerce\Repositories\PaymentMethodRepository");
+      $paymentMethod = $paymentRepository->getItem($item['paymentCode']);
       
       if (isset($paymentMethod->description) && !empty($paymentMethod->description)) {
         array_push($paymentInfo["values"],

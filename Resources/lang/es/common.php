@@ -140,6 +140,7 @@ return [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',
       'entities' => [
+        'products' => 'Productos',
         'categories' => 'Categorías',
         'carts' => 'Carritos',
         'paymentMethods' => 'Métodos de Pago',

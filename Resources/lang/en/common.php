@@ -139,6 +139,7 @@ return [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
       'entities' => [
+        'products' => 'Products',
         'categories' => 'Categories',
         'carts' => 'Carts',
         'paymentMethods' => 'Payment Methods',

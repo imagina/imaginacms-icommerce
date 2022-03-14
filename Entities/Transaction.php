@@ -21,7 +21,7 @@ class Transaction extends Model
 
   public function paymentMethod()
   {
-    return $this->belongsTo(PaymentMethod::class);
+    return $this->belongsTo(PaymentMethod::class)->withoutTenancy();
   }
 
   public function orderStatus()
