@@ -64,7 +64,7 @@
         <div>
           <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
              class=" btn-comprar btn btn-secondary text-white">
-            {{$customIndexContactLabel}}</a>
+            {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}</a>
           <!-- BUTTON WISHLIST -->
           <a
             onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"

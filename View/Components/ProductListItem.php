@@ -51,13 +51,16 @@ class ProductListItem extends Component
   public $contentCategoryToUppercase;
   public $contentPriceFontSize;
   public $contentPriceFontWeight;
+  public $customIndexContactLabel;
   
   /**
    * Create a new component instance.
    *
    * @return void
    */
-  public function __construct($item, $itemListLayout = null, $layout = null,
+  public function __construct($item,
+                              $itemListLayout = null,
+                              $layout = null,
                               $discountRibbonStyle = null,
                               $discountPosition = null,
                               $imagePadding = null,
