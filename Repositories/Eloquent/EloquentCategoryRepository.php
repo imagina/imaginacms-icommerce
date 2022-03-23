@@ -289,10 +289,13 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       
     } else
       $query = $this->model->where('slug', $slug)->with('translations', 'parent', 'children', 'vehicles');
-    
-    
-    if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
+
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+    $tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
+
+    if ($tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
+
       $query->withoutTenancy();
       $query->where(function ($query) use ($model) {
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
