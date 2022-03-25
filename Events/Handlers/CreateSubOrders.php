@@ -20,7 +20,7 @@ class CreateSubOrders
       $organizations = $order->orderItems->pluck("organization_id")->toArray();
       
       // recorriendo cada org id en los items de la orden
-      foreach ($organizations as $organizationId) {
+      foreach (array_unique($organizations) as $organizationId) {
         
         //Only if there are a valid organization Id
         if (isset($organizationId) && !empty($organizationId)) {
