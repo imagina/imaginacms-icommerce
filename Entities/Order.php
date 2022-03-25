@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Ilocations\Entities\Country;
 use Modules\Ilocations\Entities\Province;
 use Modules\Isite\Entities\Organization;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Order extends Model
 {
+  use BelongsToTenant;
   
   protected $table = 'icommerce__orders';
   
