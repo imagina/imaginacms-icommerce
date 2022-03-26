@@ -10,14 +10,18 @@ class Transaction extends Model
 
     protected $table = 'icommerce__transactions';
 
-    protected $fillable = [
-      'external_code',
-      'order_id',
-      'payment_method_id',
-      'amount',
-      'status',
-      'external_status',
-    ];
+  protected $fillable = [
+    'external_code',
+    'order_id',
+    'payment_method_id',
+    'amount',
+    'status',
+    'external_status',
+  ];
+
+  protected $with = [
+    'paymentMethod',
+  ];
 
   public function paymentMethod()
   {
