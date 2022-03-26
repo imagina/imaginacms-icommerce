@@ -7,39 +7,41 @@ use Modules\Icommerce\Entities\PaymentMethod;
 
 class CreateSubOrders
 {
-  
-  
+
+
   public function handle($event = null)
   {
-    
+
     $order = $event->order;
-    
+
     \Log::info('Icommerce: Events|Handlers|CreateSubOrders|OrderId: ' . $order->id);
-    
+
     if (!isset($order->parent_id) || empty($order->parent_id)) {
       $organizations = $order->orderItems->pluck("organization_id")->toArray();
-      
+
       // recorriendo cada org id en los items de la orden
-      foreach ($organizations as $organizationId) {
-        
+      foreach (array_unique($organizations) as $organizationId) {
+
         //Only if there are a valid organization Id
         if (isset($organizationId) && !empty($organizationId)) {
-          
+
           $organizationOrderItems = $order->orderItems->where("organization_id", $organizationId);
-          
+
           $tenantWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
-          
+
           //si los métodos de pago están centralizados entonces las subordenes se deben pagar con wallet
           if (in_array("paymentMethods", $tenantWithCentralData)) {
             $paymentMethod = PaymentMethod::where("name", "icredit")->first();
-            
+            $paymentCode = $paymentMethod->id;
+
             //reventamos error para prevenir que un marketplace con metodos centralizados no tenga la wallet instalada
             if (!isset($paymentMethod->id)) throw new \Exception("The Module Icredit it's required when the payment methods are centralized", 400);
           } else {
             // de lo contrario las ordenes hijas quedan con el mismo método de pago de la orden padre
             $paymentMethod = PaymentMethod::find($order->payment_code);
+            $paymentCode = $order->payment_code;
           }
-          
+
           $coupon = $order->coupons->first();
           $data = [
             'parentId' => $order->id,
@@ -70,7 +72,7 @@ class CreateSubOrders
             "shipping_method" => $order->shipping_method,
             "shipping_code" => $order->shipping_code,
             "shipping_amount" => $order->shipping_amount,
-            "paymentCode" => $order->paymentCode,
+            "paymentCode" => $paymentCode,
             "paymentMethod" => $paymentMethod,
             "currency_id" => $order->currency_id,
             "currency_code" => $order->currency_code,
@@ -78,13 +80,13 @@ class CreateSubOrders
             "organization_id" => $organizationId,
             "coupon" => $coupon
           ];
-          
+
           // Creating Sub Order
           $subOrderCreated = app("Modules\Icommerce\Services\OrderService")->create($data);
-          
+
         }
       }
     }
   }
-  
+
 }
