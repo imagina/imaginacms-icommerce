@@ -112,7 +112,11 @@ class OrderService
         throw new \Exception('There are an error with the cart', 400);
       }
       
-      $total = (($data["type"] ?? '') == "quote") ? $cart->products->sum('total') : $cart->total;
+      //If the Order belongs to an organization the total of the cart will be based in the cartProducts of the organization
+      if(isset($data["organization_id"]) && !empty($data["organization_id"]))
+        $total = $cart->products()->where("organization_id",$data["organization_id"] ?? $data["organizationId"] ?? null)->get()->sum('total');
+      else
+        $total = $cart->products->sum('total');
       /*
       |--------------------------------------------------------------------------
       | getting shipping address if issset in the data
