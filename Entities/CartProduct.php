@@ -15,6 +15,7 @@ class CartProduct extends Model
     'product_id',
     'quantity',
     'is_call',
+    'organization_id',
     'options'
 
   ];

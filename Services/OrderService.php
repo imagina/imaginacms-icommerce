@@ -111,6 +111,8 @@ class OrderService
         \Log::info("[ERROR/Exception]:: There are an error with the cart | OrderService::110");
         throw new \Exception('There are an error with the cart', 400);
       }
+      
+      //If the Order belongs to an organization the total of the cart will be based in the cartProducts of the organization
       if(isset($data["organization_id"]) && !empty($data["organization_id"]))
         $total = $cart->products()->where("organization_id",$data["organization_id"] ?? $data["organizationId"] ?? null)->get()->sum('total');
       else
