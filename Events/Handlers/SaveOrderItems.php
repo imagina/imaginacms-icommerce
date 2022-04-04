@@ -27,7 +27,7 @@ class SaveOrderItems
         }
         $order = $event->order;
         $items = $event->items;
-      
+
         foreach ($items as $item) {
           
           if(isset($order->organization_id) && !empty($order->organization_id) && $item["organization_id"] != $order->organization_id){
