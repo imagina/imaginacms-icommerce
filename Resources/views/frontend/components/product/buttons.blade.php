@@ -4,56 +4,70 @@
         @switch(setting("icommerce::addToCartButtonAction"))
             @case("add-to-cart") @default
             @if(!$addToCartWithQuantity)
-                <a class="add-cart btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
-                   onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)">
-                    @if($withIconInAddToCart)
-                        <i class="fa {{$addToCartIcon}}"></i>
-                    @endif
-                    @if($withTextInAddToCart)
-                        {{trans("icommerce::products.button.addToCartItemList")}}
-                    @endif
-                </a>
+                <!-- add-cart btn-sm btn -->
+              <x-isite::button :style="$buttonsLayout" buttonClasses="add-cart button-small"
+                               :onclick="'window.livewire.emit(\'addToCart\','.$product->id.',1,{},false)'"
+                               :withIcon="$withIconInAddToCart"
+                               :iconClass="'fa '.$addToCartIcon"
+                               :withLabel="$withTextInAddToCart"
+                               :label="trans('icommerce::products.button.addToCartItemList')"
+                               :sizeLabel="$bottomFontSize"
+              />
+              
             @endif
             @break
             @case("go-to-show-view")
-            <a class="add-cart btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
-               href="{{$product->url}}">
-                @if($withIconInAddToCart)
-                    <i class="fa {{$addToCartIcon}}"></i>
-                @endif
-                @if($withTextInAddToCart)
-                    {{trans("icommerce::products.button.addToCartItemList")}}
-                @endif
-            </a>
+
+            <x-isite::button :style="$buttonsLayout" buttonClasses="add-cart button-small"
+                             :href="$product->url"
+                             :withIcon="$withIconInAddToCart"
+                             :iconClass="'fa '.$addToCartIcon"
+                             :withLabel="$withTextInAddToCart"
+                             :label="trans('icommerce::products.button.addToCartItemList')"
+                             :sizeLabel="$bottomFontSize"
+            />
+
             @break
         @endswitch
         @switch(setting("icommerce::addToCartQuoteButtonAction"))
             @case("add-to-cart-quote")
             @if(setting("icommerce::showButtonToQuoteInStore"))
-                <a class="add-cart btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
-                   onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true)">
-                    @if($withIconInAddToCart)
-                        <i class="fa fa-file"></i>
-                    @endif
-                </a>
+
+                    <x-isite::button :style="$buttonsLayout" buttonClasses="add-cart button-small"
+                                     :onclick="'window.livewire.emit(\'addToCart\','.$product->id.',1,{},false)'"
+                                     :withIcon="$withIconInAddToCart"
+                                     iconClass="fa fa-file"
+                                     :withLabel="false"
+                                     :sizeLabel="$bottomFontSize"
+                    />
+
             @endif
         @endswitch
     @else
-        <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
-           class="contact btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm">
-            @if($withIconInAddToCart)
-                <i class="fa fa-envelope"></i>
-            @endif
-            @if($withTextInAddToCart)
-                {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}
-            @endif
-        </a>
+          
+                       @php $contactUrl=setting('icommerce::customIndexContactLabel', null, 'Contáctenos'); @endphp
+                        <x-isite::button :style="$buttonsLayout" buttonClasses="contact button-small"
+                                         :withIcon="$withIconInAddToCart"
+                                         :onclick="'window.livewire.emit(\'makeQuote\','.$product->id.')'"
+                                         iconClass="fa fa-envelope"
+                                         :withLabel="$withTextInAddToCart"
+                                         :label="$contactUrl"
+                                         :sizeLabel="$bottomFontSize"
+
+                        />
+
     @endif
     @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && $wishlistEnable)
-        <a class="wishlist btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
-           onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
-            <i class="fa {{$wishlistIcon}}"></i>
-        </a>
+ 
+        @php $wishUrl=json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]); @endphp
+            <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist button-small"
+                             :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrl.')'"
+                             :withIcon="$withIconInAddToCart"
+                             :iconClass="'fa '.$wishlistIcon"
+                             :withLabel="false"
+                             :sizeLabel="$bottomFontSize"
+            />
+
     @endif
 </div>
       

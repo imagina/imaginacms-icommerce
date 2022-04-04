@@ -1,5 +1,8 @@
 @once
     <style>
+      .button-minus i, .button-plus i{
+        pointer-events: none;
+      }
     @if($externalShadowOnHover)
 
           .product-layout:hover {
@@ -19,9 +22,9 @@
           .product-layout-1 .buttons.rounded a.add-to-cart-with-quantity-button {
             width: unset !important;
             height: unset !important;
-            padding: 0.25rem 0.6rem;
+            /*padding: 0.25rem 0.6rem;
             font-size: 0.825rem !important;
-            line-height: 1.5 !important;
+            line-height: 1.5 !important;*/
             @if($addToCartWithQuantityStyle == "square")
               border-radius: opx;
             @endif

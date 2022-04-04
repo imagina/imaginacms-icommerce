@@ -52,7 +52,7 @@ class ProductListItem extends Component
   public $contentPriceFontSize;
   public $contentPriceFontWeight;
   public $customIndexContactLabel;
-  
+  public $bottomFontSize;
   /**
    * Create a new component instance.
    *
@@ -99,6 +99,7 @@ class ProductListItem extends Component
                               $contentCategoryToUppercase = true,
                               $contentPriceFontSize = 8,
                               $contentPriceFontWeight = null,
+                              $bottomFontSize = 13,
                               $parentAttributes = null,
                               $editLink,
                               $tooltipEditLink)
@@ -107,135 +108,50 @@ class ProductListItem extends Component
     
     $this->itemListLayout = $itemListLayout ?? "product-list-item-layout-1";
     
-    list($this->discountRibbonStyle,
-      $this->discountPosition,
-      $this->imagePadding,
-      $this->imageBorder,
-      $this->imageBorderColor,
-      $this->imageBorderRadius,
-      $this->imageAspect,
-      $this->externalPadding,
-      $this->externalBorder,
-      $this->externalBorderRadius,
-      $this->externalBorderColor,
-      $this->externalShadowOnHover,
-      $this->externalShadowOnHoverColor,
-      $this->addToCartIcon,
-      $this->wishlistEnable,
-      $this->wishlistIcon,
-      $this->addToCartWithQuantityStyle,
-      $this->withTextInAddToCart,
-      $this->withIconInAddToCart,
-      $this->addToCartWithQuantity,
-      $this->showButtonsOnMouseHover,
-      $this->buttonsLayout,
-      $this->buttonsPosition,
-      $this->contentAlign,
-      $this->contentExternalPaddingX,
-      $this->contentExternalPaddingY,
-      $this->addToCartWithQuantityPaddingX,
-      $this->addToCartWithQuantityPaddingY,
-      $this->addToCartWithQuantityMarginBottom,
-      $this->contentTitleFontSize,
-      $this->contentTitleMaxHeight,
-      $this->contentTitleNumberOfCharacters,
-      $this->contentTitleToUppercase,
-      $this->contentCategoryEnable,
-      $this->contentCategoryFontSize,
-      $this->contentCategoryToUppercase,
-      $this->contentPriceFontSize,
-      $this->contentPriceFontWeight,
-      $this->view,
-      $this->customIndexContactLabel) =
-      Cache::store('array')->remember("productListItemSettings", 60*60*24, function () use ( //Caché de settings de productos por 30 días
-      $discountRibbonStyle,
-      $discountPosition,
-      $imagePadding,
-      $imageBorder,
-      $imageBorderColor,
-      $imageBorderRadius,
-      $imageAspect,
-      $externalPadding,
-      $externalBorder,
-      $externalBorderRadius,
-      $externalBorderColor,
-      $externalShadowOnHover,
-      $externalShadowOnHoverColor,
-      $addToCartIcon,
-      $wishlistEnable,
-      $wishlistIcon,
-      $addToCartWithQuantityStyle,
-      $withTextInAddToCart,
-      $withIconInAddToCart,
-      $addToCartWithQuantity,
-      $showButtonsOnMouseHover,
-      $buttonsLayout,
-      $buttonsPosition,
-      $contentAlign,
-      $contentExternalPaddingX,
-      $contentExternalPaddingY,
-      $addToCartWithQuantityPaddingX,
-      $addToCartWithQuantityPaddingY,
-      $addToCartWithQuantityMarginBottom,
-      $contentTitleFontSize,
-      $contentTitleMaxHeight,
-      $contentTitleNumberOfCharacters,
-      $contentTitleToUppercase,
-      $contentCategoryEnable,
-      $contentCategoryFontSize,
-      $contentCategoryToUppercase,
-      $contentPriceFontSize,
-      $contentPriceFontWeight,
-      $layout
-    ) {
+    $this->discountRibbonStyle = $discountRibbonStyle ?? setting('icommerce::productDiscountRibbonStyle', null, "flag");
+    $this->discountPosition = $discountPosition ?? setting('icommerce::productDiscountPosition', null, "top-right");
+    $this->imagePadding = $imagePadding ?? setting('icommerce::productImagePadding', null, 0);
+    $this->imageBorder = $imageBorder ?? setting('icommerce::productImageBorder', null, false);
+    $this->imageBorderColor = $imageBorderColor ?? setting('icommerce::productImageBorderColor', null, "#dddddd");
+    $this->imageBorderRadius = $imageBorderRadius ?? setting('icommerce::productImageBorderRadius', null, 0);
+    $this->imageAspect = $imageAspect ?? setting('icommerce::productAspect', null, '1-1');
+    $this->externalPadding = $externalPadding ?? setting('icommerce::productExternalPadding', null, 0);
+    $this->externalBorder = $externalBorder ?? setting('icommerce::productExternalBorder', null, false);
+    $this->externalBorderRadius = $externalBorderRadius ?? setting('icommerce::productExternalBorderRadius', null, 0);
+    $this->externalBorderColor = $externalBorderColor ?? setting('icommerce::productExternalBorderColor', null, "#dddddd");
+    $this->externalShadowOnHover = $externalShadowOnHover ?? setting('icommerce::productExternalShadowOnHover', null, true);
+    $this->externalShadowOnHoverColor = $externalShadowOnHoverColor ?? setting('icommerce::productExternalShadowOnHoverColor', null, "rgba(0, 0, 0, 0.15)");
+    $this->addToCartIcon = $addToCartIcon ?? setting('icommerce::productAddToCartIcon', null, "fa-shopping-cart");
+    $this->wishlistEnable = $wishlistEnable ?? setting('icommerce::productWishlistEnable', null, true);
+    $this->wishlistIcon = $wishlistIcon ?? setting('icommerce::productWishlistIcon', null, "fa-heart-o");
+    $this->addToCartWithQuantityStyle = $addToCartWithQuantityStyle ?? setting('icommerce::productAddToCartWithQuantityStyle', null, "square");
+    $this->withTextInAddToCart = $withTextInAddToCart ?? setting('icommerce::productWithTextInAddToCart', null, true);
+    $this->withIconInAddToCart = $withIconInAddToCart ?? setting('icommerce::productWithIconInAddToCart', null, true);
+    $this->addToCartWithQuantity = $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity',null,false);
+    $this->showButtonsOnMouseHover = $showButtonsOnMouseHover ?? setting('icommerce::productShowButtonsOnMouseHover', null, false);
+    $this->buttonsLayout = $buttonsLayout ?? setting('icommerce::productButtonsLayout', null, 'borders');
+    $this->buttonsPosition = $buttonsPosition ?? setting('icommerce::productButtonsPosition', null, 'in-content');
+    $this->contentAlign = $contentAlign ?? setting('icommerce::productContentAlign', null, "left");
+    $this->contentExternalPaddingX = $contentExternalPaddingX ?? setting('icommerce::productContentExternalPaddingX', null, 0);
+    $this->contentExternalPaddingY = $contentExternalPaddingY ?? setting('icommerce::productContentExternalPaddingY', null, 0);
+    $this->addToCartWithQuantityPaddingX = $addToCartWithQuantityPaddingX ?? setting('icommerce::productAddToCartWithQuantityPaddingX', null, 0);
+    $this->addToCartWithQuantityPaddingY = $addToCartWithQuantityPaddingY ?? setting('icommerce::productAddToCartWithQuantityPaddingY', null, 0);
+    $this->addToCartWithQuantityMarginBottom = $addToCartWithQuantityMarginBottom ?? setting('icommerce::productAddToCartWithQuantityMarginBottom', null, 0);
+    $this->contentTitleFontSize = $contentTitleFontSize ?? setting('icommerce::productContentTitleFontSize', null, 14);
+    $this->contentTitleMaxHeight = $contentTitleMaxHeight ?? setting('icommerce::productContentTitleMaxHeight', null, 14);
+    $this->contentTitleNumberOfCharacters = $contentTitleNumberOfCharacters ?? setting('icommerce::productContentTitleNumberOfCharacters', null, 100);
+    $this->contentTitleToUppercase = $contentTitleToUppercase ?? setting('icommerce::productContentTitleToUppercase', null, false);
+    $this->contentCategoryEnable = $contentCategoryEnable ?? setting('icommerce::productContentCategoryEnable', null, true);
+    $this->contentCategoryFontSize = $contentCategoryFontSize ?? setting('icommerce::productContentCategoryFontSize', null, 8);
+    $this->contentCategoryToUppercase = $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true);
+    $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);
+    $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
+    $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, "13");
       $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
-      return [
-        $discountRibbonStyle ?? setting('icommerce::productDiscountRibbonStyle', null, "flag"),
-        $discountPosition ?? setting('icommerce::productDiscountPosition', null, "top-right"),
-        $imagePadding ?? setting('icommerce::productImagePadding', null, 0),
-        $imageBorder ?? setting('icommerce::productImageBorder', null, false),
-        $imageBorderColor ?? setting('icommerce::productImageBorderColor', null, "#dddddd"),
-        $imageBorderRadius ?? setting('icommerce::productImageBorderRadius', null, 0),
-        $imageAspect ?? setting('icommerce::productAspect', null, '1-1'),
-        $externalPadding ?? setting('icommerce::productExternalPadding', null, 0),
-        $externalBorder ?? setting('icommerce::productExternalBorder', null, false),
-        $externalBorderRadius ?? setting('icommerce::productExternalBorderRadius', null, 0),
-        $externalBorderColor ?? setting('icommerce::productExternalBorderColor', null, "#dddddd"),
-        $externalShadowOnHover ?? setting('icommerce::productExternalShadowOnHover', null, true),
-        $externalShadowOnHoverColor ?? setting('icommerce::productExternalShadowOnHoverColor', null, "rgba(0, 0, 0, 0.15)"),
-        $addToCartIcon ?? setting('icommerce::productAddToCartIcon', null, "fa-shopping-cart"),
-        $wishlistEnable ?? setting('icommerce::productWishlistEnable', null, true),
-        $wishlistIcon ?? setting('icommerce::productWishlistIcon', null, "fa-heart-o"),
-        $addToCartWithQuantityStyle ?? setting('icommerce::productAddToCartWithQuantityStyle', null, "square"),
-        $withTextInAddToCart ?? setting('icommerce::productWithTextInAddToCart', null, true),
-        $withIconInAddToCart ?? setting('icommerce::productWithIconInAddToCart', null, true),
-        $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity', null, false),
-        $showButtonsOnMouseHover ?? setting('icommerce::productShowButtonsOnMouseHover', null, false),
-        $buttonsLayout ?? setting('icommerce::productButtonsLayout', null, 'borders'),
-        $buttonsPosition ?? setting('icommerce::productButtonsPosition', null, 'in-content'),
-        $contentAlign ?? setting('icommerce::productContentAlign', null, "left"),
-        $contentExternalPaddingX ?? setting('icommerce::productContentExternalPaddingX', null, 0),
-        $contentExternalPaddingY ?? setting('icommerce::productContentExternalPaddingY', null, 0),
-        $addToCartWithQuantityPaddingX ?? setting('icommerce::productAddToCartWithQuantityPaddingX', null, 0),
-        $addToCartWithQuantityPaddingY ?? setting('icommerce::productAddToCartWithQuantityPaddingY', null, 0),
-        $addToCartWithQuantityMarginBottom ?? setting('icommerce::productAddToCartWithQuantityMarginBottom', null, 0),
-        $contentTitleFontSize ?? setting('icommerce::productContentTitleFontSize', null, 14),
-        $contentTitleMaxHeight ?? setting('icommerce::productContentTitleMaxHeight', null, 14),
-        $contentTitleNumberOfCharacters ?? setting('icommerce::productContentTitleNumberOfCharacters', null, 100),
-        $contentTitleToUppercase ?? setting('icommerce::productContentTitleToUppercase', null, false),
-        $contentCategoryEnable ?? setting('icommerce::productContentCategoryEnable', null, true),
-        $contentCategoryFontSize ?? setting('icommerce::productContentCategoryFontSize', null, 8),
-        $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true),
-        $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8),
-        $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal"),
-        "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout . ".index",
-        setting('icommerce::customIndexContactLabel', null, 'Contáctenos')
-      ];
-    });
-    
- 
+    $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
+    $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
     
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);

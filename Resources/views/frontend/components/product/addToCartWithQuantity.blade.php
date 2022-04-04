@@ -6,44 +6,56 @@
                      margin-bottom: {{$addToCartWithQuantityMarginBottom}}px !important;">
             <!-- BUTTON QUANTITY -->
             <div class="number-input input-group quantity-selector">
-                <button wire:click="$emit('decrementValue',$event)" type="button" class="button-minus"
-                        data-field="quantity">
+                <button onclick="icommerce_quantityAction(event)" type="button" class="button-minus"
+                        data-action="decrement">
                   <i class="fa fa-minus" aria-hidden="true"></i>
                 </button>
                 <input type="number" step="1" value="1" min="1" name="quantity" class="quantity-field d-inline-block form-control">
-                <button wire:click="$emit('incrementValue',$event)" type="button" class="button-plus"
-                        data-field="quantity"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <button onclick="icommerce_quantityAction(event)" type="button" class="button-plus"
+                        data-action="increment"><i class="fa fa-plus" aria-hidden="true"></i></button>
             </div>
 
             <!-- BUTTON ADD  -->
             <div class="add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
-                <a wire:click="$emit('addCartWithQuantity',$event)"
-                   class="btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm add-cart add-to-cart-with-quantity-button"
-                   data-pid="{{$product->id}}">
-                    @if($withIconInAddToCart)
-                        <i class="fa {{$addToCartIcon}}"></i>
-                    @endif
-                    @if($withTextInAddToCart)
-                        {{trans("icommerce::products.button.addToCartItemList")}}
-                    @endif
-                </a>
+               
+                <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-cart add-to-cart-with-quantity-button"
+                                 onclick="icommerce_addToCartWithQuantity(event)"
+                                 :withIcon="$withIconInAddToCart"
+                                 :iconClass="'fa '.$addToCartIcon"
+                                 :withLabel="$withTextInAddToCart"
+                                 :label="trans('icommerce::products.button.addToCartItemList')"
+                                 :sizeLabel="$bottomFontSize"
+                                 :dataItemId="$product->id"
+                />
 
                 @if(!$withTextInAddToCart && $wishlistEnable)
-                    <a class=" wishlist btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm ml-1"
-                       onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})">
-                        <i class="fa fa-heart-o"></i>
-                    </a>
+                   
+                    @php $wishUrlLE = json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]); @endphp
+                    <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist 1 button-small"
+                                     :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrlLE.')'"
+                                     :withIcon="$withIconInAddToCart"
+                                     iconClass="fa fa-heart-o"
+                                     :withLabel="false"
+                                     sizeLabel="$bottomFontSize"
+                    />
+
                 @endif
 
             </div>
             <!-- BUTTON ADD QUOTE -->
             @if(setting("icommerce::showButtonToQuoteInStore"))
                 <div class="add-to-cart-quote-button">
-                    <a wire:click="$emit('addCartQuoteWithQuantity',$event)"
-                       class="2 btn btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary btn-sm add-to-cart-quote-with-quantity-button"
-                       data-pid="{{$product->id}}">
-                        <i class="fas fa-file-alt"></i>{{trans('icommerce::cart.button.add_to_cart_quote')}}
-                    </a>
+                 
+                    <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-to-cart-quote-with-quantity-button"
+                                     onclick="icommerce_addToCartQuoteWithQuantity(event)"
+                                     :withIcon="true"
+                                     iconClass="fas fa-file-alt"
+                                     :withLabel="true"
+                                     :label="trans('icommerce::cart.button.add_to_cart_quote')"
+                                     :sizeLabel="$bottomFontSize"
+                                     :dataItemId="$product->id"
+                    />
+
                 </div>
             @endif
         </div>
@@ -53,30 +65,20 @@
     @parent
     <script type="text/javascript" defer>
 
-      function icommerce_incrementValue(e) {
+      function icommerce_quantityAction(e) {
+      
         e.preventDefault();
-        var fieldName = $(e.target).data('field');
+        var action = $(e.target).data('action');
         var parent = $(e.target).closest('div');
-        var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
-
-        if (!isNaN(currentVal)) {
-          parent.find('input[name=' + fieldName + ']').val(currentVal + 1);
-        } else {
-          parent.find('input[name=' + fieldName + ']').val(0);
-        }
-      }
-
-      function icommerce_decrementValue(e) {
-        e.preventDefault();
-        var fieldName = $(e.target).data('field');
-        var parent = $(e.target).closest('div');
-        var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
-
-        if (!isNaN(currentVal) && currentVal > 0) {
-          parent.find('input[name=' + fieldName + ']').val(currentVal - 1);
-        } else {
-          parent.find('input[name=' + fieldName + ']').val(1);
-        }
+        var quantityInput = parent.find('input[name=quantity]');
+        var currentVal = parseInt(quantityInput.val(), 10);
+        
+        if (!isNaN(currentVal)) quantityInput.val(1);
+          if(action == "increment")
+            quantityInput.val(currentVal + 1);
+          else{
+            quantityInput.val(currentVal - 1);
+          }
       }
 
       function icommerce_addToCartWithQuantity(e) {
@@ -85,7 +87,7 @@
         let divParentAdd = addBtn.closest('div.add-to-cart-with-quantity')
         let quantitySelector = $(divParentAdd).children("div.number-input.input-group.quantity-selector")[0];
         let quantityInput = $(quantitySelector).children("input.quantity-field")[0];
-        let productId = $(e.target).data('pid');
+        let productId = $(e.target).data('item-id');
         window.livewire.emit('addToCart', productId, $(quantityInput).val())
         $(quantityInput).val(1)
       }
@@ -96,40 +98,10 @@
         let divParentAdd = addBtn.closest('div.add-to-cart-with-quantity')
         let quantitySelector = $(divParentAdd).children("div.number-input.input-group.quantity-selector")[0];
         let quantityInput = $(quantitySelector).children("input.quantity-field")[0];
-        let productId = $(e.target).data('pid');
+        let productId = $(e.target).data('item-id');
         window.livewire.emit('addToCart', productId, $(quantityInput).val(), {}, true)
         $(quantityInput).val(1)
       }
-
-      @if(isset($productListLayout) && !empty($productListLayout))
-      Livewire.on('incrementValue', (e) => {
-        icommerce_incrementValue(e);
-      })
-
-      Livewire.on('decrementValue', (e) => {
-        icommerce_decrementValue(e);
-      })
-
-      Livewire.on('addCartWithQuantity', (e) => {
-        icommerce_addToCartWithQuantity(e);
-      })
-      Livewire.on('addCartQuoteWithQuantity', (e) => {
-        icommerce_addToCartQuoteWithQuantity(e);
-      })
-      @else
-      $('.infor .input-group').on('click', '.button-plus', function (e) {
-        icommerce_incrementValue(e);
-      });
-      $('.infor .input-group').on('click', '.button-minus', function (e) {
-        icommerce_decrementValue(e);
-      });
-      $('.infor .add-to-cart-with-quantity-button').click(function (e) {
-        icommerce_addToCartWithQuantity(e);
-      });
-      $('.infor .add-to-cart-quote-with-quantity-button').click(function (e) {
-        icommerce_addToCartQuoteWithQuantity(e);
-      });
-        @endif
 
     </script>
 
