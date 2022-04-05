@@ -143,7 +143,8 @@ return [
         'categories' => 'Categories',
         'carts' => 'Carts',
         'paymentMethods' => 'Payment Methods',
-        'shippingMethods' => 'Shipping Methods'
+        'shippingMethods' => 'Shipping Methods',
+        'orders' => 'Orders',
       ],
     ],
     'product' => [

@@ -487,6 +487,7 @@ return [
         ['label' => 'icommerce::common.settings.tenant.entities.carts', 'value' => 'carts'],
         ['label' => 'icommerce::common.settings.tenant.entities.paymentMethods', 'value' => 'paymentMethods'],
         ['label' => 'icommerce::common.settings.tenant.entities.shippingMethods', 'value' => 'shippingMethods'],
+        ['label' => 'icommerce::common.settings.tenant.entities.orders', 'value' => 'orders'],
       ]
     ]
   ],
