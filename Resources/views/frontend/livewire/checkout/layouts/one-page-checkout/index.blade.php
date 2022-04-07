@@ -1,4 +1,4 @@
-<div class="row">
+<div id="btn-continue-buying-up" class="row">
   <div class="col py-2">
     <a class="btn btn-success waves-effect waves-light"
        href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
