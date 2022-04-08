@@ -122,11 +122,18 @@ if (!function_exists('localesymbol')) {
 
 if (!function_exists('formatMoney')) {
 
-    function formatMoney($value)
+    function formatMoney($value,$showCurrencyCode=false)
     {
         $format =(object) Config::get('asgard.icommerce.config.formatmoney');
 
-        return number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
+        $numberFormat = number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
+
+        if($showCurrencyCode){
+            $currency = Currency::whereStatus(Status::ENABLED)->where('default_currency','=',1)->first();
+            $numberFormat = $numberFormat." ".$currency->code;
+        }
+
+        return $numberFormat;
 
     }
 
