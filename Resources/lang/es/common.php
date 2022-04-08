@@ -144,7 +144,8 @@ return [
         'categories' => 'Categorías',
         'carts' => 'Carritos',
         'paymentMethods' => 'Métodos de Pago',
-        'shippingMethods' => 'Métodos de Envío'
+        'shippingMethods' => 'Métodos de Envío',
+        'orders' => 'Ordenes',
       ],
     ],
     'product'=>[
