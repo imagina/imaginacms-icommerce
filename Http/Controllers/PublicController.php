@@ -312,10 +312,12 @@ class PublicController extends BaseApiController
     $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
     
     $tpl = "icommerce::frontend.checkout.index";
-    
+
     $cart = request()->session()->get('cart');
     if (isset($cart->id)) {
       $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    }else{
+      $cart = app('Modules\Icommerce\Services\CartService')->create(["userId" => \Auth::id() ?? null]);
     }
   
     $organization = null;

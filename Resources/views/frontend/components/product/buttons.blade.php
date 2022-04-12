@@ -4,32 +4,39 @@
         @switch(setting("icommerce::addToCartButtonAction"))
             @case("add-to-cart") @default
             @if(!$addToCartWithQuantity)
-                <a class="add-cart btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
-                   onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)">
-                    @if($withIconInAddToCart)
-                        <i class="fa {{$addToCartIcon}}"></i>
-                    @endif
-                    @if($withTextInAddToCart)
-                        {{trans("icommerce::products.button.addToCartItemList")}}
-                    @endif
-                </a>
+              <x-isite::button :style="$buttonsLayout" buttonClasses="add-cart"
+                               :onclick="'window.livewire.emit('.'addToCart'.','.$product->id.',1,{},false)'"
+                               :withIcon="$withIconInAddToCart"
+                               :iconClass="'fa '.$addToCartIcon"
+                               :withLabel="$withTextInAddToCart"
+                               :label="trans('icommerce::products.button.addToCartItemList')"
+              />
+              
             @endif
             @break
             @case("go-to-show-view")
-            <a class="add-cart btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
-               href="{{$product->url}}">
-                @if($withIconInAddToCart)
-                    <i class="fa {{$addToCartIcon}}"></i>
-                @endif
-                @if($withTextInAddToCart)
-                    {{trans("icommerce::products.button.addToCartItemList")}}
-                @endif
-            </a>
+      
+              <x-isite::button :style="$buttonsLayout" buttonClasses="add-cart"
+                               :onclick="'window.livewire.emit('.'addToCart'.','.$product->id.',1,{},false)'"
+                               :withIcon="$withIconInAddToCart"
+                               :iconClass="'fa '.$addToCartIcon"
+                               :withLabel="$withTextInAddToCart"
+                               :label="trans('icommerce::products.button.addToCartItemList')"
+              />
+    
             @break
         @endswitch
         @switch(setting("icommerce::addToCartQuoteButtonAction"))
             @case("add-to-cart-quote")
             @if(setting("icommerce::showButtonToQuoteInStore"))
+      
+              <x-isite::button :style="$buttonsLayout" buttonClasses="add-cart"
+                               :withIcon="$withIconInAddToCart"
+                               :iconClass="'fa '.$addToCartIcon"
+                               :withLabel="$withTextInAddToCart"
+                               :label="trans('icommerce::products.button.addToCartItemList')"
+              />
+            
                 <a class="add-cart btn btn-sm btn{{Str::contains($buttonsLayout, 'outline') ? "-outline" : ""}}-primary"
                    onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true)">
                     @if($withIconInAddToCart)
