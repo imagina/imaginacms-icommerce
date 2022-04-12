@@ -3,7 +3,7 @@
 namespace Modules\Icommerce\View\Components;
 
 use Illuminate\View\Component;
-
+use Illuminate\Support\Facades\Cache;
 class ProductListItem extends Component
 {
   
@@ -51,13 +51,16 @@ class ProductListItem extends Component
   public $contentCategoryToUppercase;
   public $contentPriceFontSize;
   public $contentPriceFontWeight;
-  
+  public $customIndexContactLabel;
+  public $bottomFontSize;
   /**
    * Create a new component instance.
    *
    * @return void
    */
-  public function __construct($item, $itemListLayout = null, $layout = null,
+  public function __construct($item,
+                              $itemListLayout = null,
+                              $layout = null,
                               $discountRibbonStyle = null,
                               $discountPosition = null,
                               $imagePadding = null,
@@ -96,14 +99,15 @@ class ProductListItem extends Component
                               $contentCategoryToUppercase = true,
                               $contentPriceFontSize = 8,
                               $contentPriceFontWeight = null,
+                              $bottomFontSize = 13,
                               $parentAttributes = null,
                               $editLink,
                               $tooltipEditLink)
   {
     $this->product = $item;
-  
+    
     $this->itemListLayout = $itemListLayout ?? "product-list-item-layout-1";
-  
+    
     $this->discountRibbonStyle = $discountRibbonStyle ?? setting('icommerce::productDiscountRibbonStyle', null, "flag");
     $this->discountPosition = $discountPosition ?? setting('icommerce::productDiscountPosition', null, "top-right");
     $this->imagePadding = $imagePadding ?? setting('icommerce::productImagePadding', null, 0);
@@ -142,16 +146,19 @@ class ProductListItem extends Component
     $this->contentCategoryToUppercase = $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true);
     $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);
     $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
-    $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
+    $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, "13");
+      $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
-   
-    if(!empty($parentAttributes))
+    $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
+    
+    if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
   
-  private function getParentAttributes($parentAttributes){
+  private function getParentAttributes($parentAttributes)
+  {
     
     isset($parentAttributes["itemListLayout"]) ? $this->itemListLayout = $parentAttributes["itemListLayout"] : false;
     isset($parentAttributes["addToCartWithQuantity"]) ? $this->addToCartWithQuantity = $parentAttributes["addToCartWithQuantity"] : false;

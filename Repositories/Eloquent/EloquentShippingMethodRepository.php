@@ -104,6 +104,20 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
+  
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
+    $tenantWithCentralData = in_array("shippingMethods", $entitiesWithCentralData);
+  
+    if ($tenantWithCentralData && isset(tenant()->id)) {
+      $model = $this->model;
+    
+      $query->withoutTenancy();
+      $query->where(function ($query) use ($model) {
+        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
+      });
+    }
+    
     
     /*== REQUEST ==*/
     return $query->where($field ?? 'id', $criteria)->first();

@@ -55,15 +55,13 @@ if (!function_exists('icommerce_geCategories')) {
   
   function icommerce_geCategories($options = array())
   {
-    
     $default_options = array(
       'take' => 12, //Numero de posts a obtener,
       'order' => ['field'=>'created_at','way'=>'desc'],//orden de llamado
       "filter" => ['status' => 1]
     );
     
-    $options = array_merge_recursive($default_options, $options);
-    
+    $options = array_replace_recursive($default_options, $options);
     $categoryRepository=app('Modules\Icommerce\Repositories\CategoryRepository');
     $params=json_decode(json_encode($options));
     
@@ -124,11 +122,18 @@ if (!function_exists('localesymbol')) {
 
 if (!function_exists('formatMoney')) {
 
-    function formatMoney($value)
+    function formatMoney($value,$showCurrencyCode=false)
     {
         $format =(object) Config::get('asgard.icommerce.config.formatmoney');
 
-        return number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
+        $numberFormat = number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
+
+        if($showCurrencyCode){
+            $currency = Currency::whereStatus(Status::ENABLED)->where('default_currency','=',1)->first();
+            $numberFormat = $numberFormat." ".$currency->code;
+        }
+
+        return $numberFormat;
 
     }
 

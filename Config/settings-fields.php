@@ -482,10 +482,12 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
+        ['label' => 'icommerce::common.settings.tenant.entities.products', 'value' => 'products'],
         ['label' => 'icommerce::common.settings.tenant.entities.categories', 'value' => 'categories'],
         ['label' => 'icommerce::common.settings.tenant.entities.carts', 'value' => 'carts'],
         ['label' => 'icommerce::common.settings.tenant.entities.paymentMethods', 'value' => 'paymentMethods'],
         ['label' => 'icommerce::common.settings.tenant.entities.shippingMethods', 'value' => 'shippingMethods'],
+        ['label' => 'icommerce::common.settings.tenant.entities.orders', 'value' => 'orders'],
       ]
     ]
   ],

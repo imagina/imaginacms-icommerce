@@ -9,6 +9,7 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 // Events
 use Modules\Icommerce\Events\OrderWasCreated;
 
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class EloquentOrderRepository extends EloquentBaseRepository implements OrderRepository
 {
@@ -97,6 +98,25 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
       $query->where('customer_id', $params->user->id);
     }
   
+  
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+    $tenantWithCentralData = in_array("orders",$entitiesWithCentralData);
+  
+  
+    if ($tenantWithCentralData && isset(tenant()->id)) {
+      $model = $this->model;
+    
+      $query->withoutTenancy();
+      $query->where(function ($query) use ($model) {
+        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+          ->orWhere(function($query) use ($model){
+            $authUser = \Auth::user();
+            $query->whereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn))
+              ->where("customer_id",$authUser->id ?? null);
+          });
+      });
+    }
+  
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
@@ -145,8 +165,31 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
         if (isset($params->fields) && count($params->fields))
           $query->select($params->fields);
 
+
+        $query->where($field ?? 'id', $criteria);
+
+
+        $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
+        $tenantWithCentralData = in_array("orders",$entitiesWithCentralData);
+
+     
+        if ($tenantWithCentralData && isset(tenant()->id)) {
+          $model = $this->model;
+        
+          $query->withoutTenancy();
+          $query->where(function ($query) use ($model) {
+            $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+              ->orWhere(function($query) use ($model){
+                $authUser = \Auth::user();
+                $query->whereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn))
+                  ->where("customer_id",$authUser->id ?? null);
+              });
+          });
+        }
+
+
         /*== REQUEST ==*/
-        return $query->where($field ?? 'id', $criteria)->first();
+        return $query->first();
       }
 
 

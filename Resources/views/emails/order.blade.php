@@ -23,6 +23,17 @@
        margin: 10px 0;
        color: white;"
      target="_blank">{{trans("icommerce::orders.table.details")}}: #{{$order->id}}</a>
+  <br>
+
+  @if(isset($order->organization_id) && !empty($order->organization_id))
+    @php
+      $organizationRepository = app("Modules\Isite\Repositories\OrganizationRepository");
+      $organization = $organizationRepository->getItem($order->organization_id);
+    @endphp
+    <p>
+      {{trans("icommerce::orders.sub-orders.details_1").' '.$order->parent_id.', '.trans("icommerce::orders.sub-orders.details_2").' '.$organization->title.'.'}}
+    </p>
+  @endif
 </div>
 <br>
 <div class="table-products" style="margin-bottom: 15px; font-size: 10px">

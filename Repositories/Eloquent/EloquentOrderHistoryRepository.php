@@ -6,6 +6,7 @@ use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Repositories\OrderHistoryRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
+use Modules\Icommerce\Events\OrderWasUpdated;
 
 class EloquentOrderHistoryRepository extends EloquentBaseRepository implements OrderHistoryRepository
 {
@@ -68,6 +69,14 @@ class EloquentOrderHistoryRepository extends EloquentBaseRepository implements O
   {
 
     $orderhistory = $this->model->create($data);
+    
+    //====== Update Order
+    $orderhistory->order->update([
+      'status_id' => $orderhistory->status
+    ]);
+    event(new OrderWasUpdated($orderhistory->order));
+    //====== End Update Order
+
     event(new OrderStatusHistoryWasCreated($orderhistory));
   
     if($orderhistory->status == 13) {// Processed

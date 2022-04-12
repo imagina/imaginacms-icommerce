@@ -126,6 +126,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
     //if not found product into cart with the same options
     if(!$cartProduct) {
+      $data["organization_id"] = $product->organization_id ?? null;
       $cartProduct = $this->model->create($data);
       $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
 

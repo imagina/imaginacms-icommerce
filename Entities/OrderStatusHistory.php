@@ -8,7 +8,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class OrderStatusHistory extends Model
 {
-  use BelongsToTenant;
+
   protected $table = 'icommerce__order_status_history';
 
   protected $fillable = [

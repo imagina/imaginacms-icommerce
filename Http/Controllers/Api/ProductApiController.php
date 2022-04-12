@@ -40,16 +40,10 @@ class ProductApiController extends BaseApiController
     private $setting;
 
     public function __construct(
-        ProductRepository $product,
-        CategoryRepository $category,
-        Setting $setting,
-        ManufacturerRepository $manufacturer
+        ProductRepository $product
     )
     {
         $this->product = $product;
-        $this->category = $category;
-        $this->setting = $setting;
-        $this->manufacturer = $manufacturer;
     }
 
     /**
@@ -58,6 +52,7 @@ class ProductApiController extends BaseApiController
      */
     public function index(Request $request)
     {
+     
         try {
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
@@ -66,7 +61,7 @@ class ProductApiController extends BaseApiController
 
             //Response
             $response = ['data' => ProductTransformer::collection($products)];
-
+      
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($products)] : false;
         } catch (\Exception $e) {
@@ -90,6 +85,7 @@ class ProductApiController extends BaseApiController
     public function show($criteria, Request $request)
     {
         try {
+    
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
@@ -101,7 +97,7 @@ class ProductApiController extends BaseApiController
 
             //Response
             $response = ["data" => new ProductTransformer($product)];
-
+   
             //If request pagination add meta-page
             $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
@@ -216,6 +212,8 @@ class ProductApiController extends BaseApiController
     {
         \DB::beginTransaction(); //DB Transaction
         try {
+          $this->setting = app("Modules\Setting\Contracts\Setting");
+          
             //Get data
             $data = $request->input('attributes') ?? [];//Get data
 
@@ -275,6 +273,8 @@ class ProductApiController extends BaseApiController
 
     public function importProducts(Request $request)
     {
+      $this->category = app("Modules\Icommerce\Repositories\CategoryRepository");
+      $this->manufacturer = app("Modules\Icommerce\Repositories\ManufacturerRepository");
         $msg = "";
         try {
             $data = $request->all();
