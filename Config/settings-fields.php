@@ -470,6 +470,7 @@ return [
   'tenantWithCentralData' => [
     'value' => [],
     'name' => 'icommerce::tenantWithCentralData',
+    "onlySuperAdmin" => true,
     'groupName' => 'tenantConfiguration',
     'groupTitle' => 'icommerce::common.settings.tenant.group',
     'type' => 'select',
@@ -652,6 +653,7 @@ return [
   'productAddToCartIcon' => [
     'value' => 'fa-shopping-cart',
     'name' => 'icommerce::productAddToCartIcon',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -687,6 +689,7 @@ return [
   'productWishlistIcon' => [
     'value' => 'fa-heart-o',
     'name' => 'icommerce::productWishlistIcon',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -748,6 +751,7 @@ return [
   'productButtonsLayout' => [
     'value' => 'borders',
     'name' => 'icommerce::productButtonsLayout',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -774,6 +778,7 @@ return [
   'productButtonsPosition' => [
     'value' => 'in-content',
     'name' => 'icommerce::productButtonsPosition',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -803,6 +808,7 @@ return [
   'productContentAlign' => [
     'value' => 'left',
     'name' => 'icommerce::productContentAlign',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -990,6 +996,7 @@ return [
   'productContentPriceFontWeight' => [
     'value' => 'normal',
     'name' => 'icommerce::productContentPriceFontWeight',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -1009,6 +1016,4 @@ return [
       ]
     ]
   ],
-  
-
 ];
