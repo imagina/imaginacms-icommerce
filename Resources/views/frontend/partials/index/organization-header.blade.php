@@ -25,18 +25,20 @@
                     {{$organization->title}}
                   </div>
                   <div class="store-followers">
-                    10 seguidores
+                    <livewire:ifollow::followers :followableId="$organization->id"
+                                                 followableType="Modules\Isite\Entities\Organization" />
+                    
                   </div>
-                  <div class="btn btn-store">
-                    <i class="fa fa-heart-o"></i> SEGUIR
-                  </div>
+  
+                  <livewire:ifollow::follow :followableId="$organization->id" followableType="Modules\Isite\Entities\Organization" />
+
                 </div>
-                <div class="col-12">
-                  <div class="store-social">
-                    <span class="pr-3">Síguenos!</span> <x-isite::social id="storeSocial"/>
-                  </div>
-                  
-                </div>
+{{--                <div class="col-12">--}}
+{{--                  <div class="store-social">--}}
+{{--                    <span class="pr-3">Síguenos!</span> <x-isite::social id="storeSocial"/>--}}
+{{--                  </div>--}}
+{{--                  --}}
+{{--                </div>--}}
               </div>
             </div>
           </div>
