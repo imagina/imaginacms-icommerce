@@ -24,21 +24,7 @@
     @include('icommerce::frontend.partials.show.rating')
   @endif
 
-  <!-- PRICE -->
-  @if(!$product->is_call)
-    <div class="price ">
-      <div class="mb-0">
-      <span class="text-primary font-weight-bold">
-        {{isset($currency->id) ? $currency->symbol_left : '$'}}
-        {{formatMoney($product->discount->price ?? $product->price)}}
-        {{isset($currency->id) ? $currency->symbol_right : ''}}
-      </span>
-        @if(isset($product->discount->price))
-          <br><span class="price-desc h6 pl-3">{{ trans('icommerce::products.alerts.beforeDiscount') }} <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
-        @endif
-      </div>
-    </div>
-@endif
+
 <!-- END PRICE -->
 
   @if($product->pdf)

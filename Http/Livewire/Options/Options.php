@@ -33,7 +33,7 @@ class Options extends Component
     $this->quantity = 1;
     $this->optionsSelected = [];
     $this->view = "icommerce::frontend.livewire.options.index";
-    
+    $this->optionsPrice = 0;
   }
   
   //|--------------------------------------------------------------------------
@@ -74,6 +74,20 @@ class Options extends Component
  
   
   //|--------------------------------------------------------------------------
+  //| Livewire Properties
+  //|--------------------------------------------------------------------------
+  public function getPriceOptionsProperty(){
+    $optionsPrice = 0;
+    foreach ($this->optionValues as $optionValue){
+      if(in_array($optionValue->id,$this->optionsSelected)){
+        $optionsPrice += $optionValue->price_prefix == "+" ? $optionValue->price : $optionValue->price*-1;
+      }
+    }
+    
+    return $optionsPrice;
+  }
+  
+  //|--------------------------------------------------------------------------
   //| Livewire Events
   //|--------------------------------------------------------------------------
   /**
@@ -81,10 +95,10 @@ class Options extends Component
    */
   public function hydrate()
   {
-    
+    $this->optionsPrice = 0;
     $this->options = $this->product->optionsPivot->sortByDesc("sort_order");
     $this->optionValues = $this->product->optionValues;
-    
+  
   }
   
   

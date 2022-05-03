@@ -1,4 +1,3 @@
-<meta name="title" content="{{$product->meta_title??$product->name}}">
 <meta name="keywords" content="{{$product->meta_keyword ?? ''}}">
 <meta name="description" content="{{$product->meta_description??$product->summary}}">
 <meta name="robots" content="{{$product->options->meta_robots??'INDEX,FOLLOW'}}">
@@ -23,3 +22,8 @@
 <meta name="twitter:description" content="{{$product->meta_description??$product->summary}}">
 <meta name="twitter:creator" content="">
 <meta name="twitter:image:src" content="{{url($product->mediaFiles()->mainimage->path ?? 'modules/icommerce/img/product/default.jpg') }}">
+
+@section('title')
+  
+  {{$product->meta_title??$product->name}}  | @parent
+@stop

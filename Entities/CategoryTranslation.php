@@ -38,15 +38,15 @@ class CategoryTranslation extends Model
     public function setMetaDescriptionAttribute($value){
 
         if(empty($value)){
-            $this->attributes['meta_description'] = substr(strip_tags($this->description??''),0,150);
+            $this->attributes['meta_description'] = substr(strip_tags($this->description??''),0,180);
         }else{
             $this->attributes['meta_description'] = $value;
         }
     }
 
     public function getMetaDescriptionAttribute(){
-
-        return $this->meta_description ?? substr(strip_tags($this->description??''),0,150);
+ 
+        return $this->attributes["meta_description"] ?? substr(strip_tags($this->description??''),0,180);
     }
 
     public function getTranslatableOptionAttribute($value) {
@@ -63,7 +63,7 @@ class CategoryTranslation extends Model
      */
     public function getMetaTitleAttribute(){
 
-        return $this->meta_title ?? $this->title;
+        return $this->attributes["meta_title"] ?? $this->title;
     }
 
 

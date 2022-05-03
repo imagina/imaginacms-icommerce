@@ -1,42 +1,44 @@
 @section('meta')
+  
   @if(isset($category->id) || isset($manufacturer->id))
-
+  
     @php
-    if(isset($category->id)){
-        $title = $category->meta_title ?? $category->title . (isset($manufacturer->id) ? " - ".$manufacturer->meta_title ?? $manufacturer->name : '');
-        $description = $category->meta_description ?? $category->description . (isset($manufacturer->id) ? " - ".$manufacturer->meta_description ?? $manufacturer->description : '');
-
-          $mediaFiles = $category->mediaFiles();
-          $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
-          if(!$withImage){
-            if(isset($manufacturer->id)){
-              $mediaFiles = $manufacturer->mediaFiles();
-              $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
-              if($withImage){
-                $image = $mediaFiles->mainimage->path;
+      
+      if(isset($category->id)){
+          $title = $category->meta_title ?? $category->title . (isset($manufacturer->id) ? " - ".$manufacturer->meta_title ?? $manufacturer->name : '');
+          $description = $category->meta_description ?? $category->description . (isset($manufacturer->id) ? " - ".$manufacturer->meta_description ?? $manufacturer->description : '');
+  
+            $mediaFiles = $category->mediaFiles();
+            $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
+            if(!$withImage){
+              if(isset($manufacturer->id)){
+                $mediaFiles = $manufacturer->mediaFiles();
+                $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
+                if($withImage){
+                  $image = $mediaFiles->mainimage->path;
+                }
               }
+            }else{
+              $image = $mediaFiles->mainimage->path;
             }
-          }else{
-            $image = $mediaFiles->mainimage->path;
-          }
-
-          $type = isset($manufacturer->id) ? "branch" : "category";
-
-          $url = $category->url;
-    }elseif(isset($manufacturer->id)){
-       $title =$manufacturer->meta_title ?? $manufacturer->title;
-        $description = $manufacturer->meta_description ?? $manufacturer->description;
-
-              $mediaFiles = $manufacturer->mediaFiles();
-              $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
-              if($withImage){
-                $image = $mediaFiles->mainimage->path;
-              }
-
-              $type = "branch";
-
-              $url = $manufacturer->url;
-    }
+  
+            $type = isset($manufacturer->id) ? "branch" : "category";
+  
+            $url = $category->url;
+      }elseif(isset($manufacturer->id)){
+         $title =$manufacturer->meta_title ?? $manufacturer->title;
+          $description = $manufacturer->meta_description ?? $manufacturer->description;
+  
+                $mediaFiles = $manufacturer->mediaFiles();
+                $withImage = !strpos($mediaFiles->mainimage->path,"default.jpg");
+                if($withImage){
+                  $image = $mediaFiles->mainimage->path;
+                }
+  
+                $type = "branch";
+  
+                $url = $manufacturer->url;
+      }
 
     @endphp
 
@@ -73,5 +75,5 @@
 
 @section('title')
 
-  {{(isset($category->id)) ? ($category->title . (isset($manufacturer) ? " - ". $manufacturer->name : '')) : (isset($manufacturer) ?  $manufacturer->name : ucfirst(trans("icommerce::routes.store.index.index")))}}  | @parent
+  {{(isset($category->id)) ? (($category->meta_title ?? $category->title) . (isset($manufacturer) ? " - ". ($manufacturer->name->meta_title ?? $manufacturer->name) : '')) : (isset($manufacturer) ?  ($manufacturer->name->meta_title ?? $manufacturer->name) : ucfirst(trans("icommerce::routes.store.index.index")))}}  | @parent
 @stop

@@ -12,7 +12,21 @@
   @endforeach
 
 </div>
-  
+  @if(!$product->is_call)
+    
+    <div class="price ">
+      <div class="mb-0">
+      <span class="text-primary font-weight-bold">
+        {{isset($currency->id) ? $currency->symbol_left : '$'}}
+        {{formatMoney(($product->discount->price ?? $product->price) +$this->priceOptions )}}
+        {{isset($currency->id) ? $currency->symbol_right : ''}}
+      </span>
+        @if(isset($product->discount->price))
+          <br><span class="price-desc h6 pl-3">{{ trans('icommerce::products.alerts.beforeDiscount') }} <del>{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del></span>
+        @endif
+      </div>
+    </div>
+  @endif
   <div class="add-cart">
     <hr>
     <div class="row">
@@ -66,6 +80,9 @@
     </div>
     <hr>
   </div>
+
+  <!-- PRICE -->
+
 </div>
 @section('scripts-owl')
   @parent
