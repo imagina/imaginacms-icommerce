@@ -22,10 +22,11 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     $defaultInclude = [];
     $query->with(array_merge($defaultInclude, $params->include ?? []));
     
+    $this->validateTenantWithCentralData($query);
+    
     // FILTERS
     if ($params->filter) {
       $filter = $params->filter;
-      
       //add filter by search
       if (isset($filter->search)) {
         //find search in columns
@@ -72,12 +73,16 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
           }
           foreach ($items as $key => $method) {
             $methodApiController = app($method->options->init);
+            
             if (method_exists($methodApiController, "calculations")) {
               try {
+                
                 $results = $methodApiController->calculations(new Request ($data));
                 $resultData = $results->getData();
                 $method->calculations = $resultData;
               } catch (\Exception $e) {
+                
+                
                 $resultData["msj"] = "error";
                 $resultData["items"] = $e->getMessage();
                 $method->calculations = $resultData;
@@ -87,16 +92,6 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
         }
         return $items;
       }
-    }
-    
-    if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
-      $model = $this->model;
-      
-      $query->withoutTenancy();
-      $query->where(function ($query) use ($model) {
-        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
-          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
-      });
     }
     
     
@@ -130,11 +125,11 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     
     //Check field name to criteria
     if (isset($params->filter->field)) $query->where($params->filter->field, $criteria);
-  
+    
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-    
+      
       if (isset($filter->field))//Filter by specific field
         $field = $filter->field;
     }
@@ -142,24 +137,13 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     // RELATIONSHIPS
     $includeDefault = [];
     $query->with(array_merge($includeDefault, $params->include ?? []));
-    
-    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
-    $tenantWithCentralData = in_array("paymentMethods", $entitiesWithCentralData);
-    
-    if ($tenantWithCentralData && isset(tenant()->id)) {
-      $model = $this->model;
-      
-      $query->withoutTenancy();
-      $query->where(function ($query) use ($model) {
-        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
-          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
-      });
-    }
   
+    $this->validateTenantWithCentralData($query);
+    
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
+    
     /*== REQUEST ==*/
     return $query->where($field ?? 'id', $criteria)->first();
     
@@ -209,6 +193,24 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
       return $model;
     } else {
       return false;
+    }
+  }
+  
+  private function validateTenantWithCentralData($query)
+  {
+    
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
+    $tenantWithCentralData = in_array("paymentMethods", $entitiesWithCentralData);
+    
+    
+    if ($tenantWithCentralData && isset(tenant()->id)) {
+      $model = $this->model;
+      
+      $query->withoutTenancy();
+      $query->where(function ($query) use ($model) {
+        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
+      });
     }
   }
   
