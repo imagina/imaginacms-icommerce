@@ -46,16 +46,9 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
       }
       
     }
+  
+    $this->validateTenantWithCentralData($query);
     
-    if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
-      $model = $this->model;
-      
-      $query->withoutTenancy();
-      $query->where(function ($query) use ($model) {
-        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
-          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
-      });
-    }
     
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
@@ -104,19 +97,8 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-  
-    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
-    $tenantWithCentralData = in_array("shippingMethods", $entitiesWithCentralData);
-  
-    if ($tenantWithCentralData && isset(tenant()->id)) {
-      $model = $this->model;
     
-      $query->withoutTenancy();
-      $query->where(function ($query) use ($model) {
-        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
-          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
-      });
-    }
+    $this->validateTenantWithCentralData($query);
     
     
     /*== REQUEST ==*/
@@ -175,10 +157,10 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
     if (isset($methods) && $methods->count() > 0) {
       // Search Cart
       $cartRepository = app('Modules\Icommerce\Repositories\CartRepository');
-  
+      
       if (isset($data['cart_id'])) {
         $cart = $cartRepository->getItem($data['cart_id']);
-       
+        
         // Fix data cart products
         $supportCart = new cartSupport();
         $dataCart = $supportCart->fixProductsAndTotal($cart);
@@ -199,6 +181,23 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
       }
     }
     return $methods;
+  }
+  
+  public function validateTenantWithCentralData($query)
+  {
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
+    $tenantWithCentralData = in_array("shippingMethods", $entitiesWithCentralData);
+    
+    if ($tenantWithCentralData && isset(tenant()->id)) {
+      $model = $this->model;
+      
+      $query->withoutTenancy();
+      $query->where(function ($query) use ($model) {
+        $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
+          ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
+      });
+    }
+    
   }
   
 }

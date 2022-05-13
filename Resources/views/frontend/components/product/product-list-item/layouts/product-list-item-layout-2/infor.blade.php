@@ -3,7 +3,7 @@
     <div class="cursor-pointer position-relative">
       @if(!isset($itemListLayout) || $itemListLayout!='one')
         
-        <div class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden">
+        <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
           <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url"
                                  :isMedia="true"
                                  :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
