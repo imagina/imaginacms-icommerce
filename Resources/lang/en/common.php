@@ -130,6 +130,7 @@ return [
     'productContentTitleToUppercase' => 'Enable Title uppercase',
     'productContentCategoryFontSize' => 'Category font size',
     'productContentCategoryToUppercase' => 'Enable Category uppercase',
+    'productContentCategoryEnable' => 'Show Category',
     'productContentPriceFontSize' => 'Price font size',
     'productContentTitleNumberOfCharacters' => 'Title number of characters',
     'productContentTitleMaxHeight' => 'Min/Max height title',

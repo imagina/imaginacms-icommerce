@@ -132,6 +132,7 @@ return [
     'productContentTitleToUppercase' => 'Activar Mayúsculas para el Título',
     'productContentCategoryFontSize' => 'Tamaño de la categoría',
     'productContentCategoryToUppercase' => 'Activar Mayúsculas para la categoría',
+    'productContentCategoryEnable' => 'Mostrar Categoría',
     'productContentPriceFontSize' => 'Tamaño del Precio',
     'productContentTitleNumberOfCharacters' => 'Cantidad de caracteres para el título',
     'productContentTitleMaxHeight' => 'Altura máxima/Mínima para el título',

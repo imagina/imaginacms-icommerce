@@ -95,11 +95,11 @@ class ProductListItem extends Component
                               $contentTitleNumberOfCharacters = null,
                               $contentTitleToUppercase = false,
                               $contentCategoryEnable = null,
-                              $contentCategoryFontSize = 8,
+                              $contentCategoryFontSize = null,
                               $contentCategoryToUppercase = true,
-                              $contentPriceFontSize = 8,
+                              $contentPriceFontSize = null,
                               $contentPriceFontWeight = null,
-                              $bottomFontSize = 13,
+                              $bottomFontSize = null,
                               $parentAttributes = null,
                               $editLink,
                               $tooltipEditLink)
@@ -146,7 +146,7 @@ class ProductListItem extends Component
     $this->contentCategoryToUppercase = $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true);
     $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);
     $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
-    $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, "13");
+    $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, 13);
       $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
     $this->editLink = $editLink;
