@@ -99,6 +99,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       }
 
+      if (isset($filter->tagId)) {
+        $query->whereTag($filter->tagId, "id");
+      }
+
       // Filter by category SLUG
       if (isset($filter->categorySlug) && !empty($filter->categorySlug)) {
         $query->whereHas('categories', function ($query) use ($filter) {
