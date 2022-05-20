@@ -1,10 +1,10 @@
 .btn-circle {
-  border-radius: 14px;
-  height: 28px;
+  border-radius: 50rem;
+  /*height: 28px;*/
   display: inline-table;
   align-items: center;
   text-align: center;
-  padding: 3px 6px;
+  /*padding: 3px 6px;*/
   
   i {
     font-size: .7rem;
@@ -471,7 +471,7 @@
   .buttons {
     &.borders {
       a {
-        padding: 0px 8px;
+        /*padding: 0px 8px;*/
         background-color: unset;
         border-color: unset;
         color: #404040;
@@ -481,7 +481,7 @@
         cursor: pointer;
         
         &:hover, &:visited, &:focus {
-          color: var(--dark);
+          color: var(--dark) !important;
           background-color: unset !important;
           border-color: unset !important;
         }
@@ -518,7 +518,7 @@
     &.rounded {
       &.with-add-cart-text {
         .add-cart, .contact {
-          padding: 3px 10px;
+          /*padding: 3px 10px;*/
           i {
             margin-right: 4px;
           }
@@ -544,8 +544,8 @@
     
     &.square {
       a {
-        padding: 0.375rem 0.45rem;
-        line-height: 1.2;
+        /*padding: 0.375rem 0.45rem;
+        line-height: 1.2;*/
         border-radius: 0px;
       }
     }

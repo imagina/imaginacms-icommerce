@@ -29,5 +29,19 @@
       </div>
     </div>
   @endif
-
+    <style>wi
+        /*Discount Ribbon*/
+        .productRibbon .ribbonDiscount .asideRibbon {
+            color: {{$ribbonTextColor}};
+            background-color: {{$ribbonBackgroundColor}} !important;
+        }
+        .productRibbon.circle .ribbonDiscount .asideRibbon {
+            background-color: {{$ribbonBackgroundColor}} !important;
+        }
+        .productRibbon .ribbonDiscount .asideRibbon::after,
+        .productRibbon.flag.top-left .asideRibbon::after,
+        .productRibbon.square.top-left .asideRibbon::after {
+            border-color: transparent {{$ribbonBackgroundColor}} !important;
+        }
+    </style>
 </div>
