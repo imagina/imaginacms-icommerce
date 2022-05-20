@@ -53,6 +53,10 @@ class ProductListItem extends Component
   public $contentPriceFontWeight;
   public $customIndexContactLabel;
   public $bottomFontSize;
+  public $productBackgroundColor;
+  public $ribbonBackgroundColor;
+  public $ribbonTextColor;
+
   /**
    * Create a new component instance.
    *
@@ -101,6 +105,9 @@ class ProductListItem extends Component
                               $contentPriceFontWeight = null,
                               $bottomFontSize = null,
                               $parentAttributes = null,
+                              $productBackgroundColor = "",
+                              $ribbonBackgroundColor = "#f2c037",
+                              $ribbonTextColor = "#333333",
                               $editLink,
                               $tooltipEditLink)
   {
@@ -152,7 +159,9 @@ class ProductListItem extends Component
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
     $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
-    
+    $this->productBackgroundColor = $productBackgroundColor;
+    $this->ribbonBackgroundColor = $ribbonBackgroundColor;
+    $this->ribbonTextColor = $ribbonTextColor;
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
