@@ -124,11 +124,12 @@ class PublicController extends BaseApiController
       //Default breadcrumb
       $configFilters["categories"]["breadcrumb"] = [];
     }
-    
-    
+  
+    $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '');
+  
     config(["asgard.icommerce.config.filters" => $configFilters]);
     
-    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization'));
+    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title'));
   }
   
   // view products by manufacturer
@@ -176,9 +177,10 @@ class PublicController extends BaseApiController
       
     }
     
+    $title = (isset($manufacturer->id) ? $manufacturer->name : '');
     //$dataRequest = $request->all();
     
-    return view($tpl, compact('manufacturer', 'categoryBreadcrumb', 'carouselImages'));
+    return view($tpl, compact('manufacturer', 'categoryBreadcrumb', 'carouselImages', 'title'));
   }  // view products by manufacturer
   
   public function indexOffers(Request $request)
@@ -198,8 +200,8 @@ class PublicController extends BaseApiController
       $withDiscount = true;
       
     }
-    
-    return view($tpl, compact('withDiscount'));
+    $title = "";
+    return view($tpl, compact('withDiscount','title'));
   }
   
   // view products by category
@@ -254,9 +256,12 @@ class PublicController extends BaseApiController
       
     }
     
+    $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '').(isset($manufacturer->id) ? (isset($category->id) ? ' / ' : '').$manufacturer->name : '');
+  
+  
     //$dataRequest = $request->all();
     
-    return view($tpl, compact('category', 'manufacturer', 'categoryBreadcrumb', 'carouselImages'));
+    return view($tpl, compact('category', 'manufacturer', 'categoryBreadcrumb', 'carouselImages', 'title'));
   }
   
   /**

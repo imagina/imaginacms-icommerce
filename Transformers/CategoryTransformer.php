@@ -12,6 +12,7 @@ class CategoryTransformer extends JsonResource
       'id' => $this->id,
       'externalId' => $this->when($this->external_id, $this->external_id),
       'title' => $this->title ?? '',
+      'h1Title' => $this->h1_title ?? '',
       'slug' => $this->slug ?? '',
       'url' => $this->url ?? '',
       'newUrl' => $this->new_url ?? '',
@@ -46,6 +47,8 @@ class CategoryTransformer extends JsonResource
       foreach ($languages as $lang => $value) {
         $data[$lang]['title'] = $this->hasTranslation($lang) ?
           $this->translate("$lang")['title'] : '';
+        $data[$lang][ 'h1Title'] = $this->hasTranslation($lang) ?
+          $this->translate("$lang")['h1_title'] : '';
         $data[$lang]['description'] = $this->hasTranslation($lang) ?
           $this->translate("$lang")['description'] ?? '' : '';
         $data[$lang]['slug'] = $this->hasTranslation($lang) ?
