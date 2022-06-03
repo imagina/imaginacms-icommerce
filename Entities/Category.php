@@ -21,6 +21,7 @@ Category extends Model
   protected static $entityNamespace = 'asgardcms/icommerceCategory';
   public $translatedAttributes = [
     'title',
+    'h1_title',
     'slug',
     'description',
     'meta_title',

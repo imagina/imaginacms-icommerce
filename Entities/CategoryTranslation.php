@@ -12,6 +12,7 @@ class CategoryTranslation extends Model
     public $timestamps = false;
     protected $fillable = [
         'title',
+        'h1_title',
         'slug',
         'description',
         'meta_title',

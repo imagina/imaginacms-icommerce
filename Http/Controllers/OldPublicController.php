@@ -89,8 +89,10 @@ class OldPublicController extends BasePublicController
     $gallery = $this->getGalleryCategory($category);
   
     config(["asgard.icommerce.config.filters" => $configFilters]);
-    
-    return view($tpl, compact('category','products','paginate','categoryBreadcrumb','gallery'));
+  
+    $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '');
+
+    return view($tpl, compact('category','products','paginate','categoryBreadcrumb','gallery','title'));
   }
   
   // Informacion de Producto
