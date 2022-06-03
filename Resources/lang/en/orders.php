@@ -71,6 +71,7 @@ return [
     'rights' => 'All Rights Reserved by ',
     'notificationOrder' => 'Order Notification',
     'statusChanged' => 'Your order <b>#:orderId</b> has been updated to the status: <strong>:statusName</strong>',
+    'order updated by' => 'Order updated by: :paymentMethod'
   ],
   'validation' => [
   ],
