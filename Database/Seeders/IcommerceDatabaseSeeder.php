@@ -21,8 +21,11 @@ class IcommerceDatabaseSeeder extends Seeder
         $this->call(CurrencyTableSeeder::class);
         $this->call(StoreTableSeeder::class);
         $this->call(NotificationRulesTableSeeder::class);
-        $this->call(IformQuoteTableSeeder::class);
+        //$this->call(IformQuoteTableSeeder::class);
         $this->call(IformRequestQuoteTableSeeder::class);
-        $this->call(IformLetMeKnowWhenProductIsAvailableTableSeeder::class);
+        //$this->call(IformLetMeKnowWhenProductIsAvailableTableSeeder::class);
+        $this->call(CreateFormsTableSeeder::class);
+
+
     }
 }

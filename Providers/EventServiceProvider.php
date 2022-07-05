@@ -29,6 +29,13 @@ use Modules\Icommerce\Events\CouponWasUpdated;
 use Modules\Icommerce\Events\CouponIsDeleting;
 use Modules\Icommerce\Events\Handlers\HandleCouponable;
 
+use Modules\Icommerce\Events\FormIsCreating;
+use Modules\Icommerce\Events\Handlers\Forms\LetMeKnowProductIsAvailable;
+use Modules\Icommerce\Events\Handlers\Forms\Quote;
+
+// Isite Events
+use Modules\Isite\Events\OrganizationWasCreated;
+
 class EventServiceProvider extends ServiceProvider
 {
   protected $listen = [
@@ -75,5 +82,14 @@ class EventServiceProvider extends ServiceProvider
     CouponIsDeleting::class => [
       HandleCouponable::class
     ],
+    FormIsCreating::class => [
+      LetMeKnowProductIsAvailable::class,
+      Quote::class
+    ],
+    OrganizationWasCreated::class => [
+      LetMeKnowProductIsAvailable::class,
+      Quote::class
+    ],
+    
   ];
 }
