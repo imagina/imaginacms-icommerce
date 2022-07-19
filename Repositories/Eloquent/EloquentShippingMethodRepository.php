@@ -14,6 +14,8 @@ use Modules\Ihelpers\Events\UpdateMedia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+
 class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
 {
   
@@ -151,8 +153,14 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
       }
     }
     
-    /* Run query*/
-    $methods = $query->get();
+    // Params to get Shipping Methods
+    $params = [
+      "filter" => [
+        "status" => 1
+      ]
+    ];
+    $methods = $this->getItemsBy(json_decode(json_encode($params)));
+    
     
     if (isset($methods) && $methods->count() > 0) {
       // Search Cart
