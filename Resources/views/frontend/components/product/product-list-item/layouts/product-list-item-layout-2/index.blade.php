@@ -17,7 +17,7 @@
         <div class="row justify-content-center position-relative m-0">
           @include('icommerce::frontend.components.product.ribbon')
           <div
-            class="bg-img bg-img-{{$productAspect}} d-flex justify-content-center align-items-center overflow-hidden"
+            class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden"
             style="padding: {{$imageSpacing}}px;">
             <x-media::single-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
