@@ -29,6 +29,7 @@ use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 //Services
 use Modules\Icommerce\Services\ProductService;
+use Modules\Page\Services\PageService;
 
 class PublicController extends BaseApiController
 {
@@ -41,6 +42,7 @@ class PublicController extends BaseApiController
   private $payments;
   private $shippings;
   private $productService;
+  private $pageService;
   
   public function __construct(
     ProductRepository $product,
@@ -50,7 +52,8 @@ class PublicController extends BaseApiController
     CurrencyRepository $currency,
     PaymentMethodRepository $payments,
     ShippingMethodRepository $shippings,
-    ProductService $productService
+    ProductService $productService,
+    PageService $pageService
   )
   {
     parent::__construct();
@@ -62,6 +65,7 @@ class PublicController extends BaseApiController
     $this->payments = $payments;
     $this->shippings = $shippings;
     $this->productService = $productService;
+    $this->pageService = $pageService;
   }
   
   // view products by category
@@ -128,8 +132,16 @@ class PublicController extends BaseApiController
     $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '');
   
     config(["asgard.icommerce.config.filters" => $configFilters]);
+
+
+    //Get the information of the layout by the 'system name' of the page and path to find
+    $dataLayout = $this->pageService->getDataLayout('store','.icommerce.index');
+    if(!is_null($dataLayout['tpl']))
+      $tpl = $dataLayout['tpl'];
+    $layoutSystemName = $dataLayout['layoutSystemName'];
+
     
-    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title'));
+    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName'));
   }
   
   // view products by manufacturer
@@ -303,8 +315,16 @@ class PublicController extends BaseApiController
 
       $category = $product->category;
       $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
+
+      //Get the information of the layout by the 'system name' of the page and path to find
+      $dataLayout = $this->pageService->getDataLayout('store-show','.icommerce.show');
+
+      if(!is_null($dataLayout['tpl']))
+        $tpl = $dataLayout['tpl'];
+      $layoutSystemName = $dataLayout['layoutSystemName'];
       
-      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript'));
+     
+      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName'));
       
     } else {
       return response()->view('errors.404', [], 404);
