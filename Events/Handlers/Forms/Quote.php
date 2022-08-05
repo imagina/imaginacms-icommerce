@@ -10,6 +10,8 @@ class Quote
     public function handle($event = null)
     {
 
+        \Log::info("Icommerce: Evens|Handlers|Forms|Quote");
+
         $formRepository = app("Modules\Iforms\Repositories\FormRepository");
         $blockRepository = app("Modules\Iforms\Repositories\BlockRepository");
         $fieldRepository = app("Modules\Iforms\Repositories\FieldRepository");
@@ -34,102 +36,91 @@ class Quote
 
         if(!isset($form->id)) {
           
-          //Create Form
-          $form = $formRepository->create([
-            "title" => trans("icommerce::quote.form.form.title.single"),
-            "system_name" => "icommerce_quote_form",
-            "active" => true
-          ]);
-      
-          // Create Block
-          $block = $blockRepository->create([
-            "form_id" => $form->id
-          ]);
-          
-          // Create Field
-          $fieldRepository->create([
-            "form_id" => $form->id,
-            "block_id" => $block->id,
-            "es" => [
-              "label" => trans("icommerce::quote.form.fields.name.label",[],"es"),
-            ],
-            "en" => [
-              "label" => trans("icommerce::quote.form.fields.name.label",[],"en"),
-            ],
-            "type" => 1,
-            "name" => "fullName",
-            "required" => true,
-          ]);
+          try{
 
-          // Create Field
-          $fieldRepository->create([
-            "form_id" => $form->id,
-            "block_id" => $block->id,
-            "es" => [
-              "label" => trans("icommerce::quote.form.fields.email.label",[],"es"),
-            ],
-            "en" => [
-              "label" => trans("icommerce::quote.form.fields.email.label",[],"en"),
-            ],
-            "type" => 4,
-            "name" => "email",
-            "required" => true,
-          ]);
-      
-          // Create Field
-          $fieldRepository->create([
-            "form_id" => $form->id,
-            "block_id" => $block->id,
-            "es" => [
-              "label" => trans("icommerce::quote.form.fields.telephone.label",[],"es"),
-            ],
-            "en" => [
-              "label" => trans("icommerce::quote.form.fields.telephone.label",[],"en"),
-            ],
-            "type" => 10,
-            "name" => "telephone",
-            "required" => true,
-          ]);
+            //Create Form
+            $form = $formRepository->create([
+              "title" => trans("icommerce::quote.form.form.title.single"),
+              "system_name" => "icommerce_quote_form",
+              "active" => true
+            ]);
+        
+            // Create Block
+            $block = $blockRepository->create([
+              "form_id" => $form->id
+            ]);
+            
+           
+            // Create Field
+            $this->createField($form->id,$block->id,1,"fullName",true,trans("icommerce::quote.form.fields.name.label"));
 
-          // Create Field
-          $fieldRepository->create([
-            "form_id" => $form->id,
-            "block_id" => $block->id,
-            "es" => [
-              "label" => trans("icommerce::quote.form.fields.productName.label",[],"es"),
-            ],
-            "en" => [
-              "label" => trans("icommerce::quote.form.fields.productName.label",[],"en"),
-            ],
-            "type" => 1,
-            "name" => "productName",
-            "required" => true,
-          ]);
-      
-          // Create Field
-          $fieldRepository->create([
-            "form_id" => $form->id,
-            "block_id" => $block->id,
-            "es" => [
-              "label" => trans("icommerce::quote.form.fields.additionalInformation.label",[],"es"),
-            ],
-            "en" => [
-              "label" => trans("icommerce::quote.form.fields.additionalInformation.label",[],"en"),
-            ],
-            "type" => 2,
-            "name" => "additionalInformation",
-            "required" => true,
-          ]);
+            // Create Field
+            $this->createField($form->id,$block->id,4,"email",true,trans("icommerce::quote.form.fields.email.label"));
+        
+            // Create Field
+            $this->createField($form->id,$block->id,10,"telephone",true,trans("icommerce::quote.form.fields.telephone.label"));
 
-          // Create Setting
-          $settingRepository->create([
-            "name" => "icommerce::icommerceQuoteForm",
-            "plainValue" => $form->id,
-            "isTranslatable" => 0
-          ]);
+            // Create Field
+            $this->createField($form->id,$block->id,1,"productName",true,trans("icommerce::quote.form.fields.productName.label"));
+        
+            // Create Field
+            $this->createField($form->id,$block->id,2,"additionalInformation",true,trans("icommerce::quote.form.fields.additionalInformation.label"));
+
+            // Create Setting
+            $settingRepository->create([
+              "name" => "icommerce::icommerceQuoteForm",
+              "plainValue" => $form->id,
+              "isTranslatable" => 0
+            ]);
+
+          }catch(\Exception $e){
+                \Log::error('Icommerce: Events|Handlers|Forms|Quote|Message: '.$e->getMessage());
+                dd($e);
+          }
+
+          \Log::info("Icommerce: Evens|Handlers|Forms|Quote|END"); 
           
         }
         
     }// If handle
+
+    /*
+    * Create Field
+    */
+    public function createField($formId,$blockId,$type,$name,$required,$transLabel){
+        
+        $fieldRepository = app("Modules\Iforms\Repositories\FieldRepository");
+
+        $dataToCreate = [
+            "form_id" => $formId,
+            "block_id" => $blockId,
+            "type" => $type,
+            "name" => $name,
+            "required" => $required
+        ];
+
+        // Create Field
+        $fieldCreated = $fieldRepository->create($dataToCreate);
+
+        //Translations
+        $this->addTranslation($fieldCreated,'es',$transLabel,[],"es");
+        $this->addTranslation($fieldCreated,'en',$transLabel,[],"en");
+
+    }
+
+
+    /*
+    * Add Translations
+    * PD: New Alternative method due to problems with astronomic translatable
+    **/
+    public function addTranslation($field,$locale,$label){
+
+      \DB::table('iforms__field_translations')->insert([
+          'label' => trans($label,[],$locale),
+          'field_id' => $field->id,
+          'locale' => $locale
+      ]);
+
+    }
 
 }

@@ -9,10 +9,11 @@ class LetMeKnowProductIsAvailable
 
     public function handle($event = null)
     {
+
+        \Log::info("Icommerce: Evens|Handlers|Forms|LetMeKnowProductIsAvailable");
         
         $formRepository = app("Modules\Iforms\Repositories\FormRepository");
         $blockRepository = app("Modules\Iforms\Repositories\BlockRepository");
-        $fieldRepository = app("Modules\Iforms\Repositories\FieldRepository");
         $settingRepository = app("Modules\Setting\Repositories\SettingRepository");
         $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
         $params = [
@@ -35,57 +36,80 @@ class LetMeKnowProductIsAvailable
         //Validation Form
         if(!isset($form->id)) {
 
-            // Create Form
-            $form = $formRepository->create([
-                "title" => trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title"),
-                "system_name" => "icommerce_let_me_know_when_product_is_available_form",
-                "active" => true
-            ]);
+            try{
+                // Create Form
+                $form = $formRepository->create([
+                    "title" => trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title"),
+                    "system_name" => "icommerce_let_me_know_when_product_is_available_form",
+                    "active" => true
+                ]);
 
-            // Create Block
-            $block = $blockRepository->create([
-                "form_id" => $form->id
-            ]);
+                // Create Block
+                $block = $blockRepository->create([
+                    "form_id" => $form->id
+                ]);
 
-            // Create Field
-            $fieldRepository->create([
-                "form_id" => $form->id,
-                "block_id" => $block->id,
-                "es" => [
-                  "label" => trans("icommerce::forms.letMeKnowWhenProductIsAvailable.fields.productName",[],"es"),
-                ],
-                "en" => [
-                  "label" => trans("icommerce::forms.letMeKnowWhenProductIsAvailable.fields.productName",[],"en"),
-                ],
-                "type" => 1,
-                "name" => "productName",
-                "required" => true,
-            ]);
+                // Create Field
+                $this->createField($form->id,$block->id,1,"productName",true,trans("icommerce::forms.letMeKnowWhenProductIsAvailable.fields.productName"));
 
-            // Create Field
-            $fieldRepository->create([
-                "form_id" => $form->id,
-                "block_id" => $block->id,
-                "es" => [
-                  "label" => trans("icommerce::forms.letMeKnowWhenProductIsAvailable.fields.email",[],"es"),
-                ],
-                "en" => [
-                  "label" => trans("icommerce::forms.letMeKnowWhenProductIsAvailable.fields.email",[],"en"),
-                ],
-                "type" => 1,
-                "name" => "email",
-                "required" => true,
-            ]);
-
-            // Create Setting
-            $settingRepository->create([
-                "name" => "icommerce::letMeKnowProductIsAvailableForm",
-                "plainValue" => $form->id,
-                "isTranslatable" => 0
-            ]);
-            
+                // Create Field
+                $this->createField($form->id,$block->id,1,"email",true,trans("icommerce::forms.letMeKnowWhenProductIsAvailable.fields.email"));
+                
+                // Create Setting
+                $settingRepository->create([
+                    "name" => "icommerce::letMeKnowProductIsAvailableForm",
+                    "plainValue" => $form->id,
+                    "isTranslatable" => 0
+                ]);
+              
+            }catch(\Exception $e){
+                \Log::error('Icommerce: Events|Handlers|Forms|LetMeKnowProductIsAvailable|Message: '.$e->getMessage());
+                dd($e);
+            }  
         }
+
+        \Log::info("Icommerce: Evens|Handlers|Forms|LetMeKnowProductIsAvailable|END");
         
     }// If handle
+
+
+    /*
+    * Create Field
+    */
+    public function createField($formId,$blockId,$type,$name,$required,$transLabel){
+        
+        $fieldRepository = app("Modules\Iforms\Repositories\FieldRepository");
+
+        $dataToCreate = [
+            "form_id" => $formId,
+            "block_id" => $blockId,
+            "type" => $type,
+            "name" => $name,
+            "required" => $required
+        ];
+
+        // Create Field
+        $fieldCreated = $fieldRepository->create($dataToCreate);
+
+        //Translations
+        $this->addTranslation($fieldCreated,'es',$transLabel,[],"es");
+        $this->addTranslation($fieldCreated,'en',$transLabel,[],"en");
+
+    }
+
+
+    /*
+    * Add Translations
+    * PD: New Alternative method due to problems with astronomic translatable
+    **/
+    public function addTranslation($field,$locale,$label){
+
+      \DB::table('iforms__field_translations')->insert([
+          'label' => trans($label,[],$locale),
+          'field_id' => $field->id,
+          'locale' => $locale
+      ]);
+
+    }
 
 }
