@@ -80,22 +80,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
       //Filter by catgeory ID
       if (isset($filter->category) && !empty($filter->category)) {
-
-
-        $categories = Category::descendantsAndSelf($filter->category);
-
-        if ($categories->isNotEmpty()) {
-          $query->where(function ($query) use ($categories) {
-
-            $query->where(function ($query) use ($categories) {
-              $query->whereHas('categories', function ($query) use ($categories) {
-                $query->whereIn('icommerce__product_category.category_id', $categories->pluck("id"));
-              })->orWhereIn('icommerce__products.category_id', $categories->pluck("id"));
-            });
-          });
-
-        }
-
+	
+				$categories = Category::descendantsAndSelf($filter->category);
+	
+				if ($categories->isNotEmpty()) {
+						$query->where(function ($query) use ($categories) {
+							$query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (".(join(",",$categories->pluck("id")->toArray()))."))")
+								->orWhereIn('icommerce__products.category_id', $categories->pluck("id"));
+						});
+			
+		
+				}
 
       }
 
@@ -147,12 +142,12 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       // add filter by Categories 1 or more than 1, in array/*
       if (isset($filter->categories) && !empty($filter->categories)) {
-        is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-        $query->where(function ($query) use ($filter) {
-          $query->whereHas('categories', function ($query) use ($filter) {
-            $query->whereIn('icommerce__product_category.category_id', $filter->categories);
-          })->orWhereIn('category_id', $filter->categories);
-        });
+				is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+				$query->where(function ($query) use ($filter){
+					$query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (".(join(",",$filter->categories))."))")
+						->orWhereIn('icommerce__products.category_id', $filter->categories);
+				});
+	
 
       }
 
@@ -222,7 +217,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $orderByField = $filter->order->field ?? 'created_at';//Default field
         $orderWay = $filter->order->way ?? 'desc';//Default way
         if (in_array($orderByField, ["slug","name"])) {
-          $query->join('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
+          $query->leftJoin('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
           $query->orderBy("translations.{$orderByField}", $orderWay);
         } else
           $query->orderBy($orderByField, $orderWay);//Add order to query
@@ -280,32 +275,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     } else {
 
       //Pre filters by default
-      //pre-filter date_available
-      $query->where(function ($query) {
-        $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
-        $query->orWhereNull("date_available");
-      });
-
-      //pre-filter status
-      $query->where("status", 1);
-
-      //pre-filter quantity and subtract
-      $query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
-      
-      //pre-filter if the organization is enabled (organization status = 1)
-      $query->where(function ($query) {
-        $query->whereNull("organization_id")
-          ->orWhere(function ($query) {
-            $query->whereHas("organization", function ($query){
-              $query->where("isite__organizations.status",1);
-            });
-          });
-      });
-      
-      $query->whereHas('category', function ($query) {
-        $query->where("icommerce__categories.status", "!=", 0);
-        //->where("iblog__categories.internal", "!=", 1);
-      });
+      $this->defaultPreFilters($query, $params);
     }
 
 
@@ -322,8 +292,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       foreach ($order as $orderObject) {
         if (isset($orderObject->field) && isset($orderObject->way)) {
           if (in_array($orderObject->field, $this->model->translatedAttributes)) {
-            $query->join('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
-            $query->orderBy("translations.$orderObject->field", $orderObject->way);
+            $query->orderByTranslation($orderObject->field, $orderObject->way);
           } else
             $query->orderBy($orderObject->field, $orderObject->way);
         }
@@ -335,8 +304,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
-//if(isset($filter->search))
-//    dd($query->toSql(),$query->getBindings());
+    //if(isset($filter->search))
+    //\Log::info([$query->toSql(),$query->getBindings()]);
+
+	  //	return $query->get();
     /*== REQUEST ==*/
     if (isset($params->onlyQuery) && $params->onlyQuery) {
       return $query;
@@ -350,6 +321,31 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
   }
   
+  public function defaultPreFilters($query, $params){
+	
+		//Pre filters by default
+		//pre-filter date_available
+		$query->where(function ($query) {
+			$query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
+			$query->orWhereNull("date_available");
+		});
+	
+		//pre-filter status
+		$query->where("status", 1);
+	
+		//pre-filter quantity and subtract
+		$query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
+	
+		//pre-filter if the organization is enabled (organization status = 1)
+		$query->where(function ($query) {
+			$query->whereNull("organization_id")
+				->orWhereRaw("icommerce__products.organization_id IN (SELECT id from isite__organizations where status = 1)");
+
+		});
+	
+		$query->whereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
+	}
+	
   public function getItem($criteria, $params = false)
   {
 
@@ -426,16 +422,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       //Pre filters by default
       //pre-filter date_available
-      $query->where(function ($query) {
-        $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
-        $query->orWhereNull("date_available");
-      });
-
-      //pre-filter status
-      $query->where("status", 1);
-
-      //pre-filter quantity and subtract
-      $query->whereRaw("((subtract = 1 and quantity > 0) or (subtract = 0) or (stock_status = 0))");
+			//Pre filters by default
+			$this->defaultPreFilters($query, $params);
 
     }
 
