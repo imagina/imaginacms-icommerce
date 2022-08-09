@@ -109,7 +109,7 @@
             :title="$title"
             :description="isset($category->options->descriptionIndex) && !empty($category->options->descriptionIndex) ? $category->options->descriptionIndex : null "
             :params="[
-            'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : []],
+            'filter' => ['category' => $category->id ?? null, 'manufacturers' => isset($manufacturer->id) ? [$manufacturer->id] : [],'withDiscount' => isset($withDiscount) ? $withDiscount : false],
             'include' => ['discounts','translations','category','categories','manufacturer','productOptions'], 
             'take' => setting('icommerce::product-per-page',null,12)]"
             :configOrderBy="config('asgard.icommerce.config.orderBy')"
