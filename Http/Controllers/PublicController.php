@@ -200,8 +200,8 @@ class PublicController extends BaseApiController
     $argv = explode("/", $request->path());
     $slug = end($argv);
     
-    $tpl = 'icommerce::frontend.index';
-    $ttpl = 'icommerce.index';
+    $tpl = 'icommerce::frontend.offers.index';
+    $ttpl = 'icommerce.offers.index';
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
     
@@ -212,7 +212,7 @@ class PublicController extends BaseApiController
       $withDiscount = true;
       
     }
-    $title = "";
+    $title = trans('icommerce::common.offers.title');
     return view($tpl, compact('withDiscount','title'));
   }
   
