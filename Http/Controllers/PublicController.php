@@ -198,7 +198,7 @@ class PublicController extends BaseApiController
   public function indexOffers(Request $request)
   {
     $argv = explode("/", $request->path());
-    
+    $slug = end($argv);
     
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
