@@ -255,4 +255,8 @@ return [
     'share' => 'Share'
   ],
 
+  'offers' => [
+    'title' => 'Offers'
+  ]
+
 ];
