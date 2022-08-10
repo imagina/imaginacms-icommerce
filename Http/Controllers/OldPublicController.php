@@ -114,7 +114,9 @@ class OldPublicController extends BasePublicController
     $product = $this->product->getItem($slug,$params);
     
     if($product){
-  
+ 
+      if($product->url != request()->url()) return redirect($product->url);
+      
       $category= $product->category;
       $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
   

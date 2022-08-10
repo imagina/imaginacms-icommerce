@@ -8,8 +8,7 @@ $locale = LaravelLocalization::setLocale() ?: App::getLocale();
 $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
 
   /** @var Router $router */
-  Route::group(['prefix' => LaravelLocalization::setLocale(),
-    'middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
+  Route::group(['middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
     
     $router->get(trans('icommerce::routes.store.index.index'), [
       'as' => $locale . '.icommerce.store.index',

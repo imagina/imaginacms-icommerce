@@ -431,7 +431,10 @@ class Product extends Model implements TaggableInterface
     $currentLocale = \LaravelLocalization::getCurrentLocale();
     $host = request()->getHost();
     if ($useOldRoutes)
+      if($this->category->status)
       return \URL::route($currentLocale . '.icommerce.' . $this->category->slug . '.product', [$this->slug]);
+      else
+        return "";
     else {
       if(!isset(tenant()->id) && !empty($this->organization_id)){
         
