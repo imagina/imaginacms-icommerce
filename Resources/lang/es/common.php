@@ -263,4 +263,8 @@ return [
     'share' => 'Compartir'
   ],
 
+  'offers' => [
+    'title' => 'Ofertas'
+  ]
+
 ];
