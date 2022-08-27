@@ -428,7 +428,7 @@ class Product extends Model implements TaggableInterface
     if (!empty($this->custom_url)) return $this->custom_url;
     
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-    $currentLocale = \LaravelLocalization::getCurrentLocale();
+    $currentLocale = locale();
     $host = request()->getHost();
     if ($useOldRoutes)
       if($this->category->status)
@@ -436,12 +436,9 @@ class Product extends Model implements TaggableInterface
       else
         return "";
     else {
-      if(!isset(tenant()->id) && !empty($this->organization_id)){
-        
-        return tenant_route($this->organization->slug.".".Str::remove('https://', env('APP_URL', 'localhost')), $currentLocale.'.icommerce.store.show', [$this->slug]);
-      }
+      $tenantDomain = isset(tenant()->id) ? tenant()->domain : (tenancy()->find($this->organization_id)->domain ?? parse_url(env('APP_URL', 'localhost'),PHP_URL_HOST));
       
-      return tenant_route(request()->getHost(), $currentLocale.'.icommerce.store.show', [$this->slug]);
+      return tenant_route($tenantDomain, $currentLocale.'.icommerce.store.show', [$this->slug]);
     }
     
     

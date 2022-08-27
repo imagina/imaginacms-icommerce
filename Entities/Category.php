@@ -97,7 +97,7 @@ Category extends Model
   {
     $url = "";
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-    $currentLocale = \LaravelLocalization::getCurrentLocale();
+    $currentLocale = locale();
     $routeName = request()->route()->getName();
 
     if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
