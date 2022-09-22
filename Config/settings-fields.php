@@ -550,6 +550,30 @@ return [
       ]
     ]
   ],
+
+  'productRibbonBackgroundColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "#f2c037",
+    'name' => 'icommerce::productRibbonBackgroundColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productRibbonBackgroundColor'
+    ]
+  ],
+
+  'productRibbonTextColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "#333333",
+    'name' => 'icommerce::productRibbonTextColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productRibbonTextColor'
+    ]
+  ],
   
   'productImageBorder' => [
     "onlySuperAdmin" => true,
@@ -954,6 +978,30 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleToUppercase'
     ]
   ],
+
+  'productContentTitleFontWeight' => [
+    'value' => 'normal',
+    'name' => 'icommerce::productContentTitleFontWeight',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productContentTitleFontWeight',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ['label' => 'Texto en negrita', 'value' => 'bold'],
+            ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+            ['label' => 'Texto de peso normal', 'value' => 'normal'],
+            ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+        ]
+    ]
+  ],
   
   'productContentCategoryFontSize' => [
     "onlySuperAdmin" => true,
@@ -995,7 +1043,30 @@ return [
       'label' => 'icommerce::common.settings.productContentCategoryToUppercase'
     ]
   ],
-  
+  'productContentCategoryFontWeight' => [
+    'value' => 'normal',
+    'name' => 'icommerce::productContentCategoryFontWeight',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productContentCategoryFontWeight',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ['label' => 'Texto en negrita', 'value' => 'bold'],
+            ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+            ['label' => 'Texto de peso normal', 'value' => 'normal'],
+            ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+        ]
+    ]
+  ],
+
   'productContentPriceFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 8,
@@ -1018,7 +1089,7 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-      'label' => 'Precio Negrita (Weight)',
+      'label' => 'icommerce::common.settings.productContentPriceFontWeight',
       'useInput' => false,
       'useChips' => false,
       'multiple' => false,
@@ -1032,4 +1103,31 @@ return [
       ]
     ]
   ],
+
+  'productProductBackgroundColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "#ffffff",
+    'name' => 'icommerce::productProductBackgroundColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productProductBackgroundColor'
+    ]
+  ],
+
+  'productProductBackgroundColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "transparent",
+    'name' => 'icommerce::productProductBackgroundColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'input',
+    'props' => [
+        'label' => 'icommerce::common.settings.productProductBackgroundColor'
+    ]
+  ],
+
+
+
 ];
