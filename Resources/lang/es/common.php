@@ -27,7 +27,7 @@ return [
   'pages' => [
     'index' => 'Página Principal',
     'checkout' => 'Página Checkout',
-
+    'labelDefaultTypeCustomer' => 'Comprar como usuario invitado por defecto',
   ],
   'filters' => [
     'title' => 'Filtrar',

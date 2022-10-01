@@ -18,18 +18,21 @@ use Modules\Icommerce\Transformers\ShippingMethodTransformer;
 use Modules\Iprofile\Transformers\AddressTransformer;
 use Illuminate\Support\Facades\Validator;
 use Modules\Icommerce\Support\Coupon as SupportCoupon;
+use Illuminate\Support\Str;
+use Modules\User\Entities\Sentinel\User as entityUser;
+use Modules\Iprofile\Entities\Address as Address;
 
 class Checkout extends Component
 {
-  
-  protected $listeners = ['addressAdded', 'cartUpdated'];
-  
+
+  protected $listeners = ['addressAdded', 'cartUpdated', 'emitCheckoutAddress'];
+
   public $user;
   public $step;
   public $view;
   public $layout;
   public $order;
-  
+
   public $cart;
   public $currency;
   public $requireShippingMethod;
@@ -45,29 +48,33 @@ class Checkout extends Component
   public $locale;
   public $update;
   public $organization;
+  public $userEmail;
+  public $shopAsGuest;
+  public $addressGuest;
+  public $addressGuestShipping;
   protected $addresses;
-  
+
   protected $taxes;
   protected $products;
   protected $paymentMethods;
   protected $shippingMethods;
   protected $couponDiscount;
-  
 
-  
+
   public function mount(Request $request, $layout = null, $order = null, $cart = null,
-                        $orderId = null, $cartId = null, $currency = null, $currencyId = null)
+                                $orderId = null, $cartId = null, $currency = null, $currencyId = null)
   {
-    
     $this->couponSelected = null;
     $this->couponCode = null;
     $this->taxes = [];
     $this->sameShippingAndBillingAddresses = true;
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
+    $this->shopAsGuest = setting('icommerce::defaultTypeCustomer');
+    $this->addressGuestShipping = null;
 
     $this->layout = $layout ?? setting("icommerce::checkoutLayout");
-    
+
     $this->initTitle();
     $this->initUser();
     $this->initOrganization();
@@ -76,12 +83,50 @@ class Checkout extends Component
     $this->initCart($cart, $cartId);
     $this->initCurrency($currency, $currencyId);
     $this->load();
-    
+
     $this->view = "icommerce::frontend.livewire.checkout.index";
-    
+
   }
-  
-  
+
+  //|--------------------------------------------------------------------------
+  //| User guests
+  //|--------------------------------------------------------------------------
+  public function emitCheckoutAddress($data)
+  {
+    if ($data['type'] == 'billing') {
+      $this->addressGuest = $data;
+      if ($this->sameShippingAndBillingAddresses) {
+        $this->addressGuestShipping = $data;
+      }
+    } else {
+      $this->addressGuestShipping = $data;
+    }
+    $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
+  }
+
+  public function createUserGuest()
+  {
+    $userdata['email'] = $this->userEmail;
+    $userdata['password'] = Str::random(32);
+    $userdata['first_name'] = $this->addressGuest['first_name'];
+    $userdata['last_name'] = $this->addressGuest['last_name'];
+    $userdata["is_activated"] = true;
+    $role = $this->roleRepository()->findByName(config('asgard.user.config.default_role', 'User'));
+    $this->user = entityUser::where('email', $userdata['email'])->first();
+    if (!$this->user) {
+      $this->user = $this->userRepository()->createWithRoles($userdata, [$role->id], $userdata["is_activated"]);
+    }
+  }
+
+  public function shopAsGuest()
+  {
+    if ($this->shopAsGuest == false) {
+      $this->shopAsGuest = true;
+    } else {
+      $this->shopAsGuest = false;
+    }
+  }
+
   //|--------------------------------------------------------------------------
   //| Inits
   //|--------------------------------------------------------------------------
@@ -90,15 +135,15 @@ class Checkout extends Component
    */
   private function initTitle()
   {
-    
+
     if (setting("icommerce::customCheckoutTitle")) {
       $this->title = setting("icommerce::customCheckoutTitle");
     } else {
       $this->title = trans('icommerce::checkout.title');
     }
-    
+
   }
-  
+
   /**
    *
    */
@@ -106,128 +151,126 @@ class Checkout extends Component
   {
     $this->user = \Auth::user();
   }
-  
+
   /**
    *
    */
   public function initAddresses()
   {
-    
     if (isset($this->user->id)) {
       $this->addresses = $this->user->addresses()->get() ?? [];
-      
     } else {
       $this->addresses = collect([]);
     }
-    
   }
-  
+
   /**
    *
    */
   private function initStep()
   {
-    
+
     $this->step = 1;
     if (isset($this->user->id))
       $this->step = 2;
-    
+
   }
-  
+
   /**
    * @param $order
    */
   private function initOrder($order, $orderId)
   {
-    
+
     if (isset($order->id)) {
       $this->order = $order;
     } elseif (!empty($orderId)) {
       $order = $this->orderRepository()->getItem($orderId);
-      
+
       $this->order = new OrderTransformer($order);
     } else {
       $this->order = null;
     }
-    
+
   }
-  
-  public function initOrganization(){
-  
+
+  public function initOrganization()
+  {
+
     $this->organization = null;
     if (function_exists('tenant') && isset(tenant()->id)) {
       $this->organization = tenant();
     }
-    
+
   }
-  
+
   /**
    *
    */
   public function initPaymentMethods()
   {
-    
-    $params = ["filter" => ["status" => 1,"withCalculations" => true, "cartId" => $this->cart->id ?? null]];
-  
+
+    $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $this->cart->id ?? null]];
+
     $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
-    
+
     // Validate if the Shipping Method selected has an status error to deactivated
-    $paymentMethod = $this->paymentMethods->where("id",$this->paymentMethodSelected)->first();
-    
-    if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+    $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
+
+    if (isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status == "error") {
       $this->paymentMethodSelected = null;
     }
   }
-  
+
   /**
    *
    */
   public function initShippingMethods()
   {
-    
+
     //\Log::info('Icommerce: Livewire|Checkout|InitShippingMethods');
 
     $params = [];
     $data = ["cart_id" => $this->cart->id ?? null];
 
     $data['shippingAddressId'] = $this->shippingAddressSelected;
- 
+
     $this->shippingMethods = $this->shippingMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
- 
+
     // Validate if the Shipping Method selected has an status error to deactivated
-    $shippingMethod = $this->shippingMethods->where("id",$this->shippingMethodSelected)->first();
-    
-    if(isset($shippingMethod->id) && isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status=="error")
+    $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
+
+    if (isset($shippingMethod->id) && isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status == "error")
       $this->shippingMethodSelected = null;
-          
-    
+
+
   }
-  
+
   /**
    * @param $cart
    * @param $cartId
    */
   private function initCart($cart = null, $cartId = null)
   {
-    
-      $cart = request()->session()->get('cart');
-      
-      if (isset($cart->id) && $cart->status == 1) {
-        
-        $this->cart = $this->cartRepository()->getItem($cart->id);
-        
-      } else{
-        $this->cart = $this->cartService()->create(["cart" => $cart, "cartId" => $cartId]);
-      }
-    
-    
-    if(isset($this->cart->id)){
-      $this->requireShippingMethod = $this->cart->require_shipping;
-      
+
+    $cart = request()->session()->get('cart');
+
+    if (isset($cart->id) && $cart->status == 1) {
+
+      $this->cart = $this->cartRepository()->getItem($cart->id);
+
+    } else {
+      $this->cart = $this->cartService()->create(["cart" => $cart, "cartId" => $cartId]);
     }
-    
+
+
+    if (isset($this->cart->id)) {
+      $this->requireShippingMethod = $this->cart->require_shipping;
+
+    }
+
   }
-  
+
   /**
    * @param $currency
    * @param $currencyId
@@ -242,14 +285,14 @@ class Checkout extends Component
       $this->currency = Currency::where("default_currency", 1)->first();
     }
   }
-  
-  private function initTaxes(){
-    
+
+  private function initTaxes()
+  {
+
     $this->taxes = $this->cartService()->totalTaxes(["cart" => $this->cart, "couponDiscounts" => $this->couponDiscount->allDiscounts ?? []]);
-    
+
   }
-  
-  
+
   /**
    *
    */
@@ -263,13 +306,11 @@ class Checkout extends Component
     } else {
       $this->products = collect([]);
     }
-    
+
     if ($this->products->isNotEmpty())
       $this->cartEmpty = false;
   }
-  
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Livewire Events
   //|--------------------------------------------------------------------------
@@ -281,7 +322,7 @@ class Checkout extends Component
     //\Log::info('Icommerce: Livewire|Checkout|Hydrate');
     $this->load();
   }
-  
+
   /**
    * @param $name
    * @param $value
@@ -300,17 +341,16 @@ class Checkout extends Component
           $this->getShippingAddressProperty();
         }
         break;
-        
+
       case 'billingAddressSelected':
-        if($this->sameShippingAndBillingAddresses){
+        if ($this->sameShippingAndBillingAddresses) {
           $this->shippingAddressSelected = $this->billingAddressSelected;
         }
         break;
     }
-    
+
   }
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Event's Action
   //|--------------------------------------------------------------------------
@@ -319,7 +359,7 @@ class Checkout extends Component
    */
   public function addressAdded($address)
   {
-    
+
     $this->initAddresses();
     switch ($address["type"]) {
       case 'billing':
@@ -327,12 +367,12 @@ class Checkout extends Component
           $this->billingAddressSelected = $address["id"];
         }
 
-        if($this->sameShippingAndBillingAddresses){
+        if ($this->sameShippingAndBillingAddresses) {
           $this->shippingAddressSelected = $this->billingAddressSelected;
         }
 
         break;
-      
+
       case 'shipping':
         if (isset($address["id"])) {
           $this->shippingAddressSelected = $address["id"];
@@ -342,19 +382,18 @@ class Checkout extends Component
 
     // Initializing shipping methods sending the new addresses selected if there are another calculations by each shipping method
     $this->initShippingMethods();
-    
+
   }
-  
+
   /**
    * @param $cart
    */
   public function cartUpdated($cart)
   {
     $this->initCart(null, $cart["id"]);
-    
+
   }
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Repositories
   //|--------------------------------------------------------------------------
@@ -365,7 +404,7 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\PaymentMethodRepository');
   }
-  
+
   /**
    * @return currencyRepository
    */
@@ -373,7 +412,7 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\CurrencyRepository');
   }
-  
+
   /**
    * @return OrderRepository
    */
@@ -381,7 +420,7 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\OrderRepository');
   }
-  
+
   /**
    * @return cartRepository
    */
@@ -389,7 +428,7 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\CartRepository');
   }
-  
+
   /**
    * @return cartRepository
    */
@@ -397,13 +436,23 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Repositories\CouponRepository');
   }
-  
+
   /**
    * @return shippingMethodRepository
    */
   private function shippingMethodRepository()
   {
     return app('Modules\Icommerce\Repositories\ShippingMethodRepository');
+  }
+
+  private function roleRepository()
+  {
+    return app('Modules\User\Repositories\RoleRepository');
+  }
+
+  private function userRepository()
+  {
+    return app('Modules\User\Repositories\UserRepository');
   }
 
   //|--------------------------------------------------------------------------
@@ -413,9 +462,11 @@ class Checkout extends Component
    * @return orderService
    */
   private function orderService()
+
   {
     return app('Modules\Icommerce\Services\OrderService');
   }
+
   /**
    * @return orderService
    */
@@ -423,8 +474,7 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Services\CartService');
   }
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Supports
   //|--------------------------------------------------------------------------
@@ -435,8 +485,7 @@ class Checkout extends Component
   {
     return app('Modules\Icommerce\Support\Order');
   }
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Properties
   //|--------------------------------------------------------------------------
@@ -447,27 +496,23 @@ class Checkout extends Component
   public function getBillingAddressProperty()
   {
     $billingAddress = null;
-    
     if (isset($this->user->id)) {
-      
       if (!empty($this->billingAddressSelected)) {
         $billingAddress = $this->addresses->where("id", $this->billingAddressSelected)->first();
+
       } else {
-          $billingAddress = $this->addresses->where("type", "billing")->where("default", 1)->first();
-  
-          if (!isset($billingAddress->id) && $this->addresses->count()) {
-            $billingAddress = $this->addresses->first();
-          }
-        
-        
+        $billingAddress = $this->addresses->where("type", "billing")->where("default", 1)->first();
+
+        if (!isset($billingAddress->id) && $this->addresses->count()) {
+          $billingAddress = $this->addresses->first();
+        }
       }
-      
     }
     if (isset($billingAddress->id)) $this->billingAddressSelected = $billingAddress->id;
-    
+
     return $billingAddress;
   }
-  
+
   /**
    * Computed Property - shippingAddress
    * @return mixed
@@ -475,68 +520,68 @@ class Checkout extends Component
   public function getShippingAddressProperty()
   {
     $shippingAddress = null;
-    
+
     if (isset($this->user->id)) {
-      
+
       if (!empty($this->shippingAddressSelected)) {
         $shippingAddress = $this->addresses->where("id", $this->shippingAddressSelected)->first();
       } else {
-        if($this->sameShippingAndBillingAddresses && !empty($this->billingAddressSelected)){
-          
+        if ($this->sameShippingAndBillingAddresses && !empty($this->billingAddressSelected)) {
+
           $shippingAddress = $this->addresses->where("id", $this->billingAddressSelected)->first();
-        }else {
+        } else {
           $shippingAddress = $this->addresses->where("type", "shipping")->where("default", 1)->first();
-  
+
           if (!isset($shippingAddress->id) && $this->addresses->count()) {
             $shippingAddress = $this->addresses->first();
           }
         }
-        
+
       }
-      
+
     }
     if (isset($shippingAddress->id)) $this->shippingAddressSelected = $shippingAddress->id;
-    
+
     return $shippingAddress;
   }
-  
+
   /**
    * @return
    */
   public function getShippingMethodProperty()
   {
     $shippingMethod = null;
-    
+
     if (!empty($this->shippingMethodSelected)) {
-      
+
       $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
-    }else{
-     
+    } else {
+
       if ($this->shippingMethods->count() && $this->shippingMethods->count() == 1) {
         $shippingMethod = $this->shippingMethods->first();
       }
-      
+
     }
     if (isset($shippingMethod->id)) $this->shippingMethodSelected = $shippingMethod->id;
-    
+
     return $shippingMethod;
   }
-  
+
   /**
    * @return
    */
   public function getTotalTaxesProperty()
   {
     $totalTaxes = [];
-    
-    foreach ($this->taxes as $productTaxes){
-      foreach ($productTaxes as $productTax){
+
+    foreach ($this->taxes as $productTaxes) {
+      foreach ($productTaxes as $productTax) {
         $totalTaxes[$productTax["rateId"]] = [
           "rateId" => $productTax["rateId"],
           "rateName" => $productTax["rateName"],
-          "rate" => $productTax["rateType"] == 1 ? round($productTax["rate"])."%" :
+          "rate" => $productTax["rateType"] == 1 ? round($productTax["rate"]) . "%" :
             (isset($this->currency->id) ? $this->currency->symbol_left : '$') .
-            formatMoney($productTax["rate"]).
+            formatMoney($productTax["rate"]) .
             (isset($this->currency->id) ? $this->currency->symbol_right : ''),
           "totalTax" => ($totalTaxes[$productTax["rateId"]]["totalTax"] ?? 0) + $productTax["tax"]
         ];
@@ -545,122 +590,121 @@ class Checkout extends Component
 
     return $totalTaxes;
   }
-  
-  
-  
+
+
   /**
    * @return
    */
   public function getTotalProperty()
   {
     $total = 0;
-    
+
     //added cart total
     $total += $this->cart->total ?? 0;
-    
+
     //subtracted coupon amount
     //-----------------------------------------------------------------------------------------------------------------
-    if(isset($this->couponSelected->id)){
+    if (isset($this->couponSelected->id)) {
       $total -= $this->couponDiscount->discount ?? 0;
     }
-  
+
     //added taxes
     //-----------------------------------------------------------------------------------------------------------------
-    foreach ($this->totalTaxes as $totalTax){
+    foreach ($this->totalTaxes as $totalTax) {
       $total += $totalTax["totalTax"];
     }
-    
+
     //added shipping method total
     $total += $this->shippingMethod->calculations->price ?? 0;
-    
-  
-    
+
+
     return $total;
   }
-  
+
   /**
    * @return
    */
   public function getPaymentMethodProperty()
   {
     $paymentMethod = null;
-    
+
     if (!empty($this->paymentMethodSelected)) {
-        $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
-    }else{
+      $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();
+    } else {
       if ($this->paymentMethods->count() && $this->paymentMethods->count() == 1) {
         $paymentMethod = $this->paymentMethods->first();
       }
     }
-    
+
     if (isset($paymentMethod->id)) $this->paymentMethodSelected = $paymentMethod->id;
-  
-    if(isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status=="error"){
+
+    if (isset($paymentMethod->id) && isset($paymentMethod->calculations->status) && $paymentMethod->calculations->status == "error") {
       $this->paymentMethodSelected = $paymentMethod = null;
     }
     return $paymentMethod;
   }
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Custom Actions
   //|--------------------------------------------------------------------------
-  public function setStep($step){
+  public function setStep($step)
+  {
     $this->step = $step;
   }
-  
+
   /**
    * @param $couponCode
    */
   public function validateCoupon($couponCode)
   {
-    
+
     $params = ["filter" => ["field" => "code"]];
     $coupon = $this->couponRepository()->getItem($couponCode, json_decode(json_encode($params)));
-    
+
     //validate if the coupon exist
     if (!isset($coupon->id)) {
       $this->alert('warning', trans('icommerce::coupons.messages.coupon not exist'), config("asgard.isite.config.livewireAlerts"));
-    }else{
+    } else {
       //validate if the coupon its running yet
-      if(!$coupon->running){
+      if (!$coupon->running) {
         $this->alert('warning', trans('icommerce::coupons.messages.coupon inactive'), config("asgard.isite.config.livewireAlerts"));
         //validate if the coupon can be used by de user logged
-      }elseif(!$coupon->canUse){
+      } elseif (!$coupon->canUse) {
         $this->alert('warning', trans('icommerce::coupons.messages.cantUseThisCoupon'), config("asgard.isite.config.livewireAlerts"));
-      }else{
-  
+      } else {
+
         //coupon Support
         $validateCoupons = new SupportCoupon();
         //getting the discount details by the products in the cart
         $result = $validateCoupons->getDiscount($coupon, $this->cart->id);
 
         //if the coupon return status 1 the coupon its applied
-        if( $result->status == 1 ){
+        if ($result->status == 1) {
 
           $this->alert('success', trans('icommerce::coupons.messages.couponApplied'), config("asgard.isite.config.livewireAlerts"));
           $this->couponSelected = $coupon;
           $this->couponDiscount = $result;
           $this->initTaxes();
           $this->getTotalTaxesProperty();
-  
-        }else{
+
+        } else {
           //if the coupon return status 0 the coupon cant be applied
           $this->alert('warning', trans($result->message), config("asgard.isite.config.livewireAlerts"));
         }
       }
     }
-    
+
   }
-  
-  public function getCouponDiscount(){
-    
-    if(isset($this->couponSelected->id)){
+
+  public function getCouponDiscount()
+  {
+
+    if (isset($this->couponSelected->id)) {
       $validateCoupons = new SupportCoupon();
       $this->couponDiscount = $validateCoupons->getDiscount($this->couponSelected, $this->cart->id);
     }
   }
-  
+
   /**
    *
    */
@@ -668,8 +712,7 @@ class Checkout extends Component
   {
     $this->initAddresses();
     $this->initProducts();
-    
-    
+
     $this->getBillingAddressProperty();
     $this->getShippingAddressProperty();
 
@@ -680,14 +723,12 @@ class Checkout extends Component
     $this->getPaymentMethodProperty();
     $this->getShippingMethodProperty();
 
-    
-    
     $this->getCouponDiscount();
     $this->initTaxes();
     $this->getTotalTaxesProperty();
 
   }
-  
+
   /**
    *
    */
@@ -695,50 +736,117 @@ class Checkout extends Component
   {
 
     //\Log::info('Icommerce: Livewire|Checkout|Submit - INIT');
-
     try {
-      
-      $validatedData = Validator::make(
-        array_merge([
-          'userId' => $this->user->id ?? null,
-          'billingAddress' => $this->billingAddressSelected,
-          'paymentMethod' => $this->paymentMethodSelected,
-        ], ($this->requireShippingMethod ? [
-          'shippingMethod' => $this->shippingMethodSelected,
-          'shippingAddress' => $this->shippingAddressSelected,
-        ] : [] )),
-        array_merge([
-          'userId' => 'required',
-          'billingAddress' => 'required',
-          'paymentMethod' => 'required',
-        ],($this->requireShippingMethod ? [
-          'shippingMethod' => 'required',
-          'shippingAddress' => 'required',
-        ] : [])),
-        array_merge([
-          'userId.required' => trans("icommerce::checkout.alerts.login_order"),
-          'billingAddress.required' => trans("icommerce::checkout.messages.billing_address"),
-          'paymentMethod.required' => trans("icommerce::checkout.messages.payment_method")
-        ], ($this->requireShippingMethod ? [
-          'shippingMethod.required' => trans("icommerce::checkout.messages.shipping_method"),
-          'shippingAddress.required' => trans("icommerce::checkout.messages.shipping_address"),
-        ] : [])),
+      if ($this->shopAsGuest & !empty($this->addressGuest)) {
+        $validatedData = Validator::make(
+          array_merge([
+            'billingAddress' => count($this->addressGuest),
+            'email' => $this->userEmail,
+            'paymentMethod' => $this->paymentMethodSelected,
+          ], ($this->requireShippingMethod ? [
+            'shippingMethod' => $this->shippingMethodSelected,
+            'shippingAddress' => count($this->addressGuestShipping),
+          ] : [])),
+          array_merge([
+            'email' => 'required|email',
+            'billingAddress' => 'required',
+            'paymentMethod' => 'required',
+          ], ($this->requireShippingMethod ? [
+            'shippingMethod' => 'required',
+            'shippingAddress' => 'required',
+          ] : [])),
+          array_merge([
+            'email.required' => trans("icommerce::checkout.alerts.login_order"),
+            'email.email' => trans("icommerce::checkout.alerts.login_order"),
+            'billingAddress.required' => trans("icommerce::checkout.messages.billing_address"),
+            'paymentMethod.required' => trans("icommerce::checkout.messages.payment_method")
+          ], ($this->requireShippingMethod ? [
+            'shippingMethod.required' => trans("icommerce::checkout.messages.shipping_method"),
+            'shippingAddress.required' => trans("icommerce::checkout.messages.shipping_address"),
+          ] : []))
         )->validate();
-      
+        $this->createUserGuest();
+        $billingAddressGuest = Address::create(array(
+          'user_id' => $this->user->id,
+          'first_name' => $this->addressGuest['first_name'],
+          'last_name' => $this->addressGuest['last_name'],
+          'address_1' => $this->addressGuest['address_1'],
+          'telephone' => $this->addressGuest['telephone'],
+          'country' => $this->addressGuest['country'],
+          'country_id' => $this->addressGuest['country_id'],
+          'state' => $this->addressGuest['address_1'],
+          'state_id' => $this->addressGuest['state_id'],
+          'city' => $this->addressGuest['city'],
+          'city_id' => $this->addressGuest['city_id'],
+          'default' => $this->addressGuest['default'],
+          'type' => $this->addressGuest['type'],
+          'options' => $this->addressGuest['options'],
+        ));
+        $this->billingAddressSelected = $billingAddressGuest->id;
+        if ($this->requireShippingMethod & !$this->sameShippingAndBillingAddresses) {
+          $shippingAddressGuest = Address::create(array(
+            'user_id' => $this->user->id,
+            'first_name' => $this->addressGuestShipping['first_name'],
+            'last_name' => $this->addressGuestShipping['last_name'],
+            'address_1' => $this->addressGuestShipping['address_1'],
+            'telephone' => $this->addressGuestShipping['telephone'],
+            'country' => $this->addressGuestShipping['country'],
+            'country_id' => $this->addressGuestShipping['country_id'],
+            'state' => $this->addressGuestShipping['address_1'],
+            'state_id' => $this->addressGuestShipping['state_id'],
+            'city' => $this->addressGuestShipping['city'],
+            'city_id' => $this->addressGuestShipping['city_id'],
+            'default' => $this->addressGuestShipping['default'],
+            'type' => $this->addressGuestShipping['type'],
+            'options' => $this->addressGuestShipping['options'],
+          ));
+          $this->shippingAddressSelected = $shippingAddressGuest->id;
+        } else {
+          $this->shippingAddressSelected = $billingAddressGuest->id;
+        }
+        $this->initAddresses();
+      } else {
+        $validatedData = Validator::make(
+          array_merge([
+            'userId' => $this->user->id ?? null,
+            'billingAddress' => $this->billingAddressSelected,
+            'paymentMethod' => $this->paymentMethodSelected,
+          ], ($this->requireShippingMethod ? [
+            'shippingMethod' => $this->shippingMethodSelected,
+            'shippingAddress' => $this->shippingAddressSelected,
+          ] : [])),
+          array_merge([
+            'userId' => 'required',
+            'billingAddress' => 'required',
+            'paymentMethod' => 'required',
+          ], ($this->requireShippingMethod ? [
+            'shippingMethod' => 'required',
+            'shippingAddress' => 'required',
+          ] : [])),
+          array_merge([
+            'userId.required' => trans("icommerce::checkout.alerts.login_order"),
+            'billingAddress.required' => trans("icommerce::checkout.messages.billing_address"),
+            'paymentMethod.required' => trans("icommerce::checkout.messages.payment_method")
+          ], ($this->requireShippingMethod ? [
+            'shippingMethod.required' => trans("icommerce::checkout.messages.shipping_method"),
+            'shippingAddress.required' => trans("icommerce::checkout.messages.shipping_address"),
+          ] : []))
+        )->validate();
+      }
+
     } catch (\Illuminate\Validation\ValidationException $e) {
       // Do your thing and use $validator here
       $validator = $e->validator;
 
       $this->alert('warning', trans("icommerce::checkout.alerts.missing_fields"), config("asgard.isite.config.livewireAlerts"));
-      
+
       // Once you're done, re-throw the exception
       throw $e;
     }
-   
-  
+
     $orderService = app("Modules\Icommerce\Services\OrderService");
     $data = [];
-    
+
     $data["cart"] = $this->cart;
     $data["customer"] = $this->user;
     $data["addedBy"] = $this->user;
@@ -747,27 +855,29 @@ class Checkout extends Component
     $data["shippingMethod"] = $this->shippingMethod;
     $data["paymentMethod"] = $this->paymentMethod;
     $data["coupon"] = $this->couponSelected;
+    if ($this->shopAsGuest) {
+      $data["guest_purchase"] = true;
+    } else {
+      $data["guest_purchase"] = false;
+    }
 
-    if(!isset($this->order->id)){
-  
+
+    if (!isset($this->order->id)) {
       \Log::info('Icommerce: Livewire|Checkout|Submit|OrderService Create');
-      
       $orderData = $orderService->create($data);
-
-      if(isset($orderData["orderId"])){
+      if (isset($orderData["orderId"])) {
         $this->alert('success', trans('icommerce::orders.messages.order success'), config("asgard.isite.config.livewireAlerts"));
-        $this->emit("orderCreated",$orderData);
+        $this->emit("orderCreated", $orderData);
         $this->emit("deleteCart");
-      }else{
+      } else {
         $this->alert('warning', trans('icommerce::orders.messages.order error'), config("asgard.isite.config.livewireAlerts"));
-        \Log::info('Icommerce: Livewire|Checkout|Submit|Error: Order Data:'.json_encode($orderData));
+        \Log::info('Icommerce: Livewire|Checkout|Submit|Error: Order Data:' . json_encode($orderData));
       }
     }
 
     //\Log::info('Icommerce: Livewire|Checkout|Submit - END');
   }
-  
-  
+
   //|--------------------------------------------------------------------------
   //| Render
   //|--------------------------------------------------------------------------
@@ -776,7 +886,6 @@ class Checkout extends Component
    */
   public function render()
   {
-    
     return view($this->view, [
       "user" => $this->user,
       "addresses" => $this->addresses,
@@ -788,6 +897,5 @@ class Checkout extends Component
       "shippingMethods" => $this->shippingMethods,
       "currency" => $this->currency
     ]);
-    
   }
 }
