@@ -111,6 +111,7 @@ class Checkout extends Component
     $userdata['first_name'] = $this->addressGuest['first_name'];
     $userdata['last_name'] = $this->addressGuest['last_name'];
     $userdata["is_activated"] = true;
+    $userdata['is_guest'] = true;
     $role = $this->roleRepository()->findByName(config('asgard.user.config.default_role', 'User'));
     $this->user = entityUser::where('email', $userdata['email'])->first();
     if (!$this->user) {
