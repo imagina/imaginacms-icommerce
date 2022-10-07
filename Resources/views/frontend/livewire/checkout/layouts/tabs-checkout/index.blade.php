@@ -46,22 +46,23 @@
           <div class="text-right">
             <a class="btn btn-outline-primary font-weight-bold mb-3"
                href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
-            @if (!$shopAsGuest)
+            @if(!$shopAsGuest)
               @auth
-              @endif
+                <button type="button" class="btn btn-dark next-step mb-3" wire:click="setStep(2)">
+                  <i class="fa fa-share d-block d-md-none"></i> <span
+                    class="d-none d-md-block">{{trans("icommerce::checkout.tabs.next")}}</span>
+                </button>
+              @endauth
+              @guest
+                <div
+                  class="btn btn-light border font-weight-bold mb-3 start-step">{{trans("icommerce::checkout.alerts.login_order")}}
+                </div>
+              @endguest
+            @else
               <button type="button" class="btn btn-dark next-step mb-3" wire:click="setStep(2)">
                 <i class="fa fa-share d-block d-md-none"></i> <span
                   class="d-none d-md-block">{{trans("icommerce::checkout.tabs.next")}}</span>
               </button>
-              @if (!$shopAsGuest)
-              @endauth
-              @guest
-              @endif
-              <div
-                class="btn btn-light border font-weight-bold mb-3 start-step">{{trans("icommerce::checkout.alerts.login_order")}}
-              </div>
-              @if (!$shopAsGuest)
-              @endguest
             @endif
           </div>
         </div>
@@ -78,19 +79,35 @@
             </div>
           </div>
 
-
           <div class="text-right">
             <a class="btn btn-outline-primary font-weight-bold mb-3"
                href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
             @if (!$shopAsGuest)
               @auth
-              @endif
+                <button type="button" class="btn btn-dark prev-step mb-3">
+                  <i class="fa fa-reply d-block d-md-none"></i>
+                  <span class="d-none d-md-block"
+                        wire:click="setStep(1)">{{trans("icommerce::checkout.tabs.previous")}}</span>
+                </button>
+                @if($requireShippingMethod)
+                  <button type="button" class="btn btn-dark next-step mb-3">
+                    <i class="fa fa-share d-block d-md-none"></i>
+                    <span class="d-none d-md-block"
+                          wire:click="setStep(3)">{{trans("icommerce::checkout.tabs.next")}}</span>
+                  </button>
+                @endif
+              @endauth
+              @guest
+                <div class="btn btn-light border font-weight-bold mb-3 start-step">
+                  {{trans("icommerce::checkout.alerts.login_order")}}
+                </div>
+              @endguest
+            @else
               <button type="button" class="btn btn-dark prev-step mb-3">
                 <i class="fa fa-reply d-block d-md-none"></i>
                 <span class="d-none d-md-block"
                       wire:click="setStep(1)">{{trans("icommerce::checkout.tabs.previous")}}</span>
               </button>
-
               @if($requireShippingMethod)
                 <button type="button" class="btn btn-dark next-step mb-3">
                   <i class="fa fa-share d-block d-md-none"></i>
@@ -98,15 +115,6 @@
                         wire:click="setStep(3)">{{trans("icommerce::checkout.tabs.next")}}</span>
                 </button>
               @endif
-              @if (!$shopAsGuest)
-              @endauth
-              @guest
-              @endif
-              <div class="btn btn-light border font-weight-bold mb-3 start-step">
-                {{trans("icommerce::checkout.alerts.login_order")}}
-              </div>
-              @if (!$shopAsGuest)
-              @endguest
             @endif
           </div>
         </div>
@@ -128,20 +136,21 @@
                href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
             @if (!$shopAsGuest)
               @auth
-              @endif
+                <button type="button" class="btn btn-dark prev-step mb-3">
+                  <i class="fa fa-reply d-block d-md-none"></i> <span class="d-none d-md-block"
+                                                                      wire:click="setStep(2)">{{trans("icommerce::checkout.tabs.previous")}}</span>
+                </button>
+              @endauth
+              @guest
+                <div class="btn btn-light border font-weight-bold mb-3 start-step">
+                  {{trans("icommerce::checkout.alerts.login_order")}}
+                </div>
+              @endguest
+            @else
               <button type="button" class="btn btn-dark prev-step mb-3">
                 <i class="fa fa-reply d-block d-md-none"></i> <span class="d-none d-md-block"
                                                                     wire:click="setStep(2)">{{trans("icommerce::checkout.tabs.previous")}}</span>
               </button>
-              @if (!$shopAsGuest)
-              @endauth
-              @guest
-              @endif
-              <div class="btn btn-light border font-weight-bold mb-3 start-step">
-                {{trans("icommerce::checkout.alerts.login_order")}}
-              </div>
-              @if (!$shopAsGuest)
-              @endguest
             @endif
           </div>
         </div>

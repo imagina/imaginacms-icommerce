@@ -6,32 +6,24 @@
 </div>
 
 <div class="row">
-
   <div class="col-12 col-md-6 col-lg-8">
     @include('icommerce::frontend.livewire.checkout.layouts.two-columns-checkout.customer')
-
     @include('icommerce::frontend.livewire.checkout.layouts.two-columns-checkout.billing-details')
-
     @php($step = 3)
     @if($requireShippingMethod)
       @include('icommerce::frontend.livewire.checkout.layouts.two-columns-checkout.shipping-details')
       @php($step++)
     @endif
-
     @if($requireShippingMethod)
       @include('icommerce::frontend.livewire.checkout.layouts.two-columns-checkout.shipping-methods')
       @php($step++)
     @endif
-
     @include('icommerce::frontend.livewire.checkout.layouts.two-columns-checkout.payment-methods')
   </div>
 
   <div class="col-12 col-md-12 col-lg-4">
-
     @include('icommerce::frontend.livewire.checkout.partials.order-summary')
-
   </div>
-
 </div>
 
 <div class="row">
