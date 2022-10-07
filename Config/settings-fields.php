@@ -324,10 +324,10 @@ return [
       ]
     ],
   ],
-  'defaultTypeCustomer' => [
+  'guestPurchasesByDefault' => [
     "onlySuperAdmin" => true,
     'value' => "0",
-    'name' => 'icommerce::defaultTypeCustomer',
+    'name' => 'icommerce::guestPurchasesByDefault',
     'type' => 'checkbox',
     'groupName' => 'checkoutPage',
     'groupTitle' => 'icommerce::common.pages.checkout',

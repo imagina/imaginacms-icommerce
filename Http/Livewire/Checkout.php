@@ -73,7 +73,12 @@ class Checkout extends Component
     $this->sameShippingAndBillingAddresses = true;
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
-    $this->shopAsGuest = setting('icommerce::defaultTypeCustomer');
+    $user = Auth::user();
+    if (isset($user)){
+      $this->shopAsGuest = false;
+    } else {
+      $this->shopAsGuest = setting('icommerce::guestPurchasesByDefault');
+    }
     $this->addressGuestShipping = [];
     $this->addressGuest = [];
     $this->addressGuestBillingCreated = false;
