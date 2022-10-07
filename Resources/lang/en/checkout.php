@@ -38,5 +38,9 @@ return [
     'view_profile' => 'Ver Perfil',
     'edit_profile' => 'Edit profile',
     'logout' => 'Get out'
-  ]
+  ],
+  'buttons' => [
+    'editAddressButton' => 'Edit Address',
+    'placeholderInputEmail' => 'Correo electrónico',
+  ],
 ];

@@ -41,9 +41,20 @@
 
     <div class="card mb-0 border-0">
       @if ($shopAsGuest)
-        <livewire:iprofile::address-form :embedded="true" :route="$locale.'.icommerce.store.checkout'" type="shipping"
-                                         key="checkoutShippingAddress" :openInModal="false"
-                                         livewireEvent="emitCheckoutAddress"/>
+        @if (!$addressGuestShippingCreated)
+          <livewire:iprofile::address-form :embedded="true" :route="$locale.'.icommerce.store.checkout'" type="shipping"
+                                           key="checkoutShippingAddress" :openInModal="false"
+                                           livewireEvent="emitCheckoutAddressShipping"
+                                           :addressGuest="$addressGuestShipping"/>
+        @else
+          <div id="addressShippingTarget" class="py-3">
+            <x-iprofile::address-card-item :address="$addressGuestShipping" key="cardShipping"/>
+
+            <button class="btn btn-xs btn-primary d-block m-auto" wire:click.prevent="editAddressShippingEmit">
+              {{trans('icommerce::checkout.buttons.editAddressButton')}}
+            </button>
+          </div>
+        @endif
       @else
         @auth
           <livewire:iprofile::address-form :embedded="true" :route="$locale.'.icommerce.store.checkout'" type="shipping"

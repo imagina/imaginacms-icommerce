@@ -25,7 +25,8 @@ use Modules\Iprofile\Entities\Address as Address;
 class Checkout extends Component
 {
 
-  protected $listeners = ['addressAdded', 'cartUpdated', 'emitCheckoutAddress'];
+  protected $listeners = ['addressAdded', 'cartUpdated', 'emitCheckoutAddressBilling',
+    'emitCheckoutAddressShipping', 'editAddressBillingEmit', 'editAddressShippingEmit'];
 
   public $user;
   public $step;
@@ -52,6 +53,8 @@ class Checkout extends Component
   public $shopAsGuest;
   public $addressGuest;
   public $addressGuestShipping;
+  public $addressGuestBillingCreated;
+  public $addressGuestShippingCreated;
   protected $addresses;
 
   protected $taxes;
@@ -71,7 +74,11 @@ class Checkout extends Component
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
     $this->shopAsGuest = setting('icommerce::defaultTypeCustomer');
-    $this->addressGuestShipping = null;
+    $this->addressGuestShipping = [];
+    $this->addressGuest = [];
+    $this->addressGuestBillingCreated = false;
+    $this->addressGuestShippingCreated = false;
+
 
     $this->layout = $layout ?? setting("icommerce::checkoutLayout");
 
@@ -91,16 +98,35 @@ class Checkout extends Component
   //|--------------------------------------------------------------------------
   //| User guests
   //|--------------------------------------------------------------------------
-  public function emitCheckoutAddress($data)
+  public function editAddressBillingEmit()
   {
-    if ($data['type'] == 'billing') {
-      $this->addressGuest = $data;
-      if ($this->sameShippingAndBillingAddresses) {
-        $this->addressGuestShipping = $data;
-      }
-    } else {
+    $this->addressGuestBillingCreated = false;
+  }
+
+  public function editAddressShippingEmit()
+  {
+    $this->addressGuestShippingCreated = false;
+  }
+
+  public function emitCheckoutAddressBilling($data)
+  {
+    $this->addressGuest = $data;
+    $this->addressGuestBillingCreated = true;
+
+    if ($this->sameShippingAndBillingAddresses) {
+      $data['type'] = 'shipping';
       $this->addressGuestShipping = $data;
+      $this->addressGuestShippingCreated = true;
     }
+
+    $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
+  }
+
+  public function emitCheckoutAddressShipping($data)
+  {
+    $this->addressGuestShipping = $data;
+    $this->addressGuestShippingCreated = true;
+
     $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
   }
 
@@ -336,9 +362,16 @@ class Checkout extends Component
     switch ($name) {
       case 'sameShippingAndBillingAddresses':
         if ($value) {
+          if (isset($this->addressGuest['first_name'])) {
+            $this->addressGuestShippingCreated = true;
+            $this->addressGuestShipping = $this->addressGuest;
+            $this->addressGuestShipping['type'] = 'shipping';
+          }
           $this->shippingAddressSelected = $this->billingAddressSelected;
         } else {
+          $this->addressGuestShippingCreated = false;
           $this->shippingAddressSelected = null;
+          $this->addressGuestShipping = null;
           $this->getShippingAddressProperty();
         }
         break;
@@ -856,11 +889,7 @@ class Checkout extends Component
     $data["shippingMethod"] = $this->shippingMethod;
     $data["paymentMethod"] = $this->paymentMethod;
     $data["coupon"] = $this->couponSelected;
-    if ($this->shopAsGuest) {
-      $data["guest_purchase"] = true;
-    } else {
-      $data["guest_purchase"] = false;
-    }
+    $data["guest_purchase"] = $this->shopAsGuest;
 
 
     if (!isset($this->order->id)) {

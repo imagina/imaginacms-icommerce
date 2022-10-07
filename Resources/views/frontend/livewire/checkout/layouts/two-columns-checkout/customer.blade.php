@@ -15,14 +15,14 @@
   <div id="customerData" class="collapse show" role="tablist" aria-multiselectable="true">
     <hr class="my-2"/>
     <button wire:click.prevent="shopAsGuest"
-            class="btn btn-primary" name="button">
+            class="btn btn-xs btn-primary" name="button">
       @if (!$shopAsGuest){{trans('icommerce::customer.form.textButtonShopAsGuest')}}
       @else {{trans('icommerce::customer.form.textButtonShopAsUser')}}@endif
     </button>
     @if ($shopAsGuest)
       <hr class="py-2"/>
-      <p>Correo Electronico para enviar las ordenes, obligatorio</p>
-      <input id="userEmail" class="form-control" aria-label="Small" wire:model.defer="userEmail" placeholder="Correo electronico 2" type="text">
+      <input id="userEmail" wire:model.defer="userEmail"
+             placeholder="{{trans('icommerce::checkout.buttons.placeholderInputEmail')}}" class="form-control" type="text">
     @else
       <hr class="my-2"/>
       @guest
