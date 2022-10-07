@@ -83,10 +83,10 @@ class OrderService
       */
       $orderData["customer_id"] = $customer->id ?? null;
       $orderData["added_by_id"] = $addedBy->id ?? null;
-
       $orderData["first_name"] = $customer->first_name ?? $data["first_name"] ?? null;
       $orderData["last_name"] = $customer->last_name ?? $data["last_name"] ?? null;
       $orderData["email"] = $customer->email ?? $data["email"] ?? null;
+      $orderData["guest_purchase"] = $data["guest_purchase"] ?? null;
 
       if (isset($customer->id)) {
         $telephone = $customer->fields()->where("name", "cellularPhone")->first();

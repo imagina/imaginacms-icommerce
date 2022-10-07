@@ -78,7 +78,8 @@ class Order extends Model
     'suscription_id',
     'organization_id',
     'suscription_token',
-    'type'
+    'type',
+    'guest_purchase'
   ];
   
   
@@ -187,7 +188,7 @@ class Order extends Model
   public function getUrlAttribute()
   {
     $panel = config("asgard.iprofile.config.panel") ?? 'blade';
-    if ($panel == 'blade')
+    if ($panel == 'blade' || $this->guest_purchase)
       return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.order.show', ["orderId" => $this->id, "orderKey" => $this->key]);
     else {
       return \URL::to('/ipanel/#/store/orders/' . $this->id);

@@ -27,6 +27,7 @@ return [
   'pages' => [
     'index' => 'Index Page',
     'checkout' => 'Checkout Page',
+    'labelDefaultTypeCustomer' => 'Buy as a guest user by default',
   ],
   'filters' => [
     'title' => 'Filters',

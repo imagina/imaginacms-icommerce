@@ -320,8 +320,22 @@ return [
       'options' => [
         ['label' => 'One Page Checkout', 'value' => 'one-page-checkout'],
         ['label' => 'Tabs Checkout', 'value' => 'tabs-checkout'],
+        ['label' => 'Two Columns Checkout', 'value' => 'two-columns-checkout'],
       ]
     ],
+  ],
+  'guestPurchasesByDefault' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::guestPurchasesByDefault',
+    'type' => 'checkbox',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.pages.labelDefaultTypeCustomer'
+    ]
   ],
   'addToCartButtonAction' => [
     "onlySuperAdmin" => true,
