@@ -79,6 +79,7 @@ return [
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
     "onlySuperAdmin" => true,
+    'isTranslatable' => true,
     'type' => 'input',
     'columns' => 'col-6',
     'props' => [
