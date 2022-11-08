@@ -86,7 +86,7 @@
             </span>
           </h6>
           <!-- botones-->
-          <a href="{{ tenant_route(request()->getHost(),\LaravelLocalization::getCurrentLocale() . '.icommerce.store.checkout') }}" tabindex="-1" class="btn btn-warning btn-sm mx-1 text-white">
+          <a href="{{ tenant_route(request()->getHost(),locale() . '.icommerce.store.checkout') }}" tabindex="-1" class="btn btn-warning btn-sm mx-1 text-white">
             {{trans('icommerce::cart.button.view_cart')}}
           </a>
 

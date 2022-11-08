@@ -140,6 +140,43 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->whereIn('icommerce__products.id', $filter->id);
       }
 
+
+      // add filter by related product Ids
+      if (isset($filter->related) && !empty($filter->related)) {
+
+        //Check validation array
+        is_array($filter->related) ? true : $filter->related = [$filter->related];
+        
+        //Query
+        $query->whereIn('icommerce__products.id', $filter->related);
+
+        // If categories exist, search for products in that category as well
+        if (isset($filter->categories) && !empty($filter->categories)) {
+
+          //Check validation array
+          is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+
+          //Query
+          $query->orWhere(function ($query) use ($filter){
+            $query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (".(join(",",$filter->categories))."))")
+            ->orWhereIn('icommerce__products.category_id', $filter->categories);
+          });
+          
+
+          //Null so it doesn't take the category filter again
+          $filter->categories = null;
+
+          //Order by to include always related id products
+          $query->orderByRaw("FIELD(id,".join($filter->related).") DESC, id DESC");
+
+          //Null so it doesn't take the order filter again
+          $filter->order = null;
+
+        }
+        
+
+      }
+
       // add filter by Categories 1 or more than 1, in array/*
       if (isset($filter->categories) && !empty($filter->categories)) {
 				is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
@@ -148,15 +185,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 						->orWhereIn('icommerce__products.category_id', $filter->categories);
 				});
 	
-
-      }
-
-      // add filter by related product Ids
-      if (isset($filter->related) && !empty($filter->related)) {
-        is_array($filter->related) ? true : $filter->related = [$filter->related];
-        $query->whereHas('relatedProducts', function ($query) use ($filter) {
-          $query->whereIn('related_id', $filter->related);
-        });
 
       }
 

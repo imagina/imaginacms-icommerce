@@ -56,6 +56,8 @@ class ProductListItem extends Component
   public $productBackgroundColor;
   public $ribbonBackgroundColor;
   public $ribbonTextColor;
+  public $contentTitleFontWeight;
+  public $contentCategoryFontWeight;
 
   /**
    * Create a new component instance.
@@ -97,17 +99,19 @@ class ProductListItem extends Component
                               $contentTitleFontSize = null,
                               $contentTitleMaxHeight = null,
                               $contentTitleNumberOfCharacters = null,
-                              $contentTitleToUppercase = false,
+                              $contentTitleToUppercase = null,
                               $contentCategoryEnable = null,
                               $contentCategoryFontSize = null,
-                              $contentCategoryToUppercase = true,
+                              $contentCategoryToUppercase = null,
                               $contentPriceFontSize = null,
                               $contentPriceFontWeight = null,
                               $bottomFontSize = null,
                               $parentAttributes = null,
-                              $productBackgroundColor = "",
-                              $ribbonBackgroundColor = "#f2c037",
-                              $ribbonTextColor = "#333333",
+                              $productBackgroundColor = null,
+                              $ribbonBackgroundColor = null,
+                              $ribbonTextColor = null,
+                              $contentTitleFontWeight = null,
+                              $contentCategoryFontWeight = null,
                               $editLink,
                               $tooltipEditLink)
   {
@@ -159,9 +163,11 @@ class ProductListItem extends Component
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
     $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
-    $this->productBackgroundColor = $productBackgroundColor;
-    $this->ribbonBackgroundColor = $ribbonBackgroundColor;
-    $this->ribbonTextColor = $ribbonTextColor;
+    $this->productBackgroundColor = $productBackgroundColor ?? setting('icommerce::productProductBackgroundColor', null, "transparent");
+    $this->ribbonBackgroundColor = $ribbonBackgroundColor ?? setting('icommerce::productRibbonBackgroundColor', null, "#f2c037");
+    $this->ribbonTextColor = $ribbonTextColor ?? setting('icommerce::productRibbonTextColor', null, "#333333");
+    $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
+    $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }

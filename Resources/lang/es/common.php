@@ -27,7 +27,7 @@ return [
   'pages' => [
     'index' => 'Página Principal',
     'checkout' => 'Página Checkout',
-
+    'labelDefaultTypeCustomer' => 'Comprar como usuario invitado por defecto',
   ],
   'filters' => [
     'title' => 'Filtrar',
@@ -137,6 +137,12 @@ return [
     'productContentTitleNumberOfCharacters' => 'Cantidad de caracteres para el título',
     'productContentTitleMaxHeight' => 'Altura máxima/Mínima para el título',
     'productWishlistEnable' => 'Habilitar botón wishlist',
+    'productProductBackgroundColor' => 'Color de Fondo General',
+    'productRibbonBackgroundColor' => 'Color Fondo de Descuento',
+    'productRibbonTextColor' => 'Color Texto de Descuento',
+    'productContentPriceFontWeight' =>  'Precio Negrita (Weight)',
+    'productContentTitleFontWeight' =>  'Título Negrita (Weight)',
+    'productContentCategoryFontWeight' =>  'Categoría Negrita (Weight)',
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',
