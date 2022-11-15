@@ -506,7 +506,7 @@
         border: 0;
         cursor: pointer;
         &:hover, &:visited, &:focus {
-          color: var(--dark);
+          color: var(--dark) !important;
           background-color: unset !important;
           border-color: unset !important;
         }
