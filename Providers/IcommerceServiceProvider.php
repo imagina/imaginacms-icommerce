@@ -86,6 +86,7 @@ class IcommerceServiceProvider extends ServiceProvider
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'permissions'), "asgard.icommerce.permissions");
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'cmsPages'), "asgard.icommerce.cmsPages");
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'cmsSidebar'), "asgard.icommerce.cmsSidebar");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'blocks'), "asgard.icommerce.blocks");
     //$this->app[TagManager::class]->registerNamespace(new Product());
     //$this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
