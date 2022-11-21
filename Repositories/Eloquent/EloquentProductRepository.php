@@ -370,8 +370,21 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 				->orWhereRaw("icommerce__products.organization_id IN (SELECT id from isite__organizations where status = 1)");
 
 		});
-	
+
+	   //old
+     /*
 		$query->whereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
+    */
+
+    /*
+    * Se aplica esto xq cuando se utilizó con reservas, el producto no tenia
+    categoria, entonces el carrito no lo obtenia
+    */
+    $query->where(function ($query) {
+      $query->whereNull("category_id")
+        ->orWhereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
+    });
+
 	}
 	
   public function getItem($criteria, $params = false)
@@ -472,6 +485,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       });
     }
 
+    //dd($query->toSql(),$query->getBindings());
     /*== REQUEST ==*/
     return $query->first();
 
