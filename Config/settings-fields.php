@@ -1142,7 +1142,38 @@ return [
         'label' => 'icommerce::common.settings.productProductBackgroundColor'
     ]
   ],
-
+  'layoutProductIcommerce' => [
+    'name' => 'icommerce::layoutProductIcommerce',
+    'value' => null,
+    'type' => 'select',
+    'groupName' => 'layouts',
+    'groupTitle' => 'icommerce::common.layouts.group_name',
+    'loadOptions' => [
+      'apiRoute' => '/isite/v1/layouts',
+      'select' => ['label' => 'title', 'id' => 'path'],
+      'requestParams' => ['filter' => ['entity_name' => 'Post', 'module_name' => 'Iblog']],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.layouts.label_products_default',
+      'entityId' => null,
+    ],
+  ],
+  'layoutCategoryIcommerce' => [
+    'name' => 'icommerce::layoutCategoryIcommerce',
+    'value' => null,
+    'type' => 'select',
+    'groupName' => 'layouts',
+    'groupTitle' => 'icommerce::common.layouts.group_name',
+    'loadOptions' => [
+      'apiRoute' => '/isite/v1/layouts',
+      'select' => ['label' => 'title', 'id' => 'path'],
+      'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Iblog']],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.layouts.label_categories_default',
+      'entityId' => null,
+    ],
+  ],
 
 
 ];
