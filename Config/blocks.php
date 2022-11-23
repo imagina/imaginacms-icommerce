@@ -54,11 +54,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Borde Externo",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "externalBorderColor" => [
@@ -74,11 +70,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Sombra Externa en hover",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "externalShadowOnHoverColor" => [
@@ -162,11 +154,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => " Mostrar botón lista de deseos (Wishlist)",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "wishlistIcon" => [
@@ -187,11 +175,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar botones al pasar mouse",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "withTextInAddToCart" => [
@@ -200,11 +184,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar texto de añadir a carrito",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "withIconInAddToCart" => [
@@ -213,11 +193,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar icono dentro de añadir a carrito",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "addToCartWithQuantity" => [
@@ -226,11 +202,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Añadir al carrito con cantidad",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["booleanValidation"]
                       ]
                   ],
                   "addToCartWithQuantityStyle" => [
@@ -284,12 +256,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Alineación del Contenido",
-                          //"options" => $vAttributes["align"]
-                          "options" => [
-                              ["label" => "Centrado", "value" => "text-center"],
-                              ["label" => "Derecha", "value" => "text-right"],
-                              ["label" => "Izquierda", "value" => "text-left"]
-                          ],
+                          "options" => $vAttributes["align"]
                       ]
                   ],
                   "contentExternalPaddingX" => [
@@ -325,15 +292,11 @@ return [
                   ],
                   "contentTitleToUppercase" => [
                       "name" => "contentTitleToUppercase",
-                      "value" => false,
+                      "value" => "0",
                       "type" => "select",
                       "props" => [
                           "label" => "Convertir a Mayúsculas (Titulo)",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "contentTitleMaxHeight" => [
@@ -362,26 +325,16 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Negrita (Titulo)",
-                          //"options" => $vAttributes["fontWeight"]
-                          "options" => [
-                              ["label" => "Texto en negrita", "value" => "bold"],
-                              ["label" => "Texto en negrita (relativo al elemento principal)", "value" => "bolder"],
-                              ["label" => "Texto de peso normal", "value" => "normal"],
-                              ["label" => "Texto más ligero (en relación con el elemento principal)", "value" => "lighter"]
-                          ],
+                          "options" => $vAttributes["fontWeight"]
                       ]
                   ],
                   "contentCategoryEnable" => [
                       "name" => "contentCategoryEnable",
-                      "value" => true,
+                      "value" => "1",
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar categoria",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "contentCategoryFontSize" => [
@@ -395,15 +348,11 @@ return [
                   ],
                   "contentCategoryToUppercase" => [
                       "name" => "contentCategoryToUppercase",
-                      "value" => true,
+                      "value" => "1",
                       "type" => "select",
                       "props" => [
                           "label" => "Convertir a Mayúsculas (Categoria)",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "contentCategoryFontWeight" => [
@@ -412,13 +361,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Negrita (Categoria)",
-                          //"options" => $vAttributes["fontWeight"]
-                          "options" => [
-                              ["label" => "Texto en negrita", "value" => "bold"],
-                              ["label" => "Texto en negrita (relativo al elemento principal)", "value" => "bolder"],
-                              ["label" => "Texto de peso normal", "value" => "normal"],
-                              ["label" => "Texto más ligero (en relación con el elemento principal)", "value" => "lighter"]
-                          ],
+                          "options" => $vAttributes["fontWeight"]
                       ]
                   ],
                   "contentPriceFontSize" => [
@@ -436,13 +379,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Negrita (Precio)",
-                          //"options" => $vAttributes["fontWeight"]
-                          "options" => [
-                              ["label" => "Texto en negrita", "value" => "bold"],
-                              ["label" => "Texto en negrita (relativo al elemento principal)", "value" => "bolder"],
-                              ["label" => "Texto de peso normal", "value" => "normal"],
-                              ["label" => "Texto más ligero (en relación con el elemento principal)", "value" => "lighter"]
-                          ],
+                          "options" => $vAttributes["fontWeight"]
                       ]
                   ],
               ]
@@ -456,12 +393,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Estilo para el descuento",
-                          //"options" => $vAttributes["ribbonStyle"]
-                          "options" => [
-                              ["label" => "Bandera", "value" => "flag"],
-                              ["label" => "Circulo", "value" => "circle"],
-                              ["label" => "Cuadrado", "value" => "square"]
-                          ],
+                          "options" => $vAttributes["ribbonStyle"]
                       ]
                   ],
                   "discountPosition" => [
@@ -470,11 +402,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Posición del descuento",
-                          //"options" => $vAttributes["ribbonPosition"]
-                          "options" => [
-                              ["label" => "Superior Derecha", "value" => "top-right"],
-                              ["label" => "Superior Izquierda", "value" => "top-left"]
-                          ],
+                          "options" => $vAttributes["ribbonPosition"]
                       ]
                   ],
                   "ribbonBackgroundColor" => [
@@ -502,11 +430,7 @@ return [
                       "type" => "select",
                       "props" => [
                           "label" => "Aspecto de fotografía",
-                          //"options" => $vAttributes["imageAspectProduct"]
-                          "options" => [
-                              ["label" => "Aspect 1:1", "value" => "1-1"],
-                              ["label" => "Aspect 4:3", "value" => "4-3"]
-                          ],
+                          "options" => $vAttributes["imageAspectProduct"]
                       ]
                   ],
                   "imagePadding" => [
@@ -521,15 +445,11 @@ return [
                   ],
                   "imageBorder" => [
                       "name" => "imageBorder",
-                      "value" => false,
+                      "value" => "0",
                       "type" => "select",
                       "props" => [
                           "label" => "Borde Externo",
-                          //"options" => $vAttributes["booleanValidation"]
-                          "options" => [
-                              ["label" => "Si", "value" => true],
-                              ["label" => "No", "value" => false]
-                          ]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "imageBorderColor" => [
