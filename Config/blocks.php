@@ -50,14 +50,14 @@ return [
                   ],
                   "externalBorder" => [
                       "name" => "externalBorder",
-                      "value" => "false",
+                      "value" => false,
                       "type" => "select",
                       "props" => [
                           "label" => "Borde Externo",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
@@ -70,14 +70,14 @@ return [
                   ],
                   "externalShadowOnHover" => [
                       "name" => "externalShadowOnHover",
-                      "value" => "true",
+                      "value" => true,
                       "type" => "select",
                       "props" => [
                           "label" => "Sombra Externa en hover",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
@@ -129,7 +129,7 @@ return [
                           "options" => [
                               ["label" => "Dentro del Contenido", "value" => "in-content"],
                               ["label" => "Luego del Contenido Centrado", "value" => "after-content-center"],
-                              ["label" => "top-left-in-photo", "value" => "Sobre la Foto Superior Izquierda"],
+                              ["label" => "Sobre la Foto Superior Izquierda", "value" => "top-left-in-photo"],
                               ["label" => "Sobre la Foto Superior Centrado", "value" => "top-center-in-photo"],
                               ["label" => "Sobre la Foto Superior Derecha", "value" => "top-right-in-photo"],
                               ["label" => "Sobre la Foto Inferior Izquierda", "value" => "bottom-left-in-photo"],
@@ -158,21 +158,21 @@ return [
                   ],
                   "wishlistEnable" => [
                       "name" => "wishlistEnable",
-                      "value" => "true",
+                      "value" => true,
                       "type" => "select",
                       "props" => [
                           "label" => " Mostrar botón lista de deseos (Wishlist)",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
                   "wishlistIcon" => [
                       "name" => "wishlistIcon",
                       "value" => "fa-heart-o",
-                      "type" => "input",
+                      "type" => "select",
                       "props" => [
                           "label" => "Icono lista de deseos",
                           "options" => [
@@ -183,53 +183,53 @@ return [
                   ],
                   "showButtonsOnMouseHover" => [
                       "name" => "showButtonsOnMouseHover",
-                      "value" => "false",
+                      "value" => false,
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar botones al pasar mouse",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
                   "withTextInAddToCart" => [
                       "name" => "withTextInAddToCart",
-                      "value" => "true",
+                      "value" => true,
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar texto de añadir a carrito",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
                   "withIconInAddToCart" => [
                       "name" => "withIconInAddToCart",
-                      "value" => "true",
+                      "value" => true,
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar icono dentro de añadir a carrito",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
                   "addToCartWithQuantity" => [
                       "name" => "addToCartWithQuantity",
-                      "value" => "false",
+                      "value" => false,
                       "type" => "select",
                       "props" => [
                           "label" => "Añadir al carrito con cantidad",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
@@ -325,14 +325,14 @@ return [
                   ],
                   "contentTitleToUppercase" => [
                       "name" => "contentTitleToUppercase",
-                      "value" => "false",
+                      "value" => false,
                       "type" => "select",
                       "props" => [
                           "label" => "Convertir a Mayúsculas (Titulo)",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
@@ -373,14 +373,14 @@ return [
                   ],
                   "contentCategoryEnable" => [
                       "name" => "contentCategoryEnable",
-                      "value" => "false",
+                      "value" => true,
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar categoria",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
@@ -395,14 +395,14 @@ return [
                   ],
                   "contentCategoryToUppercase" => [
                       "name" => "contentCategoryToUppercase",
-                      "value" => "true",
+                      "value" => true,
                       "type" => "select",
                       "props" => [
                           "label" => "Convertir a Mayúsculas (Categoria)",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
@@ -433,7 +433,7 @@ return [
                   "contentPriceFontWeight" => [
                       "name" => "contentPriceFontWeight",
                       "value" => "normal",
-                      "type" => "input",
+                      "type" => "select",
                       "props" => [
                           "label" => "Negrita (Precio)",
                           //"options" => $vAttributes["fontWeight"]
@@ -521,14 +521,14 @@ return [
                   ],
                   "imageBorder" => [
                       "name" => "imageBorder",
-                      "value" => "true",
+                      "value" => false,
                       "type" => "select",
                       "props" => [
                           "label" => "Borde Externo",
                           //"options" => $vAttributes["booleanValidation"]
                           "options" => [
-                              ["label" => "Si", "value" => "true"],
-                              ["label" => "No", "value" => "false"]
+                              ["label" => "Si", "value" => true],
+                              ["label" => "No", "value" => false]
                           ]
                       ]
                   ],
