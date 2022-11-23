@@ -549,7 +549,7 @@ return [
                           "min" => "0"
                       ]
                   ],
-                  /*"imageObjectFit" => [
+                  "imageObjectFit" => [
                       "name" => "imageObjectFit",
                       "value" => "contain",
                       "type" => "select",
@@ -557,7 +557,7 @@ return [
                           "label" => "Ajuste de Imagen",
                           "options" => $vAttributes["imageObject"]
                       ]
-                  ],*/
+                  ],
               ]
           ]
       ]

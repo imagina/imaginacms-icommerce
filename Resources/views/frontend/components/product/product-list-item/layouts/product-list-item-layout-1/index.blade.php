@@ -35,7 +35,7 @@
       <x-media::single-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
-        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'" />
+        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px; object-fit: '.$imageObjectFit.';'" />
 
         @if(Str::contains($buttonsPosition, 'in-photo'))
             @include("icommerce::frontend.components.product.buttons")
