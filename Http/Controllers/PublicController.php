@@ -26,6 +26,7 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 use Modules\Isite\Entities\Organization;
 use Route;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
+use Modules\Page\Repositories\PageRepository;
 
 //Services
 use Modules\Icommerce\Services\ProductService;
@@ -43,6 +44,7 @@ class PublicController extends BaseApiController
   private $shippings;
   private $productService;
   private $pageService;
+  private $pageRepository;
   
   public function __construct(
     ProductRepository $product,
@@ -53,7 +55,8 @@ class PublicController extends BaseApiController
     PaymentMethodRepository $payments,
     ShippingMethodRepository $shippings,
     ProductService $productService,
-    PageService $pageService
+    PageService $pageService,
+    PageRepository $pageRepository
   )
   {
     parent::__construct();
@@ -66,6 +69,7 @@ class PublicController extends BaseApiController
     $this->shippings = $shippings;
     $this->productService = $productService;
     $this->pageService = $pageService;
+    $this->pageRepository = $pageRepository;
   }
   
   // view products by category
@@ -140,8 +144,10 @@ class PublicController extends BaseApiController
       $tpl = $dataLayout['tpl'];
     $layoutSystemName = $dataLayout['layoutSystemName'];
 
-    
-    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName'));
+    //Send page to detect in master layout
+    $page = $this->pageRepository->where('system_name',"store")->first();
+   
+    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName','page'));
   }
   
   // view products by manufacturer
@@ -298,8 +304,10 @@ class PublicController extends BaseApiController
         ]
       ]
     ));
-    
+
     $product = $this->product->getItem($slug, $params);
+
+    //dd($product,$slug,$params);
     
     $organization = null;
     if (isset(tenant()->id)) {
@@ -323,8 +331,10 @@ class PublicController extends BaseApiController
         $tpl = $dataLayout['tpl'];
       $layoutSystemName = $dataLayout['layoutSystemName'];
       
-     
-      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName'));
+       //Send page to detect in master layout
+      $page = $this->pageRepository->where('system_name',"store-show")->first();
+
+      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName','page'));
       
     } else {
       return response()->view('errors.404', [], 404);
