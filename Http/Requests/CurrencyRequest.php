@@ -11,7 +11,6 @@ class CurrencyRequest extends BaseFormRequest
     return [
       'code' => 'required|min:2',
       'value' => 'required',
-      'name' => 'required|min:2',
     ];
   }
   
