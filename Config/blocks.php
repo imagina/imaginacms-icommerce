@@ -150,11 +150,11 @@ return [
                   ],
                   "wishlistEnable" => [
                       "name" => "wishlistEnable",
-                      "value" => true,
+                      "value" => "1",
                       "type" => "select",
                       "props" => [
                           "label" => " Mostrar botón lista de deseos (Wishlist)",
-                          "options" => $vAttributes["booleanValidation"]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "wishlistIcon" => [
@@ -171,38 +171,38 @@ return [
                   ],
                   "showButtonsOnMouseHover" => [
                       "name" => "showButtonsOnMouseHover",
-                      "value" => false,
+                      "value" => "0",
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar botones al pasar mouse",
-                          "options" => $vAttributes["booleanValidation"]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "withTextInAddToCart" => [
                       "name" => "withTextInAddToCart",
-                      "value" => true,
+                      "value" => "1",
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar texto de añadir a carrito",
-                          "options" => $vAttributes["booleanValidation"]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "withIconInAddToCart" => [
                       "name" => "withIconInAddToCart",
-                      "value" => true,
+                      "value" => "1",
                       "type" => "select",
                       "props" => [
                           "label" => "Mostrar icono dentro de añadir a carrito",
-                          "options" => $vAttributes["booleanValidation"]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "addToCartWithQuantity" => [
                       "name" => "addToCartWithQuantity",
-                      "value" => false,
+                      "value" => "0",
                       "type" => "select",
                       "props" => [
                           "label" => "Añadir al carrito con cantidad",
-                          "options" => $vAttributes["booleanValidation"]
+                          "options" => $vAttributes["validation"]
                       ]
                   ],
                   "addToCartWithQuantityStyle" => [
@@ -252,11 +252,11 @@ return [
               "fields" => [
                   "contentAlign" => [
                       "name" => "contentAlign",
-                      "value" => "text-left",
+                      "value" => "left",
                       "type" => "select",
                       "props" => [
                           "label" => "Alineación del Contenido",
-                          "options" => $vAttributes["align"]
+                          "options" => $vAttributes["imageAlign"]
                       ]
                   ],
                   "contentExternalPaddingX" => [
@@ -481,5 +481,5 @@ return [
               ]
           ]
       ]
-  ]
+  ],
 ];
