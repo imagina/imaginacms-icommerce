@@ -43,7 +43,17 @@ return [
       'group' => 'Listas de Precios'
     ],
   ],
-
+  'layouts' => [
+    'group_name' => 'Plantillas',
+    'label_products' => 'Plantilla para Productos De Tienda',
+    'label_categories' => 'Plantilla para Categorías De Tienda',
+    'label_products_default' => 'Plantilla para Productos De Tienda (Por Defecto)',
+    'label_categories_default' => 'Plantilla para Categorías De Tienda (Por Defecto)',
+    'titlePostRecent' => 'Artículos recientes',
+    'viewMore' => 'Ver más',
+    'titleRelatedPosts' => 'Artículos relacionados',
+    'titleArticles' => 'Artículos',
+  ],
   'messages' => [
     'field required' => 'El campo es requerido',
     'min 2 characters' => 'El campo debe contener mínimo dos caracteres',

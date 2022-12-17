@@ -69,7 +69,22 @@ return [
       ]
     ],
 
+    'layoutId' => [
+      'name' => 'layoutId',
+      'value' => null,
+      'type' => 'select',
+      'loadOptions' => [
+        'apiRoute' => '/isite/v1/layouts',
+        'select' => ['label' => 'title', 'id' => 'id'],
+        'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Icommerce']],
+      ],
+      'props' => [
+        'label' => 'icommerce::common.layouts.label_categories',
+        'entityId' => null,
+      ],
     ],
+
+  ],
   //Extra field to crud product categories
   'manufacturers' => [
 
@@ -101,22 +116,36 @@ return [
   'taxRates' => [],
   //Extra field to crud products
   'products' => [
-      //productable extra fields. We recommend you adding a custom relation in config like "productable" in section "relations" > "products", and also a custom include in the section "includes" > "products"
-      'productables' => [
-          /*'posts' => [
-              'loadOptions' => [
-                  'apiRoute' => 'apiRoutes.qblog.posts',
-                  'select' => [ 'label' => 'title', 'id' => 'id' ],
-              ],
-              'value' => [], //If the field is not multiple, it must be null. Else, it must be an empty array
-              'type' => 'select', //It's recommended to use select or multiselect field types
-              'props' => [
-                  'label' => 'Entradas',
-                  'multiple' => true,
-              ],
-              'entity' => "Modules\\Iblog\\Entities\\Post", //the productable item must have an entity
-          ],*/
-      ]
-  ] ,
+    'layoutId' => [
+      'name' => 'layoutId',
+      'value' => null,
+      'type' => 'select',
+      'loadOptions' => [
+        'apiRoute' => '/isite/v1/layouts',
+        'select' => ['label' => 'title', 'id' => 'id'],
+        'requestParams' => ['filter' => ['entity_name' => 'Product', 'module_name' => 'Icommerce']],
+      ],
+      'props' => [
+        'label' => 'icommerce::common.layouts.label_products',
+        'entityId' => null,
+      ],
+    ],
+    //productable extra fields. We recommend you adding a custom relation in config like "productable" in section "relations" > "products", and also a custom include in the section "includes" > "products"
+    'productables' => [
+      /*'posts' => [
+          'loadOptions' => [
+              'apiRoute' => 'apiRoutes.qblog.posts',
+              'select' => [ 'label' => 'title', 'id' => 'id' ],
+          ],
+          'value' => [], //If the field is not multiple, it must be null. Else, it must be an empty array
+          'type' => 'select', //It's recommended to use select or multiselect field types
+          'props' => [
+              'label' => 'Entradas',
+              'multiple' => true,
+          ],
+          'entity' => "Modules\\Iblog\\Entities\\Post", //the productable item must have an entity
+      ],*/
+    ]
+  ],
 
 ];

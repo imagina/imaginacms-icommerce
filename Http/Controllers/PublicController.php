@@ -140,6 +140,23 @@ class PublicController extends BaseApiController
       $tpl = $dataLayout['tpl'];
     $layoutSystemName = $dataLayout['layoutSystemName'];
 
+    $layoutCategory = setting('icommerce::layoutCategoryIcommerce');
+    if (isset($layoutCategory) && !empty($layoutCategory)) {
+      $tpl = $layoutCategory;
+      $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+      if (view()->exists($themeLayoutCategory)) {
+        $tpl = $themeLayoutCategory;
+      }
+    }
+
+    $layoutPath = $category->typeable->layout_path ?? null;
+    if (isset($layoutPath)) {
+      $tpl = $layoutPath;
+      $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+      if (view()->exists($themeLayoutCategory)) {
+        $tpl = $themeLayoutCategory;
+      }
+    }
     
     return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName'));
   }
@@ -322,6 +339,24 @@ class PublicController extends BaseApiController
       if(!is_null($dataLayout['tpl']))
         $tpl = $dataLayout['tpl'];
       $layoutSystemName = $dataLayout['layoutSystemName'];
+
+      $layoutCategory = setting('icommerce::layoutProductIcommerce');
+      if (isset($layoutCategory) && !empty($layoutCategory)) {
+        $tpl = $layoutCategory;
+        $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+        if (view()->exists($themeLayoutCategory)) {
+          $tpl = $themeLayoutCategory;
+        }
+      }
+
+      $layoutPath = $product->typeable->layout_path ?? null;
+      if (isset($layoutPath)) {
+        $tpl = $layoutPath;
+        $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+        if (view()->exists($themeLayoutCategory)) {
+          $tpl = $themeLayoutCategory;
+        }
+      }
       
      
       return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName'));

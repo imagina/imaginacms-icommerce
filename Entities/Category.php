@@ -11,11 +11,17 @@ use TypiCMS\NestableTrait;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Isite\Traits\Typeable;
+use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 
 class
 Category extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant;
+  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant,hasEventsWithBindings, Typeable;
+
+  public $transformer = 'Modules\Icommerce\Transformers\CategoryTransformer';
+  public $entity = 'Modules\Icommerce\Entities\Category';
+  public $repository = 'Modules\Icommerce\Repositories\CategoryRepository';
 
   protected $table = 'icommerce__categories';
   protected static $entityNamespace = 'asgardcms/icommerceCategory';
