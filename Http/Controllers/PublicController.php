@@ -144,10 +144,25 @@ class PublicController extends BaseApiController
       $tpl = $dataLayout['tpl'];
     $layoutSystemName = $dataLayout['layoutSystemName'];
 
-    //Send page to detect in master layout
-    $page = $this->pageRepository->where('system_name',"store")->first();
-   
-    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName','page'));
+    $layoutCategory = setting('icommerce::layoutCategoryIcommerce');
+    if (isset($layoutCategory) && !empty($layoutCategory)) {
+      $tpl = $layoutCategory;
+      $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+      if (view()->exists($themeLayoutCategory)) {
+        $tpl = $themeLayoutCategory;
+      }
+    }
+
+    $layoutPath = $category->typeable->layout_path ?? null;
+    if (isset($layoutPath)) {
+      $tpl = $layoutPath;
+      $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+      if (view()->exists($themeLayoutCategory)) {
+        $tpl = $themeLayoutCategory;
+      }
+    }
+    
+    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName'));
   }
   
   // view products by manufacturer
@@ -304,10 +319,8 @@ class PublicController extends BaseApiController
         ]
       ]
     ));
-
+    
     $product = $this->product->getItem($slug, $params);
-
-    //dd($product,$slug,$params);
     
     $organization = null;
     if (isset(tenant()->id)) {
@@ -330,11 +343,27 @@ class PublicController extends BaseApiController
       if(!is_null($dataLayout['tpl']))
         $tpl = $dataLayout['tpl'];
       $layoutSystemName = $dataLayout['layoutSystemName'];
-      
-       //Send page to detect in master layout
-      $page = $this->pageRepository->where('system_name',"store-show")->first();
 
-      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName','page'));
+      $layoutCategory = setting('icommerce::layoutProductIcommerce');
+      if (isset($layoutCategory) && !empty($layoutCategory)) {
+        $tpl = $layoutCategory;
+        $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+        if (view()->exists($themeLayoutCategory)) {
+          $tpl = $themeLayoutCategory;
+        }
+      }
+
+      $layoutPath = $product->typeable->layout_path ?? null;
+      if (isset($layoutPath)) {
+        $tpl = $layoutPath;
+        $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+        if (view()->exists($themeLayoutCategory)) {
+          $tpl = $themeLayoutCategory;
+        }
+      }
+      
+     
+      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName'));
       
     } else {
       return response()->view('errors.404', [], 404);

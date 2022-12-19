@@ -35,6 +35,7 @@ class CategoryTransformer extends JsonResource
       //'mainImage' => $this->mainImage,
       'status' => $this->status ? '1' : '0',
       'mediaFiles' => $this->mediaFiles(),
+      'layoutId' => $this->layout_id,
     ];
     
     $filter = json_decode($request->filter);

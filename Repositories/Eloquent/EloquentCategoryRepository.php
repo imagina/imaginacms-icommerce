@@ -21,7 +21,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
       $query->with(['translations', 'files']);
@@ -31,17 +31,17 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
       $query->with($includeDefault);//Add Relationships to query
     }
-    
+
     // FILTERS
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       //add filter by id
-      if(isset($filter->id)){
+      if (isset($filter->id)) {
         !is_array($filter->id) ? $filter->id = [$filter->id] : false;
-        $query->whereIn("icommerce__categories.id",$filter->id);
+        $query->whereIn("icommerce__categories.id", $filter->id);
       }
-      
+
       //add filter by search
       if (isset($filter->search)) {
         //find search in columns
@@ -54,29 +54,29 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
       }
-      
+
       //add filter by store
       if (isset($filter->store)) {
         $query->where('store_id', $filter->store);
       }
-      
+
       //add filter by showMenu
       if (isset($filter->showMenu) && is_bool($filter->showMenu)) {
         $query->where('show_menu', $filter->showMenu);
       }
-      
+
       //add filter by ids
       if (isset($filter->ids)) {
         is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
         $query->whereIn('icommerce__categories.id', $filter->ids);
       }
-      
+
       //add filter by ids
       if (isset($filter->id)) {
         is_array($filter->id) ? true : $filter->id = [$filter->id];
         $query->whereIn('icommerce__categories.id', $filter->id);
       }
-      
+
       //add filter by manufacturers
       if (isset($filter->manufacturers) && $filter->manufacturers) {
         is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
@@ -86,15 +86,15 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
           });
         });
       }
-      
+
       //add filter by manufacturers
       if (isset($filter->organizations) && $filter->organizations) {
         is_array($filter->organizations) ? true : $filter->organizations = [$filter->organizations];
         $query->whereHas('products', function ($query) use ($filter) {
-            $query->whereIn('icommerce__products.organization_id', $filter->organizations);
+          $query->whereIn('icommerce__products.organization_id', $filter->organizations);
         });
       }
-      
+
       //Filter by date
       if (isset($filter->date)) {
         $date = $filter->date;//Short filter date
@@ -104,12 +104,12 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         if (isset($date->to))//to a date
           $query->whereDate($date->field, '<=', $date->to);
       }
-      
+
       //Order by
       if (isset($filter->order)) {
         $orderByField = $filter->order->field ?? 'created_at';//Default field
         $orderWay = $filter->order->way ?? 'desc';//Default way
-        
+
         if (in_array($orderByField, ["slug", "title"])) {
           $query->join('icommerce__category_translations as translations', 'translations.category_id', '=', 'icommerce__categories.id');
           $query->orderBy("translations.{$orderByField}", $orderWay);
@@ -118,11 +118,11 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       if (isset($filter->store)) {
         $query->where("store_id", $filter->store);
       }
-      
+
       if (isset($filter->featured) && is_bool($filter->featured)) {
         $query->where("featured", $filter->featured);
       }
-      
+
       //Filter by parent ID
       if (isset($filter->parentId)) {
         if ($filter->parentId == 0) {
@@ -133,18 +133,18 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       }
     }
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
-    
+
     } else {
-      
+
       //pre-filter status
       $query->where("status", 1);
     }
-    
+
     // ORDER
     if (isset($params->order) && $params->order) {
-      
+
       $order = is_array($params->order) ? $params->order : [$params->order];
-      
+
       foreach ($order as $orderObject) {
         if (isset($orderObject->field) && isset($orderObject->way))
           $query->orderBy("icommerce__categories." . $orderObject->field, $orderObject->way);
@@ -152,25 +152,25 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
     } else {
       $query->orderBy('sort_order', 'desc');//Add order to query
     }
-    
+
     /*== FIELDS ==*/
     if (isset($params->fields) && is_array($params->fields) && count($params->fields) && $params->fields)
       $query->select($params->fields);
-  
-    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
-    $tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
-    
+
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
+    $tenantWithCentralData = in_array("categories", $entitiesWithCentralData);
+
     if ($tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
-      
+
       $query->withoutTenancy();
       $query->where(function ($query) use ($model) {
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
     }
-    
-    
+
+
     /*== REQUEST ==*/
     //dd($query->toSql(),$query->getBindings());
     if (isset($params->page) && $params->page) {
@@ -180,46 +180,46 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       return $query->get();
     }
   }
-  
-  
+
+
   public function getItemsByForTheTreeFilter($params)
   {
     $categories = $this->getItemsBy($params);
-    
+
     if (isset($params->filter->manufacturers) && !empty($params->filter->manufacturers)) {
       $params->filter->manufacturers = null;
-      
+
       $categoriesWithoutManufacturersFilter = $this->getItemsBy($params);
-      
+
       $parents = [];
       foreach ($categories as $category) {
         $this->getParents($category, $parents, $categoriesWithoutManufacturersFilter);
       }
-      
+
       $categories = collect($parents)->merge($categories)->keyBy("id");
     }
-    
+
     if (isset($params->filter->organizations) && !empty($params->filter->organizations)) {
       $params->filter->organizations = null;
-      
+
       $categoriesWithoutOrganizationsFilter = $this->getItemsBy($params);
-      
+
       $parents = [];
       foreach ($categories as $category) {
         $this->getParents($category, $parents, $categoriesWithoutOrganizationsFilter);
       }
-      
+
       $categories = collect($parents)->merge($categories)->keyBy("id");
     }
-    
+
     return new Collection($categories);
   }
-  
+
   public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
-    
+
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
       $query->with(['translations', 'files']);
@@ -229,22 +229,22 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
       $query->with($includeDefault);//Add Relationships to query
     }
-    
+
     /*== FIELDS ==*/
     if (isset($params->fields) && is_array($params->fields) && count($params->fields))
       $query->select($params->fields);
-    
-    
+
+
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field))//Filter by specific field
         $field = $filter->field;
-      
+
       // find translatable attributes
       $translatedAttributes = $this->model->translatedAttributes;
-      
+
       // filter by translatable attributes
       if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
         $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
@@ -255,23 +255,23 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
       }
-      
-      
+
+
     }
-    
+
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
-    
+
     } else {
-      
+
       //pre-filter status
       $query->where("status", 1);
-      
+
     }
-    
+
     /*== REQUEST ==*/
     return $query->first();
   }
-  
+
   /**
    * Find a resource by the given slug
    *
@@ -281,17 +281,17 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
   public function findBySlug($slug)
   {
     if (method_exists($this->model, 'translations')) {
-      
-      
+
+
       $query = $this->model->whereHas('translations', function (Builder $q) use ($slug) {
         $q->where('slug', $slug);
       })->with('translations', 'parent', 'children');
-      
+
     } else
       $query = $this->model->where('slug', $slug)->with('translations', 'parent', 'children', 'vehicles');
 
-    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData",null,"[]"));
-    $tenantWithCentralData = in_array("categories",$entitiesWithCentralData);
+    $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
+    $tenantWithCentralData = in_array("categories", $entitiesWithCentralData);
 
     if ($tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
@@ -302,61 +302,82 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
     }
-    
+
     return $query->first();
   }
-  
+
   public function create($data)
   {
 
-    $category = $this->model->create($data);
-    //Event to ADD media
+    //Event creating model
+    if (method_exists($this->model, 'creatingCrudModel'))
+      $this->model->creatingCrudModel(['data' => $data]);
 
+    $category = $this->model->create($data);
+
+    //Event created model
+    if (method_exists($category, 'createdCrudModel'))
+      $category->createdCrudModel(['data' => $data]);
+
+    //Event to ADD media
     event(new CreateMedia($category, $data));
-    
+
     return $category;
   }
-  
+
   public function updateBy($criteria, $data, $params = false)
   {
     /*== initialize query ==*/
     $query = $this->model->query();
-    
+
+    //Event updating model
+    if (method_exists($this->model, 'updatingCrudModel'))
+      $this->model->updatingCrudModel(['data' => $data, 'params' => $params, 'criteria' => $criteria]);
+
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       //Update by field
       if (isset($filter->field))
         $field = $filter->field;
     }
-    
+
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
-    
-    event(new UpdateMedia($model, $data));//Event to Update media
-    return $model ? $model->update((array)$data) : false;
+
+    if (isset($model->id)) {
+      $response = $model->update((array)$data);
+      //Event updated model
+      if (method_exists($model, 'updatedCrudModel'))
+        $model->updatedCrudModel(['data' => $data, 'params' => $params, 'criteria' => $criteria]);
+
+      event(new UpdateMedia($model, $data));//Event to Update media
+    } else {
+      $response = false;
+    }
+    return $response;
   }
-  
+
   public function deleteBy($criteria, $params = false)
   {
     /*== initialize query ==*/
     $query = $this->model->query();
-    
+
     /*== FILTER ==*/
     if (isset($params->filter)) {
       $filter = $params->filter;
-      
+
       if (isset($filter->field))//Where field
         $field = $filter->field;
     }
-    
+
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
     event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     $model ? $model->delete() : false;
   }
-  
+
   private function getParents($categoryManufacturer, &$parents = [], $categories)
   {
     foreach ($categories as $category) {
@@ -366,6 +387,6 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       }
     }
   }
-  
+
 }
 
