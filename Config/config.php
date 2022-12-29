@@ -572,5 +572,54 @@ return [
     'carts' => false,
     'paymentMethods' => false,
     'shippingMethods' => false,
-  ]
+  ],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Pages Base 
+  |--------------------------------------------------------------------------
+  */
+  'pagesBase' => [
+
+    //Icommerce Index
+    'store' => [
+      'template' => 'default',
+      'is_home' => 0,
+      'system_name' => 'store',
+      'type' => 'internal',
+      'en' => [
+        'title' => 'Store',
+        'slug' => 'store',
+        'body' => '<p>Store</p>',
+        'meta_title' => 'Store',
+      ],
+      'es' => [
+        'title' => 'Tienda',
+        'slug' => 'tienda',
+        'body' => '<p>tienda</p>',
+        'meta_title' => 'Tienda',
+      ], 
+    ],//Icommerce Show
+    'store-show' => [
+      'template' => 'default',
+      'is_home' => 0,
+      'system_name' => 'store-show',
+      'type' => 'internal',
+      'en' => [
+              'title' => 'Store Show',
+              'slug' => 'store-show',
+              'body' => '<p>Store show</p>',
+              'meta_title' => 'Store show',
+      ],
+      'es' => [
+        'title' => 'Tienda Producto',
+        'slug' => 'tienda-producto',
+        'body' => '<p>tienda producto</p>',
+        'meta_title' => 'Tienda Producto',
+      ],
+  
+    ],
+
+  ],
+
 ];

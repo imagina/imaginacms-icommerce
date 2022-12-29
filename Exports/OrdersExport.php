@@ -43,6 +43,7 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
   public function query()
   {
     return OrderItem::orderBy('id', 'desc')->with(['order.customer']);
+
   }
 
   /**
@@ -89,7 +90,7 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
       $item->price ?? null,
       $item->total ?? null,
       $order->customer->fullName ?? null,
-      $item->telephone ?? null,
+      $item->telephone ?? $item->order->shipping_telephone ?? $item->order->payment_telephone ?? null,
       $order->customer->email ?? null,
       $order->shippingMethod ?? null,
       $order->paymentMethod ?? null,

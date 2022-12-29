@@ -26,9 +26,11 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 use Modules\Isite\Entities\Organization;
 use Route;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
+use Modules\Page\Repositories\PageRepository;
 
 //Services
 use Modules\Icommerce\Services\ProductService;
+use Modules\Page\Services\PageService;
 
 class PublicController extends BaseApiController
 {
@@ -41,6 +43,8 @@ class PublicController extends BaseApiController
   private $payments;
   private $shippings;
   private $productService;
+  private $pageService;
+  private $pageRepository;
   
   public function __construct(
     ProductRepository $product,
@@ -50,7 +54,9 @@ class PublicController extends BaseApiController
     CurrencyRepository $currency,
     PaymentMethodRepository $payments,
     ShippingMethodRepository $shippings,
-    ProductService $productService
+    ProductService $productService,
+    PageService $pageService,
+    PageRepository $pageRepository
   )
   {
     parent::__construct();
@@ -62,6 +68,8 @@ class PublicController extends BaseApiController
     $this->payments = $payments;
     $this->shippings = $shippings;
     $this->productService = $productService;
+    $this->pageService = $pageService;
+    $this->pageRepository = $pageRepository;
   }
   
   // view products by category
@@ -124,11 +132,37 @@ class PublicController extends BaseApiController
       //Default breadcrumb
       $configFilters["categories"]["breadcrumb"] = [];
     }
-    
-    
+  
+    $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '');
+  
     config(["asgard.icommerce.config.filters" => $configFilters]);
+
+
+    //Get the information of the layout by the 'system name' of the page and path to find
+    $dataLayout = $this->pageService->getDataLayout('store','.icommerce.index');
+    if(!is_null($dataLayout['tpl']))
+      $tpl = $dataLayout['tpl'];
+    $layoutSystemName = $dataLayout['layoutSystemName'];
+
+    $layoutCategory = setting('icommerce::layoutCategoryIcommerce');
+    if (isset($layoutCategory) && !empty($layoutCategory)) {
+      $tpl = $layoutCategory;
+      $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+      if (view()->exists($themeLayoutCategory)) {
+        $tpl = $themeLayoutCategory;
+      }
+    }
+
+    $layoutPath = $category->typeable->layout_path ?? null;
+    if (isset($layoutPath)) {
+      $tpl = $layoutPath;
+      $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+      if (view()->exists($themeLayoutCategory)) {
+        $tpl = $themeLayoutCategory;
+      }
+    }
     
-    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization'));
+    return view($tpl, compact('category', 'categoryBreadcrumb', 'carouselImages', 'gallery', 'organization', 'title','layoutSystemName'));
   }
   
   // view products by manufacturer
@@ -176,18 +210,19 @@ class PublicController extends BaseApiController
       
     }
     
+    $title = (isset($manufacturer->id) ? $manufacturer->name : '');
     //$dataRequest = $request->all();
     
-    return view($tpl, compact('manufacturer', 'categoryBreadcrumb', 'carouselImages'));
+    return view($tpl, compact('manufacturer', 'categoryBreadcrumb', 'carouselImages', 'title'));
   }  // view products by manufacturer
   
   public function indexOffers(Request $request)
   {
     $argv = explode("/", $request->path());
+    $slug = end($argv);
     
-    
-    $tpl = 'icommerce::frontend.index';
-    $ttpl = 'icommerce.index';
+    $tpl = 'icommerce::frontend.offers.index';
+    $ttpl = 'icommerce.offers.index';
     
     if (view()->exists($ttpl)) $tpl = $ttpl;
     
@@ -198,8 +233,8 @@ class PublicController extends BaseApiController
       $withDiscount = true;
       
     }
-    
-    return view($tpl, compact('withDiscount'));
+    $title = trans('icommerce::common.offers.title');
+    return view($tpl, compact('withDiscount','title'));
   }
   
   // view products by category
@@ -254,9 +289,12 @@ class PublicController extends BaseApiController
       
     }
     
+    $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '').(isset($manufacturer->id) ? (isset($category->id) ? ' / ' : '').$manufacturer->name : '');
+  
+  
     //$dataRequest = $request->all();
     
-    return view($tpl, compact('category', 'manufacturer', 'categoryBreadcrumb', 'carouselImages'));
+    return view($tpl, compact('category', 'manufacturer', 'categoryBreadcrumb', 'carouselImages', 'title'));
   }
   
   /**
@@ -298,8 +336,34 @@ class PublicController extends BaseApiController
 
       $category = $product->category;
       $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
+
+      //Get the information of the layout by the 'system name' of the page and path to find
+      $dataLayout = $this->pageService->getDataLayout('store-show','.icommerce.show');
+
+      if(!is_null($dataLayout['tpl']))
+        $tpl = $dataLayout['tpl'];
+      $layoutSystemName = $dataLayout['layoutSystemName'];
+
+      $layoutCategory = setting('icommerce::layoutProductIcommerce');
+      if (isset($layoutCategory) && !empty($layoutCategory)) {
+        $tpl = $layoutCategory;
+        $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+        if (view()->exists($themeLayoutCategory)) {
+          $tpl = $themeLayoutCategory;
+        }
+      }
+
+      $layoutPath = $product->typeable->layout_path ?? null;
+      if (isset($layoutPath)) {
+        $tpl = $layoutPath;
+        $themeLayoutCategory = str_replace('::frontend.','.',$layoutCategory);
+        if (view()->exists($themeLayoutCategory)) {
+          $tpl = $themeLayoutCategory;
+        }
+      }
       
-      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript'));
+     
+      return view($tpl, compact('product', 'category', 'categoryBreadcrumb', 'organization','schemaScript','layoutSystemName'));
       
     } else {
       return response()->view('errors.404', [], 404);

@@ -4,13 +4,13 @@
   
   <a class="title" href="{{$product->url}}"
      style="font-size: {{$contentTitleFontSize}}px;
-       height: {{$contentTitleMaxHeight}}px;
+       height: {{$contentTitleMaxHeight}}px; font-weight: {{$contentTitleFontWeight}};
      @if($contentTitleToUppercase)text-transform: uppercase; @endif">
     {!! Str::limit( $product->name, $contentTitleNumberOfCharacters) !!}
   </a>
-  @if($contentCategoryEnable)
+  @if($contentCategoryEnable && isset($product->category))
     <div class="category"
-         style="font-size: {{$contentCategoryFontSize}}px;
+         style="font-size: {{$contentCategoryFontSize}}px; font-weight: {{$contentCategoryFontWeight}};
          @if($contentCategoryToUppercase)text-transform: uppercase; @endif">{{$product->category->title}}</div>
   @endif
   

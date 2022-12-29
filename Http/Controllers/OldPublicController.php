@@ -89,8 +89,10 @@ class OldPublicController extends BasePublicController
     $gallery = $this->getGalleryCategory($category);
   
     config(["asgard.icommerce.config.filters" => $configFilters]);
-    
-    return view($tpl, compact('category','products','paginate','categoryBreadcrumb','gallery'));
+  
+    $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '');
+
+    return view($tpl, compact('category','products','paginate','categoryBreadcrumb','gallery','title'));
   }
   
   // Informacion de Producto
@@ -112,7 +114,9 @@ class OldPublicController extends BasePublicController
     $product = $this->product->getItem($slug,$params);
     
     if($product){
-  
+ 
+      if($product->url != request()->url()) return redirect($product->url);
+      
       $category= $product->category;
       $categoryBreadcrumb = CategoryTransformer::collection(Category::ancestorsAndSelf($category->id));
   

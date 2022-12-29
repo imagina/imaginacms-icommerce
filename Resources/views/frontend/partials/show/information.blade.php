@@ -84,4 +84,7 @@
   <!-- Points Product -->
   @include('icommerce::frontend.partials.show.points')
 
+  @if(isset($organization->id))
+    Producto Vendido por: <a href="{{$organization->url}}">{{$organization->title}}</a>
+    @endif
 </div>

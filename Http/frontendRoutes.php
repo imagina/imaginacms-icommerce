@@ -4,69 +4,68 @@ use Illuminate\Routing\Router;
 
 
 
-$locale = LaravelLocalization::setLocale() ?: App::getLocale();
+$locale = locale();
 $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
 
   /** @var Router $router */
-  Route::group(['prefix' => LaravelLocalization::setLocale(),
-    'middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
+  Route::group(['middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
     
-    $router->get(trans('icommerce::routes.store.index.index'), [
+    $router->get(trans('icommerce::routes.store.index.index',[],$locale), [
       'as' => $locale . '.icommerce.store.index',
       'uses' => 'PublicController@index',
     ]);
     
-    $router->get(trans('icommerce::routes.store.index.category'), [
+    $router->get(trans('icommerce::routes.store.index.category',[],$locale), [
       'as' => $locale . '.icommerce.store.index.category',
       'uses' => 'PublicController@index',
     ]);
     
-    $router->get(trans('icommerce::routes.store.index.manufacturer'), [
+    $router->get(trans('icommerce::routes.store.index.manufacturer',[],$locale), [
       'as' => $locale . '.icommerce.store.index.manufacturer',
       'uses' => 'PublicController@indexManufacturer',
     ]);
     
-    $router->get(trans('icommerce::routes.store.index.offers'), [
+    $router->get(trans('icommerce::routes.store.index.offers',[],$locale), [
       'as' => $locale . '.icommerce.store.index.offers',
       'uses' => 'PublicController@indexOffers',
     ]);
     
     
-    $router->get(trans('icommerce::routes.store.manufacturer.index'), [
+    $router->get(trans('icommerce::routes.store.manufacturer.index',[],$locale), [
       'as' => $locale . '.icommerce.store.manufacturer.index',
       'uses' => 'ManufacturerController@index',
     ]);
     
-    $router->get(trans('icommerce::routes.store.index.categoryManufacturer'), [
+    $router->get(trans('icommerce::routes.store.index.categoryManufacturer',[],$locale), [
       'as' => $locale . '.icommerce.store.index.categoryManufacturer',
       'uses' => 'PublicController@indexCategoryManufacturer',
     ]);
     
-    $router->get(trans('icommerce::routes.store.show.product'), [
+    $router->get(trans('icommerce::routes.store.show.product',[],$locale), [
       'as' => $locale . '.icommerce.store.show',
       'uses' => 'PublicController@show',
       'middleware' => ['doNotCacheResponse']
     ]);
     
-    $router->get(trans('icommerce::routes.store.checkout.create'), [
+    $router->get(trans('icommerce::routes.store.checkout.create',[],$locale), [
       'as' => $locale . '.icommerce.store.checkout',
       'uses' => 'PublicController@checkout',
       'middleware' => ['doNotCacheResponse']
     ]);
     
-    $router->get(trans('icommerce::routes.store.checkout.update'), [
+    $router->get(trans('icommerce::routes.store.checkout.update',[],$locale), [
       'as' => $locale . '.icommerce.store.checkout.update',
       'uses' => 'PublicController@checkoutUpdate',
       'middleware' => 'doNotCacheResponse'
     ]);
     
-    $router->get(trans('icommerce::routes.store.order.index'), [
+    $router->get(trans('icommerce::routes.store.order.index',[],$locale), [
       'as' => $locale . '.icommerce.store.order.index',
       'uses' => 'OrderController@index',
       'middleware' => ['logged.in', 'doNotCacheResponse']
     ]);
     
-    $router->get(trans('icommerce::routes.store.order.show'), [
+    $router->get(trans('icommerce::routes.store.order.show',[],$locale), [
       'as' => $locale . '.icommerce.store.order.show',
       'uses' => 'OrderController@show',
       'middleware' => 'doNotCacheResponse'

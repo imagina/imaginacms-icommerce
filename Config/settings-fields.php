@@ -34,12 +34,12 @@ return [
     ],
   ],
 
-
   'product-per-page' => [
     'name' => 'icommerce::product-per-page',
     'value' => 12,
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
+    "onlySuperAdmin" => true,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
     'props' => [
@@ -51,6 +51,7 @@ return [
     'value' => '',
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
+    "onlySuperAdmin" => true,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
     'props' => [
@@ -62,6 +63,7 @@ return [
     'value' => '',
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
+    "onlySuperAdmin" => true,
     'type' => 'input',
     'columns' => 'col-12',
     'props' => [
@@ -76,6 +78,8 @@ return [
     'value' => 'Contáctenos',
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
+    "onlySuperAdmin" => true,
+    'isTranslatable' => true,
     'type' => 'input',
     'columns' => 'col-6',
     'props' => [
@@ -89,6 +93,7 @@ return [
     'name' => 'icommerce::carouselIndexCategory',
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -110,6 +115,7 @@ return [
     'type' => 'checkbox',
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
+    "onlySuperAdmin" => true,
     'props' => [
       'label' => 'Mostrar breadcrumb en Sidebar'
     ]
@@ -117,6 +123,7 @@ return [
   'showCategoryChildrenIndexHeader' => [
     'value' => false,
     'name' => 'icommerce::showCategoryChildrenIndexHeader',
+    "onlySuperAdmin" => true,
     'type' => 'checkbox',
     'groupName' => 'indexPage',
     'groupTitle' => 'icommerce::common.pages.index',
@@ -130,6 +137,7 @@ return [
     'name' => 'icommerce::filterCategoriesTitle',
     'groupName' => 'categoryFilter',
     'groupTitle' => 'icommerce::common.filters.categories.group',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'props' => [
       'label' => 'Titulo a mostrar',
@@ -150,6 +158,7 @@ return [
     'name' => 'icommerce::filterCategoriesTitle',
     'groupName' => 'categoryFilter',
     'groupTitle' => 'icommerce::common.filters.categories.group',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'props' => [
       'label' => 'Titulo a mostrar',
@@ -168,6 +177,7 @@ return [
     'name' => 'icommerce::filterRangePricesStep',
     'groupName' => 'priceRangeFilter',
     'groupTitle' => 'icommerce::common.filters.priceRange.group',
+    "onlySuperAdmin" => true,
     'value' => 20000,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
@@ -181,6 +191,7 @@ return [
     'value' => 15,
     'type' => 'input',
     'group' => 'icommerce::common.settings.product.group',
+    "onlySuperAdmin" => true,
     'columns' => 'col-12 col-md-6',
     'props' => [
       'label' => 'icommerce::common.settings.daysEnabledForNewProducts',
@@ -249,6 +260,7 @@ return [
     'name' => 'icommerce::productMinimumQuantityToNotify',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
+    "onlySuperAdmin" => true,
     'value' => 3,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
@@ -261,6 +273,7 @@ return [
     'name' => 'icommerce::filterCategoriesStyle',
     'groupName' => 'categoryFilter',
     'groupTitle' => 'icommerce::common.filters.categories.group',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -282,6 +295,7 @@ return [
     'value' => '',
     'groupName' => 'checkoutPage',
     'groupTitle' => 'icommerce::common.pages.checkout',
+    "onlySuperAdmin" => true,
     'type' => 'input',
     'columns' => 'col-6',
     'props' => [
@@ -294,6 +308,7 @@ return [
     'name' => 'icommerce::checkoutLayout',
     'groupName' => 'checkoutPage',
     'groupTitle' => 'icommerce::common.pages.checkout',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -306,8 +321,22 @@ return [
       'options' => [
         ['label' => 'One Page Checkout', 'value' => 'one-page-checkout'],
         ['label' => 'Tabs Checkout', 'value' => 'tabs-checkout'],
+        ['label' => 'Two Columns Checkout', 'value' => 'two-columns-checkout'],
       ]
     ],
+  ],
+  'guestPurchasesByDefault' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::guestPurchasesByDefault',
+    'type' => 'checkbox',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.pages.labelDefaultTypeCustomer'
+    ]
   ],
   'addToCartButtonAction' => [
     "onlySuperAdmin" => true,
@@ -470,6 +499,7 @@ return [
   'tenantWithCentralData' => [
     'value' => [],
     'name' => 'icommerce::tenantWithCentralData',
+    "onlySuperAdmin" => true,
     'groupName' => 'tenantConfiguration',
     'groupTitle' => 'icommerce::common.settings.tenant.group',
     'type' => 'select',
@@ -497,6 +527,7 @@ return [
     'name' => 'icommerce::productDiscountRibbonStyle',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -518,6 +549,7 @@ return [
     'name' => 'icommerce::productDiscountPosition',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
+    "onlySuperAdmin" => true,
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
@@ -531,6 +563,30 @@ return [
         ['label' => 'Superior-Derecha', 'value' => 'top-right'],
         ['label' => 'Supeerior-Izquierda', 'value' => 'top-left'],
       ]
+    ]
+  ],
+
+  'productRibbonBackgroundColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "#f2c037",
+    'name' => 'icommerce::productRibbonBackgroundColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productRibbonBackgroundColor'
+    ]
+  ],
+
+  'productRibbonTextColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "#333333",
+    'name' => 'icommerce::productRibbonTextColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productRibbonTextColor'
     ]
   ],
   
@@ -652,6 +708,7 @@ return [
   'productAddToCartIcon' => [
     'value' => 'fa-shopping-cart',
     'name' => 'icommerce::productAddToCartIcon',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -687,6 +744,7 @@ return [
   'productWishlistIcon' => [
     'value' => 'fa-heart-o',
     'name' => 'icommerce::productWishlistIcon',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -748,6 +806,7 @@ return [
   'productButtonsLayout' => [
     'value' => 'borders',
     'name' => 'icommerce::productButtonsLayout',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -774,6 +833,7 @@ return [
   'productButtonsPosition' => [
     'value' => 'in-content',
     'name' => 'icommerce::productButtonsPosition',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -803,6 +863,7 @@ return [
   'productContentAlign' => [
     'value' => 'left',
     'name' => 'icommerce::productContentAlign',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
@@ -932,6 +993,30 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleToUppercase'
     ]
   ],
+
+  'productContentTitleFontWeight' => [
+    'value' => 'normal',
+    'name' => 'icommerce::productContentTitleFontWeight',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productContentTitleFontWeight',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ['label' => 'Texto en negrita', 'value' => 'bold'],
+            ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+            ['label' => 'Texto de peso normal', 'value' => 'normal'],
+            ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+        ]
+    ]
+  ],
   
   'productContentCategoryFontSize' => [
     "onlySuperAdmin" => true,
@@ -973,7 +1058,30 @@ return [
       'label' => 'icommerce::common.settings.productContentCategoryToUppercase'
     ]
   ],
-  
+  'productContentCategoryFontWeight' => [
+    'value' => 'normal',
+    'name' => 'icommerce::productContentCategoryFontWeight',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productContentCategoryFontWeight',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ['label' => 'Texto en negrita', 'value' => 'bold'],
+            ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+            ['label' => 'Texto de peso normal', 'value' => 'normal'],
+            ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+        ]
+    ]
+  ],
+
   'productContentPriceFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 8,
@@ -990,12 +1098,13 @@ return [
   'productContentPriceFontWeight' => [
     'value' => 'normal',
     'name' => 'icommerce::productContentPriceFontWeight',
+    "onlySuperAdmin" => true,
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-      'label' => 'Precio Negrita (Weight)',
+      'label' => 'icommerce::common.settings.productContentPriceFontWeight',
       'useInput' => false,
       'useChips' => false,
       'multiple' => false,
@@ -1009,6 +1118,62 @@ return [
       ]
     ]
   ],
-  
+
+  'productProductBackgroundColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "#ffffff",
+    'name' => 'icommerce::productProductBackgroundColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productProductBackgroundColor'
+    ]
+  ],
+
+  'productProductBackgroundColor' => [
+    "onlySuperAdmin" => true,
+    'value' => "transparent",
+    'name' => 'icommerce::productProductBackgroundColor',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'input',
+    'props' => [
+        'label' => 'icommerce::common.settings.productProductBackgroundColor'
+    ]
+  ],
+  'layoutProductIcommerce' => [
+    'name' => 'icommerce::layoutProductIcommerce',
+    'value' => null,
+    'type' => 'select',
+    'groupName' => 'layouts',
+    'groupTitle' => 'icommerce::common.layouts.group_name',
+    'loadOptions' => [
+      'apiRoute' => '/isite/v1/layouts',
+      'select' => ['label' => 'title', 'id' => 'path'],
+      'requestParams' => ['filter' => ['entity_name' => 'Post', 'module_name' => 'Iblog']],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.layouts.label_products_default',
+      'entityId' => null,
+    ],
+  ],
+  'layoutCategoryIcommerce' => [
+    'name' => 'icommerce::layoutCategoryIcommerce',
+    'value' => null,
+    'type' => 'select',
+    'groupName' => 'layouts',
+    'groupTitle' => 'icommerce::common.layouts.group_name',
+    'loadOptions' => [
+      'apiRoute' => '/isite/v1/layouts',
+      'select' => ['label' => 'title', 'id' => 'path'],
+      'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Iblog']],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.layouts.label_categories_default',
+      'entityId' => null,
+    ],
+  ],
+
 
 ];

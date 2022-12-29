@@ -27,6 +27,7 @@ return [
   'pages' => [
     'index' => 'Index Page',
     'checkout' => 'Checkout Page',
+    'labelDefaultTypeCustomer' => 'Buy as a guest user by default',
   ],
   'filters' => [
     'title' => 'Filters',
@@ -130,6 +131,7 @@ return [
     'productContentTitleToUppercase' => 'Enable Title uppercase',
     'productContentCategoryFontSize' => 'Category font size',
     'productContentCategoryToUppercase' => 'Enable Category uppercase',
+    'productContentCategoryEnable' => 'Show Category',
     'productContentPriceFontSize' => 'Price font size',
     'productContentTitleNumberOfCharacters' => 'Title number of characters',
     'productContentTitleMaxHeight' => 'Min/Max height title',
@@ -253,5 +255,9 @@ return [
   'social' => [
     'share' => 'Share'
   ],
+
+  'offers' => [
+    'title' => 'Offers'
+  ]
 
 ];

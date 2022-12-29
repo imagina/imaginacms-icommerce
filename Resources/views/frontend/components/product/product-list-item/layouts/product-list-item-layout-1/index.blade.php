@@ -3,7 +3,7 @@
 @if(isset($discount) && $discount) with-discount @else without-discount @endif
 @if($product->is_sold_out) sold-out @endif ribbon-discount-position-{{$discountPosition}}
 @if($product->is_new) is-new @endif"
-     style="padding: {{$externalPadding}}px;
+     style="padding: {{$externalPadding}}px; background-color: {{$productBackgroundColor}};
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
     <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
 
@@ -35,7 +35,7 @@
       <x-media::single-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
-        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'" />
+        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px; object-fit: '.$imageObjectFit.';'" />
 
         @if(Str::contains($buttonsPosition, 'in-photo'))
             @include("icommerce::frontend.components.product.buttons")

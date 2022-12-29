@@ -53,6 +53,13 @@ class ProductListItem extends Component
   public $contentPriceFontWeight;
   public $customIndexContactLabel;
   public $bottomFontSize;
+  public $productBackgroundColor;
+  public $ribbonBackgroundColor;
+  public $ribbonTextColor;
+  public $contentTitleFontWeight;
+  public $contentCategoryFontWeight;
+  public $imageObjectFit;
+
   /**
    * Create a new component instance.
    *
@@ -93,14 +100,20 @@ class ProductListItem extends Component
                               $contentTitleFontSize = null,
                               $contentTitleMaxHeight = null,
                               $contentTitleNumberOfCharacters = null,
-                              $contentTitleToUppercase = false,
+                              $contentTitleToUppercase = null,
                               $contentCategoryEnable = null,
                               $contentCategoryFontSize = null,
-                              $contentCategoryToUppercase = true,
+                              $contentCategoryToUppercase = null,
                               $contentPriceFontSize = null,
                               $contentPriceFontWeight = null,
                               $bottomFontSize = null,
                               $parentAttributes = null,
+                              $productBackgroundColor = null,
+                              $ribbonBackgroundColor = null,
+                              $ribbonTextColor = null,
+                              $contentTitleFontWeight = null,
+                              $contentCategoryFontWeight = null,
+                              $imageObjectFit = "contain",
                               $editLink,
                               $tooltipEditLink)
   {
@@ -146,13 +159,18 @@ class ProductListItem extends Component
     $this->contentCategoryToUppercase = $contentCategoryToUppercase ?? setting('icommerce::productContentCategoryToUppercase', null, true);
     $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);
     $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
-    $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, "13");
+    $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, 13);
       $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
     $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
     $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
-    
+    $this->productBackgroundColor = $productBackgroundColor ?? setting('icommerce::productProductBackgroundColor', null, "transparent");
+    $this->ribbonBackgroundColor = $ribbonBackgroundColor ?? setting('icommerce::productRibbonBackgroundColor', null, "#f2c037");
+    $this->ribbonTextColor = $ribbonTextColor ?? setting('icommerce::productRibbonTextColor', null, "#333333");
+    $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
+    $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
+    $this->imageObjectFit = $imageObjectFit;
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
