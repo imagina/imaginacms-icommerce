@@ -34,20 +34,7 @@ class PaymentMethod extends Model
   protected $casts = [
     'options' => 'array'
   ];
-
-  public $tenantWithCentralData = false;
-
-  public function __construct(array $attributes = [])
-  {
-    try{
-      if (!\App::runningInConsole()) {
-        $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
-        $this->tenantWithCentralData = in_array("paymentMethods", $entitiesWithCentralData);
-      }
-    }catch(\Exception $e){}
-
-    parent::__construct($attributes);
-  }
+  
 
   public function store()
   {

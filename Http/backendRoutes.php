@@ -18,7 +18,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
             'middleware'=>'can:icommerce.bulkload.import',
         ]);
         $router->get('export',[
-            'as'=>'admin.icommerce.bulkload.export',
+            'as'=>'admin.get.icommerce.bulkload.export',
             'uses'=>'ProductController@indexexport',
             'middleware'=>'can:icommerce.bulkload.export',
         ]);
@@ -28,7 +28,7 @@ $router->group(['prefix' =>'/icommerce'], function (Router $router) {
             'middleware'=>'can:icommerce.bulkload.import',
         ]);
         $router->post('export',[
-            'as'=>'admin.icommerce.bulkload.export',
+            'as'=>'admin.post.icommerce.bulkload.export',
             'uses'=>'ProductController@exportProducts',
             'middleware'=>'can:icommerce.bulkload.export',
         ]);
