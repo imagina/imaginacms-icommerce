@@ -622,4 +622,11 @@ return [
 
   ],
 
+  /*
+  |--------------------------------------------------------------------------
+  | Index Icommerce - Include the partials Organization Header
+  |--------------------------------------------------------------------------
+  */
+  'useTenantHeaderInTheIndex' => true
+
 ];

@@ -89,9 +89,9 @@
         {{-- Top Content , Products, Pagination --}}
         <div class="col-lg-9">
          
-          @isset(tenant()->id)
+          @if(isset(tenant()->id) && config("asgard.icommerce.config.useTenantHeaderInTheIndex"))
             @include("icommerce::frontend.partials.index.organization-header")
-          @endisset
+          @endif
           
           @if(isset($gallery) && !empty($gallery))
             @include('icommerce::frontend.partials.carousel-index-image')
