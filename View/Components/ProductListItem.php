@@ -58,6 +58,7 @@ class ProductListItem extends Component
   public $ribbonTextColor;
   public $contentTitleFontWeight;
   public $contentCategoryFontWeight;
+  public $itemComponentView;
   public $imageObjectFit;
 
   /**
@@ -113,6 +114,7 @@ class ProductListItem extends Component
                               $ribbonTextColor = null,
                               $contentTitleFontWeight = null,
                               $contentCategoryFontWeight = null,
+                              $itemComponentView = null,
                               $imageObjectFit = "contain",
                               $editLink,
                               $tooltipEditLink)
@@ -161,7 +163,7 @@ class ProductListItem extends Component
     $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
     $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, 13);
       $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
-    $this->view = "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
+    $this->view = $itemComponentView ?? "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
     $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');

@@ -4,8 +4,8 @@
 @if($product->is_sold_out) sold-out @endif ribbon-discount-position-{{$discountPosition}}
 @if($product->is_new) is-new @endif"
      style="padding: {{$externalPadding}}px; background-color: {{$productBackgroundColor}};
-        border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
-    <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
+       border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
+  <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
 
   @include('icommerce::frontend.components.product.meta')
 
@@ -19,8 +19,8 @@
             class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
             <x-media::single-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-             :mediaFiles="$product->mediaFiles()"
-             :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+              :mediaFiles="$product->mediaFiles()"
+              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
           </div>
         </div>
       </div>
@@ -31,18 +31,18 @@
   @else
 
     <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden position-relative">
-        @include('icommerce::frontend.components.product.ribbon')
+      @include('icommerce::frontend.components.product.ribbon')
       <x-media::single-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px; object-fit: '.$imageObjectFit.';'" />
 
-        @if(Str::contains($buttonsPosition, 'in-photo'))
-            @include("icommerce::frontend.components.product.buttons")
-        @endif
+      @if(Str::contains($buttonsPosition, 'in-photo'))
+        @include("icommerce::frontend.components.product.buttons")
+      @endif
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
   @endif
 
-    @include('icommerce::frontend.components.product.global-inline-css')
+  @include('icommerce::frontend.components.product.global-inline-css')
 </div>
