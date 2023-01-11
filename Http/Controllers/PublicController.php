@@ -26,6 +26,7 @@ use Modules\Icommerce\Transformers\ProductTransformer;
 use Modules\Isite\Entities\Organization;
 use Route;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
+use Modules\Page\Repositories\PageRepository;
 
 //Services
 use Modules\Icommerce\Services\ProductService;
@@ -43,6 +44,7 @@ class PublicController extends BaseApiController
   private $shippings;
   private $productService;
   private $pageService;
+  private $pageRepository;
   
   public function __construct(
     ProductRepository $product,
@@ -53,7 +55,8 @@ class PublicController extends BaseApiController
     PaymentMethodRepository $payments,
     ShippingMethodRepository $shippings,
     ProductService $productService,
-    PageService $pageService
+    PageService $pageService,
+    PageRepository $pageRepository
   )
   {
     parent::__construct();
@@ -66,6 +69,7 @@ class PublicController extends BaseApiController
     $this->shippings = $shippings;
     $this->productService = $productService;
     $this->pageService = $pageService;
+    $this->pageRepository = $pageRepository;
   }
   
   // view products by category

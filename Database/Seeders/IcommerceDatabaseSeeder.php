@@ -16,6 +16,7 @@ class IcommerceDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        $this->call(IcommerceModuleTableSeeder::class);
         $this->call(OrderStatusTableSeeder::class);
         $this->call(ItemTypeTableSeeder::class);
         $this->call(CurrencyTableSeeder::class);
