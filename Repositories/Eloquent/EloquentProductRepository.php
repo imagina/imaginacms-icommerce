@@ -349,31 +349,43 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       }
   }
 
-  public function defaultPreFilters($query, $params)
-  {
+  public function defaultPreFilters($query, $params){
 
-    //Pre filters by default
-    //pre-filter date_available
+		//Pre filters by default
+		//pre-filter date_available
+		$query->where(function ($query) {
+			$query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
+			$query->orWhereNull("date_available");
+		});
+
+		//pre-filter status
+		$query->where("status", 1);
+
+		//pre-filter quantity and subtract
+		$query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
+
+		//pre-filter if the organization is enabled (organization status = 1)
+		$query->where(function ($query) {
+			$query->whereNull("organization_id")
+				->orWhereRaw("icommerce__products.organization_id IN (SELECT id from isite__organizations where status = 1)");
+
+		});
+
+	   //old
+     /*
+		$query->whereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
+    */
+
+    /*
+    * Se aplica esto xq cuando se utilizó con reservas, el producto no tenia
+    categoria, entonces el carrito no lo obtenia
+    */
     $query->where(function ($query) {
-      $query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
-      $query->orWhereNull("date_available");
+      $query->whereNull("category_id")
+        ->orWhereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
     });
 
-    //pre-filter status
-    $query->where("status", 1);
-
-    //pre-filter quantity and subtract
-    $query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
-
-    //pre-filter if the organization is enabled (organization status = 1)
-    $query->where(function ($query) {
-      $query->whereNull("organization_id")
-        ->orWhereRaw("icommerce__products.organization_id IN (SELECT id from isite__organizations where status = 1)");
-
-    });
-
-    $query->whereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
-  }
+	}
 
   public function getItem($criteria, $params = false)
   {
@@ -472,6 +484,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       });
     }
 
+    //dd($query->toSql(),$query->getBindings());
     /*== REQUEST ==*/
     return $query->first();
 
