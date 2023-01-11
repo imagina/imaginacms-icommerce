@@ -59,6 +59,7 @@ class ProductListItem extends Component
   public $contentTitleFontWeight;
   public $contentCategoryFontWeight;
   public $itemComponentView;
+  public $imageObjectFit;
 
   /**
    * Create a new component instance.
@@ -114,6 +115,7 @@ class ProductListItem extends Component
                               $contentTitleFontWeight = null,
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
+                              $imageObjectFit = "contain",
                               $editLink,
                               $tooltipEditLink)
   {
@@ -170,6 +172,7 @@ class ProductListItem extends Component
     $this->ribbonTextColor = $ribbonTextColor ?? setting('icommerce::productRibbonTextColor', null, "#333333");
     $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
+    $this->imageObjectFit = $imageObjectFit;
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
