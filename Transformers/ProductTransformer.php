@@ -80,6 +80,7 @@ class ProductTransformer extends BaseApiTransformer
       'isNew' => $this->is_new,
       'isAvailable' => $this->is_available,
       'layoutId' => $this->layout_id,
+      'isInternal' => $this->is_internal
     ];
 
     $discount = $this->discount;
