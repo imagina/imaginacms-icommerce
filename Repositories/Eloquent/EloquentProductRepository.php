@@ -348,22 +348,22 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         return $query->get();
       }
   }
-  
+
   public function defaultPreFilters($query, $params){
-	
+
 		//Pre filters by default
 		//pre-filter date_available
 		$query->where(function ($query) {
 			$query->where("date_available", "<=", date("Y-m-d", strtotime(now())));
 			$query->orWhereNull("date_available");
 		});
-	
+
 		//pre-filter status
 		$query->where("status", 1);
-	
+
 		//pre-filter quantity and subtract
 		$query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
-	
+
 		//pre-filter if the organization is enabled (organization status = 1)
 		$query->where(function ($query) {
 			$query->whereNull("organization_id")
@@ -386,7 +386,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     });
 
 	}
-	
+
   public function getItem($criteria, $params = false)
   {
 
