@@ -1,4 +1,4 @@
-<div class="card card-block order p-3">
+<div id="cardOrderSummary" class="card card-block order p-3">
     <div class="row">
         <div class="col">
             <div class="row m-0 pointer" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false"
