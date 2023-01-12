@@ -51,6 +51,7 @@ class Checkout extends Component
   public $organization;
   public $userEmail;
   public $shopAsGuest;
+  public $guestShopOnly;
   public $addressGuest;
   public $addressGuestShipping;
   public $addressGuestBillingCreated;
@@ -74,11 +75,19 @@ class Checkout extends Component
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
     $user = Auth::user();
-    if (isset($user)){
+
+    if (isset($user)) {
       $this->shopAsGuest = false;
     } else {
       $this->shopAsGuest = setting('icommerce::guestPurchasesByDefault');
     }
+
+    if (setting('icommerce::guestShopOnly')) {
+      $this->shopAsGuest = true;
+      $this->guestShopOnly = setting('icommerce::guestShopOnly');
+
+    }
+
     $this->addressGuestShipping = [];
     $this->addressGuest = [];
     $this->addressGuestBillingCreated = false;
