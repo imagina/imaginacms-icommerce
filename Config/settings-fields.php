@@ -338,6 +338,19 @@ return [
       'label' => 'icommerce::common.pages.labelDefaultTypeCustomer'
     ]
   ],
+  'guestShopOnly' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::guestShopOnly',
+    'type' => 'checkbox',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.pages.guestShopOnly'
+    ]
+  ],
   'addToCartButtonAction' => [
     "onlySuperAdmin" => true,
     'value' => 'add-to-cart',
@@ -406,7 +419,7 @@ return [
       'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
     ]
   ],
-  
+
   'showReviewsProduct' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -420,7 +433,7 @@ return [
       'label' => 'icommerce::common.settings.product.showReviewsProduct'
     ]
   ],
-  
+
   'icommerceCartQuoteForm' => [
     "onlySuperAdmin" => true,
     'name' => 'icommerce::icommerceCartQuoteForm',
@@ -438,7 +451,7 @@ return [
     ],
   ],
 
-  
+
   'letMeKnowProductIsAvailableForm' => [
     "onlySuperAdmin" => true,
     'name' => 'icommerce::letMeKnowProductIsAvailableForm',
@@ -469,7 +482,7 @@ return [
       'label' => 'icommerce::common.settings.product.showRatingProduct'
     ]
   ],
-  
+
   'chatByOrderEnable' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -495,7 +508,7 @@ return [
       'label' => 'icommerce::common.settings.product.showRatingInReviewsProduct'
     ]
   ],
-  
+
   'tenantWithCentralData' => [
     'value' => [],
     'name' => 'icommerce::tenantWithCentralData',
@@ -521,7 +534,7 @@ return [
       ]
     ]
   ],
-  
+
   'productDiscountRibbonStyle' => [
     'value' => 'flag',
     'name' => 'icommerce::productDiscountRibbonStyle',
@@ -574,7 +587,7 @@ return [
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'inputColor',
     'props' => [
-        'label' => 'icommerce::common.settings.productRibbonBackgroundColor'
+      'label' => 'icommerce::common.settings.productRibbonBackgroundColor'
     ]
   ],
 
@@ -586,10 +599,10 @@ return [
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'inputColor',
     'props' => [
-        'label' => 'icommerce::common.settings.productRibbonTextColor'
+      'label' => 'icommerce::common.settings.productRibbonTextColor'
     ]
   ],
-  
+
   'productImageBorder' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -614,7 +627,7 @@ return [
       'label' => 'icommerce::common.settings.productImageBorderColor'
     ]
   ],
-  
+
   'productImageBorderRadius' => [
     "onlySuperAdmin" => true,
     'value' => 0,
@@ -627,7 +640,7 @@ return [
       'label' => 'icommerce::common.settings.productImageBorderRadius'
     ]
   ],
-  
+
   'productExternalPadding' => [
     "onlySuperAdmin" => true,
     'value' => 0,
@@ -640,7 +653,7 @@ return [
       'label' => 'icommerce::common.settings.productExternalPadding'
     ]
   ],
-  
+
   'productExternalBorder' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -654,7 +667,7 @@ return [
       'label' => 'icommerce::common.settings.productExternalBorder'
     ]
   ],
-  
+
   'productExternalBorderRadius' => [
     "onlySuperAdmin" => true,
     'value' => 0,
@@ -667,7 +680,7 @@ return [
       'label' => 'icommerce::common.settings.productExternalBorderRadius'
     ]
   ],
-  
+
   'productExternalBorderColor' => [
     "onlySuperAdmin" => true,
     'value' => "#dddddd",
@@ -679,7 +692,7 @@ return [
       'label' => 'icommerce::common.settings.productExternalBorderColor'
     ]
   ],
-  
+
   'productExternalShadowOnHover' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -704,7 +717,7 @@ return [
       'label' => 'icommerce::common.settings.productExternalShadowOnHoverColor'
     ]
   ],
-  
+
   'productAddToCartIcon' => [
     'value' => 'fa-shopping-cart',
     'name' => 'icommerce::productAddToCartIcon',
@@ -762,7 +775,7 @@ return [
       ]
     ]
   ],
-  
+
   'productWithTextInAddToCart' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -802,7 +815,7 @@ return [
       'label' => 'icommerce::common.settings.productShowButtonsOnMouseHover'
     ]
   ],
-  
+
   'productButtonsLayout' => [
     'value' => 'borders',
     'name' => 'icommerce::productButtonsLayout',
@@ -846,18 +859,18 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
-          ['label' => 'Dentro del Contenido', 'value' => 'in-content'],
-          ['label' => 'Luego del Contenido Centrado', 'value' => 'after-content-center'],
-          ['label' => 'Sobre la Foto Superior Izquierda', 'value' => 'top-left-in-photo'],
-          ['label' => 'Sobre la Foto Superior Centrado', 'value' => 'top-center-in-photo'],
-          ['label' => 'Sobre la Foto Superior Derecha', 'value' => 'top-right-in-photo'],
-          ['label' => 'Sobre la Foto Inferior Izquierda', 'value' => 'bottom-left-in-photo'],
-          ['label' => 'Sobre la Foto Inferior Izquierda en linea', 'value' => 'bottom-left-inline-in-photo'],
-          ['label' => 'Sobre la Foto Inferior Centrado', 'value' => 'bottom-center-in-photo'],
-          ['label' => 'Sobre la Foto Inferior Derecha', 'value' => 'bottom-right-in-photo'],
-          ['label' => 'Sobre la Foto Inferior Derecha en linea', 'value' => 'bottom-right-inline-in-photo'],
-          ['label' => 'Sobre la Foto Añadir Inferior Full y Wishlist Superior Centrado', 'value' => 'abf-wtc-in-photo'],
-        ]
+        ['label' => 'Dentro del Contenido', 'value' => 'in-content'],
+        ['label' => 'Luego del Contenido Centrado', 'value' => 'after-content-center'],
+        ['label' => 'Sobre la Foto Superior Izquierda', 'value' => 'top-left-in-photo'],
+        ['label' => 'Sobre la Foto Superior Centrado', 'value' => 'top-center-in-photo'],
+        ['label' => 'Sobre la Foto Superior Derecha', 'value' => 'top-right-in-photo'],
+        ['label' => 'Sobre la Foto Inferior Izquierda', 'value' => 'bottom-left-in-photo'],
+        ['label' => 'Sobre la Foto Inferior Izquierda en linea', 'value' => 'bottom-left-inline-in-photo'],
+        ['label' => 'Sobre la Foto Inferior Centrado', 'value' => 'bottom-center-in-photo'],
+        ['label' => 'Sobre la Foto Inferior Derecha', 'value' => 'bottom-right-in-photo'],
+        ['label' => 'Sobre la Foto Inferior Derecha en linea', 'value' => 'bottom-right-inline-in-photo'],
+        ['label' => 'Sobre la Foto Añadir Inferior Full y Wishlist Superior Centrado', 'value' => 'abf-wtc-in-photo'],
+      ]
     ]
   ],
   'productContentAlign' => [
@@ -953,7 +966,7 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleMaxHeight'
     ]
   ],
-  
+
   'productContentTitleFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 14,
@@ -966,7 +979,7 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleFontSize'
     ]
   ],
-  
+
   'productContentTitleNumberOfCharacters' => [
     "onlySuperAdmin" => true,
     'value' => 80,
@@ -979,7 +992,7 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleNumberOfCharacters'
     ]
   ],
-  
+
   'productContentTitleToUppercase' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -1003,21 +1016,21 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-        'label' => 'icommerce::common.settings.productContentTitleFontWeight',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-            ['label' => 'Texto en negrita', 'value' => 'bold'],
-            ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
-            ['label' => 'Texto de peso normal', 'value' => 'normal'],
-            ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
-        ]
+      'label' => 'icommerce::common.settings.productContentTitleFontWeight',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Texto en negrita', 'value' => 'bold'],
+        ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+        ['label' => 'Texto de peso normal', 'value' => 'normal'],
+        ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+      ]
     ]
   ],
-  
+
   'productContentCategoryFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 8,
@@ -1030,7 +1043,7 @@ return [
       'label' => 'icommerce::common.settings.productContentCategoryFontSize'
     ]
   ],
-  
+
   'productContentCategoryEnable' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -1044,7 +1057,7 @@ return [
       'label' => 'icommerce::common.settings.productContentCategoryEnable'
     ]
   ],
-  
+
   'productContentCategoryToUppercase' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -1067,18 +1080,18 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-        'label' => 'icommerce::common.settings.productContentCategoryFontWeight',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-            ['label' => 'Texto en negrita', 'value' => 'bold'],
-            ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
-            ['label' => 'Texto de peso normal', 'value' => 'normal'],
-            ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
-        ]
+      'label' => 'icommerce::common.settings.productContentCategoryFontWeight',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Texto en negrita', 'value' => 'bold'],
+        ['label' => 'Texto en negrita (relativo al elemento principal)', 'value' => 'bolder'],
+        ['label' => 'Texto de peso normal', 'value' => 'normal'],
+        ['label' => 'Texto más ligero (en relación con el elemento principal)', 'value' => 'lighter'],
+      ]
     ]
   ],
 
@@ -1094,7 +1107,7 @@ return [
       'label' => 'icommerce::common.settings.productContentPriceFontSize'
     ]
   ],
-  
+
   'productContentPriceFontWeight' => [
     'value' => 'normal',
     'name' => 'icommerce::productContentPriceFontWeight',
@@ -1127,7 +1140,7 @@ return [
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'inputColor',
     'props' => [
-        'label' => 'icommerce::common.settings.productProductBackgroundColor'
+      'label' => 'icommerce::common.settings.productProductBackgroundColor'
     ]
   ],
 
@@ -1139,7 +1152,7 @@ return [
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'input',
     'props' => [
-        'label' => 'icommerce::common.settings.productProductBackgroundColor'
+      'label' => 'icommerce::common.settings.productProductBackgroundColor'
     ]
   ],
   'layoutProductIcommerce' => [

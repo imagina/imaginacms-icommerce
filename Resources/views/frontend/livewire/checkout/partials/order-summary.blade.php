@@ -1,4 +1,4 @@
-<div class="card card-block order p-3">
+<div id="cardOrderSummary" class="card card-block order p-3">
     <div class="row">
         <div class="col">
             <div class="row m-0 pointer" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false"
@@ -262,7 +262,7 @@
 
                 </div>
 
-                <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder" wire:click="submit">
+                <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder" wire:click="{{confg("asgard.icommerce.config.livewirePlaceOrderClick")}}">
 
                         <div>
                             {{ trans('icommerce::order_summary.submit') }}
