@@ -3,21 +3,21 @@
 return [
   'name' => 'Icommerce',
   'frontendModuleName' => 'qcommerce',
-  
+
   /*
    |--------------------------------------------------------------------------
    | Default layout for the notification module
    |--------------------------------------------------------------------------
    */
   'defaultEmailLayout' => 'notification::emails.layouts.default',
-  
+
   /*
    |--------------------------------------------------------------------------
    | Default content layout in the notification module
    |--------------------------------------------------------------------------
    */
   'defaultEmailContent' => 'notification::emails.contents.default',
-  
+
   /*
    |--------------------------------------------------------------------------
    | Order Statuses to seed in the order status table
@@ -81,21 +81,21 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define routes to sites with old routes
    |--------------------------------------------------------------------------
    */
   'useOldRoutes' => false,
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define the default product rating
    |--------------------------------------------------------------------------
    */
   'defaultProductRating' => 5,
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define the different item types to the products
@@ -115,7 +115,7 @@ return [
       'title' => 'icommerce::itemtypes.types.other',
     ],
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define format money to the product price frontend
@@ -126,7 +126,7 @@ return [
     'dec_point' => '',
     'housands_sep' => '.'
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | add: custom product includes
@@ -141,14 +141,14 @@ return [
       ],*/
     ]
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | add: product relations like users relations style
    |--------------------------------------------------------------------------
    */
   'relations' => [
-    
+
     'product' => [
       //This is an productable relation. This relation must have same index as much as "productable product" crud field is called
       /*'posts' => function(){
@@ -156,7 +156,7 @@ return [
       }*/
     ]
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Define config to the mediaFillable trait for each entity
@@ -198,8 +198,8 @@ return [
       'quaternaryimage' => 'single',
     ]
   ],
-  
-  
+
+
   /*
  |--------------------------------------------------------------------------
  | Define config to the orderBy in the index page
@@ -250,7 +250,7 @@ return [
       ]
     ],
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Layout Products - Index
@@ -279,7 +279,13 @@ return [
       ],
     ]
   ],
-  
+
+  /*
+ |--------------------------------------------------------------------------
+ | Livewire Checkout placeOrder click
+ |--------------------------------------------------------------------------
+ */
+  'livewirePlaceOrderClick' => "submit",
   /*
   |--------------------------------------------------------------------------
   | Custom Includes Before Filters
@@ -293,7 +299,7 @@ return [
     ]
     */
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Filters to the index page
@@ -408,7 +414,7 @@ return [
       'classes' => 'col-12'
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Pagination to the index page
@@ -424,7 +430,7 @@ return [
   */
     "type" => "normal"
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Custom Includes After Filters
@@ -438,8 +444,8 @@ return [
     ]
     */
   ],
-  
-  
+
+
   /*
   |--------------------------------------------------------------------------
   | Widgets Components
@@ -459,7 +465,7 @@ return [
       ]
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Extra Footer Partials
@@ -486,7 +492,7 @@ return [
       'view' => "icommerce.partials.extra-footer"
     ]
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Define the options to the user menu component
@@ -505,10 +511,10 @@ return [
       "routeName" => "icommerce.store.order.index",
       "quasarUrl" => '/ipanel/#/store/orders/',
       "icon" => "fa fa-bars",
-    
+
     ],
   ],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Define Notifiable config to conect to the notification  Module
@@ -539,7 +545,7 @@ return [
     ]
 
   ],*/
-  
+
   /*
     |--------------------------------------------------------------------------
     | Define custom middlewares to apply to the all frontend routes
@@ -547,7 +553,7 @@ return [
     | example: 'logged.in' , 'auth.basic', 'throttle'
     */
   'middlewares' => [],
-  
+
   /*
   |--------------------------------------------------------------------------
   | Define all the exportable available
@@ -560,13 +566,13 @@ return [
       'exportName' => "OrdersExport"
     ]
   ],
-  
+
   /*
  |--------------------------------------------------------------------------
  | Define config to the tenant with central data by model
  |--------------------------------------------------------------------------
  */
-  
+
   'tenantWithCentralData' => [
     'categories' => false,
     'carts' => false,
@@ -576,7 +582,7 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Pages Base 
+  | Pages Base
   |--------------------------------------------------------------------------
   */
   'pagesBase' => [
@@ -598,7 +604,7 @@ return [
         'slug' => 'tienda',
         'body' => '<p>tienda</p>',
         'meta_title' => 'Tienda',
-      ], 
+      ],
     ],//Icommerce Show
     'store-show' => [
       'template' => 'default',
@@ -606,10 +612,10 @@ return [
       'system_name' => 'store-show',
       'type' => 'internal',
       'en' => [
-              'title' => 'Store Show',
-              'slug' => 'store-show',
-              'body' => '<p>Store show</p>',
-              'meta_title' => 'Store show',
+        'title' => 'Store Show',
+        'slug' => 'store-show',
+        'body' => '<p>Store show</p>',
+        'meta_title' => 'Store show',
       ],
       'es' => [
         'title' => 'Tienda Producto',
@@ -617,7 +623,7 @@ return [
         'body' => '<p>tienda producto</p>',
         'meta_title' => 'Tienda Producto',
       ],
-  
+
     ],
 
   ],
@@ -627,6 +633,62 @@ return [
   | Index Icommerce - Include the partials Organization Header
   |--------------------------------------------------------------------------
   */
-  'useTenantHeaderInTheIndex' => true
+  'useTenantHeaderInTheIndex' => true,
+
+  /*
+   |--------------------------------------------------------------------------
+   |name card
+   |--------------------------------------------------------------------------
+  */
+
+  /*
+   customer, billing-details, shipping-details,
+   shipping-methods, payment-methods, order-summary
+  */
+
+  'onePageCheckout' => [
+    'columns' => [
+      'first' => [
+        'class' => 'col-12 col-md-6 col-lg-4 colum-1',
+        'cards' => [
+          'customer', 'billing-details',
+        ]
+      ],
+      'second' => [
+        'class' => 'col-12 col-md-6 col-lg-4 colum-2',
+        'cards' => [
+          'shipping-details',
+          'shipping-methods'
+        ]
+      ],
+      'third' => [
+        'class' => 'col-12 col-md-6 col-lg-4 colum-3',
+        'cards' => [
+          'payment-methods', 'order-summary'
+        ]
+      ]
+    ]
+  ],
+
+  //Order position Info card
+
+  'infoCardCheckout' => [
+    'customerData' => [
+      'numberPosition' => '1',
+    ],
+    'billingDetails' => [
+      'numberPosition' => '2',
+    ],
+    'shippingDetails' => [
+      'numberPosition' => '3',
+    ],
+    'shippingMethods' => [
+      'numberPosition' => '4',
+    ],
+    'paymentMethods' => [
+      'numberPosition' => '5',
+    ],
+  ]
+
 
 ];

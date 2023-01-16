@@ -25,7 +25,7 @@ use Modules\Iprofile\Entities\Address as Address;
 class Checkout extends Component
 {
 
-  protected $listeners = ['addressAdded', 'cartUpdated', 'emitCheckoutAddressBilling',
+  protected $listeners = ['submit', 'addressAdded', 'cartUpdated', 'emitCheckoutAddressBilling',
     'emitCheckoutAddressShipping', 'editAddressBillingEmit', 'editAddressShippingEmit'];
 
   public $user;
@@ -51,6 +51,7 @@ class Checkout extends Component
   public $organization;
   public $userEmail;
   public $shopAsGuest;
+  public $guestShopOnly;
   public $addressGuest;
   public $addressGuestShipping;
   public $addressGuestBillingCreated;
@@ -67,6 +68,7 @@ class Checkout extends Component
   public function mount(Request $request, $layout = null, $order = null, $cart = null,
                                 $orderId = null, $cartId = null, $currency = null, $currencyId = null)
   {
+
     $this->couponSelected = null;
     $this->couponCode = null;
     $this->taxes = [];
@@ -74,11 +76,18 @@ class Checkout extends Component
     $this->update = true;
     $this->locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
     $user = Auth::user();
-    if (isset($user)){
+
+    if (isset($user)) {
       $this->shopAsGuest = false;
     } else {
       $this->shopAsGuest = setting('icommerce::guestPurchasesByDefault');
     }
+
+    $this->guestShopOnly = setting('icommerce::guestShopOnly');
+    if ($this->guestShopOnly) {
+      $this->shopAsGuest = true;
+    }
+
     $this->addressGuestShipping = [];
     $this->addressGuest = [];
     $this->addressGuestBillingCreated = false;
@@ -123,7 +132,7 @@ class Checkout extends Component
       $this->addressGuestShipping = $data;
       $this->addressGuestShippingCreated = true;
     }
-
+    $this->emit("billingAddressSavedInCheckout");
     $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
   }
 
@@ -132,6 +141,7 @@ class Checkout extends Component
     $this->addressGuestShipping = $data;
     $this->addressGuestShippingCreated = true;
 
+    $this->emit("shippingAddressSavedInCheckout");
     $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
   }
 
@@ -419,6 +429,7 @@ class Checkout extends Component
         break;
     }
 
+    $this->emit("addressSavedInCheckout");
     // Initializing shipping methods sending the new addresses selected if there are another calculations by each shipping method
     $this->initShippingMethods();
 

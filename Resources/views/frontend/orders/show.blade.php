@@ -1,8 +1,8 @@
 @extends('iprofile::frontend.layouts.master')
 @section('profileBreadcrumb')
-  
+
   <x-isite::breadcrumb>
-    
+
     <li class="breadcrumb-item">
       <a
         href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}">{{trans('icommerce::orders.title.orders')}}</a>
@@ -18,7 +18,7 @@
   <div class="float-right">
     <x-isite::print-button containerId="showOrder{{$order->id}}" icon="fa fa-file-pdf-o" text="{{ trans('icommerce::common.download') }}" />
   </div>
-  
+
   {{trans('icommerce::orders.title.detail order')}} #{{$order->id}}
 
 @endsection
@@ -26,13 +26,13 @@
   @php
     $currency= isset($order->currency) ? $order->currency : localesymbol($code ?? 'USD');
   @endphp
-  
-  
+
+
   @php
     $orderTransformed = collect($order)->toArray();
     $informationBlocks = $orderTransformed["informationBlocks"];
   @endphp
-  
+
   <div id="showOrder{{$order->id}}">
     <!--Dynamic blocks-->
     <div id="dynamicBlocksContent" class="row gutter-md">
@@ -40,31 +40,31 @@
       @foreach($informationBlocks as $block)
         <div class="col-12 col-md-6 mb-2">
           <div class="card">
-            
+
             <!--Title-->
             <div class="card-header">
               <div class="h6">{{ $block["title"] ?? "" }}</div>
             </div>
-            
+
             <!--Values-->
             <q-list>
               @foreach($block["values"] ?? [] as $item)
                 <ul class="list-group list-group-flush">
-                  
+
                   <li class="list-group-item">
                     <b>{{ $item["label"] ?? ""}}:</b> {!! $item["value"] ?? ""!!}
                   </li>
-                
+
                 </ul>
               @endforeach
             </q-list>
-          
+
           </div>
         </div>
-      
+
       @endforeach
     </div>
-    
+
     <hr class="my-4 hr-lg">
     <div class="row">
       <div id="orderC" class="col-12">
@@ -87,8 +87,7 @@
                   @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
                   <tr class="product-order">
                     <td style="min-width: 250px">
-                      <a href="{{$product->product->url}}">{{$product->title}}</a>
-                      
+                      <a href="{{$product->product->url ?? ""}}">{{$product->title}}</a>
                       <!--Show item options-->
                       @if($productOptionText->count())
                         <div class="text-muted" style="font-size: 13px">({{
@@ -160,7 +159,7 @@
         @endif
       </div>
     </div>
-  
+
   </div>
   <style type="text/css">
     table .clickable-row {
