@@ -33,7 +33,7 @@
       <div id="addressBillingTarget" class="py-3">
         <x-iprofile::address-card-item :address="$addressGuest"  key="cardBilling"/>
 
-        <button class="btn btn-xs btn-primary d-block m-auto" wire:click.prevent="editAddressBillingEmit">
+        <button id="editBillingAddressButton" class="btn btn-xs btn-primary d-block m-auto" wire:click.prevent="editAddressBillingEmit">
           {{trans('icommerce::checkout.buttons.editAddressButton')}}
         </button>
       </div>
