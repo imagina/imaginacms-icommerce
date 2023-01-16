@@ -99,7 +99,7 @@
                       @endif
                     </td>
                     <td>
-                      {{$product->reference}}<br>
+                      {{$product->product->sku}}<br>
                     </td>
                     <td>{{$product->quantity}}</td>
                     <td>{{$currency->symbol_left}} {{formatMoney($product->price)}} {{$currency->symbol_right}}</td>
