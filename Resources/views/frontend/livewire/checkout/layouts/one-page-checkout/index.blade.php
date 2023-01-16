@@ -26,19 +26,3 @@
     <a class="btn btn-primary" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
   </div>
 </div>
-
-
-{{--<script>--}}
-{{--  $(document).ready(function () {--}}
-{{--    $colum1 = document.querySelector('.colum-1');--}}
-{{--    $cardPaymentAddress = document.querySelector('#cardPaymentAddress');--}}
-{{--    $colum1.appendChild($cardPaymentAddress)--}}
-
-{{--    $colum2 = document.querySelector('.colum-2');--}}
-{{--    $cardShippingMethods = document.querySelector('#cardShippingMethods');--}}
-{{--    $colum2.appendChild($cardShippingMethods)--}}
-
-{{--    $cardPaymentMethods = document.querySelector('#cardPaymentMethods');--}}
-{{--    $colum2.appendChild($cardPaymentMethods)--}}
-{{--  })--}}
-{{--</script>--}}
