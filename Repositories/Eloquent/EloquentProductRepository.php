@@ -385,6 +385,14 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         ->orWhereRaw("icommerce__products.category_id IN (SELECT id from icommerce__categories where status = 1)");
     });
 
+    /*
+    * Se aplica para que el carrito pueda encontrar el producto a pesar
+    de si el producto es "internal"
+    */
+    if (isset($params->filter) && !isset($params->filter->ValidationInternal)){
+      $query->where("is_internal", 0);
+    }
+
 	}
 
   public function getItem($criteria, $params = false)
