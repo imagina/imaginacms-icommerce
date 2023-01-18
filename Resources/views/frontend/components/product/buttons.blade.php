@@ -1,7 +1,7 @@
 <div class="buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}}
 {{$showButtonsOnMouseHover ? "show-on-mouse-hover" : ""}}">
     @if(!$product->is_call && !$product->is_sold_out)
-        @switch(setting("icommerce::addToCartButtonAction"))
+        @switch($addToCartButtonAction ?? setting("icommerce::addToCartButtonAction"))
             @case("add-to-cart") @default
             @if(!$addToCartWithQuantity)
                 <!-- add-cart btn-sm btn -->
@@ -10,7 +10,7 @@
                                :withIcon="$withIconInAddToCart"
                                :iconClass="'fa '.$addToCartIcon"
                                :withLabel="$withTextInAddToCart"
-                               :label="trans('icommerce::products.button.addToCartItemList')"
+                               :label="$labelButtonAddProduct ?? trans('icommerce::products.button.addToCartItemList')"
                                :sizeLabel="$bottomFontSize"
               />
               
@@ -23,7 +23,7 @@
                              :withIcon="$withIconInAddToCart"
                              :iconClass="'fa '.$addToCartIcon"
                              :withLabel="$withTextInAddToCart"
-                             :label="trans('icommerce::products.button.addToCartItemList')"
+                             :label="$labelButtonAddProduct ?? trans('icommerce::products.button.addToCartItemList')"
                              :sizeLabel="$bottomFontSize"
             />
 

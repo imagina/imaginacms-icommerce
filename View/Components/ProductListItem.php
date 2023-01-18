@@ -60,6 +60,10 @@ class ProductListItem extends Component
   public $contentCategoryFontWeight;
   public $itemComponentView;
   public $imageObjectFit;
+  public $withDescription;
+  public $withPrice;
+  public $addToCartButtonAction;
+  public $labelButtonAddProduct;
 
   /**
    * Create a new component instance.
@@ -117,7 +121,11 @@ class ProductListItem extends Component
                               $itemComponentView = null,
                               $imageObjectFit = "contain",
                               $editLink,
-                              $tooltipEditLink)
+                              $tooltipEditLink,
+                              $withDescription = false,
+                              $withPrice = true,
+                              $addToCartButtonAction = null,
+                              $labelButtonAddProduct = null)
   {
     $this->product = $item;
     
@@ -173,6 +181,11 @@ class ProductListItem extends Component
     $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
     $this->imageObjectFit = $imageObjectFit;
+    $this->withDescription = $withDescription;
+    $this->withPrice = $withPrice;
+    $this->addToCartButtonAction = $addToCartButtonAction;
+    $this->labelButtonAddProduct = $labelButtonAddProduct;
+
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
