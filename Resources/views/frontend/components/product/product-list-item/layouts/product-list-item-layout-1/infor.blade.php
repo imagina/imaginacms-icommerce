@@ -13,15 +13,16 @@
          style="font-size: {{$contentCategoryFontSize}}px; font-weight: {{$contentCategoryFontWeight}};
          @if($contentCategoryToUppercase)text-transform: uppercase; @endif">{{$product->category->title}}</div>
   @endif
+
   
-  @if(isset($productListLayout) && $productListLayout=='one')
-    <div class="d-none d-lg-block summary">
+  @if(isset($productListLayout) && $productListLayout=='one' || $withDescription)
+    <div class="@if(!$withDescription) d-none @endif d-lg-block summary">
       {{$product->summary}}
     </div>
   @endif
   
   <div class="row align-items-center">
-    @if(!$product->is_call)
+    @if(!$product->is_call && $withPrice)
       <div class="col col-price @if(!$withTextInAddToCart || $buttonsPosition!="in-content") w-100 @endif">
         <div class="price"
              style="font-size: {{$contentPriceFontSize}}px;
