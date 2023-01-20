@@ -438,6 +438,7 @@ class Product extends Model implements TaggableInterface
 
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
     $currentLocale = locale();
+   
     $host = request()->getHost();
     if ($useOldRoutes)
       if ($this->category->status)
@@ -446,7 +447,7 @@ class Product extends Model implements TaggableInterface
         return "";
     else {
       $tenantDomain = isset(tenant()->id) ? tenant()->domain : (tenancy()->find($this->organization_id)->domain ?? parse_url(env('APP_URL', 'localhost'), PHP_URL_HOST));
-
+     
       return tenant_route($tenantDomain, $currentLocale . '.icommerce.store.show', [$this->slug]);
     }
 
