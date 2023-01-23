@@ -1164,7 +1164,7 @@ return [
     'loadOptions' => [
       'apiRoute' => '/isite/v1/layouts',
       'select' => ['label' => 'title', 'id' => 'path'],
-      'requestParams' => ['filter' => ['entity_name' => 'Post', 'module_name' => 'Iblog']],
+      'requestParams' => ['filter' => ['entity_name' => 'Product', 'module_name' => 'Icommerce']],
     ],
     'props' => [
       'label' => 'icommerce::common.layouts.label_products_default',
@@ -1180,7 +1180,7 @@ return [
     'loadOptions' => [
       'apiRoute' => '/isite/v1/layouts',
       'select' => ['label' => 'title', 'id' => 'path'],
-      'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Iblog']],
+      'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Icommerce']],
     ],
     'props' => [
       'label' => 'icommerce::common.layouts.label_categories_default',
