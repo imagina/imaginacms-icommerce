@@ -196,6 +196,7 @@ return [
     "symbolRight" => "Símbolo Derecho"
   ],
   "message" => [
+    "advanceEdit" => "Advanced Edit",
     "warnAddOpt" => "To add options, you must first create the product",
     "noOptions" => "There are no added options",
     "noDeleteOption" => "You can not delete this option, you are the father of {name}",

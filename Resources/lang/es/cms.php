@@ -198,6 +198,7 @@ return [
     "symbolRight" => "Símbolo Derecho"
   ],
   "message" => [
+    "advanceEdit" => "Edición Avanzada",
     "warnAddOpt" => "Para agregar opciones, primero debe crear el producto",
     "noOptions" => "No hay opciones agregadas",
     "noDeleteOption" => "No puede borrar está opción, es padre de {name}",
