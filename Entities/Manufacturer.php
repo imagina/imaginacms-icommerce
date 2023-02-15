@@ -46,13 +46,13 @@ class Manufacturer extends Model
   {
     return $this->hasMany(Product::class);
   }
-
+  
   /*
   * Polimorphy Relations
   */
   public function coupons()
   {
-    return $this->morphToMany(Coupon::class, 'couponable','icommerce__couponables');
+    return $this->morphToMany(Coupon::class, 'couponable', 'icommerce__couponables');
   }
   
   public function getOptionsAttribute($value)
@@ -64,11 +64,31 @@ class Manufacturer extends Model
     }
   }
   
-  public function getUrlAttribute()
+  public function getUrlAttribute($locale = null)
   {
     $url = "";
-    if(!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
-      $url = \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.index.manufacturer', $this->slug);
+    $currentLocale = $locale ?? locale();
+    if (!is_null($locale)) {
+      $this->slug = $this->getTranslation($locale)->slug;
+    }
+    
+    if (empty($this->slug)) return "";
+    
+    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      
+      $currentDomain = !empty($this->organization_id) ? tenant()->domain ?? tenancy()->find($this->organization_id)->domain :
+        parse_url(config('app.url'), PHP_URL_HOST);
+      
+      if (config("app.url") != $currentDomain) {
+        $savedDomain = config("app.url");
+        config(["app.url" => "https://" . $currentDomain]);
+      }
+      
+      $url = Str::replace(["{manufacturerSlug}"],[$this->slug], trans('icommerce::routes.store.index.manufacturer', [], $currentLocale));
+      $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
+      
+      if (isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
+      
     }
     return $url;
   }

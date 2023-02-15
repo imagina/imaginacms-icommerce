@@ -431,26 +431,39 @@ class Product extends Model implements TaggableInterface
    * URL product
    * @return string
    */
-  public function getUrlAttribute()
+  public function getUrlAttribute($locale = null)
   {
-
+    $url = "";
+    
     if (!empty($this->custom_url)) return $this->custom_url;
 
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-    $currentLocale = locale();
-    $host = request()->getHost();
-    if ($useOldRoutes)
-      if ($this->category->status)
-        return \URL::route($currentLocale . '.icommerce.' . $this->category->slug . '.product', [$this->slug]);
-      else
-        return "";
-    else {
-      $tenantDomain = isset(tenant()->id) ? tenant()->domain : (tenancy()->find($this->organization_id)->domain ?? parse_url(env('APP_URL', 'localhost'), PHP_URL_HOST));
 
-      return tenant_route($tenantDomain, $currentLocale . '.icommerce.store.show', [$this->slug]);
+    $currentLocale = $locale ?? locale();
+    if(!is_null($locale)){
+       $this->slug = $this->getTranslation($locale)->slug;
+       $this->category = $this->category->getTranslation($locale);
+    }
+  
+    if (empty($this->slug)) return "";
+  
+    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      $host = request()->getHost();
+      if ($useOldRoutes)
+        if ($this->category->status && !empty($this->category->slug)){
+          $url = \LaravelLocalization::localizeUrl('/'. $this->category->slug.'/'.$this->slug, $currentLocale);
+        } else{
+          $url = "";
+        }
+      else {
+        
+        $url = Str::replace(["{productSlug}"],[$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
+        $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
+        
+      }
     }
 
-
+    return $url;
   }
 
   /**

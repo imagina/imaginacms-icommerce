@@ -906,6 +906,7 @@ class Checkout extends Component
     $data["paymentMethod"] = $this->paymentMethod;
     $data["coupon"] = $this->couponSelected;
     $data["guest_purchase"] = $this->shopAsGuest;
+    $data["organizationId"] = $this->organization->id ?? null;
 
 
     if (!isset($this->order->id)) {

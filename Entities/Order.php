@@ -189,7 +189,7 @@ class Order extends Model
   {
     $panel = config("asgard.iprofile.config.panel") ?? 'blade';
     if ($panel == 'blade' || $this->guest_purchase)
-      return \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.order.show', ["orderId" => $this->id, "orderKey" => $this->key]);
+      return \URL::route(locale() . '.icommerce.store.order.show', ["orderId" => $this->id, "orderKey" => $this->key]);
     else {
       return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
