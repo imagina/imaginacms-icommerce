@@ -1187,6 +1187,14 @@ return [
       'entityId' => null,
     ],
   ],
-
-
+  'orderSummaryDescription' => [
+    'value' => null,
+    'name' => 'icommerce::orderSummaryDescription',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
+    'type' => 'html',
+    'props' => [
+      'label' => 'icommerce::common.settings.labelOrderSummaryDescription',
+    ]
+  ],
 ];
