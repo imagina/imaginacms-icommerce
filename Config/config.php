@@ -651,20 +651,19 @@ return [
       'first' => [
         'class' => 'col-12 col-md-6 col-lg-4 colum-1',
         'cards' => [
-          'customer', 'billing-details',
+          'customer',
         ]
       ],
       'second' => [
         'class' => 'col-12 col-md-6 col-lg-4 colum-2',
         'cards' => [
-          'shipping-details',
-          'shipping-methods'
+          'billing-details','shipping-details'
         ]
       ],
       'third' => [
         'class' => 'col-12 col-md-6 col-lg-4 colum-3',
         'cards' => [
-          'payment-methods', 'order-summary'
+          'shipping-methods','payment-methods', 'order-summary'
         ]
       ]
     ]
