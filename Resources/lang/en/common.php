@@ -136,6 +136,7 @@ return [
     'productContentTitleNumberOfCharacters' => 'Title number of characters',
     'productContentTitleMaxHeight' => 'Min/Max height title',
     'productWishlistEnable' => 'Enable wishlist button',
+    'labelOrderSummaryDescription' => 'Order Summary Information',
   
     'tenant' => [
       'group' => 'Tenants',

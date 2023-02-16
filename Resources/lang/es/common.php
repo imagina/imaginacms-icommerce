@@ -153,6 +153,7 @@ return [
     'productContentPriceFontWeight' =>  'Precio Negrita (Weight)',
     'productContentTitleFontWeight' =>  'Título Negrita (Weight)',
     'productContentCategoryFontWeight' =>  'Categoría Negrita (Weight)',
+    'labelOrderSummaryDescription' => 'Información Resumen De La Orden',
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',
