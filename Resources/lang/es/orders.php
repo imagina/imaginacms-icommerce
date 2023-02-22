@@ -80,6 +80,7 @@ return [
     'details_2' => 'esta orden se creó para que tengas un proceso de pedido  directo con la tienda'
   ],
   'informationBlocksOrder' => [
+    'orderingInformation' => 'Información de pedido',
     'titleOrderStatus' => 'Estado del pedido',
     'titleOrderDate' => 'Fecha de orden',
     'titleOrderIP' => 'Pedido realizado desde la IP',
