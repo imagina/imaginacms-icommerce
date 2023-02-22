@@ -50,7 +50,7 @@
         <div>
           <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
              class=" btn-comprar btn btn-secondary text-white">
-            {{setting('icommerce::customIndexContactLabel', null, 'Contáctenos')}}</a>
+            {{trans('icommerce::products.form.contactUs')}}</a>
           <!-- BUTTON WISHLIST -->
           <a
             onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
@@ -85,6 +85,6 @@
   @include('icommerce::frontend.partials.show.points')
 
   @if(isset($organization->id))
-    Producto Vendido por: <a href="{{$organization->url}}">{{$organization->title}}</a>
+  {{trans("icommerce::products.form.soldBy")}} <a href="{{$organization->url}}">{{$organization->title}}</a>
     @endif
 </div>
