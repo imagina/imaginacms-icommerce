@@ -66,7 +66,7 @@ return [
     ],
     '11' => [
       'id' => 11,
-      'title' => 'icommerce::orderstatuses.statuses.pending',
+      'title' => 'icommerce::orderstatuses.statuses.confirmingPayment',
     ],
     '12' => [
       'id' => 12,

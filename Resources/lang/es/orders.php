@@ -79,4 +79,16 @@ return [
     'details_1' => 'Esta es una orden derivada de la orden',
     'details_2' => 'esta orden se creó para que tengas un proceso de pedido  directo con la tienda'
   ],
+  'informationBlocksOrder' => [
+    'orderingInformation' => 'Información de pedido',
+    'titleOrderStatus' => 'Estado del pedido',
+    'titleOrderDate' => 'Fecha de orden',
+    'titleOrderIP' => 'Pedido realizado desde la IP',
+    'titleOrderInfoCustomer' => 'Información del cliente',
+    'titleOrderShippingAddress' => 'Dirección de Envío',
+    'titleOrderPayShippingMethod' => 'Pago y método de envío',
+    'titleOrderPayMethod' => 'Método de pago',
+    'titleOrderShippingMethod' => 'Método de envío',
+    'titleOrderDescriptionShippingMethod' => 'Descripción del método',
+  ],
 ];

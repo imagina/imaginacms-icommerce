@@ -78,6 +78,8 @@ return [
   ],
   'form' => [
     'available' => 'Available',
+    'contactUs' => 'Contact us',
+    'soldByOrganization' => 'Sold by:',
     'outOfStock' => 'Out of stock'
   ],
   'messages'          => [
