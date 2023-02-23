@@ -85,6 +85,6 @@
   @include('icommerce::frontend.partials.show.points')
 
   @if(isset($organization->id))
-  {{trans("icommerce::products.form.soldBy")}} <a href="{{$organization->url}}">{{$organization->title}}</a>
+  {{trans("icommerce::products.form.soldByOrganization")}} <a href="{{$organization->url}}">{{$organization->title}}</a>
     @endif
 </div>
