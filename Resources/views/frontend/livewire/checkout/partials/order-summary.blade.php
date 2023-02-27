@@ -237,7 +237,7 @@
           </div>
         @endif
         <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                wire:click="{{confg("asgard.icommerce.config.livewirePlaceOrderClick")}}">
+                wire:click="{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}">
           <div>
             {{ trans('icommerce::order_summary.submit') }}
           </div>

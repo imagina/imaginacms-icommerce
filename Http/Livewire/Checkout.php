@@ -363,6 +363,7 @@ class Checkout extends Component
   {
     //\Log::info('Icommerce: Livewire|Checkout|Hydrate');
     $this->load();
+
   }
 
   /**
@@ -787,7 +788,7 @@ class Checkout extends Component
 
     //\Log::info('Icommerce: Livewire|Checkout|Submit - INIT');
     try {
-      if ($this->shopAsGuest & !empty($this->addressGuest)) {
+      if ($this->shopAsGuest && !empty($this->addressGuest)) {
         $validatedData = Validator::make(
           array_merge([
             'billingAddress' => count($this->addressGuest),
@@ -824,7 +825,7 @@ class Checkout extends Component
           'telephone' => $this->addressGuest['telephone'],
           'country' => $this->addressGuest['country'],
           'country_id' => $this->addressGuest['country_id'],
-          'state' => $this->addressGuest['address_1'],
+          'state' => $this->addressGuest['state'],
           'state_id' => $this->addressGuest['state_id'],
           'city' => $this->addressGuest['city'],
           'city_id' => $this->addressGuest['city_id'],
@@ -833,7 +834,7 @@ class Checkout extends Component
           'options' => $this->addressGuest['options'],
         ));
         $this->billingAddressSelected = $billingAddressGuest->id;
-        if ($this->requireShippingMethod & !$this->sameShippingAndBillingAddresses) {
+        if ($this->requireShippingMethod && !$this->sameShippingAndBillingAddresses) {
           $shippingAddressGuest = Address::create(array(
             'user_id' => $this->user->id,
             'first_name' => $this->addressGuestShipping['first_name'],
@@ -842,7 +843,7 @@ class Checkout extends Component
             'telephone' => $this->addressGuestShipping['telephone'],
             'country' => $this->addressGuestShipping['country'],
             'country_id' => $this->addressGuestShipping['country_id'],
-            'state' => $this->addressGuestShipping['address_1'],
+            'state' => $this->addressGuestShipping['state'],
             'state_id' => $this->addressGuestShipping['state_id'],
             'city' => $this->addressGuestShipping['city'],
             'city_id' => $this->addressGuestShipping['city_id'],

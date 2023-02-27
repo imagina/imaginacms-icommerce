@@ -89,7 +89,7 @@ class OrderTransformer extends JsonResource
     //Add information blocks
     $item['informationBlocks'] = [
       [
-        'title' => 'Información de pedido',
+        'title' => trans("icommerce::orders.informationBlocksOrder.orderingInformation"),
         'values' => [
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderStatus"),
             'value' => $item['statusName']],

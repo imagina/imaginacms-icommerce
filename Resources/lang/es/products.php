@@ -79,6 +79,8 @@ return [
     ],
     'form' => [
       'available' => 'Disponibles',
+      'contactUs' => 'Contáctenos',
+      'soldByOrganization' => 'Vendido por:',
       'outOfStock' => 'Producto Agotado'
     ],
 

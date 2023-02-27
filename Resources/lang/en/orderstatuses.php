@@ -23,7 +23,7 @@ return [
     ],
     'statuses' => [
         'pending'           => 'Pending',
-        'processing'        => 'Processing',
+        'confirmingPayment' => 'Confirming Payment',
         'shipped'           => 'Shipped',
         'canceled'          => 'Canceled',
         'completed'         => 'Completed',

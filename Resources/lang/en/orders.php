@@ -80,6 +80,7 @@ return [
     'details_2' => 'this order was created so that you have a direct order process with the store'
   ],
   'informationBlocksOrder' => [
+    'orderingInformation' => 'Ordering information',
     'titleOrderStatus' => 'Order Status',
     'titleOrderDate' => 'Order Date',
     'titleOrderIP' => 'Order made from IP',
