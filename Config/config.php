@@ -355,7 +355,8 @@ return [
       'repoMethod' => 'getPriceRange',
       'layout' => 'range-layout-1',
       'classes' => 'col-12',
-      'step' => 10000
+      'step' => 10000,
+      'stepSetting' => 'icommerce::filterRangePricesStep'
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',
