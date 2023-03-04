@@ -3,16 +3,19 @@
     <br/>
     <span class="alert alert-danger" role="alert">{{ $errors->first('userId') }}</span>
   @endif
-  <hr class="my-2"/>
-  <button wire:click.prevent="shopAsGuest"
-          class="btn btn-sm btn-primary" name="button">
-    @if (!$shopAsGuest){{trans('icommerce::customer.form.textButtonShopAsGuest')}}
-    @else {{trans('icommerce::customer.form.textButtonShopAsUser')}}@endif
-  </button>
+  @guest
+    <hr class="my-2"/>
+    <button wire:click.prevent="shopAsGuest"
+            class="btn btn-sm btn-primary" name="button">
+      @if (!$shopAsGuest){{trans('icommerce::customer.form.textButtonShopAsGuest')}}
+      @else {{trans('icommerce::customer.form.textButtonShopAsUser')}}@endif
+    </button>
+  @endguest
   @if ($shopAsGuest)
     <hr class="py-2"/>
     <input id="userEmail" wire:model.defer="userEmail"
-           placeholder="{{trans('icommerce::checkout.buttons.placeholderInputEmail')}}" class="form-control" type="text">
+           placeholder="{{trans('icommerce::checkout.buttons.placeholderInputEmail')}}" class="form-control"
+           type="text">
   @else
     <hr class="my-2"/>
     <div id="customerData" class="row">
