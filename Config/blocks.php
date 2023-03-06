@@ -461,8 +461,8 @@ return [
       "image" => [
         "title" => "Imagen",
         "fields" => [
-          "productAspect" => [
-            "name" => "productAspect",
+          "imageAspect" => [
+            "name" => "imageAspect",
             "value" => "1-1",
             "type" => "select",
             "props" => [
