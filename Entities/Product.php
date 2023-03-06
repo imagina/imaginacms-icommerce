@@ -39,7 +39,8 @@ class Product extends Model implements TaggableInterface
     'summary',
     'slug',
     'meta_title',
-    'meta_description'
+    'meta_description',
+    'advanced_summary'
   ];
   protected $fillable = [
     'added_by_id',

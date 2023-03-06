@@ -174,6 +174,8 @@ class ProductTransformer extends BaseApiTransformer
             $this->translate("$lang")['metaTitle'] : '';
           $data[$lang]['metaDescription'] = $this->hasTranslation($lang) ?
             $this->translate("$lang")['metaDescription'] : '';
+          $data[$lang]['advanced_summary'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['advanced_summary'] : '';
         }
       }
     }
