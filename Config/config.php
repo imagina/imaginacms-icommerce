@@ -66,7 +66,7 @@ return [
     ],
     '11' => [
       'id' => 11,
-      'title' => 'icommerce::orderstatuses.statuses.pending',
+      'title' => 'icommerce::orderstatuses.statuses.confirmingPayment',
     ],
     '12' => [
       'id' => 12,
@@ -355,7 +355,8 @@ return [
       'repoMethod' => 'getPriceRange',
       'layout' => 'range-layout-1',
       'classes' => 'col-12',
-      'step' => 10000
+      'step' => 10000,
+      'stepSetting' => 'icommerce::filterRangePricesStep'
     ],
     'manufacturers' => [
       'title' => 'icommerce::manufacturers.plural',

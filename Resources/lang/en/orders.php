@@ -79,4 +79,16 @@ return [
     'details_1' => 'This is an order derived from the order',
     'details_2' => 'this order was created so that you have a direct order process with the store'
   ],
+  'informationBlocksOrder' => [
+    'orderingInformation' => 'Ordering information',
+    'titleOrderStatus' => 'Order Status',
+    'titleOrderDate' => 'Order Date',
+    'titleOrderIP' => 'Order made from IP',
+    'titleOrderInfoCustomer' => 'Customer Information',
+    'titleOrderShippingAddress' => 'Shipping Address',
+    'titleOrderPayShippingMethod' => 'Payment and shipping method',
+    'titleOrderPayMethod' => 'Payment method',
+    'titleOrderShippingMethod' => 'Shipping method',
+    'titleOrderDescriptionShippingMethod' => 'Method Description',
+  ],
 ];

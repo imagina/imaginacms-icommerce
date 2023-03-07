@@ -7,7 +7,7 @@
     <h3 class="d-flex align-items-center my-1 h5">
       {{ trans('icommerce::customer.title') }}
     </h3>
-  
+
     @if($errors->has('userId'))
       <br/>
       <span class="alert alert-danger" role="alert">{{ $errors->first('userId') }}</span>
@@ -15,17 +15,19 @@
   </div>
   <div id="customerData" class="collapse show" role="tablist" aria-multiselectable="true">
     @if (!$guestShopOnly)
-      <hr class="my-2"/>
-      <button wire:click.prevent="shopAsGuest"
-              class="btn btn-xs btn-primary" name="button">
-        @if (!$shopAsGuest)
-          {{trans('icommerce::customer.form.textButtonShopAsGuest')}}
-        @else
-          {{trans('icommerce::customer.form.textButtonShopAsUser')}}
-        @endif
-      </button>
+      @guest
+        <hr class="my-2"/>
+        <button wire:click.prevent="shopAsGuest"
+                class="btn btn-xs btn-primary" name="button">
+          @if (!$shopAsGuest)
+            {{trans('icommerce::customer.form.textButtonShopAsGuest')}}
+          @else
+            {{trans('icommerce::customer.form.textButtonShopAsUser')}}
+          @endif
+        </button>
+      @endguest
     @endif
-    
+
     @if ($shopAsGuest)
       <hr class="py-2"/>
       <input id="userEmail" wire:model.defer="userEmail"
@@ -61,7 +63,7 @@
           <div id="collapseRegister" class="collapse " role="tabpanel" aria-labelledby="headingRegister">
             <div class="card-block">
               <div class="card mb-0 border-0">
-                
+
                 <div class="card-block my-3">
                   <div class="alert alert-danger d-none" id="registerAlert"></div>
                   <div class="formUser">

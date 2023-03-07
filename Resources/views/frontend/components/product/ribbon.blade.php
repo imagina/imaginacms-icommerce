@@ -29,7 +29,7 @@
       </div>
     </div>
   @endif
-    <style>wi
+    <style>
         /*Discount Ribbon*/
         .productRibbon .ribbonDiscount .asideRibbon {
             color: {{$ribbonTextColor}};

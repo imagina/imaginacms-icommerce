@@ -76,7 +76,7 @@ class PublicController extends BaseApiController
   public function index(Request $request)
   {
     $argv = explode("/", $request->path());
-    $slug = end($argv);
+    $slug = end($argv); 
 
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
@@ -104,6 +104,12 @@ class PublicController extends BaseApiController
 
       $category = $this->category->findBySlug($slug);
 
+     
+      //Validation with lang from URL
+      $result = validateLocaleFromUrl($request,['entity' => $category]);
+      if(isset($result["reedirect"]))
+        return redirect()->to($result["url"]);
+      
       if (isset($category->id)) {
         $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
 
@@ -134,6 +140,16 @@ class PublicController extends BaseApiController
     } else {
       //Default breadcrumb
       $configFilters["categories"]["breadcrumb"] = [];
+
+      //Validation with lang from URL
+      $result = validateLocaleFromUrl($request,[
+        'fixedTrans'=>'icommerce::routes.store.index.index'
+      ]);
+      if(isset($result["reedirect"]))
+        return redirect()->to($result["url"]);
+      
+      
+
     }
 
     $title = (isset($category->id) ? ($category->h1_title ?? $category->title) : '');
@@ -189,6 +205,11 @@ class PublicController extends BaseApiController
       $manufacturer = $this->manufacturer->findBySlug($slug);
 
       if (isset($manufacturer->id)) {
+
+        //Validation with lang from URL
+        $result = validateLocaleFromUrl($request,['entity' => $manufacturer]);
+        if(isset($result["reedirect"]))
+          return redirect()->to($result["url"]);
 
         //Remove manufacturer filters of this index, its not necessary
         $configFilters = config("asgard.icommerce.config.filters");
@@ -265,6 +286,11 @@ class PublicController extends BaseApiController
 
       if (isset($category->id) && isset($manufacturer->id)) {
 
+         //Validation with lang from URL
+        $result = validateLocaleFromUrl($request,['entity' => $category]);
+        if(isset($result["reedirect"]))
+          return redirect()->to($result["url"]);
+
         $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
 
         $ctpl = "icommerce.manufacturer.{$manufacturer->id}.index";
@@ -325,6 +351,11 @@ class PublicController extends BaseApiController
 
     $product = $this->product->getItem($slug, $params);
 
+     //Validation with lang from URL
+    $result = validateLocaleFromUrl($request,['entity' => $product]);
+    if(isset($result["reedirect"]))
+      return redirect()->to($result["url"]);
+
     $organization = null;
     if (isset(tenant()->id)) {
       $organization = tenant();
@@ -374,8 +405,15 @@ class PublicController extends BaseApiController
 
   }
 
-  public function checkout()
+  public function checkout(Request $request)
   {
+    //Validation with lang from URL
+    $result = validateLocaleFromUrl($request,[
+        'fixedTrans'=>'icommerce::routes.store.checkout.create'
+    ]);
+    if(isset($result["reedirect"]))
+      return redirect()->to($result["url"]);
+
     $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
 
     $tpl = "icommerce::frontend.checkout.index";

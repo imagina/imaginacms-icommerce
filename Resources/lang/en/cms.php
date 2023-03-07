@@ -197,6 +197,7 @@ return [
   ],
   "message" => [
     "advanceEdit" => "Advanced Edit",
+    "quickEdit" => "Quick Edit",
     "warnAddOpt" => "To add options, you must first create the product",
     "noOptions" => "There are no added options",
     "noDeleteOption" => "You can not delete this option, you are the father of {name}",
@@ -222,6 +223,7 @@ return [
   "quickCard" => [
     "lastOrders" => "Commerce - Last Orders",
     "productsToSoldOut" => "Tienda - Products to sold out"
-  ]
+  ],
+  "advancedSummary" => "Advanced Summary"
 ];
 
