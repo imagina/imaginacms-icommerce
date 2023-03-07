@@ -8,7 +8,7 @@
             class="form-control"
             wire:model.lazy="billingAddressSelected"
             id="selectBillingAddress">
-            <option value="">Selecciona una dirección</option>
+            <option value="">{{trans('icommerce::billing_details.address.select_direction')}}</option>
 
             @foreach($addresses as $address)
               <option value="{{$address->id}}">{{$address->first_name}} {{ $address->last_name }}
