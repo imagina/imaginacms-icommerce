@@ -227,6 +227,7 @@ return [
   "quickCard" => [
     "lastOrders" => "Tienda - Ultimas Ordenes",
     "productsToSoldOut" => "Tienda - Productos por agotar"
-  ]
+  ],
+  "advancedSummary" => "Resumen Avanzado"
 ];
 
