@@ -25,5 +25,6 @@ return [
     'address'  => [
         'old_address' => 'Quiero usar una Dirección existente',
         'new_address' => 'Quiero usar una nueva dirección',
+        'select_direction' =>'Selecciona una dirección',
     ]
 ];
