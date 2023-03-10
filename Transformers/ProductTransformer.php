@@ -72,7 +72,6 @@ class ProductTransformer extends BaseApiTransformer
       //'totalDiscounts' => $this->present()->totalDiscounts,
       'isCall' => $this->is_call ? '1' : '0',
       'customUrl' => $this->when($this->custom_url, $this->custom_url),
-
       'totalTaxes' => $this->getTotalTaxes($filter),
       'manufacturerId' => $this->when($this->manufacturer_id, intval($this->manufacturer_id)),
       'taxClassId' => $this->when($this->tax_class_id, intval($this->tax_class_id)),
@@ -80,7 +79,8 @@ class ProductTransformer extends BaseApiTransformer
       'isNew' => $this->is_new,
       'isAvailable' => $this->is_available,
       'layoutId' => $this->layout_id,
-      'isInternal' => $this->is_internal
+      'isInternal' => $this->is_internal,
+      'advanced_summary' => $this->when($this->advanced_summary, $this->advanced_summary),
     ];
 
     $discount = $this->discount;
