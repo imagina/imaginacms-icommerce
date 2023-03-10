@@ -80,7 +80,7 @@ class ProductTransformer extends BaseApiTransformer
       'isAvailable' => $this->is_available,
       'layoutId' => $this->layout_id,
       'isInternal' => $this->is_internal,
-      'advanced_summary' => $this->when($this->advanced_summary, $this->advanced_summary),
+      'advancedSummary' => $this->when($this->advanced_summary, $this->advanced_summary),
     ];
 
     $discount = $this->discount;
@@ -171,10 +171,10 @@ class ProductTransformer extends BaseApiTransformer
           $data[$lang]['slug'] = $this->hasTranslation($lang) ?
             $this->translate("$lang")['slug'] : '';
           $data[$lang]['metaTitle'] = $this->hasTranslation($lang) ?
-            $this->translate("$lang")['metaTitle'] : '';
+            $this->translate("$lang")['meta_title'] : '';
           $data[$lang]['metaDescription'] = $this->hasTranslation($lang) ?
-            $this->translate("$lang")['metaDescription'] : '';
-          $data[$lang]['advanced_summary'] = $this->hasTranslation($lang) ?
+            $this->translate("$lang")['meta_description'] : '';
+          $data[$lang]['advancedSummary'] = $this->hasTranslation($lang) ?
             $this->translate("$lang")['advanced_summary'] : '';
         }
       }
