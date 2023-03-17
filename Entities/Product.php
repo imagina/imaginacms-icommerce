@@ -435,7 +435,7 @@ class Product extends Model implements TaggableInterface
   public function getUrlAttribute($locale = null)
   {
     $url = "";
-    
+
     if (!empty($this->custom_url)) return $this->custom_url;
 
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
@@ -445,11 +445,12 @@ class Product extends Model implements TaggableInterface
        $this->slug = $this->getTranslation($locale)->slug;
        $this->category = $this->category->getTranslation($locale);
     }
-  
+
     if (empty($this->slug)) return "";
-  
-    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+
+    if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')) {
       $host = request()->getHost();
+
       if ($useOldRoutes)
         if ($this->category->status && !empty($this->category->slug)){
           $url = \LaravelLocalization::localizeUrl('/'. $this->category->slug.'/'.$this->slug, $currentLocale);
@@ -457,7 +458,6 @@ class Product extends Model implements TaggableInterface
           $url = "";
         }
       else {
-        
         $url = Str::replace(["{productSlug}"],[$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
         $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
         
