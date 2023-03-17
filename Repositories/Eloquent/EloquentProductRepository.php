@@ -55,25 +55,28 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       // add filter by search
       if (isset($filter->search) && !empty($filter->search)) {
+
+        $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
+
         // removing symbols used by MySQL
         $filter->search = preg_replace("/[^a-zA-Z0-9]+/", " ", $filter->search);
         $words = explode(" ", $filter->search);//Explode
 
-        //Validate words of minum 3 length
-        foreach ($words as $key => $word) {
-          if (strlen($word) >= 3) {
-            $words[$key] = '+' . $word . '*';
-          }
-        }
-
         //Search query
         $query->leftJoin(\DB::raw(
-          "(SELECT MATCH (name) AGAINST ('(" . implode(" ", $words) . ") (" . $filter->search . ")' IN BOOLEAN MODE) scoreSearch, product_id, name " .
+          "(SELECT MATCH (" . implode(',',json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN NATURAL LANGUAGE MODE) scoreSearch1, product_id, name, " .
+          " MATCH (" . implode(',',json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(" . $filter->search . ")' IN NATURAL LANGUAGE MODE) scoreSearch2 " .
           "from icommerce__product_translations " .
-          "where `locale` = '{$filter->locale}') as ptrans"
+          "where `locale` = '".($filter->locale ?? locale())."') as ptrans"
         ), 'ptrans.product_id', 'icommerce__products.id')
-          ->where('scoreSearch', '>', 0)
-          ->orderBy('scoreSearch', 'desc');
+          ->where(function ($query){
+            $query->where('scoreSearch1', '>', 0)
+              ->orWhere('scoreSearch2', '>', 0);
+          });
+
+        foreach ($orderSearchResults ?? [] as $orderSearch){
+          $query->orderBy($orderSearch, 'desc');
+        }
 
         //Remove order by
         unset($filter->order);
