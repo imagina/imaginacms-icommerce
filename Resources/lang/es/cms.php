@@ -183,6 +183,7 @@ return [
     "color" => "Color",
     "featured" => "Destacado",
     "isCall" => "Producto para Cotizar",
+    "showPriceIsCall" => "Mostrar precio cuando el producto es para cotizar",
     "sortOrder" => "Orden de prioridad",
     "operationPrefix" => "Operación",
     "value" => "Valor | Valores",

@@ -181,6 +181,7 @@ return [
     "color" => "Color",
     "featured" => "Featured",
     "isCall" => "Product for Quote",
+    "showPriceIsCall" => "Show Price when is for Quote",
     "sortOrder" => "Sort Order",
     "operationPrefix" => "Operation",
     "value" => "Value | Values",
