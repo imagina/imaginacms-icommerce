@@ -22,7 +22,7 @@
   @endif
   
   <div class="row align-items-center">
-    @if(!$product->is_call && $withPrice)
+    @if((!$product->is_call || $product->show_price_is_call) && $withPrice)
       <div class="col col-price @if(!$withTextInAddToCart || $buttonsPosition!="in-content") w-100 @endif">
         <div class="price"
              style="font-size: {{$contentPriceFontSize}}px;

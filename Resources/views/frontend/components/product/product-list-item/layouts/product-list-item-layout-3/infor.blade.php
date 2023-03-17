@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    @if(!$product->is_call)
+    @if((!$product->is_call  || $product->show_price_is_call) && $withPrice)
         <div class="price">
             {{isset($currency) ? $currency->symbol_left : '$'}}{{formatMoney($product->discount->price ?? $product->price)}}
             @if(isset($discount) && $discount)
