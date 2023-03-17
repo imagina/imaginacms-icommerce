@@ -59,7 +59,7 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
 
         // removing symbols used by MySQL
-        $filter->search = preg_replace("/[^a-zA-Z0-9]+/", " ", $filter->search);
+        $filter->search = preg_replace("/[^Ñña-zA-Z0-9]+/", " ", $filter->search);
         $words = explode(" ", $filter->search);//Explode
 
         //Search query
