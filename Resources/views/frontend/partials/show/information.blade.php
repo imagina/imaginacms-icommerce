@@ -44,10 +44,10 @@
   @endif
 
 <!-- OPCIONES DE PRODUCTO -->
-  @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status)
+  @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")|| ($product->is_call && $product->show_price_is_call)) && $product->stock_status )
     <livewire:icommerce::options :product="$product"/>
-
-  @elseif($product->is_call)
+@endif
+  @if($product->is_call)
   <!-- BUTTON CONSULT -->
     <div class="add-cart">
       <hr>
