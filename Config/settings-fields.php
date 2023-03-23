@@ -16,8 +16,6 @@ return [
       'clearable' => true,
     ],
   ],
-
-
   'form-emails' => [
     'name' => 'icommerce::form-emails',
     'value' => [],
@@ -33,7 +31,6 @@ return [
       'label' => 'icommerce::common.settings.emails'
     ],
   ],
-
   'product-per-page' => [
     'name' => 'icommerce::product-per-page',
     'value' => 12,
@@ -72,7 +69,6 @@ return [
       'rows' => 3
     ],
   ],
-
   'customIndexContactLabel' => [
     'name' => 'icommerce::customIndexContactLabel',
     'value' => 'Contáctenos',
@@ -87,7 +83,6 @@ return [
       'type' => 'text',
     ],
   ],
-
   'carouselIndexCategory' => [
     'value' => 'carousel-category-active',
     'name' => 'icommerce::carouselIndexCategory',
@@ -131,7 +126,6 @@ return [
       'label' => 'Mostrar Categorías Hijas en el header del Index'
     ]
   ],
-
   'categoryChildrenIndexHeader' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
@@ -152,7 +146,6 @@ return [
       ]
     ]
   ],
-
   'filterCategoriesTitle' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
@@ -185,7 +178,6 @@ return [
       'label' => 'icommerce::common.filters.priceRange.step'
     ],
   ],
-
   'daysEnabledForNewProducts' => [
     'name' => 'icommerce::daysEnabledForNewProducts',
     'value' => 15,
@@ -255,7 +247,6 @@ return [
       'falseValue' => "0",
     ],
   ],
-
   'productMinimumQuantityToNotify' => [
     'name' => 'icommerce::productMinimumQuantityToNotify',
     'groupName' => 'product',
@@ -419,7 +410,6 @@ return [
       'label' => 'icommerce::common.settings.product.showButtonThatGeneratesPdfOfTheCart'
     ]
   ],
-
   'showReviewsProduct' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -433,7 +423,6 @@ return [
       'label' => 'icommerce::common.settings.product.showReviewsProduct'
     ]
   ],
-
   'icommerceCartQuoteForm' => [
     "onlySuperAdmin" => true,
     'name' => 'icommerce::icommerceCartQuoteForm',
@@ -450,8 +439,6 @@ return [
       'clearable' => true,
     ],
   ],
-
-
   'letMeKnowProductIsAvailableForm' => [
     "onlySuperAdmin" => true,
     'name' => 'icommerce::letMeKnowProductIsAvailableForm',
@@ -468,7 +455,6 @@ return [
       'clearable' => true,
     ],
   ],
-
   'showRatingProduct' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -482,7 +468,6 @@ return [
       'label' => 'icommerce::common.settings.product.showRatingProduct'
     ]
   ],
-
   'chatByOrderEnable' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -494,7 +479,6 @@ return [
       'label' => 'icommerce::common.settings.chatByOrderEnable'
     ]
   ],
-
   'showRatingInReviewsProduct' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -508,7 +492,6 @@ return [
       'label' => 'icommerce::common.settings.product.showRatingInReviewsProduct'
     ]
   ],
-
   'tenantWithCentralData' => [
     'value' => [],
     'name' => 'icommerce::tenantWithCentralData',
@@ -534,7 +517,6 @@ return [
       ]
     ]
   ],
-
   'productDiscountRibbonStyle' => [
     'value' => 'flag',
     'name' => 'icommerce::productDiscountRibbonStyle',
@@ -578,7 +560,6 @@ return [
       ]
     ]
   ],
-
   'productRibbonBackgroundColor' => [
     "onlySuperAdmin" => true,
     'value' => "#f2c037",
@@ -590,7 +571,6 @@ return [
       'label' => 'icommerce::common.settings.productRibbonBackgroundColor'
     ]
   ],
-
   'productRibbonTextColor' => [
     "onlySuperAdmin" => true,
     'value' => "#333333",
@@ -602,7 +582,6 @@ return [
       'label' => 'icommerce::common.settings.productRibbonTextColor'
     ]
   ],
-
   'productImageBorder' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -627,7 +606,6 @@ return [
       'label' => 'icommerce::common.settings.productImageBorderColor'
     ]
   ],
-
   'productImageBorderRadius' => [
     "onlySuperAdmin" => true,
     'value' => 0,
@@ -640,7 +618,6 @@ return [
       'label' => 'icommerce::common.settings.productImageBorderRadius'
     ]
   ],
-
   'productExternalPadding' => [
     "onlySuperAdmin" => true,
     'value' => 0,
@@ -653,7 +630,6 @@ return [
       'label' => 'icommerce::common.settings.productExternalPadding'
     ]
   ],
-
   'productExternalBorder' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -667,7 +643,6 @@ return [
       'label' => 'icommerce::common.settings.productExternalBorder'
     ]
   ],
-
   'productExternalBorderRadius' => [
     "onlySuperAdmin" => true,
     'value' => 0,
@@ -680,7 +655,6 @@ return [
       'label' => 'icommerce::common.settings.productExternalBorderRadius'
     ]
   ],
-
   'productExternalBorderColor' => [
     "onlySuperAdmin" => true,
     'value' => "#dddddd",
@@ -692,7 +666,6 @@ return [
       'label' => 'icommerce::common.settings.productExternalBorderColor'
     ]
   ],
-
   'productExternalShadowOnHover' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -717,7 +690,6 @@ return [
       'label' => 'icommerce::common.settings.productExternalShadowOnHoverColor'
     ]
   ],
-
   'productAddToCartIcon' => [
     'value' => 'fa-shopping-cart',
     'name' => 'icommerce::productAddToCartIcon',
@@ -775,7 +747,6 @@ return [
       ]
     ]
   ],
-
   'productWithTextInAddToCart' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -815,7 +786,6 @@ return [
       'label' => 'icommerce::common.settings.productShowButtonsOnMouseHover'
     ]
   ],
-
   'productButtonsLayout' => [
     'value' => 'borders',
     'name' => 'icommerce::productButtonsLayout',
@@ -966,7 +936,6 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleMaxHeight'
     ]
   ],
-
   'productContentTitleFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 14,
@@ -979,7 +948,6 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleFontSize'
     ]
   ],
-
   'productContentTitleNumberOfCharacters' => [
     "onlySuperAdmin" => true,
     'value' => 80,
@@ -992,7 +960,6 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleNumberOfCharacters'
     ]
   ],
-
   'productContentTitleToUppercase' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -1006,7 +973,6 @@ return [
       'label' => 'icommerce::common.settings.productContentTitleToUppercase'
     ]
   ],
-
   'productContentTitleFontWeight' => [
     'value' => 'normal',
     'name' => 'icommerce::productContentTitleFontWeight',
@@ -1030,7 +996,6 @@ return [
       ]
     ]
   ],
-
   'productContentCategoryFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 8,
@@ -1043,7 +1008,6 @@ return [
       'label' => 'icommerce::common.settings.productContentCategoryFontSize'
     ]
   ],
-
   'productContentCategoryEnable' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -1057,7 +1021,6 @@ return [
       'label' => 'icommerce::common.settings.productContentCategoryEnable'
     ]
   ],
-
   'productContentCategoryToUppercase' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -1094,7 +1057,6 @@ return [
       ]
     ]
   ],
-
   'productContentPriceFontSize' => [
     "onlySuperAdmin" => true,
     'value' => 8,
@@ -1107,7 +1069,6 @@ return [
       'label' => 'icommerce::common.settings.productContentPriceFontSize'
     ]
   ],
-
   'productContentPriceFontWeight' => [
     'value' => 'normal',
     'name' => 'icommerce::productContentPriceFontWeight',
@@ -1131,7 +1092,6 @@ return [
       ]
     ]
   ],
-
   'productProductBackgroundColor' => [
     "onlySuperAdmin" => true,
     'value' => "#ffffff",
@@ -1143,7 +1103,6 @@ return [
       'label' => 'icommerce::common.settings.productProductBackgroundColor'
     ]
   ],
-
   'productProductBackgroundColor' => [
     "onlySuperAdmin" => true,
     'value' => "transparent",
@@ -1195,6 +1154,50 @@ return [
     'type' => 'html',
     'props' => [
       'label' => 'icommerce::common.settings.labelOrderSummaryDescription',
+    ]
+  ],
+  'orderSearchResults' => [
+    'value' => ['scoreSearch1','icommerce__products.created_at','scoreSearch2'],
+    'name' => 'icommerce::orderSearchResults',
+    'groupName' => 'searcher',
+    'groupTitle' => 'icommerce::common.search.settings.groupName',
+    "onlySuperAdmin" => true,
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.search.settings.labelSearcherOrder',
+      'useInput' => false,
+      'useChips' => true,
+      'multiple' => true,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'icommerce::common.search.settings.options.fullWord', 'value' => 'scoreSearch1'],
+        ['label' => 'icommerce::common.search.settings.options.createDate', 'value' => 'icommerce__products.created_at'],
+        ['label' => 'icommerce::common.search.settings.options.uniqueWord', 'value' => 'scoreSearch2'],
+      ]
+    ]
+  ],
+  'selectSearchFieldsProducts' => [
+    'value' => ['name','summary','description'],
+    'name' => 'icommerce::selectSearchFieldsProducts',
+    'groupName' => 'searcher',
+    'groupTitle' => 'icommerce::common.search.settings.groupName',
+    "onlySuperAdmin" => true,
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+      'label' => 'icommerce::common.search.settings.labelSearchFields',
+      'useInput' => false,
+      'useChips' => true,
+      'multiple' => true,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'icommerce::common.search.settings.options.name', 'value' => 'name'],
+        ['label' => 'icommerce::common.search.settings.options.summary', 'value' => 'summary'],
+        ['label' => 'icommerce::common.search.settings.options.description', 'value' => 'description'],
+      ]
     ]
   ],
 ];

@@ -253,6 +253,19 @@ return [
     'no_results' => 'No hay resultados',
     'see_all' => 'Ver todos los resultados...',
     'search_result' => 'Resultado de la busqueda de',
+    'settings' => [
+      'groupName' => 'Motor De Búsqueda Tienda',
+      'labelSearcherOrder' => 'Ordenamiento de búsqueda',
+      'labelSearchFields' => 'Campos de búsqueda para productos',
+      'options' => [
+        'name' => 'Nombre Del Producto',
+        'summary' => 'Resumen Del Producto',
+        'description' => 'Descripción Del Producto',
+        'uniqueWord' => 'Palabras Individuales',
+        'createDate' => 'Fecha De Creación',
+        'fullWord' => 'Palabra Completa',
+      ],
+    ],
   ],
   'related' => [
     'page' => 'PAGINA RELACIONADA',
@@ -275,13 +288,10 @@ return [
       'orderurl' => 'If you want to check the status of your order at any time please go to the link: '
     ],
   ],
-
   'social' => [
     'share' => 'Compartir'
   ],
-
   'offers' => [
     'title' => 'Ofertas'
-  ]
-
+  ],
 ];
