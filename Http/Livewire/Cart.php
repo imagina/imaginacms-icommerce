@@ -6,6 +6,7 @@ use \Illuminate\Session\SessionManager;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Modules\Icommerce\Entities\Category;
+use Modules\Icommerce\Entities\Currency;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
@@ -17,15 +18,19 @@ class Cart extends Component
   public $cart;
   public $view;
   public $layout;
+  public $currentCurrency;
+  public $currencySelected;
   public $productToQuote;
   public $showButton;
   public $icon;
   public $iconquote;
   private $params;
   private $request;
+  protected $currencies;
   protected $listeners = ['addToCart','addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
 
-  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart', $iconquote = 'fas fa-file-alt', $showButton = true)
+  public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
+                        $iconquote = 'fas fa-file-alt', $showButton = true)
   {
 
 
@@ -36,6 +41,7 @@ class Cart extends Component
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
 
     //$this->refreshCart();
+    $this->load();
   }
 
   //|--------------------------------------------------------------------------
@@ -165,7 +171,28 @@ class Cart extends Component
     $this->emit("cartUpdated", $this->cart);
 
   }
+  
+  /**
+   * @param $name
+   * @param $value
+   */
+  public function updated($name, $value)
+  {
 
+    switch ($name) {
+      case 'currencySelected':
+        if ($value) {
+          $currency = $this->currencyRepository()->getItem($value);
+           request()->session()->put('custom_currency_' . (tenant()->id ?? "") . $currency->code,$currency);
+    
+          $this->dispatchBrowserEvent('refresh-page');
+        }
+        break;
+        
+    }
+    
+  }
+  
   public function download()
   {
 
@@ -247,13 +274,21 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\CartProductRepository');
   }
-
+  
   /**
    * @return productRepository
    */
   private function productRepository()
   {
     return app('Modules\Icommerce\Repositories\ProductRepository');
+  }
+  
+  /**
+   * @return currencyRepository
+   */
+  private function currencyRepository()
+  {
+    return app('Modules\Icommerce\Repositories\CurrencyRepository');
   }
   //|--------------------------------------------------------------------------
   //| Services
@@ -288,8 +323,11 @@ class Cart extends Component
 
   protected function load()
   {
-
+    $this->currentCurrency = currentCurrency();
+    $this->currencies = $this->currencyRepository()->getItemsBy(json_decode(json_encode([])));
+    $this->currencySelected = $this->currentCurrency->id;
   }
+  
 
   //|--------------------------------------------------------------------------
   //| Properties

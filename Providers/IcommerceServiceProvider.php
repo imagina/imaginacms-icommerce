@@ -2,11 +2,13 @@
 
 namespace Modules\Icommerce\Providers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Events\BuildingSidebar;
 use Modules\Core\Events\LoadingBackendTranslations;
 use Modules\Core\Traits\CanPublishConfiguration;
 use Modules\Icommerce\Console\UpdateCarts;
+use Modules\Icommerce\Entities\Currency;
 use Modules\Icommerce\Entities\Product;
 use Modules\Icommerce\Events\Handlers\RegisterIcommerceSidebar;
 use Modules\Tag\Repositories\TagManager;
@@ -92,6 +94,7 @@ class IcommerceServiceProvider extends ServiceProvider
 
     $this->registerComponents();
     $this->registerComponentsLivewire();
+    $this->cachingCurrency();
   }
 
   /**
@@ -560,5 +563,8 @@ class IcommerceServiceProvider extends ServiceProvider
     Livewire::component('icommerce::options.item', \Modules\Icommerce\Http\Livewire\Options\ItemOption::class);
   }
 
-
+  private function cachingCurrency(){
+  
+    //  currentCurrency();
+  }
 }

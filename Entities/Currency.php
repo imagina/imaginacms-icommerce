@@ -17,11 +17,14 @@ class Currency extends Model
     'code',
     'symbol_left',
     'symbol_right',
-    'decimal_place',
+    'decimals',
+    'decimal_separator',
+    'thousands_separator',
     'store_id',
     'value',
     'status',
     'default_currency',
+    'locale',
     'options'
   
   ];

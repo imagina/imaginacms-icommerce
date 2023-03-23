@@ -15,10 +15,10 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     
     // RELATIONSHIPS
     $defaultInclude = ['translations'];
-    $query->with(array_merge($defaultInclude, $params->include));
+    $query->with(array_merge($defaultInclude, $params->include ?? []));
     
     // FILTERS
-    if ($params->filter) {
+    if (isset($params->filter)) {
       $filter = $params->filter;
       
       //get language translation
@@ -45,20 +45,33 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
       }
     }
   
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+    } else {
+    
+      //Pre filters by default
+      $this->defaultPreFilters($query, $params);
+    }
+  
+  
     /*== FIELDS ==*/
     if (isset($params->fields) && count($params->fields))
       $query->select($params->fields);
   
     /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
+    if (isset($params->onlyQuery) && $params->onlyQuery) {
+      return $query;
+    } else
+      if (isset($params->page) && $params->page) {
+        //return $query->paginate($params->take);
+        return $query->paginate($params->take, ['*'], null, $params->page);
+      } else {
+        isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
+        return $query->get();
+      }
   }
   
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -72,15 +85,24 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
 
     // RELATIONSHIPS
     $includeDefault = ['translations'];
-    $query->with(array_merge($includeDefault, $params->include));
+    $query->with(array_merge($includeDefault, $params->include ?? []));
 
 
     // FIELDS
-    if ($params->fields) {
+    if (isset($params->fields) && !empty($params->fields)) {
+      
       $query->select($params->fields);
     }
-
+  
     $query->where($field ?? 'id', $criteria);
+
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
+    
+    } else {
+    
+      //Pre filters by default
+      $this->defaultPreFilters($query, $params);
+    }
 
     return $query->first();
     
@@ -155,6 +177,14 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
   public function getActive(){
     return $this->model->where("default_currency",1)->first();
   }
-
-
+  
+  public function defaultPreFilters(&$query, $params){
+    
+    //Pre filters by default
+    //pre-filter status
+    $query->where("status", 1);
+    
+  
+    
+  }
 }

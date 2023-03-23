@@ -196,7 +196,11 @@ return [
     "productHint" => "Escriba el nombre de los productos deseados",
     "withDiscount" => "Con descuento",
     "symbolLeft" => "Símbolo Izquierdo",
-    "symbolRight" => "Símbolo Derecho"
+    "symbolRight" => "Símbolo Derecho",
+    "decimals" => "Decimales",
+    "decimalSeparator" => "Separador de Decimales",
+    "thousandsSeparator" => "Separador de Miles",
+
   ],
   "message" => [
     "advanceEdit" => "Edición Avanzada",

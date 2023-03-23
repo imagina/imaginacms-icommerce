@@ -48,7 +48,7 @@ return [
     "code" => "Code",
     "symbol_left" => "Symbol Left",
     "symbol_right" => "Symbol Right",
-    "decimal_place" => "Decimal",
+    "decimals" => "Decimal",
     "value" => "Value",
     "status" => "Status",
     "default_currency" => "Default Currency"
@@ -193,8 +193,11 @@ return [
     "allOrder" => "Apply to all order?",
     "productHint" => "Please type the product name",
     "withDiscount" => "With discount",
-    "symbolLeft" => "Símbolo Izquierdo",
-    "symbolRight" => "Símbolo Derecho"
+    "symbolLeft" => "Left Symbol",
+    "decimals" => "Decimals",
+    "decimalSeparator" => "Decimal Separator",
+    "thousandsSeparator" => "Thousands Separator",
+    "symbolRight" => "Right Symbol"
   ],
   "message" => [
     "advanceEdit" => "Advanced Edit",

@@ -122,9 +122,13 @@ return [
    |--------------------------------------------------------------------------
    */
   'formatmoney' => [
+    'symbol_left' => '$',
+    'symbol_right' => '',
     'decimals' => 0,
-    'dec_point' => '',
-    'housands_sep' => '.'
+    'decimal_separator' => '.',
+    'thousands_separator' => ',',
+    'code'=> 'USD',
+    'value'=>1
   ],
 
   /*

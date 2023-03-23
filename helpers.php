@@ -124,17 +124,45 @@ if (!function_exists('formatMoney')) {
 
     function formatMoney($value,$showCurrencyCode=false)
     {
-        $format =(object) Config::get('asgard.icommerce.config.formatmoney');
-
-        $numberFormat = number_format($value, $format->decimals,$format->dec_point, $format->housands_sep);
+        $currency = currentCurrency();
+     
+        $value = $value * $currency->value;
+        $numberFormatted = number_format($value, $currency->decimals,$currency->decimal_separator, $currency->thousands_separator);
 
         if($showCurrencyCode){
-            $currency = Currency::whereStatus(Status::ENABLED)->where('default_currency','=',1)->first();
-            $numberFormat = $numberFormat." ".$currency->code;
+          $numberFormatted = $currency->symbol_left.$numberFormatted.$currency->symbol_right;
         }
 
-        return $numberFormat;
+        return $numberFormatted;
 
+    }
+
+}
+if (!function_exists('currentCurrency')) {
+
+    function currentCurrency()
+    {
+      
+      $currency = \Cache::store(config("cache.default"))->remember('currency_' . (tenant()->id ?? "") . locale(), 60*60*24*30, function () {
+    
+        //getting currency by current locale
+        $currency = Currency::where("locale",locale())->whereStatus(Status::ENABLED)->first();
+    
+        if(!isset($currency->id)){
+          //getting default currency
+          $currency = Currency::where("default_currency",1)->whereStatus(Status::ENABLED)->first();
+        }
+        
+        if(!isset($currency->id)){
+          $currency = new Currency(Config::get('asgard.icommerce.config.formatmoney'));
+        }
+        return $currency;
+      });
+  
+      $sessionCurrency = request()->session()->get('custom_currency_' . (tenant()->id ?? "") . $currency->code);
+   
+      if(isset($sessionCurrency->id)) return $sessionCurrency;
+      return $currency;
     }
 
 }
