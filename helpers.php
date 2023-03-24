@@ -127,7 +127,7 @@ if (!function_exists('formatMoney')) {
         $currency = currentCurrency();
      
         $value = $value * $currency->value;
-        $numberFormatted = number_format($value, $currency->decimals,$currency->decimal_separator, $currency->thousands_separator);
+        $numberFormatted = number_format($value, intval($currency->decimals) ?? 0,$currency->decimal_separator, $currency->thousands_separator);
 
         if($showCurrencyCode){
           $numberFormatted = $currency->symbol_left.$numberFormatted.$currency->symbol_right;
