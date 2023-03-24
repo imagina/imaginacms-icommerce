@@ -25,7 +25,7 @@ class CurrencyTableSeeder extends Seeder
         "code"	=> "COP",
         "symbol_left"	=> "$",
         "symbol_right"	=> "",
-        "decimal_place"=> "",
+        "decimals"=> "",
         "value"	=> 1,
         "status"	=> 1,
         "default_currency"	=> true
