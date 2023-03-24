@@ -42,9 +42,25 @@
       </a>
     </div>
   @endif
-
+  
+  @if( $product->is_sold_out )
+  <div>
+    <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
+    
+    @php
+      $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null);
+    @endphp
+    @if($productAvailableForm)
+      <br>
+      <br>
+      <span class="text-primary">{{trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title")}}</span>
+      <x-iforms::form :id="$productAvailableForm"
+                      :fieldsParams="['productName' => ['readonly' => 'readonly', 'value' => $product->name]]"/>
+    @endif
+    <hr>
+  </div>
 <!-- OPCIONES DE PRODUCTO -->
-  @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")|| ($product->is_call && $product->show_price_is_call)) && $product->stock_status )
+  @elseif((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart") || ($product->is_call && $product->show_price_is_call)) && $product->stock_status )
     <livewire:icommerce::options :product="$product"/>
 @endif
   @if($product->is_call)
@@ -68,22 +84,6 @@
 
         </div>
       </div>
-      <hr>
-    </div>
-  @else
-    <div>
-      <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
-
-      @php
-        $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null);
-      @endphp
-      @if($productAvailableForm)
-        <br>
-        <br>
-        <span class="text-primary">{{trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title")}}</span>
-        <x-iforms::form :id="$productAvailableForm"
-                        :fieldsParams="['productName' => ['readonly' => 'readonly', 'value' => $product->name]]"/>
-      @endif
       <hr>
     </div>
   @endif
