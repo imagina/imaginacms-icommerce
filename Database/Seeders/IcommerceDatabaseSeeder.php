@@ -26,6 +26,7 @@ class IcommerceDatabaseSeeder extends Seeder
         $this->call(IformRequestQuoteTableSeeder::class);
         //$this->call(IformLetMeKnowWhenProductIsAvailableTableSeeder::class);
         $this->call(CreateFormsTableSeeder::class);
+        $this->call(IcommerceFixOrdersStatusPendingDuplicatedTableSeeder::class);
 
 
     }

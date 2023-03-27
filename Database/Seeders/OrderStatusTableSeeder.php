@@ -34,9 +34,7 @@ class OrderStatusTableSeeder extends Seeder
           ]
         ];
         $orderStatus = OrderStatus::find($status['id']);
-        if(isset($orderStatus->id)){
-          $orderStatus->update($data);
-        }else{
+        if(!isset($orderStatus->id)){
           $orderStatus = OrderStatus::create($data);
         }
         
