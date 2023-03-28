@@ -168,7 +168,7 @@ class OrderTransformer extends JsonResource
             [
               'label' => trans("iprofile::frontend.form.shipping_address"),
               'value' => ($this->shipping_first_name ?? '') . ", " . ($this->shipping_last_name ?? '') . ", " .
-                ($this->shipping_address_1 ?? '') . ", " . ($this->shipping_city ?? '') . ", " .
+                ($this->shipping_address_1 ?? '') . ", " . ($this->shipping_city ?? '') . ", " . ($this->shipping_zip_code ?? '') . ", " .
                 (isset($item['shippingDepartment']->name) ? $item['shippingDepartment']->name : '') . ", " . (isset($item['shippingCountry']->name) ? $item['shippingCountry']->name : '')
             ],
             [
@@ -192,16 +192,17 @@ class OrderTransformer extends JsonResource
                     "label" => trans("iprofile::addresses.form.identification"),
                     "value" => $orderShippingExtraFields->{$extraField->field} . " " . $documentNumber
                   ]);
-                } else {
-                  array_push($customerShippingAddressBlock["values"], [
-                    "label" => trans("iprofile::addresses.form.$extraField->field"),
-                    "value" => $orderShippingExtraFields->{$extraField->field}
-                  ]);
                 }
               }
             }
           }
         }
+
+          array_push($customerShippingAddressBlock["values"], [
+            "label" => trans("iprofile::addresses.form.extraInfo"),
+            "value" => $orderShippingExtraFields->extraInfo
+          ]);
+        
       } else {
         $customerShippingAddressBlock = [
           'title' => trans('icommerce::orders.table.shipping address'),
@@ -227,7 +228,7 @@ class OrderTransformer extends JsonResource
           ],
           [
             'label' => trans("iprofile::frontend.form.billing_address"),
-            'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, {$item['paymentCity']}, " .
+            'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, {$item['paymentCity']}, {$item['paymentZipCode']}, " .
               ($item['paymentDepartment']->name ?? '') . ", " . ($item['paymentCountry']->name ?? '')
           ],
           [
@@ -248,18 +249,20 @@ class OrderTransformer extends JsonResource
                   "label" => trans("iprofile::addresses.form.identification"),
                   "value" => $orderBillingExtraFields->{$extraField->field} . " " . $documentNumber
                 ]);
-              } else {
-                array_push($customerBillingAddressBlock["values"], [
-                  "label" => trans("iprofile::addresses.form.$extraField->field"),
-                  "value" => $orderBillingExtraFields->{$extraField->field}
-                ]);
               }
             }
           }
         }
       }
+   
+  
+      array_push($customerBillingAddressBlock["values"], [
+        "label" => trans("iprofile::addresses.form.extraInfo"),
+        "value" => $orderBillingExtraFields->extraInfo
+      ]);
+      
       array_push($item["informationBlocks"], $customerBillingAddressBlock);
-
+  
     } else {
 
       if ($this->type == "quote") {
