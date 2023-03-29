@@ -200,7 +200,7 @@ class OrderTransformer extends JsonResource
 
           array_push($customerShippingAddressBlock["values"], [
             "label" => trans("iprofile::addresses.form.extraInfo"),
-            "value" => $orderShippingExtraFields->extraInfo
+            "value" => $orderShippingExtraFields->extraInfo ?? ""
           ]);
         
       } else {
