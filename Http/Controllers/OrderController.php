@@ -45,7 +45,11 @@ class OrderController extends BasePublicController
             $orders = $this->order->getItemsBy((object)["filter"=>(object)["customer"=>$user->id],"include"=>[],"page"=>1,"take"=>8,"user"=>$user]);
         }
 
-        return view($tpl, compact('orders', 'user'));
+        $organization = null;
+        if (isset(tenant()->id)) 
+            $organization = tenant();
+
+        return view($tpl, compact('orders', 'user','organization'));
     }
 
     /**
@@ -65,6 +69,11 @@ class OrderController extends BasePublicController
             $order = $this->order->getItem($request->orderKey,(object)["filter"=>(object)["field"=>"key"],"include"=>[]]);
 
         $products = [];
+
+        $organization = null;
+        if (isset(tenant()->id)) 
+            $organization = tenant();
+
         if (isset($order) && !empty($order)) {
             if ($order->shipping_amount>0){
                 $subtotal = $order->total + $order->coupon_total - $order->shipping_amount;
@@ -74,8 +83,8 @@ class OrderController extends BasePublicController
             if ($order->tax_amount){
                 $subtotal = $subtotal - $order->tax_amount;
             }
-          $order = new OrderTransformer($order);
-            return view($tpl, compact('order','subtotal'));
+            $order = new OrderTransformer($order);
+            return view($tpl, compact('order','subtotal','organization'));
 
         } else
             return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));
