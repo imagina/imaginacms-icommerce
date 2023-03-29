@@ -10,7 +10,7 @@
         </li>
         @if($notContainIsCall)
           <li class="list-group-item bg-light">
-            <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() . '.icommerce.store.checkout') }}"
+            <a href="{{ \URL::route(locale() . '.icommerce.store.checkout') }}"
                class="btn btn-warning btn-block text-white">
               {{trans('icommerce::cart.button.view_cart')}}
             </a>

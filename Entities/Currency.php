@@ -24,7 +24,7 @@ class Currency extends Model
     'value',
     'status',
     'default_currency',
-    'locale',
+    'language',
     'options'
   
   ];

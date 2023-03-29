@@ -20,8 +20,19 @@
                             @endif
                         </span>
 
-              
                     </h5>
+  
+                  @if($this->currencies->count())
+                    <div class="form-group">
+                      <select wire:model="currencySelected" id="currencySelector" class="form-control currency-selector">
+                        @foreach($this->currencies as $currency)
+                          <option {{$currency->id == $currentCurrency->id ? "selected" : ""}} value="{{$currency->id}}">{{$currency->code}}</option>
+                        @endforeach
+                      </select>
+    
+                    </div>
+  
+                  @endif
                     <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
                         <i class="fa fa-arrow-right"></i>
                     </button>
@@ -116,7 +127,10 @@
     </script>
     <script>
         window.addEventListener('refresh-page', event => {
-            window.location.reload(true);
+            setTimeout(()=>{
+                window.location.reload(true);
+            },1000)
+            
         })
     </script>
 @stop

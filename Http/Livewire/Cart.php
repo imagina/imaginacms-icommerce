@@ -183,8 +183,8 @@ class Cart extends Component
       case 'currencySelected':
         if ($value) {
           $currency = $this->currencyRepository()->getItem($value);
-           request()->session()->put('custom_currency_' . (tenant()->id ?? "") . $currency->code,$currency);
-    
+           request()->session()->put('custom_currency_' . (tenant()->id ?? ""),$currency);
+          
           $this->dispatchBrowserEvent('refresh-page');
         }
         break;
