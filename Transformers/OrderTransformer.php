@@ -228,7 +228,7 @@ class OrderTransformer extends JsonResource
           ],
           [
             'label' => trans("iprofile::frontend.form.billing_address"),
-            'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, {$item['paymentCity']}, {$item['paymentZipCode']}, " .
+            'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, ".($item['paymentCity']).", {$this->payment_zip_code}, " .
               ($item['paymentDepartment']->name ?? '') . ", " . ($item['paymentCountry']->name ?? '')
           ],
           [
@@ -258,7 +258,7 @@ class OrderTransformer extends JsonResource
   
       array_push($customerBillingAddressBlock["values"], [
         "label" => trans("iprofile::addresses.form.extraInfo"),
-        "value" => $orderBillingExtraFields->extraInfo
+        "value" => $orderBillingExtraFields->extraInfo ?? ""
       ]);
       
       array_push($item["informationBlocks"], $customerBillingAddressBlock);
