@@ -252,7 +252,7 @@ class Checkout extends Component
   public function initPaymentMethods()
   {
 
-    $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $this->cart->id ?? null]];
+    $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $this->cart->id ?? null,"validateCurrency" => true]];
 
     $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
 

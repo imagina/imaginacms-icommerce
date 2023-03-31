@@ -71,23 +71,52 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
             if (isset($params->extra))
               $data['extra'] = $params->extra;
           }
+
+          //Helper to get current currency
+          $currentCurrency = currentCurrency();
+
           foreach ($items as $key => $method) {
-            $methodApiController = app($method->options->init);
-            
-            if (method_exists($methodApiController, "calculations")) {
-              try {
-                
-                $results = $methodApiController->calculations(new Request ($data));
-                $resultData = $results->getData();
-                $method->calculations = $resultData;
-              } catch (\Exception $e) {
-                
-                
-                $resultData["msj"] = "error";
-                $resultData["items"] = $e->getMessage();
-                $method->calculations = $resultData;
+
+            //Process to validate method currencies
+            $methodDeleted = false;
+            if(isset($filter->validateCurrency)){
+
+              /* If the field is not configured yet, 
+              the method will be displayed for all */
+              if(isset($method->options->showInCurrencies)){
+                $currencies = $method->options->showInCurrencies;
+
+                if(!in_array($currentCurrency->code, $currencies)){
+                  unset($items[$key]);
+                  $methodDeleted = true;
+                }
+
               }
+              
             }
+
+            if($methodDeleted==false){
+              //Process to calculation validation in each method
+              $methodApiController = app($method->options->init);
+              
+              if (method_exists($methodApiController, "calculations")) {
+                try {
+                  
+                  $results = $methodApiController->calculations(new Request ($data));
+                  $resultData = $results->getData();
+                  $method->calculations = $resultData;
+                } catch (\Exception $e) {
+                  
+                  
+                  $resultData["msj"] = "error";
+                  $resultData["items"] = $e->getMessage();
+                  $method->calculations = $resultData;
+                }
+              }
+
+            }
+
+
           }
         }
         return $items;
