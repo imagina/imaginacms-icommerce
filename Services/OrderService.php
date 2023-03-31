@@ -254,7 +254,7 @@ class OrderService
       } elseif (isset($data["currencyId"]) && !empty($data["currencyId"])) {
         $currency = $currencyRepository->getItem($data["currencyId"]);
       } else {
-        $currency = $currencyRepository->findByAttributes(["default_currency" => 1]);
+        $currency = currentCurrency();
       }
 
       // Set Currency
