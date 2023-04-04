@@ -19,6 +19,7 @@ use Livewire\Livewire;
 class IcommerceServiceProvider extends ServiceProvider
 {
   use CanPublishConfiguration;
+
   /**
    * Indicates if loading of the provider is deferred.
    *
@@ -89,6 +90,7 @@ class IcommerceServiceProvider extends ServiceProvider
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'cmsPages'), "asgard.icommerce.cmsPages");
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'cmsSidebar'), "asgard.icommerce.cmsSidebar");
     $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'blocks'), "asgard.icommerce.blocks");
+    $this->mergeConfigFrom($this->getModuleConfigFilePath('icommerce', 'gamification'), "asgard.icommerce.gamification");
     //$this->app[TagManager::class]->registerNamespace(new Product());
     //$this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
@@ -548,7 +550,8 @@ class IcommerceServiceProvider extends ServiceProvider
    * Register components
    */
 
-  private function registerComponents(){
+  private function registerComponents()
+  {
     Blade::componentNamespace("Modules\Icommerce\View\Components", 'icommerce');
   }
 
@@ -563,8 +566,9 @@ class IcommerceServiceProvider extends ServiceProvider
     Livewire::component('icommerce::options.item', \Modules\Icommerce\Http\Livewire\Options\ItemOption::class);
   }
 
-  private function cachingCurrency(){
-  
+  private function cachingCurrency()
+  {
+
     //  currentCurrency();
   }
 }
