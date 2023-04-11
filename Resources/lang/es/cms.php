@@ -234,6 +234,37 @@ return [
     "lastOrders" => "Tienda - Ultimas Ordenes",
     "productsToSoldOut" => "Tienda - Productos por agotar"
   ],
-  "advancedSummary" => "Resumen Avanzado"
+  "advancedSummary" => "Resumen Avanzado",
+  "documentation" => [
+    "products" => "Los productos son los que puedes vender a través de tu tienda, cada producto puede contar con muchas
+    características como un SKU único, cantidad o existencia, precio o valor, también puedes categorizarlos
+    para que en tu tienda se puedan filtrar de una manera más organizada, agregarle opciones como color, talla, tamaños
+    y muchas otras características que te permitan tener una tienda lo suficientemente completa.",
+    "categories" => "Es posible crear categories en tu tienda, con un nombre, descripción y organizarlas en modo de árbol
+    (categorías padres y categorías hijas) con el fin de categorizar todos tus productos.",
+    "options" => "Puedes crear opciones como Colores (rojo, verde, amarillo...), tallas (xs, sm, md...) y todas las 
+    opciones que tus productos necesiten.",
+    "payment-methods" => "Para poder vender tus productos te brindamos la opción de que configures uno o varios métodos de
+    pago los cuales se mostraran como opciones en el check-out de tus clientes al momento de realizar una compra.",
+    "shipping-methods" => "Puedes configurar que métodos de envío brindaras a tus clientes para que ellos reciban todos
+    los productos que tu les vendes y también definir un costo extra por cada método.",
+    "orders" => "Las ordenes son todas las compras que recibes por medio de tu tienda, puedes aceptar o rechazarlas, 
+    verificar pagos, dejar comentarios y procesar las compras.",
+    "coupons" => "Los cupones son una herramienta promocional que permite a tus usuarios obtener descuentos sobre 
+    productos específicos de tu tienda.",
+    "manufacturers" => "Los fabricantes se refieren a las compañías u organizaciones que producen o suple los productos 
+    que son vendidos en tu tienda. Los fabricantes pueden jugar un papel importante en tu tienda, brindando información
+    acerca del origen de tus productos.",
+    "taxclasses" => "Los impuestos son una forma de categorizar tus productos en función de la tasa de impuestos que
+     se les aplica. Esto permite que la aplicación calcule y aplique los impuestos correctos durante el proceso de 
+     pago según el producto que está comprando.",
+    "currencies" => "Puedes configurar uno o varios tipos de moneda como Pesos o Dólares, los cuales serán usados para
+    cobrar los productos que se compren a través de tu tienda. Es importante tener en cuenta que el valor de las 
+    monedas tradicionales puede estar sujeto a la volatilidad y es posible que no siempre mantenga su valor percibido 
+    a lo largo del tiempo.",
+    "quotes" => "Una cotización se refiere a una solicitud de cotización de precio personalizada para un producto 
+    específico o grupo de productos. Las cotizaciones a menudo se usan para productos que tienen precios variables o 
+    requieren personalización, como pedidos grandes o productos especializados."
+  ]
 ];
 

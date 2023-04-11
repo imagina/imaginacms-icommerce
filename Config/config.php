@@ -127,8 +127,8 @@ return [
     'decimals' => 0,
     'decimal_separator' => '.',
     'thousands_separator' => ',',
-    'code'=> 'USD',
-    'value'=>1
+    'code' => 'USD',
+    'value' => 1
   ],
 
   /*
@@ -662,13 +662,13 @@ return [
       'second' => [
         'class' => 'col-12 col-md-6 col-lg-4 colum-2',
         'cards' => [
-          'billing-details','shipping-details'
+          'billing-details', 'shipping-details'
         ]
       ],
       'third' => [
         'class' => 'col-12 col-md-6 col-lg-4 colum-3',
         'cards' => [
-          'shipping-methods','payment-methods', 'order-summary'
+          'shipping-methods', 'payment-methods', 'order-summary'
         ]
       ]
     ]
@@ -692,7 +692,20 @@ return [
     'paymentMethods' => [
       'numberPosition' => '5',
     ],
+  ],
+
+  /*Translate keys of each entity. Based on the permission string*/
+  'documentation' => [
+    'products' => "icommerce::cms.documentation.products",
+    'categories' => "icommerce::cms.documentation.categories",
+    'options' => "icommerce::cms.documentation.options",
+    'payment-methods' => "icommerce::cms.documentation.payment-methods",
+    'shipping-methods' => "icommerce::cms.documentation.shipping-methods",
+    'orders' => "icommerce::cms.documentation.orders",
+    'coupons' => "icommerce::cms.documentation.coupons",
+    'manufacturers' => "icommerce::cms.documentation.manufacturers",
+    'taxclasses' => "icommerce::cms.documentation.taxclasses",
+    'currencies' => "icommerce::cms.documentation.currencies",
+    'quotes' => "icommerce::cms.documentation.quotes",
   ]
-
-
 ];

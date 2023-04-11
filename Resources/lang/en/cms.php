@@ -228,6 +228,37 @@ return [
     "lastOrders" => "Commerce - Last Orders",
     "productsToSoldOut" => "Tienda - Products to sold out"
   ],
-  "advancedSummary" => "Advanced Summary"
+  "advancedSummary" => "Advanced Summary",
+  "documentation" => [
+    "products" => "The products are those that you can sell through your store, each product can have many
+     characteristics such as a unique SKU, quantity or existence, price or value, you can also categorize them
+     so that in your store they can be filtered in a more organized way, add options such as color, size
+     and many other features that allow you to have a complete enough store.",
+    "categories" => "It is possible to create categories in your store, with a name, description and organize them in tree mode
+     (parent categories and child categories) in order to categorize all your products.",
+    "options" => "You can create options such as Colors (red, green, yellow...), sizes (xs, sm, md...) and all
+     options that your products need.",
+    "payment-methods" => "In order to sell your products, we offer you the option to configure one or several payment methods
+     payment which will be shown as options at the check-out of your customers when making a purchase.",
+    "shipping-methods" => "You can configure which shipping methods you will provide to your customers so that they receive all
+     the products that you sell them and also define an extra cost for each method.",
+    "orders" => "Orders are all the purchases you receive through your store, you can accept or reject them,
+     verify payments, leave feedback, and process purchases.",
+    "coupons" => "Coupons are a promotional tool that allows your users to get discounts on
+     specific products of your store.",
+    "manufacturers" => "Manufacturers refer to the companies or organizations that produce or supply the products
+     that are sold in your store. Manufacturers can play an important role in your store, providing information
+     about the origin of your products.",
+    "taxclasses" => "Taxes are a way of categorizing your products based on the tax rate that
+      it applies to them. This allows the application to calculate and apply the correct taxes during the checkout process.
+      payment according to the product you are buying.",
+    "currencies" => "You can configure one or several types of currency such as Pesos or Dollars, which will be used for
+     charge for products purchased through your store. It is important to note that the value of the
+     Traditional currencies can be subject to volatility and may not always hold their perceived value
+     over time.",
+    "quotes" => "A quote refers to a request for a custom price quote for a product
+     specific or group of products. Quotes are often used for products that have variable prices or
+     require customization, such as large orders or specialized products."
+  ]
 ];
 

@@ -222,7 +222,7 @@ return [
     'edit' => 'icommerce::relatedproducts.edit resource',
     'destroy' => 'icommerce::relatedproducts.destroy resource',
   ],
-  
+
   'icommerce.payment-methods' => [
     'manage' => 'icommerce::paymentmethods.manage resource',
     'index' => 'icommerce::paymentmethods.list resource',
@@ -230,7 +230,7 @@ return [
     'edit' => 'icommerce::paymentmethods.edit resource',
     'destroy' => 'icommerce::paymentmethods.destroy resource',
   ],
-  
+
   'icommerce.cart' => [
     'manage' => 'icommerce::cart.manage resource',
     'index' => 'icommerce::cart.list resource',
@@ -272,6 +272,7 @@ return [
     'create' => 'icommerce::quotes.create resource',
     'edit' => 'icommerce::quotes.edit resource',
     'destroy' => 'icommerce::quotes.destroy resource',
+    'currencies' => 'icommerce::quotes.destroy currencies',
   ],
 // append
 
