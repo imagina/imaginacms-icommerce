@@ -6,10 +6,11 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Iprofile\Entities\Department;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class ProductDiscount extends Model
 {
-  use BelongsToTenant;
+  use BelongsToTenant, AuditTrait;
   protected $table = 'icommerce__product_discounts';
 
   protected $fillable = [

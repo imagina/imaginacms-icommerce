@@ -8,10 +8,11 @@ use Modules\Ilocations\Entities\Country;
 use Modules\Ilocations\Entities\Province;
 use Modules\Isite\Entities\Organization;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Order extends Model
 {
-  use BelongsToTenant;
+  use BelongsToTenant, AuditTrait;
   
   protected $table = 'icommerce__orders';
   

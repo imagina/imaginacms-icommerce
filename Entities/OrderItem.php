@@ -4,9 +4,12 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class OrderItem extends Model
 {
+
+  use AuditTrait;
 
   protected $table = 'icommerce__order_item';
 

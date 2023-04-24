@@ -5,10 +5,11 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Option extends Model
 {
-    use Translatable, BelongsToTenant;
+    use Translatable, BelongsToTenant, AuditTrait;
 
     protected $table = 'icommerce__options';
     public $translatedAttributes = [

@@ -8,10 +8,11 @@ use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Media\Entities\File;
 use Modules\Core\Traits\NamespacedEntity;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class OptionValue extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant, AuditTrait;
 
   protected $table = 'icommerce__option_values';
   public $translatedAttributes = [

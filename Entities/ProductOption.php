@@ -6,10 +6,12 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class ProductOption extends Model
 {
-  use NodeTrait, BelongsToTenant;
+  use NodeTrait, BelongsToTenant, AuditTrait;
   
   protected $table = 'icommerce__product_option';
   

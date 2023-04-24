@@ -4,10 +4,11 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Currency extends Model
 {
-  use Translatable;
+  use Translatable, AuditTrait;
   
   protected $table = 'icommerce__currencies';
   public $translatedAttributes = [

@@ -6,10 +6,11 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Coupon extends Model
 {
-  use BelongsToTenant;
+  use BelongsToTenant, AuditTrait;
   protected $table = 'icommerce__coupons';
 
   protected $fillable = [

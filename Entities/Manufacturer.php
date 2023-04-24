@@ -8,10 +8,11 @@ use Modules\Core\Traits\NamespacedEntity;
 use Modules\Media\Support\Traits\MediaRelation;
 use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Manufacturer extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant, AuditTrait;
   
   protected $table = 'icommerce__manufacturers';
   public $translatedAttributes = [

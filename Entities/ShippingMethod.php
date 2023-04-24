@@ -6,10 +6,11 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Media\Support\Traits\MediaRelation;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class ShippingMethod extends Model
 {
-  use Translatable, MediaRelation, BelongsToTenant;
+  use Translatable, MediaRelation, BelongsToTenant, AuditTrait;
   
   protected $table = 'icommerce__shipping_methods';
   

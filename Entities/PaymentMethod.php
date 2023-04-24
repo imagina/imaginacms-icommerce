@@ -8,10 +8,11 @@ use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Media\Support\Traits\MediaRelation;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Iforms\Support\Traits\Formeable;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class PaymentMethod extends Model
 {
-  use Translatable, MediaRelation, Formeable, BelongsToTenant, hasEventsWithBindings;
+  use Translatable, MediaRelation, Formeable, BelongsToTenant, hasEventsWithBindings, AuditTrait;
 
   public $translatedAttributes = [
     'title',

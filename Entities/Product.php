@@ -20,11 +20,12 @@ use Modules\Isite\Entities\Organization;
 use Illuminate\Support\Str;
 use Modules\Isite\Traits\Typeable;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Product extends Model implements TaggableInterface
 {
   use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,
-    Rateable, Relationable, BelongsToTenant, hasEventsWithBindings, Typeable;
+    Rateable, Relationable, BelongsToTenant, hasEventsWithBindings, Typeable, AuditTrait;
 
   public $transformer = 'Modules\Icommerce\Transformers\ProductTransformer';
   public $entity = 'Modules\Icommerce\Entities\Product';

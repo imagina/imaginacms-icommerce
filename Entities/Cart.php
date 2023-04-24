@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Icommerce\Presenters\CartPresenter;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
 class Cart extends Model
 {
-  use PresentableTrait, BelongsToTenant;
+  use PresentableTrait, BelongsToTenant, AuditTrait;
   
   protected $table = 'icommerce__carts';
   
