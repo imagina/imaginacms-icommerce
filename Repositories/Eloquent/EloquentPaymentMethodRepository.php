@@ -240,7 +240,13 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
+    }else{
+        // Validation like DEEV
+        // When user is going to pay the plan in central checkout
+        if( config("tenancy.mode")!=NULL && config("tenancy.mode")=="singleDatabase")
+          $query->where("organization_id",null);
     }
+
   }
   
 }
