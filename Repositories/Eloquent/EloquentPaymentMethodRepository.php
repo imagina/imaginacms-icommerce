@@ -243,7 +243,7 @@ class EloquentPaymentMethodRepository extends EloquentBaseRepository implements 
     }else{
         // Validation like DEEV
         // When user is going to pay the plan in central checkout
-        if( config("tenancy.mode")!=NULL && config("tenancy.mode")=="singleDatabase")
+        if( config("tenancy.mode")!=NULL && config("tenancy.mode")=="singleDatabase" && is_null(tenant()))
           $query->where("organization_id",null);
     }
 
