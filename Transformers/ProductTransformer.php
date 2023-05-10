@@ -7,6 +7,7 @@ use Modules\Icommerce\Entities\Status;
 use Modules\Ihelpers\Traits\Transformeable;
 use Modules\Iprofile\Transformers\UserTransformer;
 use Modules\Ihelpers\Transformers\BaseApiTransformer;
+use Modules\Isite\Transformers\RevisionTransformer;
 use Modules\Marketplace\Transformers\StoreTransformer as MarketplaceStoreTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
 
@@ -82,6 +83,7 @@ class ProductTransformer extends BaseApiTransformer
       'layoutId' => $this->layout_id,
       'isInternal' => $this->is_internal,
       'advancedSummary' => $this->when($this->advanced_summary, $this->advanced_summary),
+      'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
     ];
 
     $discount = $this->discount;

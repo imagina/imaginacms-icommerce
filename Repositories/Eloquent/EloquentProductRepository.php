@@ -134,7 +134,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       //Filter by stock status
       if (isset($filter->status)) {
-
         $query->where('status', ($filter->status ? 1 : 0));
       }
 

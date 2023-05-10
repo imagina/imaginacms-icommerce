@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Isite\Transformers\RevisionTransformer;
 
 class CouponTransformer extends JsonResource
 {
@@ -35,6 +36,7 @@ class CouponTransformer extends JsonResource
       'minimumQuantityProducts' => (int)$this->minimum_quantity_products,
       'excludeDepartments' => $this->exclude_departments,
       'includeDepartments' => $this->include_departments,
+      'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
     ];
 
     return $data;
