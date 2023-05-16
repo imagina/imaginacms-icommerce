@@ -136,8 +136,9 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
 
     } else {
 
-      //pre-filter status
-      $query->where("status", 1);
+       //Pre filters by default
+       $this->defaultPreFilters($query, $params);
+      
     }
 
     // ORDER
@@ -179,6 +180,7 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
       return $query->get();
     }
+
   }
 
 
@@ -387,6 +389,21 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
       }
     }
   }
+
+  public function defaultPreFilters($query, $params)
+  {
+
+		//pre-filter status
+		$query->where("status", 1);
+
+		//pre-filter if the organization is enabled (organization status = 1)
+		$query->where(function ($query) {
+			$query->whereNull("organization_id")
+				->orWhereRaw("icommerce__categories.organization_id IN (SELECT id from isite__organizations where status = 1)");
+
+		});
+    
+	}
 
 }
 
