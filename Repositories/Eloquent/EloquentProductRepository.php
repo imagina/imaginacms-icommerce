@@ -304,6 +304,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->whereNotIn('id', $exclude);
       }
 
+      if (isset($filter->onlyWithOrganization)) {
+        $query->whereNotNull("organization_id");
+      }
+
     }
 
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {

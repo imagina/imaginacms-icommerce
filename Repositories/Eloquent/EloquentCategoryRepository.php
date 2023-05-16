@@ -123,6 +123,10 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $query->where("featured", $filter->featured);
       }
 
+      if (isset($filter->onlyWithOrganization)) {
+        $query->whereNotNull("organization_id");
+      }
+
       //Filter by parent ID
       if (isset($filter->parentId)) {
         if ($filter->parentId == 0) {
