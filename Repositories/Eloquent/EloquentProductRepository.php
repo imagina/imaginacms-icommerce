@@ -499,6 +499,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       });
     }
 
+    if (!isset($params->filter->field)) {
+      $query->where('id', $criteria);
+    }
+
     //dd($query->toSql(),$query->getBindings());
     /*== REQUEST ==*/
     return $query->first();
