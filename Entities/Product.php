@@ -97,7 +97,9 @@ class Product extends Model implements TaggableInterface
 
   public function entity()
   {
-    return $this->belongsTo($this->entity_type, 'entity_id');
+
+      return $this->belongsTo($this->entity_type, 'entity_id');
+    
   }
 
   public function store()
@@ -460,9 +462,17 @@ class Product extends Model implements TaggableInterface
           $url = "";
         }
       else {
+        $tenancyMode = config("tenancy.mode", null);
+  
+    
+        if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
+            return tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
+      
+        }
+        
         $url = Str::replace(["{productSlug}"],[$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
         $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-        
+       
       }
     }
 

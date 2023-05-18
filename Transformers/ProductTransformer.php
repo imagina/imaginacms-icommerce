@@ -183,9 +183,26 @@ class ProductTransformer extends BaseApiTransformer
 
     $this->customIncludes($data);
 
+    $this->entityRelation($data);
+    
     return $data;
   }
 
+  private function entityRelation(&$data){
+
+    if(!empty($this->entity_type) && !empty($this->entity_id)){
+      
+      $entity = $this->entity_type::find($this->entity_id);
+      
+      if(!empty($entity) && !empty($entity->transformer)){
+      
+        $data["entity"] = new $entity->transformer($entity);
+      }
+      
+    }
+    
+  }
+  
   private function getTotalTaxes($filter)
   {
     $basePrice = $this->price ? $this->price : 0;

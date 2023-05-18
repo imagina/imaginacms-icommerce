@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
+use Modules\Isite\Entities\Organization;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use TypiCMS\NestableTrait;
@@ -96,7 +97,11 @@ Category extends Model
   {
     return $this->morphToMany(Coupon::class, 'couponable','icommerce__couponables');
   }
-
+  
+  public function organization()
+  {
+    return $this->belongsTo(Organization::class);
+  }
   /*
   * Mutators / Accessors
   */
@@ -159,11 +164,21 @@ Category extends Model
           default:
             $url = Str::replace(["{categorySlug}"],[$this->slug], trans('icommerce::routes.store.index.category', [], $currentLocale));
             $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
+            
+            $tenancyMode = config("tenancy.mode", null);
+  
+            if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
+              $url = tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.index.category', [$this->slug]);
+
+            }
             break;
         }
       }
     }
   
+
+
+    
     if(isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
   
     return $url;
