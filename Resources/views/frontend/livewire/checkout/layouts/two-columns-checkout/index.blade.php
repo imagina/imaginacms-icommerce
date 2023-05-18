@@ -21,8 +21,10 @@
     @include('icommerce::frontend.livewire.checkout.layouts.two-columns-checkout.payment-methods')
   </div>
 
-  <div class="col-12 col-md-12 col-lg-4">
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="sticky-top">
     @include('icommerce::frontend.livewire.checkout.partials.order-summary')
+    </div>
   </div>
 </div>
 
