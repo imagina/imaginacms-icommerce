@@ -3,6 +3,7 @@
 namespace Modules\Icommerce\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Isite\Transformers\RevisionTransformer;
 
 class CategoryTransformer extends JsonResource
 {
@@ -36,6 +37,7 @@ class CategoryTransformer extends JsonResource
       'status' => $this->status ? '1' : '0',
       'mediaFiles' => $this->mediaFiles(),
       'layoutId' => $this->layout_id,
+      'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
     ];
     
     $filter = json_decode($request->filter);

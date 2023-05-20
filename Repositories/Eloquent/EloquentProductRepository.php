@@ -134,7 +134,6 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
       //Filter by stock status
       if (isset($filter->status)) {
-
         $query->where('status', ($filter->status ? 1 : 0));
       }
 
@@ -502,6 +501,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
+    }
+
+    if (!isset($params->filter->field)) {
+      $query->where('id', $criteria);
     }
 
     //dd($query->toSql(),$query->getBindings());

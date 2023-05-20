@@ -92,37 +92,36 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     return $taxClass;
   }
 
-    public function updateBy($criteria, $data, $params){
+  public function updateBy($criteria, $data, $params)
+  {
 
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+    // INITIALIZE QUERY
+    $query = $this->model->query();
 
-        // FILTER
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
 
-            if (isset($filter->field))//Where field
-                $query->where($filter->field, $criteria);
-            else//where id
-                $query->where('id', $criteria);
-        }
-
-        // REQUEST
-        $model = $query->first();
-
-        if($model) {
-            $rates = Arr::get($data, 'rates', []);
-            unset($data['rates']);
-            $model->update($data);
-            // sync tables
-            if($rates)
-                //$model->rates()->detach();
-                $model->rates()->delete();
-                $model->rates()->createMany($rates);
-        }
-        return $model;
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
     }
 
+    // REQUEST
+    $model = $query->first();
 
+    if ($model) {
+      $rates = Arr::get($data, 'rates', []);
+      unset($data['rates']);
+      $model->update($data);
+      // sync tables
+      if ($rates)
+        //$model->rates()->detach();
+        $model->rates()->delete();
+      $model->rates()->createMany($rates);
+    }
+    return $model;
+  }
 
 }

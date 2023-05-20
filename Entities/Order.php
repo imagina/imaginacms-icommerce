@@ -9,11 +9,16 @@ use Modules\Ilocations\Entities\Province;
 use Modules\Isite\Entities\Organization;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Isite\Traits\RevisionableTrait;
 
 class Order extends Model
 {
-  use BelongsToTenant, AuditTrait;
-  
+  use BelongsToTenant, AuditTrait, RevisionableTrait;
+
+  public $transformer = 'Modules\Icommerce\Transformers\OrderTransformer';
+  public $entity = 'Modules\Icommerce\Entities\Post';
+  public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
+
   protected $table = 'icommerce__orders';
   
   protected $fillable = [

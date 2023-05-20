@@ -11,6 +11,7 @@ use Modules\Iprofile\Transformers\UserTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ilocations\Transformers\CountryTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
+use Modules\Isite\Transformers\RevisionTransformer;
 
 class OrderTransformer extends JsonResource
 {
@@ -83,7 +84,8 @@ class OrderTransformer extends JsonResource
       'shippingCountry' => new CountryTransformer($this->whenLoaded('shippingCountry')),
       'shippingDepartment' => new ProvinceTransformer($this->whenLoaded('shippingDepartment')),
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
-      'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions'))
+      'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions')),
+      'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
     ];
 
     //Add information blocks

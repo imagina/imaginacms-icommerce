@@ -15,11 +15,13 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Isite\Traits\Typeable;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Isite\Traits\RevisionableTrait;
 
 class
 Category extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant,hasEventsWithBindings, Typeable, AuditTrait;
+  use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant,
+    hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait;
 
   public $transformer = 'Modules\Icommerce\Transformers\CategoryTransformer';
   public $entity = 'Modules\Icommerce\Entities\Category';

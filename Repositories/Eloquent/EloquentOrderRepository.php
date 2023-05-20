@@ -85,6 +85,10 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
         $orderWay = $filter->order->way ?? 'desc';//Default way
         $query->orderBy($orderByField, $orderWay);//Add order to query
       }
+      if (isset($filter->id)) {
+        !is_array($filter->id) ? $filter->id = [$filter->id] : false;
+        $query->where('id', $filter->id);
+      }
     }
     if (!isset($params->filter->order)) {
       $query->orderBy("created_at", "desc");//Add order to query

@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Isite\Traits\RevisionableTrait;
 
 class Coupon extends Model
 {
-  use BelongsToTenant, AuditTrait;
+  use BelongsToTenant, AuditTrait, RevisionableTrait;
+
+  public $transformer = 'Modules\Icommerce\Transformers\CouponTransformer';
+  public $entity = 'Modules\Icommerce\Entities\Coupon';
+  public $repository = 'Modules\Icommerce\Repositories\CouponRepository';
+
   protected $table = 'icommerce__coupons';
 
   protected $fillable = [
