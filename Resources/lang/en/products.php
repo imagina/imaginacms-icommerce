@@ -20,7 +20,8 @@ return [
   ],
   'button' => [
     'create product' => 'Create a product',
-    'addToCartItemList' => "Buy"
+    'addToCartItemList' => "Buy",
+    'wishList' => 'Wish List',
   ],
   'table'             => [
     'title'                     => 'Title',
