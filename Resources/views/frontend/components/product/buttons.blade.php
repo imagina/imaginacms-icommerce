@@ -39,6 +39,7 @@
                                      iconClass="fa fa-file"
                                      :withLabel="false"
                                      :sizeLabel="$bottomFontSize"
+                                     label="file"
                     />
 
             @endif
@@ -66,6 +67,8 @@
                              :iconClass="'fa '.$wishlistIcon"
                              :withLabel="false"
                              :sizeLabel="$bottomFontSize"
+                             :label="trans('icommerce::products.button.wishList')"
+
             />
 
     @endif

@@ -21,7 +21,8 @@ return [
     ],
     'button'            => [
         'create product'    => 'Crear un producto',
-        'addToCartItemList' => "Comprar"
+        'addToCartItemList' => "Comprar",
+        'wishList' => 'Lista de Deseo',
     ],
     'table' => [
         'title'                     => 'Titulo',

@@ -7,12 +7,12 @@
             <!-- BUTTON QUANTITY -->
             <div class="number-input input-group quantity-selector">
                 <button onclick="icommerce_quantityAction(event)" type="button" class="button-minus"
-                        data-action="decrement">
+                        data-action="decrement" aria-label="minus">
                   <i class="fa fa-minus" aria-hidden="true"></i>
                 </button>
-                <input type="number" step="1" value="1" min="1" name="quantity" class="quantity-field d-inline-block form-control">
+                <input aria-label="quantity" type="number" step="1" value="1" min="1" name="quantity" class="quantity-field d-inline-block form-control">
                 <button onclick="icommerce_quantityAction(event)" type="button" class="button-plus"
-                        data-action="increment"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        data-action="increment" aria-label="plus"><i class="fa fa-plus" aria-hidden="true"></i></button>
             </div>
 
             <!-- BUTTON ADD  -->
@@ -31,12 +31,13 @@
                 @if(!$withTextInAddToCart && $wishlistEnable)
                    
                     @php $wishUrlLE = json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]); @endphp
-                    <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist 1 button-small"
+                    <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist button-small"
                                      :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrlLE.')'"
                                      :withIcon="$withIconInAddToCart"
                                      iconClass="fa fa-heart-o"
                                      :withLabel="false"
                                      sizeLabel="$bottomFontSize"
+                                     :label="trans('icommerce::products.button.wishList')"
                     />
 
                 @endif
