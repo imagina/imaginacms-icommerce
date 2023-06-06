@@ -21,6 +21,7 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
    */
   public function getItemsBy($params)
   {
+
     return $this->remember(function () use ($params) {
       return $this->repository->getItemsBy($params);
     });

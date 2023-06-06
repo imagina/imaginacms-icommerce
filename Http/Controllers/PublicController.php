@@ -342,7 +342,11 @@ class PublicController extends BaseApiController
 
     $params = json_decode(json_encode(
       [
-        "include" => explode(",", "translations,category,categories,tags,addedBy"),
+        "include" => [
+          "translations","category","categories","tags","addedBy","typeable","optionsPivot",
+          "productOptions","optionsPivot.option","optionValues",
+          "relatedProducts"
+        ],
         "filter" => [
           "field" => "slug"
         ]
@@ -365,7 +369,7 @@ class PublicController extends BaseApiController
 
     if ($product) {
 
-      $currency = Currency::where("default_currency", 1)->first();
+      $currency = currentCurrency();
       $schemaScript = $this->productService->createSchemaScript($product, $currency);
 
       $category = $product->category;
@@ -429,8 +433,8 @@ class PublicController extends BaseApiController
     if (isset(tenant()->id)) {
       $organization = tenant();
     }
-
-    $currency = Currency::where("default_currency", 1)->first();
+  
+    $currency = currentCurrency();
 
     if (setting("icommerce::customCheckoutTitle")) {
       $title = setting("icommerce::customCheckoutTitle");
@@ -445,21 +449,25 @@ class PublicController extends BaseApiController
     $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
 
     $tpl = "icommerce::frontend.checkout.index";
-
-    $cart = request()->session()->get('cart');
-    if (isset($cart->id)) {
-      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
-    }
-    $currency = Currency::where("default_currency", 1)->first();
+    
+    $currency = currentCurrency();
 
     $order = $this->order->getItem($orderId);
-
+    
+    if (isset($order->cart_id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($order->cart_id);
+    }
+    
+    if(isset($order->id) && $order->created_at<'2023-05-01' || !isset($cart->id))
+      return view('isite::frontend.errors.maintenance');
+    
     if (setting("icommerce::customCheckoutTitle")) {
       $title = setting("icommerce::customCheckoutTitle");
     } else {
       $title = trans('icommerce::checkout.title');
     }
-    return view($tpl, ["cart" => new CartTransformer($cart), "currency" => $currency, "title" => $title, "order" => $order]);
+    
+    return view($tpl, ["cart" => $cart, "currency" => $currency, "title" => $title, "order" => $order]);
   }
 
 

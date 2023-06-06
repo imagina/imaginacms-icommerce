@@ -16,5 +16,13 @@
       window.livewire.emit('refreshCart');
     });
   </script>
+<style>
+  #cartLayout2 .cart .quantity:before {
+    content: '(';
+  }
+  #cartLayout2 .cart .quantity:after {
+    content: ')';
+  }
 
+</style>
 @stop

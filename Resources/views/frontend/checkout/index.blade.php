@@ -22,5 +22,5 @@
                                   :orderId="$order->id ?? $orderId ?? null" :currency="$currency ?? null"
                                   :currencyId="$currency->id ?? $currencyId ?? null" key="checkout" />
 
-
+@include('icommerce::frontend.checkout.style')
 @stop

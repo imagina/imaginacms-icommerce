@@ -2,6 +2,8 @@
 
 namespace Modules\Icommerce\Services;
 
+use Modules\Icommerce\Entities\Product;
+
 class PaymentMethodService
 {
     
@@ -65,11 +67,10 @@ class PaymentMethodService
 
             foreach ($payoutsFieldName as $key => $payout) {
            
+              $params = json_decode(json_encode(["filter" => ["field" => "name", "userId" => $userId]]));
                 // Check field for this user and name field
-                $field = $this->fieldRepository
-                ->where('name','=',$payout['fieldName'])
-                ->where('user_id', '=', $userId)
-                ->first();
+                $field = $this->fieldRepository->getItem($payout['fieldName'],$params);
+                
 
                 // Add configurations
                 if(!is_null($field)){

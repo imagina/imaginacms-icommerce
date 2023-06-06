@@ -15,4 +15,24 @@
 
     </div>
   </div>
+  <style>
+    #categoryList1 .card a {
+      height: calc(100vh *.72) !important;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    #categoryList1 .card h3 {
+      font-size: 2.375rem;
+    }
+    #categoryList1 .card:hover {
+      box-shadow: 0px 0px 9px 0px #949393;
+      z-index: 9;
+    }
+    @media (max-width: 576px) {
+      #categoryList1 .card h3 {
+        font-size: 1.125rem;
+      }
+    }
+
+  </style>
 </section>

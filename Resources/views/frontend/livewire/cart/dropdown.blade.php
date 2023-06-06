@@ -95,3 +95,26 @@
     </div>
 </div>
 
+
+<style>
+  .cart-dropdown-menu .cart-remove {
+    cursor: pointer;
+  }
+  .cart-dropdown-menu .dropdown-menu {
+    max-height: 380px;
+    overflow-y: auto;
+  }
+  .cart-dropdown-menu .dropdown-menu::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+  }
+  .cart-dropdown-menu .dropdown-menu::-webkit-scrollbar-track {
+    background-color: #CCCCCC;
+  }
+  .cart-dropdown-menu .dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+  }
+
+
+</style>
+
