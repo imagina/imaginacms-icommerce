@@ -57,7 +57,7 @@ class CacheCartDecorator extends BaseCacheDecorator implements CartRepository
    *
    * @return mixed
    */
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
     $this->clearCache();
     
@@ -69,7 +69,7 @@ class CacheCartDecorator extends BaseCacheDecorator implements CartRepository
    *
    * @return mixed
    */
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     $this->clearCache();
     

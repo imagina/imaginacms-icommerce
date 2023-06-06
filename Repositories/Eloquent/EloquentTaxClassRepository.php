@@ -54,7 +54,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     }
   }
 
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -92,7 +92,7 @@ class EloquentTaxClassRepository extends EloquentBaseRepository implements TaxCl
     return $taxClass;
   }
 
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
 
     // INITIALIZE QUERY

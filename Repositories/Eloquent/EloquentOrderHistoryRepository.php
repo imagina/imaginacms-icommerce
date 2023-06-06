@@ -46,7 +46,7 @@ class EloquentOrderHistoryRepository extends EloquentBaseRepository implements O
     }
   }
 
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

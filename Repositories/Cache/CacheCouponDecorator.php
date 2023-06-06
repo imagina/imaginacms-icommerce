@@ -31,7 +31,7 @@ class CacheCouponDecorator extends BaseCacheDecorator implements CouponRepositor
    *
    * @return object
    */
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     return $this->remember(function () use ($criteria, $params) {
       return $this->repository->getItem($criteria, $params);

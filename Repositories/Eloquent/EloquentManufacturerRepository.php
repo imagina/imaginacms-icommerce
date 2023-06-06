@@ -100,7 +100,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     }
   }
   
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -156,7 +156,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
   }
   
   
-  public function updateBy($criteria, $data, $params){
+  public function updateBy($criteria, $data, $params = false){
     
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -182,7 +182,7 @@ class EloquentManufacturerRepository extends EloquentBaseRepository implements M
     
   }
   
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

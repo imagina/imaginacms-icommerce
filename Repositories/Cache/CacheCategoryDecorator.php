@@ -43,7 +43,7 @@ class CacheCategoryDecorator extends BaseCacheDecorator implements CategoryRepos
    *
    * @return object
    */
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     return $this->remember(function () use ($criteria, $params) {
       return $this->repository->getItem($criteria, $params);
@@ -67,7 +67,7 @@ class CacheCategoryDecorator extends BaseCacheDecorator implements CategoryRepos
    *
    * @return mixed
    */
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
     $this->clearCache();
     
@@ -79,7 +79,7 @@ class CacheCategoryDecorator extends BaseCacheDecorator implements CategoryRepos
    *
    * @return mixed
    */
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     $this->clearCache();
     

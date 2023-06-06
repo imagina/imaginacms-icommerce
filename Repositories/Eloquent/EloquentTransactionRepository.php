@@ -51,7 +51,7 @@ class EloquentTransactionRepository extends EloquentBaseRepository implements Tr
     }
   }
 
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -97,7 +97,7 @@ class EloquentTransactionRepository extends EloquentBaseRepository implements Tr
     return $transaction;
   }
 
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
 
     // INITIALIZE QUERY
@@ -122,7 +122,7 @@ class EloquentTransactionRepository extends EloquentBaseRepository implements Tr
     return $model;
   }
 
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

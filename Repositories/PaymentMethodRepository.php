@@ -10,7 +10,7 @@ interface PaymentMethodRepository extends BaseRepository
   
   public function getItem($criteria, $params = false);
   
-  public function updateBy($criteria, $data, $params);
+  public function updateBy($criteria, $data, $params = false);
 
   
 }

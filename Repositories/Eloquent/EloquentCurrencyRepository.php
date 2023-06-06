@@ -117,7 +117,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
   }
   
   
-  public function updateBy($criteria, $data, $params){
+  public function updateBy($criteria, $data, $params = false){
     
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -151,7 +151,7 @@ class EloquentCurrencyRepository extends EloquentBaseRepository implements Curre
     return $model;
   }
 
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();

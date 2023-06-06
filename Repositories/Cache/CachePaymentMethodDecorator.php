@@ -55,7 +55,7 @@ class CachePaymentMethodDecorator extends BaseCacheDecorator implements PaymentM
    *
    * @return mixed
    */
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
     $this->clearCache();
     
