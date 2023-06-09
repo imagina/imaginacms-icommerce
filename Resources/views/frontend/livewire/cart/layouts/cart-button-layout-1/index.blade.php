@@ -17,4 +17,24 @@
     window.livewire.emit('refreshCart');
   });
   </script>
+  <style>
+    #cartLayout1 .cart {
+      width: 22px;
+    }
+    #cartLayout1 .cart .quantity {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      border-radius: 50%;
+      right: 7px;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.688rem;
+      font-weight: bold;
+      background: var(--primary);
+    }
+
+  </style>
 @stop

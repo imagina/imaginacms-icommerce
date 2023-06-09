@@ -31,7 +31,7 @@ class CachePaymentMethodDecorator extends BaseCacheDecorator implements PaymentM
    *
    * @return object
    */
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     return $this->remember(function () use ($criteria, $params) {
       return $this->repository->getItem($criteria, $params);
@@ -55,7 +55,7 @@ class CachePaymentMethodDecorator extends BaseCacheDecorator implements PaymentM
    *
    * @return mixed
    */
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
     $this->clearCache();
     

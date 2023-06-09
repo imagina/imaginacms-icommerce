@@ -129,4 +129,5 @@
 
   </div>
 
+    @include('icommerce::frontend.partials.style')
 @stop

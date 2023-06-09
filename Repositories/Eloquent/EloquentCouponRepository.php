@@ -68,7 +68,7 @@ class EloquentCouponRepository extends EloquentBaseRepository implements CouponR
     }
   }
 
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     //Initialize query
     $query = $this->model->query();

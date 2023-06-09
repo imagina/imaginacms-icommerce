@@ -28,7 +28,7 @@
       width: -moz-max-content;
       width: max-content;
       margin: 2px 0;
-      @include media-breakpoint-down(xs) {
+      @media (max-width: 575.98px) {
         margin: 2px auto;
       }
       
@@ -118,7 +118,7 @@
     }
     .add-to-cart-button{
       margin: 2px 0;
-      @include media-breakpoint-down(xs) {
+      @media (max-width: 576px)  {
         margin: 2px auto;
       }
     }
@@ -189,8 +189,8 @@
         }
       }
     }*/
-    
-    @include media-breakpoint-down(lg) {
+
+    @media (max-width: 1120px)  {
       justify-content: center;
     }
   }
@@ -213,7 +213,7 @@
       
       span {
         font-weight: bold;
-        @include font-size(13px);
+        font-size: 0.813rem;
       }
     }
     
@@ -230,7 +230,7 @@
     }
     
     /***** Media Queries *****/
-    @include media-breakpoint-down(md) {
+    @media (max-width: 768px)  {
       height: 170px;
     }
   }
@@ -260,7 +260,7 @@
   }
   
   .price {
-    @include font-size(13px);
+    font-size: 0.813rem;
     color: $gray-900;
   }
   
@@ -281,12 +281,12 @@
   }
   
   .cart {
-    @include font-size(10px);
+    font-size: 0.625rem;
     display: none;
   }
   
   .cart-no {
-    @include font-size(10px);
+    font-size: 0.625rem;
     display: block;
   }
   

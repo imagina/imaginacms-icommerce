@@ -31,7 +31,7 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
    *
    * @return object
    */
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     return $this->remember(function () use ($criteria, $params) {
       return $this->repository->getItem($criteria, $params);
@@ -45,7 +45,8 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
    */
   public function create($data)
   {
-    $this->clearCache();
+ 
+    $this->clearCache('icommerce.carts');
     
     return $this->repository->create($data);
   }
@@ -55,9 +56,9 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
    *
    * @return mixed
    */
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
-    $this->clearCache();
+    $this->clearCache('icommerce.carts');
     
     return $this->repository->updateBy($criteria, $data, $params);
   }
@@ -67,9 +68,9 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
    *
    * @return mixed
    */
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
-    $this->clearCache();
+    $this->clearCache('icommerce.carts');
     
     return $this->repository->deleteBy($criteria, $params);
   }

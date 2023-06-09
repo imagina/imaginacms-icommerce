@@ -21,6 +21,7 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
    */
   public function getItemsBy($params)
   {
+
     return $this->remember(function () use ($params) {
       return $this->repository->getItemsBy($params);
     });
@@ -55,7 +56,7 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
    *
    * @return mixed
    */
-  public function updateBy($criteria, $data, $params)
+  public function updateBy($criteria, $data, $params = false)
   {
     $this->clearCache();
     
@@ -67,7 +68,7 @@ class CacheProductDecorator extends BaseCacheDecorator implements ProductReposit
    *
    * @return mixed
    */
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     $this->clearCache();
     

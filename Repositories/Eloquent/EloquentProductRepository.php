@@ -680,7 +680,10 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
       \DB::raw("MIN(icommerce__products.price) AS minPrice"),
       \DB::raw("MAX(icommerce__products.price) AS maxPrice")
     );
-
+    
+    if (isset($params->filter->search))
+      $query->groupBy('scoreSearch1','product_id', 'name','scoreSearch2');
+    
     return $query->first();
   }
 

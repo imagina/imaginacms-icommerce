@@ -59,7 +59,7 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
         }
     }
 
-    public function getItem($criteria, $params)
+    public function getItem($criteria, $params = false)
     {
         // INITIALIZE QUERY
         $query = $this->model->query();
@@ -87,7 +87,7 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
         return $productList;
     }
 
-    public function updateBy($criteria, $data, $params){
+    public function updateBy($criteria, $data, $params = false){
 
         // INITIALIZE QUERY
         $query = $this->model->query();
@@ -111,7 +111,7 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
         return $model;
     }
 
-    public function deleteBy($criteria, $params)
+    public function deleteBy($criteria, $params = false)
     {
         // INITIALIZE QUERY
         $query = $this->model->query();

@@ -77,7 +77,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       }
     }
 
-  public function getItem($criteria, $params)
+  public function getItem($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
@@ -168,7 +168,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     return $cartProduct;
   }
 
-  public function updateBy($criteria, $data, $params){
+  public function updateBy($criteria, $data, $params = false){
 
     // INITIALIZE QUERY
     $cartProduct = $this->findByAttributesOrOptions($data);
@@ -197,7 +197,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     return $cartProduct;
   }
 
-  public function deleteBy($criteria, $params)
+  public function deleteBy($criteria, $params = false)
   {
     // INITIALIZE QUERY
     $query = $this->model->query();
