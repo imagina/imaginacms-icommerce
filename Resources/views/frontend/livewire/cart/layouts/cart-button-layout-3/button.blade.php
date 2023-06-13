@@ -1,4 +1,4 @@
-<a class="cart-link"  data-toggle="modal" data-target="#modalCart">
+<a class="cart-link" role="button" aria-label="cart" data-toggle="modal" data-target="#modalCart">
   <div class="cart">
     <span class="quantity">
        @if(!isset($cart->quantity))

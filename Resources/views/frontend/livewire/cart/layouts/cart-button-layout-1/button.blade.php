@@ -1,6 +1,6 @@
 <a class="nav-link" type="button"
      id="dropdownCart" data-toggle="dropdown" aria-haspopup="true"
-     aria-expanded="false">
+     aria-expanded="false" role="button" aria-label="cart">
     <div class="cart d-inline-block">
       <span class="quantity text-dark">
         @if(!isset($cart->quantity))

@@ -1,5 +1,5 @@
 <!--Shopping cart-->
-<div class="cart-dropdown-menu " aria-labelledby="dropdownCart" style="z-index: 99999;">
+<div class="cart-dropdown-menu"  style="z-index: 99999;">
     <!--Shopping cart dropdown -->
     <div class="dropdown-menu dropdown-menu-right rounded-0" aria-labelledby="dropdownCart" style="  min-width: 20rem; z-index: 9999999">
 
