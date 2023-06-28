@@ -1200,4 +1200,16 @@ return [
       ]
     ]
   ],
+	'checkoutRedirectUrl' => [
+		"onlySuperAdmin" => true,
+		'value' => null,
+		'name' => 'icommerce::checkoutRedirectUrl',
+		'type' => 'input',
+		'groupName' => 'checkoutPage',
+		'groupTitle' => 'icommerce::common.pages.checkout',
+		'props' => [
+			'type' => "text",
+			'label' => 'icommerce::common.settings.checkoutRedirectUrl'
+		]
+	],
 ];

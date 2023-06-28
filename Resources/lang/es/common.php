@@ -154,6 +154,7 @@ return [
     'productContentTitleFontWeight' =>  'Título Negrita (Weight)',
     'productContentCategoryFontWeight' =>  'Categoría Negrita (Weight)',
     'labelOrderSummaryDescription' => 'Información Resumen De La Orden',
+    'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',
