@@ -351,7 +351,7 @@ class OrderService
       }
 	
       //if there are an redirect URL custom in the setting this will have a full priority
-			$checkoutRedirectUrl = setting("icommerce::checkoutRedirectUrl", null, "");
+			$checkoutRedirectUrl = setting("icommerce::checkoutRedirectUrl", null);
 			$dataResponse["url"] = $checkoutRedirectUrl ?? $dataResponse["url"];
 	
 			//update cart status
