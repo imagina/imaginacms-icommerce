@@ -82,18 +82,14 @@
                 <th>{{trans('icommerce::orders.table.quantity')}}</th>
                 <th>{{trans('icommerce::orders.table.unit price')}}</th>
                 <th class="text-right">{{trans('icommerce::orders.table.total')}}</th>
-                @php $orderOptions = $order->orderOption @endphp
                 @foreach($order->orderItems as $product)
-                  @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
                   <tr class="product-order">
                     <td style="min-width: 250px">
                       <a href="{{$product->product->url ?? ""}}">{{$product->title}}</a>
                       <!--Show item options-->
-                      @if($productOptionText->count())
+                      @if($product->orderOption()->count())
                         <div class="text-muted" style="font-size: 13px">({{
-                                                        $productOptionText->map(function ($item){
-                                                        return $item->option_description .": ".$item->option_value_description;
-                                                        })->implode(', ')
+                                                        $product->getOptionsProductsAttributes()
                                                     }})
                         </div>
                       @endif

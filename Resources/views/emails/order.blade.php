@@ -50,23 +50,18 @@
     <tbody>
 
     @php
-      $orderOptions = $order->orderOption;
       $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD');
     @endphp
     @foreach($order->orderItems as $product)
-      @php $productOptionText = $orderOptions->where('order_item_id',$product->id) @endphp
       <tr class="product-order">
         <td>
           <a href="{{$product->product->url}}">
             <h4>{{$product->title}}</h4>
           </a>
-
           <!--Show item options-->
-          @if($productOptionText->count())
+          @if($product->orderOption()->count())
             <div class="text-muted" style="font-size: 13px">({{
-                  $productOptionText->map(function ($item){
-                  return $item->option_description .": ".$item->option_value_description;
-                  })->implode(', ')
+                  $product->getOptionsProductsAttributes()
               }})
             </div>
           @endif
