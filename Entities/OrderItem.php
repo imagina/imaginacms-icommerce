@@ -90,7 +90,7 @@ class OrderItem extends Model
 
   }
 
-  public function getOptionsProductsAttributes()
+  public function getProductOptionsLabelAttribute()
   {
     return $this->orderOption()->get()->map(function ($item) {
       return $item->option_description . ": " . $item->option_value_description;

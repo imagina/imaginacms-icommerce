@@ -89,7 +89,7 @@
                       <!--Show item options-->
                       @if($product->orderOption()->count())
                         <div class="text-muted" style="font-size: 13px">({{
-                                                        $product->getOptionsProductsAttributes()
+                                                        $product->product_options_label
                                                     }})
                         </div>
                       @endif

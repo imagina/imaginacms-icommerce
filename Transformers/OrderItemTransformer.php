@@ -24,7 +24,8 @@ class OrderItemTransformer extends JsonResource
       'price' => $this->when($this->price,$this->price),
       'total' => $this->when($this->total, Currency::convert($this->total)),
       'createdAt' => $this->when($this->created_at,$this->created_at),
-      'updatedAt' => $this->when($this->updated_at,$this->updated_at)
+      'updatedAt' => $this->when($this->updated_at,$this->updated_at),
+      'productOptionsLabel' => $this->product_options_label
     ];
 
     if(isset($this->orderOption) && count($this->orderOption)>0)
