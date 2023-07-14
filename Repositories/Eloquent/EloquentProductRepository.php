@@ -64,8 +64,8 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
 
         //Search query
         $query->leftJoin(\DB::raw(
-          "(SELECT MATCH (" . implode(',',json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN NATURAL LANGUAGE MODE) scoreSearch1, product_id, name, " .
-          " MATCH (" . implode(',',json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(" . $filter->search . ")' IN NATURAL LANGUAGE MODE) scoreSearch2 " .
+          "(SELECT MATCH (" . implode(',',json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN BOOLEAN MODE) scoreSearch1, product_id, name, " .
+          " MATCH (" . implode(',',json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 " .
           "from icommerce__product_translations " .
           "where `locale` = '".($filter->locale ?? locale())."') as ptrans"
         ), 'ptrans.product_id', 'icommerce__products.id')

@@ -121,7 +121,7 @@ return [
    | Define format money to the product price frontend
    |--------------------------------------------------------------------------
    */
-  'formatmoney' => [
+  'formatMoney' => [
     'symbol_left' => '$',
     'symbol_right' => '',
     'decimals' => 0,

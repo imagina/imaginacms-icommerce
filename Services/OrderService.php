@@ -349,8 +349,12 @@ class OrderService
       if($order->children->isNotEmpty()){
         $dataResponse["url"] = url("/ipanel/#/store/orders/");
       }
-
-      //update cart status
+	
+      //if there are an redirect URL custom in the setting this will have a full priority
+			$checkoutRedirectUrl = setting("icommerce::checkoutRedirectUrl", null);
+			$dataResponse["url"] = $checkoutRedirectUrl ?? $dataResponse["url"];
+	
+			//update cart status
       $updateCart = $this->cart->update($cart, ['status' => 2]);
 
       //Response
