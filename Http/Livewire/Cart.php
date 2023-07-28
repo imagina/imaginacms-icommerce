@@ -96,26 +96,30 @@ class Cart extends Component
   {
 
     try {
-      $product = $this->productRepository()->getItem($productId);
 
-      if (isset($product->id)) {
-        $data = [
-          "cart_id" => $this->cart->id,
-          "product_id" => $productId,
-          "quantity" => $quantity,
-          "product_option_values" => $productOptionValues,
-          "is_call" => $isCall
-        ];
+      if($quantity>0){
 
-        $this->cartProductRepository()->create($data);
-        $this->updateCart();
+        $product = $this->productRepository()->getItem($productId);
 
-        $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+        if (isset($product->id)) {
+          $data = [
+            "cart_id" => $this->cart->id,
+            "product_id" => $productId,
+            "quantity" => $quantity,
+            "product_option_values" => $productOptionValues,
+            "is_call" => $isCall
+          ];
 
-      } else {
-        $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+          $this->cartProductRepository()->create($data);
+          $this->updateCart();
+
+          $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+
+        } else {
+          $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+        }
+        
       }
-
 
     } catch (\Exception $e) {
 
