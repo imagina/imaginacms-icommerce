@@ -23,7 +23,7 @@
                wire:model="selected"
                {{!$selectOption->available ? "disabled" : ""}}
                title="{{!$selectOption->available ? '(Agotado)' : ''}}"/>
-        <label style="cursor:pointer;" for="{{$option->description}}"
+        <label style="cursor:pointer;" for="{{ $selectOption->optionValue->description }}"
                title="{{!$selectOption->available ? '(Agotado)' : ''}}">
           <span>{{ $selectOption->optionValue->description }}</span>
         </label>
