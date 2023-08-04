@@ -1,6 +1,6 @@
 @foreach($productOptionValues as $selectOption)
   <div
-    class="text-left {{$selectOption->optionValue->options->type != 1 ? 'd-inline-block' : 'radio-square'}}">
+    class="text-left {{$selectOption->optionValue->options->type != 1 ? 'd-inline-block' : 'checkbox-square'}}">
     
     <!--Color box-->
     @if($selectOption->optionValue->options->type == 3)
@@ -23,9 +23,9 @@
                {{!$selectOption->available ? "disabled" : ""}}
                title="{{!$selectOption->available ? '(Agotado)' : ''}}"
         />
-        <label style="cursor:pointer;" for="{{$productOption->option->description}}{{$productOption->id}}"/>
-        
-        {{ $selectOption->optionValue->description }}
+        <label for="{{$productOption->option->description}}{{$productOption->id}}"/>
+
+          <span>{{ $selectOption->optionValue->description }}</span>
         </label>
       </div>
     @endif
