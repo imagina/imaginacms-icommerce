@@ -1,6 +1,6 @@
 @foreach($productOptionValues as $selectOption)
   <div
-    class="text-left {{$selectOption->optionValue->options->type != 1 ? 'd-inline-block' : 'checkbox-square'}}">
+    class="text-left {{$selectOption->optionValue->options->type != 1 ? 'd-inline-block' : 'radio-square'}}">
     
     <!--Color box-->
     @if($selectOption->optionValue->options->type == 3)
