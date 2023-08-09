@@ -23,9 +23,9 @@
                {{!$selectOption->available ? "disabled" : ""}}
                title="{{!$selectOption->available ? '(Agotado)' : ''}}"
         />
-        <label style="cursor:pointer;" for="{{$productOption->option->description}}{{$productOption->id}}"/>
-        
-        {{ $selectOption->optionValue->description }}
+        <label for="{{$productOption->option->description}}{{$productOption->id}}"/>
+
+          <span>{{ $selectOption->optionValue->description }}</span>
         </label>
       </div>
     @endif
