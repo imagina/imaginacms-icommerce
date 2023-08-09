@@ -146,16 +146,16 @@ if (!function_exists('currentCurrency')) {
       $currency = \Cache::store(config("cache.default"))->remember('currency_' . (tenant()->id ?? "") . locale(), 60*60*24*30, function () {
     
         $currencyRepository = app("Modules\Icommerce\Repositories\CurrencyRepository");
-        $params = ["filter" => ["language" => locale(), "status" => Status::ENABLED, "withoutWhereCriteria" => true]];
+        $params = ["filter" => ["language" => locale(), "field" => "status"]];
         //getting currency by current locale
-        $currency = $currencyRepository->getItem("",json_decode(json_encode($params)));
+        $currency = $currencyRepository->getItem(Status::ENABLED,json_decode(json_encode($params)));
     
         if(!isset($currency->id)){
           //getting default currency
-          $params = ["filter" => ["default_currency" => 1, "status" => Status::ENABLED, "withoutWhereCriteria" => true]];
-          $currency = $currencyRepository->getItem("",json_decode(json_encode($params)));
+          $params = ["filter" => ["default_currency" => 1, "field" => "status"]];
+          $currency = $currencyRepository->getItem(Status::ENABLED,json_decode(json_encode($params)));
         }
-        
+
         if(!isset($currency->id)){
           $currency = new Currency(Config::get('asgard.icommerce.config.formatMoney'));
         }
