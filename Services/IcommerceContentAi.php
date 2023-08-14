@@ -18,7 +18,6 @@ class IcommerceContentAi
 
   private $categoryRepository;
   private $productRepository;
-  private $fileService;
   
   function __construct()
   {
@@ -27,7 +26,7 @@ class IcommerceContentAi
     $this->maxAttempts = (int)setting("isite::n8nMaxAttempts", null, 3);
     $this->categoryRepository = app("Modules\Icommerce\Repositories\CategoryRepository");
     $this->productRepository = app("Modules\Icommerce\Repositories\ProductRepository");
-    $this->fileService = app("Modules\Media\Services\FileService");
+
   }
 
   public function getCategories($quantity = 2)
@@ -166,7 +165,7 @@ class IcommerceContentAi
 
       // Image Process
       if(isset($category['image']) && isset($category['image'][0])){
-        $file = $this->saveImage($category['image'][0]);
+        $file = $this->aiService->saveImage($category['image'][0]);
         $category['medias_single']['mainimage'] = $file->id;
       }
 
@@ -217,7 +216,7 @@ class IcommerceContentAi
 
       // Image Process
       if(isset($product['image']) && isset($product['image'][0])){
-        $file = $this->saveImage($product['image'][0]);
+        $file = $this->aiService->saveImage($product['image'][0]);
         $product['medias_single']['mainimage'] = $file->id;
       }
 
@@ -237,23 +236,5 @@ class IcommerceContentAi
    
   }
 
-  /**
-   * Save image from AI
-   */
-  public function saveImage($image)
-  {
-
-    \Log::info($this->log."saveImage");
-    
-
-    $path = $image->url;
-    $provider = $image->provider;
-
-    $fileCreated = $this->fileService->storeHotLinked($path,$provider);
-
-    return $fileCreated;
-
-
-  }
 
 }
