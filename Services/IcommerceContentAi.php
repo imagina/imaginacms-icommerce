@@ -20,11 +20,11 @@ class IcommerceContentAi
   private $productRepository;
   private $fileService;
   
-  function __construct($maxAttempts = 3)
+  function __construct()
   {
 
     $this->aiService = new AiService();
-    $this->maxAttempts = $maxAttempts;
+    $this->maxAttempts = (int)setting("isite::n8nMaxAttempts", null, 3);
     $this->categoryRepository = app("Modules\Icommerce\Repositories\CategoryRepository");
     $this->productRepository = app("Modules\Icommerce\Repositories\ProductRepository");
     $this->fileService = app("Modules\Media\Services\FileService");
