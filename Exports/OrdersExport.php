@@ -34,6 +34,7 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
 
   public function __construct($params, $exportParams)
   {
+    $this->userId = \Auth::id();//Set for ReportQueue
     $this->params = $params;
     $this->exportParams = $exportParams;
     $this->inotification = app('Modules\Notification\Services\Inotification');
