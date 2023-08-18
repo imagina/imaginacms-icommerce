@@ -76,7 +76,7 @@ return [
       'loadOptions' => [
         'apiRoute' => '/isite/v1/layouts',
         'select' => ['label' => 'title', 'id' => 'id'],
-        'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Icommerce']],
+        'requestParams' => ['filter' => ['entity_name' => 'Category', 'module_name' => 'Icommerce', 'isInternal' => 1]],
       ],
       'props' => [
         'label' => 'icommerce::common.layouts.label_categories',
@@ -123,7 +123,7 @@ return [
       'loadOptions' => [
         'apiRoute' => '/isite/v1/layouts',
         'select' => ['label' => 'title', 'id' => 'id'],
-        'requestParams' => ['filter' => ['entity_name' => 'Product', 'module_name' => 'Icommerce']],
+        'requestParams' => ['filter' => ['entity_name' => 'Product', 'module_name' => 'Icommerce', 'isInternal' => 1]],
       ],
       'props' => [
         'label' => 'icommerce::common.layouts.label_products',
