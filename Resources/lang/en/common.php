@@ -137,7 +137,7 @@ return [
     'productContentTitleMaxHeight' => 'Min/Max height title',
     'productWishlistEnable' => 'Enable wishlist button',
     'labelOrderSummaryDescription' => 'Order Summary Information',
-		'checkoutRedirectUrl' => 'Checkout redirect URL',
+    'checkoutRedirectUrl' => 'Checkout redirect URL',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
@@ -259,6 +259,8 @@ return [
 
   'offers' => [
     'title' => 'Offers'
+  ],
+  'featured' => [
+    'title' => 'Featured Products'
   ]
-
 ];

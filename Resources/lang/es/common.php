@@ -295,4 +295,7 @@ return [
   'offers' => [
     'title' => 'Ofertas'
   ],
+  'featured' => [
+    'title' => 'Productos Destacados'
+  ],
 ];
