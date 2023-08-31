@@ -261,6 +261,27 @@ class PublicController extends BaseApiController
     return view($tpl, compact('withDiscount', 'title'));
   }
 
+  public function indexFeatured(Request $request)
+  {
+    $argv = explode("/", $request->path());
+    $slug = end($argv);
+
+    $tpl = 'icommerce::frontend.featured.index';
+    $ttpl = 'icommerce.featured.index';
+
+    if (view()->exists($ttpl)) $tpl = $ttpl;
+
+    $featured = false;
+
+    if ($slug && $slug != trans('icommerce::routes.store.index')) {
+
+      $featured = true;
+
+    }
+    $title = trans('icommerce::common.featured.title');
+    return view($tpl, compact('featured', 'title'));
+  }
+
   // view products by category
   public function indexCategoryManufacturer(Request $request, $categorySlug, $manufacturerSlug)
   {

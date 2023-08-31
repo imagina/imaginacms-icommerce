@@ -29,6 +29,11 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
       'as' => $locale . '.icommerce.store.index.offers',
       'uses' => 'PublicController@indexOffers',
     ]);
+
+    $router->get(trans('icommerce::routes.store.index.featured',[],$locale), [
+      'as' => $locale . '.icommerce.store.index.featured',
+      'uses' => 'PublicController@indexFeatured',
+    ]);
     
     
     $router->get(trans('icommerce::routes.store.manufacturer.index',[],$locale), [
