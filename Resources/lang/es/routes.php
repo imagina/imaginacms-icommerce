@@ -9,6 +9,7 @@ return [
       'manufacturer' => 'tienda/m/{manufacturerSlug}',
       'categoryManufacturer' => 'tienda/c/{categorySlug}/m/{manufacturerSlug}',
       'offers' => 'tienda/ofertas',
+      'featured' => 'tienda/destacados',
     ],
     
     'show' => [
