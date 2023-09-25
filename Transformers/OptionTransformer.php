@@ -17,7 +17,7 @@ class OptionTransformer extends JsonResource
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at),
       'optionValues' => OptionValueTransformer::collection($this->whenLoaded('optionValues')),
-      'dinamic' => $this->dinamic
+      'dynamic' => $this->dynamic
     ];
 
     $filter = json_decode($request->filter);
