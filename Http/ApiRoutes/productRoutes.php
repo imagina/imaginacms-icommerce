@@ -36,5 +36,10 @@ $router->group(['prefix' => '/products'], function (Router $router) {
         'uses'=>'ProductApiController@importProducts',
          'middleware'=>['auth:api','auth-can:icommerce.products.import']
     ]);
+    $router->post('/sync/{criteria}',[
+        'as'=>'api.icommerce.products.sync',
+        'uses'=>'ProductApiController@syncProducts',
+        'middleware'=>['auth:api']
+    ]);
 
 });
