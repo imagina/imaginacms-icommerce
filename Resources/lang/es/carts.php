@@ -21,9 +21,9 @@ return [
     ],
     'validation' => [
     ],
-    'status'=>[
-        'abandoned'=>'Abandonado',
-        'active'=>'Activo',
-        'processed'=>'Procesado'
-    ]
+    'status' => [
+        'abandoned' => 'Abandonado',
+        'active' => 'Activo',
+        'processed' => 'Procesado',
+    ],
 ];

@@ -14,7 +14,7 @@ return [
     ],
     'button' => [
         'create category' => 'Crea una categoría',
-        'show_products' => 'ver productos'
+        'show_products' => 'ver productos',
     ],
     'table' => [
     ],

@@ -2,73 +2,70 @@
 
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], function (Router $router) {
-//======  CATEGORIES
-  require('ApiRoutes/categoryRoutes.php');
+Route::prefix('/icommerce/v3')->group(function (Router $router) {
+    //======  CATEGORIES
+    require 'ApiRoutes/categoryRoutes.php';
 
-//======  COUPONS
-  require('ApiRoutes/couponRoutes.php');
+    //======  COUPONS
+    require 'ApiRoutes/couponRoutes.php';
 
-//======  CURRENCIES
-  require('ApiRoutes/currencyRoutes.php');
+    //======  CURRENCIES
+    require 'ApiRoutes/currencyRoutes.php';
 
-//======  MANUFACTURERS
-  require('ApiRoutes/manufacturerRoutes.php');
+    //======  MANUFACTURERS
+    require 'ApiRoutes/manufacturerRoutes.php';
 
-//======  OPTIONS
-  require('ApiRoutes/optionRoutes.php');
+    //======  OPTIONS
+    require 'ApiRoutes/optionRoutes.php';
 
-//======  OPTIONS VALUES
-  require('ApiRoutes/optionValueRoutes.php');
+    //======  OPTIONS VALUES
+    require 'ApiRoutes/optionValueRoutes.php';
 
-//======  CARTS
-  require('ApiRoutes/cartRoutes.php');
+    //======  CARTS
+    require 'ApiRoutes/cartRoutes.php';
 
-//======  CART PRODUCTS
-  require('ApiRoutes/cartProductRoutes.php');
+    //======  CART PRODUCTS
+    require 'ApiRoutes/cartProductRoutes.php';
 
-//======  TAX CLASSES
-  require('ApiRoutes/taxClassRoutes.php');
+    //======  TAX CLASSES
+    require 'ApiRoutes/taxClassRoutes.php';
 
-  //======  TAX RATES
-  require('ApiRoutes/taxRateRoutes.php');
+    //======  TAX RATES
+    require 'ApiRoutes/taxRateRoutes.php';
 
+    //======  PRODUCTS
+    require 'ApiRoutes/productRoutes.php';
 
-  //======  PRODUCTS
-  require('ApiRoutes/productRoutes.php');
+    //======  PRODUCTS-OPTIONS
+    require 'ApiRoutes/productOptionRoutes.php';
 
-  //======  PRODUCTS-OPTIONS
-  require('ApiRoutes/productOptionRoutes.php');
+    //======  PRODUCT OPTION VALUES
+    require 'ApiRoutes/productOptionValueRoutes.php';
 
-  //======  PRODUCT OPTION VALUES
-  require('ApiRoutes/productOptionValueRoutes.php');
+    //======  PRODUCT DISCOUNTS
+    require 'ApiRoutes/productDiscountRoutes.php';
 
-  //======  PRODUCT DISCOUNTS
-  require('ApiRoutes/productDiscountRoutes.php');
+    //======  ORDERS
+    require 'ApiRoutes/orderRoutes.php';
 
-  //======  ORDERS
-  require('ApiRoutes/orderRoutes.php');
+    //======  ORDER STATUS
+    require 'ApiRoutes/orderStatusRoutes.php';
 
-  //======  ORDER STATUS
-  require('ApiRoutes/orderStatusRoutes.php');
+    //======  ORDER STATUS HISTORY
+    require 'ApiRoutes/orderHistoryRoutes.php';
 
-  //======  ORDER STATUS HISTORY
-  require('ApiRoutes/orderHistoryRoutes.php');
+    //======  PAYMENT METHODS
+    require 'ApiRoutes/paymentMethodRoutes.php';
 
+    //======  TRANSACTION
+    require 'ApiRoutes/transactionRoutes.php';
 
-  //======  PAYMENT METHODS
-  require('ApiRoutes/paymentMethodRoutes.php');
+    //======  SHIPPING METHODS
+    require 'ApiRoutes/shippingMethodRoutes.php';
 
-  //======  TRANSACTION
-  require('ApiRoutes/transactionRoutes.php');
+    //======  STORES
+    require 'ApiRoutes/storeRoutes.php';
 
-  //======  SHIPPING METHODS
-  require('ApiRoutes/shippingMethodRoutes.php');
-
-  //======  STORES
-  require('ApiRoutes/storeRoutes.php');
-
-  //======  ITEM TYPES
-  require('ApiRoutes/itemTypeRoutes.php');
-
+    //======  ITEM TYPES
+    require 'ApiRoutes/itemTypeRoutes.php';
 });

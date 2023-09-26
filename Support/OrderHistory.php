@@ -4,29 +4,27 @@ namespace Modules\Icommerce\Support;
 
 class OrderHistory
 {
+    private $status;
 
-  private $status;
-  private $notify;
-  private $comment;
+    private $notify;
 
-  public function __construct($status,$notify,$comment=null){
+    private $comment;
 
-    $this->status = $status;
-    $this->notify = $notify;
-    $this->comment = $comment;
-  }
+    public function __construct($status, $notify, $comment = null)
+    {
+        $this->status = $status;
+        $this->notify = $notify;
+        $this->comment = $comment;
+    }
 
-   
-  public function getData(){
+    public function getData()
+    {
+        $data = [
+            'status' => $this->status,
+            'notify' => $this->notify,
+            'comment' => $this->comment,
+        ];
 
-    $data = array(
-      'status' => $this->status, 
-      'notify' => $this->notify,
-      'comment' => $this->comment
-    );
-
-    return $data;
-
-  }
-
+        return $data;
+    }
 }

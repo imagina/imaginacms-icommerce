@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 class ProductWasUpdated
 {
     use SerializesModels;
+
     public $entity;
 
     /**
@@ -16,15 +17,13 @@ class ProductWasUpdated
      */
     public function __construct($entity)
     {
-      $this->entity = $entity;
+        $this->entity = $entity;
     }
 
     /**
      * Get the channels the event should be broadcast on.
-     *
-     * @return array
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return [];
     }

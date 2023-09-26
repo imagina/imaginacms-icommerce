@@ -15,7 +15,7 @@ class StoreRequest extends BaseFormRequest
     {
         return [
             'name' => 'required|min:2',
-            'address'=> 'required|min:2',
+            'address' => 'required|min:2',
             'phone' => 'required|min:2',
         ];
     }

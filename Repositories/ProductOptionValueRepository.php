@@ -6,11 +6,11 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface ProductOptionValueRepository extends BaseRepository
 {
-  public function getItemsBy($params);
-  
-  public function getItem($criteria, $params = false);
+    public function getItemsBy($params);
 
-  public function updateBy($criteria, $data, $params = false);
-  
-  public function deleteBy($criteria, $params = false);
+    public function getItem($criteria, $params = false);
+
+    public function updateBy($criteria, $data, $params = false);
+
+    public function deleteBy($criteria, $params = false);
 }

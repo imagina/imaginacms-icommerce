@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\ProductOptionRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\ProductOptionRepository;
 
 class CacheProductOptionDecorator extends BaseCacheDecorator implements ProductOptionRepository
 {
@@ -13,33 +13,27 @@ class CacheProductOptionDecorator extends BaseCacheDecorator implements ProductO
         $this->entityName = 'icommerce.productoptions';
         $this->repository = $productoption;
     }
-  
+
   /**
    * List or resources
-   *
-   * @return collection
    */
   public function getItemsBy($params)
   {
-    return $this->remember(function () use ($params) {
-      return $this->repository->getItemsBy($params);
-    });
+      return $this->remember(function () use ($params) {
+          return $this->repository->getItemsBy($params);
+      });
   }
-  
-  
+
   /**
    * find a resource by id or slug
-   *
-   * @return object
    */
   public function getItem($criteria, $params = false)
   {
-    return $this->remember(function () use ($criteria, $params) {
-      return $this->repository->getItem($criteria, $params);
-    });
+      return $this->remember(function () use ($criteria, $params) {
+          return $this->repository->getItem($criteria, $params);
+      });
   }
-  
-  
+
   /**
    * update a resource
    *
@@ -47,12 +41,11 @@ class CacheProductOptionDecorator extends BaseCacheDecorator implements ProductO
    */
   public function updateBy($criteria, $data, $params = false)
   {
-    $this->clearCache();
-    
-    return $this->repository->updateBy($criteria, $data, $params);
+      $this->clearCache();
+
+      return $this->repository->updateBy($criteria, $data, $params);
   }
-  
-  
+
   /**
    * destroy a resource
    *
@@ -60,8 +53,8 @@ class CacheProductOptionDecorator extends BaseCacheDecorator implements ProductO
    */
   public function deleteBy($criteria, $params = false)
   {
-    $this->clearCache();
-    
-    return $this->repository->deleteBy($criteria, $params);
+      $this->clearCache();
+
+      return $this->repository->deleteBy($criteria, $params);
   }
 }

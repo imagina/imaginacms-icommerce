@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\OrderOptionRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\OrderOptionRepository;
 
 class CacheOrderOptionDecorator extends BaseCacheDecorator implements OrderOptionRepository
 {

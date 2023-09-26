@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository;
 
 class CachePaymentMethodGeozoneDecorator extends BaseCacheDecorator implements PaymentMethodGeozoneRepository
 {

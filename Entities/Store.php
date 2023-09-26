@@ -25,28 +25,28 @@ class Store extends Model
 
     protected $casts = [
         'options' => 'array',
-        'polygon' => 'array'
+        'polygon' => 'array',
     ];
 
-  public function city()
-  {
-    return $this->belongsTo(City::class, 'city_id');
-  }
-  
-  public function user()
-  {
-    $driver = config('asgard.user.config.driver');
-    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
-  }
-  
-  public function country()
-  {
-    return $this->belongsTo(Country::class, 'country_id');
-  }
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 
-  public function department()
-  {
-    return $this->belongsTo(Province::class, 'province_id');
-  }
+    public function user()
+    {
+        $driver = config('asgard.user.config.driver');
 
+        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
 }

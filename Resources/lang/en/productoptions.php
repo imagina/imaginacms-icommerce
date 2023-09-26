@@ -21,12 +21,12 @@ return [
     ],
     'validation' => [
     ],
-    'alerts'            => [
-        'soldOut'      => 'Product option sold out',
-        'lowStock'      => 'Product Option with low stock',
+    'alerts' => [
+        'soldOut' => 'Product option sold out',
+        'lowStock' => 'Product Option with low stock',
     ],
-    'messages'          => [
-        'soldOut'      => 'Your option: <b>:name</b> has been <b>sold out</b> <br/> into product: <b>:productName</b>',
-        'lowStock'      => '<b>:units</b> unit(s) remaining for your option: <b>:name</b></br> into product: <b>:productName</b>',
+    'messages' => [
+        'soldOut' => 'Your option: <b>:name</b> has been <b>sold out</b> <br/> into product: <b>:productName</b>',
+        'lowStock' => '<b>:units</b> unit(s) remaining for your option: <b>:name</b></br> into product: <b>:productName</b>',
     ],
 ];

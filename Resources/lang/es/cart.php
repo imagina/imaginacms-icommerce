@@ -2,42 +2,42 @@
 
 return [
     'title' => 'Carrito de compras',
-    'breadcrumb_title'	=> 'Carrito',
-    'carting'         => [
-        'title'             => 'Carrito',
-        'my_cart'           => 'Mi carrito',
-        'your_cart'         => 'Tú carrito de compras',
-        'view_cart'         => 'Ver carrito',
+    'breadcrumb_title' => 'Carrito',
+    'carting' => [
+        'title' => 'Carrito',
+        'my_cart' => 'Mi carrito',
+        'your_cart' => 'Tú carrito de compras',
+        'view_cart' => 'Ver carrito',
     ],
-    'articles'      => [
-        'cart'              => 'Carrito de compras',
-        'empty_cart'        => 'Carrito de compras vacío',
+    'articles' => [
+        'cart' => 'Carrito de compras',
+        'empty_cart' => 'Carrito de compras vacío',
     ],
-    'table'         => [
-        'picture'           => 'Imagen',
-        'item'          	=> 'Artículo',
-        'sku'          		=> 'SKU',
-        'unit_price'        => 'Precio unitario',
-        'quantity'          => 'Cantidad',
-        'price_per_unit'    => 'Precio por unidad',
-        'subtotal'          => 'Sub Total',
-        'total'          	=> 'Total: ',
-        'secondary_total'   => 'Total',
+    'table' => [
+        'picture' => 'Imagen',
+        'item' => 'Artículo',
+        'sku' => 'SKU',
+        'unit_price' => 'Precio unitario',
+        'quantity' => 'Cantidad',
+        'price_per_unit' => 'Precio por unidad',
+        'subtotal' => 'Sub Total',
+        'total' => 'Total: ',
+        'secondary_total' => 'Total',
     ],
-    'button'    => [
-        'continue_shopping'   	=> 'Continuar comprando',
-        'proceed_to_checkout'   => 'Proceder a pagar',
-        'view_cart'             => 'Ver Carrito',
-        'checkout'              => 'Finalizar Pedido',
-        'add_to_cart'           => 'Agregar',
-        'add_to_cart_quote'     => 'Agregar cotizacion',
-        'download_pdf'          => 'Descargar PDF',
-        'request_quote'         => 'Solicitar cotizacion'
+    'button' => [
+        'continue_shopping' => 'Continuar comprando',
+        'proceed_to_checkout' => 'Proceder a pagar',
+        'view_cart' => 'Ver Carrito',
+        'checkout' => 'Finalizar Pedido',
+        'add_to_cart' => 'Agregar',
+        'add_to_cart_quote' => 'Agregar cotizacion',
+        'download_pdf' => 'Descargar PDF',
+        'request_quote' => 'Solicitar cotizacion',
     ],
-    'empty_cart_message'    => [
-        'part_1'   	=> 'No tienes artículos en tú carrito de compras. haz Click ',
-        'part_2'   => 'aquí',
-        'part_3'   => ' para continuar comprando.',
+    'empty_cart_message' => [
+        'part_1' => 'No tienes artículos en tú carrito de compras. haz Click ',
+        'part_2' => 'aquí',
+        'part_3' => ' para continuar comprando.',
     ],
     'message' => [
         'add' => 'Producto agregado al carrito',

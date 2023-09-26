@@ -9,16 +9,16 @@ class OptionRequest extends BaseFormRequest
     public function rules()
     {
         return [
-          'type' => 'required',
+            'type' => 'required',
 
         ];
     }
 
     public function translationRules()
     {
-      return [
-        'description' => 'required|min:1',
-      ];
+        return [
+            'description' => 'required|min:1',
+        ];
     }
 
     public function authorize()
@@ -29,11 +29,11 @@ class OptionRequest extends BaseFormRequest
     public function messages()
     {
         return [
-          // type
-          'type.required' => trans('icommerce::common.messages.field required'),
+            // type
+            'type.required' => trans('icommerce::common.messages.field required'),
 
-          // sort_order
-          'sort_order.required' => trans('icommerce::common.messages.field required'),
+            // sort_order
+            'sort_order.required' => trans('icommerce::common.messages.field required'),
 
         ];
     }
@@ -41,9 +41,9 @@ class OptionRequest extends BaseFormRequest
     public function translationMessages()
     {
         return [
-          // description
-          'description.required' => trans('icommerce::common.messages.field required'),
-          'description.min:1' => trans('icommerce::common.messages.min 1 characters'),
+            // description
+            'description.required' => trans('icommerce::common.messages.field required'),
+            'description.min:1' => trans('icommerce::common.messages.min 1 characters'),
         ];
     }
 }

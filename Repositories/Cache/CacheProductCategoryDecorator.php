@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\ProductCategoryRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\ProductCategoryRepository;
 
 class CacheProductCategoryDecorator extends BaseCacheDecorator implements ProductCategoryRepository
 {

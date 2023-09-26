@@ -2,28 +2,27 @@
 
 namespace Modules\Icommerce\Imports;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Modules\Icommerce\Repositories\CategoryRepository;
-use Modules\Icommerce\Entities\Category;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Modules\Icommerce\Repositories\CategoryRepository;
 
 // class CategoriesImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
 class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
 {
-
     private $category;
+
     private $info;
 
     public function __construct(
         CategoryRepository $category,
         $info
 
-    ){
+    ) {
         $this->category = $category;
         $this->info = $info;
     }
@@ -39,12 +38,12 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
         foreach ($rows as $row) {
             try {
                 if (isset($row->id)) {
-                    $category_id = (int)$row->id;
-                    $title = (string)$row->title;
-                    $description = (string)$row->description;
-                    $parent_id = (int)$row->parent_id;
-                    $image = (string)$row->image;
-                    $slug = "";
+                    $category_id = (int) $row->id;
+                    $title = (string) $row->title;
+                    $description = (string) $row->description;
+                    $parent_id = (int) $row->parent_id;
+                    $image = (string) $row->image;
+                    $slug = '';
                     // Search by id
                     $category = $this->category->find($category_id);
                     $slug = Str::slug($title, '-');
@@ -55,53 +54,42 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
                         'slug' => $slug,
                         'title' => $title,
                         'description' => $description,
-                        'parent_id'=>$parent_id,
+                        'parent_id' => $parent_id,
                     ];
 
-                    if (isset($category->id) && !empty($category->id)) {
+                    if (isset($category->id) && ! empty($category->id)) {
                         // Update
                         $this->category->update($category, $param);
-                        \Log::info('Update Category: '.$category->id.' title: ' . $category->title);
+                        \Log::info('Update Category: '.$category->id.' title: '.$category->title);
                     } else {
                         // Create
                         $category = $this->category->create($param);
-                        \Log::info('Create a Category: '.$category->id.' title: ' .  $category->title);
+                        \Log::info('Create a Category: '.$category->id.' title: '.$category->title);
                     }//if exist
 
-                    if (isset($image) && !empty($image)) {
-
+                    if (isset($image) && ! empty($image)) {
                         $item = DB::table('media__files')->select('id')->where('filename', $image)->first();
                         if (isset($item->id)) {
                             $imageselec = DB::table('media__imageables')->select('id')->where('file_id', $item->id)->where('imageable_id', $category->id)->where('imageable_type', 'Modules\Icommerce\Entities\Category')->where('zone', 'mainimage')->first();
-                            if (!isset($imageselec->id)) {
+                            if (! isset($imageselec->id)) {
                                 DB::insert('insert into media__imageables (file_id, imageable_id, imageable_type, zone) values (?, ?, ?, ?)', [$item->id, $category->id, 'Modules\Icommerce\Entities\Category', 'mainimage']);
                             }
-
-
                         }
-
                     }
-
-
-
                 }//if isset title
             } catch (\Exception $e) {
                 \Log::error($e->getMessage());
                 // dd($e->getMessage());
             }
-
         }// foreach
-
     }
 
     public function saveimage($destination_path, $picture)
     {
-
         $disk = 'publicmedia';
         try {
             if (\Storage::disk('publicmedia')->exists($picture)) {
                 $image = \Image::make(\Storage::disk('publicmedia')->url($picture));
-
 
                 $image->resize(config('asgard.iblog.config.imagesize.width'), config('asgard.iblog.config.imagesize.height'), function ($constraint) {
                     $constraint->aspectRatio();
@@ -112,7 +100,6 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
                 }
                 // 2. Store the image on disk.
                 \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '80'));
-
 
                 // Save Thumbs
                 \Storage::disk($disk)->put(
@@ -149,5 +136,4 @@ class CategoriesImport implements ToCollection, WithChunkReading, WithHeadingRow
     {
         return 500;
     }
-
 }

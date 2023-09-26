@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class CurrencyTranslation extends Model
 {
     /**
-     * @var $table string
+     * @var string
      */
     protected $table = 'icommerce__currency_translations';
+
     /**
-     * @var  $timestamps bool
+     * @var  bool
      */
     public $timestamps = false;
+
     /**
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
-
 }

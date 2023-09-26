@@ -4,19 +4,19 @@
     "type": "asgard-module",
     "license": "MIT",
     "require": {
-        "php": ">=7.2.0",
+        "php": "^8.1",
         "composer/installers": "~1.0",
-        "imagina/core-module": "v8.x-dev",
-        "imagina/ihelpers-module": "v8.x-dev",
-        "imagina/notification-module": "v8.x-dev",
-        "imagina/icurrency-module": "v8.x-dev",
-        "imagina/icommercecheckmo-module": "v8.x-dev",
-        "imagina/icommerceagree-module": "v8.x-dev",
-        "imagina/wishlistable-module": "v8.x-dev"
+        "imagina/core-module": "v10.x-dev",
+        "imagina/ihelpers-module": "v10.x-dev",
+        "imagina/notification-module": "v10.x-dev",
+        "imagina/icurrency-module": "v10.x-dev",
+        "imagina/icommercecheckmo-module": "v10.x-dev",
+        "imagina/icommerceagree-module": "v10.x-dev",
+        "imagina/wishlistable-module": "v10.x-dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0",
-        "orchestra/testbench": "3.5.*"
+        "orchestra/testbench": "^8.5",
+        "phpunit/phpunit": "^10"
     },
     "autoload-dev": {
         "psr-4": {
@@ -35,7 +35,7 @@
     "extra": {
         "branch-alias": {
             "dev-master": "4.0.x-dev",
-            "dev-v8.x": "8.0.x-dev"
+            "dev-v10.x": "10.0.x-dev"
         }
     },
     "autoload": {

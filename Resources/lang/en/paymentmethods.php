@@ -25,7 +25,7 @@ return [
     'messages' => [
         'no payment methods' => 'No payment methods',
         'noPaymentMethodSelected' => 'No Payment Method selected',
-        'showInCurrencies' => 'Show the payment method in these currencies'
+        'showInCurrencies' => 'Show the payment method in these currencies',
     ],
     'validation' => [
     ],

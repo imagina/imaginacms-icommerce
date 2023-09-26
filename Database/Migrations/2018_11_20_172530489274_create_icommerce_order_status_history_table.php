@@ -1,39 +1,35 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateIcommerceOrderStatusHistoryTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('icommerce__order_status_history', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             // Your fields
-          $table->integer('order_id')->unsigned();
-          $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
-  
-          $table->tinyInteger('status')->default(1)->unsigned();
-          $table->integer('notify')->unsigned();
-          $table->text('comment')->nullable();
+            $table->integer('order_id')->unsigned();
+            $table->foreign('order_id')->references('id')->on('icommerce__orders')->onDelete('restrict');
 
-          $table->timestamps();
+            $table->tinyInteger('status')->default(1)->unsigned();
+            $table->integer('notify')->unsigned();
+            $table->text('comment')->nullable();
+
+            $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('icommerce__order_status_history');
     }
-}
+};

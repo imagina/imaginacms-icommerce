@@ -58,6 +58,7 @@
           <a href="{{$product->product->url}}">
             <h4>{{$product->title}}</h4>
           </a>
+
           <!--Show item options-->
           @if($product->orderOption()->count())
             <div class="text-muted" style="font-size: 13px">({{

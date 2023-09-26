@@ -18,7 +18,7 @@ return [
     'form' => [
     ],
     'messages' => [
-        'no shipping methods'   => 'No shipping methods have been added',
+        'no shipping methods' => 'No shipping methods have been added',
     ],
     'validation' => [
     ],

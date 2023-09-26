@@ -8,11 +8,11 @@ class CartProductRequest extends BaseFormRequest
 {
     public function rules()
     {
-      return [
-        'cart_id' => 'required|exists:icommerce__carts,id',
-        'product_id' => 'required|exists:icommerce__products,id',
+        return [
+            'cart_id' => 'required|exists:icommerce__carts,id',
+            'product_id' => 'required|exists:icommerce__products,id',
 
-      ];
+        ];
     }
 
     public function translationRules()
@@ -27,14 +27,14 @@ class CartProductRequest extends BaseFormRequest
 
     public function messages()
     {
-      return [
-        // cart id
-        'cart_id.required' => trans('icommerce::common.messages.field required'),
+        return [
+            // cart id
+            'cart_id.required' => trans('icommerce::common.messages.field required'),
 
-        // product id
-        'product_id.required' => trans('icommerce::common.messages.field required'),
-        
-      ];
+            // product id
+            'product_id.required' => trans('icommerce::common.messages.field required'),
+
+        ];
     }
 
     public function translationMessages()

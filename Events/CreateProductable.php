@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Modules\Icommerce\Events;
-
 
 class CreateProductable
 {
     public $model;
+
     public $data;
 
     public function __construct($model, array $data)
@@ -17,7 +16,6 @@ class CreateProductable
 
     /**
      * Return the entity
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getEntity()
     {
@@ -26,7 +24,6 @@ class CreateProductable
 
     /**
      * Return the ALL data sent
-     * @return array
      */
     public function getSubmissionData()
     {

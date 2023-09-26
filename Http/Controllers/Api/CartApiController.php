@@ -3,31 +3,26 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
-use Modules\Icommerce\Http\Requests\CartRequest;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Icommerce\Http\Requests\CartProductRequest;
-
 // Base Api
-use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
-
+use Modules\Icommerce\Http\Requests\CartRequest;
 // Transformers
-use Modules\Icommerce\Transformers\CartTransformer;
-
+use Modules\Icommerce\Repositories\CartRepository;
 // Entities
-use Modules\Icommerce\Entities\Cart;
 
 //Auth
-use Modules\User\Contracts\Authentication;
-
+use Modules\Icommerce\Transformers\CartTransformer;
 // Repositories
-use Modules\Icommerce\Repositories\CartRepository;
+use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 //Transactions
-use DB;
+use Modules\User\Contracts\Authentication;
 
 class CartApiController extends BaseApiController
 {
     private $cart;
+
     protected $auth;
 
     public function __construct(CartRepository $cart)
@@ -35,7 +30,6 @@ class CartApiController extends BaseApiController
         $this->cart = $cart;
         $this->auth = app(Authentication::class);
     }
-
 
     /**
      * GET ITEMS
@@ -53,15 +47,15 @@ class CartApiController extends BaseApiController
 
             //Response
             $response = [
-                "data" => CartTransformer::collection($dataEntity)
+                'data' => CartTransformer::collection($dataEntity),
             ];
 
             //If request pagination add meta-page
-            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($dataEntity)] : false;
+            $params->page ? $response['meta'] = ['page' => $this->pageTransformer($dataEntity)] : false;
         } catch (\Exception $e) {
-          \Log::error($e->getMessage());
+            \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
 
         //Return response
@@ -71,7 +65,6 @@ class CartApiController extends BaseApiController
     /**
      * GET A ITEM
      *
-     * @param $criteria
      * @return mixed
      */
     public function show($criteria, Request $request)
@@ -84,15 +77,16 @@ class CartApiController extends BaseApiController
             $dataEntity = $this->cart->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$dataEntity) throw new \Exception('Item not found', 404);
+            if (! $dataEntity) {
+                throw new \Exception('Item not found', 404);
+            }
 
             //Response
-            $response = ["data" => new CartTransformer($dataEntity)];
-
+            $response = ['data' => new CartTransformer($dataEntity)];
         } catch (\Exception $e) {
-          \Log::error($e->getMessage());
+            \Log::error($e->getMessage());
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
 
         //Return response
@@ -102,7 +96,6 @@ class CartApiController extends BaseApiController
     /**
      * CREATE A ITEM
      *
-     * @param Request $request
      * @return mixed
      */
     public function create(Request $request)
@@ -113,22 +106,22 @@ class CartApiController extends BaseApiController
             $data = $request->input('attributes');
 
             //Validate Request
-            $this->validateRequestApi(new CartRequest((array)$data));
+            $this->validateRequestApi(new CartRequest((array) $data));
 
-            $data["ip"] = $request->ip();
-            $data["session_id"] = session('key');
-            
+            $data['ip'] = $request->ip();
+            $data['session_id'] = session('key');
+
             //Create item
             $cart = $this->cart->create($data);
 
             //Response
-            $response = ["data" =>  new CartTransformer($cart)];
+            $response = ['data' => new CartTransformer($cart)];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-          \Log::error($e->getMessage());
-            \DB::rollback();//Rollback to Data Base
+            \Log::error($e->getMessage());
+            \DB::rollback(); //Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
         //Return response
         return response()->json($response, $status ?? 200);
@@ -137,8 +130,6 @@ class CartApiController extends BaseApiController
     /**
      * UPDATE ITEM
      *
-     * @param $criteria
-     * @param Request $request
      * @return mixed
      */
     public function update($criteria, Request $request)
@@ -149,7 +140,7 @@ class CartApiController extends BaseApiController
             $data = $request->input('attributes');
 
             //Validate Request
-            $this->validateRequestApi(new CartRequest((array)$data));
+            $this->validateRequestApi(new CartRequest((array) $data));
 
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
@@ -158,13 +149,13 @@ class CartApiController extends BaseApiController
             $this->cart->updateBy($criteria, $data, $params);
 
             //Response
-            $response = ["data" => 'Item Updated'];
-            \DB::commit();//Commit to DataBase
+            $response = ['data' => 'Item Updated'];
+            \DB::commit(); //Commit to DataBase
         } catch (\Exception $e) {
-          \Log::error($e->getMessage());
-            \DB::rollback();//Rollback to Data Base
+            \Log::error($e->getMessage());
+            \DB::rollback(); //Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
 
         //Return response
@@ -174,7 +165,6 @@ class CartApiController extends BaseApiController
     /**
      * DELETE A ITEM
      *
-     * @param $criteria
      * @return mixed
      */
     public function delete($criteria, Request $request)
@@ -188,18 +178,16 @@ class CartApiController extends BaseApiController
             $this->cart->deleteBy($criteria, $params);
 
             //Response
-            $response = ["data" => ""];
-            \DB::commit();//Commit to Data Base
+            $response = ['data' => ''];
+            \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-          \Log::error($e->getMessage());
-            \DB::rollback();//Rollback to Data Base
+            \Log::error($e->getMessage());
+            \DB::rollback(); //Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
 
         //Return response
         return response()->json($response, $status ?? 200);
     }
-
-
 }

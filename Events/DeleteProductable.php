@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Modules\Icommerce\Events;
-
 
 class DeleteProductable
 {
@@ -15,7 +13,6 @@ class DeleteProductable
 
     /**
      * Return the entity
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getEntity()
     {
@@ -24,7 +21,6 @@ class DeleteProductable
 
     /**
      * Return the ALL data sent
-     * @return array
      */
     public function getSubmissionData()
     {

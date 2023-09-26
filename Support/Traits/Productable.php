@@ -1,42 +1,34 @@
 <?php
 
-
 namespace Modules\Icommerce\Support\Traits;
 
 use Modules\Icommerce\Entities\Product;
 
 /**
  * Trait Productable
- * @package Modules\Icommerce\Support\Traits
- *
  */
 trait Productable
 {
-
-
-
     /**
-    * Boot trait method
-    */
+     * Boot trait method
+     */
     public static function bootProductable()
     {
         //Listen event after create model
         static::createdWithBindings(function ($model) {
-          $model->syncProduct();
+            $model->syncProduct();
         });
 
         static::updatedWithBindings(function ($model) {
-          $model->syncProduct();
+            $model->syncProduct();
         });
-
     }
 
-    
     /**
-    * Sync Product
-    */
-    public function syncProduct(){
-
+     * Sync Product
+     */
+    public function syncProduct()
+    {
         \Log::info('Icommerce: Trait Productable - Entity ID:'.$this->id);
 
         $data = [
@@ -49,39 +41,39 @@ trait Productable
             'stock_status' => $this->stock_status ?? 1,
             'quantity' => $this->quantity ?? 999999,
             'entity_id' => $this->id,
-            'entity_type' => get_class($this)
+            'entity_type' => get_class($this),
         ];
 
         \Log::info('Icommerce: Trait Productable - Data:'.json_encode($data));
 
-        $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->where('entity_id',$this->id)->first();
+        $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->where('entity_id', $this->id)->first();
 
-        if($product)
+        if ($product) {
             $product->update($data);
-        else
+        } else {
             $product = app('Modules\\Icommerce\\Repositories\\ProductRepository')->create($data);
-        
+        }
     }
-
 
     /**
      * Make the Productable morph relation
-     * @return object
      */
-    public function products()
+    public function products(): object
     {
         return $this->morphMany(Product::class, 'entity');
     }
 
-    public function getProductAttribute(){
+    public function getProductAttribute()
+    {
         return $this->products->first();
     }
 
-    public function getProductableAttribute(){
+    public function getProductableAttribute()
+    {
         $classNamespace = get_class($this);
-        $classNamespaceExploded = explode('\\',strtolower($classNamespace));
+        $classNamespaceExploded = explode('\\', strtolower($classNamespace));
         $productableField = config('asgard.'.strtolower($classNamespaceExploded[1]).'.crud-fields.'.$classNamespaceExploded[3].'s.productable') ?? [];
+
         return $productableField['props']['multiple'] === true ? $this->products->pluck('id') : ($this->product->id ?? null);
     }
-
 }

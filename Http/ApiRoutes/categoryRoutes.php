@@ -2,12 +2,11 @@
 
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' => '/categories'], function (Router $router) {
-
+Route::prefix('/categories')->group(function (Router $router) {
     $router->post('/', [
         'as' => 'api.icommerce.categories.create',
         'uses' => 'CategoryApiController@create',
-        'middleware' => ['auth:api','auth-can:icommerce.categories.create']
+        'middleware' => ['auth:api', 'auth-can:icommerce.categories.create'],
     ]);
     $router->get('/', [
         'as' => 'api.icommerce.categories.index',
@@ -20,12 +19,11 @@ $router->group(['prefix' => '/categories'], function (Router $router) {
     $router->put('/{criteria}', [
         'as' => 'api.icommerce.categories.update',
         'uses' => 'CategoryApiController@update',
-        'middleware' => ['auth:api','auth-can:icommerce.categories.edit']
+        'middleware' => ['auth:api', 'auth-can:icommerce.categories.edit'],
     ]);
     $router->delete('/{criteria}', [
         'as' => 'api.icommerce.categories.delete',
         'uses' => 'CategoryApiController@delete',
-        'middleware' => ['auth:api','auth-can:icommerce.categories.destroy']
+        'middleware' => ['auth:api', 'auth-can:icommerce.categories.destroy'],
     ]);
-
 });
