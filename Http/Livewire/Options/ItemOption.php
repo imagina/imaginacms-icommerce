@@ -26,14 +26,24 @@ class ItemOption extends Component
   public $type;
   public $productOptionId;
   public $selected;
+
+  //Is a dynamic option - The data will be added by the buyer (Example: text)
+  //No dynamic - The data comes via DB (Example: colors)
+  public $dynamic;
+  public $optionId;
   
+  private $log = "Icommerce: Livewire|Options|ItemOption|";
   
   public function mount(Request $request, $type, $product, $productOption)
   {
-  
+    
+    \Log::info($this->log."Mount");
+
     $this->type = $type;
     $this->productId = $product->id;
     $this->productOptionId = $productOption->id;
+    $this->dynamic = $productOption->option->dynamic;
+    $this->optionId = $productOption->option_id;
     
     $this->loadProtectedAttributes();
     
@@ -54,7 +64,10 @@ class ItemOption extends Component
    *
    */
   public function setOption($ProductOptionValueId)
-  {
+  { 
+
+    \Log::info($this->log."setOption");
+
     $oldValue = $this->selected;
     
     //si el tipo es checkbox hay que tratar el $selected como un array
@@ -78,7 +91,7 @@ class ItemOption extends Component
       }
     }
     
-    $this->emit('updateOption', $oldValue, $this->selected);
+    $this->emit('updateOption', $oldValue, $this->selected,$this->dynamic,$this->optionId);
   }
   
   
@@ -105,7 +118,9 @@ class ItemOption extends Component
   public function updatingSelected($value)
   {
     
-    $this->emit('updateOption', $this->selected, $value);
+    \Log::info($this->log."updatingSelected");
+
+    $this->emit('updateOption', $this->selected, $value, $this->dynamic ,$this->optionId);
     
   }
   
