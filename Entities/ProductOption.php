@@ -50,6 +50,11 @@ class ProductOption extends Model
   {
     return $this->hasMany(OrderOption::class);
   }
+
+  public function parentOptionValue()
+  {
+    return $this->belongsTo(OptionValue::class, 'parent_option_value_id');
+  }
   
   public function getLftName()
   {

@@ -14,6 +14,8 @@ use Modules\Icommerce\Events\ProductSoldOut;
 class SaveOrderItems
 {
     private $emails;
+    private $log = "Icommerce: Events|Handlers|SaveOrderItems";
+
     public function __construct()
     {
         $this->emails = explode(',', setting('icommerce::form-emails'));
@@ -26,7 +28,7 @@ class SaveOrderItems
             $productMinimumQuantityToNotify = setting('icommerce::productMinimumQuantityToNotify');
         }
         $order = $event->order;
-        $items = $event->items;
+        $items = $event->items; //Items From Order (Products)
 
         foreach ($items as $item) {
           
@@ -36,6 +38,11 @@ class SaveOrderItems
 
           $cartProductOptionsValues = $item["productOptionValues"];
           unset($item["productOptionValues"]);
+
+          //Case No Dynamics
+          $cartProductOptions = $item["productOptions"];
+          unset($item["productOptions"]);
+
 
             // Create Order Items
             $orderItem = $order->orderItems()->create($item);
@@ -62,13 +69,14 @@ class SaveOrderItems
                 }
                 $product->save();
               }
-  
+
+              $supportOrderOption = new orderOptionSupport();
+
               if ($cartProductOptionsValues != null) {
                 foreach ($cartProductOptionsValues as $productOptionValue) {
                   $quantity_ = $stock = 0;
                   // Fix Data OrderOption
-                  $supportOrderOption = new orderOptionSupport();
-                  $dataOrderOption    = $supportOrderOption->fixData($order->id, $orderItem->id, $productOptionValue);
+                  $dataOrderOption    = $supportOrderOption->fixData($order->id, $orderItem, $productOptionValue);
                   $logvar             = json_encode($dataOrderOption);
                   // Create Order Option
                   $order->orderOption()->create($dataOrderOption);
@@ -106,6 +114,20 @@ class SaveOrderItems
       
                 }
               }
+
+              //Case No Dynamics
+              if ($cartProductOptions != null) {
+                //\Log::info($this->log."CartProductOptions|FixData|");
+                foreach ($cartProductOptions as $option) {
+                  // Fix Data OrderOption
+                  $dataOrderOption    = $supportOrderOption->fixData($order->id, $orderItem, null,$option);
+
+                  // Create Order Option
+                  $order->orderOption()->create($dataOrderOption);
+
+                }
+              }
+
             }
         
         } // End Foreach
