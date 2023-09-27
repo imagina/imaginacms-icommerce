@@ -22,6 +22,8 @@ class Options extends Component
   public $optionsSelected;
   
   protected $listeners = ['updateOption','addToCartOptions'];
+
+  private $log = "Icommerce: Livewire|Options|Options|";
   
   public function mount(Request $request, $product)
   {
@@ -42,24 +44,43 @@ class Options extends Component
   /**
    * @param $oldValue
    * @param $newValue
+   * @param $dynamic
    */
-  public function updateOption($oldValue, $newValue)
+  public function updateOption($oldValue, $newValue,$dynamic,$optionId)
   {
   
+    \Log::info($this->log."updateOption");
     $oldValue = !is_array($oldValue) ? [$oldValue] : $oldValue;
-  
+
+    //\Log::info($this->log."oldValue: ".json_encode($oldValue));
+    //\Log::info($this->log."newValue: ".json_encode($newValue));
+    
     foreach ($oldValue as $value) {
       foreach ($this->optionsSelected as $key => $optionSelected) {
-        if ($optionSelected == $value)
-          unset($this->optionsSelected[$key]);
+         //Case Dynamic Option
+         if($dynamic && isset($optionSelected['value']) &&  $optionSelected['value']== $value){
+            unset($this->optionsSelected[$key]);
+         }else{
+          //Case No Dynamic Option
+          if ($optionSelected == $value)
+            unset($this->optionsSelected[$key]);
+         }
+
       }
     }
-    
+
     if(!empty($newValue)){
       $newValue = !is_array($newValue) ? [$newValue] : $newValue;
-      $this->optionsSelected = array_merge($this->optionsSelected, $newValue);
-  
+
+      if($dynamic){
+        $news[]  = ["option_id" => $optionId, "value" => $newValue[0]];
+        $this->optionsSelected = array_merge($this->optionsSelected, $news);
+      }else{
+        $this->optionsSelected = array_merge($this->optionsSelected, $newValue);
+      }
+
     }
+
   }
   
   /**
