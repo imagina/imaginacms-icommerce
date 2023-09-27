@@ -7,6 +7,9 @@ use Modules\Icommerce\Entities\ProductDiscount;
 class OrderItem
 {
 
+  /**
+   * @param $items (Products from Cart)
+   */
   public function fixData($items){
 
     $products = [];
@@ -27,8 +30,10 @@ class OrderItem
         "entity_id" => $item->product->entity_id ?? null,
         "tax" => 0,
         "reward" => 0,
-        "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null
-        ]);
+        "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null, //No Dynamic Options
+        "productOptions" => (count($item->optionsDynamics)>0) ? $item->optionsDynamics : null //Dynamic Options
+      ]);
+
 
       if(isset($item->product->discount->id)){
         $productDiscount = ProductDiscount::find($item->product->discount->id);
