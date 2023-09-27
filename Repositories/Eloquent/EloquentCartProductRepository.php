@@ -11,15 +11,18 @@ use Modules\Icommerce\Entities\CartProduct;
 use Illuminate\Support\Arr;
 
 class EloquentCartProductRepository extends EloquentBaseRepository implements CartProductRepository
-{
+{ 
+
+  private $log = "Icommerce: Repositories|CartProduct|";
+  
 
   public function getItemsBy($params = false)
-    {
+  {
       /*== initialize query ==*/
       $query = $this->model->query();
 
       /*== RELATIONSHIPS ==*/
-      if(in_array('*',$params->include)){//If Request all relationships
+      if(in_array('*',$params->include ?? [])){//If Request all relationships
         $query->with([]);
       }else{//Especific relationships
         $includeDefault = [];//Default relationships
@@ -62,6 +65,22 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         if (isset($filter->cartId)){
           $query->where('cart_id', $filter->cartId);
         }
+
+        if (isset($filter->productId)){
+          $query->where('product_id', $filter->productId);
+        }
+
+        if (isset($filter->isCall)){
+          $query->where('is_call', $filter->isCall);
+        }
+
+        if (isset($filter->optionsDynamicsIds)){
+          $optionsDynamicIds = $filter->optionsDynamicsIds;
+          $query->whereHas('optionsDynamics', function ($query) use ($optionsDynamicIds) {
+            $query->whereIn("option_id",$optionsDynamicIds);
+          });
+        }
+
       }
 
       /*== FIELDS ==*/
@@ -72,10 +91,11 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       if (isset($params->page) && $params->page) {
         return $query->paginate($params->take);
       } else {
-        $params->take ? $query->take($params->take) : false;//Take
+        isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
         return $query->get();
       }
-    }
+
+  }
 
   public function getItem($criteria, $params = false)
   {
@@ -86,10 +106,14 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
     // RELATIONSHIPS
     $includeDefault = ['productOptionValues'];
-    $query->with(array_merge($includeDefault, $params->include));
+    if (isset($params->include))//merge relations with default relationships
+      $includeDefault = array_merge($includeDefault, $params->include);
+
+    $query->with($includeDefault);//Add Relationships to query
+
 
     // FIELDS
-    if ($params->fields) {
+    if (isset($params->fields) && count($params->fields)) {
       $query->select($params->fields);
     }
     return $query->first();
@@ -97,7 +121,9 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
 
   public function create($data){
-  
+    
+    //\Log::info($this->log."Create");
+
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
 
@@ -115,11 +141,17 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
     }
-  
-    $productOptionValues = ProductOptionValue::whereIn("id",$data["product_option_values"] ?? [])->get();
     
+    //Separate Options to new process
+    $result = $this->separateOptions($data["product_option_values"]);
+    $optionsDynamic = $result['optionsDynamic'];
+    $data["product_option_values"] = $result['pov'];
+   
+    //Search Product Option Values
+    $productOptionValues = ProductOptionValue::whereIn("id",$data["product_option_values"] ?? [])->get();
+
     // validate required options
-    if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $productOptionValues)) {
+    if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $productOptionValues, $optionsDynamic)) {
       throw new \Exception("Missing required product options", 400);
     }
 
@@ -138,30 +170,89 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     if(!$cartProduct) {
       $data["organization_id"] = $product->organization_id ?? null;
       $cartProduct = $this->model->create($data);
-      $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
+
+      //Sync NO dynamics options
+      if(count($data["product_option_values"])>0){
+        //\Log::info($this->log.'Create|Sync Product Options Values');
+        $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
+      }
+     
+      //Sync Dynamics options
+      if(count($optionsDynamic)>0){
+        //\Log::info($this->log.'Create|Sync Dinamics Options');
+       
+        //#CasoX = Si existe una opcion "NoDinamica" y una "Dinamica". Agregaba la "NoDinamica" pero la "Dinamica" negative.
+        //$cartProduct->optionsDynamics()->sync($optionsDynamic);
+        
+        //Con esto se soluciono
+        $cartProduct->optionsDynamics()->attach($optionsDynamic);
+       
+      }
 
     }else {
-      // get product options
-      $productOptionValues = $cartProduct->productOptionValues;
 
-      // get options from front
-      $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
+      //Case - Cart Product Exist
 
-      // if product doesn't have the same options wil be created and sync options
+      //NO dynamics options - Check
+      if(count($data["product_option_values"])>0){
 
-      $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
+        // get product options
+        $productOptionValues = $cartProduct->productOptionValues;
+        // get options from front
+        $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
 
-      if( array_diff($productOptionValuesIds, $productOptionValuesFront) !== array_diff($productOptionValuesFront, $productOptionValuesIds)){
-     
-          $cartProduct = $this->model->create($data);
-          $cartProduct->productOptionValues()->sync($productOptionValuesFront);
+        // if product doesn't have the same options wil be created and sync options
+        $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
 
-      }else{
-    
-        // if product have the same options update quantity and update
-        $data['quantity'] += $cartProduct->quantity;
+        if( array_diff($productOptionValuesIds, $productOptionValuesFront) !== array_diff($productOptionValuesFront, $productOptionValuesIds)){
+            $cartProduct = $this->model->create($data);
+            $cartProduct->productOptionValues()->sync($productOptionValuesFront);
+        }else{
+          // if product have the same options update quantity and update
+          $data['quantity'] += $cartProduct->quantity;
           $cartProduct->update($data);
+        }
 
+      }
+
+      //Dynamics options - Check
+      if(count($optionsDynamic)>0){
+
+        //Cart Products con la informacion de opciones dinamicas
+        $cartProducts = $this->findCartProductsWithDynamics($optionsDynamic,$data);
+        
+        //Opciones dinamicas agrupadas
+        $allOptionsDynamicsInCart = $this->groupAllOptionsDynamics($cartProducts);
+
+        //Recorrer las opciones nuevas
+        foreach ($optionsDynamic as $key => $optionsFront) {
+          $cartProductId = null;
+          //Se evaluan todas las opciones del carrito, para ver si ya existe una con la misma informacion
+          foreach ($allOptionsDynamicsInCart as $key => $optionCart) {
+            if($optionsFront['option_id']==$optionCart['option_id'] && $optionsFront['value']==$optionCart['value']){
+              $cartProductId = $optionCart['cartProductId'];
+              break;
+            }
+          }
+
+          //Check Result
+          if(is_null($cartProductId)){
+              //Create cart product
+              $cartProduct = $this->model->create($data);
+              $newDataOption[] = $optionsFront;
+              $cartProduct->optionsDynamics()->attach($newDataOption);
+          }else{
+              //Update a specific cart product
+              $cartProductUpdate =  $this->getItem($cartProductId);
+              $data['quantity'] += $cartProductUpdate->quantity;
+              $cartProductUpdate->update($data);
+          }
+
+        }
+        
+      }else{
+        //\Log::info($this->log."create|Not Options Dynamics");
+        $cartProduct = $this->model->create($data);
       }
 
     }
@@ -190,9 +281,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   
       }else{ // if not the same options create cart product
         $cartProduct = $this->model->create($data);
-      }
-      
-      
+      } 
     }
     return $cartProduct;
   }
@@ -265,17 +354,27 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
   
   
-  private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues)
+  private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues,$optionsDynamic)
   {
-    
+
     $allRequiredOptionsOk = true;
     foreach ($productOptions as $productOption) {
       $optionOk = true;
       if ($productOption->pivot->required) {
         $optionOk = false;
-        foreach ($productOptionValues as $productOptionValue) {
-          $productOption->id == $productOptionValue->option_id ? $optionOk = true : false;
+
+        //No Dynamic
+        if($productOption->dynamic==0){
+          foreach ($productOptionValues as $productOptionValue) {
+            $productOption->id == $productOptionValue->option_id ? $optionOk = true : false;
+          }
+        }else{
+          //Dynamic
+          foreach ($optionsDynamic as $od) {
+            $productOption->id == $od['option_id'] ? $optionOk = true : false;
+          }
         }
+
       }
       !$optionOk ? $allRequiredOptionsOk = false : false;
     }
@@ -335,4 +434,76 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     //dd($quantity,$productOptionsValues,$data,$cartProduct);
     return $validQuantity;
   }
+
+  private function separateOptions($pov)
+  {
+
+    $optionsDynamic = [];
+    \Log::info($this->log.'separateOptions|ProductOptionValuesOld: '.json_encode($pov));
+
+    foreach ($pov as $key => $value) {
+      if(is_array($value)){
+        $optionsDynamic[] = $value;
+        unset($pov[$key]);
+      }
+    }
+
+    \Log::info($this->log.'separateOptions|ProductOptionValuesNews: '.json_encode($pov));
+    \Log::info($this->log.'separateOptions|OptionsDynamics: '.json_encode($optionsDynamic));
+
+    return ['optionsDynamic' => $optionsDynamic, 'pov' => $pov];
+
+  }
+
+  /**
+   * @param $optionsDynamics (From Frontend)
+   */
+  public function findCartProductsWithDynamics($optionsDynamic,$data)
+  {
+
+    //\Log::info($this->log."findCartProductsWithDynamics");
+
+    $optionsDynamicIds = array_column($optionsDynamic, 'option_id');
+
+    $params = [
+      "filter" => [
+        "cartId" => $data['cart_id'],
+        "productId" => $data['product_id'],
+        "isCall" => $data['is_call'] ?? false,
+        'optionsDynamicsIds' => $optionsDynamicIds
+      ]
+    ];
+
+    $cartProducts = $this->getItemsBy(json_decode(json_encode($params)));
+
+    return $cartProducts;
+
+  }
+
+  public function groupAllOptionsDynamics($cartProducts)
+  {
+
+    //\Log::info($this->log."groupAllOptionsDynamics");
+
+    $allOptionsDynamicsInCart = [];
+    //Se obtienen las opciones para cada producto.
+    foreach ($cartProducts as $key => $cartProduct) {
+      $cartProductId = $cartProduct->id;
+      /**
+       * Hay que agruparlas por el caso de que existan 2 productos con opciones, 
+       * Si se intenta actualizar el 2do, puede que el primero no tenga esa opcion y la agregaria (cuando no deberia)
+       */
+      foreach ($cartProduct->optionsDynamics as $key => $option) {
+        $oldOption = [
+              'cartProductId' => $cartProductId,
+              'option_id' => $option->pivot->option_id,
+              'value' => $option->pivot->value
+        ];
+        array_push($allOptionsDynamicsInCart,$oldOption);
+      }
+    }
+
+    return $allOptionsDynamicsInCart;
+  }
+
 }
