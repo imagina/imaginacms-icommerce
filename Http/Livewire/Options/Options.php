@@ -49,7 +49,12 @@ class Options extends Component
   public function updateOption($oldValue, $newValue,$dynamic,$optionId)
   {
   
-    \Log::info($this->log."updateOption");
+    //\Log::info($this->log."updateOption");
+
+    //Case Dynamics 
+    if(is_string($oldValue)) $oldValue = strip_tags($oldValue);
+    if(is_string($newValue)) $newValue = strip_tags($newValue);
+
     $oldValue = !is_array($oldValue) ? [$oldValue] : $oldValue;
 
     //\Log::info($this->log."oldValue: ".json_encode($oldValue));
@@ -80,6 +85,8 @@ class Options extends Component
       }
 
     }
+
+    //\Log::info($this->log."OptionsSelected: ".json_encode($this->optionsSelected));
 
   }
   

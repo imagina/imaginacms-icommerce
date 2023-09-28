@@ -117,15 +117,8 @@ class ItemOption extends Component
    */
   public function updatingSelected($value)
   {
-    
-    \Log::info($this->log."updatingSelected");
-
-    //Case Dynamics
-    if(is_string($value))
-      $value = strip_tags($value);
-
+    //\Log::info($this->log."updatingSelected");
     $this->emit('updateOption', $this->selected, $value, $this->dynamic ,$this->optionId);
-    
   }
   
   /**
