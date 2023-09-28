@@ -6,11 +6,9 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface ShippingMethodRepository extends BaseRepository
 {
+    public function getItemsBy($params);
 
-  public function getItemsBy($params);
-  
-  public function getItem($criteria, $params = null);
+    public function getItem($criteria, $params = null);
 
-  public function getCalculations($request, $params);
-
+    public function getCalculations($request, $params);
 }

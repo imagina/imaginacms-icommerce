@@ -1,16 +1,14 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateIcommerceTaxClassesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('icommerce__tax_classes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -27,15 +25,13 @@ class CreateIcommerceTaxClassesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-      Schema::table('icommerce__tax_rates', function (Blueprint $table) {
-          //$table->dropForeign(['tax_class_id']);
-      });
+        Schema::table('icommerce__tax_rates', function (Blueprint $table) {
+            //$table->dropForeign(['tax_class_id']);
+        });
 
-      Schema::dropIfExists('icommerce__tax_classes');
+        Schema::dropIfExists('icommerce__tax_classes');
     }
-}
+};

@@ -9,7 +9,7 @@ class PaymentMethodRequest extends BaseFormRequest
     public function rules()
     {
         return [
-          'name' => 'required'
+            'name' => 'required',
         ];
     }
 
@@ -26,8 +26,8 @@ class PaymentMethodRequest extends BaseFormRequest
     public function messages()
     {
         return [
-          // Name
-          'name.required' => trans('icommerce::common.messages.field required'),
+            // Name
+            'name.required' => trans('icommerce::common.messages.field required'),
         ];
     }
 

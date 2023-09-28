@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Icommerce\Repositories\ProductDiscountRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Icommerce\Repositories\ProductDiscountRepository;
 
 class EloquentProductDiscountRepository extends EloquentBaseRepository implements ProductDiscountRepository
 {
@@ -26,35 +26,39 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
             //add filter by search
             if (isset($filter->search)) {
                 //find search in columns
-                $query->where('id', 'like', '%' . $filter->search . '%')
-                    ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-                    ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+                $query->where('id', 'like', '%'.$filter->search.'%')
+                    ->orWhere('updated_at', 'like', '%'.$filter->search.'%')
+                    ->orWhere('created_at', 'like', '%'.$filter->search.'%');
             }
 
             /*== By product ==*/
-            if (isset($filter->productId))
+            if (isset($filter->productId)) {
                 $query->where('product_id', $filter->productId);
-
-            if (isset($filter->date)) {
-                $date = $filter->date;//Short filter date
-                $date->field = $date->field ?? 'created_at';
-                if (isset($date->from))//From a date
-                    $query->whereDate($date->field, '>=', $date->from);
-                if (isset($date->to))//to a date
-                    $query->whereDate($date->field, '<=', $date->to);
             }
 
+            if (isset($filter->date)) {
+                $date = $filter->date; //Short filter date
+                $date->field = $date->field ?? 'created_at';
+                if (isset($date->from)) {//From a date
+                    $query->whereDate($date->field, '>=', $date->from);
+                }
+                if (isset($date->to)) {//to a date
+                    $query->whereDate($date->field, '<=', $date->to);
+                }
+            }
         }
 
         /*== FIELDS ==*/
-        if (isset($params->fields) && count($params->fields))
+        if (isset($params->fields) && count($params->fields)) {
             $query->select($params->fields);
+        }
 
         /*== REQUEST ==*/
         if (isset($params->page) && $params->page) {
             return $query->paginate($params->take);
         } else {
-            $params->take ? $query->take($params->take) : false;//Take
+            $params->take ? $query->take($params->take) : false; //Take
+
             return $query->get();
         }
     }
@@ -70,25 +74,23 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
         $includeDefault = [];
         $query->with(array_merge($includeDefault, $params->include));
 
-
         // FIELDS
         if ($params->fields) {
             $query->select($params->fields);
         }
-        return $query->first();
 
+        return $query->first();
     }
 
     public function create($data)
     {
-
         $productList = $this->model->create($data);
 
         return $productList;
     }
 
-    public function updateBy($criteria, $data, $params = false){
-
+    public function updateBy($criteria, $data, $params = false)
+    {
         // INITIALIZE QUERY
         $query = $this->model->query();
 
@@ -96,18 +98,20 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
         if (isset($params->filter)) {
             $filter = $params->filter;
 
-            if (isset($filter->field))//Where field
+            if (isset($filter->field)) {//Where field
                 $query->where($filter->field, $criteria);
-            else//where id
+            } else {//where id
                 $query->where('id', $criteria);
+            }
         }
 
         // REQUEST
         $model = $query->first();
 
-        if($model) {
+        if ($model) {
             $model->update($data);
         }
+
         return $model;
     }
 
@@ -120,16 +124,17 @@ class EloquentProductDiscountRepository extends EloquentBaseRepository implement
         if (isset($params->filter)) {
             $filter = $params->filter;
 
-            if (isset($filter->field)) //Where field
+            if (isset($filter->field)) { //Where field
                 $query->where($filter->field, $criteria);
-            else //where id
+            } else { //where id
                 $query->where('id', $criteria);
+            }
         }
 
         // REQUEST
         $model = $query->first();
 
-        if($model) {
+        if ($model) {
             $model->delete();
         }
     }

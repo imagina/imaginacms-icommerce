@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository;
 
 class CacheShippingMethodGeozoneDecorator extends BaseCacheDecorator implements ShippingMethodGeozoneRepository
 {

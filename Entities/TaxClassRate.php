@@ -14,10 +14,10 @@ class TaxClassRate extends Model
     public $translatedAttributes = [];
 
     protected $fillable = [
-      'tax_class_id',
-      'tax_rate_id',
-      'based',
-      'priority'
+        'tax_class_id',
+        'tax_rate_id',
+        'based',
+        'priority',
     ];
 
     public function taxRate()
@@ -29,6 +29,4 @@ class TaxClassRate extends Model
     {
         return $this->belongsTo(TaxClass::class);
     }
-
-
 }

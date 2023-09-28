@@ -10,27 +10,28 @@ class OrderStatus extends Model
     use Translatable;
 
     protected $table = 'icommerce__order_statuses';
+
     public $translatedAttributes = [
-      'title'
+        'title',
     ];
+
     protected $fillable = [
-      'status',
-      'parent_id'
+        'status',
+        'parent_id',
     ];
 
     public function orders()
     {
-      return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class);
     }
 
     public function orderHistories()
     {
-      return $this->hasMany(OrderStatusHistory::class);
+        return $this->hasMany(OrderStatusHistory::class);
     }
 
     public function transactions()
     {
-      return $this->hasMany(Transactions::class);
+        return $this->hasMany(Transactions::class);
     }
-
 }

@@ -2,93 +2,88 @@
 
 namespace Modules\Icommerce\Imports;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
 
-class ManufacturersImport implements ToCollection,WithChunkReading,WithHeadingRow,ShouldQueue
+class ManufacturersImport implements ToCollection, WithChunkReading, WithHeadingRow, ShouldQueue
 {
-
     private $manufacturer;
+
     private $info;
 
     public function __construct(
         ManufacturerRepository $manufacturer,
         $info
 
-    ){
-      $this->info = $info;
+    ) {
+        $this->info = $info;
         $this->manufacturer = $manufacturer;
     }
 
-     /**
+    /**
      * Data from Excel
      */
     public function collection(Collection $rows)
     {
         \App::setLocale($this->info['Locale']);
-        $rows=json_decode(json_encode($rows));
-        foreach ($rows as $row)
-        {
+        $rows = json_decode(json_encode($rows));
+        foreach ($rows as $row) {
             try {
-              if(isset($row->id)){
-                $manufacturer_id=(int)$row->id;
-                $name=(string)$row->name;
-                $image=(string)$row->image;
-                $options=null;
-                // Search by id
-                $manufacturer=$this->manufacturer->find($manufacturer_id);
-                if (isset($this->info['folderpaht'])  && $this->info['folderpaht']) {
-                    if (isset($image) && !empty($image)) {
-                        $picture = $this->info['folderpaht'] . 'manufacturer/' . $image;
-                        $destination_path = 'assets/icommerce/manufacturer/' . $manufacturer_id . '.jpg';
-                        $img = $this->saveimage($destination_path, $picture);
-                        $options["mainimage"] = $img;
+                if (isset($row->id)) {
+                    $manufacturer_id = (int) $row->id;
+                    $name = (string) $row->name;
+                    $image = (string) $row->image;
+                    $options = null;
+                    // Search by id
+                    $manufacturer = $this->manufacturer->find($manufacturer_id);
+                    if (isset($this->info['folderpaht']) && $this->info['folderpaht']) {
+                        if (isset($image) && ! empty($image)) {
+                            $picture = $this->info['folderpaht'].'manufacturer/'.$image;
+                            $destination_path = 'assets/icommerce/manufacturer/'.$manufacturer_id.'.jpg';
+                            $img = $this->saveimage($destination_path, $picture);
+                            $options['mainimage'] = $img;
+                        }
+                    } else {
+                        if ($manufacturer) {
+                            $options = $manufacturer->options;
+                        }
                     }
-                } else {
-                    if($manufacturer)
-                    $options = $manufacturer->options;
-                }
-                $options=json_encode($options);
-                $param = [
-                  'id' => $manufacturer_id,
-                  'name' => $name,
-                  'options'=>$options
-                ];
-                if($manufacturer){
-                  //Update
-                  $this->manufacturer->update($manufacturer,  $param);
-                  \Log::info('Update Manufacturer: '.$manufacturer->name);
-                }else{
-                  //Create
-                  $newManufacturer = $this->manufacturer->create($param);
-                  // Take id from excel
-                  $newManufacturer->id = $param["id"];
-                  $newManufacturer->save();
-                  \Log::info('Create a Manufacturer: '.$param['name']);
-                }
-              }//if row!=name
+                    $options = json_encode($options);
+                    $param = [
+                        'id' => $manufacturer_id,
+                        'name' => $name,
+                        'options' => $options,
+                    ];
+                    if ($manufacturer) {
+                        //Update
+                        $this->manufacturer->update($manufacturer, $param);
+                        \Log::info('Update Manufacturer: '.$manufacturer->name);
+                    } else {
+                        //Create
+                        $newManufacturer = $this->manufacturer->create($param);
+                        // Take id from excel
+                        $newManufacturer->id = $param['id'];
+                        $newManufacturer->save();
+                        \Log::info('Create a Manufacturer: '.$param['name']);
+                    }
+                }//if row!=name
             } catch (\Exception $e) {
                 \Log::error($e->getMessage());
                 dd($e->getMessage());
             }
-
         }// foreach
-
     }
 
     public function saveimage($destination_path, $picture)
     {
-
         $disk = 'publicmedia';
         try {
             if (\Storage::disk('publicmedia')->exists($picture)) {
                 $image = \Image::make(\Storage::disk('publicmedia')->url($picture));
-
 
                 $image->resize(config('asgard.iblog.config.imagesize.width'), config('asgard.iblog.config.imagesize.height'), function ($constraint) {
                     $constraint->aspectRatio();
@@ -99,7 +94,6 @@ class ManufacturersImport implements ToCollection,WithChunkReading,WithHeadingRo
                 }
                 // 2. Store the image on disk.
                 \Storage::disk($disk)->put($destination_path, $image->stream('jpg', '80'));
-
 
                 // Save Thumbs
                 \Storage::disk($disk)->put(
@@ -136,5 +130,4 @@ class ManufacturersImport implements ToCollection,WithChunkReading,WithHeadingRo
     {
         return 1000;
     }
-
 }

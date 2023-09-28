@@ -19,19 +19,19 @@ class ManufacturerTranslation extends Model
         'description',
         'meta_title',
         'meta_description',
-        'translatable_options'
+        'translatable_options',
     ];
+
     protected $casts = [
-        'translatable_options' => 'array'
+        'translatable_options' => 'array',
     ];
 
     public function sluggable()
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
-
 }

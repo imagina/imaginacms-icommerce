@@ -11,15 +11,16 @@ class TaxClass extends Model
     use Translatable, AuditTrait;
 
     protected $table = 'icommerce__tax_classes';
+
     public $translatedAttributes = [
-      'name',
-      'description'
+        'name',
+        'description',
     ];
+
     protected $fillable = [];
 
     public function rates()
     {
-      return $this->hasMany(TaxClassRate::class,'tax_class_id','id');
+        return $this->hasMany(TaxClassRate::class, 'tax_class_id', 'id');
     }
-
 }

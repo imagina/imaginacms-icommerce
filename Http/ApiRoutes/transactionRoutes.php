@@ -3,7 +3,7 @@
 use Illuminate\Routing\Router;
 
 //TODO este grupo de rutas no se usa nunca desde front por ahora las dejo comentadas hasta el momento en que sean requeridas
-//$router->group(['prefix' => '/transactions'/*,'middleware' => ['auth:api']*/], function (Router $router) {
+//Route::group(['prefix' => '/transactions'/*,'middleware' => ['auth:api']*/], function (Router $router) {
 //  $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
 //
 //  $router->post('/', [

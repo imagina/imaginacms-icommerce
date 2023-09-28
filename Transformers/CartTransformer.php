@@ -7,7 +7,7 @@ use Modules\Icurrency\Support\Facades\Currency;
 
 class CartTransformer extends JsonResource
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
         $data = [
             'id' => $this->when($this->id, $this->id),
@@ -23,6 +23,5 @@ class CartTransformer extends JsonResource
         ];
 
         return $data;
-
     }
 }

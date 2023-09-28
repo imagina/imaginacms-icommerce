@@ -1,6 +1,6 @@
 <?php
 
-$vAttributes = include(base_path() . '/Modules/Isite/Config/standardValuesForBlocksAttributes.php');
+$vAttributes = include base_path().'/Modules/Isite/Config/standardValuesForBlocksAttributes.php';
 
 return [
   "productListItem" => [
@@ -16,16 +16,16 @@ return [
             "name" => "itemListLayout",
             "value" => "product-list-item-layout-1",
             "type" => "select",
-            'columns' => 'col-12',
+                        'columns' => 'col-12',
             "props" => [
               "label" => "itemListLayout",
               "options" => [
                 ["label" => "product-list-item-layout-1", "value" => "product-list-item-layout-1"],
-                //["label" => "product-list-item-layout-2", "value" => "product-list-item-layout-2"],
-                //["label" => "product-list-item-layout-3", "value" => "product-list-item-layout-3"]
+                                //["label" => "product-list-item-layout-2", "value" => "product-list-item-layout-2"],
+                                //["label" => "product-list-item-layout-3", "value" => "product-list-item-layout-3"]
               ]
             ]
-          ],
+                    ],
           "externalPadding" => [
             "name" => "externalPadding",
             "value" => "0",
@@ -36,7 +36,7 @@ return [
               "min" => "0",
               "max" => "20",
             ]
-          ],
+                    ],
           "externalBorderRadius" => [
             "name" => "externalBorderRadius",
             "value" => "0",
@@ -47,7 +47,7 @@ return [
               "min" => "0",
               "max" => "50",
             ]
-          ],
+                    ],
           "externalBorder" => [
             "name" => "externalBorder",
             "value" => false,
@@ -56,7 +56,7 @@ return [
               "label" => "Borde Externo",
               "options" => $vAttributes["booleanValidation"]
             ]
-          ],
+                        ],
           "externalBorderColor" => [
             "name" => "externalBorderColor",
             "type" => "inputColor",
@@ -79,16 +79,16 @@ return [
             "props" => [
               "label" => "Color Sombra Externa"
             ]
-          ],
+                        ],
           "productBackgroundColor" => [
             "name" => "productBackgroundColor",
             "type" => "inputColor",
             "props" => [
               "label" => "Color de fondo"
             ]
-          ],
+                ],
         ]
-      ],
+            ],
       "buttons" => [
         "title" => "Botones",
         "fields" => [
@@ -98,7 +98,7 @@ return [
             "props" => [
               "label" => "Texto Botón Añadir al Carrito"
             ]
-          ],
+                        ],
           "addToCartButtonAction" => [
             "name" => "addToCartButtonAction",
             "value" => "add-to-cart",
@@ -108,13 +108,13 @@ return [
               "options" => [
                 ["label" => "Añadir Producto Al Carrito", "value" => "add-to-cart"],
                 ["label" => "Ir A La Vista Del Producto", "value" => "go-to-show-view"],
-              ],
-            ],
-          ],
+                    ],
+                            ],
+                        ],
           "buttonsLayout" => [
             "name" => "buttonsLayout",
             "value" => "borders",
-            'columns' => 'col-12',
+                        'columns' => 'col-12',
             "type" => "select",
             "props" => [
               "label" => "Estilo de Botones",
@@ -127,13 +127,13 @@ return [
                 ["label" => "Botones Outline Redondos", "value" => "outline rounded"],
                 ["label" => "Botones Outline Semi-cuadrados", "value" => "outline semi-square"],
                 ["label" => "Botones Outline Cuadrados", "value" => "outline square"]
-              ],
-            ],
-          ],
+                            ],
+                        ],
+                    ],
           "buttonsPosition" => [
             "name" => "buttonsPosition",
             "value" => "in-content",
-            'columns' => 'col-12',
+                        'columns' => 'col-12',
             "type" => "select",
             "props" => [
               "label" => "Posición de Botones",
@@ -150,9 +150,9 @@ return [
                 ["label" => "Sobre la Foto Inferior Derecha en linea", "value" => "bottom-right-inline-in-photo"],
                 ["label" => "Sobre la Foto Añadir Inferior Full con Wishlist", "value" => "bottoms-full-in-photo"],
                 ["label" => "Sobre la Foto Añadir Inferior Full y Wishlist Superior Centrado", "value" => "abf-wtc-in-photo"],
-              ],
+                        ],
             ]
-          ],
+                        ],
           "addToCartIcon" => [
             "name" => "addToCartIcon",
             "value" => "fa-shopping-cart",
@@ -164,9 +164,9 @@ return [
                 ["label" => "fa-shopping-bag", "value" => "fa-shopping-bag"],
                 ["label" => "fa-shopping-basket", "value" => "fa-shopping-basket"],
                 ["label" => "fa-cart-plus", "value" => "fa-cart-plus"]
-              ],
+                        ],
             ]
-          ],
+                    ],
           "wishlistEnable" => [
             "name" => "wishlistEnable",
             "value" => "1",
@@ -175,7 +175,7 @@ return [
               "label" => " Mostrar botón lista de deseos (Wishlist)",
               "options" => $vAttributes["validation"]
             ]
-          ],
+                        ],
           "wishlistIcon" => [
             "name" => "wishlistIcon",
             "value" => "fa-heart-o",
@@ -346,7 +346,7 @@ return [
               "min" => "0",
               "max" => "100",
             ]
-          ],
+                    ],
           "contentTitleNumberOfCharacters" => [
             "name" => "contentTitleNumberOfCharacters",
             "value" => "100",
@@ -355,7 +355,7 @@ return [
               "label" => "Número caracteres (Titulo)",
               "type" => "number"
             ]
-          ],
+                    ],
           "contentTitleFontWeight" => [
             "name" => "contentTitleFontWeight",
             "value" => "normal",
@@ -364,7 +364,7 @@ return [
               "label" => "Negrita (Titulo)",
               "options" => $vAttributes["fontWeight"]
             ]
-          ],
+                        ],
           "contentCategoryEnable" => [
             "name" => "contentCategoryEnable",
             "value" => "1",
@@ -409,7 +409,7 @@ return [
               "label" => "Tamaño letra (Precio)",
               "type" => "number"
             ]
-          ],
+                        ],
           "contentPriceFontWeight" => [
             "name" => "contentPriceFontWeight",
             "value" => "normal",
@@ -418,9 +418,9 @@ return [
               "label" => "Negrita (Precio)",
               "options" => $vAttributes["fontWeight"]
             ]
-          ],
+                    ],
         ]
-      ],
+                        ],
       "discount" => [
         "title" => "Descuento",
         "fields" => [
@@ -432,7 +432,7 @@ return [
               "label" => "Estilo para el descuento",
               "options" => $vAttributes["ribbonStyle"]
             ]
-          ],
+                    ],
           "discountPosition" => [
             "name" => "discountPosition",
             "value" => "top-right",
@@ -441,23 +441,23 @@ return [
               "label" => "Posición del descuento",
               "options" => $vAttributes["ribbonPosition"]
             ]
-          ],
+                        ],
           "ribbonBackgroundColor" => [
             "name" => "ribbonBackgroundColor",
             "type" => "inputColor",
             "props" => [
               "label" => "Color de fondo de cinta"
             ]
-          ],
+                    ],
           "ribbonTextColor" => [
             "name" => "ribbonTextColor",
             "type" => "inputColor",
             "props" => [
               "label" => "Color texto de cinta"
             ]
-          ],
+                        ],
         ]
-      ],
+                    ],
       "image" => [
         "title" => "Imagen",
         "fields" => [
@@ -469,7 +469,7 @@ return [
               "label" => "Aspecto de fotografía",
               "options" => $vAttributes["imageAspectProduct"]
             ]
-          ],
+                        ],
           "imagePadding" => [
             "name" => "imagePadding",
             "value" => "0",
@@ -479,7 +479,7 @@ return [
               "type" => "number",
               "min" => "0",
             ]
-          ],
+                    ],
           "imageBorder" => [
             "name" => "imageBorder",
             "value" => "0",
@@ -488,14 +488,14 @@ return [
               "label" => "Borde Externo",
               "options" => $vAttributes["validation"]
             ]
-          ],
+                        ],
           "imageBorderColor" => [
             "name" => "imageBorderColor",
             "type" => "inputColor",
             "props" => [
               "label" => "Color borde"
             ]
-          ],
+                    ],
           "imageBorderRadius" => [
             "name" => "imageBorderRadius",
             "value" => "0",
@@ -505,7 +505,7 @@ return [
               "type" => "number",
               "min" => "0"
             ]
-          ],
+                ],
           "imageObjectFit" => [
             "name" => "imageObjectFit",
             "value" => "contain",
@@ -514,9 +514,9 @@ return [
               "label" => "Ajuste de Imagen",
               "options" => $vAttributes["imageObject"]
             ]
-          ],
+            ],
         ]
       ]
     ]
-  ],
+    ],
 ];

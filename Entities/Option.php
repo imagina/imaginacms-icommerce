@@ -4,33 +4,36 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Core\Support\Traits\AuditTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Option extends Model
 {
     use Translatable, BelongsToTenant, AuditTrait;
 
     protected $table = 'icommerce__options';
+
     public $translatedAttributes = [
-        'description'
+        'description',
     ];
+
     protected $fillable = [
         'type',
         'sort_order',
-        'options'
+        'options',
     ];
 
     protected $casts = [
-        'options' => 'array'
+        'options' => 'array',
     ];
 
-    public function products(){
+    public function products()
+    {
         return $this->belongsToMany(Product::class, 'icommerce__product_option')->withPivot('value', 'required')->withTimestamps();
     }
 
-    public function optionValues(){
+    public function optionValues()
+    {
         return $this->hasMany(OptionValue::class);
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\CouponHistoryRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\CouponHistoryRepository;
 
 class CacheCouponHistoryDecorator extends BaseCacheDecorator implements CouponHistoryRepository
 {

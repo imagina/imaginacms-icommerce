@@ -3,23 +3,18 @@
 namespace Modules\Icommerce\Http\Controllers\Api;
 
 // Requests & Response
-use Modules\Icommerce\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 // Base Api
 use Modules\Icommerce\Http\Requests\CreateCategoryRequest;
 use Modules\Icommerce\Http\Requests\UpdateCategoryRequest;
-use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
-
+use Modules\Icommerce\Repositories\CategoryRepository;
 // Transformers
 use Modules\Icommerce\Transformers\CategoryTransformer;
-
 // Entities
-use Modules\Icommerce\Entities\Category;
 
 // Repositories
-use Modules\Icommerce\Repositories\CategoryRepository;
+use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 class CategoryApiController extends BaseApiController
 {
@@ -45,23 +40,22 @@ class CategoryApiController extends BaseApiController
             $categories = $this->category->getItemsBy($params);
 
             //Response
-            $response = ["data" => CategoryTransformer::collection($categories)];
+            $response = ['data' => CategoryTransformer::collection($categories)];
 
             //If request pagination add meta-page
-            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($categories)] : false;
+            $params->page ? $response['meta'] = ['page' => $this->pageTransformer($categories)] : false;
         } catch (\Exception $e) {
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
 
         //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
     }
 
     /**
      * GET A ITEM
      *
-     * @param $criteria
      * @return mixed
      */
     public function show($criteria, Request $request)
@@ -74,33 +68,34 @@ class CategoryApiController extends BaseApiController
             $category = $this->category->getItem($criteria, $params);
 
             //Break if no found item
-            if (!$category) throw new \Exception('Item not found', 404);
+            if (! $category) {
+                throw new \Exception('Item not found', 404);
+            }
 
             //Response
-            $response = ["data" => new CategoryTransformer($category)];
+            $response = ['data' => new CategoryTransformer($category)];
 
             //If request pagination add meta-page
-            $params->page ? $response["meta"] = ["page" => $this->pageTransformer($category)] : false;
+            $params->page ? $response['meta'] = ['page' => $this->pageTransformer($category)] : false;
         } catch (\Exception $e) {
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
 
         //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
     }
 
     /**
      * CREATE A ITEM
      *
-     * @param Request $request
      * @return mixed
      */
     public function create(Request $request)
     {
         \DB::beginTransaction();
         try {
-            $data = $request->input('attributes') ?? [];//Get data
+            $data = $request->input('attributes') ?? []; //Get data
             //Validate Request
 
             $this->validateRequestApi(new CreateCategoryRequest($data));
@@ -109,26 +104,22 @@ class CategoryApiController extends BaseApiController
             $category = $this->category->create($data);
 
             //Response
-            $response = ["data" => new CategoryTransformer($category)];
+            $response = ['data' => new CategoryTransformer($category)];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \DB::rollback();//Rollback to Data Base
+            \DB::rollback(); //Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
         //Return response
-        return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
+        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @return Response
      */
-    public function update($criteria, Request $request)
+    public function update($criteria, Request $request): Response
     {
-
-
         \DB::beginTransaction();
         try {
             $params = $this->getParamsRequest($request);
@@ -138,24 +129,24 @@ class CategoryApiController extends BaseApiController
             $this->validateRequestApi(new UpdateCategoryRequest($data));
 
             //Update data
-            $category = $this->category->updateBy($criteria, $data,$params);
+            $category = $this->category->updateBy($criteria, $data, $params);
 
             //Response
             $response = ['data' => 'Item Updated'];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \DB::rollback();//Rollback to Data Base
+            \DB::rollback(); //Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
+
         return response()->json($response, $status ?? 200);
     }
 
     /**
      * Remove the specified resource from storage.
-     * @return Response
      */
-    public function delete($criteria, Request $request)
+    public function delete($criteria, Request $request): Response
     {
         \DB::beginTransaction();
         try {
@@ -169,10 +160,11 @@ class CategoryApiController extends BaseApiController
             $response = ['data' => ''];
             \DB::commit(); //Commit to Data Base
         } catch (\Exception $e) {
-            \DB::rollback();//Rollback to Data Base
+            \DB::rollback(); //Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ['errors' => $e->getMessage()];
         }
+
         return response()->json($response, $status ?? 200);
     }
 }

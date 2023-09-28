@@ -15,10 +15,10 @@ class TaxClassRequest extends BaseFormRequest
 
     public function translationRules()
     {
-      return [
-        'name' => 'required|min:2',
-        'description' => 'required|min:2'
-      ];
+        return [
+            'name' => 'required|min:2',
+            'description' => 'required|min:2',
+        ];
     }
 
     public function authorize()
@@ -34,13 +34,13 @@ class TaxClassRequest extends BaseFormRequest
     public function translationMessages()
     {
         return [
-          // name
-          'name.required' => trans('icommerce::common.messages.field required'),
-          'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
-          
-          // description
-          'description.required' => trans('icommerce::common.messages.field required'),
-          'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
+            // name
+            'name.required' => trans('icommerce::common.messages.field required'),
+            'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
+
+            // description
+            'description.required' => trans('icommerce::common.messages.field required'),
+            'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
         ];
     }
 }

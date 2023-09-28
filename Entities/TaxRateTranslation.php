@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class TaxRateTranslation extends Model
 {
     public $timestamps = false;
+
     protected $fillable = [
-      'name'
+        'name',
     ];
+
     protected $table = 'icommerce__tax_rate_translations';
 }

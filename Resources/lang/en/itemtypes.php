@@ -21,9 +21,9 @@ return [
     ],
     'validation' => [
     ],
-  'types' => [
-    'product'        => 'Product',
-    'service'           => 'Service',
-    'other'           => 'Other'
-  ],
+    'types' => [
+        'product' => 'Product',
+        'service' => 'Service',
+        'other' => 'Other',
+    ],
 ];

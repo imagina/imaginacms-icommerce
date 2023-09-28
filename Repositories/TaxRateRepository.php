@@ -6,8 +6,7 @@ use Modules\Core\Repositories\BaseRepository;
 
 interface TaxRateRepository extends BaseRepository
 {
-  public function getItemsBy($params);
-  
-  public function getItem($criteria, $params = false);
+    public function getItemsBy($params);
 
+    public function getItem($criteria, $params = false);
 }

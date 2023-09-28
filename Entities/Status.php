@@ -4,46 +4,43 @@ namespace Modules\Icommerce\Entities;
 
 /**
  * Class Status
- * @package Modules\icommerce\Entities
  */
 class Status
 {
-  const DISABLED = 0;
-  const ENABLED = 1;
+    const DISABLED = 0;
 
-  /**
-   * @var array
-   */
-  private $statuses = [];
+    const ENABLED = 1;
 
-  public function __construct()
-  {
-    $this->statuses = [
-      self::DISABLED => trans('icommerce::status.disabled'),
-      self::ENABLED => trans('icommerce::status.enabled'),
-    ];
-  }
+    /**
+     * @var array
+     */
+    private $statuses = [];
 
-  /**
-   * Get the available statuses
-   * @return array
-   */
-  public function lists()
-  {
-    return $this->statuses;
-  }
-
-  /**
-   * Get the post status
-   * @param int $statusId
-   * @return string
-   */
-  public function get($statusId)
-  {
-    if (isset($this->statuses[$statusId])) {
-      return $this->statuses[$statusId];
+    public function __construct()
+    {
+        $this->statuses = [
+            self::DISABLED => trans('icommerce::status.disabled'),
+            self::ENABLED => trans('icommerce::status.enabled'),
+        ];
     }
 
-    return $this->statuses[self::DISABLED];
-  }
+    /**
+     * Get the available statuses
+     */
+    public function lists()
+    {
+        return $this->statuses;
+    }
+
+    /**
+     * Get the post status
+     */
+    public function get($statusId)
+    {
+        if (isset($this->statuses[$statusId])) {
+            return $this->statuses[$statusId];
+        }
+
+        return $this->statuses[self::DISABLED];
+    }
 }

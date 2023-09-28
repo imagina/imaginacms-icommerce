@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\OrderShipmentRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\OrderShipmentRepository;
 
 class CacheOrderShipmentDecorator extends BaseCacheDecorator implements OrderShipmentRepository
 {

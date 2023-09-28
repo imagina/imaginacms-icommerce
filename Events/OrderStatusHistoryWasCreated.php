@@ -3,26 +3,22 @@
 namespace Modules\Icommerce\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 // Transformers
-use Modules\Icommerce\Transformers\OrderTransformer;
 
 class OrderStatusHistoryWasCreated /*implements ShouldBroadcast*/
 {
-   // use Dispatchable, InteractsWithSockets, SerializesModels;
+    // use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
-
 
     public function __construct($order)
     {
         $this->order = $order;
-
-
     }
 
     public function broadcastAs()
@@ -33,7 +29,7 @@ class OrderStatusHistoryWasCreated /*implements ShouldBroadcast*/
     public function broadcastWith()
     {
         return [
-            'id' => $this->order['order_id']
+            'id' => $this->order['order_id'],
         ];
     }
 
@@ -44,8 +40,6 @@ class OrderStatusHistoryWasCreated /*implements ShouldBroadcast*/
      */
     public function broadcastOn()
     {
-  
-      return new Channel('global');
+        return new Channel('global');
     }
-
 }

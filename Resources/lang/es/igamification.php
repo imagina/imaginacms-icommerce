@@ -1,9 +1,9 @@
 <?php
 
 return [
-  "categories" => [],
-  "activities" => [
-    "createProduct" => "Tienda",
-    "createProductDescription" => "Crea tus Productos",
-  ],
+    'categories' => [],
+    'activities' => [
+        'createProduct' => 'Tienda',
+        'createProductDescription' => 'Crea tus Productos',
+    ],
 ];

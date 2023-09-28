@@ -2,19 +2,17 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
 class CouponOrderHistory extends Model
 {
-
     protected $table = 'icommerce__coupon_order_history';
 
     protected $fillable = [
-      'coupon_id',
-      'order_id',
-      'customer_id',
-      'amount'
+        'coupon_id',
+        'order_id',
+        'customer_id',
+        'amount',
     ];
 
     public function coupon()
@@ -30,8 +28,7 @@ class CouponOrderHistory extends Model
     public function customer()
     {
         $driver = config('asgard.user.config.driver');
+
         return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
     }
-
-
 }

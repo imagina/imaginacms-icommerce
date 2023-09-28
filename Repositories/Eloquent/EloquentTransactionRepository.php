@@ -2,146 +2,149 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Icommerce\Repositories\TransactionRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Icommerce\Repositories\TransactionRepository;
 
 class EloquentTransactionRepository extends EloquentBaseRepository implements TransactionRepository
 {
+    public function getItemsBy($params)
+    {
+        // INITIALIZE QUERY
+        $query = $this->model->query();
 
-  public function getItemsBy($params)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+        // RELATIONSHIPS
+        $defaultInclude = [];
+        $query->with(array_merge($defaultInclude, $params->include));
 
-    // RELATIONSHIPS
-    $defaultInclude = [];
-    $query->with(array_merge($defaultInclude, $params->include));
+        // FILTERS
+        if ($params->filter) {
+            $filter = $params->filter;
 
-    // FILTERS
-    if ($params->filter) {
-      $filter = $params->filter;
+            //set language translation
+            if (isset($params->filter->locale)) {
+                \App::setLocale($filter->locale ?? null);
+            }
+            $lang = \App::getLocale();
 
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
-      $lang = \App::getLocale();
+            //add filter by search
+            if (isset($filter->search)) {
+                //find search in columns
+                $query->where(function ($query) use ($filter) {
+                    $query->where('id', 'like', '%'.$filter->search.'%')
+                      ->orWhere('updated_at', 'like', '%'.$filter->search.'%')
+                      ->orWhere('created_at', 'like', '%'.$filter->search.'%');
+                });
+            }
+        }
 
-      //add filter by search
-      if (isset($filter->search)) {
+        /*== FIELDS ==*/
+        if (isset($params->fields) && count($params->fields)) {
+            $query->select($params->fields);
+        }
 
-        //find search in columns
-        $query->where(function ($query) use ($filter, $lang) {
-          $query->where('id', 'like', '%' . $filter->search . '%')
-            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-        });
-      }
+        /*== REQUEST ==*/
+        if (isset($params->page) && $params->page) {
+            return $query->paginate($params->take);
+        } else {
+            $params->take ? $query->take($params->take) : false; //Take
+
+            return $query->get();
+        }
     }
 
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
+    public function getItem($criteria, $params = false)
+    {
+        // INITIALIZE QUERY
+        $query = $this->model->query();
 
-    /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
-  }
+        // RELATIONSHIPS
+        $includeDefault = [];
+        $query->with(array_merge($includeDefault, $params->include));
 
-  public function getItem($criteria, $params = false)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+        /*== FIELDS ==*/
+        if (is_array($params->fields) && count($params->fields)) {
+            $query->select($params->fields);
+        }
 
-    // RELATIONSHIPS
-    $includeDefault = [];
-    $query->with(array_merge($includeDefault, $params->include));
+        // FILTERS
+        //get language translation
+        $lang = \App::getLocale();
 
-    /*== FIELDS ==*/
-    if (is_array($params->fields) && count($params->fields))
-      $query->select($params->fields);
+        /*== FILTER ==*/
+        if (isset($params->filter)) {
+            $filter = $params->filter;
 
-    // FILTERS
-    //get language translation
-    $lang = \App::getLocale();
+            if (isset($filter->slug) && $filter->slug) {//Filter by slug
+                $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
+                    $query->where('locale', $lang)
+                      ->where('slug', $criteria);
+                });
+            } else {//Filter by ID
+                $query->where('id', $criteria);
+            }
+        }
 
-    /*== FILTER ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;
+        if (! isset($params->filter->field)) {
+            $query->where('id', $criteria);
+        }
 
-      if (isset($filter->slug) && $filter->slug)//Filter by slug
-        $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
-          $query->where('locale', $lang)
-            ->where('slug', $criteria);
-        });
-      else//Filter by ID
-        $query->where('id', $criteria);
-
+        return $query->first();
     }
 
-    if (!isset($params->filter->field)) {
-      $query->where('id', $criteria);
+    public function create($data)
+    {
+        $transaction = $this->model->create($data);
+
+        return $transaction;
     }
 
-    return $query->first();
-  }
+    public function updateBy($criteria, $data, $params = false)
+    {
+        // INITIALIZE QUERY
+        $query = $this->model->query();
 
-  public function create($data)
-  {
+        // FILTER
+        if (isset($params->filter)) {
+            $filter = $params->filter;
 
-    $transaction = $this->model->create($data);
+            if (isset($filter->field)) {//Where field
+                $query->where($filter->field, $criteria);
+            } else {//where id
+                $query->where('id', $criteria);
+            }
+        }
 
-    return $transaction;
-  }
+        // REQUEST
+        $model = $query->first();
 
-  public function updateBy($criteria, $data, $params = false)
-  {
+        if ($model) {
+            $model->update($data);
+        }
 
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field))//Where field
-        $query->where($filter->field, $criteria);
-      else//where id
-        $query->where('id', $criteria);
+        return $model;
     }
 
-    // REQUEST
-    $model = $query->first();
+    public function deleteBy($criteria, $params = false)
+    {
+        // INITIALIZE QUERY
+        $query = $this->model->query();
 
-    if ($model) {
-      $model->update($data);
+        // FILTER
+        if (isset($params->filter)) {
+            $filter = $params->filter;
+
+            if (isset($filter->field)) { //Where field
+                $query->where($filter->field, $criteria);
+            } else { //where id
+                $query->where('id', $criteria);
+            }
+        }
+
+        // REQUEST
+        $model = $query->first();
+
+        if ($model) {
+            $model->delete();
+        }
     }
-    return $model;
-  }
-
-  public function deleteBy($criteria, $params = false)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
-    }
-
-    // REQUEST
-    $model = $query->first();
-
-    if ($model) {
-      $model->delete();
-    }
-  }
 }

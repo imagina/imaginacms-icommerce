@@ -16,8 +16,6 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
     protected $auth;
 
     /**
-     * @param Authentication $auth
-     *
      * @internal param Guard $guard
      */
     public function __construct(Authentication $auth)
@@ -30,17 +28,10 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
         $sidebar->add($this->extendWith($sidebar->getMenu()));
     }
 
-    /**
-     * @param Menu $menu
-     * @return Menu
-     */
-    public function extendWith(Menu $menu)
+    public function extendWith(Menu $menu): Menu
     {
-
-
         $menu->group(trans('core::sidebar.content'), function (Group $group) {
             $group->item('Tienda', function (Item $item) {
-
                 $item->item('Administrar Tienda', function (Item $item) {
                     $item->icon('fa fa-copy');
                     $item->weight(10);
@@ -59,7 +50,6 @@ class RegisterIcommerceSidebar implements \Maatwebsite\Sidebar\SidebarExtender
                     );
                 });
             });
-
         });
 
         return $menu;

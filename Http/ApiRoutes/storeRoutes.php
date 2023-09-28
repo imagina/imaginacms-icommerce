@@ -3,7 +3,7 @@
 use Illuminate\Routing\Router;
 
 //TODO routas de store están deprecadas, las dejo comentadas por ahora para no dejar una brecha de seguridad con esta entidad
-//$router->group(['prefix' => '/stores'/*,'middleware' => ['auth:api']*/], function (Router $router) {
+//Route::group(['prefix' => '/stores'/*,'middleware' => ['auth:api']*/], function (Router $router) {
 //    $locale = \LaravelLocalization::setLocale() ?: \App::getLocale();
 //
 //    $router->post('/', [

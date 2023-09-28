@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Modules\Icommerce\Events\Handlers;
-
 
 use Illuminate\Support\Arr;
 
@@ -12,13 +10,13 @@ class HandleProductable
     {
         $entity = $event->getEntity();
         $productId = Arr::get($event->getSubmissionData(), 'product_id', null);
-        if(!empty($productId)){
+        if (! empty($productId)) {
             $entityType = get_class($entity);
             if (is_module_enabled('Icommerce')) {
                 $params = json_decode(json_encode(['filter' => ['field' => 'entity_id']]));
-                $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id,$params);
-                if($productWithPlan){
-                    if($productWithPlan->entity_type == $entityType) {
+                $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id, $params);
+                if ($productWithPlan) {
+                    if ($productWithPlan->entity_type == $entityType) {
                         $productWithPlan->entity_id = 0;
                         $productWithPlan->entity_type = null;
                         $productWithPlan->save();
@@ -29,15 +27,14 @@ class HandleProductable
                 $product->entity_type = $entityType;
                 $product->save();
             }
-        }else{
+        } else {
             $params = json_decode(json_encode(['filter' => ['field' => 'entity_id']]));
-            $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id,$params);
-            if($productWithPlan){
+            $productWithPlan = app('Modules\\Icommerce\\Repositories\\ProductRepository')->getItem($entity->id, $params);
+            if ($productWithPlan) {
                 $productWithPlan->entity_id = 0;
                 $productWithPlan->entity_type = null;
                 $productWithPlan->save();
             }
         }
     }
-
 }

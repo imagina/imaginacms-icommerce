@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Icommerce\Repositories\ProductTagRepository;
 use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Icommerce\Repositories\ProductTagRepository;
 
 class CacheProductTagDecorator extends BaseCacheDecorator implements ProductTagRepository
 {

@@ -2,42 +2,42 @@
 
 return [
     'title' => 'Shopping cart',
-    'breadcrumb_title'	=> 'Cart',
-    'carting'         => [
-        'title'             => 'Cart',
-        'my_cart'           => 'My cart',
-        'your_cart'         => 'Your shopping cart',
-        'view_cart'         => 'See cart',
+    'breadcrumb_title' => 'Cart',
+    'carting' => [
+        'title' => 'Cart',
+        'my_cart' => 'My cart',
+        'your_cart' => 'Your shopping cart',
+        'view_cart' => 'See cart',
     ],
-    'articles'      => [
-        'cart'              => 'Shopping cart',
-        'empty_cart'        => 'Empty shopping cart',
+    'articles' => [
+        'cart' => 'Shopping cart',
+        'empty_cart' => 'Empty shopping cart',
     ],
-    'table'         => [
-        'picture'           => 'Image',
-        'item'          	=> 'Article',
-        'sku'          		=> 'SKU',
-        'unit_price'        => 'Unit price',
-        'quantity'          => 'Quantity',
-        'price_per_unit'    => 'Price by unit',
-        'subtotal'          => 'Subtotal',
-        'total'          	=> 'Total: ',
-        'secondary_total'   => 'Total',
+    'table' => [
+        'picture' => 'Image',
+        'item' => 'Article',
+        'sku' => 'SKU',
+        'unit_price' => 'Unit price',
+        'quantity' => 'Quantity',
+        'price_per_unit' => 'Price by unit',
+        'subtotal' => 'Subtotal',
+        'total' => 'Total: ',
+        'secondary_total' => 'Total',
     ],
-    'button'    => [
-        'continue_shopping'   	=> 'Continue buying',
-        'proceed_to_checkout'   => 'Proceed to pay',
-        'view_cart'             => 'See cart',
-        'checkout'              => 'Checkout',
-        'add_to_cart'           => 'Add to cart',
-        'add_to_cart_quote'     => 'Add to quote',
-        'download_pdf'          => 'Download PDF',
-        'request_quote'         => 'Request Quote'
+    'button' => [
+        'continue_shopping' => 'Continue buying',
+        'proceed_to_checkout' => 'Proceed to pay',
+        'view_cart' => 'See cart',
+        'checkout' => 'Checkout',
+        'add_to_cart' => 'Add to cart',
+        'add_to_cart_quote' => 'Add to quote',
+        'download_pdf' => 'Download PDF',
+        'request_quote' => 'Request Quote',
     ],
-    'empty_cart_message'    => [
-        'part_1'   	=> 'You have no items in your shopping cart. click',
-        'part_2'   => 'here',
-        'part_3'   => 'To continue shopping.',
+    'empty_cart_message' => [
+        'part_1' => 'You have no items in your shopping cart. click',
+        'part_2' => 'here',
+        'part_3' => 'To continue shopping.',
     ],
     'message' => [
         'add' => 'Product added to cart',

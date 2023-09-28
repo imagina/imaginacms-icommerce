@@ -11,8 +11,8 @@ class ShippingMethodTranslation extends Model
     protected $fillable = [
         'title',
         'description',
-      'shipping_method_id',
-      'locale',
+        'shipping_method_id',
+        'locale',
     ];
 
     protected $table = 'icommerce__shipping_method_translations';

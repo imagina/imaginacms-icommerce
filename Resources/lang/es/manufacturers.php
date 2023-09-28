@@ -20,7 +20,7 @@ return [
     'form' => [
     ],
     'messages' => [
-        'no-manufacturers-associated' => 'No existen marcas asociadas con los productos mostrados'
+        'no-manufacturers-associated' => 'No existen marcas asociadas con los productos mostrados',
     ],
     'validation' => [
     ],
