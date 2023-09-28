@@ -6,9 +6,19 @@ return [
 
   /*
    |--------------------------------------------------------------------------
-   | Default layout for the notification module
+   | Configuration by google sheet template id
    |--------------------------------------------------------------------------
    */
+  'synchronizable' => [
+      'template_id' => '1ZVKNiaLZNEOsSFskBiIewNlHkYvrmArS0m_aWqu7-nM',
+      'entities' => ["icommerce_syncProducts", "icommerce_syncCategories"]
+  ],
+
+   /*
+    |--------------------------------------------------------------------------
+    | Default layout for the notification module
+    |--------------------------------------------------------------------------
+    */
   'defaultEmailLayout' => 'notification::emails.layouts.default',
 
   /*
