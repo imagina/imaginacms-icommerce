@@ -398,15 +398,4 @@ class ProductApiController extends BaseApiController
         //Response
         return $response;
     }
-
-    private function getCategoryId($slug, $category) {
-        $response = $category->show($slug, new Request([
-            "setting" => ["fromAdmin" => true],
-            "filter" => ["field" => "slug"]
-        ]));
-
-        $response = $response->original["data"]["id"];
-
-        return $response;
-    }
 }
