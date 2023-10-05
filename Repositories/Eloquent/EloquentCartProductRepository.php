@@ -193,30 +193,10 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
       //Case - Cart Product Exist
 
-      //NO dynamics options - Check
-      if(count($data["product_option_values"])>0){
-
-        // get product options
-        $productOptionValues = $cartProduct->productOptionValues;
-        // get options from front
-        $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
-
-        // if product doesn't have the same options wil be created and sync options
-        $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
-
-        if( array_diff($productOptionValuesIds, $productOptionValuesFront) !== array_diff($productOptionValuesFront, $productOptionValuesIds)){
-            $cartProduct = $this->model->create($data);
-            $cartProduct->productOptionValues()->sync($productOptionValuesFront);
-        }else{
-          // if product have the same options update quantity and update
-          $data['quantity'] += $cartProduct->quantity;
-          $cartProduct->update($data);
-        }
-
-      }
-
       //Dynamics options - Check
       if(count($optionsDynamic)>0){
+
+        \Log::info($this->log."create|Options Dynamics");
 
         //Cart Products con la informacion de opciones dinamicas
         $cartProducts = $this->findCartProductsWithDynamics($optionsDynamic,$data);
@@ -251,8 +231,34 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         }
         
       }else{
-        //\Log::info($this->log."create|Not Options Dynamics");
-        $cartProduct = $this->model->create($data);
+
+        \Log::info($this->log."create|NOT Options Dynamics");
+    
+        // get product options
+        $productOptionValues = $cartProduct->productOptionValues;
+        // get options from front
+        $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
+
+        $productOptionDynamics = $cartProduct->optionsDynamics;
+        
+        // if product doesn't have the same options wil be created and sync options
+        $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
+
+        /**
+         * Agregada validacion $productOptionDynamics->isNotEmpty() 
+         * Caso de Uso: Cuando ya existe producto con opciones dinamicas y se envia a guardar sin opciones dinamicas (q deberia ser otro)
+         * se rectifica con esa relacion para evitar que le sume "quantity" al producto anterior
+         */
+        if($productOptionDynamics->isNotEmpty() || array_diff($productOptionValuesIds, $productOptionValuesFront) !== array_diff($productOptionValuesFront, $productOptionValuesIds)){
+            $cartProduct = $this->model->create($data);
+            $cartProduct->productOptionValues()->sync($productOptionValuesFront);
+        }else{
+
+          // if product have the same options update quantity and update
+          $data['quantity'] += $cartProduct->quantity;
+          $cartProduct->update($data);
+        }
+
       }
 
     }
