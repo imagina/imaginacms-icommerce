@@ -204,13 +204,13 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         //Opciones dinamicas agrupadas
         $allOptionsDynamicsInCart = $this->groupAllOptionsDynamics($cartProducts);
 
-        //Recorrer las opciones nuevas
+        //Recorrer las opciones nuevas (Las que vienen del Frontend)
         foreach ($optionsDynamic as $key => $optionsFront) {
           $cartProductId = null;
           //Se evaluan todas las opciones del carrito, para ver si ya existe una con la misma informacion
           foreach ($allOptionsDynamicsInCart as $key => $optionCart) {
             if($optionsFront['option_id']==$optionCart['option_id'] && $optionsFront['value']==$optionCart['value']){
-              $cartProductId = $optionCart['cartProductId'];
+              $cartProductId = $optionCart['cartProductId']; //Ya existe esa opcion, con esto ya sabemos que producto actualizar del carrito
               break;
             }
           }
@@ -441,6 +441,10 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     return $validQuantity;
   }
 
+  /**
+   * Separamos las opciones en 2 arrays (Dinamicas y No dinamicas)
+   * @param $pov (Product Options values)
+   */
   private function separateOptions($pov)
   {
 
@@ -462,7 +466,12 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
   }
 
   /**
-   * @param $optionsDynamics (From Frontend)
+   * Se obtienen las opciones dinamicas de cada producto (CartProducts)
+   * Este metodo se realizó por separado para no combinarlo con el metodo findByAttributesOrOptions
+   * que trabaja con la misma tabla pivote pero con otra relacion y validaciones
+   * 
+   * @param $optionsDynamics (From Frontend) [option_id,value]
+   * @return $cartProducts (Solo los productos que contengan opciones dinamicas)
    */
   public function findCartProductsWithDynamics($optionsDynamic,$data)
   {
@@ -486,18 +495,23 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
   }
 
+  /**
+   * Se agrupan las opciones dinamicas con su cart_product_id para que sea mas facil de validar posteriormente
+   * @return $allOptionsDynamicsInCart (array) - Cada opcion con su id y valor, y el cart_product_id
+   */
   public function groupAllOptionsDynamics($cartProducts)
   {
 
     //\Log::info($this->log."groupAllOptionsDynamics");
 
     $allOptionsDynamicsInCart = [];
-    //Se obtienen las opciones para cada producto.
+    //Se obtienen las opciones para cada producto que estan en el carrito
     foreach ($cartProducts as $key => $cartProduct) {
       $cartProductId = $cartProduct->id;
       /**
-       * Hay que agruparlas por el caso de que existan 2 productos con opciones, 
-       * Si se intenta actualizar el 2do, puede que el primero no tenga esa opcion y la agregaria (cuando no deberia)
+       * Caso que se presento: Un producto tiene el valor "x", el otro tiene el valor "x2"
+       * Cuando se volvia a guardar "x2", estaba modificando el primero cuando en realidad debia actualizar el "x2"
+       * por eso toca agruparlas para luego revisarlas todas antes de decidir
        */
       foreach ($cartProduct->optionsDynamics as $key => $option) {
         $oldOption = [
