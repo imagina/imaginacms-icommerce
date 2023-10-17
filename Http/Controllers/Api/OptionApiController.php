@@ -114,7 +114,7 @@ class OptionApiController extends BaseApiController
       $option = $this->option->create($data);
 
       //Response
-      $response = ["data" => ''];
+      $response = ["data" => new OptionTransformer($option)];
       \DB::commit(); //Commit to Data Base
     } catch (\Exception $e) {
       \DB::rollback();//Rollback to Data Base
@@ -177,8 +177,8 @@ class OptionApiController extends BaseApiController
 
       //call Method delete
       $this->option->deleteBy($criteria, $params);
-      
-      
+
+
       //Response
       $response = ["data" => "Item deleted"];
       \DB::commit();//Commit to Data Base

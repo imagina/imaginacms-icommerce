@@ -71,4 +71,12 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
   //======  ITEM TYPES
   require('ApiRoutes/itemTypeRoutes.php');
 
+
+  //======  OPTION TYPES - STATIC
+  $router->apiCrud([
+    'module' => 'icommerce',
+    'prefix' => 'option-types',
+    'staticEntity' => 'Modules\Icommerce\Entities\OptionType'
+  ]);
+
 });

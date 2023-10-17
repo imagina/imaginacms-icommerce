@@ -60,7 +60,7 @@ return [
   "productOptions" => "Opciones de productos",
   "newOption" => "Nueva Opción",
   "updateOption" => "Actualizar Opción",
-  "newOptionValue" => "Nuevo valor de Opción",
+  "newOptionValue" => "Nuevo valor",
   "updateOptionValue" => "Actualizar valor de Opción",
   "newProductOptionValue" => "Nuevo valor de Opción de producto",
   "updateProductOptionValue" => "Actualizar valor de Opción de producto",

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Core\Support\Traits\AuditTrait;
 
+//Static Classes
+use Modules\Icommerce\Entities\OptionType;
+
 class Option extends Model
 {
     use Translatable, BelongsToTenant, AuditTrait;
@@ -32,5 +35,15 @@ class Option extends Model
     public function optionValues(){
         return $this->hasMany(OptionValue::class);
     }
+
+    
+    public function getDynamicAttribute()
+    {
+        $type = new OptionType();
+        $typeData = $type->get($this->type);
+
+        return $typeData['dynamic'];
+    }
+    
 
 }
