@@ -40,7 +40,13 @@ class CartProduct extends Model
     return $this->belongsToMany(ProductOptionValue::class, 'icommerce__cart_product_options')->withTimestamps();
 
   }
-
+  
+  public function optionsDynamics()
+  {
+    return $this->belongsToMany(Option::class, 'icommerce__cart_product_options')
+    ->withPivot('cart_product_id', 'product_option_value_id', 'option_id', 'value')
+    ->withTimestamps();
+  }
 
   public function setOptionsAttribute($value)
   {
