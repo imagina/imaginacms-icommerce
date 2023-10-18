@@ -14,7 +14,7 @@ class ManufacturerRequest extends BaseFormRequest
   public function translationRules()
   {
     return [
-      'title' => 'required|min:2',
+      'name' => 'required|min:2',
     ];
   }
   
@@ -32,8 +32,8 @@ class ManufacturerRequest extends BaseFormRequest
   {
     return [
       // title
-      'title.required' => trans('icommerce::common.messages.field required'),
-      'title.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      'name.required' => trans('icommerce::common.messages.field required'),
+      'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
     
     ];
   }
