@@ -75,9 +75,9 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         }
 
         if (isset($filter->dynamicOptionsIds)){
-          $optionsDynamicIds = $filter->dynamicOptionsIds;
-          $query->whereHas('dynamicOptions', function ($query) use ($optionsDynamicIds) {
-            $query->whereIn("option_id",$optionsDynamicIds);
+          $dynamicOptionsIds = $filter->dynamicOptionsIds;
+          $query->whereHas('dynamicOptions', function ($query) use ($dynamicOptionsIds) {
+            $query->whereIn("option_id",$dynamicOptionsIds);
           });
         }
 
@@ -478,14 +478,14 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
     //\Log::info($this->log."findCartProductsWithDynamics");
 
-    $optionsDynamicIds = array_column($optionsDynamic, 'option_id');
+    $dynamicOptionsIds = array_column($optionsDynamic, 'option_id');
 
     $params = [
       "filter" => [
         "cartId" => $data['cart_id'],
         "productId" => $data['product_id'],
         "isCall" => $data['is_call'] ?? false,
-        'dynamicOptionsIds' => $optionsDynamicIds
+        'dynamicOptionsIds' => $dynamicOptionsIds
       ]
     ];
 
