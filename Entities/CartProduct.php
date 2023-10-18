@@ -41,7 +41,7 @@ class CartProduct extends Model
 
   }
   
-  public function optionsDynamics()
+  public function dynamicOptions()
   {
     return $this->belongsToMany(Option::class, 'icommerce__cart_product_options')
     ->withPivot('cart_product_id', 'product_option_value_id', 'option_id', 'value')

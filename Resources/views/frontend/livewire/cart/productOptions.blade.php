@@ -6,9 +6,9 @@
     @endforeach
 @endif
 
-@if($cartProduct->optionsDynamics)
+@if($cartProduct->dynamicOptions)
     <br>
-    @foreach($cartProduct->optionsDynamics as $option)
+    @foreach($cartProduct->dynamicOptions as $option)
         <label>{{$option->description}}
             : {{$option->pivot->value}}</label>
     @endforeach

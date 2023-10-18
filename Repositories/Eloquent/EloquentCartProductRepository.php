@@ -74,9 +74,9 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
           $query->where('is_call', $filter->isCall);
         }
 
-        if (isset($filter->optionsDynamicsIds)){
-          $optionsDynamicIds = $filter->optionsDynamicsIds;
-          $query->whereHas('optionsDynamics', function ($query) use ($optionsDynamicIds) {
+        if (isset($filter->dynamicOptionsIds)){
+          $optionsDynamicIds = $filter->dynamicOptionsIds;
+          $query->whereHas('dynamicOptions', function ($query) use ($optionsDynamicIds) {
             $query->whereIn("option_id",$optionsDynamicIds);
           });
         }
@@ -182,10 +182,10 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         //\Log::info($this->log.'Create|Sync Dinamics Options');
        
         //#CasoX = Si existe una opcion "NoDinamica" y una "Dinamica". Agregaba la "NoDinamica" pero la "Dinamica" negative.
-        //$cartProduct->optionsDynamics()->sync($optionsDynamic);
+        //$cartProduct->dynamicOptions()->sync($optionsDynamic);
         
         //Con esto se soluciono
-        $cartProduct->optionsDynamics()->attach($optionsDynamic);
+        $cartProduct->dynamicOptions()->attach($optionsDynamic);
        
       }
 
@@ -220,7 +220,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
               //Create cart product
               $cartProduct = $this->model->create($data);
               $newDataOption[] = $optionsFront;
-              $cartProduct->optionsDynamics()->attach($newDataOption);
+              $cartProduct->dynamicOptions()->attach($newDataOption);
           }else{
               //Update a specific cart product
               $cartProductUpdate =  $this->getItem($cartProductId);
@@ -239,7 +239,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         // get options from front
         $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
 
-        $productOptionDynamics = $cartProduct->optionsDynamics;
+        $productOptionDynamics = $cartProduct->dynamicOptions;
         
         // if product doesn't have the same options wil be created and sync options
         $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
@@ -470,7 +470,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
    * Este metodo se realizó por separado para no combinarlo con el metodo findByAttributesOrOptions
    * que trabaja con la misma tabla pivote pero con otra relacion y validaciones
    * 
-   * @param $optionsDynamics (From Frontend) [option_id,value]
+   * @param $dynamicOptions (From Frontend) [option_id,value]
    * @return $cartProducts (Solo los productos que contengan opciones dinamicas)
    */
   public function findCartProductsWithDynamics($optionsDynamic,$data)
@@ -485,7 +485,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
         "cartId" => $data['cart_id'],
         "productId" => $data['product_id'],
         "isCall" => $data['is_call'] ?? false,
-        'optionsDynamicsIds' => $optionsDynamicIds
+        'dynamicOptionsIds' => $optionsDynamicIds
       ]
     ];
 
@@ -513,7 +513,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
        * Cuando se volvia a guardar "x2", estaba modificando el primero cuando en realidad debia actualizar el "x2"
        * por eso toca agruparlas para luego revisarlas todas antes de decidir
        */
-      foreach ($cartProduct->optionsDynamics as $key => $option) {
+      foreach ($cartProduct->dynamicOptions as $key => $option) {
         $oldOption = [
               'cartProductId' => $cartProductId,
               'option_id' => $option->pivot->option_id,
