@@ -21,7 +21,7 @@ class CreateIcommerceLengthClassTranslationsTable extends Migration
       
       $table->integer('length_class_id')->unsigned();
       $table->string('locale')->index();
-      $table->unique(['length_class_id', 'locale']);
+      $table->unique(['length_class_id', 'locale'],"length_class_id_locale_trans");
       $table->foreign('length_class_id')->references('id')->on('icommerce__length_classes')->onDelete('cascade');
     });
   }

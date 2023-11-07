@@ -21,7 +21,7 @@ class CreateIcommerceWeightClassTranslationsTable extends Migration
       
       $table->integer('weight_class_id')->unsigned();
       $table->string('locale')->index();
-      $table->unique(['weight_class_id', 'locale']);
+      $table->unique(['weight_class_id', 'locale'],"weight_class_id_locale_trans");
       $table->foreign('weight_class_id')->references('id')->on('icommerce__weight_classes')->onDelete('cascade');
     });
   }
