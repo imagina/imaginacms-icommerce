@@ -78,5 +78,18 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
     'prefix' => 'option-types',
     'staticEntity' => 'Modules\Icommerce\Entities\OptionType'
   ]);
-
+  
+  $router->apiCrud([
+    'module' => 'icommerce',
+    'prefix' => 'weight-classes',
+    'controller' => 'WeightClassApiController',
+    //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []]
+  ]);
+  $router->apiCrud([
+    'module' => 'icommerce',
+    'prefix' => 'length-classes',
+    'controller' => 'LengthClassApiController',
+    //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []]
+  ]);
+// append
 });

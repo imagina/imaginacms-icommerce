@@ -20,7 +20,7 @@ class IcommerceDatabaseSeeder extends Seeder
       "baseClass" => "\Modules\Icommerce\Database\Seeders",
       "seeds" => ["IcommerceModuleTableSeeder", "OrderStatusTableSeeder", "ItemTypeTableSeeder", "CurrencyTableSeeder",
         "StoreTableSeeder", "NotificationRulesTableSeeder", "IformRequestQuoteTableSeeder", "CreateFormsTableSeeder",
-        "IcommerceFixOrdersStatusPendingDuplicatedTableSeeder"]
+        "IcommerceFixOrdersStatusPendingDuplicatedTableSeeder","WeightAndLengthTableSeeder"]
     ]);
   }
 }

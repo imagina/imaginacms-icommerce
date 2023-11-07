@@ -524,7 +524,33 @@ class IcommerceServiceProvider extends ServiceProvider
     );
 
 
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\WeightClassRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentWeightClassRepository(new \Modules\Icommerce\Entities\WeightClass());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheWeightClassDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\LengthClassRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentLengthClassRepository(new \Modules\Icommerce\Entities\LengthClass());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheLengthClassDecorator($repository);
+            }
+        );
 // add bindings
+
+
 
 
   }

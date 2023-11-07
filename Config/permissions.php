@@ -274,7 +274,25 @@ return [
     'destroy' => 'icommerce::quotes.destroy resource',
     'currencies' => 'icommerce::quotes.destroy currencies',
   ],
+    'icommerce.weightclasses' => [
+        'manage' => 'icommerce::weightclasses.manage resource',
+        'index' => 'icommerce::weightclasses.list resource',
+        'create' => 'icommerce::weightclasses.create resource',
+        'edit' => 'icommerce::weightclasses.edit resource',
+        'destroy' => 'icommerce::weightclasses.destroy resource',
+        'restore' => 'icommerce::weightclasses.restore resource',
+    ],
+    'icommerce.lengthclasses' => [
+        'manage' => 'icommerce::lengthclasses.manage resource',
+        'index' => 'icommerce::lengthclasses.list resource',
+        'create' => 'icommerce::lengthclasses.create resource',
+        'edit' => 'icommerce::lengthclasses.edit resource',
+        'destroy' => 'icommerce::lengthclasses.destroy resource',
+        'restore' => 'icommerce::lengthclasses.restore resource',
+    ],
 // append
+
+
 
 
 ];
