@@ -230,6 +230,9 @@ class IcommerceContentAi
       $product['quantity'] = 9999;
       $product['stock_status'] = 1;
 
+      if(isset($product['es']['name']))
+          \Log::info($this->log."createProducts|Name: ".$product['es']['name']);
+
       $result = $this->productRepository->create($product);
 
     }
