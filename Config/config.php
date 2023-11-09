@@ -91,7 +91,107 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Weight Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'weightClasses' => [
+    [
+    "value" => 1,
+    "default" => true,
+    "es" => [
+      "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"es"),
+      "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"es")
+    ],
+    "en" => [
+      "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"en"),
+      "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"en")
+    ]
+  ],
+  [
+    "value" => 1000,
+    "default" => false,
+    "es" => [
+      "title" => trans("icommerce::weightclasses.classes.gram.title",[],"es"),
+      "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"es")
+    ],
+    "en" => [
+      "title" => trans("icommerce::weightclasses.classes.gram.title",[],"en"),
+      "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"en")
+    ]
+  ],
+  [
+    "value" => 2.20460000,
+    "default" => false,
+    "es" => [
+      "title" => trans("icommerce::weightclasses.classes.pound.title",[],"es"),
+      "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"es")
+    ],
+    "en" => [
+      "title" => trans("icommerce::weightclasses.classes.pound.title",[],"en"),
+      "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"en")
+    ]
+  ],
+  [
+    "value" => 35.27400000,
+    "default" => false,
+    "es" => [
+      "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"es"),
+      "unit" => trans("icommerce::weightclasses.classes.ounce.title",[],"es")
+    ],
+    "en" => [
+      "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"en"),
+      "unit" => trans("icommerce::weightclasses.classes.ounce.unit",[],"en")
+    ]
+  ]
 
+],
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Length Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'lengthClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::lengthclasses.classes.centimeter.title",[],"es"),
+        "unit" => trans("icommerce::lengthclasses.classes.centimeter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::lengthclasses.classes.centimeter.title",[],"en"),
+        "unit" => trans("icommerce::lengthclasses.classes.centimeter.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 10,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::lengthclasses.classes.millimeter.title",[],"es"),
+        "unit" => trans("icommerce::lengthclasses.classes.millimeter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::lengthclasses.classes.millimeter.title",[],"en"),
+        "unit" => trans("icommerce::lengthclasses.classes.millimeter.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 0.39370000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::lengthclasses.classes.inch.title",[],"es"),
+        "unit" => trans("icommerce::lengthclasses.classes.inch.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::lengthclasses.classes.inch.title",[],"en"),
+        "unit" => trans("icommerce::lengthclasses.classes.inch.unit",[],"en")
+      ]
+    ]
+  ],
   /*
    |--------------------------------------------------------------------------
    | Define routes to sites with old routes

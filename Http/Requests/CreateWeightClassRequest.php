@@ -4,17 +4,20 @@ namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
 
-class ManufacturerRequest extends BaseFormRequest
+class CreateWeightClassRequest extends BaseFormRequest
 {
   public function rules()
   {
-    return [];
+    return [
+      'value' => 'required'
+    ];
   }
   
   public function translationRules()
   {
     return [
-      'name' => 'required|min:2',
+      'title' => 'required',
+      'unit' => 'required'
     ];
   }
   
@@ -30,11 +33,12 @@ class ManufacturerRequest extends BaseFormRequest
   
   public function translationMessages()
   {
-    return [
-      // title
-      'name.required' => trans('icommerce::common.messages.field required'),
-      'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
-    
-    ];
+    return [];
   }
+  
+  public function getValidator()
+  {
+    return $this->getValidatorInstance();
+  }
+  
 }

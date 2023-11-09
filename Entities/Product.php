@@ -80,7 +80,9 @@ class Product extends Model implements TaggableInterface
     'custom_url',
     'external_id',
     'is_internal',
-    'show_price_is_call'
+    'show_price_is_call',
+    'weight_class_id',
+    'length_class_id',
   ];
 
   protected $presenter = ProductPresenter::class;
@@ -95,7 +97,18 @@ class Product extends Model implements TaggableInterface
     $this->auth = Auth::user();
     parent::__construct($attributes);
   }
-
+  
+  public function weightClass(): WeightClass
+  {
+    return $this->belongsTo(WeightClass::class);
+  }
+  
+  
+  public function lengthClass(): LengthClass
+  {
+    return $this->belongsTo(LengthClass::class);
+  }
+  
   public function entity()
   {
 
