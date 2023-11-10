@@ -81,6 +81,7 @@ return [
   'admin_notes' => 'Administration Notes',
   'created_at' => 'Creation date',
   'parent' => 'Higher',
+  'to' => 'to',
   'settings' => [
     'couponsQuantity' => 'Amount of Coupons',
     'couponAvailable' => 'Activate Coupon',
