@@ -62,6 +62,7 @@ class Product extends Model implements TaggableInterface
     'weight',
     'length',
     'width',
+    'volume',
     'height',
     'subtract',
     'minimum',

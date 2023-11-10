@@ -212,7 +212,8 @@ return [
     "decimals" => "Decimales",
     "decimalSeparator" => "Separador de Decimales",
     "thousandsSeparator" => "Separador de Miles",
-    "unit" => "Unidad"
+    "unit" => "Unidad",
+    "volume" => "Volumen"
   ],
   "message" => [
     "advanceEdit" => "Edición Avanzada",
