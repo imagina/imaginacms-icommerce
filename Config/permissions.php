@@ -290,7 +290,25 @@ return [
         'destroy' => 'icommerce::lengthclasses.destroy resource',
         'restore' => 'icommerce::lengthclasses.restore resource',
     ],
+    'icommerce.volumeclasses' => [
+        'manage' => 'icommerce::volumeclasses.manage resource',
+        'index' => 'icommerce::volumeclasses.list resource',
+        'create' => 'icommerce::volumeclasses.create resource',
+        'edit' => 'icommerce::volumeclasses.edit resource',
+        'destroy' => 'icommerce::volumeclasses.destroy resource',
+        'restore' => 'icommerce::volumeclasses.restore resource',
+    ],
+    'icommerce.quantityclasses' => [
+        'manage' => 'icommerce::quantityclasses.manage resource',
+        'index' => 'icommerce::quantityclasses.list resource',
+        'create' => 'icommerce::quantityclasses.create resource',
+        'edit' => 'icommerce::quantityclasses.edit resource',
+        'destroy' => 'icommerce::quantityclasses.destroy resource',
+        'restore' => 'icommerce::quantityclasses.restore resource',
+    ],
 // append
+
+
 
 
 

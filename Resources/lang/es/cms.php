@@ -42,6 +42,18 @@ return [
     "adminItemTypesCreate" => "Crear Tipos",
     "adminItemTypesEdit" => "Editar Tipos",
     "panelOrders" => "Mis Compras",
+    "newWeightClasses" => "Nuevo tipo de peso",
+    "updateWeightClasses" => "Actualizar tipo de peso",
+    "weightClasses" => " Tipos de Peso",
+    "newLengthClasses" => "Nuevo tipo de longitud",
+    "updateLengthClasses" => "Actualizar tipo de longitud",
+    "lengthClasses" => " Tipos de longitud",
+    "newVolumeClasses" => "Nuevo tipo de volumen",
+    "updateVolumeClasses" => "Actualizar tipo de volumen",
+    "volumeClasses" => " Tipos de volumen",
+    "newQuantityClasses" => "Nuevo tipo de cantidad",
+    "updateQuantityClasses" => "Actualizar tipo de cantidad",
+    "quantityClasses" => " Tipos de cantidad",
     "newCurrencies" => "Nuevas monedas",
     "updateCurrency" => "Actualizar moneda",
     "currencies" => " Monedas",
@@ -200,7 +212,7 @@ return [
     "decimals" => "Decimales",
     "decimalSeparator" => "Separador de Decimales",
     "thousandsSeparator" => "Separador de Miles",
-
+    "unit" => "Unidad"
   ],
   "message" => [
     "advanceEdit" => "Edición Avanzada",

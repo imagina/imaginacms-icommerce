@@ -548,7 +548,33 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheLengthClassDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\VolumeClassRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentVolumeClassRepository(new \Modules\Icommerce\Entities\VolumeClass());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheVolumeClassDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\QuantityClassRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentQuantityClassRepository(new \Modules\Icommerce\Entities\QuantityClass());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheQuantityClassDecorator($repository);
+            }
+        );
 // add bindings
+
+
 
 
 

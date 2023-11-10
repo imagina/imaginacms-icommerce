@@ -99,55 +99,55 @@ return [
    */
   'weightClasses' => [
     [
-    "value" => 1,
-    "default" => true,
-    "es" => [
-      "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"es"),
-      "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"es")
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"en")
+      ]
     ],
-    "en" => [
-      "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"en"),
-      "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"en")
+    [
+      "value" => 1000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.gram.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.gram.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 2.20460000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.pound.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.pound.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 35.27400000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.ounce.title",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.ounce.unit",[],"en")
+      ]
     ]
+  
   ],
-  [
-    "value" => 1000,
-    "default" => false,
-    "es" => [
-      "title" => trans("icommerce::weightclasses.classes.gram.title",[],"es"),
-      "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"es")
-    ],
-    "en" => [
-      "title" => trans("icommerce::weightclasses.classes.gram.title",[],"en"),
-      "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"en")
-    ]
-  ],
-  [
-    "value" => 2.20460000,
-    "default" => false,
-    "es" => [
-      "title" => trans("icommerce::weightclasses.classes.pound.title",[],"es"),
-      "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"es")
-    ],
-    "en" => [
-      "title" => trans("icommerce::weightclasses.classes.pound.title",[],"en"),
-      "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"en")
-    ]
-  ],
-  [
-    "value" => 35.27400000,
-    "default" => false,
-    "es" => [
-      "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"es"),
-      "unit" => trans("icommerce::weightclasses.classes.ounce.title",[],"es")
-    ],
-    "en" => [
-      "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"en"),
-      "unit" => trans("icommerce::weightclasses.classes.ounce.unit",[],"en")
-    ]
-  ]
-
-],
   
   /*
    |--------------------------------------------------------------------------
@@ -189,6 +189,82 @@ return [
       "en" => [
         "title" => trans("icommerce::lengthclasses.classes.inch.title",[],"en"),
         "unit" => trans("icommerce::lengthclasses.classes.inch.unit",[],"en")
+      ]
+    ]
+  ],
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Volume Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'volumeClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::volumeclasses.classes.liter.title",[],"es"),
+        "unit" => trans("icommerce::volumeclasses.classes.liter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::volumeclasses.classes.liter.title",[],"en"),
+        "unit" => trans("icommerce::volumeclasses.classes.liter.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 1000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::volumeclasses.classes.milliliter.title",[],"es"),
+        "unit" => trans("icommerce::volumeclasses.classes.milliliter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::volumeclasses.classes.milliliter.title",[],"en"),
+        "unit" => trans("icommerce::volumeclasses.classes.milliliter.unit",[],"en")
+      ]
+    ]
+  ],
+  
+  /*
+   |--------------------------------------------------------------------------
+   | Volume Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'quantityClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::quantityclasses.classes.unit.title",[],"es"),
+        "unit" => trans("icommerce::quantityclasses.classes.unit.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::quantityclasses.classes.unit.title",[],"en"),
+        "unit" => trans("icommerce::quantityclasses.classes.unit.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 6,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::quantityclasses.classes.sixpack.title",[],"es"),
+        "unit" => trans("icommerce::quantityclasses.classes.sixpack.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::quantityclasses.classes.sixpack.title",[],"en"),
+        "unit" => trans("icommerce::quantityclasses.classes.sixpack.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 12,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::quantityclasses.classes.dozen.title",[],"es"),
+        "unit" => trans("icommerce::quantityclasses.classes.dozen.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::quantityclasses.classes.dozen.title",[],"en"),
+        "unit" => trans("icommerce::quantityclasses.classes.dozen.unit",[],"en")
       ]
     ]
   ],
