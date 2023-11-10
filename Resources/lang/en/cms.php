@@ -209,7 +209,8 @@ return [
     "decimals" => "Decimals",
     "decimalSeparator" => "Decimal Separator",
     "thousandsSeparator" => "Thousands Separator",
-    "symbolRight" => "Right Symbol"
+    "symbolRight" => "Right Symbol",
+    "volume" => "Volume",
   ],
   "message" => [
     "advanceEdit" => "Advanced Edit",
