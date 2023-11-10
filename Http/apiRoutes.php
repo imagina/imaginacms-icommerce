@@ -91,5 +91,35 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
     'controller' => 'LengthClassApiController',
     //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []]
   ]);
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'volume-classes',
+      'controller' => 'VolumeClassApiController',
+      //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
+      // 'customRoutes' => [ // Include custom routes if needed
+      //  [
+      //    'method' => 'post', // get,post,put....
+      //    'path' => '/some-path', // Route Path
+      //    'uses' => 'ControllerMethodName', //Name of the controller method to use
+      //    'middleware' => [] // if not set up middleware, auth:api will be the default
+      //  ]
+      // ]
+    ]);
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'quantity-classes',
+      'controller' => 'QuantityClassApiController',
+      //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
+      // 'customRoutes' => [ // Include custom routes if needed
+      //  [
+      //    'method' => 'post', // get,post,put....
+      //    'path' => '/some-path', // Route Path
+      //    'uses' => 'ControllerMethodName', //Name of the controller method to use
+      //    'middleware' => [] // if not set up middleware, auth:api will be the default
+      //  ]
+      // ]
+    ]);
 // append
+
+
 });

@@ -5,16 +5,16 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Modules\Core\Icrud\Entities\CrudModel;
 
-class LengthClass extends CrudModel
+class VolumeClass extends CrudModel
 {
   use Translatable;
 
-  protected $table = 'icommerce__length_classes';
-  public $transformer = 'Modules\Icommerce\Transformers\LengthClassTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\LengthClassRepository';
+  protected $table = 'icommerce__volume_classes';
+  public $transformer = 'Modules\Icommerce\Transformers\VolumeClassTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\VolumeClassRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateLengthClassRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateLengthClassRequest',
+      'create' => 'Modules\Icommerce\Http\Requests\CreateVolumeClassRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateVolumeClassRequest',
     ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [

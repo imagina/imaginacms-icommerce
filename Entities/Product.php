@@ -83,6 +83,8 @@ class Product extends Model implements TaggableInterface
     'show_price_is_call',
     'weight_class_id',
     'length_class_id',
+    'volume_class_id',
+    'quantity_class_id',
   ];
 
   protected $presenter = ProductPresenter::class;
@@ -101,6 +103,16 @@ class Product extends Model implements TaggableInterface
   public function weightClass(): WeightClass
   {
     return $this->belongsTo(WeightClass::class);
+  }
+  
+  public function volumeClass(): VolumeClass
+  {
+    return $this->belongsTo(VolumeClass::class);
+  }
+  
+  public function quantityClass(): QuantityClass
+  {
+    return $this->belongsTo(QuantityClass::class);
   }
   
   

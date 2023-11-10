@@ -26,7 +26,10 @@ class WeightClass extends CrudModel
     'deleting' => [],
     'deleted' => []
   ];
-  public $translatedAttributes = [];
+  public $translatedAttributes = [
+    "title",
+    "unit"
+  ];
   protected $fillable = [
     "value",
     "default"
