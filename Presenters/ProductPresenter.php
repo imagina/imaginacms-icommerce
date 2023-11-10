@@ -7,7 +7,6 @@ use Modules\Icommerce\Entities\Status;
 use Illuminate\Support\Facades\Auth;
 use Modules\Iprofile\Entities\Department;
 
-use Modules\Icommerce\Entities\WeightClass;
 
 class ProductPresenter extends Presenter
 {
