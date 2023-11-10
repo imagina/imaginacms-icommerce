@@ -100,23 +100,23 @@ class Product extends Model implements TaggableInterface
     parent::__construct($attributes);
   }
   
-  public function weightClass(): WeightClass
+  public function weightClass()
   {
     return $this->belongsTo(WeightClass::class);
   }
   
-  public function volumeClass(): VolumeClass
+  public function volumeClass()
   {
     return $this->belongsTo(VolumeClass::class);
   }
   
-  public function quantityClass(): QuantityClass
+  public function quantityClass()
   {
     return $this->belongsTo(QuantityClass::class);
   }
   
   
-  public function lengthClass(): LengthClass
+  public function lengthClass()
   {
     return $this->belongsTo(LengthClass::class);
   }
