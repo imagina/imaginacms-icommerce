@@ -36,6 +36,11 @@
         </div>
       </div>
     @endif
+
+    <!-- calculation according to the information of weight, volume, quantity, lenght-->
+    @include('icommerce::frontend.components.product.calculate-pum')
+
+
     @if((!$addToCartWithQuantity || $withTextInAddToCart) && !Str::contains($buttonsPosition, 'in-photo') && !Str::contains($buttonsPosition, 'after-content'))
       <div class="col-auto col-buttons" style="position: unset">
         @include("icommerce::frontend.components.product.buttons")
