@@ -31,7 +31,7 @@ class OrderItem
         "tax" => 0,
         "reward" => 0,
         "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null, //No Dynamic Options
-        "productOptions" => (count($item->optionsDynamics)>0) ? $item->optionsDynamics : null //Dynamic Options
+        "productOptions" => (count($item->dynamicOptions)>0) ? $item->dynamicOptions : null //Dynamic Options
       ]);
 
 
