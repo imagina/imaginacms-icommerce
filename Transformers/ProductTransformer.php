@@ -20,7 +20,12 @@ class ProductTransformer extends BaseApiTransformer
     $filter = json_decode($request->filter);
     //$price = Currency::convert($this->price);
     //$price = $this->present()->price();
-
+  
+    $tags = [];
+    foreach ($this->tags as $tag) {
+      $tags[] = $tag->name;
+    }
+    
     $data = [
       'id' => $this->id,
       'externalId' => $this->when($this->external_id, $this->external_id),
@@ -89,6 +94,7 @@ class ProductTransformer extends BaseApiTransformer
       'isInternal' => $this->is_internal,
       'advancedSummary' => $this->when($this->advanced_summary, $this->advanced_summary),
       'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
+      'tags' => $tags
     ];
 
     $discount = $this->discount;

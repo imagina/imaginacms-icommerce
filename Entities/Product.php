@@ -92,7 +92,7 @@ class Product extends Model implements TaggableInterface
   protected $casts = [
     'options' => 'array'
   ];
-  protected $width = ['files'];
+  protected $width = ['files','tags'];
   private $auth;
 
   public function __construct(array $attributes = [])
