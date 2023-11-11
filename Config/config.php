@@ -10,7 +10,7 @@ return [
    |--------------------------------------------------------------------------
    */
   'synchronizable' => [
-    'workflowPath' => /*'/google-sheets/'*/ '/agi-one/',
+    'workflowPath' => '/google-sheets/',
     'entities' => [
       'icommerce_syncProducts' => [
         'template_id' => '1ZVKNiaLZNEOsSFskBiIewNlHkYvrmArS0m_aWqu7-nM',
