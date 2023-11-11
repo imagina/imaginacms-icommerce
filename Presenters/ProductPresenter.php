@@ -7,6 +7,7 @@ use Modules\Icommerce\Entities\Status;
 use Illuminate\Support\Facades\Auth;
 use Modules\Iprofile\Entities\Department;
 
+
 class ProductPresenter extends Presenter
 {
     /**
@@ -180,4 +181,46 @@ class ProductPresenter extends Presenter
 
     return $hasRequiredOptions;
   }
+
+  /**
+   *  Calculation according to the information of weight, volume, quantity, lenght
+   * @param $currencySymbol (validation in partial calculate pum)
+   * @param $dynamicPrice (case when a product has options)
+   */
+  public function getCalculateInfor($currencySymbol,$dynamicPrice)
+  {
+    
+    $result = "";
+    $product = $this->entity;
+
+    $price = (is_null($dynamicPrice)) ? $product->price : $dynamicPrice;
+
+    // Weight Case
+    if($product->weight>0){
+        $total = $price / $product->weight;
+        $unit = getUnitClass($product);
+    }else{
+         // Length Case
+        if($product->length>0){
+            $total = $price / $product->length;
+            $unit = getUnitClass($product,"length");
+        }else{
+            // Volumen Case
+            if($product->volumen>0){
+                $total = $price / $product->volumen;
+                $unit = getUnitClass($product,"volume");
+            }
+            // Quantity Case - TODO
+        }
+    }
+
+    if(isset($unit)){
+        //Final Text
+        $result = $unit." ".trans("icommerce::common.to")." ".$currencySymbol."".formatMoney($total);
+    }
+
+    return $result;
+
+  }
+
 }

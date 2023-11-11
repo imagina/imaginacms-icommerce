@@ -30,6 +30,8 @@
     @include('icommerce::frontend.partials.show.rating')
   @endif
 
+  <!-- information of lenght,weight -->
+  @include('icommerce::frontend.partials.show.extra-information')
 
 <!-- END PRICE -->
 

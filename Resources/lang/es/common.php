@@ -92,6 +92,7 @@ return [
   'admin_notes' => 'Notas de Administración',
   'created_at' => 'Fecha de Creación',
   'parent' => 'Superior',
+  'to' => 'a',
   'settings' => [
     'couponsQuantity' => 'Cantidad de Cupones',
     'couponAvailable' => 'Activar Cupon',

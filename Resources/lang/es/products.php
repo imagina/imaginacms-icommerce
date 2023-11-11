@@ -43,6 +43,7 @@ return [
         'length'                    => 'Largo',
         'width'                     => 'Ancho',
         'height'                    => 'Alto',
+        'volume'                    => 'Volumen',
         'substract'                 => 'Substraer del Stock',
         'minimum'                   => 'Cantidad minima que puede ser ordenada de este producto',
         'reference'                 => 'Referencia o Modelo',
