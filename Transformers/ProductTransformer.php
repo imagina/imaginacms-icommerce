@@ -10,6 +10,7 @@ use Modules\Ihelpers\Transformers\BaseApiTransformer;
 use Modules\Isite\Transformers\RevisionTransformer;
 use Modules\Marketplace\Transformers\StoreTransformer as MarketplaceStoreTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
+use Modules\Iqreable\Transformers\QrTransformer;
 
 class ProductTransformer extends BaseApiTransformer
 {
@@ -94,7 +95,8 @@ class ProductTransformer extends BaseApiTransformer
       'isInternal' => $this->is_internal,
       'advancedSummary' => $this->when($this->advanced_summary, $this->advanced_summary),
       'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
-      'tags' => $tags
+      'tags' => $tags,
+      'qrs' => QrTransformer::collection($this->whenLoaded('qrs')),
     ];
 
     $discount = $this->discount;
