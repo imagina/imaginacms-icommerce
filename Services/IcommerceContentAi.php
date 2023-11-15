@@ -33,7 +33,7 @@ class IcommerceContentAi
   {
     \Log::info($this->log . "getCategories|INIT");
     //instance the prompt to generate the categories
-    $prompt = "Información descriptiva para categorias de productos usados en un sitio WEB-ecommerce con los siguientes atributos ";
+    $prompt = "Información descriptiva para categorias de productos usados en un sitio WEB-ecommerce con los siguientes atributos: ";
     //Instance attributes
     $prompt .= $this->aiService->getStandardPrompts(
       ["title", "shortTitle", "description", "slug", "shortSlug","tags"]
