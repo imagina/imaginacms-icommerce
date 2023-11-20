@@ -55,6 +55,10 @@ class IcommerceProductsContentAi
 
     if(!is_null($newProducts)){
       $this->createProducts($newProducts);
+
+      //Set the process has completed
+      $this->aiService->saveAiCompleted("icommerce");
+
     }
     
   }
