@@ -18,7 +18,7 @@ class ProductRequest extends BaseFormRequest
     return [
       'name' => 'required|min:2',
       'slug' => 'required|min:2',
-      'description' => 'required|min:2'
+      'summary' => 'required|min:2'
     ];
   }
 
@@ -46,8 +46,8 @@ class ProductRequest extends BaseFormRequest
       'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
 
       // description
-      'description.required' => trans('icommerce::common.messages.field required'),
-      'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      'summary.required' => trans('icommerce::common.messages.field required'),
+      'summary.min:2' => trans('icommerce::common.messages.min 2 characters'),
     ];
   }
 }
