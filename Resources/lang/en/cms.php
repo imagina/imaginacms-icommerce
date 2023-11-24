@@ -215,7 +215,7 @@ return [
     "volume" => "Volume",
   ],
   "message" => [
-    "advanceEdit" => "Advanced Edit",
+    "advanceEdit" => "Go to advanced Form",
     "quickEdit" => "Quick Edit",
     "warnAddOpt" => "To add options, you must first create the product",
     "noOptions" => "There are no added options",
