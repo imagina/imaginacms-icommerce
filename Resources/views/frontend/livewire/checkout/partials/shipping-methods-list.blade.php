@@ -3,7 +3,7 @@
     @php
       $disableMethod=false;
       if(isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status=="error")
-        $disableMethod = true;
+        $disableMethod = true
       
     @endphp
 
@@ -18,7 +18,7 @@
         </label>
         @php($mediaFiles = $shippingMethod->mediaFiles())
         @if(isset($mediaFiles->mainimage->relativeMediumThumb) && !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
-          <img src="{{$mediaFiles->mainimage->relativeMediumThumb}}" class="img-responsive float-right" style="max-height: 100px; width: auto; max-width: 60%;">
+          <img alt="shipping method image" src="{{$mediaFiles->mainimage->relativeMediumThumb}}" class="img-responsive float-right" style="max-height: 100px; width: auto; max-width: 60%;">
         @endif
 
         

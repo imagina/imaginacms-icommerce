@@ -28,7 +28,7 @@
     </div>
   @endif
 
-@php $dynamicPrice = ($product->discount->price ?? $product->price) + $this->priceOptions;  @endphp
+@php $dynamicPrice = ($product->discount->price ?? $product->price) + $this->priceOptions  @endphp
 <!-- calculation according to the information of weight, volume, quantity, lenght-->
 @include('icommerce::frontend.components.product.calculate-pum',['dynamicPrice' => $dynamicPrice])
 

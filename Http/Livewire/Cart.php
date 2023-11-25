@@ -207,9 +207,8 @@ class Cart extends Component
       'filename' => trans("icommerce::pdf.settings.pdf.file_name"),
       'view' => 'icommerce::pdf.viewCart'
     ];
-
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+  
+    return $this->PdfService()->create($content);
   }
 
   public function requestQuote()
@@ -245,9 +244,8 @@ class Cart extends Component
       'filename' => trans('icommerce::pdf.settings.pdf.file_name'),
       'view' => 'icommerce::pdf.viewOrder',
     ];
-
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+  
+    return $this->PdfService()->create($content);
 
   }
 

@@ -4,6 +4,7 @@ return [
   "sidebar" => [
     "adminGroup" => "Tienda",
     "adminProducts" => "Productos",
+    "adminMagnitudes" => "Magnitudes",
     "adminProductCreate" => "Creación de Productos",
     "adminProductEdit" => "Editar Producto",
     "adminCategories" => "Categorias de Producto",
@@ -216,7 +217,7 @@ return [
     "volume" => "Volumen"
   ],
   "message" => [
-    "advanceEdit" => "Edición Avanzada",
+    "advanceEdit" => "Ir al formulario avanzado",
     "quickEdit" => "Edición Rapida",
     "warnAddOpt" => "Para agregar opciones, primero debe crear el producto",
     "noOptions" => "No hay opciones agregadas",

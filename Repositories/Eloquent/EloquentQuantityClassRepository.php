@@ -18,7 +18,7 @@ class EloquentQuantityClassRepository extends EloquentCrudRepository implements 
    * @var array
    */
   protected $replaceSyncModelRelations = [];
-
+  
   /**
    * Filter query
    *

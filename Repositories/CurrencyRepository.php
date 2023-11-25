@@ -2,18 +2,8 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Repositories\BaseRepository;
+use Modules\Core\Icrud\Repositories\BaseCrudRepository;
 
-interface CurrencyRepository extends BaseRepository
+interface CurrencyRepository extends BaseCrudRepository
 {
-  public function getItemsBy($params);
-  
-  public function getItem($criteria, $params = false);
-  
-  public function updateBy($criteria, $data, $params = false);
-  
-  public function deleteBy($criteria, $params = false);
-
-  public function getActive();
-
 }

@@ -1,5 +1,7 @@
 url: https://github.com/imagina/asgardcms-icommerce
 versions:
+  3.0.0:
+    - Implemented Crud Repository Base
   1.2.2:
     added:
       -

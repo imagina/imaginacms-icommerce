@@ -18,7 +18,12 @@ class EloquentLengthClassRepository extends EloquentCrudRepository implements Le
    * @var array
    */
   protected $replaceSyncModelRelations = [];
-
+  
+  /**
+   * Attribute to customize relations by default
+   * @var array
+   */
+  protected $includeToQuery = [];
   /**
    * Filter query
    *
@@ -66,6 +71,7 @@ class EloquentLengthClassRepository extends EloquentCrudRepository implements Le
     //Response
     return $model;
   }
+  
   public function create($data)
   {
     $this->checkDefault($data);

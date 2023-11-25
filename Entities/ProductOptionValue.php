@@ -3,14 +3,31 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class ProductOptionValue extends Model
+class ProductOptionValue extends CrudModel
 {
-  use BelongsToTenant, AuditTrait;
+  use BelongsToTenant;
+
   protected $table = 'icommerce__product_option_value';
+  public $transformer = 'Modules\Icommerce\Transformers\ProductOptionValueTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\ProductOptionValueRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateProductOptionValueRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductOptionValueRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
   protected $fillable = [
     'product_option_id',
@@ -30,7 +47,6 @@ class ProductOptionValue extends Model
     'stock_status'
   ];
 
-  // OK YA PROBADAS
   public function cartproductoptions()
   {
     return $this->hasMany(CartProductOption::class);
@@ -47,13 +63,13 @@ class ProductOptionValue extends Model
   {
     return $this->belongsTo(ProductOption::class);
   }
-  
-  
+
+
   public function parentProductOptionValue()
   {
-    return $this->belongsTo(ProductOptionValue::class,'parent_prod_opt_val_id');
+    return $this->belongsTo(ProductOptionValue::class, 'parent_prod_opt_val_id');
   }
-  
+
   //************* OJO DUDAS PROBAR ********************
   public function option()
   {
@@ -76,16 +92,17 @@ class ProductOptionValue extends Model
     return $this->hasMany(OrderOption::class);
   }
 
-  
-  public function getAvailableAttribute(){
-    
+
+  public function getAvailableAttribute()
+  {
+
     return $this->stock_status && (($this->substract && $this->quantity) || !$this->substract);
-    
+
   }
 
   public function childrenProductOptionValue()
   {
-    return $this->hasMany($this,  'parent_prod_opt_val_id', 'id');
+    return $this->hasMany($this, 'parent_prod_opt_val_id', 'id');
   }
 
   public function updateStockByChildren()
@@ -100,7 +117,7 @@ class ProductOptionValue extends Model
       $this->update(["quantity" => $stock]);
       if ($stock == 0) {
         $this->update(["stock_status" => 0]);
-      }elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where("stock_status",1)->get()->isNotEmpty()) {
+      } elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where("stock_status", 1)->get()->isNotEmpty()) {
         $this->update(["stock_status" => 1]);
       }
       if ($this->parentProductOptionValue) {

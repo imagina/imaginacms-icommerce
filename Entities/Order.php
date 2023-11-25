@@ -3,24 +3,36 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Icrud\Entities\CrudModel;
+use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Ilocations\Entities\Country;
 use Modules\Ilocations\Entities\Province;
 use Modules\Isite\Entities\Organization;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Isite\Traits\RevisionableTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class Order extends Model
+class Order extends CrudModel
 {
-  use BelongsToTenant, AuditTrait, RevisionableTrait;
-
-  public $transformer = 'Modules\Icommerce\Transformers\OrderTransformer';
-  public $entity = 'Modules\Icommerce\Entities\Post';
-  public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
+  use BelongsToTenant;
 
   protected $table = 'icommerce__orders';
-  
+  public $transformer = 'Modules\Icommerce\Transformers\OrderTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
+  public $requestValidation = [
+      'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
+    ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
+
   protected $fillable = [
     'parent_id',
     'cart_id',
@@ -87,24 +99,24 @@ class Order extends Model
     'type',
     'guest_purchase'
   ];
-  
-  
+
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function customer()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
   }
-  
+
   public function addedBy()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'added_by_id');
   }
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__order_item')
@@ -114,12 +126,12 @@ class Order extends Model
       ->withTimestamps()
       ->using(OrderItem::class);
   }
-  
+
   public function orderItems()
   {
     return $this->hasMany(OrderItem::class);
   }
-  
+
   public function parent()
   {
     return $this->belongsTo(Order::class, 'parent_id');
@@ -129,68 +141,60 @@ class Order extends Model
   {
     return $this->hasMany(Order::class,"parent_id");
   }
-  
+
   public function coupons()
   {
     return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
       ->withPivot('amount')
       ->withTimestamps();
   }
-  
+
   public function orderHistory()
   {
     return $this->hasMany(OrderStatusHistory::class);
   }
-  
-  
+
+
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
   }
-  
+
   public function status()
   {
     return $this->belongsTo(OrderStatus::class, 'status_id');
   }
-  
+
   public function organization()
   {
     return $this->belongsTo(Organization::class);
   }
-  
-  public function store()
-  {
-    if (is_module_enabled('Marketplace')) {
-      return $this->belongsTo('Modules\Marketplace\Entities\Store');
-    }
-    return $this->belongsTo(Store::class);
-  }
-  
+
   public function currency()
   {
     return $this->belongsTo(Currency::class);
   }
-  
+
   public function conversation()
   {
     return $this->hasOne("Modules\Ichat\Entities\Conversation","entity_id");
   }
-  
+
   public function transactions()
   {
     return $this->hasMany(Transaction::class);
   }
-  
+
   public function shippings()
   {
     return $this->hasMany(Shipping::class);
   }
-  
+
   public function getOptionsAttribute($value)
   {
     return json_decode($value);
   }
-  
+
   public function getUrlAttribute()
   {
     $panel = config("asgard.iprofile.config.panel") ?? 'blade';
@@ -200,33 +204,33 @@ class Order extends Model
       return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
   }
-  
-  
+
+
   public function getCouponTotalAttribute()
   {
     return $this->coupons->sum('pivot.amount');
   }
-  
+
   public function setOptionsAttribute($value)
   {
     $this->attributes['options'] = json_encode($value);
   }
-  
+
   public function paymentCountry()
   {
     return $this->belongsTo(Country::class, 'payment_country', 'iso_2')->with('translations');
   }
-  
+
   public function shippingCountry()
   {
     return $this->belongsTo(Country::class, 'shipping_country_code', 'iso_2')->with('translations');
   }
-  
+
   public function paymentDepartment()
   {
     return $this->belongsTo(Province::class, 'payment_zone', 'iso_2')->with('translations');
   }
-  
+
   public function shippingDepartment()
   {
     return $this->belongsTo(Province::class, 'shipping_zone', 'iso_2')->with('translations');

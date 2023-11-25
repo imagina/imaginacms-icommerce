@@ -3,7 +3,6 @@
 namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
-use Modules\Ihelpers\Rules\UniqueSlugRule;
 
 class CreateCategoryRequest extends BaseFormRequest
 {
@@ -14,11 +13,9 @@ class CreateCategoryRequest extends BaseFormRequest
 
   public function translationRules()
   {
-
     return [
-      'title' => 'required|min:2',
-      'slug' => ["required",new UniqueSlugRule("icommerce__category_translations"),"min:2"],
-      'description' => 'required|min:2',
+      // 'title' => 'required|min:2',
+      //  'slug' => 'required',
     ];
   }
 
@@ -48,8 +45,9 @@ class CreateCategoryRequest extends BaseFormRequest
       'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
     ];
   }
-  
-  public function getValidator(){
-    return $this->getValidatorInstance();
-  }
+
+    public function getValidator(){
+        return $this->getValidatorInstance();
+    }
+    
 }
