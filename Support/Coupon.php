@@ -56,7 +56,7 @@ class Coupon
         
         return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon apply'), $discount, 1,$result['discounts']);
       }else{
-        return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon not apply product'), 0, 0);
+        return $this->setResponseMessages(trans('icommerce::coupons.messages.coupon not apply product'));
       }
       
     }
@@ -223,13 +223,12 @@ class Coupon
    * @return $coupon
    */
   public function  redeemCoupon ($couponId, $orderId, $customerId, $amount) {
-    $coupon = CouponOrderHistory::create([
+    return CouponOrderHistory::create([
       'coupon_id' => $couponId,
       'order_id' => $orderId,
       'customer_id' => $customerId,
       'amount' => $amount,
     ]);
-    return $coupon;
   }
   
   /**
@@ -250,13 +249,11 @@ class Coupon
   public function applyDiscount($coupon,$cartProduct){
     
     $discount = $this->calcDiscount($coupon->type_discount, $coupon->discount, $cartProduct->total);
-    
-    $discountProduct = array(
+  
+    return array(
       "productId" => $cartProduct->product->id,
       "discount" => $discount
     );
-    
-    return $discountProduct;
     
   }
   

@@ -98,7 +98,7 @@ class Cart extends Component
     try {
 
       if($quantity>0){
-
+    
         $product = $this->productRepository()->getItem($productId);
 
         if (isset($product->id)) {
@@ -112,7 +112,7 @@ class Cart extends Component
 
           $this->cartProductRepository()->create($data);
           $this->updateCart();
-
+  
           $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
 
         } else {
@@ -207,9 +207,8 @@ class Cart extends Component
       'filename' => trans("icommerce::pdf.settings.pdf.file_name"),
       'view' => 'icommerce::pdf.viewCart'
     ];
-
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+  
+    return $this->PdfService()->create($content);
   }
 
   public function requestQuote()
@@ -245,9 +244,8 @@ class Cart extends Component
       'filename' => trans('icommerce::pdf.settings.pdf.file_name'),
       'view' => 'icommerce::pdf.viewOrder',
     ];
-
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+  
+    return $this->PdfService()->create($content);
 
   }
 

@@ -3,21 +3,34 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
-use Modules\Media\Support\Traits\MediaRelation;
-use Modules\Media\Entities\File;
-use Modules\Core\Traits\NamespacedEntity;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Core\Traits\NamespacedEntity;
+use Modules\Media\Support\Traits\MediaRelation;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class OptionValue extends Model
+class OptionValue extends CrudModel
 {
-  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant, AuditTrait;
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
 
   protected $table = 'icommerce__option_values';
-  public $translatedAttributes = [
-    'description'
+  public $transformer = 'Modules\Icommerce\Transformers\OptionValueTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\OptionValueRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOptionValueRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOptionValueRequest',
   ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
+  public $translatedAttributes = ['description'];
   protected $fillable = [
     'option_id',
     'sort_order',
@@ -63,18 +76,5 @@ class OptionValue extends Model
         'parent_option_value_id', 'quantity',
         'subtract', 'price', 'weight'
       )->withTimestamps();
-  }
-
-  public function getMainImageAttribute()
-  {
-    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
-    if (!$thumbnail) return [
-      'mimeType' => 'image/jpeg',
-      'path' => url('modules/iblog/img/post/default.jpg')
-    ];
-    return [
-      'mimeType' => $thumbnail->mimetype,
-      'path' => $thumbnail->path_string
-    ];
   }
 }

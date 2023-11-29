@@ -46,7 +46,7 @@
         @endswitch
     @else
           
-                       @php $contactUrl=setting('icommerce::customIndexContactLabel', null, 'Contáctenos'); @endphp
+                       @php $contactUrl=setting('icommerce::customIndexContactLabel', null, 'Contáctenos') @endphp
                         <x-isite::button :style="$buttonsLayout" buttonClasses="contact button-small"
                                          :withIcon="$withIconInAddToCart"
                                          :onclick="'window.livewire.emit(\'makeQuote\','.$product->id.')'"
@@ -60,7 +60,7 @@
     @endif
     @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && $wishlistEnable)
  
-        @php $wishUrl=json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]); @endphp
+        @php $wishUrl=json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]) @endphp
             <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist button-small"
                              :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrl.')'"
                              :withIcon="$withIconInAddToCart"

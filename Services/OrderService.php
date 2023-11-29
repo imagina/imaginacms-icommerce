@@ -231,7 +231,7 @@ class OrderService
         if(isset($data["parentId"]) && !is_null($data["parentId"]))
           $params["extra"]['parentId'] = $data["parentId"];
 
-        $paymentMethods = $paymentMethodRepository->getItemsBy(json_decode(json_encode($params)));
+        $paymentMethods = $paymentMethodRepository->getCalculations(json_decode(json_encode($params)));
 
         $paymentMethod = $paymentMethods->where("id", $data["paymentMethod"]->id ?? $data["paymentMethodId"])->first();
 

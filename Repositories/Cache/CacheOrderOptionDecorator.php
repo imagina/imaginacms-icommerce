@@ -3,9 +3,9 @@
 namespace Modules\Icommerce\Repositories\Cache;
 
 use Modules\Icommerce\Repositories\OrderOptionRepository;
-use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
 
-class CacheOrderOptionDecorator extends BaseCacheDecorator implements OrderOptionRepository
+class CacheOrderOptionDecorator extends BaseCacheCrudDecorator implements OrderOptionRepository
 {
     public function __construct(OrderOptionRepository $orderoption)
     {
