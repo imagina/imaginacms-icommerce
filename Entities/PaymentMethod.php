@@ -64,5 +64,50 @@ class PaymentMethod extends CrudModel
   {
     return $this->belongsToMany('Modules\Ilocations\Entities\Geozones', 'icommerce__payment_methods_geozones', 'payment_method_id', 'geozone_id')->withTimestamps();
   }
+  
+  public function getCalculations($filter){
+  
+    $calculations = null;
+    //Process to validate method currencies
+    $methodDeleted = false;
+    if(isset($filter->validateCurrency)){
+    
+      /* If the field is not configured yet,
+      the method will be displayed for all */
+      if(isset($this->options->showInCurrencies)){
+        $currencies = $this->options->showInCurrencies;
+      
+        if(!in_array($currentCurrency->code, $currencies)){
+          unset($items[$key]);
+          $methodDeleted = true;
+        }
+      
+      }
+    
+    }
+  
+    if($methodDeleted==false){
+      //Process to calculation validation in each method
+      $methodApiController = app($this->options->init);
+    
+      if (method_exists($methodApiController, "calculations")) {
+        try {
+        
+          $results = $methodApiController->calculations(new Request ($data));
+          $resultData = $results->getData();
+          $calculations = $resultData;
+        } catch (\Exception $e) {
+        
+        
+          $resultData["msj"] = "error";
+          $resultData["items"] = $e->getMessage();
+          $calculations = $resultData;
+        }
+      }
+    
+    }
+  
+   return $calculations;
+  }
 
 }

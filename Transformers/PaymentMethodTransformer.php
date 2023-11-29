@@ -13,6 +13,9 @@ class PaymentMethodTransformer extends CrudResource
   */
   public function modelAttributes($request)
   {
-    return [];
+    $calculations = isset($this->calculations) ? $this->calculations : null;
+    return [
+      "calculations" => $calculations
+    ];
   }
 }

@@ -104,6 +104,10 @@ class Order extends CrudModel
   protected $casts = [
     'options' => 'array'
   ];
+  
+  protected $with = [
+    'status'
+  ];
 
   public function customer()
   {
@@ -163,6 +167,11 @@ class Order extends CrudModel
   public function status()
   {
     return $this->belongsTo(OrderStatus::class, 'status_id');
+  }
+  
+  public function getStatusNameAttribute()
+  {
+    return $this->status->title;
   }
 
   public function organization()

@@ -5,6 +5,9 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Illuminate\Support\Arr;
 use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
+use Modules\Icommerce\Entities\ProductOptionValue;
+use Modules\Icommerce\Entities\CartProduct;
+use Modules\Icommerce\Entities\Cart;
 
 class EloquentCartProductRepository extends EloquentCrudRepository implements CartProductRepository
 {
@@ -28,6 +31,9 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
    * @param $params
    * @return mixed
    */
+  
+  private $log = "Icommerce: Repositories|CartProduct|";
+  
   public function filterQuery($query, $filter, $params)
   {
     
@@ -85,7 +91,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   
   public function create($data)
   {
-    
+ 
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
     
@@ -99,19 +105,20 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     ];
     
     $product = $productRepository->getItem($data["product_id"], json_decode(json_encode($params)));
-    
+  
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
     }
-    
+
     //Separate Options to new process
     $result = $this->separateOptions($data["product_option_values"]);
+
     $optionsDynamic = $result['optionsDynamic'];
     $data["product_option_values"] = $result['pov'];
     
     //Search Product Option Values
     $productOptionValues = ProductOptionValue::whereIn("id", $data["product_option_values"] ?? [])->get();
-    
+ 
     // validate required options
     if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $productOptionValues, $optionsDynamic)) {
       throw new \Exception("Missing required product options", 400);
@@ -382,8 +389,9 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   {
     
     $optionsDynamic = [];
+
     \Log::info($this->log . 'separateOptions|ProductOptionValuesOld: ' . json_encode($pov));
-    
+
     foreach ($pov as $key => $value) {
       if (is_array($value)) {
         $optionsDynamic[] = $value;

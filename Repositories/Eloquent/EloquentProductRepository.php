@@ -8,6 +8,9 @@ use Modules\Icommerce\Events\ProductWasUpdated;
 use Modules\Icommerce\Repositories\ProductRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Icommerce\Entities\Category;
+use Modules\Icommerce\Entities\Option;
+use Modules\Icommerce\Entities\OptionValue;
 
 class EloquentProductRepository extends EloquentCrudRepository implements ProductRepository
 {
@@ -442,7 +445,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     isset($params->filter->priceRange) ? $params->filter->priceRange = null : false;
     if (isset($params->filter->order)) $params->filter->order = false;
     isset($params->filter) ? empty($params->filter) ? $params->filter = (object)["noSortOrder" => true] : $params->filter->noSortOrder = true : false;
-    $params->onlyQuery = true;
+    $params->returnAsQuery = true;
     $params->order = false;
     
     $query = $this->getItemsBy($params);
@@ -466,7 +469,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     isset($params->filter->manufacturers) ? $params->filter->manufacturers = null : false;
     isset($params->order) ? $params->order = null : false;
     
-    $params->onlyQuery = true;
+    $params->returnAsQuery = true;
     
     $query = $this->getItemsBy($params);
     
@@ -490,7 +493,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     isset($params->filter->optionValues) ? $params->filter->optionValues = null : false;
     isset($params->order) ? $params->order = null : false;
     
-    $params->onlyQuery = true;
+    $params->returnAsQuery = true;
     
     $query = $this->getItemsBy($params);
     
@@ -527,7 +530,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     !isset($params->include) ? $params->include = [] : false;
     isset($params->order) ? $params->order = null : false;
     
-    $params->onlyQuery = true;
+    $params->returnAsQuery = true;
     
     $query = $this->getItemsBy($params);
     

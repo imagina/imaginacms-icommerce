@@ -48,73 +48,7 @@ class EloquentPaymentMethodRepository extends EloquentCrudRepository implements 
         ->orWhere('payment_code', 'like', '%' . $filter->search . '%')
         ->orWhere('name', 'like', '%' . $filter->search . '%');
     }
-  
-    if (isset($filter->withCalculations)) {
     
-      $query->where('status', 1);
-      /* Init query */
-      $items = $query->get();
-    
-      if (isset($items) && $items->count() > 0) {
-        $data = [];
-      
-        if (isset($filter->cartId)) {
-          // Add products to request
-          $data['cartId'] = $filter->cartId;
-          // Add extra params
-          if (isset($params->extra))
-            $data['extra'] = $params->extra;
-        }
-      
-        //Helper to get current currency
-        $currentCurrency = currentCurrency();
-      
-        foreach ($items as $key => $method) {
-        
-          //Process to validate method currencies
-          $methodDeleted = false;
-          if(isset($filter->validateCurrency)){
-          
-            /* If the field is not configured yet,
-            the method will be displayed for all */
-            if(isset($method->options->showInCurrencies)){
-              $currencies = $method->options->showInCurrencies;
-            
-              if(!in_array($currentCurrency->code, $currencies)){
-                unset($items[$key]);
-                $methodDeleted = true;
-              }
-            
-            }
-          
-          }
-        
-          if($methodDeleted==false){
-            //Process to calculation validation in each method
-            $methodApiController = app($method->options->init);
-          
-            if (method_exists($methodApiController, "calculations")) {
-              try {
-              
-                $results = $methodApiController->calculations(new Request ($data));
-                $resultData = $results->getData();
-                $method->calculations = $resultData;
-              } catch (\Exception $e) {
-              
-              
-                $resultData["msj"] = "error";
-                $resultData["items"] = $e->getMessage();
-                $method->calculations = $resultData;
-              }
-            }
-          
-          }
-        
-        
-        }
-      }
-      return $items;
-    }
   
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
@@ -175,5 +109,70 @@ class EloquentPaymentMethodRepository extends EloquentCrudRepository implements 
         $query->where("organization_id",null);
     }
     
+  }
+  
+  public function getCalculations($params){
+  
+    $items = [];
+
+    if (isset($params->filter->withCalculations)) {
+      $filters = $params->filter;//Short data filter
+      $items = $this->getItemsBy($params);
+   
+      if (isset($items) && $items->count() > 0) {
+        $data = [];
+      
+        if (isset($filter->cartId)) {
+          // Add products to request
+          $data['cartId'] = $filter->cartId;
+          // Add extra params
+          if (isset($params->extra))
+            $data['extra'] = $params->extra;
+        }
+      
+        //Helper to get current currency
+        $currentCurrency = currentCurrency();
+      
+        foreach ($items as $key => $method) {
+        
+          //Process to validate method currencies
+          $methodDeleted = false;
+          if(isset($filter->validateCurrency)){
+          
+            /* If the field is not configured yet,
+            the method will be displayed for all */
+            if(isset($method->options->showInCurrencies)){
+              $currencies = $method->options->showInCurrencies;
+            
+              if(!in_array($currentCurrency->code, $currencies)){
+                unset($items[$key]);
+                $methodDeleted = true;
+              }
+            }
+          }
+     
+          if($methodDeleted==false){
+            //Process to calculation validation in each method
+            $methodApiController = app($method->options->init);
+          
+            if (method_exists($methodApiController, "calculations")) {
+              try {
+              
+                $results = $methodApiController->calculations(new Request ($data));
+                $resultData = $results->getData();
+                $method->calculations = $resultData;
+              } catch (\Exception $e) {
+              
+                $resultData["msj"] = "error";
+                $resultData["items"] = $e->getMessage();
+                $method->calculations = $resultData;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return $items;
   }
 }

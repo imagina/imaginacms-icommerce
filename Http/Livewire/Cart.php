@@ -98,7 +98,7 @@ class Cart extends Component
     try {
 
       if($quantity>0){
-
+    
         $product = $this->productRepository()->getItem($productId);
 
         if (isset($product->id)) {
@@ -112,7 +112,7 @@ class Cart extends Component
 
           $this->cartProductRepository()->create($data);
           $this->updateCart();
-
+  
           $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
 
         } else {
