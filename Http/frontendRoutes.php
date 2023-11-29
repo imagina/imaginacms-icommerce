@@ -83,7 +83,8 @@ if(config('asgard.icommerce.config.useOldRoutes')){
   
   if (!App::runningInConsole()) {
     $categoryRepository = app('Modules\Icommerce\Repositories\CategoryRepository');
-    $categories = $categoryRepository->getItemsBy(json_decode(json_encode(['fields' => 'id', 'include' => ['translations'], 'take' => null])));
+    $categories = $categoryRepository->getItemsBy(json_decode(json_encode(['fields' => 'id', 'include' => [], 'take' => null])));
+    
     foreach ($categories as $category) {
       if(empty($category->slug)){
         continue;

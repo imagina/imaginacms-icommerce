@@ -71,8 +71,6 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item,
-                              $editLink,
-                              $tooltipEditLink,
                               $itemListLayout = null,
                               $layout = null,
                               $discountRibbonStyle = null,
@@ -122,6 +120,8 @@ class ProductListItem extends Component
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
                               $imageObjectFit = "contain",
+                              $editLink,
+                              $tooltipEditLink,
                               $withDescription = false,
                               $withPrice = true,
                               $addToCartButtonAction = null,

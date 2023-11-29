@@ -3,32 +3,15 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Modules\Core\Icrud\Entities\CrudModel;
-use Modules\Core\Support\Traits\AuditTrait;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Iprofile\Entities\Department;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
-class ProductDiscount extends CrudModel
+class ProductDiscount extends Model
 {
-  use BelongsToTenant;
-
+  use BelongsToTenant, AuditTrait;
   protected $table = 'icommerce__product_discounts';
-  public $transformer = 'Modules\Icommerce\Transformers\ProductDiscountTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\ProductDiscountRepository';
-  public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateProductDiscountRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductDiscountRequest',
-  ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
 
   protected $fillable = [
     'product_id',
@@ -45,7 +28,6 @@ class ProductDiscount extends CrudModel
     'exclude_departments',
     'include_departments',
   ];
-
   protected $casts = [
     'exclude_departments' => 'array',
     'include_departments' => 'array'
@@ -100,7 +82,9 @@ class ProductDiscount extends CrudModel
   {
 
     $basePrice = $this->product->present()->price;
-    return $this->calcDiscount($basePrice);
+    $valueDiscount = $this->calcDiscount($basePrice);
+
+    return $valueDiscount;
 
   }
 

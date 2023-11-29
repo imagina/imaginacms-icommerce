@@ -38,7 +38,7 @@ use Modules\Isite\Events\OrganizationWasCreated;
 
 class EventServiceProvider extends ServiceProvider
 {
-    protected $listen = [
+  protected $listen = [
     OrderIsCreating::class => [
       SaveOrderItems::class
     ],
@@ -91,5 +91,5 @@ class EventServiceProvider extends ServiceProvider
       Quote::class
     ],
     
-    ];
+  ];
 }

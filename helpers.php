@@ -93,8 +93,10 @@ if (!function_exists('icommerce_totalDimensions')) {
             $tLength += ($item->length > 0) ? $item->length : 1;
 
         }
-  
-      return array($tWidth, $tHeight, $tLength);
+
+        $dimensions = array($tWidth, $tHeight, $tLength);
+
+        return $dimensions;
 
     }
 

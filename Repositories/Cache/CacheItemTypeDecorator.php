@@ -3,9 +3,9 @@
 namespace Modules\Icommerce\Repositories\Cache;
 
 use Modules\Icommerce\Repositories\ItemTypeRepository;
-use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
+use Modules\Core\Repositories\Cache\BaseCacheDecorator;
 
-class CacheItemTypeDecorator extends BaseCacheCrudDecorator implements ItemTypeRepository
+class CacheItemTypeDecorator extends BaseCacheDecorator implements ItemTypeRepository
 {
     public function __construct(ItemTypeRepository $itemtype)
     {

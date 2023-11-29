@@ -30,9 +30,4 @@ class CreateProductOptionRequest extends BaseFormRequest
     {
         return [];
     }
-
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
-    
 }

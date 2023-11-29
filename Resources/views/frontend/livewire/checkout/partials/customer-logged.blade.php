@@ -3,7 +3,7 @@
   <div class='d-block'>
     
     @php
-      $mainImage=\Modules\Iprofile\Entities\Field::where('user_id',Auth::user()->id)->where('name','mainImage')->first()
+      $mainImage=\Modules\Iprofile\Entities\Field::where('user_id',Auth::user()->id)->where('name','mainImage')->first();
     
     @endphp
     <div id="imgProfile" class="mb-5 text-center">

@@ -3,47 +3,34 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Modules\Core\Icrud\Entities\CrudModel;
+use Illuminate\Database\Eloquent\Model;
 
-class OrderStatus extends CrudModel
+class OrderStatus extends Model
 {
-  use Translatable;
+    use Translatable;
 
-  protected $table = 'icommerce__order_statuses';
-  public $transformer = 'Modules\Icommerce\Transformers\OrderStatusTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\OrderStatusRepository';
-  public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateOrderStatusRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderStatusRequest',
+    protected $table = 'icommerce__order_statuses';
+    public $translatedAttributes = [
+      'title'
     ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
-  public $translatedAttributes = ['title'];
-  protected $fillable = [
-    'status',
-    'parent_id'
-  ];
+    protected $fillable = [
+      'status',
+      'parent_id'
+    ];
 
-  public function orders()
-  {
-    return $this->hasMany(Order::class);
-  }
+    public function orders()
+    {
+      return $this->hasMany(Order::class);
+    }
 
-  public function orderHistories()
-  {
-    return $this->hasMany(OrderStatusHistory::class);
-  }
+    public function orderHistories()
+    {
+      return $this->hasMany(OrderStatusHistory::class);
+    }
 
-  public function transactions()
-  {
-    return $this->hasMany(Transactions::class);
-  }
+    public function transactions()
+    {
+      return $this->hasMany(Transactions::class);
+    }
+
 }

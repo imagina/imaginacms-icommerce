@@ -2,17 +2,18 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Modules\Core\Icrud\Transformers\CrudResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderStatusTransformer extends CrudResource
+class OrderStatusTransformer extends JsonResource
 {
-  /**
-  * Method to merge values with response
-  *
-  * @return array
-  */
-  public function modelAttributes($request)
+  public function toArray($request)
   {
-    return [];
+    $item =  [
+      'id' => $this->when($this->id,$this->id),
+      'title' => $this->when($this->title,$this->title),
+      'parentId' => $this->when($this->parent_id,$this->parent_id),
+      'status' => $this->when($this->status,$this->status)
+  ];
+    return $item;
   }
 }

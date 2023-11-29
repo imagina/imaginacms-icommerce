@@ -3,34 +3,18 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Support\Str;
-use Modules\Core\Icrud\Entities\CrudModel;
-use Modules\Core\Support\Traits\AuditTrait;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Media\Support\Traits\MediaRelation;
+use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
-class Manufacturer extends CrudModel
+class Manufacturer extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
-
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant, AuditTrait;
+  
   protected $table = 'icommerce__manufacturers';
-  public $transformer = 'Modules\Icommerce\Transformers\ManufacturerTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\ManufacturerRepository';
-  public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateManufacturerRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateManufacturerRequest',
-    ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
   public $translatedAttributes = [
     'name',
     'slug',
@@ -45,11 +29,12 @@ class Manufacturer extends CrudModel
     'sort_order',
     'store_id'
   ];
+  
   protected $casts = [
     'options' => 'array',
     'active' => 'boolean'
   ];
-
+  
   public function store()
   {
     if (is_module_enabled('Marketplace')) {
@@ -57,12 +42,12 @@ class Manufacturer extends CrudModel
     }
     return $this->belongsTo(Store::class);
   }
-
+  
   public function products()
   {
     return $this->hasMany(Product::class);
   }
-
+  
   /*
   * Polimorphy Relations
   */
@@ -70,7 +55,7 @@ class Manufacturer extends CrudModel
   {
     return $this->morphToMany(Coupon::class, 'couponable', 'icommerce__couponables');
   }
-
+  
   public function getOptionsAttribute($value)
   {
     try {
@@ -79,7 +64,7 @@ class Manufacturer extends CrudModel
       return json_decode($value);
     }
   }
-
+  
   public function getUrlAttribute($locale = null)
   {
     $url = "";
@@ -87,25 +72,68 @@ class Manufacturer extends CrudModel
     if (!is_null($locale)) {
       $this->slug = $this->getTranslation($locale)->slug;
     }
-
+    
     if (empty($this->slug)) return "";
-  
-    if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')){
-
+    
+    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      
       $currentDomain = !empty($this->organization_id) ? tenant()->domain ?? tenancy()->find($this->organization_id)->domain :
         parse_url(config('app.url'), PHP_URL_HOST);
-
+      
       if (config("app.url") != $currentDomain) {
         $savedDomain = config("app.url");
         config(["app.url" => "https://" . $currentDomain]);
       }
-
+      
       $url = Str::replace(["{manufacturerSlug}"],[$this->slug], trans('icommerce::routes.store.index.manufacturer', [], $currentLocale));
       $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-
+      
       if (isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
-
+      
     }
     return $url;
   }
+  
+  
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'mainimage')->first();
+    if (!$thumbnail) {
+      if (isset($this->options->mainimage)) {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url($this->options->mainimage)
+        ];
+      } else {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url('modules/iblog/img/post/default.jpg')
+        ];
+      }
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
+  
+  public function getSecondaryImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
+    if (!$thumbnail) {
+      $image = [
+        'mimeType' => 'image/jpeg',
+        'path' => url('modules/iblog/img/post/default.jpg')
+      ];
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
+  
 }

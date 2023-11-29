@@ -2,17 +2,42 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Modules\Core\Icrud\Transformers\CrudResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaxClassTransformer extends CrudResource
+class TaxClassTransformer extends JsonResource
 {
-  /**
-  * Method to merge values with response
-  *
-  * @return array
-  */
-  public function modelAttributes($request)
+  public function toArray($request)
   {
-    return [];
+    $data =  [
+      'id' => $this->id,
+      'name' => $this->name,
+      'description' => $this->description,
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
+    ];
+    
+    // Rates
+    if(isset($this->rates))
+      $data['rates'] = TaxClassRateTransformer::collection($this->rates);
+  
+  
+    // TRANSLATIONS
+    $filter = json_decode($request->filter);
+  
+    // Return data with available translations
+    if (isset($filter->allTranslations) && $filter->allTranslations){
+    
+      // Get langs avaliables
+      $languages = \LaravelLocalization::getSupportedLocales();
+    
+      foreach ($languages as  $key => $value){
+        if ($this->hasTranslation($key)) {
+          $data[$key]['name'] = $this->hasTranslation($key) ? $this->translate("$key")['name'] : '';
+          $data[$key]['description'] = $this->hasTranslation($key) ? $this->translate("$key")['description'] : '';
+        }
+      }
+    }
+    
+    return $data;
   }
 }

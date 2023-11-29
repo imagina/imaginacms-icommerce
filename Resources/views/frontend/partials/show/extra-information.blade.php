@@ -1,7 +1,7 @@
 <div class="extra-information">
 
     <div class="infor-measures">
-        @php $unit = getUnitClass($product,"length") @endphp
+        @php $unit = getUnitClass($product,"length"); @endphp
         @if($product->length>0)
             {{trans("icommerce::products.table.length")}}: {{$product->length}}{{$unit}}
         @endif

@@ -7,28 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class ManufacturerTranslation extends Model
 {
-  use Sluggable;
+    use Sluggable;
 
-  public $timestamps = false;
-  protected $fillable = [
-    'name',
-    'slug',
-    'description',
-    'meta_title',
-    'meta_description',
-    'translatable_options'
-  ];
-  protected $table = 'icommerce__manufacturer_trans';
-  protected $casts = [
-    'translatable_options' => 'array'
-  ];
+    protected $table = 'icommerce__manufacturer_trans';
 
-  public function sluggable()
-  {
-    return [
-      'slug' => [
-        'source' => 'name'
-      ]
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'meta_title',
+        'meta_description',
+        'translatable_options'
     ];
-  }
+    protected $casts = [
+        'translatable_options' => 'array'
+    ];
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
 }

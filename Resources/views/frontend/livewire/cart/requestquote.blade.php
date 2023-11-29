@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
         @php
-          $quoteFormId = setting('icommerce::icommerceCartQuoteForm',null,null)
+          $quoteFormId = setting('icommerce::icommerceCartQuoteForm',null,null);
         @endphp
         @if($quoteFormId)
           <x-iforms::form :id="$quoteFormId" livewireSubmitEvent="submitQuote" formId="quoteForm"/>

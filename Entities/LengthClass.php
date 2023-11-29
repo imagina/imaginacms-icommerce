@@ -13,9 +13,9 @@ class LengthClass extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\LengthClassTransformer';
   public $repository = 'Modules\Icommerce\Repositories\LengthClassRepository';
   public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateLengthClassRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateLengthClassRequest',
-  ];
+      'create' => 'Modules\Icommerce\Http\Requests\CreateLengthClassRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateLengthClassRequest',
+    ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

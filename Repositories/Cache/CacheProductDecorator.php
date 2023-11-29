@@ -3,9 +3,9 @@
 namespace Modules\Icommerce\Repositories\Cache;
 
 use Modules\Icommerce\Repositories\ProductRepository;
-use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
+use Modules\Core\Repositories\Cache\BaseCacheDecorator;
 
-class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRepository
+class CacheProductDecorator extends BaseCacheDecorator implements ProductRepository
 {
   public function __construct(ProductRepository $product)
   {
@@ -13,7 +13,67 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
     $this->entityName = 'icommerce.products';
     $this->repository = $product;
   }
+
+  /**
+   * List or resources
+   *
+   * @return collection
+   */
+  public function getItemsBy($params)
+  {
+
+    return $this->remember(function () use ($params) {
+      return $this->repository->getItemsBy($params);
+    });
+  }
+
+  /**
+   * find a resource by id or slug
+   *
+   * @return object
+   */
+  public function getItem($criteria, $params = false)
+  {
+    return $this->remember(function () use ($criteria, $params) {
+      return $this->repository->getItem($criteria, $params);
+    });
+  }
+
+  /**
+   * create a resource
+   *
+   * @return mixed
+   */
+  public function create($data)
+  {
+    $this->clearCache();
+    
+    return $this->repository->create($data);
+  }
   
+  /**
+   * update a resource
+   *
+   * @return mixed
+   */
+  public function updateBy($criteria, $data, $params = false)
+  {
+    $this->clearCache();
+    
+    return $this->repository->updateBy($criteria, $data, $params);
+  }
+  
+  /**
+   * destroy a resource
+   *
+   * @return mixed
+   */
+  public function deleteBy($criteria, $params = false)
+  {
+    $this->clearCache();
+    
+    return $this->repository->deleteBy($criteria, $params);
+  }
   
   /**
    * Min and Max Price
@@ -26,7 +86,7 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
       return $this->repository->getPriceRange($params);
     });
   }
-  
+
   /**
    * Get Manufactures From Products Filtered
    *
@@ -38,7 +98,7 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
       return $this->repository->getManufacturers($params);
     });
   }
-  
+
   /**
    * Get Product Options From Products Filtered
    *
@@ -50,4 +110,5 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
       return $this->repository->getProductOptions($params);
     });
   }
+
 }

@@ -3,38 +3,24 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Modules\Core\Icrud\Entities\CrudModel;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
-use Modules\Core\Support\Traits\AuditTrait;
-use Modules\Iforms\Support\Traits\Formeable;
 use Modules\Media\Support\Traits\MediaRelation;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Iforms\Support\Traits\Formeable;
+use Modules\Core\Support\Traits\AuditTrait;
 
-class PaymentMethod extends CrudModel
+class PaymentMethod extends Model
 {
-  use Translatable, MediaRelation, Formeable, BelongsToTenant;
+  use Translatable, MediaRelation, Formeable, BelongsToTenant, hasEventsWithBindings, AuditTrait;
 
-  protected $table = 'icommerce__payment_methods';
-  public $transformer = 'Modules\Icommerce\Transformers\PaymentMethodTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\PaymentMethodRepository';
-  public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreatePaymentMethodRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdatePaymentMethodRequest',
-    ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
   public $translatedAttributes = [
     'title',
     'description'
   ];
+
+  protected $table = 'icommerce__payment_methods';
+
   protected $fillable = [
     'status',
     'name',
@@ -45,9 +31,19 @@ class PaymentMethod extends CrudModel
     'parent_name'
   ];
 
+
   protected $casts = [
     'options' => 'array'
   ];
+  
+
+  public function store()
+  {
+    if (is_module_enabled('Marketplace')) {
+      return $this->belongsTo('Modules\Marketplace\Entities\Store');
+    }
+    return $this->belongsTo(Store::class);
+  }
 
   public function getOptionsAttribute($value)
   {
@@ -64,50 +60,28 @@ class PaymentMethod extends CrudModel
   {
     return $this->belongsToMany('Modules\Ilocations\Entities\Geozones', 'icommerce__payment_methods_geozones', 'payment_method_id', 'geozone_id')->withTimestamps();
   }
-  
-  public function getCalculations($filter){
-  
-    $calculations = null;
-    //Process to validate method currencies
-    $methodDeleted = false;
-    if(isset($filter->validateCurrency)){
-    
-      /* If the field is not configured yet,
-      the method will be displayed for all */
-      if(isset($this->options->showInCurrencies)){
-        $currencies = $this->options->showInCurrencies;
-      
-        if(!in_array($currentCurrency->code, $currencies)){
-          unset($items[$key]);
-          $methodDeleted = true;
-        }
-      
-      }
-    
-    }
-  
-    if($methodDeleted==false){
-      //Process to calculation validation in each method
-      $methodApiController = app($this->options->init);
-    
-      if (method_exists($methodApiController, "calculations")) {
-        try {
-        
-          $results = $methodApiController->calculations(new Request ($data));
-          $resultData = $results->getData();
-          $calculations = $resultData;
-        } catch (\Exception $e) {
-        
-        
-          $resultData["msj"] = "error";
-          $resultData["items"] = $e->getMessage();
-          $calculations = $resultData;
-        }
-      }
-    
-    }
-  
-   return $calculations;
-  }
 
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+    if (!$thumbnail) {
+      if (isset($this->options->mainimage)) {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url($this->options->mainimage)
+        ];
+      } else {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url('modules/iblog/img/post/default.jpg')
+        ];
+      }
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
 }

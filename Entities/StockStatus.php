@@ -14,7 +14,7 @@ class StockStatus
   /**
    * @var array
    */
-  private $statuses;
+  private $statuses = [];
   
   public function __construct()
   {

@@ -13,9 +13,9 @@ class WeightClass extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\WeightClassTransformer';
   public $repository = 'Modules\Icommerce\Repositories\WeightClassRepository';
   public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateWeightClassRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateWeightClassRequest',
-  ];
+      'create' => 'Modules\Icommerce\Http\Requests\CreateWeightClassRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateWeightClassRequest',
+    ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

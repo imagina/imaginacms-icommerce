@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Icrud\Repositories\BaseCrudRepository;
+use Modules\Core\Repositories\BaseRepository;
 
-interface OrderOptionRepository extends BaseCrudRepository
+interface OrderOptionRepository extends BaseRepository
 {
 }

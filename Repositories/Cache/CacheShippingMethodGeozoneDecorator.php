@@ -3,9 +3,9 @@
 namespace Modules\Icommerce\Repositories\Cache;
 
 use Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository;
-use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
+use Modules\Core\Repositories\Cache\BaseCacheDecorator;
 
-class CacheShippingMethodGeozoneDecorator extends BaseCacheCrudDecorator implements ShippingMethodGeozoneRepository
+class CacheShippingMethodGeozoneDecorator extends BaseCacheDecorator implements ShippingMethodGeozoneRepository
 {
     public function __construct(ShippingMethodGeozoneRepository $shippingmethodgeozone)
     {

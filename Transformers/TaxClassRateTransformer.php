@@ -2,17 +2,21 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Modules\Core\Icrud\Transformers\CrudResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaxClassRateTransformer extends CrudResource
+class TaxClassRateTransformer extends JsonResource
 {
-  /**
-  * Method to merge values with response
-  *
-  * @return array
-  */
-  public function modelAttributes($request)
+  public function toArray($request)
   {
-    return [];
+    $data =  [
+      'taxRateId' => $this->when($this->tax_rate_id, $this->tax_rate_id),
+      'based' => $this->when($this->based, $this->based),
+      'priority' => (string)$this->priority ?? '0',
+      'taxRate' => new TaxRateTransformer($this->whenLoaded('taxRate')),
+      'taxClass' => new TaxClassTransformer($this->whenLoaded('taxClass')),
+    ];
+
+
+    return $data;
   }
 }

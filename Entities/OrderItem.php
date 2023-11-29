@@ -3,29 +3,15 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Modules\Core\Icrud\Entities\CrudModel;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Support\Traits\AuditTrait;
 
-class OrderItem extends CrudModel
+class OrderItem extends Model
 {
 
+  use AuditTrait;
+
   protected $table = 'icommerce__order_item';
-  public $transformer = 'Modules\Icommerce\Transformers\OrderItemTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\OrderItemRepository';
-  public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderItemRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderItemRequest',
-  ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
 
   protected $fillable = [
     'order_id',
@@ -110,6 +96,5 @@ class OrderItem extends CrudModel
       return $item->option_description . ": " . $item->option_value_description;
     })->implode(', ');
   }
-
 
 }

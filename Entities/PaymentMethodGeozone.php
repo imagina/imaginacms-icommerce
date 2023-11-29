@@ -2,33 +2,18 @@
 
 namespace Modules\Icommerce\Entities;
 
+use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-use Modules\Core\Icrud\Entities\CrudModel;
-
-class PaymentMethodGeozone extends CrudModel
+class PaymentMethodGeozone extends Model
 {
-
-  protected $table = 'icommerce__payment_methods_geozones';
-  public $transformer = 'Modules\Icommerce\Transformers\PaymentMethodGeozoneTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository';
-  public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreatePaymentMethodGeozoneRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdatePaymentMethodGeozoneRequest',
+   
+    protected $table = 'icommerce__payment_methods_geozones';
+    protected $fillable = [
+    	"id",
+        "payment_method_id",
+        "geozone_id"
     ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
 
-  protected $fillable = [
-    "id",
-    "payment_method_id",
-    "geozone_id"
-  ];
 }

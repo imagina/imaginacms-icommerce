@@ -2,9 +2,15 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Icrud\Repositories\BaseCrudRepository;
+use Modules\Core\Repositories\BaseRepository;
 
-interface PaymentMethodRepository extends BaseCrudRepository
+interface PaymentMethodRepository extends BaseRepository
 {
-  public function getCalculations($params);
+  public function getItemsBy($params);
+  
+  public function getItem($criteria, $params = false);
+  
+  public function updateBy($criteria, $data, $params = false);
+
+  
 }

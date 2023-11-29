@@ -2,8 +2,15 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Icrud\Repositories\BaseCrudRepository;
+use Modules\Core\Repositories\BaseRepository;
 
-interface OrderStatusRepository extends BaseCrudRepository
+interface OrderStatusRepository extends BaseRepository
 {
+  public function getItemsBy($params);
+  
+  public function getItem($criteria, $params = false);
+  
+  public function updateBy($criteria, $data, $params = false);
+  
+  public function deleteBy($criteria, $params = false);
 }

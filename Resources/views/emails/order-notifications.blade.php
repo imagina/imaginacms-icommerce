@@ -1,5 +1,5 @@
 @php
-  $order = $data["order"]
+  $order = $data["order"];
 @endphp
 
 <p><strong> {{$order->first_name}}, {{$order->last_name}}</strong></p>
@@ -7,7 +7,7 @@
   {!! trans("icommerce::orders.messages.statusChanged",["orderId" => $order->id, "statusName" => $order->status->title])!!}
 </p>
 @php
-  $comment = $data["comment"]
+  $comment = $data["comment"];
 @endphp
 
 @if(!empty($comment) && strlen($comment) > 5)

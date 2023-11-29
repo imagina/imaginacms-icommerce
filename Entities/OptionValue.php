@@ -3,34 +3,21 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Modules\Core\Icrud\Entities\CrudModel;
-use Modules\Core\Support\Traits\AuditTrait;
-use Modules\Core\Traits\NamespacedEntity;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Media\Entities\File;
+use Modules\Core\Traits\NamespacedEntity;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Support\Traits\AuditTrait;
 
-class OptionValue extends CrudModel
+class OptionValue extends Model
 {
-  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant;
+  use Translatable, NamespacedEntity, MediaRelation, BelongsToTenant, AuditTrait;
 
   protected $table = 'icommerce__option_values';
-  public $transformer = 'Modules\Icommerce\Transformers\OptionValueTransformer';
-  public $repository = 'Modules\Icommerce\Repositories\OptionValueRepository';
-  public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateOptionValueRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateOptionValueRequest',
+  public $translatedAttributes = [
+    'description'
   ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
-  public $translatedAttributes = ['description'];
   protected $fillable = [
     'option_id',
     'sort_order',
@@ -76,5 +63,18 @@ class OptionValue extends CrudModel
         'parent_option_value_id', 'quantity',
         'subtract', 'price', 'weight'
       )->withTimestamps();
+  }
+
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files()->where('zone', 'mainimage')->first();
+    if (!$thumbnail) return [
+      'mimeType' => 'image/jpeg',
+      'path' => url('modules/iblog/img/post/default.jpg')
+    ];
+    return [
+      'mimeType' => $thumbnail->mimetype,
+      'path' => $thumbnail->path_string
+    ];
   }
 }

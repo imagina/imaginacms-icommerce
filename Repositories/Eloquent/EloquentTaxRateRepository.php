@@ -3,72 +3,129 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\TaxRateRepository;
-use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
+use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Illuminate\Support\Arr;
 
-class EloquentTaxRateRepository extends EloquentCrudRepository implements TaxRateRepository
+class EloquentTaxRateRepository extends EloquentBaseRepository implements TaxRateRepository
 {
-  /**
-   * Filter names to replace
-   * @var array
-   */
-  protected $replaceFilters = [];
-
-  /**
-   * Relation names to replace
-   * @var array
-   */
-  protected $replaceSyncModelRelations = [];
-  
-  /**
-   * Attribute to customize relations by default
-   * @var array
-   */
-  protected $with = ['all' => ['translations']];
-  /**
-   * Filter query
-   *
-   * @param $query
-   * @param $filter
-   * @param $params
-   * @return mixed
-   */
-  public function filterQuery($query, $filter, $params)
+  public function getItemsBy($params)
   {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
 
-    /**
-     * Note: Add filter name to replaceFilters attribute before replace it
-     *
-     * Example filter Query
-     * if (isset($filter->status)) $query->where('status', $filter->status);
-     *
-     */
+    // RELATIONSHIPS
+    $defaultInclude = ['translations'];
+    $query->with(array_merge($defaultInclude, $params->include));
 
-    //Response
-    return $query;
+    // FILTERS
+    if ($params->filter) {
+      $filter = $params->filter;
+
+      //get language translation
+      $lang = \App::getLocale();
+
+      //add filter by search
+      if (isset($filter->search)) {
+
+        //find search in columns
+        $query->where(function ($query) use ($filter, $lang) {
+          $query->whereHas('translations', function ($query) use ($filter, $lang) {
+            $query->where('locale', $lang)
+              ->where('name', 'like', '%' . $filter->search . '%');
+          })->orWhere('id', 'like', '%' . $filter->search . '%')
+            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+        });
+      }
+    }
+
+    /*== FIELDS ==*/
+    if (isset($params->fields) && count($params->fields))
+      $query->select($params->fields);
+
+    /*== REQUEST ==*/
+    if (isset($params->page) && $params->page) {
+      return $query->paginate($params->take);
+    } else {
+      $params->take ? $query->take($params->take) : false;//Take
+      return $query->get();
+    }
   }
 
-  /**
-   * Method to sync Model Relations
-   *
-   * @param $model ,$data
-   * @return $model
-   */
-  public function syncModelRelations($model, $data)
+  public function getItem($criteria, $params = false)
   {
-    //Get model relations data from attribute of model
-    $modelRelationsData = ($model->modelRelations ?? []);
+    // INITIALIZE QUERY
+    $query = $this->model->query();
 
-    /**
-     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
-     *
-     * Example to sync relations
-     * if (array_key_exists(<relationName>, $data)){
-     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
-     * }
-     *
-     */
+    $query->where('id', $criteria);
 
-    //Response
+    // RELATIONSHIPS
+    $includeDefault = ['translations'];
+    $query->with(array_merge($includeDefault, $params->include));
+
+    // FIELDS
+    if ($params->fields) {
+      $query->select($params->fields);
+    }
+    return $query->first();
+
+  }
+
+  public function create($data)
+  {
+
+    $taxRate = $this->model->create($data);
+
+    //$taxRate->rates()->sync(Arr::get($data, 'rates', []));
+
+
+    return $taxRate;
+  }
+
+  public function updateBy($criteria, $data, $params = false){
+
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field))//Where field
+        $query->where($filter->field, $criteria);
+      else//where id
+        $query->where('id', $criteria);
+    }
+
+    // REQUEST
+    $model = $query->first();
+
+    if($model){
+      $model->update($data);
+    }
     return $model;
+  }
+
+  public function deleteBy($criteria, $params = false)
+  {
+    // INITIALIZE QUERY
+    $query = $this->model->query();
+
+    // FILTER
+    if (isset($params->filter)) {
+      $filter = $params->filter;
+
+      if (isset($filter->field)) //Where field
+        $query->where($filter->field, $criteria);
+      else //where id
+        $query->where('id', $criteria);
+    }
+
+    // REQUEST
+    $model = $query->first();
+
+    if($model) {
+      $model->delete();
+    }
   }
 }

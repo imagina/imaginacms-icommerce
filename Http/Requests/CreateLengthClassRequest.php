@@ -12,7 +12,7 @@ class CreateLengthClassRequest extends BaseFormRequest
       'value' => 'required'
     ];
   }
-
+  
   public function translationRules()
   {
     return [
@@ -20,24 +20,25 @@ class CreateLengthClassRequest extends BaseFormRequest
       'unit' => 'required'
     ];
   }
-
+  
   public function authorize()
   {
     return true;
   }
-
+  
   public function messages()
   {
     return [];
   }
-
+  
   public function translationMessages()
   {
     return [];
   }
-
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
-    
+  
+  public function getValidator()
+  {
+    return $this->getValidatorInstance();
+  }
+  
 }
