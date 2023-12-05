@@ -10,9 +10,10 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-12">
-          @include('icommerce::frontend.partials.breadcrumb')
-        </div>
+
+        {{-- Banner Top--}}
+        @includeFirst(["icommerce.partials.index.custom-banner","icommerce::frontend.partials.banner"])
+
         <div class="col-lg-12">
 
           <livewire:isite::items-list
