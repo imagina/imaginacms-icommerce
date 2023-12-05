@@ -8,8 +8,12 @@
 
   <div class="page icommerce icommerce-offers-index py-5">
 
+
     <div class="container">
       <div class="row">
+        <div class="col-12">
+          @include('icommerce::frontend.partials.breadcrumb')
+        </div>
 
         <div class="col-lg-12">
 
