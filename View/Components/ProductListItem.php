@@ -64,6 +64,7 @@ class ProductListItem extends Component
   public $withPrice;
   public $addToCartButtonAction;
   public $labelButtonAddProduct;
+  public $showDeleteBtn;
 
   /**
    * Create a new component instance.
@@ -125,7 +126,8 @@ class ProductListItem extends Component
                               $withDescription = false,
                               $withPrice = true,
                               $addToCartButtonAction = null,
-                              $labelButtonAddProduct = null)
+                              $labelButtonAddProduct = null,
+                              $showDeleteBtn = false)
   {
     $this->product = $item;
     
@@ -185,6 +187,7 @@ class ProductListItem extends Component
     $this->withPrice = $withPrice;
     $this->addToCartButtonAction = $addToCartButtonAction;
     $this->labelButtonAddProduct = $labelButtonAddProduct;
+    $this->showDeleteBtn = $showDeleteBtn;
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
