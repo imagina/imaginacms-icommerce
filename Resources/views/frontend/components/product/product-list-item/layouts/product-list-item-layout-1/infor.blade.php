@@ -55,6 +55,9 @@
       </div>
     </div>
   @endif
+ 
+  @include('icommerce::frontend.components.product.btn-delete')
+
 </div>
 
 
