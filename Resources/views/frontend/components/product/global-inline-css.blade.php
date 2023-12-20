@@ -3,6 +3,14 @@
       .button-minus i, .button-plus i{
         pointer-events: none;
       }
+      .product-layout .add-to-cart-with-quantity .quantity-selector input[type=number]::-webkit-outer-spin-button,
+      .product-layout .add-to-cart-with-quantity .quantity-selector input[type=number]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+      .product-layout .add-to-cart-with-quantity .quantity-selector input[type=number] {
+          -moz-appearance:textfield !important;
+      }
     @if($externalShadowOnHover)
 
           .product-layout:hover {
