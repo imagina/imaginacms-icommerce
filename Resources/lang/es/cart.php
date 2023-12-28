@@ -32,7 +32,8 @@ return [
         'add_to_cart'           => 'Agregar',
         'add_to_cart_quote'     => 'Agregar cotizacion',
         'download_pdf'          => 'Descargar PDF',
-        'request_quote'         => 'Solicitar cotizacion'
+        'request_quote'         => 'Solicitar cotizacion',
+        'add_to_cart 2'         => 'Agregar al carrito'
     ],
     'empty_cart_message'    => [
         'part_1'   	=> 'No tienes artículos en tú carrito de compras. haz Click ',
