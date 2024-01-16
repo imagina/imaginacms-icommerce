@@ -2,9 +2,10 @@
 <div class="product-layout product-layout-1 position-relative
 @if(isset($discount) && $discount) with-discount @else without-discount @endif
 @if($product->is_sold_out) sold-out @endif ribbon-discount-position-{{$discountPosition}}
-@if($product->is_new) is-new @endif"
+@if($product->is_new) is-new @endif">
+     {{--
      style="padding: {{$externalPadding}}px; background-color: {{$productBackgroundColor}};
-       border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
+       border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">--}}
   <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
 
   @include('icommerce::frontend.components.product.meta')
@@ -20,7 +21,7 @@
             <x-media::single-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+              imgClasses="product-img"/>
           </div>
         </div>
       </div>
@@ -35,7 +36,7 @@
       <x-media::single-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
-        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px; object-fit: '.$imageObjectFit.';'" />
+        imgClasses="product-img" />
 
       @if(Str::contains($buttonsPosition, 'in-photo'))
         @include("icommerce::frontend.components.product.buttons")
