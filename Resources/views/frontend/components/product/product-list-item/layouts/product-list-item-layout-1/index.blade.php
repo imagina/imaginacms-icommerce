@@ -3,9 +3,6 @@
 @if(isset($discount) && $discount) with-discount @else without-discount @endif
 @if($product->is_sold_out) sold-out @endif ribbon-discount-position-{{$discountPosition}}
 @if($product->is_new) is-new @endif">
-     {{--
-     style="padding: {{$externalPadding}}px; background-color: {{$productBackgroundColor}};
-       border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">--}}
   <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
 
   @include('icommerce::frontend.components.product.meta')
