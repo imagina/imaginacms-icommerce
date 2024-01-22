@@ -64,6 +64,8 @@ class ProductListItem extends Component
   public $withPrice;
   public $addToCartButtonAction;
   public $labelButtonAddProduct;
+  public $showDeleteBtn;
+  public $productLayout;
 
   /**
    * Create a new component instance.
@@ -125,7 +127,10 @@ class ProductListItem extends Component
                               $withDescription = false,
                               $withPrice = true,
                               $addToCartButtonAction = null,
-                              $labelButtonAddProduct = null)
+                              $labelButtonAddProduct = null,
+                              $showDeleteBtn = false,
+                              $productLayout=null
+  )
   {
     $this->product = $item;
     
@@ -180,11 +185,13 @@ class ProductListItem extends Component
     $this->ribbonTextColor = $ribbonTextColor ?? setting('icommerce::productRibbonTextColor', null, "#333333");
     $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
-    $this->imageObjectFit = $imageObjectFit;
+    $this->imageObjectFit = $imageObjectFit ?? setting('icommerce::productImageObjectFit', null, "contain");
     $this->withDescription = $withDescription;
     $this->withPrice = $withPrice;
     $this->addToCartButtonAction = $addToCartButtonAction;
     $this->labelButtonAddProduct = $labelButtonAddProduct;
+    $this->showDeleteBtn = $showDeleteBtn;
+    $this->productLayout=$productListItemLayout;
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);

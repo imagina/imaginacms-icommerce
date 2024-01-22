@@ -1114,6 +1114,33 @@ return [
       'label' => 'icommerce::common.settings.productProductBackgroundColor'
     ]
   ],
+  'productImageObjectFit' => [
+    'value' => 'contain',
+    'name' => 'icommerce::productImageObjectFit',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productImageObjectFit',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ["label" => "Contain", "value" => "contain"],
+            ["label" => "Cover", "value" => "cover"],
+            ["label" => "Fill", "value" => "fill"],
+            ["label" => "Inicial", "value" => "inicial"],
+            ["label" => "Revert", "value" => "revert"],
+            ["label" => "Scale-down", "value" => "scale Down"],
+            ["label" => "Unset", "value" => "unset"],
+            ["label" => "none", "value" => "none"]
+        ]
+    ]
+   ],
   'layoutProductIcommerce' => [
     'name' => 'icommerce::layoutProductIcommerce',
     'value' => null,

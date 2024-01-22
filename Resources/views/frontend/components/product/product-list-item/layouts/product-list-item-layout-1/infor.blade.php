@@ -1,20 +1,13 @@
-<div class="infor text-{{$contentAlign}}"
-     style="padding-left: {{$contentExternalPaddingX}}px; padding-right: {{$contentExternalPaddingX}}px;
-       padding-top: {{$contentExternalPaddingY}}px; padding-bottom: {{$contentExternalPaddingY}}px;">
-  
-  <a class="title" href="{{$product->url}}"
-     style="font-size: {{$contentTitleFontSize}}px;
-       height: {{$contentTitleMaxHeight}}px; font-weight: {{$contentTitleFontWeight}};
-     @if($contentTitleToUppercase)text-transform: uppercase; @endif">
+<div class="infor text-{{$contentAlign}}">
+  <a class="title" href="{{$product->url}}">
     {!! Str::limit( $product->name, $contentTitleNumberOfCharacters) !!}
   </a>
   @if($contentCategoryEnable && isset($product->category))
-    <div class="category"
-         style="font-size: {{$contentCategoryFontSize}}px; font-weight: {{$contentCategoryFontWeight}};
-         @if($contentCategoryToUppercase)text-transform: uppercase; @endif">{{$product->category->title}}</div>
+    <div class="category">
+      {{$product->category->title}}
+    </div>
   @endif
 
-  
   @if(isset($productListLayout) && $productListLayout=='one' || $withDescription)
     <div class="@if(!$withDescription) d-none @endif d-lg-block summary">
       {{$product->summary}}
@@ -24,9 +17,7 @@
   <div class="row align-items-center">
     @if((!$product->is_call || $product->show_price_is_call) && $withPrice)
       <div class="col col-price @if(!$withTextInAddToCart || $buttonsPosition!="in-content") w-100 @endif">
-        <div class="price"
-             style="font-size: {{$contentPriceFontSize}}px;
-               font-weight: {{$contentPriceFontWeight}};">
+        <div class="price">
           {{isset($currency) ? $currency->symbol_left : '$'}}
           {{formatMoney($discount->price ?? $product->price)}}
           @if(isset($discount) && $discount)
@@ -42,7 +33,7 @@
 
 
     @if((!$addToCartWithQuantity || $withTextInAddToCart) && !Str::contains($buttonsPosition, 'in-photo') && !Str::contains($buttonsPosition, 'after-content'))
-      <div class="col-auto col-buttons" style="position: unset">
+      <div class="col-auto col-buttons col-buttons-unset">
         @include("icommerce::frontend.components.product.buttons")
       </div>
     @endif
@@ -55,8 +46,10 @@
       </div>
     </div>
   @endif
-</div>
+ 
+  @include('icommerce::frontend.components.product.btn-delete')
 
+</div>
 
 
 @if($addToCartWithQuantity && !$product->is_call)
