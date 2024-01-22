@@ -270,6 +270,11 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     if (isset($filter->onlyWithOrganization)) {
       $query->whereNotNull("organization_id");
     }
+  
+    //Filter Used in Index - List Item - Wishlist
+    if(isset($filter->wishlist)){
+      $query->whereRaw("icommerce__products.id IN (SELECT wishlistable_id from  wishlistable__wishlistables WHERE wishlistable_type = 'Modules\\\Icommerce\\\Entities\\\Product' AND deleted_at is null AND wishlist_id = ".$filter->wishlist.")");
+    }
 
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
