@@ -139,6 +139,7 @@ return [
     'productWishlistEnable' => 'Enable wishlist button',
     'labelOrderSummaryDescription' => 'Order Summary Information',
     'checkoutRedirectUrl' => 'Checkout redirect URL',
+    'productImageObjectFit' => 'Image object fit',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
