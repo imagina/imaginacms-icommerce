@@ -63,7 +63,8 @@ return [
     "decimal_place" => "Decimal",
     "value" => "valor",
     "status" => "Estado",
-    "default_currency" => "Moneda predeterminada"
+    "default_currency" => "Moneda predeterminada",
+    "warehouses" => "Bodegas"
   ],
   "newProduct" => "Nuevo Producto",
   "updateProduct" => "Actualizar Producto",
@@ -213,7 +214,8 @@ return [
     "decimalSeparator" => "Separador de Decimales",
     "thousandsSeparator" => "Separador de Miles",
     "unit" => "Unidad",
-    "volume" => "Volumen"
+    "volume" => "Volumen",
+    "mapHelp" => "Busca la dirección o localíza la bodega en el mapa."
   ],
   "message" => [
     "advanceEdit" => "Ir al formulario avanzado",
@@ -278,6 +280,8 @@ return [
     "quotes" => "Una cotización se refiere a una solicitud de cotización de precio personalizada para un producto 
     específico o grupo de productos. Las cotizaciones a menudo se usan para productos que tienen precios variables o 
     requieren personalización, como pedidos grandes o productos especializados."
-  ]
+  ],
+  "newWarehouse" => "Nueva Bodega",
+  "updateWarehouse" => "Editar Bodega"
 ];
 
