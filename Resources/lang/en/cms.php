@@ -65,7 +65,8 @@ return [
     "decimal_place" => "Decimal",
     "value" => "Value",
     "status" => "Status",
-    "default_currency" => "Default Currency"
+    "default_currency" => "Default Currency",
+    "warehouses" => "Warehouses"
   ],
   "newProduct" => "New Product",
   "updateProduct" => "Update Product",
@@ -213,6 +214,7 @@ return [
     "thousandsSeparator" => "Thousands Separator",
     "symbolRight" => "Right Symbol",
     "volume" => "Volume",
+    "mapHelp" => "Search for the address or locate the warehouse on the map."
   ],
   "message" => [
     "advanceEdit" => "Go to advanced Form",
@@ -274,6 +276,8 @@ return [
     "quotes" => "A quote refers to a request for a custom price quote for a product
      specific or group of products. Quotes are often used for products that have variable prices or
      require customization, such as large orders or specialized products."
-  ]
+  ],
+  "newWarehouse" => "New Warehouse",
+  "updateWarehouse" => "Edit Warehouse"
 ];
 
