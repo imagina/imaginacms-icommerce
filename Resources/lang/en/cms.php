@@ -115,6 +115,9 @@ return [
   "subtotal" => "Subtotal",
   "shipping" => "Shipping",
   "orderHistory" => "Order History",
+  "label" => [
+    "warehouse" => "Warehouse | Warehouses",
+  ],
   "form" => [
     "formContent" => "Here you can find the information related to the name, slug, summary and description.",
     "statusContent" => "Here you can change the status of your product.",
