@@ -113,6 +113,9 @@ return [
   "subtotal" => "Total parcial",
   "shipping" => "Envío",
   "orderHistory" => "Historial de Orden",
+  "label" => [
+    "warehouse" => "Bodega | Bodegas",
+  ],
   "form" => [
     "formContent" => "Aquí podrás encontrar la información relacionada al nombre, slug, resumen y descripción.",
     "statusContent" => "Aquí podrás cambiar el estado de tu producto.",
