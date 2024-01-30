@@ -215,7 +215,13 @@ return [
     "thousandsSeparator" => "Separador de Miles",
     "unit" => "Unidad",
     "volume" => "Volumen",
-    "mapHelp" => "Busca la dirección o localíza la bodega en el mapa."
+    "mapHelp" => "Busca la dirección o localíza la bodega en el mapa.",
+    "productWarehouse" => "Bodegas",
+    "productWarehouseContent" => "Selecciona las diferentes bodegas donde se encuentra ubicado tu producto.",
+    "generalWarehouse" => "Bodega general",
+    "generalWarehouseHelp" => "Puedes gestionar de manera eficiente la información detallada de cada producto, segmentada de acuerdo a las distintas bodegas. Así, puedes organizar y administrar de forma centralizada los datos específicos de tus productos en cada ubicación, simplificando la gestión de inventario y optimizando tu control operativo.",
+    "warehouseByOptions" => "Bodega por Opcion",
+    "warehouseByOptionsHelp" => "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima."
   ],
   "message" => [
     "advanceEdit" => "Ir al formulario avanzado",
