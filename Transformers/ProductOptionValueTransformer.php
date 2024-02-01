@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Transformers;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Icommerce\Transformers\OptionValueTransformer;
+use Modules\Icommerce\Transformers\OptionTransformer;
 
 class ProductOptionValueTransformer extends JsonResource
 {
@@ -33,7 +34,8 @@ class ProductOptionValueTransformer extends JsonResource
       'available' => $this->available,
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
-      'optionValueEntity' => new OptionValueTransformer($this->whenLoaded('optionValue'))
+      'optionValueEntity' => new OptionValueTransformer($this->whenLoaded('optionValue')),
+      'option' => new OptionTransformer($this->whenLoaded('option')),
     ];
 
     return $data;
