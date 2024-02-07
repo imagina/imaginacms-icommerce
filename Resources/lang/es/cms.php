@@ -64,7 +64,8 @@ return [
     "decimal_place" => "Decimal",
     "value" => "valor",
     "status" => "Estado",
-    "default_currency" => "Moneda predeterminada"
+    "default_currency" => "Moneda predeterminada",
+    "warehouses" => "Bodegas"
   ],
   "newProduct" => "Nuevo Producto",
   "updateProduct" => "Actualizar Producto",
@@ -113,6 +114,9 @@ return [
   "subtotal" => "Total parcial",
   "shipping" => "Envío",
   "orderHistory" => "Historial de Orden",
+  "label" => [
+    "warehouse" => "Bodega | Bodegas",
+  ],
   "form" => [
     "formContent" => "Aquí podrás encontrar la información relacionada al nombre, slug, resumen y descripción.",
     "statusContent" => "Aquí podrás cambiar el estado de tu producto.",
@@ -214,7 +218,14 @@ return [
     "decimalSeparator" => "Separador de Decimales",
     "thousandsSeparator" => "Separador de Miles",
     "unit" => "Unidad",
-    "volume" => "Volumen"
+    "volume" => "Volumen",
+    "mapHelp" => "Busca la dirección o localíza la bodega en el mapa.",
+    "productWarehouse" => "Bodegas",
+    "productWarehouseContent" => "Selecciona las diferentes bodegas donde se encuentra ubicado tu producto.",
+    "generalWarehouse" => "Bodega general",
+    "generalWarehouseHelp" => "Puedes gestionar de manera eficiente la información detallada de cada producto, segmentada de acuerdo a las distintas bodegas. Así, puedes organizar y administrar de forma centralizada los datos específicos de tus productos en cada ubicación, simplificando la gestión de inventario y optimizando tu control operativo.",
+    "warehouseByOptions" => "Bodega por Opcion",
+    "warehouseByOptionsHelp" => "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima."
   ],
   "message" => [
     "advanceEdit" => "Ir al formulario avanzado",
@@ -279,6 +290,8 @@ return [
     "quotes" => "Una cotización se refiere a una solicitud de cotización de precio personalizada para un producto 
     específico o grupo de productos. Las cotizaciones a menudo se usan para productos que tienen precios variables o 
     requieren personalización, como pedidos grandes o productos especializados."
-  ]
+  ],
+  "newWarehouse" => "Nueva Bodega",
+  "updateWarehouse" => "Editar Bodega"
 ];
 

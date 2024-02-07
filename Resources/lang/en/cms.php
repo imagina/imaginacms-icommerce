@@ -66,7 +66,8 @@ return [
     "decimal_place" => "Decimal",
     "value" => "Value",
     "status" => "Status",
-    "default_currency" => "Default Currency"
+    "default_currency" => "Default Currency",
+    "warehouses" => "Warehouses"
   ],
   "newProduct" => "New Product",
   "updateProduct" => "Update Product",
@@ -115,6 +116,9 @@ return [
   "subtotal" => "Subtotal",
   "shipping" => "Shipping",
   "orderHistory" => "Order History",
+  "label" => [
+    "warehouse" => "Warehouse | Warehouses",
+  ],
   "form" => [
     "formContent" => "Here you can find the information related to the name, slug, summary and description.",
     "statusContent" => "Here you can change the status of your product.",
@@ -214,6 +218,13 @@ return [
     "thousandsSeparator" => "Thousands Separator",
     "symbolRight" => "Right Symbol",
     "volume" => "Volume",
+    "mapHelp" => "Search for the address or locate the warehouse on the map.",
+    "productWarehouse" => "Warehouses",
+    "productWarehouseContent" => "Select the different warehouses where your product is located.",
+    "generalWarehouse" => "General warehouse",
+    "generalWarehouseHelp" => "You can efficiently manage detailed information for each product, segmented according to the different warehouses. This way, you can organize and centrally manage specific data for your products at each location, simplifying inventory management and optimizing your operational control.",
+    "warehouseByOptions" => "Warehouse by options",
+    "warehouseByOptionsHelp" => "We provide you with the ability to efficiently manage detailed information for each product option, organized according to different warehouses. This allows you to centralize the management of specific data for each variant at each location, simplifying inventory administration and optimizing operational control effectively."
   ],
   "message" => [
     "advanceEdit" => "Go to advanced Form",
@@ -275,6 +286,8 @@ return [
     "quotes" => "A quote refers to a request for a custom price quote for a product
      specific or group of products. Quotes are often used for products that have variable prices or
      require customization, such as large orders or specialized products."
-  ]
+  ],
+  "newWarehouse" => "New Warehouse",
+  "updateWarehouse" => "Edit Warehouse"
 ];
 

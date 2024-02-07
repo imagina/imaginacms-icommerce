@@ -29,6 +29,7 @@ class CartProduct extends CrudModel
   protected $fillable = [
     'cart_id',
     'product_id',
+    'warehouse_id',
     'quantity',
     'is_call',
     'organization_id',
@@ -47,6 +48,11 @@ class CartProduct extends CrudModel
   public function product()
   {
     return $this->belongsTo(Product::class);
+  }
+
+  public function warehouse()
+  {
+    return $this->belongsTo(Warehouse::class);
   }
 
   public function productOptionValues()
