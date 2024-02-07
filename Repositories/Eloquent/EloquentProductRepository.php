@@ -77,10 +77,11 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
      * if (isset($filter->status)) $query->where('status', $filter->status);
      *
      */
+
   
     // add filter by search
     if (isset($filter->search) && !empty($filter->search)) {
-    
+
       $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
     
       // removing symbols used by MySQL
@@ -107,7 +108,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       unset($filter->order);
     }
   
-  
+
     //Filter by catgeory ID
     if (isset($filter->category) && !empty($filter->category)) {
     
@@ -228,7 +229,6 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       $orderByField = $filter->order->field ?? 'created_at';//Default field
       $orderWay = $filter->order->way ?? 'desc';//Default way
       if (in_array($orderByField, ["slug", "name"])) {
-        $query->leftJoin('icommerce__product_translations as translations', 'translations.product_id', '=', 'icommerce__products.id');
         $query->orderBy("translations.{$orderByField}", $orderWay);
       } else
         $query->orderBy($orderByField, $orderWay);//Add order to query
@@ -249,7 +249,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       $query->has('discount');
     
     }
-  
+
     if (isset($filter->productType) && !empty($filter->productType)) {
     
       $type = $filter->productType;
@@ -283,26 +283,10 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       //Pre filters by default
       $this->defaultPreFilters($query, $params);
     }
-  
+
     //Order by "Sort order"
     if (!isset($params->filter->noSortOrder) || !$params->filter->noSortOrder) {
-      $query->orderBy('sort_order', 'desc');//Add order to query
-    }
-  
-    // ORDER
-    if (isset($params->order) && $params->order) {
-    
-      $order = is_array($params->order) ? $params->order : [$params->order];
-    
-      foreach ($order as $orderObject) {
-        if (isset($orderObject->field) && isset($orderObject->way)) {
-          if (in_array($orderObject->field, $this->model->translatedAttributes)) {
-            $query->orderByTranslation($orderObject->field, $orderObject->way);
-          } else
-            $query->orderBy($orderObject->field, $orderObject->way);
-        }
-      
-      }
+     $query->orderBy('sort_order', 'desc');//Add order to query
     }
   
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
@@ -317,8 +301,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
     }
-    
-    
+
     //Response
     return $query;
   }
@@ -458,6 +441,9 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       \DB::raw("MIN(icommerce__products.price) AS minPrice"),
       \DB::raw("MAX(icommerce__products.price) AS maxPrice")
     );
+  
+    //removing ordering
+    $query->reorder();
     
     if (isset($params->filter->search))
       $query->groupBy('scoreSearch1', 'product_id', 'name', 'scoreSearch2');
