@@ -2,22 +2,7 @@
   @if (!$shopAsGuest)
     <div class="card mb-0 border-0"> <!-- Div contenedor usar una dirección de las que ya tiene agregadas. -->
       @if($billingAddress)
-        <div class="form-group">
-          <label for="selectBillingAddress">  {{trans('iprofile::addresses.title.myAddresses')}} </label>
-          <select
-            class="form-control"
-            wire:model.lazy="billingAddressSelected"
-            id="selectBillingAddress">
-            <option value="">{{trans('icommerce::billing_details.address.select_direction')}}</option>
-
-            @foreach($addresses as $address)
-              <option value="{{$address->id}}">{{$address->first_name}} {{ $address->last_name }}
-                - {{  $address->address_1 }}</option>
-            @endforeach
-          </select>
-          {!! $errors->first("billingAddress", '<span class="help-block">:message</span>') !!}
-        </div>
-        <x-iprofile::address-card-item :address="$billingAddress"/>
+            <livewire:iprofile::address-list :addresses="$addresses" :addressSelected="$billingAddress" type="checkoutBilling" emit="billingAddressChanged"/>
       @endif
     </div> <!-- Fin usar una dirección de las q ya posee agregadas. -->
   @endif

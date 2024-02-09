@@ -20,21 +20,8 @@
       @if (!$shopAsGuest)
         <div class="card mb-0 border-0"> <!-- Div contenedor usar una dirección de las que ya tiene agregadas. -->
           @if($shippingAddress)
-            <div class="form-group">
-              <label for="selectShippingAddress">  {{trans('iprofile::addresses.title.myAddresses')}} </label>
-              <select
-                class="form-control"
-                wire:model.lazy="shippingAddressSelected"
-                id="selectShippingAddress">
-                <option value="">Selecciona una dirección</option>
-                @foreach($addresses as $address)
-                  <option value="{{$address->id}}">{{$address->first_name}} {{ $address->last_name }}
-                    - {{  $address->address_1 }}</option>
-                @endforeach
-              </select>
-            </div>
-            <x-iprofile::address-card-item :address="$shippingAddress"/>
-          @endif
+                <livewire:iprofile::address-list :addresses="$addresses" :addressSelected="$shippingAddress" type="checkoutShipping" emit="shippingAddressChanged"/>
+            @endif
         </div> <!-- Fin usar una dirección de las q ya posee agregadas. -->
       @endif
     @endauth

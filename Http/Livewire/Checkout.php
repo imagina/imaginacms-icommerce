@@ -26,7 +26,8 @@ class Checkout extends Component
 {
 
   protected $listeners = ['submit', 'addressAdded', 'cartUpdated', 'emitCheckoutAddressBilling',
-    'emitCheckoutAddressShipping', 'editAddressBillingEmit', 'editAddressShippingEmit'];
+    'emitCheckoutAddressShipping', 'editAddressBillingEmit', 'editAddressShippingEmit', 'billingAddressChanged',
+    'shippingAddressChanged'];
 
   public $user;
   public $step;
@@ -122,6 +123,16 @@ class Checkout extends Component
     $this->addressGuestShippingCreated = false;
   }
 
+  public function billingAddressChanged($data){
+    
+    $this->billingAddressSelected = $data;
+  }
+  
+  public function shippingAddressChanged($data){
+    
+    $this->shippingAddressSelected = $data;
+    
+  }
   public function emitCheckoutAddressBilling($data)
   {
     $this->addressGuest = $data;
