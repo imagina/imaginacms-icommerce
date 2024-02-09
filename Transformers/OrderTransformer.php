@@ -71,6 +71,8 @@ class OrderTransformer extends JsonResource
       'ip' => $this->when($this->ip, $this->ip),
       'userAgent' => $this->when($this->user_agent, $this->user_agent),
       'key' => $this->when($this->key, $this->key),
+      'warehouse_id' => $this->when($this->warehouse_id, $this->warehouse_id),
+      'warehouse_title' => $this->when($this->warehouse_title, $this->warehouse_title),
       'requireShipping' => $this->require_shipping ? '1' : '0',
       'suscriptionId' => $this->when($this->suscription_id, $this->suscription_id),
       'suscriptionToken' => $this->when($this->suscription_token, $this->suscription_token),
