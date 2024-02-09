@@ -119,7 +119,52 @@ $router->group(['prefix' => '/icommerce/v3'/*,'middleware' => ['auth:api']*/], f
       //  ]
       // ]
     ]);
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'warehouses',
+      'controller' => 'WarehouseApiController',
+      //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
+      // 'customRoutes' => [ // Include custom routes if needed
+      //  [
+      //    'method' => 'post', // get,post,put....
+      //    'path' => '/some-path', // Route Path
+      //    'uses' => 'ControllerMethodName', //Name of the controller method to use
+      //    'middleware' => [] // if not set up middleware, auth:api will be the default
+      //  ]
+      // ]
+    ]);
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'product-warehouse',
+      'controller' => 'ProductWarehouseApiController',
+      //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
+      // 'customRoutes' => [ // Include custom routes if needed
+      //  [
+      //    'method' => 'post', // get,post,put....
+      //    'path' => '/some-path', // Route Path
+      //    'uses' => 'ControllerMethodName', //Name of the controller method to use
+      //    'middleware' => [] // if not set up middleware, auth:api will be the default
+      //  ]
+      // ]
+    ]);
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'product-option-value-warehouse',
+      'controller' => 'ProductOptionValueWarehouseApiController',
+      //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
+      // 'customRoutes' => [ // Include custom routes if needed
+      //  [
+      //    'method' => 'post', // get,post,put....
+      //    'path' => '/some-path', // Route Path
+      //    'uses' => 'ControllerMethodName', //Name of the controller method to use
+      //    'middleware' => [] // if not set up middleware, auth:api will be the default
+      //  ]
+      // ]
+    ]);
 // append
+
+
+
 
 
 });
