@@ -207,6 +207,17 @@ class Product extends Model implements TaggableInterface
       ->withTimestamps();
   }
 
+  /**
+   * Warehouse Relation
+   */
+  public function productWarehouses()
+  {
+
+    return $this->belongsToMany(Warehouse::class, 'icommerce__product_warehouse')
+      ->withPivot('id', 'product_id', 'warehouse_id', 'quantity')
+      ->withTimestamps();
+  }
+
   public function optionValues()
   {
     return $this->hasMany(ProductOptionValue::class);
