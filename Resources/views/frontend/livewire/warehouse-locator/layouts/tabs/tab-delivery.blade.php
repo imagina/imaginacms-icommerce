@@ -13,18 +13,8 @@ id="homeModalWarehouseLocator" role="tabpanel" aria-labelledby="homeTabModalWare
             :userAddresses="$userShippingAddresses"/>
     @else
         
-        <h5>Falta Implementacion de:</h5>
-        <ul>
-            <li>Componente Address Card Item FALTA EL SELECT @Juan</li>
-            <li>Una vez se tenga lo del select, faltan los procesos de verificacion de warehouse para la direccion seleccionada</li>
-        </ul>
-
-        {{--
-        <x-iprofile::addressCardItem :address="$shippingAddress"/>
-        --}}
-
         <livewire:iprofile::address-list :addresses="$userShippingAddresses" :addressSelected="$shippingAddress" emit="shippingAddressChanged"/>
-
+        
         {{-- BTN NEW ADDRESS --}}
         <div class="form-row justify-content-center mt-4">
 

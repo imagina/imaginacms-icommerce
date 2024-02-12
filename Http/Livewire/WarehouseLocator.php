@@ -30,7 +30,8 @@ class WarehouseLocator extends Component
   protected $listeners = [
       'addressAdded' => 'checkAddress',
       'cleanWarehouseAlert',
-      'cancelledNewAddress' => 'changeShowAddressForm'
+      'cancelledNewAddress' => 'changeShowAddressForm',
+      'shippingAddressChanged' => 'checkAddress'
   ];
     
   /**
@@ -241,7 +242,7 @@ class WarehouseLocator extends Component
   }
   
   /**
-   * LISTENER
+   * LISTENER | addressAdded | shippingAddressChanged
    * @param $addressData (array)
    */
   public function checkAddress($addressData)
@@ -249,26 +250,41 @@ class WarehouseLocator extends Component
 
     \Log::info($this->log.'checkAddress');
 
+    //Added
+    if(isset($addressData['id'])){
+      $criteria = $addressData['id'];
+    }else{
+      //Shipping Address Changed
+      $criteria = $addressData;
+    }
+   
     //Search Collection Entity
-    $criteria = $addressData['id'];
     $params['include'] = [];
     $address = $this->addressRepository()->getItem($criteria,json_decode(json_encode($params)));
 
-    //Proccess to get a Warehouse to the Address
-    $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($address);
+    //Get warehouse to the address
+    $warehouseToAddress = $address->warehouse;
 
-    //Get Warehouse Data
-    $warehouse = $warehouseProcess['warehouse'];
+    //The address have a warehouse
+    if (!is_null($warehouseToAddress)) {
+      \Log::info($this->log . 'Shipping Address has a warehouse');
+      $warehouse = $warehouseToAddress;
+    }else{
+      //Proccess to get a Warehouse to the Address
+      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($address);
 
-    //Save Warehouse for this Address
-    $address->warehouse_id = $warehouse->id;
-    $address->save();
+      //Get Warehouse Data
+      $warehouse = $warehouseProcess['warehouse'];
+
+      //Save Warehouse for this Address
+      $address->warehouse_id = $warehouse->id;
+      $address->save();
+    }
 
     //Update Livewire Vars
     $this->shippingAddress = $address;
     $this->warehouse = $warehouse;
-    //$this->activeTooltip = false;
-
+    
     //Save in Session
     session(['warehouse' => $this->warehouse]);
     session(['shippingAddress' => $this->shippingAddress]);
