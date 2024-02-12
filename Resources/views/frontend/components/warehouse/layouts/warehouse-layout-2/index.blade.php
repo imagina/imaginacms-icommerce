@@ -13,7 +13,9 @@
 
             @else
                 @if($user)
-                    Hola {{$user->first_name}}, estas comprando para: {{$warehouse->address}}
+                    <a class="address cursor-pointer {{$addressClass}}" data-toggle="modal" data-target="#modalWarehouseLocator">
+                        Hola {{$user->first_name}}, estas comprando para: {{$warehouse->address}}
+                    </a>
                 @else
                     Hola, <a class="cursor-pointer" onclick="location.href='{{"/ipanel/#/auth/login/?redirectTo=".url()->current()}}'"> <!-- llamar al login -->
                         Iniciar sesión para usar tus direcciones guardadas
