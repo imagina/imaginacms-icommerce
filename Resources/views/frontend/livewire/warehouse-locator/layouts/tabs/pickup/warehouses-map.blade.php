@@ -13,6 +13,6 @@
    
 @if($showNotWarehouses)
     <div class="alert alert-danger" role="alert">
-        No existen bodegas disponibles para la ubicacion seleccionada
+        {{trans('icommerce::warehouses.message.not warehouses found for the location')}}
     </div>
 @endif
