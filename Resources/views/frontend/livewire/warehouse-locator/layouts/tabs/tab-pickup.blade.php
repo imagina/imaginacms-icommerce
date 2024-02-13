@@ -41,14 +41,16 @@
 
             <div class="form-point">
 
-                <h5>Falta Implementacion de:</h5>
-                <ul>
-                    <li>Selectores de Locations</li>
-                    <li>Mapa con Warehouses</li>
-                    <li>Seleccion de Marcador</li>
-                    <li>Mostrar informacion de Marcador en la parte superior</li>
-                </ul>
+                <!-- Selects Province and City -->
+                @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.selects-location')
+
+                <!-- Warehouse Selected -->
+                @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.warehouse-selected')
+
+                <!-- WAREHOUSES MAP -->
+                @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.warehouses-map')
                 
+
 
             </div>
 
