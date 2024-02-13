@@ -30,6 +30,7 @@ class WarehouseLocator extends Component
   public $warehousesLocation;
   public $warehouseSelectedFromMap;
   public $showNotWarehouses;
+  public $disabledBtnConfirm;
   
   /**
   * LISTENERS
@@ -68,6 +69,7 @@ class WarehouseLocator extends Component
       $this->tabSelected = $this->shippingMethods['delivery'];
       $this->warehouseSelectedFromMap = null;
       $this->showNotWarehouses = false;
+      $this->disableBtnConfirm = false;
       
       //Init Process
       $this->getAllShippingAddressFromUser();
@@ -114,10 +116,8 @@ class WarehouseLocator extends Component
   */
   public function getAllShippingAddressFromUser()
   { 
-    \Log::info($this->log.'getAllShippingAddressFromUser');
     if (isset($this->user->id)) {
-        $this->userShippingAddresses = $this->user->addresses()->where("type", "shipping")->get();
-       
+      $this->userShippingAddresses = $this->user->addresses()->where("type", "shipping")->get();
     }else{
         $this->userShippingAddresses = collect([]);
     }
@@ -269,63 +269,72 @@ class WarehouseLocator extends Component
 
     \Log::info($this->log.'checkAddress');
 
-    //Added
-    if(isset($addressData['id'])){
-      $criteria = $addressData['id'];
-    }else{
-      //Shipping Address Changed
-      $criteria = $addressData;
-    }
-   
-    //Search Collection Entity
-    $params['include'] = [];
-    $address = $this->addressRepository()->getItem($criteria,json_decode(json_encode($params)));
+    if(!empty($addressData)){
 
-    //Get warehouse to the address
-    $warehouseToAddress = $address->warehouse;
+      $this->disabledBtnConfirm = false;
 
-    //The address have a warehouse
-    if (!is_null($warehouseToAddress)) {
-      \Log::info($this->log . 'Shipping Address has a warehouse');
-      $warehouse = $warehouseToAddress;
-    }else{
-      //Proccess to get a Warehouse to the Address
-      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($address);
-
-      //Get Warehouse Data
-      $warehouse = $warehouseProcess['warehouse'];
-
-      //Save Warehouse for this Address
-      $address->warehouse_id = $warehouse->id;
-      $address->save();
-    }
-
-    //Update Livewire Vars
-    $this->shippingAddress = $address;
-    $this->warehouse = $warehouse;
+      //Added
+      if(isset($addressData['id'])){
+        $criteria = $addressData['id'];
+      }else{
+        //Shipping Address Changed
+        $criteria = $addressData;
+      }
     
-    //Save in Session
-    session(['warehouse' => $this->warehouse]);
-    session(['shippingAddress' => $this->shippingAddress]);
+      //Search Collection Entity
+      $params['include'] = [];
+      $address = $this->addressRepository()->getItem($criteria,json_decode(json_encode($params)));
 
-    //Show Session Vars in Log
-    $this->warehouseService()->showSessionVars();
+      //Get warehouse to the address
+      $warehouseToAddress = $address->warehouse;
 
-    //Close Address Form
-    $this->showAddressForm = false;
+      //The address have a warehouse
+      if (!is_null($warehouseToAddress)) {
+        \Log::info($this->log . 'Shipping Address has a warehouse');
+        $warehouse = $warehouseToAddress;
+      }else{
+        //Proccess to get a Warehouse to the Address
+        $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($address);
 
-    //Verifying that it was a nearby warehouse
-    if(isset($warehouseProcess['nearby'])){
-      //Show Sweet Alert in frontend
-      session(['warehouseAlert' => true]);
-      //Reload Page
-      return redirect(request()->header('Referer'));
+        //Get Warehouse Data
+        $warehouse = $warehouseProcess['warehouse'];
+
+        //Save Warehouse for this Address
+        $address->warehouse_id = $warehouse->id;
+        $address->save();
+      }
+
+      //Update Livewire Vars
+      $this->shippingAddress = $address;
+      $this->warehouse = $warehouse;
+      
+      //Save in Session
+      session(['warehouse' => $this->warehouse]);
+      session(['shippingAddress' => $this->shippingAddress]);
+
+      //Show Session Vars in Log
+      $this->warehouseService()->showSessionVars();
+
+      //Close Address Form
+      $this->showAddressForm = false;
+
+      //Verifying that it was a nearby warehouse
+      if(isset($warehouseProcess['nearby'])){
+        //Show Sweet Alert in frontend
+        session(['warehouseAlert' => true]);
+        //Reload Page
+        return redirect(request()->header('Referer'));
+
+      }else{
+
+        //OJO CON ESTO / PROBAR
+        $this->getAllShippingAddressFromUser();
+        
+      }
 
     }else{
-
-      //OJO CON ESTO / PROBAR
-      $this->getAllShippingAddressFromUser();
-      
+      $this->shippingAddress = null;
+      $this->disabledBtnConfirm = true;
     }
 
   }
@@ -373,8 +382,17 @@ class WarehouseLocator extends Component
     \Log::info($this->log.'changeTabSelected|To: '.$tabSelected);
 
     $this->tabSelected = $tabSelected;
-    //session(['shippingMethodName' => $shippingMethodSelected]);
-   
+    
+    //Is tab Pickup but button confirm was disabled
+    if($tabSelected==$this->shippingMethods['pickup'] && $this->disabledBtnConfirm){
+      $this->disabledBtnConfirm = false;
+    }
+
+    //Is tab Delivery and shipping address not selected
+    if($tabSelected==$this->shippingMethods['delivery'] && is_null($this->shippingAddress)){
+      $this->disabledBtnConfirm = true;
+    } 
+
   }
 
   /**
