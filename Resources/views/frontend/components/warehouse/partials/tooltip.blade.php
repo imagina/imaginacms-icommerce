@@ -4,22 +4,27 @@
         <div class="warehouse-tooltip-body">
             <div class="warehouse-tooltip-close" onclick="closeTooltip()">×</div>
             <div class="warehouse-tooltip-body-title">
-                ¿Vas a comprar para: {{$warehouse->address}}
+                {{trans('icommerce::warehouses.messages.you are going to buy for')}}
+                {{$warehouse->address}}
             </div>
             <div class="warehouse-tooltip-body-description">
-                Te mostraremos los productos disponibles para esta localidad
+                {{trans('icommerce::warehouses.messages.products for this location')}}
             </div>
 
             <div class="row justify-content-center mt-4">
                 <div class="col-sm-6 pb-3 pb-sm-0">
-                    <button type="button" onclick="closeTooltip()" class="btn btn-outline-primary btn-block">Mantener</button>
+                    <button type="button" onclick="closeTooltip()" class="btn btn-outline-primary btn-block">{{trans('icommerce::warehouses.button.keep')}}</button>
                 </div>
                 <div class="col-sm-6">
 
                     @if($user)
-                        <button type="button" onclick="closeTooltip()" data-toggle="modal" data-target="#modalWarehouseLocator" class="btn btn-primary btn-block">Cambiar</button>
+                        <button type="button" onclick="closeTooltip()" data-toggle="modal" data-target="#modalWarehouseLocator" class="btn btn-primary btn-block">
+                            {{trans('icommerce::warehouses.button.change')}}
+                        </button>
                     @else
-                        <button type="button" onclick="closeTooltip()" data-toggle="modal" data-target="#userLoginModal" class="btn btn-primary btn-block">Cambiar</button>
+                        <button type="button" onclick="closeTooltip()" data-toggle="modal" data-target="#userLoginModal" class="btn btn-primary btn-block">
+                            {{trans('icommerce::warehouses.button.change')}}
+                        </button>
                     @endif
 
                 </div>

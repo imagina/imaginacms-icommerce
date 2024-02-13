@@ -4,8 +4,8 @@
 
             @if($user && !empty($shippingAddress))
                 <span class="{{ $textClass }}">
-                Hola {{$user->first_name}},
-                {{ $text ?? 'tu Ubicación es: ' }}
+                {{trans('icommerce::warehouses.messages.hello')}} {{$user->first_name}},
+                {{ $text ?? trans('icommerce::warehouses.messages.your address is') }}
                 </span>
                 <a class="address cursor-pointer {{ $addressClass }}" data-toggle="modal" data-target="#modalWarehouseLocator">
                     <u>{{$shippingAddress->address_1}}</u>
@@ -14,11 +14,11 @@
             @else
                 @if($user)
                     <a class="address cursor-pointer {{$addressClass}}" data-toggle="modal" data-target="#modalWarehouseLocator">
-                        Hola {{$user->first_name}}, estas comprando para: {{$warehouse->address}}
+                        {{trans('icommerce::warehouses.messages.hello')}} {{$user->first_name}}, {{trans('icommerce::warehouses.messages.buying for')}} {{$warehouse->address}}
                     </a>
                 @else
-                    Hola, <a class="cursor-pointer" onclick="location.href='{{"/ipanel/#/auth/login/?redirectTo=".url()->current()}}'"> <!-- llamar al login -->
-                        Iniciar sesión para usar tus direcciones guardadas
+                    {{trans('icommerce::warehouses.messages.hello')}}, <a class="cursor-pointer" onclick="location.href='{{"/ipanel/#/auth/login/?redirectTo=".url()->current()}}'"> <!-- llamar al login -->
+                        {{trans('icommerce::warehouses.messages.not logged')}}
                     </a>
                 @endif
 
