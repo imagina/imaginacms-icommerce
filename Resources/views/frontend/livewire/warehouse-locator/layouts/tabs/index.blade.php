@@ -6,13 +6,13 @@
             <a class="nav-link {{$tabSelected == $shippingMethods['delivery'] ? 'active' : ''}}" 
             id="homeTabModalWarehouseLocator" data-toggle="tab" href="#homeModalWarehouseLocator" role="tab" aria-controls="homeModalWarehouseLocator" aria-selected="true"
             wire:click="changeTabSelected('{{$shippingMethods['delivery']}}')">
-                Domicilio
+               {{trans('icommerce::warehouses.tabs.delivery')}}
             </a>
         </li>
         <li class="nav-item" role="presentation" >
             <a class="nav-link {{$tabSelected == $shippingMethods['pickup'] ? 'active' : ''}}" id="pointTabModalWarehouseLocator" data-toggle="tab" href="#pointModalWarehouseLocator" role="tab" aria-controls="pointModalWarehouseLocator" aria-selected="false"
             wire:click="changeTabSelected('{{$shippingMethods['pickup']}}')">
-                Recoger en Tienda
+                {{trans('icommerce::warehouses.tabs.pickup')}}
             </a>
         </li>
     </ul>

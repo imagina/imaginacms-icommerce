@@ -38,4 +38,8 @@ return [
         'title' => '¿Cómo te gustaría recibir tu pedido?',
         'choose a shippping method' => 'Elige un método de entrega',
     ],
+    'tabs' => [
+        'delivery' => 'Domicilio',
+        'pickup' => 'Recoger en Tienda'
+    ]
 ];
