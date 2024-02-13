@@ -11,6 +11,7 @@ return [
         'warehouses' => 'Warehouse',
         'create warehouse' => 'Create a warehouse',
         'edit warehouse' => 'Edit a warehouse',
+        'important' => 'Importante',
     ],
     'button' => [
         'create warehouse' => 'Create a warehouse',
@@ -28,7 +29,8 @@ return [
         'buying for' => 'Estas comprando para:',
         'not logged' => 'Iniciar sesión para usar tus direcciones guardadas',
         'you are going to buy for' => '¿Vas a comprar para:',
-        'products for this location' => 'Te mostraremos los productos disponibles para esta localidad'
+        'products for this location' => 'Te mostraremos los productos disponibles para esta localidad',
+        'address without warehouse coverage' => 'Tu dirección no tiene cobertura para Domicilio, te hemos asignado la tienda mas cercana para que recojas tus productos',
     ],
     'validation' => [
     ],

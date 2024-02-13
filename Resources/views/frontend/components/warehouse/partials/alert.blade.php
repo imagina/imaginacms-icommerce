@@ -4,8 +4,8 @@
 <script>
     @if(session("warehouseAlert"))
         Swal.fire({
-            title: "Importante!",
-            text: "Tu dirección no tiene cobertura para Domicilio, te hemos asignado la tienda mas cercana para que recojas tus productos",
+            title: "{{trans('icommerce::warehouses.title.important')}}",
+            text: "{{trans('icommerce::warehouses.messages.address without warehouse coverage')}}",
             icon: "warning"
         }).then((result) => {
             if (result.isConfirmed) {
