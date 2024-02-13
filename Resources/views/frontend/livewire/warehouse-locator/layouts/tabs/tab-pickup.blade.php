@@ -20,7 +20,9 @@
             <!-- End Listado de tiendas marcadas -->
             <div class="form-row justify-content-center mt-4">
                 <div class="form-group col-md-6">
-                    <button wire:click="$set('chooseOtherWarehouse', true)" type="button" class="btn outline btn-primary btn-block">Escoger otra Tienda</button>
+                    <button wire:click="$set('chooseOtherWarehouse', true)" type="button" class="btn outline btn-primary btn-block">
+                        {{trans('icommerce::warehouses.button.choosed other warehouse')}}
+                    </button>
                 </div>
                 <div class="form-group col-md-6">
                     @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.btn-confirm')
@@ -34,8 +36,8 @@
         <div id="otherWarehouse">
 
             <p class="text-small">
-                <strong>Importante:</strong> 
-                Seleccione el punto en el mapa con el puntero rojo después de clic en Confirmar. Solo se mostrarán los productos para la tienda seleccionada.
+                <strong>{{trans('icommerce::warehouses.title.important')}}:</strong> 
+                {{trans('icommerce::warehouses.messages.select a point of the map')}}
             </p>
 
 
@@ -57,7 +59,9 @@
             
             <div class="form-row justify-content-center mt-4">
                 <div class="form-group col-md-4">
-                    <button wire:click="$set('chooseOtherWarehouse', false)" type="button" class="btn outline btn-primary btn-block">Volver</button>
+                    <button wire:click="$set('chooseOtherWarehouse', false)" type="button" class="btn outline btn-primary btn-block">
+                        {{trans('icommerce::warehouses.button.back')}}
+                    </button>
                 </div>
                 <div class="form-group col-md-6">
                     @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.btn-confirm')

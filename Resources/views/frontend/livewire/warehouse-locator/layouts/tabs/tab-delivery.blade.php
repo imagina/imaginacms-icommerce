@@ -19,7 +19,9 @@ id="homeModalWarehouseLocator" role="tabpanel" aria-labelledby="homeTabModalWare
         <div class="form-row justify-content-center mt-4">
 
             <div class="form-group col-md-6">
-                <button wire:click="$set('showAddressForm', true)" type="button" class="btn btn-primary btn-block">Agregar nueva dirección</button>
+                <button wire:click="$set('showAddressForm', true)" type="button" class="btn btn-primary btn-block">
+                    {{trans('icommerce::warehouses.button.add new address')}}
+                </button>
             </div>
 
             <div class="form-group col-md-6">
