@@ -24,6 +24,13 @@ class WarehouseLocator extends Component
   public $chooseOtherWarehouse;
   public $tabSelected;
 
+  public $provinces;
+  public $cities;
+  public $mapPickup;
+  public $warehousesLocation;
+  public $warehouseSelectedFromMap;
+  public $showNotWarehouses;
+  
   /**
   * LISTENERS
   */
@@ -31,7 +38,8 @@ class WarehouseLocator extends Component
       'addressAdded' => 'checkAddress',
       'cleanWarehouseAlert',
       'cancelledNewAddress' => 'changeShowAddressForm',
-      'shippingAddressChanged' => 'checkAddress'
+      'shippingAddressChanged' => 'checkAddress',
+      'markerSelectedFromMap'
   ];
     
   /**
@@ -58,14 +66,12 @@ class WarehouseLocator extends Component
       $this->showAddressForm = false;
       $this->chooseOtherWarehouse = false;
       $this->tabSelected = $this->shippingMethods['delivery'];
+      $this->warehouseSelectedFromMap = null;
+      $this->showNotWarehouses = false;
       
-     
       //Init Process
       $this->getAllShippingAddressFromUser();
       $this->init();
-     
-      //$this->initProvinces();
-      //$this->initCities();
 
   }
 
@@ -157,6 +163,7 @@ class WarehouseLocator extends Component
   { 
     
     $this->cities = collect([]);
+    $this->showNotWarehouses = false;
 
     if(!empty($this->mapPickup["state_id"])){
       $provinceId = $this->mapPickup["state_id"];
@@ -198,9 +205,19 @@ class WarehouseLocator extends Component
 
       case 'mapPickup.city':
           if (!empty($value)) {
-            $this->setWarehousesLocations();
+            $this->setWarehousesLocation();
           }
           break;
+      case 'chooseOtherWarehouse':
+            if ($value) {
+              $this->initProvinces();
+            }else{
+              //Click in "Back Btn"
+              if(!is_null($this->warehouseSelectedFromMap)){
+                $this->warehouseSelectedFromMap = null;
+              }
+            }
+            break;
     }
 
   }
@@ -208,35 +225,37 @@ class WarehouseLocator extends Component
   /**
    *  Get and Set Warehouses Location to City
    */
-  public function setWarehousesLocations()
+  public function setWarehousesLocation()
   {
 
-    \Log::info($this->log.'setWarehousesLocations|CityId: '.$this->mapPickup["city"]);
+    \Log::info($this->log.'setWarehousesLocation|CityId: '.$this->mapPickup["city"]);
+    $this->warehousesLocation = [];
+    $this->showNotWarehouses = false;
     
     //Warehouses to the City Selected in Map
     $params['filter']['city_id'] = $this->mapPickup["city"];
-    $this->warehouses = $this->warehouseRepository()->getItemsBy(json_decode(json_encode($params)));
+    $params['filter']['status'] = 1;
+    $warehouses = $this->warehouseRepository()->getItemsBy(json_decode(json_encode($params)));
 
-    if(!is_null($this->warehouses) && count($this->warehouses)>0){
-      foreach ($this->warehouses as $key => $warehouse) {
+    //Check warehouses
+    if(!is_null($warehouses) && count($warehouses)>0){
+      foreach ($warehouses as $key => $warehouse) {
 
-        \Log::info($this->log.'setWarehousesLocations|warehouse: '.$warehouse->id);
-        array_push($this->warehousesLocations, [
+        \Log::info($this->log.'setWarehousesLocation|warehouse: '.$warehouse->id);
+        array_push($this->warehousesLocation, [
           'lat' => $warehouse->lat,
           'lng' => $warehouse->lng,
           'title' =>  $warehouse->title,
-          'id' => $warehouse->id
+          'id' => $warehouse->id,
+          'address' => $warehouse->address, //Se agrego aqui para ser reutilizado
+          'province' => $warehouse->province->name,//Se agrego aqui para ser reutilizado
+          'city' => $warehouse->city->name//Se agrego aqui para ser reutilizado
         ]);
 
       }
 
-      //Send event to Update Locations in frontend
-      //Listener in: Frontend/Components/Maps
-      //warehouses al final corresponde a: "extraIdEvents" como parametro del map
-      $this->dispatchBrowserEvent('items-map-updated-warehouses',[
-        'locationsItem' => $this->warehousesLocations,
-      ]);
-
+    }else{
+      $this->showNotWarehouses = true;
     }
 
   }
@@ -330,6 +349,22 @@ class WarehouseLocator extends Component
   }
 
   /**
+   * Listener
+   * Marker is selected in Map
+   */
+  public function markerSelectedFromMap($warehouseId)
+  {
+    \Log::info($this->log.'markerSelectedFromMap: '.$warehouseId);
+
+    //Re use this array to search data
+    $key = array_search($warehouseId, array_column($this->warehousesLocation, 'id'));
+    
+    //To the front View
+    $this->warehouseSelectedFromMap = $this->warehousesLocation[$key];
+   
+  }
+
+  /**
    * EVENT CLICK
    * When Click in a TAB
    */
@@ -351,6 +386,16 @@ class WarehouseLocator extends Component
    
     //Save in Session
     session(['shippingMethodName' => $this->tabSelected]);
+
+    //Case Pickup Map
+    if(!is_null($this->warehouseSelectedFromMap)){
+      
+      $criteria = $this->warehouseSelectedFromMap['id'];
+      //Get All Data
+      $warehouseSelected = $this->warehouseRepository()->getItem($criteria);
+      //Save in Session
+      session(['warehouse' => $warehouseSelected]);
+    }
 
     //Reload Page
     return redirect(request()->header('Referer'));
