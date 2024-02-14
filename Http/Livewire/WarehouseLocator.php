@@ -209,14 +209,7 @@ class WarehouseLocator extends Component
           }
           break;
       case 'chooseOtherWarehouse':
-            if ($value) {
-              $this->initProvinces();
-            }else{
-              //Click in "Back Btn"
-              if(!is_null($this->warehouseSelectedFromMap)){
-                $this->warehouseSelectedFromMap = null;
-              }
-            }
+            $this->otherWarehousesSelected($value);
             break;
     }
 
@@ -231,6 +224,7 @@ class WarehouseLocator extends Component
     \Log::info($this->log.'setWarehousesLocation|CityId: '.$this->mapPickup["city"]);
     $this->warehousesLocation = [];
     $this->showNotWarehouses = false;
+    $this->warehouseSelectedFromMap = null;
     
     //Warehouses to the City Selected in Map
     $params['filter']['city_id'] = $this->mapPickup["city"];
@@ -259,7 +253,7 @@ class WarehouseLocator extends Component
     }
 
   }
-  
+
   /**
    * LISTENER | addressAdded | shippingAddressChanged
    * @param $addressData (array)
@@ -370,6 +364,9 @@ class WarehouseLocator extends Component
     
     //To the front View
     $this->warehouseSelectedFromMap = $this->warehousesLocation[$key];
+
+    //Show BTN Confirm
+    $this->disabledBtnConfirm = false;
    
   }
 
@@ -388,10 +385,24 @@ class WarehouseLocator extends Component
       $this->disabledBtnConfirm = false;
     }
 
-    //Is tab Delivery and shipping address not selected
-    if($tabSelected==$this->shippingMethods['delivery'] && is_null($this->shippingAddress)){
-      $this->disabledBtnConfirm = true;
-    } 
+    //Is tab Delivery 
+    if($tabSelected==$this->shippingMethods['delivery']){
+      //shipping address not selected
+      if(is_null($this->shippingAddress)){
+        //Not Show BTN Confirm
+        $this->disabledBtnConfirm = true;
+      }else{
+        //Show BTN Confirm
+        $this->disabledBtnConfirm = false;
+      }
+
+      //El usuario estaba en Pickup, escogiendo la ubicacion pero se cambio de tab
+      if($this->chooseOtherWarehouse){
+          $this->chooseOtherWarehouse = false;
+          $this->warehouseSelectedFromMap = null;
+      }
+      
+    }
 
   }
 
@@ -417,6 +428,32 @@ class WarehouseLocator extends Component
 
     //Reload Page
     return redirect(request()->header('Referer'));
+
+  }
+
+  /**
+   * Updated | ChooseOtherWarehouses Var
+   * Click Button Other Warehouses
+   */
+  public function otherWarehousesSelected($value)
+  {
+
+    //Case Open Ilocations
+    if ($value) {
+      
+      if(is_null($this->provinces)) $this->initProvinces();
+      //Disable BTN Confirm
+      $this->disabledBtnConfirm = true;
+
+    }else{
+
+      //Case | Click in "Back BTN"
+     
+      $this->warehouseSelectedFromMap = null;
+      //Active BTN Confirm
+      $this->disabledBtnConfirm = false;
+      
+    }
 
   }
 
