@@ -12,15 +12,10 @@
                 </a>
 
             @else
-                @if($user)
-                    <a class="address cursor-pointer {{$addressClass}}" data-toggle="modal" data-target="#modalWarehouseLocator">
-                        {{trans('icommerce::warehouses.messages.hello')}} {{$user->first_name}}, {{trans('icommerce::warehouses.messages.buying for')}} {{$warehouse->address}}
-                    </a>
-                @else
-                    {{trans('icommerce::warehouses.messages.hello')}}, <a class="cursor-pointer" onclick="location.href='{{"/ipanel/#/auth/login/?redirectTo=".url()->current()}}'"> <!-- llamar al login -->
-                        {{trans('icommerce::warehouses.messages.not logged')}}
-                    </a>
-                @endif
+                
+                <a class="address cursor-pointer {{$addressClass}}" data-toggle="modal" data-target="#modalWarehouseLocator">
+                    {{trans('icommerce::warehouses.messages.hello')}} {{$user ? $user->first_name : ""}}, {{trans('icommerce::warehouses.messages.buying for')}} {{$warehouse->address}}
+                </a>
 
             @endif
 
