@@ -267,6 +267,13 @@ class Warehouse extends Component
           }
         }
 
+      }else{
+        
+        //User Not Logged but at one point the shippingAddress session variable was created
+        if(!is_null(session("shippingAddress"))) {
+          session(['shippingAddress' => null]);
+        }
+
       }
     }
 
