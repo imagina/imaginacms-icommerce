@@ -225,8 +225,8 @@ class Warehouse extends Component
 
             //Assign Default Warehouse
             $this->setDefaultWarehouse();
-            //Show tooltip
-            $this->activeTooltip = true;
+
+            if(is_null(session("showTooltip"))) $this->activeTooltip = true;
 
             session(['shippingAddressChecked' => true]);
 
