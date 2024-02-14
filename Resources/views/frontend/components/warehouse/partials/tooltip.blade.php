@@ -188,7 +188,7 @@
             tooltip.parentNode.removeChild(tooltip);
         }
 
-        if('keep'){
+        if(from=='keep'){
             //Update variable session
             window.livewire.emit('updateTooltipStatus');
         }
