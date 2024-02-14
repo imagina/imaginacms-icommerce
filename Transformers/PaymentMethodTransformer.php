@@ -12,6 +12,7 @@ class PaymentMethodTransformer extends JsonResource
 {
   public function toArray($request)
   {
+    $form = $this->forms->first();
     $data = [
       'id' => $this->when($this->id, $this->id),
       'title' => $this->when($this->title, $this->title),
@@ -27,8 +28,8 @@ class PaymentMethodTransformer extends JsonResource
       'activevalue' => $this->active,
       'payout' => $this->payout ? 1 : 0,
       'mediaFiles' => $this->mediaFiles(),
-      'form' => new FormTransformer($this->form),
-      'formId' => $this->form ? $this->form->id : null,
+      'form' => $form ? new FormTransformer($form) : null,
+      'formId' => $form->id ?? null,
     ];
 
     // Add Crud Fields from Payment Method
