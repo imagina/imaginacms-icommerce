@@ -7,12 +7,13 @@
         :locations="$warehousesLocation"
         :initMultipleLocations="true"
         :activeClickInMarker="true"
-        :emitAfterClickMarker="true" />
+        :emitAfterClickMarker="true"
+        :activeAnimationInMarker="true" />
 
 @endif
    
 @if($showNotWarehouses)
     <div class="alert alert-danger" role="alert">
-        {{trans('icommerce::warehouses.message.not warehouses found for the location')}}
+        {{trans('icommerce::warehouses.messages.not warehouses found for the location')}}
     </div>
 @endif
