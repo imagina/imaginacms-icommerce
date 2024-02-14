@@ -2,7 +2,7 @@
     <div class="warehouse-tooltip-screen">aaf</div>
     <div class="warehouse-tooltip-container">
         <div class="warehouse-tooltip-body">
-            <div class="warehouse-tooltip-close" onclick="closeTooltip()">×</div>
+            <div class="warehouse-tooltip-close" onclick="closeTooltip('close')">×</div>
             <div class="warehouse-tooltip-body-title">
                 {{trans('icommerce::warehouses.messages.you are going to buy for')}}
                 {{$warehouse->address}}
@@ -13,19 +13,13 @@
 
             <div class="row justify-content-center mt-4">
                 <div class="col-sm-6 pb-3 pb-sm-0">
-                    <button type="button" onclick="closeTooltip()" class="btn btn-outline-primary btn-block">{{trans('icommerce::warehouses.button.keep')}}</button>
+                    <button type="button" onclick="closeTooltip('keep')" class="btn btn-outline-primary btn-block">{{trans('icommerce::warehouses.button.keep')}}</button>
                 </div>
                 <div class="col-sm-6">
 
-                    @if($user)
-                        <button type="button" onclick="closeTooltip()" data-toggle="modal" data-target="#modalWarehouseLocator" class="btn btn-primary btn-block">
-                            {{trans('icommerce::warehouses.button.change')}}
-                        </button>
-                    @else
-                        <button type="button" onclick="closeTooltip()" data-toggle="modal" data-target="#userLoginModal" class="btn btn-primary btn-block">
-                            {{trans('icommerce::warehouses.button.change')}}
-                        </button>
-                    @endif
+                    <button type="button" onclick="closeTooltip('change')" data-toggle="modal" data-target="#modalWarehouseLocator" class="btn btn-primary btn-block">
+                        {{trans('icommerce::warehouses.button.change')}}
+                    </button>
 
                 </div>
             </div>
@@ -188,11 +182,17 @@
 
 </style>
 <script>
-    function closeTooltip() {
+    function closeTooltip(from) {
         const tooltip = document.getElementById('{{$warehouseLocatorId}}Tooltip');
         if (tooltip.parentNode) {
             tooltip.parentNode.removeChild(tooltip);
         }
+
+        if('keep'){
+            //Update variable session
+            window.livewire.emit('updateTooltipStatus');
+        }
+       
     }
     // Función para mostrar el Tooltip
     function mostrarTooltip() {

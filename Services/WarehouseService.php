@@ -29,6 +29,7 @@ class WarehouseService
 
         $shippingAddressChecked = request()->session()->get('shippingAddressChecked');
         $warehouseAlert= request()->session()->get('warehouseAlert');
+        $showTooltip = request()->session()->get('showTooltip');
 
         \Log::info($this->log.'showSessionVars|===============================');
 
@@ -42,6 +43,8 @@ class WarehouseService
             \Log::info($this->log.'showSessionVars|shippingAddressChecked: '.$shippingAddressChecked);
         if(isset($warehouseAlert))
             \Log::info($this->log.'showSessionVars|warehouseAlert: '.$warehouseAlert);
+        if(isset($showTooltip))
+            \Log::info($this->log.'showSessionVars|showTooltip: '.$showTooltip);
 
         \Log::info($this->log.'showSessionVars|===============================');
        
@@ -60,6 +63,7 @@ class WarehouseService
         session()->forget('shippingAddress');
         session()->forget('shippingAddressChecked');
         session()->forget('warehouseAlert');
+        session()->forget('showTooltip');
 
     }
 

@@ -164,8 +164,9 @@ class Warehouse extends Component
       $this->shippingAddress = session("shippingAddress");
     }
 
-    //Show in Log
-    //$this->warehouseService()->showSessionVars();
+    if (!is_null(session("showTooltip"))) {
+      $this->activeTooltip = session("showTooltip");
+    }
 
   }
 
@@ -278,7 +279,7 @@ class Warehouse extends Component
     }
 
     //Show Tooltip
-    if (is_null($this->shippingAddress)) $this->activeTooltip = true;
+    if (is_null($this->shippingAddress) && is_null(session("showTooltip"))) $this->activeTooltip = true;
 
     \Log::info($this->log . 'END');
 
