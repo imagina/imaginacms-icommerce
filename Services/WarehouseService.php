@@ -28,7 +28,6 @@ class WarehouseService
         $shippingAddress = request()->session()->get('shippingAddress');
 
         $shippingAddressChecked = request()->session()->get('shippingAddressChecked');
-        //$warehouseChecked = request()->session()->get('warehouseChecked');
         $warehouseAlert= request()->session()->get('warehouseAlert');
 
         \Log::info($this->log.'showSessionVars|===============================');
@@ -41,10 +40,6 @@ class WarehouseService
             \Log::info($this->log.'showSessionVars|shippingMethodName: '.$shippingMethodName);
         if(isset($shippingAddressChecked))
             \Log::info($this->log.'showSessionVars|shippingAddressChecked: '.$shippingAddressChecked);
-        /*
-        if(isset($warehouseChecked))
-            \Log::info($this->log.'showSessionVars|warehouseChecked: '.$warehouseChecked);
-        */
         if(isset($warehouseAlert))
             \Log::info($this->log.'showSessionVars|warehouseAlert: '.$warehouseAlert);
 
@@ -65,10 +60,7 @@ class WarehouseService
         session()->forget('shippingAddress');
         session()->forget('shippingAddressChecked');
         session()->forget('warehouseAlert');
-        //session()->forget('warehouseChecked');
 
-
-       // $this->showSessionVars();
     }
 
     /**
@@ -81,6 +73,7 @@ class WarehouseService
         $nearbyWarehouse = null;
         
         $params['include'] = ['polygon'];
+        $params['filter']['status'] = 1;
         $warehouses = $this->warehouseRepository->getItemsBy(json_decode(json_encode($params)));
 
         \Log::info($this->log.'getWarehouseToAddress|Address: '.$address->address_1.'| City: '.$address->city);
