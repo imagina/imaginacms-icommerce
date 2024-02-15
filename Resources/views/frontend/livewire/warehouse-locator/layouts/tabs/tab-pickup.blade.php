@@ -36,10 +36,9 @@
         <div id="otherWarehouse">
 
             <p class="text-small">
-                <strong>{{trans('icommerce::warehouses.title.important')}}:</strong> 
-                {{trans('icommerce::warehouses.messages.select a point of the map')}}
+                <strong>{{trans('icommerce::warehouses.title.information')}}:</strong>
+                {{trans('icommerce::warehouses.messages.select province and city')}}
             </p>
-
 
             <div class="form-point">
 
@@ -51,8 +50,6 @@
 
                 <!-- WAREHOUSES MAP -->
                 @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.warehouses-map')
-                
-
 
             </div>
 

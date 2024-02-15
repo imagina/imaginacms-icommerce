@@ -1,5 +1,10 @@
 @if(!is_null($warehousesLocation) && count($warehousesLocation)>0) 
     
+    <p class="text-small">
+        <strong>{{trans('icommerce::warehouses.title.important')}}:</strong> 
+        {{trans('icommerce::warehouses.messages.select a point of the map')}}
+    </p>
+
     <x-isite::maps  
         mapId="map_canvas_pickup"
         :usingLivewire="true" 

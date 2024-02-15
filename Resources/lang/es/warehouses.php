@@ -12,7 +12,8 @@ return [
         'create warehouse' => 'Create a warehouse',
         'edit warehouse' => 'Edit a warehouse',
         'important' => 'Importante',
-        'warehouse selected' => 'Tienda seleccionada'
+        'warehouse selected' => 'Tienda seleccionada',
+        'information' => 'Información'
     ],
     'button' => [
         'create warehouse' => 'Create a warehouse',
@@ -36,8 +37,9 @@ return [
         'you are going to buy for' => '¿Vas a comprar para:',
         'products for this location' => 'Te mostraremos los productos disponibles para esta localidad',
         'address without warehouse coverage' => 'Tu dirección no tiene cobertura para Domicilio, te hemos asignado la tienda mas cercana para que recojas tus productos',
-        'select a point of the map' => 'Seleccione el punto en el mapa con el puntero rojo después de clic en Confirmar. Solo se mostrarán los productos para la tienda seleccionada.',
+        'select a point of the map' => 'Seleccione el punto en el mapa con el puntero rojo. Después haz click en el boton "Confirmar Selección". Solo se mostrarán los productos para la tienda seleccionada.',
         'not warehouses found for the location' => 'No existen bodegas disponibles para la ubicacion seleccionada',
+        'select province and city' => 'Seleccione la provincia y la ciudad para mostrarte las bodegas disponibles',
     ],
     'validation' => [
     ],
