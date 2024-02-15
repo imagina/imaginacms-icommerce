@@ -22,7 +22,8 @@ return [
         'add new address' => 'Agregar nueva dirección',
         'choosed other warehouse' => 'Escoger otra Tienda',
         'back' => 'Volver',
-        'confirm selected' => 'Confirmar Selección'
+        'confirm selected' => 'Confirmar Selección',
+        'waiting' => 'Cargando',
     ],
     'table' => [
     ],
