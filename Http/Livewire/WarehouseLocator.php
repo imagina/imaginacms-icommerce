@@ -31,6 +31,7 @@ class WarehouseLocator extends Component
   public $warehouseSelectedFromMap;
   public $showNotWarehouses;
   public $disabledBtnConfirm;
+  public $loading;
   
   /**
   * LISTENERS
@@ -41,7 +42,8 @@ class WarehouseLocator extends Component
       'cancelledNewAddress' => 'changeShowAddressForm',
       'shippingAddressChanged' => 'checkAddress',
       'markerSelectedFromMap',
-      'updateTooltipStatus'
+      'updateTooltipStatus',
+      'confirmData'
   ];
     
   /**
@@ -71,6 +73,7 @@ class WarehouseLocator extends Component
       $this->warehouseSelectedFromMap = null;
       $this->showNotWarehouses = false;
       $this->disableBtnConfirm = false;
+      $this->loading = false;
       
       //Init Process
       $this->getAllShippingAddressFromUser();
@@ -125,7 +128,7 @@ class WarehouseLocator extends Component
   }
 
   /**
-   * 
+   * INIT
    */
   public function init()
   {
@@ -137,7 +140,6 @@ class WarehouseLocator extends Component
 
   }
 
-  
   /**
    * Init Provinces | Case Tab Pickup
    */
@@ -183,7 +185,7 @@ class WarehouseLocator extends Component
   }
 
   /**
-   * Updated General
+   * UPDATE GENERAL
    */
   public function updated($name, $value)
   {
@@ -425,7 +427,12 @@ class WarehouseLocator extends Component
    */
   public function confirmData()
   {
-   
+
+    \Log::info($this->log.'confirmData');
+
+    $this->loading = true;
+    $this->disabledBtnConfirm = true;
+
     //Save in Session
     session(['shippingMethodName' => $this->tabSelected]);
 
@@ -440,7 +447,10 @@ class WarehouseLocator extends Component
     }
 
     //Reload Page
-    return redirect(request()->header('Referer'));
+    //return redirect(request()->header('Referer'));
+
+    //Reload Page
+    $this->dispatchBrowserEvent('refresh-page');
 
   }
 
