@@ -436,14 +436,22 @@ class WarehouseLocator extends Component
     //Save in Session
     session(['shippingMethodName' => $this->tabSelected]);
 
-    //Case Pickup Map
-    if(!is_null($this->warehouseSelectedFromMap)){
+    //Case Pickup
+    if($this->tabSelected==$this->shippingMethods['pickup']){
+
+      //Shipping Address Selected (From Delivery)
+      session(['shippingAddress' => null]);
+
+      //User selected a warehouse from Map
+      if(!is_null($this->warehouseSelectedFromMap)){
+        
+        $criteria = $this->warehouseSelectedFromMap['id'];
+        //Get All Data
+        $warehouseSelected = $this->warehouseRepository()->getItem($criteria);
+        //Save in Session
+        session(['warehouse' => $warehouseSelected]);
+      }
       
-      $criteria = $this->warehouseSelectedFromMap['id'];
-      //Get All Data
-      $warehouseSelected = $this->warehouseRepository()->getItem($criteria);
-      //Save in Session
-      session(['warehouse' => $warehouseSelected]);
     }
 
     //Reload Page
