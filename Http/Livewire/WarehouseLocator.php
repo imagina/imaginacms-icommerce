@@ -306,8 +306,8 @@ class WarehouseLocator extends Component
       $this->warehouse = $warehouse;
       
       //Save in Session
-      session(['warehouse' => $this->warehouse]);
-      session(['shippingAddress' => $this->shippingAddress]);
+      //session(['warehouse' => $this->warehouse]);
+      //session(['shippingAddress' => $this->shippingAddress]);
 
       //Show Session Vars in Log
       $this->warehouseService()->showSessionVars();
@@ -452,6 +452,13 @@ class WarehouseLocator extends Component
         session(['warehouse' => $warehouseSelected]);
       }
       
+    }else{
+      //Case Delivery
+      
+      //Save in Session
+      session(['warehouse' => $this->warehouse]);
+      session(['shippingAddress' => $this->shippingAddress]);
+
     }
 
     //Reload Page
