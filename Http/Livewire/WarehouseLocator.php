@@ -136,6 +136,7 @@ class WarehouseLocator extends Component
     //Shipping Method Selected
     if (!is_null(session("shippingMethodName"))){
       $this->shippingMethodName = session("shippingMethodName");
+      $this->tabSelected = session("shippingMethodName");
     }
 
   }
