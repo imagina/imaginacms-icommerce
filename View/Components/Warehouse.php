@@ -185,6 +185,8 @@ class Warehouse extends Component
       $this->shippingAddress = $shippingAddress ;
       //Save in Session Shipping Address
       session(['shippingAddress' => $this->shippingAddress]);
+      session(['shippingMethodName' => $this->shippingMethods['delivery']]);
+
     } else {
       \Log::info($this->log . 'getAndsetShippingAddress|User has no address by default');
       session(['shippingAddress' => null]);
