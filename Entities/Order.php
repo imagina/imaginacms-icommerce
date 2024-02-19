@@ -87,7 +87,8 @@ class Order extends Model
     'type',
     'guest_purchase',
     'warehouse_id',
-    'warehouse_title'
+    'warehouse_title',
+    'warehouse_address'
   ];
   
   
