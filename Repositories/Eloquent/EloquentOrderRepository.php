@@ -68,6 +68,10 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
         $query->where('added_by_id', $filter->user);
       }
 
+      if (isset($filter->warehouseId)) {
+        $query->where('warehouse_id', $filter->warehouseId);
+      }
+
       if (isset($filter->customer)) {
 
         // if has permission
@@ -199,7 +203,10 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
   public function create($data)
   {
-
+    if (setting('icommerce::warehouseFunctionability', null, false)) {
+      $warehouse = session('warehouse');
+      $data["warehouse_id"] = $warehouse->id ?? null;
+    }
     // Create Order
     $order = $this->model->create($data);
 
