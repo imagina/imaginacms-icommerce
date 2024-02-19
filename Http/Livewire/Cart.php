@@ -18,6 +18,8 @@ class Cart extends Component
   public $cart;
   public $view;
   public $layout;
+  public $warehouse;
+  public $warehouseEnabled;
   public $currentCurrency;
   public $currencySelected;
   public $productToQuote;
@@ -27,10 +29,10 @@ class Cart extends Component
   private $params;
   private $request;
   protected $currencies;
-  protected $listeners = ['addToCart','addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
+  protected $listeners = ['addToCart', 'addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
-                        $iconquote = 'fas fa-file-alt', $showButton = true)
+                                $iconquote = 'fas fa-file-alt', $showButton = true)
   {
 
 
@@ -38,6 +40,8 @@ class Cart extends Component
     $this->layout = $layout;
     $this->icon = $icon;
     $this->iconquote = $iconquote;
+    $this->warehouse = session('warehouse');
+    $this->warehouseEnabled = setting('icommerce::warehouseFunctionability',null,false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
 
     //$this->refreshCart();
@@ -80,6 +84,37 @@ class Cart extends Component
       //Create item
       $this->cart = $this->cartRepository()->create($data);
 
+    }
+    if (isset($this->cart->products) && !is_null($this->cart->products)) {
+      $updateCart = false;
+      foreach ($this->cart->products as $cartProduct) {
+        $productAvailable = $this->cartProductRepository()->productHasValidQuantity($cartProduct);
+        if (!$productAvailable) {
+          $this->cartProductRepository()->deleteBy($cartProduct->id);
+          $updateCart = true;
+        } else {
+          $warehouseEnabled = setting('icommerce::warehouseFunctionability', null, false);
+          $warehouse = Session('warehouse');
+          if ($warehouseEnabled && $cartProduct->warehouse_id != $warehouse->id) {
+            $data = [
+              'product_id' => $cartProduct->product->id,
+              'warehouse_id' => $warehouse->id,
+              'cart_id' => $this->cart->id,
+              'product_option_values' =>  $cartProduct->productOptionValues->pluck('id')->toArray()
+            ];
+            $this->cartProductRepository()->updateBy($cartProduct->id, $data);
+          }
+        }
+      }
+      if ($updateCart) {
+        $this->updateCart();
+        $warehouseEnabled = setting('icommerce::warehouseFunctionability', null, false);
+        if ($warehouseEnabled) {
+          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"),["timer" => "8000"]));
+        } else {
+          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProduct"), config("asgard.isite.config.livewireAlerts"));
+        }
+      }
     }
     request()->session()->put('cart', $this->cart);
 
@@ -134,7 +169,10 @@ class Cart extends Component
           break;
 
         case 'Product Quantity Unavailable':
-          $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
+          if($this->warehouseEnabled)
+            $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
+          else
+            $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
       }
 

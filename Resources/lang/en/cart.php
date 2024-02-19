@@ -48,6 +48,7 @@ return [
         'not_existence' => 'You cannot add more since it exceeds the existence in the inventory',
         'min_exceeded' => 'Quantity must be at least 1',
         'quantity_unavailable' => 'There are :quantity units left of the product you want',
+        'warehouse_quantity_unavailable' => 'This product is not available for the selected Warehouse',
     ],
 
 ];

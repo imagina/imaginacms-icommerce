@@ -1,4 +1,4 @@
-<div id="cartLayout2" class="dropdown {{!$showButton ? 'd-none' : ''}}">
+<div wire:init="refreshCart" id="cartLayout2" class="dropdown {{!$showButton ? 'd-none' : ''}}">
 
   @include("icommerce::frontend.livewire.cart.layouts.$layout.button")
 
@@ -11,11 +11,7 @@
 
 @section('scripts-owl')
 @parent
-  <script type="text/javascript" defer>
-    $(document).ready(function () {
-      window.livewire.emit('refreshCart');
-    });
-  </script>
+
 <style>
   #cartLayout2 .cart .quantity:before {
     content: '(';

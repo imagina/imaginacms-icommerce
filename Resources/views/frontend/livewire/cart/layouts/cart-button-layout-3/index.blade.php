@@ -1,4 +1,4 @@
-<div id="cartLayout3" class="cart-layout-3" >
+<div wire:init="refreshCart" id="cartLayout3" class="cart-layout-3" >
 
     @include("icommerce::frontend.livewire.cart.requestquote")
 
@@ -120,11 +120,6 @@
 
 @section('scripts-owl')
     @parent
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            window.livewire.emit('refreshCart');
-        });
-    </script>
     <script>
         window.addEventListener('refresh-page', event => {
             setTimeout(()=>{
