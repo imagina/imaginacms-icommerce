@@ -85,10 +85,6 @@ class Warehouse extends CrudModel
   public function profileAddresses()
   { 
     return $this->hasMany("Modules\Iprofile\Entities\Adress");
-    /*
-    return $this->belongsToMany("Modules\Iprofile\Entities\Adress", 'icommerce__address_warehouse')
-      ->withTimestamps();
-    */
   }
   
 
