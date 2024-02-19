@@ -123,6 +123,12 @@ class OrderService
       |--------------------------------------------------------------------------
       */
 
+      foreach ($cart->products as $cartProduct){
+        if(!$this->cartProduct->productHasValidQuantity($cartProduct)){
+          throw new \Exception('There are some products out of stock', 400);
+        }
+        
+      }
       if (isset($data["shippingAddress"]) || isset($data["shippingAddressId"])) {
         $shippingAddress = $data["shippingAddress"] ??
           (isset($data["shippingAddressId"]) ? $addresses->where("id", $data["shippingAddressId"]) :
@@ -283,7 +289,10 @@ class OrderService
       $orderData["user_agent"] = request()->header('User-Agent');
       $orderData["ip"] = request()->ip();//Set Ip from request
       $orderData['key'] = substr(md5(date("Y-m-d H:i:s") . request()->ip()), 0, 20);
-
+      if (setting('icommerce::warehouseFunctionability', null, false)) {
+        $warehouse = session('warehouse');
+        $orderData["warehouse_id"] = $data["warehouse_id"] ?? $data["warehouseId"] ?? $warehouse->id ?? null;
+      }
 
       // Data Order History
       $supportOrderHistory = new orderHistorySupport(1, 1);
