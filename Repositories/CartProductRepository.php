@@ -13,4 +13,6 @@ interface CartProductRepository extends BaseRepository
   public function updateBy($criteria, $data, $params = false);
   
   public function deleteBy($criteria, $params = false);
+
+  public function productHasValidQuantity($cartProduct, $product = null, $productOptionsValues = null, $data = null, $productOptionValuesFrontend = null);
 }

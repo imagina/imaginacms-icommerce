@@ -74,5 +74,10 @@ class CacheCartProductDecorator extends BaseCacheDecorator implements CartProduc
     
     return $this->repository->deleteBy($criteria, $params);
   }
-
+  
+  public function productHasValidQuantity($cartProduct, $product = null, $productOptionsValues = null, $data = null, $productOptionValuesFrontend = null){
+  
+    return $this->repository->productHasValidQuantity($cartProduct, $product, $productOptionsValues, $data, $productOptionValuesFrontend);
+  }
+  
 }
