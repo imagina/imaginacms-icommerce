@@ -85,7 +85,10 @@ class Order extends Model
     'organization_id',
     'suscription_token',
     'type',
-    'guest_purchase'
+    'guest_purchase',
+    'warehouse_id',
+    'warehouse_title',
+    'warehouse_address'
   ];
   
   

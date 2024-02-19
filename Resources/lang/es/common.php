@@ -157,6 +157,10 @@ return [
     'labelOrderSummaryDescription' => 'Información Resumen De La Orden',
     'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'productImageObjectFit' => 'Ajuste de la imagen',
+    'warehouse' => [
+      'groupName' => 'Bodegas',
+      'warehouseFunctionability' => 'Activar funcionabilidad para Bodegas'
+    ],
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',

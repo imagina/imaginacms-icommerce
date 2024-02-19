@@ -1239,4 +1239,17 @@ return [
 			'label' => 'icommerce::common.settings.checkoutRedirectUrl'
 		]
 	],
+  'warehouseFunctionability' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::warehouseFunctionability',
+    'groupName' => 'warehouse',
+    'groupTitle' => 'icommerce::common.settings.warehouse.groupName',
+    'type' => 'checkbox',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.warehouse.warehouseFunctionability'
+    ]
+  ],
 ];

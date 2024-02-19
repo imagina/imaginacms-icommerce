@@ -306,7 +306,25 @@ return [
         'destroy' => 'icommerce::quantityclasses.destroy resource',
         'restore' => 'icommerce::quantityclasses.restore resource',
     ],
+    'icommerce.warehouses' => [
+        'manage' => 'icommerce::warehouses.manage resource',
+        'index' => 'icommerce::warehouses.list resource',
+        'create' => 'icommerce::warehouses.create resource',
+        'edit' => 'icommerce::warehouses.edit resource',
+        'destroy' => 'icommerce::warehouses.destroy resource',
+        'restore' => 'icommerce::warehouses.restore resource',
+    ],
+    'icommerce.productwarehouses' => [
+        'manage' => 'icommerce::productwarehouses.manage resource',
+        'index' => 'icommerce::productwarehouses.list resource',
+        'create' => 'icommerce::productwarehouses.create resource',
+        'edit' => 'icommerce::productwarehouses.edit resource',
+        'destroy' => 'icommerce::productwarehouses.destroy resource',
+        'restore' => 'icommerce::productwarehouses.restore resource',
+    ],
 // append
+
+
 
 
 
