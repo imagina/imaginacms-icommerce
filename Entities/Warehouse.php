@@ -41,11 +41,15 @@ class Warehouse extends CrudModel
     'province_id',
     'city_id',
     'polygon_id',
-    'default'
+    'default',
+    'users_to_notify',
+    'emails_to_notify'
   ];
 
   protected $casts = [
-    'options' => 'array'
+    'options' => 'array',
+    'users_to_notify' => 'array',
+    'emails_to_notify' => 'array'
   ];
 
   
