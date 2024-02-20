@@ -203,10 +203,6 @@ class EloquentOrderRepository extends EloquentBaseRepository implements OrderRep
 
   public function create($data)
   {
-    if (setting('icommerce::warehouseFunctionability', null, false)) {
-      $warehouse = session('warehouse');
-      $data["warehouse_id"] = $warehouse->id ?? null;
-    }
     // Create Order
     $order = $this->model->create($data);
 

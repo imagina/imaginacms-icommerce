@@ -128,7 +128,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
   
     $warehouse = session('warehouse');
-    $warehouseEnabled = setting('icommerce::warehouseFunctionability',null,false);
+    $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
   
     if($warehouseEnabled && isset($warehouse->id)){
       $data["warehouse_id"] = $warehouse->id;
@@ -431,7 +431,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     if($product->subtract){ // si el producto se substrae de inventario
   
       $warehouse = session('warehouse');
-      $warehouseEnabled = setting('icommerce::warehouseFunctionability',null,false);
+      $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
    
       $productQuantity = $product->quantity;
       //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session

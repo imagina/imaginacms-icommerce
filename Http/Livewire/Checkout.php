@@ -263,7 +263,7 @@ class Checkout extends Component
   public function initPaymentMethods()
   {
 
-    $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $this->cart->id ?? null,"validateCurrency" => true]];
+    $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $this->cart->id ?? null, "validateCurrency" => true]];
 
     $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
 
@@ -282,21 +282,30 @@ class Checkout extends Component
   {
 
     //\Log::info('Icommerce: Livewire|Checkout|InitShippingMethods');
-
     $params = [];
     $data = ["cart_id" => $this->cart->id ?? null];
-
     $data['shippingAddressId'] = $this->shippingAddressSelected;
-
     $this->shippingMethods = $this->shippingMethodRepository()->getCalculations($data, json_decode(json_encode($params)));
 
+    if (setting('icommerce::warehouseFunctionality', null, false)) {
+      $shippingMethodWarehouse = session('shippingMethodName');
+      $shippingMethodSelectedWarehouse = \DB::table('icommerce__shipping_methods')
+        ->where('name', $shippingMethodWarehouse)->pluck('id')->first();
+      $data['shippingAddressId'] = $shippingMethodSelectedWarehouse;
+      $this->shippingMethodSelected = $shippingMethodSelectedWarehouse;
+
+      foreach ($this->shippingMethods as &$shippingMethod) {
+        if ($shippingMethod->id != $shippingMethodSelectedWarehouse) {
+          $shippingMethod->status = false;
+        }
+      }
+      $this->shippingMethods = $this->shippingMethods->where("status", 1);
+    }
     // Validate if the Shipping Method selected has an status error to deactivated
     $shippingMethod = $this->shippingMethods->where("id", $this->shippingMethodSelected)->first();
 
     if (isset($shippingMethod->id) && isset($shippingMethod->calculations->status) && $shippingMethod->calculations->status == "error")
       $this->shippingMethodSelected = null;
-
-
   }
 
   /**
@@ -582,6 +591,14 @@ class Checkout extends Component
   public function getShippingAddressProperty()
   {
     $shippingAddress = null;
+
+    if (setting('icommerce::warehouseFunctionality', null, false)) {
+      $shippingAddressWarehouse = session('shippingAddress');
+      if (isset($shippingAddressWarehouse)) {
+        $this->shippingAddressSelected = $shippingAddressWarehouse->id;
+        $this->sameShippingAndBillingAddresses = false;
+      }
+    }
 
     if (isset($this->user->id)) {
 
@@ -921,7 +938,12 @@ class Checkout extends Component
     $data["coupon"] = $this->couponSelected;
     $data["guest_purchase"] = $this->shopAsGuest;
     $data["organizationId"] = $this->organization->id ?? null;
-
+    if (setting('icommerce::warehouseFunctionality', null, false)) {
+      $warehouse = session('warehouse');
+      $data["warehouse_id"] = $warehouse->id ?? null;
+      $data["warehouse_title"] = $warehouse->title ?? null;
+      $data["warehouse_address"] = $warehouse->address ?? null;
+    }
 
     if (!isset($this->order->id)) {
       \Log::info('Icommerce: Livewire|Checkout|Submit|OrderService Create');

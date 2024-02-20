@@ -7,6 +7,7 @@ use Modules\Icommerce\Entities\OrderStatus;
 use Modules\Icommerce\Entities\PaymentMethod;
 use Modules\Icommerce\Transformers\OrderHistoryTransformer;
 use Modules\Icommerce\Transformers\OrderItemTransformer;
+use Modules\Icommerce\Transformers\WarehouseTransformer;
 use Modules\Iprofile\Transformers\UserTransformer;
 use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ilocations\Transformers\CountryTransformer;
@@ -71,8 +72,6 @@ class OrderTransformer extends JsonResource
       'ip' => $this->when($this->ip, $this->ip),
       'userAgent' => $this->when($this->user_agent, $this->user_agent),
       'key' => $this->when($this->key, $this->key),
-      'warehouse_id' => $this->when($this->warehouse_id, $this->warehouse_id),
-      'warehouse_title' => $this->when($this->warehouse_title, $this->warehouse_title),
       'requireShipping' => $this->require_shipping ? '1' : '0',
       'suscriptionId' => $this->when($this->suscription_id, $this->suscription_id),
       'suscriptionToken' => $this->when($this->suscription_token, $this->suscription_token),
@@ -88,6 +87,10 @@ class OrderTransformer extends JsonResource
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions')),
       'revisions' => RevisionTransformer::collection($this->whenLoaded('revisions')),
+      'warehouseId' => $this->when($this->warehouse_id, $this->warehouse_id),
+      'warehouseAddress' => $this->when($this->warehouse_address, $this->warehouse_address),
+      'warehouseTitle' => $this->when($this->warehouse_title, $this->warehouse_title),
+      'warehouse' => new WarehouseTransformer($this->whenLoaded('warehouse')),
     ];
 
     //Add information blocks
@@ -127,7 +130,7 @@ class OrderTransformer extends JsonResource
       $customerRegisterExtraFields = json_decode(setting("iprofile::registerExtraFields", null, "[]"));
       if (!empty($customerFields)) {
         foreach ($customerRegisterExtraFields as $extraField) {
-          if ($extraField->active) {
+          if ($extraField->active ?? false) {
             if ($extraField->type == "documentType") {
               $customerField = $customerFields->filter(function ($field) use ($extraField) {
                 return strstr($field->name, $extraField->field) ||
@@ -187,7 +190,7 @@ class OrderTransformer extends JsonResource
 
         if (!empty($orderShippingExtraFields)) {
           foreach ($customerAddressExtraFields as $extraField) {
-            if ($extraField->active) {
+            if ($extraField->active ?? false) {
               if (isset($orderShippingExtraFields->{$extraField->field})) {
                 if ($extraField->field == "documentType") {
                   $documentNumber = $orderShippingExtraFields->documentNumber ?? '';
@@ -202,11 +205,11 @@ class OrderTransformer extends JsonResource
           }
         }
 
-          array_push($customerShippingAddressBlock["values"], [
-            "label" => trans("iprofile::addresses.form.extraInfo"),
-            "value" => $orderShippingExtraFields->extraInfo ?? ""
-          ]);
-        
+        array_push($customerShippingAddressBlock["values"], [
+          "label" => trans("iprofile::addresses.form.extraInfo"),
+          "value" => $orderShippingExtraFields->extraInfo ?? ""
+        ]);
+
       } else {
         $customerShippingAddressBlock = [
           'title' => trans('icommerce::orders.table.shipping address'),
@@ -232,7 +235,7 @@ class OrderTransformer extends JsonResource
           ],
           [
             'label' => trans("iprofile::frontend.form.billing_address"),
-            'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, ".($item['paymentCity']).", {$this->payment_zip_code}, " .
+            'value' => "{$item['paymentFirstName']}, {$item['paymentLastName']}, {$item['paymentAddress1']}, " . ($item['paymentCity']) . ", {$this->payment_zip_code}, " .
               ($item['paymentDepartment']->name ?? '') . ", " . ($item['paymentCountry']->name ?? '')
           ],
           [
@@ -245,7 +248,7 @@ class OrderTransformer extends JsonResource
       $orderBillingExtraFields = $this->options->billingAddress ?? [];
       if (!empty($orderBillingExtraFields)) {
         foreach ($customerAddressExtraFields as $extraField) {
-          if ($extraField->active) {
+          if ($extraField->active ?? false) {
             if (isset($orderBillingExtraFields->{$extraField->field})) {
               if ($extraField->field == "documentType") {
                 $documentNumber = $orderBillingExtraFields->documentNumber ?? '';
@@ -258,15 +261,15 @@ class OrderTransformer extends JsonResource
           }
         }
       }
-   
-  
+
+
       array_push($customerBillingAddressBlock["values"], [
         "label" => trans("iprofile::addresses.form.extraInfo"),
         "value" => $orderBillingExtraFields->extraInfo ?? ""
       ]);
-      
+
       array_push($item["informationBlocks"], $customerBillingAddressBlock);
-  
+
     } else {
 
       if ($this->type == "quote") {
@@ -308,7 +311,7 @@ class OrderTransformer extends JsonResource
           [
             'label' => trans("icommerce::orders.informationBlocksOrder.titleOrderShippingMethod"),
             'value' => !$this->require_shipping ? trans('icommerce::orders.messages.orderNotRequireShipping')
-            : (!empty($item['shippingMethod']) ? $item['shippingMethod'] : '-')
+              : (!empty($item['shippingMethod']) ? $item['shippingMethod'] : '-')
           ]
 
         ]
@@ -326,6 +329,23 @@ class OrderTransformer extends JsonResource
       array_push($item['informationBlocks'],
         $paymentInfo
       );
+    }
+
+    if (setting('icommerce::warehouseFunctionality', null, false)) {
+      $warehouseBlockInfo = [
+        'title' => trans("icommerce::orders.informationBlocksOrder.titleOrderInfoWarehouse"),
+        'values' => [
+          [
+            'label' => trans("icommerce::orders.informationBlocksOrder.labelTitleWarehouse"),
+            'value' => $item['warehouseTitle'] ?? ''
+          ],
+          [
+            'label' => trans("icommerce::orders.informationBlocksOrder.labelAddressWarehouse"),
+            'value' => $item['warehouseAddress'] ?? ''
+          ],
+        ]
+      ];
+      array_push($item['informationBlocks'], $warehouseBlockInfo);
     }
 
     return $item;

@@ -45,4 +45,7 @@ return [
     'editAddressButton' => 'Editar Dirección',
     'placeholderInputEmail' => 'Correo electrónico',
   ],
+  'shippingMethods' => [
+    'labelPrice' => 'Precio: ',
+  ]
 ];
