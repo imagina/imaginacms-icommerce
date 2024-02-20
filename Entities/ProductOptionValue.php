@@ -77,10 +77,9 @@ class ProductOptionValue extends Model
     return $this->hasMany(OrderOption::class);
   }
 
-  
-  public function getAvailableAttribute(){
-    
-    $warehouseEnabled = setting('icommerce::warehouseFunctionability', null, false);
+  public function getAvailableAttribute()
+  {
+    $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
     if ($warehouseEnabled && $this->subtract) {
       $warehouse = session('warehouse');
       if (!is_null($warehouse)) {
@@ -101,7 +100,7 @@ class ProductOptionValue extends Model
 
   public function childrenProductOptionValue()
   {
-    return $this->hasMany($this,  'parent_prod_opt_val_id', 'id');
+    return $this->hasMany($this, 'parent_prod_opt_val_id', 'id');
   }
 
   public function updateStockByChildren()
@@ -116,7 +115,7 @@ class ProductOptionValue extends Model
       $this->update(["quantity" => $stock]);
       if ($stock == 0) {
         $this->update(["stock_status" => 0]);
-      }elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where("stock_status",1)->get()->isNotEmpty()) {
+      } elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where("stock_status", 1)->get()->isNotEmpty()) {
         $this->update(["stock_status" => 1]);
       }
       if ($this->parentProductOptionValue) {
@@ -127,22 +126,22 @@ class ProductOptionValue extends Model
     }
     return $this->quantity;
   }
-  
+
   public function getLftName()
   {
     return 'lft';
   }
-  
+
   public function getRgtName()
   {
     return 'rgt';
   }
-  
+
   public function getDepthName()
   {
     return 'depth';
   }
-  
+
   public function getParentIdName()
   {
     return 'parent_prod_opt_val_id';

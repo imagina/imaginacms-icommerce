@@ -20,7 +20,7 @@ class Order extends Model
   public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
 
   protected $table = 'icommerce__orders';
-  
+
   protected $fillable = [
     'parent_id',
     'cart_id',
@@ -90,24 +90,24 @@ class Order extends Model
     'warehouse_title',
     'warehouse_address'
   ];
-  
-  
+
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function customer()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
   }
-  
+
   public function addedBy()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'added_by_id');
   }
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__order_item')
@@ -117,12 +117,12 @@ class Order extends Model
       ->withTimestamps()
       ->using(OrderItem::class);
   }
-  
+
   public function orderItems()
   {
     return $this->hasMany(OrderItem::class);
   }
-  
+
   public function parent()
   {
     return $this->belongsTo(Order::class, 'parent_id');
@@ -130,37 +130,37 @@ class Order extends Model
 
   public function children()
   {
-    return $this->hasMany(Order::class,"parent_id");
+    return $this->hasMany(Order::class, "parent_id");
   }
-  
+
   public function coupons()
   {
     return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
       ->withPivot('amount')
       ->withTimestamps();
   }
-  
+
   public function orderHistory()
   {
     return $this->hasMany(OrderStatusHistory::class);
   }
-  
-  
+
+
   public function orderOption()
   {
     return $this->hasMany(OrderOption::class);
   }
-  
+
   public function status()
   {
     return $this->belongsTo(OrderStatus::class, 'status_id');
   }
-  
+
   public function organization()
   {
     return $this->belongsTo(Organization::class);
   }
-  
+
   public function store()
   {
     if (is_module_enabled('Marketplace')) {
@@ -168,32 +168,32 @@ class Order extends Model
     }
     return $this->belongsTo(Store::class);
   }
-  
+
   public function currency()
   {
     return $this->belongsTo(Currency::class);
   }
-  
+
   public function conversation()
   {
-    return $this->hasOne("Modules\Ichat\Entities\Conversation","entity_id");
+    return $this->hasOne("Modules\Ichat\Entities\Conversation", "entity_id");
   }
-  
+
   public function transactions()
   {
     return $this->hasMany(Transaction::class);
   }
-  
+
   public function shippings()
   {
     return $this->hasMany(Shipping::class);
   }
-  
+
   public function getOptionsAttribute($value)
   {
     return json_decode($value);
   }
-  
+
   public function getUrlAttribute()
   {
     $panel = config("asgard.iprofile.config.panel") ?? 'blade';
@@ -203,35 +203,40 @@ class Order extends Model
       return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
   }
-  
-  
+
+
   public function getCouponTotalAttribute()
   {
     return $this->coupons->sum('pivot.amount');
   }
-  
+
   public function setOptionsAttribute($value)
   {
     $this->attributes['options'] = json_encode($value);
   }
-  
+
   public function paymentCountry()
   {
     return $this->belongsTo(Country::class, 'payment_country', 'iso_2')->with('translations');
   }
-  
+
   public function shippingCountry()
   {
     return $this->belongsTo(Country::class, 'shipping_country_code', 'iso_2')->with('translations');
   }
-  
+
   public function paymentDepartment()
   {
     return $this->belongsTo(Province::class, 'payment_zone', 'iso_2')->with('translations');
   }
-  
+
   public function shippingDepartment()
   {
     return $this->belongsTo(Province::class, 'shipping_zone', 'iso_2')->with('translations');
+  }
+
+  public function warehouse()
+  {
+    return $this->belongsTo(Warehouse::class);
   }
 }

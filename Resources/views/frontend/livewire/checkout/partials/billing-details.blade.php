@@ -9,7 +9,7 @@
 @endauth
 
 <div class="card mb-0 border-0">
-  @if ($shopAsGuest)
+  @if ($shopAsGuest && setting('icommerce::enableGuestShopping', null, true))
     @if (!$addressGuestBillingCreated)
       <livewire:iprofile::address-form :embedded="true" :route="$locale.'.icommerce.store.checkout'" type="billing"
                                        key="checkoutBillingAddress" :openInModal="false"

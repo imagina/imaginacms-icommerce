@@ -11,6 +11,7 @@ use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Services\PdfService;
+use function PHPUnit\Framework\isNull;
 
 class Cart extends Component
 {
@@ -41,7 +42,7 @@ class Cart extends Component
     $this->icon = $icon;
     $this->iconquote = $iconquote;
     $this->warehouse = session('warehouse');
-    $this->warehouseEnabled = setting('icommerce::warehouseFunctionability',null,false);
+    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
 
     //$this->refreshCart();
@@ -93,7 +94,7 @@ class Cart extends Component
           $this->cartProductRepository()->deleteBy($cartProduct->id);
           $updateCart = true;
         } else {
-          $warehouseEnabled = setting('icommerce::warehouseFunctionability', null, false);
+          $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
           $warehouse = Session('warehouse');
           if ($warehouseEnabled && $cartProduct->warehouse_id != $warehouse->id) {
             $data = [
@@ -108,7 +109,7 @@ class Cart extends Component
       }
       if ($updateCart) {
         $this->updateCart();
-        $warehouseEnabled = setting('icommerce::warehouseFunctionability', null, false);
+        $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
         if ($warehouseEnabled) {
           $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"),["timer" => "8000"]));
         } else {
@@ -119,20 +120,21 @@ class Cart extends Component
     request()->session()->put('cart', $this->cart);
 
   }
-  
-  
-  public function addToCartWithOptions($data){
 
-    $this->addToCart($data["productId"],$data["quantity"],$data["productOptionValues"]);
-    
+
+  public function addToCartWithOptions($data)
+  {
+
+    $this->addToCart($data["productId"], $data["quantity"], $data["productOptionValues"]);
+
   }
-  
+
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
   {
 
     try {
 
-      if($quantity>0){
+      if ($quantity > 0) {
 
         $product = $this->productRepository()->getItem($productId);
 
@@ -153,7 +155,7 @@ class Cart extends Component
         } else {
           $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
         }
-        
+
       }
 
     } catch (\Exception $e) {
@@ -213,7 +215,7 @@ class Cart extends Component
     $this->emit("cartUpdated", $this->cart);
 
   }
-  
+
   /**
    * @param $name
    * @param $value
@@ -225,16 +227,16 @@ class Cart extends Component
       case 'currencySelected':
         if ($value) {
           $currency = $this->currencyRepository()->getItem($value);
-           request()->session()->put('custom_currency_' . (tenant()->id ?? ""),$currency);
-          
+          request()->session()->put('custom_currency_' . (tenant()->id ?? ""), $currency);
+
           $this->dispatchBrowserEvent('refresh-page');
         }
         break;
-        
+
     }
-    
+
   }
-  
+
   public function download()
   {
 
@@ -316,7 +318,7 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\CartProductRepository');
   }
-  
+
   /**
    * @return productRepository
    */
@@ -324,7 +326,7 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\ProductRepository');
   }
-  
+
   /**
    * @return currencyRepository
    */
@@ -369,7 +371,7 @@ class Cart extends Component
     $this->currencies = $this->currencyRepository()->getItemsBy(json_decode(json_encode([])));
     $this->currencySelected = $this->currentCurrency->id;
   }
-  
+
 
   //|--------------------------------------------------------------------------
   //| Properties

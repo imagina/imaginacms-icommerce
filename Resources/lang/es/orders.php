@@ -90,5 +90,8 @@ return [
     'titleOrderPayMethod' => 'Método de pago',
     'titleOrderShippingMethod' => 'Método de envío',
     'titleOrderDescriptionShippingMethod' => 'Descripción del método',
+    'titleOrderInfoWarehouse' => 'Tienda',
+    'labelTitleWarehouse' => 'Nombre',
+    'labelAddressWarehouse' => 'Dirección',
   ],
 ];
