@@ -43,7 +43,12 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
       }
-
+  
+      /*== By product ==*/
+      if (isset($filter->productId))
+        $query->where('product_id', $filter->productId);
+  
+      
       /*== By Option ==*/
       if (isset($filter->option)) {
         $query->where('option_id', $filter->option);

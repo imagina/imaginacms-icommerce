@@ -18,8 +18,7 @@ class UpdateProductRequest extends BaseFormRequest
   {
     return [
       'name' => 'min:2',
-      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2"],
-      'description' => 'min:2'
+      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2"]
     ];
   }
 
@@ -44,11 +43,7 @@ class UpdateProductRequest extends BaseFormRequest
 
       // slug
       'slug.required' => trans('icommerce::common.messages.field required'),
-      'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
-
-      // description
-      'description.required' => trans('icommerce::common.messages.field required'),
-      'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      'slug.min:2' => trans('icommerce::common.messages.min 2 characters')
     ];
   }
 }

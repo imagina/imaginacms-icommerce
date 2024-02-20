@@ -4,12 +4,13 @@ namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Kalnoy\Nestedset\NodeTrait;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Core\Support\Traits\AuditTrait;
 
 class ProductOptionValue extends Model
 {
-  use BelongsToTenant, AuditTrait;
+  use BelongsToTenant, AuditTrait, NodeTrait;
   protected $table = 'icommerce__product_option_value';
 
   protected $fillable = [
@@ -79,8 +80,23 @@ class ProductOptionValue extends Model
   
   public function getAvailableAttribute(){
     
-    return $this->stock_status && (($this->substract && $this->quantity) || !$this->substract);
-    
+    $warehouseEnabled = setting('icommerce::warehouseFunctionability', null, false);
+    if ($warehouseEnabled && $this->subtract) {
+      $warehouse = session('warehouse');
+      if (!is_null($warehouse)) {
+        $warehouseProductQuantity = \DB::table('icommerce__product_option_value_warehouse')
+          ->where('warehouse_id', $warehouse->id)
+          ->where('product_option_value_id', $this->id)
+          ->where('product_id', $this->product_id)
+          ->first();
+        if (isset($warehouseProductQuantity) && $warehouseProductQuantity->quantity == 0 || is_null($warehouseProductQuantity)) {
+          $this->quantity = 0;
+        } else {
+          $this->quantity = $warehouseProductQuantity->quantity;
+        }
+      }
+    }
+    return $this->stock_status && (($this->subtract && $this->quantity) || !$this->subtract);
   }
 
   public function childrenProductOptionValue()
@@ -110,5 +126,25 @@ class ProductOptionValue extends Model
 
     }
     return $this->quantity;
+  }
+  
+  public function getLftName()
+  {
+    return 'lft';
+  }
+  
+  public function getRgtName()
+  {
+    return 'rgt';
+  }
+  
+  public function getDepthName()
+  {
+    return 'depth';
+  }
+  
+  public function getParentIdName()
+  {
+    return 'parent_prod_opt_val_id';
   }
 }
