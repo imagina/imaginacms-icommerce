@@ -16,7 +16,7 @@
   </div>
 @endif
 
-<div class="@if ($sameShippingAndBillingAddresses) collapse @else collapse-show @endif" id="collapseExample">
+<div wire:ignore.self class="@if ($sameShippingAndBillingAddresses) collapse @else collapse-show @endif" id="collapseExample">
   <div class="card-block" id="ShippingAddress">
     @auth
       @if (!$shopAsGuest)

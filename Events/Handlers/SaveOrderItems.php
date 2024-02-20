@@ -16,10 +16,18 @@ class SaveOrderItems
 {
   private $emails;
   private $log = "Icommerce: Events|Handlers|SaveOrderItems";
+  public $warehouseEnable;
+  public $productOptionValueWarehouseRepository;
+  public $productWarehouseRepository;
+  public $productRepository;
 
   public function __construct()
   {
     $this->emails = explode(',', setting('icommerce::form-emails'));
+    $this->warehouseEnable = setting('icommerce::warehouseFunctionality', null, false);
+    $this->productOptionValueWarehouseRepository = app('Modules\Icommerce\Repositories\ProductOptionValueWarehouseRepository');
+    $this->productWarehouseRepository = app('Modules\Icommerce\Repositories\ProductWarehouseRepository');
+    $this->productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
   }
 
   public function handle($event)
@@ -48,22 +56,18 @@ class SaveOrderItems
       // Create Order Items
       $orderItem = $order->orderItems()->create($item);
       $product = Product::find($item["product_id"]);
-      $warehouseEnable = setting('icommerce::warehouseFunctionality', null, false);
-      $productOptionValueWarehouseRepository = app('Modules\Icommerce\Repositories\ProductOptionValueWarehouseRepository');
-      $productWarehouseRepository = app('Modules\Icommerce\Repositories\ProductWarehouseRepository');
-      $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
 
       //if no es una sub orden entonces si descuente de inventario, las subordenes no vuelven a descontar los productos
       if (!$order->parent_id) {
         if (isset($product->id) && $product->subtract) {
           // restar cantidades en los warehouses solo si dicha función está activa
-          if ($warehouseEnable) {
+          if ($this->warehouseEnable) {
             $warehouseProduct = \DB::table('icommerce__product_warehouse')
               ->where('warehouse_id', $order->warehouse_id)
               ->where('product_id', $product->id)
               ->first();
             $warehouseProduct->quantity = $warehouseProduct->quantity - $item["quantity"];
-            $productWarehouseRepository->updateBy($warehouseProduct->id, ['quantity' => $warehouseProduct->quantity]);
+            $this->productWarehouseRepository->updateBy($warehouseProduct->id, ['quantity' => $warehouseProduct->quantity]);
           }
           $product->quantity = $product->quantity - $item["quantity"];
           $product->quantity < 0 ? $product->quantity = 0 : false;
@@ -82,7 +86,7 @@ class SaveOrderItems
             }
           }
 //          $product->save();
-          $productRepository->updateBy($product->id, ['quantity' => $product->quantity, "stock_status" => $product->stock_status]);
+          $this->productRepository->updateBy($product->id, ['quantity' => $product->quantity, "stock_status" => $product->stock_status]);
         }
 
         $supportOrderOption = new orderOptionSupport();
@@ -98,13 +102,13 @@ class SaveOrderItems
 
             if ($productOptionValue->subtract) {
               // restar cantidades en los warehouses solo si dicha función está activa
-              if ($warehouseEnable) {
+              if ($this->warehouseEnable) {
                 $warehouseProductOptionValueWarehouse = \DB::table('icommerce__product_option_value_warehouse')
                   ->where('warehouse_id', $order->warehouse_id)
                   ->where('product_option_value_id', $productOptionValue->id)
                   ->first();
                 $warehouseProductOptionValueWarehouse->quantity = $warehouseProductOptionValueWarehouse->quantity - $item["quantity"];
-                $productOptionValueWarehouseRepository->updateBy($warehouseProductOptionValueWarehouse->id, ['quantity' => $warehouseProductOptionValueWarehouse->quantity]);
+                $this->productOptionValueWarehouseRepository->updateBy($warehouseProductOptionValueWarehouse->id, ['quantity' => $warehouseProductOptionValueWarehouse->quantity]);
               }
               //Restar cantidad comprada a la opcion seleccionada
               $productOptionValue->quantity = $productOptionValue->quantity - $item["quantity"];

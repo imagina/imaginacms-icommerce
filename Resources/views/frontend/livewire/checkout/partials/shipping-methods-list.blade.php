@@ -27,7 +27,7 @@
         @if(isset($shippingMethod->calculations->priceshow) && $shippingMethod->calculations->priceshow)
           <div class="shipping-method-price">
 
-            Precio:
+            {{trans('icommerce::checkout.shippingMethods.labelPrice')}}
             {{ isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($shippingMethod->calculations->price) }} {{isset($currency) ? $currency->symbol_right : ''}}
 
           </div>
