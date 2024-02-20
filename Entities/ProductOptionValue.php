@@ -141,9 +141,22 @@ class ProductOptionValue extends Model
   {
     return 'depth';
   }
-
+  
   public function getParentIdName()
   {
     return 'parent_prod_opt_val_id';
+  }
+  
+  public function getFullNameAttribute()
+  {
+    $ancestorsAndSelf = ProductOptionValue::with(["option","option.translations","optionValue","optionValue.translations"])->ancestorsAndSelf($this->id);
+    $fullname = "";
+    
+  foreach ($ancestorsAndSelf as $productOptionValue)
+    $fullname .= ($productOptionValue->option ? $productOptionValue->option->description : "") . ": " .
+      ($productOptionValue->optionValue ? $productOptionValue->optionValue->description : "")." / ";
+
+    
+    return $fullname;
   }
 }
