@@ -15,15 +15,17 @@ use Modules\Icommerce\Events\Handlers\DiscountStockProducts;
 use Modules\Icommerce\Events\Handlers\UpdateOrderStatus;
 use Modules\Icommerce\Events\Handlers\SavePoints;
 use Modules\Icommerce\Events\Handlers\UpdateSubOrdersStatus;
+use Modules\Icommerce\Events\Handlers\ValidateQuantities;
 use Modules\Icommerce\Events\OrderIsCreating;
 use Modules\Icommerce\Events\OrderWasCreated;
 use Modules\Icommerce\Events\OrderWasUpdated;
 use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 use Modules\Icommerce\Events\OrderWasProcessed;
+use Modules\Icommerce\Events\ProductOptionValueWasUpdated;
 use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Events\ProductWasUpdated;
 use Modules\Icommerce\Events\UpdateProductable;
-
+use Modules\Icommerce\Events\ProductOptionValueWasCreated;
 use Modules\Icommerce\Events\CouponWasCreated;
 use Modules\Icommerce\Events\CouponWasUpdated;
 use Modules\Icommerce\Events\CouponIsDeleting;
@@ -90,6 +92,11 @@ class EventServiceProvider extends ServiceProvider
       LetMeKnowProductIsAvailable::class,
       Quote::class
     ],
-    
+    ProductOptionValueWasCreated::class => [
+      ValidateQuantities::class,
+    ],
+    ProductOptionValueWasUpdated::class => [
+      ValidateQuantities::class,
+    ],
   ];
 }

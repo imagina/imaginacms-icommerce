@@ -3,8 +3,11 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Entities\ProductOptionValue;
+use Modules\Icommerce\Events\ProductOptionValueWasUpdated;
+use Modules\Icommerce\Events\ProductOptionValueWasCreated;
 use Modules\Icommerce\Repositories\ProductOptionValueRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+
 //Events media
 use Modules\Ihelpers\Events\CreateMedia;
 use Modules\Ihelpers\Events\UpdateMedia;
@@ -43,12 +46,12 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
             ->orWhere('created_at', 'like', '%' . $filter->search . '%');
         });
       }
-  
+
       /*== By product ==*/
       if (isset($filter->productId))
         $query->where('product_id', $filter->productId);
-  
-      
+
+
       /*== By Option ==*/
       if (isset($filter->option)) {
         $query->where('option_id', $filter->option);
@@ -131,15 +134,17 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
 
     //Event to ADD media
     event(new CreateMedia($productOptionValue, $data));
-  
-    if(!empty($productOptionValue->parent_prod_opt_val_id)){
+
+    event(new ProductOptionValueWasCreated($productOptionValue));
+
+    if (!empty($productOptionValue->parent_prod_opt_val_id)) {
       $parent = ProductOptionValue::find($productOptionValue->parent_prod_opt_val_id);
 
       //Verificacion y posible actualizacion de status y stock de padre
       $parent->updateStockByChildren();
-    
+
     }
-    
+
     return $productOptionValue;
   }
 
@@ -159,19 +164,19 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
 
     /*== REQUEST ==*/
     $model = $query->where($field ?? 'id', $criteria)->first();
-  
-    if(!empty($model)){
+
+    if (!empty($model)) {
       event(new UpdateMedia($model, $data));//Event to Update media
       $model->update((array)$data);
-  
-      if(!empty($model->parent_option_value_id)){
+      event(new ProductOptionValueWasUpdated($model));
+      if (!empty($model->parent_option_value_id)) {
         $parent = $model->parentProductOptionValue;
-          //Verificacion y posible actualizacion de status y stock de padre
-          $parent->updateStockByChildren();
-       
+        //Verificacion y posible actualizacion de status y stock de padre
+        $parent->updateStockByChildren();
+
       }
     }
-    
+
     return $model;
   }
 
