@@ -149,13 +149,13 @@ class ProductOptionValue extends Model
   
   public function getFullNameAttribute()
   {
-    $ancestorsAndSelf = ProductOptionValue::with(["option","option.translations","optionValue","optionValue.translations"])->ancestorsAndSelf($this->id);
+    $ancestorsAndSelf = ProductOptionValue::with(["option","option.translations","optionValue","optionValue.translations","children"])->ancestorsAndSelf($this->id);
     $fullname = "";
     
   foreach ($ancestorsAndSelf as $productOptionValue)
     $fullname .= ($productOptionValue->option ? $productOptionValue->option->description : "") . ": " .
-      ($productOptionValue->optionValue ? $productOptionValue->optionValue->description : "")." / ";
-
+      ($productOptionValue->optionValue ? $productOptionValue->optionValue->description : "") . ($productOptionValue->children->isNotEmpty() ? " / " : "");
+  
     
     return $fullname;
   }
