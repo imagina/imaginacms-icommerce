@@ -97,11 +97,11 @@ class AddToCartButton extends Component
           ->where('warehouse_id', $warehouse->id)
           ->where('product_id', $this->product->id)
           ->first();
-      }
-      if (isset($warehouseProductQuantity) && $warehouseProductQuantity->quantity == 0 || is_null($warehouseProductQuantity)) {
-        $this->label = trans('icommerce::common.components.buttonLivewire.labelDisable');
-        $this->disabled = true;
-        $this->iconClass = "fa-solid fa-circle-exclamation";
+        if (isset($warehouseProductQuantity) && $warehouseProductQuantity->quantity == 0 || is_null($warehouseProductQuantity)) {
+          $this->label = trans('icommerce::common.components.buttonLivewire.labelDisable');
+          $this->disabled = true;
+          $this->iconClass = "fa-solid fa-circle-exclamation";
+        }
       }
     }
     $this->loading = false;
