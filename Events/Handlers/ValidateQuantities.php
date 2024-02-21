@@ -33,7 +33,11 @@ class ValidateQuantities
         ->where('subtract', 1)
         ->get()->pluck('quantity')->toArray();
       $productQuantity = array_sum($otherQuantitiesProductOptionValue);
-      $this->productRepository->updateBy($productOptionValue->product_id, ['quantity' => $productQuantity]);
+      if ($productQuantity > 0) {
+        $this->productRepository->updateBy($productOptionValue->product_id, ['quantity' => $productQuantity, "stock_status" => 1]);
+      } else {
+        $this->productRepository->updateBy($productOptionValue->product_id, ['quantity' => 0, "stock_status" => 0]);
+      }
     }
   }
 }
