@@ -90,9 +90,4 @@ class EloquentProductOptionValueWarehouseRepository extends EloquentCrudReposito
     event(new ProductOptionValueWarehouseWasUpdated($model));
   }
 
-  private function checkTreeCreation($data)
-  {
-
-
-  }
 }

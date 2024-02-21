@@ -322,6 +322,14 @@ return [
         'destroy' => 'icommerce::productwarehouses.destroy resource',
         'restore' => 'icommerce::productwarehouses.restore resource',
     ],
+    'icommerce.productoptionvaluewarehouses' => [
+        'manage' => 'icommerce::productoptionvaluewarehouses.manage resource',
+        'index' => 'icommerce::productoptionvaluewarehouses.list resource',
+        'create' => 'icommerce::productoptionvaluewarehouses.create resource',
+        'edit' => 'icommerce::productoptionvaluewarehouses.edit resource',
+        'destroy' => 'icommerce::productoptionvaluewarehouses.destroy resource',
+        'restore' => 'icommerce::productoptionvaluewarehouses.restore resource',
+    ],
 // append
 
 
