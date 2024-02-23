@@ -36,7 +36,6 @@ class ProductOptionValueTransformer extends JsonResource
       'available' => $this->available,
       'createdAt' => $this->when($this->created_at, $this->created_at),
       'updatedAt' => $this->when($this->updated_at, $this->updated_at),
-      'children' => $this->when($this->children, ProductOptionValueTransformer::collection($this->children)),
       'optionValueEntity' => new OptionValueTransformer($this->whenLoaded('optionValue')),
       'option' => new OptionTransformer($this->whenLoaded('option')),
     ];
