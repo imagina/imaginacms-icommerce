@@ -2,6 +2,7 @@
 
 namespace Modules\Icommerce\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use Modules\Core\Icrud\Controllers\BaseCrudController;
 //Model
 use Modules\Icommerce\Entities\ProductOptionValueWarehouse;

@@ -13,9 +13,10 @@ class ProductOptionValueTransformer extends JsonResource
   {
     $data = [
       'id' => $this->id,
+      'fullName' => $this->full_name,
       'productOptionId' => $this->when($this->product_option_id,$this->product_option_id),
       'productId' => $this->when($this->product_id,$this->product_id),
-      'parentId' => $this->when($this->parent_prod_opt_val_id,$this->parent_prod_opt_val_id),
+      'parentId' => $this->parent_prod_opt_val_id ?? 0,
       'optionId' => $this->when($this->option_id,$this->option_id),
       'optionValueId' => $this->when($this->option_value_id,$this->option_value_id),
       'optionValue' => $this->when($this->option_value_id,$this->optionValue->description),
