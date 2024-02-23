@@ -15,6 +15,7 @@ use Modules\Icommerce\Events\Handlers\DiscountStockProducts;
 use Modules\Icommerce\Events\Handlers\UpdateOrderStatus;
 use Modules\Icommerce\Events\Handlers\SavePoints;
 use Modules\Icommerce\Events\Handlers\UpdateSubOrdersStatus;
+use Modules\Icommerce\Events\Handlers\ValidateProductQuantityWarehouse;
 use Modules\Icommerce\Events\Handlers\ValidateQuantities;
 use Modules\Icommerce\Events\Handlers\ValidateQuantitiesWarehouse;
 use Modules\Icommerce\Events\OrderIsCreating;
@@ -25,6 +26,7 @@ use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Events\ProductOptionValueWarehouseWasCreated;
 use Modules\Icommerce\Events\ProductOptionValueWarehouseWasUpdated;
 use Modules\Icommerce\Events\ProductOptionValueWasUpdated;
+use Modules\Icommerce\Events\ProductWarehouseWasUpdated;
 use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Events\ProductWasUpdated;
 use Modules\Icommerce\Events\UpdateProductable;
@@ -106,6 +108,12 @@ class EventServiceProvider extends ServiceProvider
     ],
     ProductOptionValueWarehouseWasUpdated::class => [
       ValidateQuantitiesWarehouse::class,
+    ],
+    ProductWarehouseWasUpdated::class => [
+      ValidateProductQuantityWarehouse::class,
+    ],
+    ProductWarehouseWasCreated::class => [
+      ValidateProductQuantityWarehouse::class,
     ],
   ];
 }

@@ -82,12 +82,14 @@ class EloquentProductWarehouseRepository extends EloquentCrudRepository implemen
   {
     $model = parent::create($data);
     event(new ProductWarehouseWasCreated($model));
+    return $model;
   }
 
   public function updateBy($criteria, $data, $params = false)
   {
     $model = parent::updateBy($criteria, $data, $params = false);
     event(new ProductWarehouseWasUpdated($model));
+    return $model;
   }
 
 }
