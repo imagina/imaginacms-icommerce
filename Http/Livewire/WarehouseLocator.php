@@ -431,6 +431,9 @@ class WarehouseLocator extends Component
 
     \Log::info($this->log.'confirmData');
 
+    //Helper|Isite
+    clearResponseCache();
+
     $this->loading = true;
     $this->disabledBtnConfirm = true;
 
