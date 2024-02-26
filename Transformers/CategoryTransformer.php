@@ -33,6 +33,7 @@ class CategoryTransformer extends JsonResource
       'children' => CategoryTransformer::collection($this->whenLoaded('children')),
       'store' => new StoreTransformer($this->whenLoaded('store')),
       'products' => ProductTransformer::collection($this->whenLoaded('products')),
+      'ownProducts' => ProductTransformer::collection($this->whenLoaded('ownProducts')),
       //'mainImage' => $this->mainImage,
       'status' => $this->status ? '1' : '0',
       'mediaFiles' => $this->mediaFiles(),

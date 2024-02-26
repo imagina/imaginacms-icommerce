@@ -431,6 +431,9 @@ class WarehouseLocator extends Component
 
     \Log::info($this->log.'confirmData');
 
+    //Helper|Isite
+    clearResponseCache();
+
     $this->loading = true;
     $this->disabledBtnConfirm = true;
 
@@ -441,8 +444,13 @@ class WarehouseLocator extends Component
     if($this->tabSelected==$this->shippingMethods['pickup']){
 
       //Shipping Address Selected (From Delivery)
-      session(['shippingAddress' => null]);
-
+      if(!is_null(session('shippingAddress'))){
+        //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
+        session(['shippingAddress' => null]);
+        //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
+        session(['shippingAddressChecked' => true]);
+      }
+      
       //User selected a warehouse from Map
       if(!is_null($this->warehouseSelectedFromMap)){
         
@@ -461,6 +469,9 @@ class WarehouseLocator extends Component
       session(['shippingAddress' => $this->shippingAddress]);
 
     }
+
+    //Show Session Vars in Log
+    //$this->warehouseService()->showSessionVars();
 
     //Reload Page
     //return redirect(request()->header('Referer'));
