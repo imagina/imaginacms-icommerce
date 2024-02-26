@@ -17,6 +17,8 @@ use Modules\Icommerce\Events\Handlers\SavePoints;
 use Modules\Icommerce\Events\Handlers\UpdateSubOrdersStatus;
 use Modules\Icommerce\Events\Handlers\ValidateProductQuantityWarehouse;
 use Modules\Icommerce\Events\Handlers\ValidateQuantities;
+use Modules\Icommerce\Events\Handlers\SendOrderWarehouse;
+use Modules\Icommerce\Events\Handlers\ValidateQuantitiesWarehouse;
 use Modules\Icommerce\Events\OrderIsCreating;
 use Modules\Icommerce\Events\OrderWasCreated;
 use Modules\Icommerce\Events\OrderWasUpdated;
@@ -57,7 +59,7 @@ class EventServiceProvider extends ServiceProvider
     ],
     OrderWasUpdated::class => [
       SendOrder::class,
-      
+      SendOrderWarehouse::class,
     ],
     OrderStatusHistoryWasCreated::class => [
       UpdateOrderStatus::class,
@@ -65,7 +67,7 @@ class EventServiceProvider extends ServiceProvider
     ],
     OrderWasProcessed::class => [
       SavePoints::class,
-     
+
     ],
     ProductWasCreated::class => [
     ],
