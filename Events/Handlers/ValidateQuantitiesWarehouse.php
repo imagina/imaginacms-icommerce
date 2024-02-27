@@ -83,30 +83,30 @@ class ValidateQuantitiesWarehouse
       } else {
 
         // si no tiene padre se busca las opciones hermanas de primer nivel buscando sus Ids
-        $ProductOptionValueIds = \DB::table('icommerce__product_option_value')
+        $productOptionValueIds = \DB::table('icommerce__product_option_value')
           ->whereNull('parent_prod_opt_val_id')
           ->where('subtract', 1)
           ->where('product_id', $productOptionValue->product_id)
           ->get()->pluck('id')->toArray();
 
         // se totaliza las cantidades para este producto
-        $ProductOptionValueQuantities = \DB::table('icommerce__product_option_value_warehouse')
-          ->whereIn('product_option_value_id', $ProductOptionValueIds)
+        $productOptionValueQuantities = \DB::table('icommerce__product_option_value_warehouse')
+          ->whereIn('product_option_value_id', $productOptionValueIds)
           ->where('warehouse_id', $productOptionValueWarehouse->warehouse_id)
           ->where('product_id', $productOptionValue->product_id)
           ->get()->pluck('quantity')->toArray();
 
         // se suman todos los quantities encontrados con el query anterior
-        $ProductQuantityWarehouse = array_sum($ProductOptionValueQuantities);
-        $ProductWarehouse = \DB::table('icommerce__product_warehouse')
+        $productQuantityWarehouse = array_sum($productOptionValueQuantities);
+        $productWarehouse = \DB::table('icommerce__product_warehouse')
           ->where('product_id', $productOptionValue->product_id)
           ->where('warehouse_id', $productOptionValueWarehouse->warehouse_id)
           ->first();
 
         //se crea o se actualiza con los datos anteriores para totalizar las opciones en cada warehouse
-        if (isset($ProductWarehouse->id)) {
+        if (isset($productWarehouse->id)) {
 
-          $this->productWarehouseRepository->updateBy($ProductWarehouse->id, ['quantity' => $ProductQuantityWarehouse]);
+          $this->productWarehouseRepository->updateBy($productWarehouse->id, ['quantity' => $productQuantityWarehouse]);
 
         } else {
 
@@ -114,7 +114,7 @@ class ValidateQuantitiesWarehouse
           $data = [
             'warehouse_id' => $productOptionValueWarehouse->warehouse_id,
             'product_id' => $productOptionValue->product_id,
-            'quantity' => $ProductQuantityWarehouse
+            'quantity' => $productQuantityWarehouse
           ];
           $this->productWarehouseRepository->create($data);
 
