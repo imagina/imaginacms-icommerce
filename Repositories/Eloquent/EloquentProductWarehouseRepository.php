@@ -4,6 +4,8 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\ProductWarehouseRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
+use Modules\Icommerce\Events\ProductWarehouseWasCreated;
+use Modules\Icommerce\Events\ProductWarehouseWasUpdated;
 
 class EloquentProductWarehouseRepository extends EloquentCrudRepository implements ProductWarehouseRepository
 {
@@ -75,4 +77,19 @@ class EloquentProductWarehouseRepository extends EloquentCrudRepository implemen
     //Response
     return $model;
   }
+
+  public function create($data)
+  {
+    $model = parent::create($data);
+    event(new ProductWarehouseWasCreated($model));
+    return $model;
+  }
+
+  public function updateBy($criteria, $data, $params = false)
+  {
+    $model = parent::updateBy($criteria, $data, $params = false);
+    event(new ProductWarehouseWasUpdated($model));
+    return $model;
+  }
+
 }
