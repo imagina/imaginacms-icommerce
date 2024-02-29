@@ -4,6 +4,8 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\ProductOptionValueWarehouseRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
+use Modules\Icommerce\Events\ProductOptionValueWarehouseWasUpdated;
+use Modules\Icommerce\Events\ProductOptionValueWarehouseWasCreated;
 
 class EloquentProductOptionValueWarehouseRepository extends EloquentCrudRepository implements ProductOptionValueWarehouseRepository
 {
@@ -75,9 +77,19 @@ class EloquentProductOptionValueWarehouseRepository extends EloquentCrudReposito
     //Response
     return $model;
   }
-  
-  private function checkTreeCreation($data){
-  
-  
+
+  public function create($data)
+  {
+    $model = parent::create($data);
+    event(new ProductOptionValueWarehouseWasCreated($model));
+    return $model;
   }
+
+  public function updateBy($criteria, $data, $params = false)
+  {
+    $model = parent::updateBy($criteria, $data, $params = false);
+    event(new ProductOptionValueWarehouseWasUpdated($model));
+    return $model;
+  }
+
 }
