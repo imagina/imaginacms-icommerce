@@ -16,10 +16,8 @@ class CachePaymentMethodDecorator extends BaseCacheCrudDecorator implements Paym
     
     public function getCalculations($params)
     {
-  
-      return $this->remember(function () use ($params) {
         return $this->repository->getCalculations($params);
-      },$this->createKey("calculations", $params));
+    
     }
   
 }

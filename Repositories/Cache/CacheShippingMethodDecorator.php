@@ -17,8 +17,8 @@ class CacheShippingMethodDecorator extends BaseCacheCrudDecorator implements Shi
   
   public function getCalculations($request, $params)
   {
-    return $this->remember(function () use ($request, $params) {
+   
       return $this->repository->getCalculations($request, $params);
-    });
+  
   }
 }
