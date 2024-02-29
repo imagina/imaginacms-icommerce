@@ -26,13 +26,15 @@ class Cart extends Component
   public $showButton;
   public $icon;
   public $iconquote;
+  public $classCart;
+  public $styleCart;
   private $params;
   private $request;
   protected $currencies;
   protected $listeners = ['addToCart', 'addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
-                                $iconquote = 'fas fa-file-alt', $showButton = true)
+                                $iconquote = 'fas fa-file-alt', $showButton = true, $classCart = '', $styleCart = '')
   {
 
 
@@ -43,6 +45,8 @@ class Cart extends Component
     $this->warehouse = session('warehouse');
     $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
+    $this->classCart = $classCart;
+    $this->styleCart = $styleCart;
 
     //$this->refreshCart();
     $this->load();
