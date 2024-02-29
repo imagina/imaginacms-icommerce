@@ -652,6 +652,7 @@ class IcommerceServiceProvider extends ServiceProvider
   private function registerComponentsLivewire()
   {
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
+    Livewire::component('icommerce::cart-button', \Modules\Icommerce\Http\Livewire\Cart::class);
     Livewire::component('icommerce::checkout', \Modules\Icommerce\Http\Livewire\Checkout::class);
     Livewire::component('icommerce::addToCartButton', \Modules\Icommerce\Http\Livewire\AddToCartButton::class);
     Livewire::component('icommerce::options', \Modules\Icommerce\Http\Livewire\Options\Options::class);

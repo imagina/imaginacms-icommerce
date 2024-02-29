@@ -519,4 +519,55 @@ return [
       ]
     ]
   ],
+  "cart" => [
+    "title" => "Carrito de compras",
+    "systemName" => "icommerce::cart-button",
+    "nameSpace" => "livewire",
+    "attributes" => [
+      "general" => [
+        "title" => "General",
+        "fields" => [
+            "layout" => [
+                "name" => "layout",
+                "value" => "cart-button-layout-1",
+                "type" => "select",
+                "props" => [
+                    "label" => "Layout",
+                    "options" => [
+                        ["label" => "Layout 1", "value" => "cart-button-layout-1"],
+                        ["label" => "Layout 2", "value" => "cart-button-layout-2"],
+                        ["label" => "Layout 3", "value" => "cart-button-layout-3"],
+                    ]
+                ]
+            ],
+            "icon" => [
+                "name" => "icon",
+                "value" => "fa fa-shopping-basket",
+                "type" => "input",
+                "props" => [
+                    "label" => "icon",
+                ]
+            ],
+            "classCart" => [
+                "name" => "classCart",
+                "columns" => "col-12",
+                "type" => "input",
+                "props" => [
+                    "label" => "Clase",
+                ]
+            ],
+            "styleCart" => [
+                "name" => "styleCart",
+                "type" => "input",
+                "columns" => "col-12",
+                "props" => [
+                    "label" => "Estilos",
+                    'type' => 'textarea',
+                    'rows' => 5,
+                ],
+            ],
+        ],
+      ],
+    ],
+  ]
 ];
