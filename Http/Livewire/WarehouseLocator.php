@@ -153,7 +153,16 @@ class WarehouseLocator extends Component
    
     if (isset($countryId)) {
       $params = ["filter" => ["countryId" => $countryId ?? null,"order" => ["way"=> "asc", "field" => "name"]]];
+      
+      //Get Setting
+      $provincesIso2  = json_decode(setting('icommerce::availableProvincesMap',null,null));
+      //Add Filter
+      if(!is_null($provincesIso2) && count($provincesIso2)>0){
+        $params["filter"]['iso2'] = $provincesIso2;
+      }
+
       $this->provinces = $this->provinceRepository()->getItemsBy(json_decode(json_encode($params)));
+
     } else {
       $this->provinces = collect([]);
     }
@@ -179,7 +188,18 @@ class WarehouseLocator extends Component
 
     if(isset($provinceId)) {
       \Log::info($this->log.'Init Cities');
-      $params = ["filter" => ["provinceId" => $provinceId ?? null,"order" => ["way"=> "asc", "field" => "name"]]];
+
+      //Get Setting
+      $citiesId  = json_decode(setting('icommerce::availableCitiesMap',null,null));
+      //Add Filter
+      if(!is_null($citiesId) && count($citiesId)>0){
+        //Get Only selecteds
+        $params["filter"]['id'] = $citiesId;
+      }else{
+        //Get all cities for the province
+        $params = ["filter" => ["provinceId" => $provinceId ?? null,"order" => ["way"=> "asc", "field" => "name"]]];
+      }
+
       $this->cities = $this->cityRepository()->getItemsBy(json_decode(json_encode($params)));
     }
 
