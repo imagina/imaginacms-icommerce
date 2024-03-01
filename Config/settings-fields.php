@@ -329,6 +329,19 @@ return [
       'label' => 'icommerce::common.pages.labelDefaultTypeCustomer'
     ]
   ],
+  'enableGuestShopping' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::enableGuestShopping',
+    'type' => 'checkbox',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.pages.labelEnableGuestShopping'
+    ]
+  ],
   'guestShopOnly' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -1239,4 +1252,17 @@ return [
 			'label' => 'icommerce::common.settings.checkoutRedirectUrl'
 		]
 	],
+  'warehouseFunctionality' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::warehouseFunctionality',
+    'groupName' => 'warehouse',
+    'groupTitle' => 'icommerce::common.settings.warehouse.groupName',
+    'type' => 'checkbox',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.warehouse.warehouseFunctionality'
+    ]
+  ],
 ];

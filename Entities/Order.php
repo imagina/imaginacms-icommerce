@@ -97,14 +97,17 @@ class Order extends CrudModel
     'organization_id',
     'suscription_token',
     'type',
-    'guest_purchase'
+    'guest_purchase',
+    'warehouse_id',
+    'warehouse_title',
+    'warehouse_address'
   ];
 
 
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   protected $with = [
     'status'
   ];
@@ -143,7 +146,7 @@ class Order extends CrudModel
 
   public function children()
   {
-    return $this->hasMany(Order::class,"parent_id");
+    return $this->hasMany(Order::class, "parent_id");
   }
 
   public function coupons()
@@ -168,7 +171,7 @@ class Order extends CrudModel
   {
     return $this->belongsTo(OrderStatus::class, 'status_id');
   }
-  
+
   public function getStatusNameAttribute()
   {
     return $this->status->title;
@@ -186,7 +189,7 @@ class Order extends CrudModel
 
   public function conversation()
   {
-    return $this->hasOne("Modules\Ichat\Entities\Conversation","entity_id");
+    return $this->hasOne("Modules\Ichat\Entities\Conversation", "entity_id");
   }
 
   public function transactions()
@@ -243,5 +246,10 @@ class Order extends CrudModel
   public function shippingDepartment()
   {
     return $this->belongsTo(Province::class, 'shipping_zone', 'iso_2')->with('translations');
+  }
+
+  public function warehouse()
+  {
+    return $this->belongsTo(Warehouse::class);
   }
 }

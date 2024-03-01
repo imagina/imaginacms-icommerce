@@ -502,7 +502,49 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheProductOptionValueDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\WarehouseRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentWarehouseRepository(new \Modules\Icommerce\Entities\Warehouse());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheWarehouseDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\ProductWarehouseRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductWarehouseRepository(new \Modules\Icommerce\Entities\ProductWarehouse());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheProductWarehouseDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\ProductOptionValueWarehouseRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentProductOptionValueWarehouseRepository(new \Modules\Icommerce\Entities\ProductOptionValueWarehouse());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheProductOptionValueWarehouseDecorator($repository);
+            }
+        );
 // add bindings
+
+
+
+
+
+
 
 
 
@@ -541,8 +583,11 @@ class IcommerceServiceProvider extends ServiceProvider
   private function registerComponentsLivewire()
   {
     Livewire::component('icommerce::cart', \Modules\Icommerce\Http\Livewire\Cart::class);
+    Livewire::component('icommerce::cart-button', \Modules\Icommerce\Http\Livewire\Cart::class);
     Livewire::component('icommerce::checkout', \Modules\Icommerce\Http\Livewire\Checkout::class);
+    Livewire::component('icommerce::addToCartButton', \Modules\Icommerce\Http\Livewire\AddToCartButton::class);
     Livewire::component('icommerce::options', \Modules\Icommerce\Http\Livewire\Options\Options::class);
     Livewire::component('icommerce::options.item', \Modules\Icommerce\Http\Livewire\Options\ItemOption::class);
+    Livewire::component('icommerce::warehouse-locator', \Modules\Icommerce\Http\Livewire\WarehouseLocator::class);
   }
 }

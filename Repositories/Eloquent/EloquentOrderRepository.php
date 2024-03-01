@@ -71,6 +71,10 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
       $query->where('status_id', $filter->status);
     }
   
+      if (isset($filter->warehouseId)) {
+        $query->where('warehouse_id', $filter->warehouseId);
+      }
+
     if (isset($filter->customer)) {
     
       // if has permission
@@ -93,8 +97,8 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
     if (!$showOthersPermission && !isset($filter->field)) {
       $query->where('customer_id', $params->user->id)->where('parent_id', null);
     }
-  
-  
+
+
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
     $tenantWithCentralData = in_array("orders", $entitiesWithCentralData);
   

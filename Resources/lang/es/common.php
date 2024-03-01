@@ -28,6 +28,9 @@ return [
     'index' => 'Página Principal',
     'checkout' => 'Página Checkout',
     'labelDefaultTypeCustomer' => 'Comprar como usuario invitado por defecto',
+    'labelEnableGuestShopping' => 'Habilitar la funcionalidad "Comprar como invitado"',
+    'buttonChangeShippingAddressWarehouse' => 'Cambiar dirección de entrega',
+    'buttonChangeShippingMethodWarehouse' => 'Cambiar Método de envío',
   ],
   'filters' => [
     'title' => 'Filtrar',
@@ -151,12 +154,16 @@ return [
     'productProductBackgroundColor' => 'Color de Fondo General',
     'productRibbonBackgroundColor' => 'Color Fondo de Descuento',
     'productRibbonTextColor' => 'Color Texto de Descuento',
-    'productContentPriceFontWeight' =>  'Precio Negrita (Weight)',
-    'productContentTitleFontWeight' =>  'Título Negrita (Weight)',
-    'productContentCategoryFontWeight' =>  'Categoría Negrita (Weight)',
+    'productContentPriceFontWeight' => 'Precio Negrita (Weight)',
+    'productContentTitleFontWeight' => 'Título Negrita (Weight)',
+    'productContentCategoryFontWeight' => 'Categoría Negrita (Weight)',
     'labelOrderSummaryDescription' => 'Información Resumen De La Orden',
     'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'productImageObjectFit' => 'Ajuste de la imagen',
+    'warehouse' => [
+      'groupName' => 'Bodegas',
+      'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',
+    ],
     'tenant' => [
       'group' => 'Inquilinos',
       'tenantWithCentralData' => 'Entidades con data central',
@@ -169,7 +176,7 @@ return [
         'orders' => 'Ordenes',
       ],
     ],
-    'product'=>[
+    'product' => [
       'group' => 'Producto',
       'layout' => 'Layout del Producto',
       'minimumQuantityToNotify' => 'Cantidad mínima para notificar inventario bajo',
@@ -299,5 +306,15 @@ return [
   ],
   'featured' => [
     'title' => 'Productos Destacados'
+  ],
+  'components' => [
+    'buttonLivewire' => [
+      'labelDisable' => 'No Disponible',
+      'labelLoading' => 'Cargando',
+    ],
+    'alerts' => [
+      'updateCartByDeleteProductWarehouse' => 'Hemos Actualizado tu compra De acuerdo a la disponibilidad en la bodega seleccionada',
+      'updateCartByDeleteProduct' => 'Hemos Actualizado tu compra de acuerdo a la disponibilidad del Producto',
+    ],
   ],
 ];

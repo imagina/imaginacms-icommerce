@@ -13,4 +13,10 @@ class CacheCartProductDecorator extends BaseCacheCrudDecorator implements CartPr
         $this->entityName = 'icommerce.cartproducts';
         $this->repository = $cartproduct;
     }
+  
+  public function productHasValidQuantity($cartProduct, $product = null, $productOptionsValues = null, $data = null, $productOptionValuesFrontend = null){
+    
+    return $this->repository->productHasValidQuantity($cartProduct, $product, $productOptionsValues, $data, $productOptionValuesFrontend);
+  }
+  
 }

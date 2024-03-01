@@ -333,7 +333,7 @@
         left: 5px;
         width: 110px;
         
-        a.add-cart, a.contact {
+        a.add-cart, a.contact, button.add-cart, button.contact {
           margin-bottom: 5px;
         }
       }
@@ -344,7 +344,7 @@
         text-align: right;
         width: 110px;
         
-        a.add-cart, a.contact {
+        a.add-cart, a.contact, button.add-cart, button.contact {
           margin-bottom: 5px;
         }
       }
@@ -354,7 +354,7 @@
         left: 5px;
         width: 110px;
         
-        a.add-cart, a.contact {
+        a.add-cart, a.contact, button.add-cart, button.contact {
           margin-bottom: 5px;
         }
       }
@@ -365,7 +365,7 @@
         text-align: right;
         width: 110px;
         
-        a.add-cart, a.contact {
+        a.add-cart, a.contact, button.add-cart, button.contact {
           margin-bottom: 5px;
         }
       }
@@ -410,14 +410,14 @@
         }
         
         &.rounded, &.square {
-          a {
+          a, button {
             color: white;
             border-color: transparent;
           }
         }
         
         &.outline {
-          a {
+          a, button {
             color: white;
             border-color: white;
           }
@@ -437,7 +437,7 @@
       }
       
       &.borders {
-        a {
+        a, button {
           border-right: 1px solid #404040;
         }
       }
@@ -460,7 +460,7 @@
   
   .buttons {
     &.borders {
-      a {
+      a, button {
         /*padding: 0px 8px;*/
         background-color: unset;
         border-color: unset;
@@ -481,13 +481,13 @@
         padding-right: 6px;
       }
       
-      a:last-child, style + a {
+      a:last-child, style + a, style + button, button:last-child {
         border-right: 1px solid #404040;
       }
     }
     
     &.without-borders {
-      a {
+      a, button {
         padding: 0px 8px;
         background-color: unset;
         border-color: unset;
@@ -515,24 +515,23 @@
       }
       
       &.without-add-cart-text {
-        a.add-cart {
+        a.add-cart, button.add-cart {
           width: 28px;
         }
       }
       
-      a.wishlist {
+      a.wishlist, button.wishlist  {
         width: 28px;
       }
       
-      a {
+      a, button {
         @extend .btn-circle;
       }
-      
       
     }
     
     &.square {
-      a {
+      a, button {
         /*padding: 0.375rem 0.45rem;
         line-height: 1.2;*/
         border-radius: 0px;

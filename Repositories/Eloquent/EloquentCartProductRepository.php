@@ -31,7 +31,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
    * @param $params
    * @return mixed
    */
-  
+
   private $log = "Icommerce: Repositories|CartProduct|";
   
   public function filterQuery($query, $filter, $params)
@@ -95,6 +95,12 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
     
+    $warehouse = session('warehouse');
+    $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
+  
+    if($warehouseEnabled && isset($warehouse->id)){
+      $data["warehouse_id"] = $warehouse->id;
+    }
     //To include all products even if they are internal (as in the case of services in reservations)
     $params = [
       "filter" => [
@@ -130,7 +136,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     //validate setting canAddIsCallProductsIntoCart
     if (!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])) {
       // validate valid quantity
-      if (!$this->productHasValidQuantity($product, $product->optionValues, $data, $cartProduct, $productOptionValues)) {
+      if (!$this->productHasValidQuantity($cartProduct, $product, $product->optionValues, $data, $productOptionValues)) {
         throw new \Exception("Product Quantity Unavailable", 400);
       }
     }
@@ -248,10 +254,9 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
       
       $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
-      $productOptionValuesIdsFront = array_column($productOptionValuesFront, 'id');
+
       // if is the same option values ids
-      
-      if (array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)) {
+      if( array_diff($productOptionValuesIds, $productOptionValuesFront) === array_diff($productOptionValuesFront, $productOptionValuesIds)){
         $cartProduct->update($data);
         
       } else { // if not the same options create cart product
@@ -286,7 +291,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       foreach ($cartProducts as $cartProductQuery) {
         // get product options
         $productOptionValuesIds = $cartProductQuery->productOptionValues->pluck('id')->toArray();
-        
         
         if (array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)) {
           
@@ -328,12 +332,25 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     return $allRequiredOptionsOk;
   }
   
-  private function productHasValidQuantity($product, $productOptionsValues, $data, $cartProduct, $productOptionValuesFrontend)
+  public function productHasValidQuantity($cartProduct, $product = null, $productOptionsValues = null, $data = null, $productOptionValuesFrontend = null)
   {
     $validQuantity = true;
     
     $cartProductQuantity = 0;
-    
+  
+    if(empty($product)){
+      $product = $cartProduct->product;
+    }
+  
+    if(empty($productOptionsValues)){
+      $productOptionsValues = $product->optionValues;
+    }
+ 
+    if(empty($productOptionValuesFrontend)){
+      //Search Product Option Values
+      $productOptionValuesFrontend = $cartProduct->productOptionValues;
+      
+    }
     //buscamos los productos que ya estén añadidos al carrito actual
     if (isset($cartProduct->id)) {
       $cartProducts = $cartProduct->cart->products;
@@ -344,31 +361,60 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     
     //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
     foreach ($cartProducts as $cartSingleProduct) {
-      if ($cartSingleProduct->product_id == $data["product_id"]) {
+        if($cartSingleProduct->product_id == $product->id) {
         $cartProductQuantity += $cartSingleProduct->quantity;
       }
     }
     
-    $quantity = $data["quantity"] + $cartProductQuantity;
+    $quantity = ($data["quantity"] ?? 0) + $cartProductQuantity;
     
     if ($product->subtract) { // si el producto se substrae de inventario
       
+      $warehouse = session('warehouse');
+      $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
+   
+      $productQuantity = $product->quantity;
+      //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
+      //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
+      if($warehouseEnabled){
+        
+        if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+        $productQuantity = \DB::table('icommerce__product_warehouse')
+            ->where('warehouse_id', $warehouse->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+        $productQuantity = $productQuantity->quantity ?? 0;
+      }
+ 
       // si la cantidad del producto no alcanza para lo solicitado
-      if ($product->quantity < $quantity) {
+      if($productQuantity < $quantity){
         $validQuantity = false;
       } else {
-        if (!empty($data["product_option_values"])) { // si están añadiendo el producto con opciones
-          foreach ($productOptionValuesFrontend as $productOptionValue) { // recorriendo las opciones añadidas
+        if(!empty($productOptionValuesFrontend) && $productOptionValuesFrontend->isNotEmpty() && !empty($productOptionsValues) && $productOptionsValues->isNotEmpty()){ // si están añadiendo el producto con opciones
+          foreach ($productOptionValuesFrontend as $productOptionValueFrontend) { // recorriendo las opciones añadidas
             
             foreach ($productOptionsValues as $productOptionsValue) { // recorriendo las options values del producto
               
               //si el value del producto se debe substraer de inventario y coincide con el que se está añadiendo al carrito
-              if ($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValue->option_value_id) {
+             if($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValueFrontend->option_value_id){
+
+               $productOptionsValueQuantity = $productOptionsValue->quantity;
+               if($warehouseEnabled){
                 
-                //dd($quantity,$productOptionsValue->subtract,$productOptionValue["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValue["optionValueId"]);
+                 if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+                 $productOptionsValueQuantity = \DB::table('icommerce__product_option_value_warehouse')
+                   ->where('warehouse_id', $warehouse->id)
+                   ->where('product_option_value_id', $productOptionsValue->id)
+                   ->where('product_id', $productOptionsValue->product_id)
+                   ->first();
+  
+                 $productOptionsValueQuantity = $productOptionsValueQuantity->quantity ?? 0;
+               }
+               //dd($quantity,$productOptionsValue->subtract,$productOptionValueFrontend["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValueFrontend["optionValueId"]);
                 //si la cantidad de unidades para el valor de opcion no alcanza para lo solicitado
-                if ($productOptionsValue->quantity < $quantity) {
-                  //dd($productOptionsValue->quantity,$quantity);
+              if($productOptionsValueQuantity < $quantity){
+                //dd($productOptionsValueQuantity,$quantity, $productOptionsValue);
                   $validQuantity = false;
                 }
               }
@@ -377,7 +423,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         }
       }
     }
-    //dd($quantity,$productOptionsValues,$data,$cartProduct);
+    //dd($quantity,$validQuantity,$productOptionsValues,$data,$cartProduct);
     return $validQuantity;
   }
   

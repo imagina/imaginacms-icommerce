@@ -19,13 +19,15 @@
 @endif
 
 @if(!$withTextInAddToCart)
-.product-layout .add-to-cart-with-quantity.rounded .add-to-cart-button a i {
+.product-layout .add-to-cart-with-quantity.rounded .add-to-cart-button a i,
+.product-layout .add-to-cart-with-quantity.rounded .add-to-cart-button button i {
     margin-right: 0px !important;
 }
 @endif
 
 @if($withTextInAddToCart && $buttonsLayout=="rounded" && $addToCartWithQuantity)
-.product-layout-1 .buttons.rounded a.add-to-cart-with-quantity-button {
+.product-layout-1 .buttons.rounded a.add-to-cart-with-quantity-button,
+.product-layout-1 .buttons.rounded button.add-to-cart-with-quantity-button {
     width: unset !important;
     height: unset !important;
     /*padding: 0.25rem 0.6rem;

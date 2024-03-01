@@ -16,6 +16,9 @@ class CartProductTransformer extends CrudResource
   {
     return [
       'total' => $this->when($this->total, Currency::convert($this->total)),
+      //Relationships Data
+      'product' => $this->when($this->product, new ProductTransformer($this->product)),
+      'productOptionValues' => ProductOptionValueTransformer::collection($this->productOptionValues),
     ];
   }
 }

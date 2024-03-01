@@ -14,7 +14,7 @@
     @endif
   </div>
   <div id="customerData" class="collapse show" role="tablist" aria-multiselectable="true">
-    @if (!$guestShopOnly)
+    @if (!$guestShopOnly && setting('icommerce::enableGuestShopping', null, true))
       @guest
         <hr class="my-2"/>
         <button wire:click.prevent="shopAsGuest"
@@ -27,8 +27,7 @@
         </button>
       @endguest
     @endif
-
-    @if ($shopAsGuest)
+    @if ($shopAsGuest && setting('icommerce::enableGuestShopping', null, true))
       <hr class="py-2"/>
       <input id="userEmail" wire:model.defer="userEmail"
              placeholder="{{trans('icommerce::checkout.buttons.placeholderInputEmail')}}" class="form-control"

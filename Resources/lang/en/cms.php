@@ -288,6 +288,8 @@ return [
      require customization, such as large orders or specialized products."
   ],
   "newWarehouse" => "New Warehouse",
-  "updateWarehouse" => "Edit Warehouse"
+  "updateWarehouse" => "Edit Warehouse",
+  "fieldEditableOnlyWarehouse" => "This field must be updated by the warehouse",
+  "changeOnlyNestedOptionValue" => "This option has child options, you can only modify this field in them"
 ];
 

@@ -292,6 +292,8 @@ return [
     requieren personalización, como pedidos grandes o productos especializados."
   ],
   "newWarehouse" => "Nueva Bodega",
-  "updateWarehouse" => "Editar Bodega"
+  "updateWarehouse" => "Editar Bodega",
+  "fieldEditableOnlyWarehouse" => "Este campo se modifica por bodegas",
+  "changeOnlyNestedOptionValue" => "Esta opción tiene opciones hijas, solo puedes modificar este campo en ellas"
 ];
 

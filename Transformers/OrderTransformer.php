@@ -21,7 +21,7 @@ class OrderTransformer extends CrudResource
       'shippingDepartment' => new ProvinceTransformer($this->whenLoaded('shippingDepartment')),
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions')),
-    ];
+     ];
   
     //Add information blocks
     $item['informationBlocks'] = [
@@ -60,7 +60,7 @@ class OrderTransformer extends CrudResource
       $customerRegisterExtraFields = json_decode(setting("iprofile::registerExtraFields", null, "[]"));
       if (!empty($customerFields)) {
         foreach ($customerRegisterExtraFields as $extraField) {
-          if ($extraField->active) {
+          if ($extraField->active ?? false) {
             if ($extraField->type == "documentType") {
               $customerField = $customerFields->filter(function ($field) use ($extraField) {
                 return strstr($field->name, $extraField->field) ||
@@ -120,7 +120,7 @@ class OrderTransformer extends CrudResource
       
         if (!empty($orderShippingExtraFields)) {
           foreach ($customerAddressExtraFields as $extraField) {
-            if ($extraField->active) {
+            if ($extraField->active ?? false) {
               if (isset($orderShippingExtraFields->{$extraField->field})) {
                 if ($extraField->field == "documentType") {
                   $documentNumber = $orderShippingExtraFields->documentNumber ?? '';
@@ -178,7 +178,7 @@ class OrderTransformer extends CrudResource
       $orderBillingExtraFields = $this->options->billingAddress ?? [];
       if (!empty($orderBillingExtraFields)) {
         foreach ($customerAddressExtraFields as $extraField) {
-          if ($extraField->active) {
+          if ($extraField->active ?? false) {
             if (isset($orderBillingExtraFields->{$extraField->field})) {
               if ($extraField->field == "documentType") {
                 $documentNumber = $orderBillingExtraFields->documentNumber ?? '';
@@ -261,6 +261,23 @@ class OrderTransformer extends CrudResource
       );
     }
   
+    if (setting('icommerce::warehouseFunctionality', null, false)) {
+      $warehouseBlockInfo = [
+        'title' => trans("icommerce::orders.informationBlocksOrder.titleOrderInfoWarehouse"),
+        'values' => [
+          [
+            'label' => trans("icommerce::orders.informationBlocksOrder.labelTitleWarehouse"),
+            'value' => $item['warehouseTitle'] ?? ''
+          ],
+          [
+            'label' => trans("icommerce::orders.informationBlocksOrder.labelAddressWarehouse"),
+            'value' => $item['warehouseAddress'] ?? ''
+          ],
+        ]
+      ];
+      array_push($item['informationBlocks'], $warehouseBlockInfo);
+    }
+
     return $item;
   }
 }

@@ -13,6 +13,8 @@ class ProductOptionValueTransformer extends CrudResource
   */
   public function modelAttributes($request)
   {
-    return [];
+    return [
+      'parentId' => $this->parent_prod_opt_val_id ?? 0,
+    ];
   }
 }

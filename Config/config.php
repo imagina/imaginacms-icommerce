@@ -893,5 +893,16 @@ return [
     'taxclasses' => "icommerce::cms.documentation.taxclasses",
     'currencies' => "icommerce::cms.documentation.currencies",
     'quotes' => "icommerce::cms.documentation.quotes",
-  ]
+  ],
+
+  /*
+   |--------------------------------------------------------------------------
+   |WAREHOUSE
+   |--------------------------------------------------------------------------
+  */
+  'warehouseShippingMethods' => [
+    'delivery' => 'icommerceordertotal', //Shipping Method Name
+    'pickup' => 'icommercepickup'
+  ],
+
 ];
