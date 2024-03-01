@@ -4,7 +4,6 @@ id="homeModalWarehouseLocator" role="tabpanel" aria-labelledby="homeTabModalWare
     @if(is_null($user))
 
         @php $reedirectUrl = "/ipanel/#/auth/login/?redirectTo=".url('/'); @endphp
-        {{trans('icommerce::warehouses.messages.hello')}}, 
         <a class="cursor-pointer text-primary" onclick="location.href='{{$reedirectUrl}}'">
             {{trans('icommerce::warehouses.messages.not logged')}}
         </a>
