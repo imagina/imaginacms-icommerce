@@ -1265,4 +1265,30 @@ return [
       'label' => 'icommerce::common.settings.warehouse.warehouseFunctionality'
     ]
   ],
+  'productGalleryLayout' => [
+    "onlySuperAdmin" => true,
+    'value' => 'gallery-layout-4',
+    'name' => 'icommerce::productGalleryLayout',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productShowGalleryLayout',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ['label' => 'Gallery 1', 'value' => 'gallery-layout-1'],
+            ['label' => 'Gallery 2', 'value' => 'gallery-layout-2'],
+            ['label' => 'Gallery 3', 'value' => 'gallery-layout-3'],
+            ['label' => 'Gallery 4', 'value' => 'gallery-layout-4'],
+            ['label' => 'Gallery 5', 'value' => 'gallery-layout-5'],
+            ['label' => 'Gallery 6', 'value' => 'gallery-layout-6'],
+            ['label' => 'Gallery 7', 'value' => 'gallery-layout-7']
+        ]
+    ]
+  ],
 ];
