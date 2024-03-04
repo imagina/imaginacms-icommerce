@@ -116,7 +116,7 @@ class Cart extends Component
             } else {
                 $this->alert('warning', trans('icommerce::cart.message.add'), config('asgard.isite.config.livewireAlerts'));
             }
-        
+
       }
 
         } catch (\Exception $e) {
@@ -257,22 +257,22 @@ class Cart extends Component
     //|--------------------------------------------------------------------------
     //| Repositories
     //|--------------------------------------------------------------------------
-    private function cartRepository(): cartRepository
+    private function cartRepository()
     {
         return app('Modules\Icommerce\Repositories\CartRepository');
     }
 
-    private function cartProductRepository(): cartProductRepository
+    private function cartProductRepository()
     {
         return app('Modules\Icommerce\Repositories\CartProductRepository');
     }
 
-    private function productRepository(): productRepository
+    private function productRepository()
     {
         return app('Modules\Icommerce\Repositories\ProductRepository');
     }
 
-    private function currencyRepository(): currencyRepository
+    private function currencyRepository()
     {
         return app('Modules\Icommerce\Repositories\CurrencyRepository');
     }
@@ -280,12 +280,12 @@ class Cart extends Component
     //|--------------------------------------------------------------------------
     //| Services
     //|--------------------------------------------------------------------------
-    private function orderService(): orderService
+    private function orderService()
     {
         return app('Modules\Icommerce\Services\OrderService');
     }
 
-    public function PdfService(): PdfService
+    public function PdfService()
     {
         return app('Modules\Isite\Services\PdfService');
     }
