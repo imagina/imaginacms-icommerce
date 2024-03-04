@@ -1290,5 +1290,51 @@ return [
             ['label' => 'Gallery 7', 'value' => 'gallery-layout-7']
         ]
     ]
+],
+  'availableProvincesMap' => [
+    'name' => 'icommerce::availableProvincesMap',
+    'value' =>  [],
+    'type' => 'select',
+    'groupName' => 'warehouse',
+    'groupTitle' => 'icommerce::common.settings.warehouse.groupName',
+    'columns' => 'col-12 col-md-6 q-pr-sm q-pt-sm',
+    'props' => [
+      'clearable' => true,
+      'multiple' => true,
+      'label' => 'ilocations::common.settings.availableProvinces',
+    ],
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.qlocations.provinces', //apiRoute to request
+      'select' => ['label' => 'name', 'id' => 'iso2'], //Define fields to config select
+      'filterByQuery' => true,
+      'requestParams' => [
+        "filter" => [
+          "indexAll" => true
+        ]
+      ]
+    ]
+  ],
+  'availableCitiesMap' => [
+    'name' => 'icommerce::availableCitiesMap',
+    'value' => [],
+    'type' => 'select',
+    'groupName' => 'warehouse',
+    'groupTitle' => 'icommerce::common.settings.warehouse.groupName',
+    'columns' => 'col-12 col-md-6 q-pr-sm q-pt-sm',
+    'props' => [
+      'clearable' => true,
+      'multiple' => true,
+      'label' => 'ilocations::common.settings.availableCities',
+    ],
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.qlocations.cities', //apiRoute to request
+      'select' => ['label' => 'name', 'id' => 'id'], //Define fields to config select
+      'filterByQuery' => true,
+      'requestParams' => [
+        "filter" => [
+          "indexAll" => true
+        ]
+      ]
+    ]
   ],
 ];
