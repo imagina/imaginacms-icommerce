@@ -43,6 +43,18 @@ return [
       'group' => 'Price Lists'
     ],
   ],
+  'layouts' => [
+    'group_name' => 'Templates',
+    'label_products' => 'Store Products Template',
+    'label_categories' => 'Store Category Template',
+    'label_products_default' => 'Store Products Template (Default)',
+    'label_categories_default' => 'Store Categories Template (Default)',
+    'titlePostRecent' => 'Recent Articles',
+    'viewMore' => 'View more',
+    'titleRelatedPosts' => 'Related Posts',
+    'titleArticles' => 'Articles',
+    'page_product' => 'Product Page',
+  ],
   'messages' => [
     'title is required' => 'The title is required',
     'title min 2' => 'The title must contain a minimum of two characters',
@@ -140,6 +152,7 @@ return [
     'labelOrderSummaryDescription' => 'Order Summary Information',
     'checkoutRedirectUrl' => 'Checkout redirect URL',
     'productImageObjectFit' => 'Image object fit',
+    'productShowGalleryLayout' => 'Gallery Template',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
