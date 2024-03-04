@@ -5,7 +5,7 @@
         <div id="warehouseSelected">
 
         
-            <div class="list-address">
+            <div class="list-address" wire:init="loadWarehouseShowInfor">
                 <div class="item-address">
                     <div class="form-check d-flex align-items-center position-static">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked>

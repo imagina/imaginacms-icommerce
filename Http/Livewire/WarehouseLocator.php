@@ -32,6 +32,8 @@ class WarehouseLocator extends Component
   public $showNotWarehouses;
   public $disabledBtnConfirm;
   public $loading;
+
+  public $readyToLoad = false;
   
   /**
   * LISTENERS
@@ -452,7 +454,7 @@ class WarehouseLocator extends Component
     \Log::info($this->log.'confirmData');
 
     //Helper|Isite
-    clearResponseCache();
+    //clearResponseCache();
 
     $this->loading = true;
     $this->disabledBtnConfirm = true;
@@ -527,7 +529,24 @@ class WarehouseLocator extends Component
 
   }
 
+  /**
+   * WIRE INIT
+   */
+  public function loadWarehouseShowInfor()
+  {
+      $this->readyToLoad = true;
+  }
   
+  /**
+   *  Proccess to get Information | Case: Active Cache
+   */
+  public function getWarehouseFromSession()
+  {
+    
+    $this->warehouse = session("warehouse");
+    return $this->warehouse;
+
+  }
 
   //|--------------------------------------------------------------------------
   //| Render
@@ -538,8 +557,10 @@ class WarehouseLocator extends Component
   public function render()
   {
 
-    return view($this->view);
-
+    return view($this->view,[
+      'warehouse' => $this->readyToLoad ? $this->getWarehouseFromSession() : null
+    ]);
+   
   }
 
 }
