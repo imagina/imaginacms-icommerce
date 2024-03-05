@@ -589,5 +589,6 @@ class IcommerceServiceProvider extends ServiceProvider
     Livewire::component('icommerce::options', \Modules\Icommerce\Http\Livewire\Options\Options::class);
     Livewire::component('icommerce::options.item', \Modules\Icommerce\Http\Livewire\Options\ItemOption::class);
     Livewire::component('icommerce::warehouse-locator', \Modules\Icommerce\Http\Livewire\WarehouseLocator::class);
+    Livewire::component('icommerce::warehouse-show-infor', \Modules\Icommerce\Http\Livewire\WarehouseShowInfor::class);
   }
 }

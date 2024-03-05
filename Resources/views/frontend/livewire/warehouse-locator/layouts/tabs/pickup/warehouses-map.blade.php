@@ -7,8 +7,7 @@
 
     <x-isite::maps  
         mapId="map_canvas_pickup"
-        :usingLivewire="true" 
-        :showLocationName="false" 
+        :usingLivewire="true"  
         :locations="$warehousesLocation"
         :initMultipleLocations="true"
         :activeClickInMarker="true"

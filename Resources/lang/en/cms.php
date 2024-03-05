@@ -118,6 +118,8 @@ return [
   "orderHistory" => "Order History",
   "label" => [
     "warehouse" => "Warehouse | Warehouses",
+    "bannerPriceList" => "Head to your personal product list to start exploring. Enjoy the best prices!",
+    "explorePriceList" => "Browse Product List",
   ],
   "form" => [
     "formContent" => "Here you can find the information related to the name, slug, summary and description.",

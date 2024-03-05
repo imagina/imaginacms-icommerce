@@ -56,6 +56,7 @@ return [
     'viewMore' => 'Ver más',
     'titleRelatedPosts' => 'Artículos relacionados',
     'titleArticles' => 'Artículos',
+    'page_product' => 'Página de Producto',
   ],
   'messages' => [
     'field required' => 'El campo es requerido',
@@ -160,6 +161,7 @@ return [
     'labelOrderSummaryDescription' => 'Información Resumen De La Orden',
     'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'productImageObjectFit' => 'Ajuste de la imagen',
+    'productShowGalleryLayout' => 'Plantilla de Galeria',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',
