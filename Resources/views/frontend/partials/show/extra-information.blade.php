@@ -25,7 +25,7 @@
         </div>
     @endif
 
-    @if(isset($product->mediaFiles()->sizereference->path) && !is_null($product->mediaFiles()->sizereference->path))
+    @if(isset($product->mediaFiles()->sizereference->id) && !is_null($product->mediaFiles()->sizereference->id))
         <div class="col-12 py-3">
             <a class="button-size-guide text-primary py-3 h4" target="_blank"
                href="{{$product->mediaFiles()->sizereference->path}}">
