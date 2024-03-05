@@ -18,14 +18,12 @@ class OrderHistory
 
    
   public function getData(){
-
-    $data = array(
-      'status' => $this->status, 
+  
+    return array(
+      'status' => $this->status,
       'notify' => $this->notify,
       'comment' => $this->comment
     );
-
-    return $data;
 
   }
 

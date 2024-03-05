@@ -1,6 +1,6 @@
 @php($categorySelected = $categoryBreadcrumb[count($categoryBreadcrumb)-1] ?? null)
 
-@php($isSelected = !empty($categorySelected) ? $categorySelected->id == $category->id ? true : false : false)
+@php($isSelected = !empty($categorySelected) ? $categorySelected->id == $category->id : false)
 
 <li class="list-group-item {{$isSelected ? 'category-selected' : ''}} level-{{$level}}">
 	
@@ -29,7 +29,7 @@
 			<a href="{{$newUrl}}" class="text-href ">
 				@php($mediaFiles = $category->mediaFiles())
 				@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
-					<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
+					<img alt="category icon image" class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
 				@endif
 				{{$category->title}}
 			</a>
@@ -45,7 +45,7 @@
 			   aria-controls="multiCollapse-{{$slug}}">
 				@php($mediaFiles = $category->mediaFiles())
 				@if(isset($mediaFiles->iconimage->path) && !strpos($mediaFiles->iconimage->path,"default.jpg"))
-					<img class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
+					<img alt="category icon image" class="category-icon filter" src="{{$mediaFiles->iconimage->path}}">
 				@endif
 				{{$category->title}}
 			</a>

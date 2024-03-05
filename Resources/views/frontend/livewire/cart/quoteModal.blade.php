@@ -9,7 +9,7 @@
         </div>
         <div class="modal-body">
           @php
-            $quoteFormId = setting('icommerce::icommerceQuoteForm',null,null);
+            $quoteFormId = setting('icommerce::icommerceQuoteForm',null,null)
           @endphp
           @if($quoteFormId)
             <x-iforms::form :id="$quoteFormId" :fieldsParams="['productName' => ['readonly' => 'readonly']]" />

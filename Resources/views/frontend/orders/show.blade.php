@@ -24,13 +24,13 @@
 @endsection
 @section('profileContent')
   @php
-    $currency= isset($order->currency) ? $order->currency : localesymbol($code ?? 'USD');
+    $currency= isset($order->currency) ? $order->currency : localesymbol($code ?? 'USD')
   @endphp
 
 
   @php
     $orderTransformed = collect($order)->toArray();
-    $informationBlocks = $orderTransformed["informationBlocks"];
+    $informationBlocks = $orderTransformed["informationBlocks"]
   @endphp
 
   <div id="showOrder{{$order->id}}">

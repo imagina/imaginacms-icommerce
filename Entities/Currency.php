@@ -3,14 +3,30 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
 
-class Currency extends Model
+class Currency extends CrudModel
 {
-  use Translatable, AuditTrait;
+  use Translatable;
   
   protected $table = 'icommerce__currencies';
+  public $transformer = 'Modules\Icommerce\Transformers\CurrencyTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\CurrencyRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateCurrencyRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateCurrencyRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
   public $translatedAttributes = [
     'name'
   ];
@@ -27,14 +43,13 @@ class Currency extends Model
     'default_currency',
     'language',
     'options'
-  
   ];
-  
-  
+
+
   protected $casts = [
     'options' => 'array'
   ];
-  
+
   public function store()
   {
     if (is_module_enabled('Marketplace')) {
@@ -42,10 +57,9 @@ class Currency extends Model
     }
     return $this->belongsTo(Store::class);
   }
-  
+
   public function orders()
   {
     return $this->hasMany(Order::class);
   }
-  
 }

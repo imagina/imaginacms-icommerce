@@ -3,22 +3,32 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Icrud\Entities\CrudModel;
 
-class ItemType extends Model
+class ItemType extends CrudModel
 {
-    use Translatable;
+  use Translatable;
 
-    protected $table = 'icommerce__item_types';
-    public $translatedAttributes = [
-        'title'
+  protected $table = 'icommerce__item_types';
+  public $transformer = 'Modules\Icommerce\Transformers\ItemTypeTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\ItemTypeRepository';
+  public $requestValidation = [
+      'create' => 'Modules\Icommerce\Http\Requests\CreateItemTypeRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateItemTypeRequest',
     ];
-    protected $fillable = [
-        'options'
-    ];
-
-
-    protected $casts = [
-        'options' => 'array'
-    ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
+  public $translatedAttributes = [ 'title'];
+  protected $fillable = [ 'options'];
+  protected $casts = [
+    'options' => 'array'
+  ];
 }

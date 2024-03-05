@@ -3,12 +3,28 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Icrud\Entities\CrudModel;
 
-class Transaction extends Model
+class Transaction extends CrudModel
 {
 
-    protected $table = 'icommerce__transactions';
+  protected $table = 'icommerce__transactions';
+  public $transformer = 'Modules\Icommerce\Transformers\TransactionTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\TransactionRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateTransactionRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateTransactionRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
   protected $fillable = [
     'external_code',
@@ -30,7 +46,7 @@ class Transaction extends Model
 
   public function orderStatus()
   {
-    return $this->belongsTo(OrderStatus::class,"status");
+    return $this->belongsTo(OrderStatus::class, "status");
   }
 
 }

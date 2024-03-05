@@ -2,15 +2,10 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Repositories\BaseRepository;
+use Modules\Core\Icrud\Repositories\BaseCrudRepository;
 
-interface ShippingMethodRepository extends BaseRepository
+interface ShippingMethodRepository extends BaseCrudRepository
 {
-
-  public function getItemsBy($params);
   
-  public function getItem($criteria, $params = null);
-
   public function getCalculations($request, $params);
-
 }

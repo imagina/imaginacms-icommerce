@@ -3,12 +3,28 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
-use Modules\Icommerce\Entities\Product;
+use Modules\Core\Icrud\Entities\CrudModel;
 
-class CartProduct extends Model
+class CartProduct extends CrudModel
 {
+
   protected $table = 'icommerce__cart_product';
+  public $transformer = 'Modules\Icommerce\Transformers\CartProductTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\CartProductRepository';
+  public $requestValidation = [
+      'create' => 'Modules\Icommerce\Http\Requests\CreateCartProductRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateCartProductRequest',
+    ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
   protected $fillable = [
     'cart_id',
@@ -18,9 +34,7 @@ class CartProduct extends Model
     'is_call',
     'organization_id',
     'options'
-
   ];
-
 
   protected $casts = [
     'options' => 'array'
@@ -44,14 +58,14 @@ class CartProduct extends Model
   public function productOptionValues()
   {
     return $this->belongsToMany(ProductOptionValue::class, 'icommerce__cart_product_options')->withTimestamps();
-
   }
-  
+
+
   public function dynamicOptions()
   {
     return $this->belongsToMany(Option::class, 'icommerce__cart_product_options')
-    ->withPivot('cart_product_id', 'product_option_value_id', 'option_id', 'value')
-    ->withTimestamps();
+      ->withPivot('cart_product_id', 'product_option_value_id', 'option_id', 'value')
+      ->withTimestamps();
   }
 
   public function setOptionsAttribute($value)
@@ -64,7 +78,6 @@ class CartProduct extends Model
   {
     return json_decode($value);
   }
-
 
   public function getTotalAttribute()
   {

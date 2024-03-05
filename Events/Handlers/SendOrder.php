@@ -4,7 +4,6 @@ namespace Modules\Icommerce\Events\Handlers;
 
 use Illuminate\Contracts\Mail\Mailer;
 use Modules\User\Entities\Sentinel\User;
-use Modules\Icommerce\Emails\Order;
 use Modules\Notification\Services\Notification;
 
 class SendOrder

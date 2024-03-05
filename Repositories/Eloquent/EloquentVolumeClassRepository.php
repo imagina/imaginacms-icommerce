@@ -18,7 +18,7 @@ class EloquentVolumeClassRepository extends EloquentCrudRepository implements Vo
    * @var array
    */
   protected $replaceSyncModelRelations = [];
-
+  
   /**
    * Filter query
    *

@@ -3,22 +3,35 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Isite\Traits\RevisionableTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class Coupon extends Model
+class Coupon extends CrudModel
 {
-  use BelongsToTenant, AuditTrait, RevisionableTrait;
-
-  public $transformer = 'Modules\Icommerce\Transformers\CouponTransformer';
-  public $entity = 'Modules\Icommerce\Entities\Coupon';
-  public $repository = 'Modules\Icommerce\Repositories\CouponRepository';
-
+  use BelongsToTenant;
+  
+  
   protected $table = 'icommerce__coupons';
-
+  public $transformer = 'Modules\Icommerce\Transformers\CouponTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\CouponRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateCouponRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateCouponRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
+  public $translatedAttributes = [];
   protected $fillable = [
     'code',
     'type',
@@ -41,22 +54,22 @@ class Coupon extends Model
     'exclude_departments',
     'include_departments'
   ];
-
+  
   private $auth;
-
+  
   protected $casts = [
     'options' => 'array',
     'exclude_departments' => 'array',
     'include_departments' => 'array'
   ];
-
-
+  
+  
   public function __construct(array $attributes = [])
   {
     $this->auth = Auth::user();
     parent::__construct($attributes);
   }
-
+  
   public function store()
   {
     if (is_module_enabled('Marketplace')) {
@@ -64,35 +77,35 @@ class Coupon extends Model
     }
     return $this->belongsTo(Store::class);
   }
-
+  
   public function product()
   {
     return $this->belongsTo(Product::class);
   }
-
+  
   public function category()
   {
     return $this->belongsTo(Category::class);
   }
-
+  
   public function customer()
   {
     $driver = config('asgard.user.config.driver');
     return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
   }
-
+  
   public function orders()
   {
     return $this->belongsToMany(Order::class, 'icommerce__coupon_order_history')->withTimestamps()->withPivot('amount');
   }
-
-
+  
+  
   public function couponHistories()
   {
     return $this->hasMany(CouponOrderHistory::class);
   }
-
-
+  
+  
   /*
   * Mutators / Accessors
   */
@@ -100,22 +113,22 @@ class Coupon extends Model
   {
     $this->attributes['exclude_departments'] = json_encode($value);
   }
-
+  
   public function getExcludeDepartmentsAttribute($value)
   {
     return json_decode($value);
   }
-
+  
   public function setIncludeDepartmentsAttribute($value)
   {
     $this->attributes['include_departments'] = json_encode($value);
   }
-
+  
   public function getIncludeDepartmentsAttribute($value)
   {
     return json_decode($value);
   }
-
+  
   /*
   * Polimorphy Relations
   */
@@ -123,17 +136,17 @@ class Coupon extends Model
   {
     return $this->morphedByMany(Product::class, 'couponable', 'icommerce__couponables');
   }
-
+  
   public function categories()
   {
     return $this->morphedByMany(Category::class, 'couponable', 'icommerce__couponables');
   }
-
+  
   public function manufacturers()
   {
     return $this->morphedByMany(Manufacturer::class, 'couponable', 'icommerce__couponables');
   }
-
+  
   /*
   * Attributes
   */
@@ -141,22 +154,22 @@ class Coupon extends Model
   {
     return $this->has('orders')->count();
   }
-
+  
   public function getUsesTotalPerUserAttribute()
   {
     return $this->whereHas('orders', function ($query) {
       $query->where('icommerce__coupon_order_history.customer_id', Auth::id());
     })->count();
   }
-
+  
   public function getRunningAttribute()
   {
-
+    
     // Validate if coupon active (0 is ID for inactive coupons)
     if ($this->status == 0) {
       return false;
     }
-
+    
     // validate if the coupon is valid (Dates)
     $now = date('Y-m-d');
     if (!($now >= $this->date_start)) {
@@ -165,20 +178,20 @@ class Coupon extends Model
     if (!($now <= $this->date_end)) {
       return false;
     }
-
+    
     // Validate the number of times the coupon has been used
     if ($this->quantity_total > 0) {//If quantity total == 0 is infinite
       if ($this->usesTotal >= $this->quantity_total) {
         return false;
       }
     }
-
+    
     return true;
   }
-
+  
   public function getCanUseAttribute()
   {
-
+    
     $user = $this->auth;
     $userId = $user->id ?? 0;
     //dd($userId);
@@ -189,37 +202,35 @@ class Coupon extends Model
         ->get()
         ->pluck("department_id")->toArray();
     }
-
+    
     $excludeDepartments = $this->exclude_departments;
     $includeDepartments = $this->include_departments;
-
+    
     //validate exclude departments
-    if(!empty($excludeDepartments)){
-      foreach ($departments as $departmentId){
-        if(in_array($departmentId,$excludeDepartments)){ // si alguno de los departamentos del usuario está en los excluidos: return false
+    if (!empty($excludeDepartments)) {
+      foreach ($departments as $departmentId) {
+        if (in_array($departmentId, $excludeDepartments)) { // si alguno de los departamentos del usuario está en los excluidos: return false
           return false;
         }
       }
     }
-
+    
     //validate include departments
-    if(!empty($includeDepartments) && !empty(array_diff($includeDepartments, ["0"]))){ // si hay departamentos incluidos y no está 0 = ALL
-      $departmentsIntersection = array_intersect($departments,$includeDepartments);
-      if(empty($departmentsIntersection)){
+    if (!empty($includeDepartments) && !empty(array_diff($includeDepartments, ["0"]))) { // si hay departamentos incluidos y no está 0 = ALL
+      $departmentsIntersection = array_intersect($departments, $includeDepartments);
+      if (empty($departmentsIntersection)) {
         return false;
       }
     }
-
+    
     // Validate the number of times the coupon has been used by the logged in user
     if ($this->quantity_total_customer > 0 && $this->logged && Auth::id() != null) { //If quantity total == 0 is infinite
       if ($this->usesTotalPerUser >= $this->quantity_total_customer) {
         return false;
       }
     }
-
-
-
+    
     return true;
   }
-
+  
 }

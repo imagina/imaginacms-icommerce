@@ -123,22 +123,21 @@ class Cart extends Component
     request()->session()->put('cart', $this->cart);
 
   }
+  
+  
+  public function addToCartWithOptions($data){
 
-
-  public function addToCartWithOptions($data)
-  {
-
-    $this->addToCart($data["productId"], $data["quantity"], $data["productOptionValues"]);
-
+    $this->addToCart($data["productId"],$data["quantity"],$data["productOptionValues"]);
+    
   }
-
+  
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
   {
 
     try {
 
-      if ($quantity > 0) {
-
+      if($quantity>0){
+    
         $product = $this->productRepository()->getItem($productId);
 
         if (isset($product->id)) {
@@ -218,7 +217,7 @@ class Cart extends Component
     $this->emit("cartUpdated", $this->cart);
 
   }
-
+  
   /**
    * @param $name
    * @param $value
@@ -235,11 +234,11 @@ class Cart extends Component
           $this->dispatchBrowserEvent('refresh-page');
         }
         break;
-
+        
     }
-
+    
   }
-
+  
   public function download()
   {
 
@@ -250,9 +249,8 @@ class Cart extends Component
       'filename' => trans("icommerce::pdf.settings.pdf.file_name"),
       'view' => 'icommerce::pdf.viewCart'
     ];
-
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+  
+    return $this->PdfService()->create($content);
   }
 
   public function requestQuote()
@@ -288,9 +286,8 @@ class Cart extends Component
       'filename' => trans('icommerce::pdf.settings.pdf.file_name'),
       'view' => 'icommerce::pdf.viewOrder',
     ];
-
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+  
+    return $this->PdfService()->create($content);
 
   }
 
@@ -321,7 +318,7 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\CartProductRepository');
   }
-
+  
   /**
    * @return productRepository
    */
@@ -329,7 +326,7 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\ProductRepository');
   }
-
+  
   /**
    * @return currencyRepository
    */
@@ -374,7 +371,7 @@ class Cart extends Component
     $this->currencies = $this->currencyRepository()->getItemsBy(json_decode(json_encode([])));
     $this->currencySelected = $this->currentCurrency->id;
   }
-
+  
 
   //|--------------------------------------------------------------------------
   //| Properties

@@ -2,136 +2,89 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Icommerce\Repositories\ShippingMethodRepository;
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-
 use Illuminate\Http\Request;
-
-//Support
+use Modules\Icommerce\Repositories\ShippingMethodRepository;
+use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 use Modules\Icommerce\Support\Cart as cartSupport;
-use Modules\Ihelpers\Events\CreateMedia;
-use Modules\Ihelpers\Events\UpdateMedia;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Arr;
-
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class EloquentShippingMethodRepository extends EloquentBaseRepository implements ShippingMethodRepository
+class EloquentShippingMethodRepository extends EloquentCrudRepository implements ShippingMethodRepository
 {
+  /**
+   * Filter names to replace
+   * @var array
+   */
+  protected $replaceFilters = [];
+
+  /**
+   * Relation names to replace
+   * @var array
+   */
+  protected $replaceSyncModelRelations = [];
   
-  public function getItemsBy($params)
+  /**
+   * Filter query
+   *
+   * @param $query
+   * @param $filter
+   * @param $params
+   * @return mixed
+   */
+  public function filterQuery($query, $filter, $params)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-    
-    // RELATIONSHIPS
-    $defaultInclude = [];
-    $query->with(array_merge($defaultInclude, $params->include ?? []));
-    
-    // FILTERS
-    if ($params->filter) {
-      $filter = $params->filter;
-      
-      //add filter by search
-      if (isset($filter->search)) {
-        //find search in columns
-        $query->where('id', 'like', '%' . $filter->search . '%')
-          ->orWhere('name', 'like', '%' . $filter->search . '%')
-          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-      }
-      //add filter by status
-      if (isset($filter->status)) {
-        //find search in columns
-        $query->where('status', $filter->status);
-        
-      }
-      
-    }
+
+    /**
+     * Note: Add filter name to replaceFilters attribute before replace it
+     *
+     * Example filter Query
+     * if (isset($filter->status)) $query->where('status', $filter->status);
+     *
+     */
+  
   
     $this->validateTenantWithCentralData($query);
-    
-    
+  
+  
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
     } else {
       //pre-filter status
       $query->where("status", 1);
-      
+    
     }
     
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-    
-    /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      (isset($params->take) && $params->take) ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
+    //Response
+    return $query;
   }
-  
-  public function getItem($criteria, $params = false)
+
+  /**
+   * Method to sync Model Relations
+   *
+   * @param $model ,$data
+   * @return $model
+   */
+  public function syncModelRelations($model, $data)
   {
-    //Initialize query
-    $query = $this->model->query();
-    
-    /*== RELATIONSHIPS ==*/
-    if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with([]);
-    } else {//Especific relationships
-      $includeDefault = [];//Default relationships
-      if (isset($params->include))//merge relations with default relationships
-        $includeDefault = array_merge($includeDefault, $params->include ?? []);
-      $query->with($includeDefault);//Add Relationships to query
-    }
-    
-    /*== FILTER ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      
-      if (isset($filter->field))//Filter by specific field
-        $field = $filter->field;
-    }
-    
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-    
-    $this->validateTenantWithCentralData($query);
-    
-    
-    /*== REQUEST ==*/
-    return $query->where($field ?? 'id', $criteria)->first();
-  }
-  
-  
-  public function create($data)
-  {
-    
-    $shippingMethod = $this->model->create($data);
-    event(new CreateMedia($shippingMethod, $data));
-    return $shippingMethod;
-    
-  }
-  
-  public function update($model, $data)
-  {
-    
-    $model->update($data);
-    
-    event(new UpdateMedia($model, $data));
-    
+    //Get model relations data from attribute of model
+    $modelRelationsData = ($model->modelRelations ?? []);
+
+    /**
+     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     *
+     * Example to sync relations
+     * if (array_key_exists(<relationName>, $data)){
+     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+     * }
+     *
+     */
+
+    //Response
     return $model;
-    
   }
-  
   
   /**
    *
-   * @param $request
+   * @param $data
    * @return Response
    */
   
@@ -204,14 +157,13 @@ class EloquentShippingMethodRepository extends EloquentBaseRepository implements
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
-
+      
     }else{
-        // Validation like DEEV
-        // When user is going to pay the plan in central checkout
-        if( config("tenancy.mode")!=NULL && config("tenancy.mode")=="singleDatabase" && is_null(tenant()))
-          $query->where("organization_id",null);
+      // Validation like DEEV
+      // When user is going to pay the plan in central checkout
+      if( config("tenancy.mode")!=NULL && config("tenancy.mode")=="singleDatabase" && is_null(tenant()))
+        $query->where("organization_id",null);
     }
     
   }
-  
 }

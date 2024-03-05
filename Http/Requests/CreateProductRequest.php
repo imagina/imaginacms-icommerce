@@ -47,4 +47,9 @@ class CreateProductRequest extends BaseFormRequest
 
     ];
   }
+
+    public function getValidator(){
+        return $this->getValidatorInstance();
+    }
+    
 }

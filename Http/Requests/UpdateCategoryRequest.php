@@ -48,8 +48,8 @@ class UpdateCategoryRequest extends BaseFormRequest
       'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
     ];
   }
-  
-  public function getValidator(){
-    return $this->getValidatorInstance();
-  }
+
+    public function getValidator(){
+        return $this->getValidatorInstance();
+    }
 }

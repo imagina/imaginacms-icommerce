@@ -3,145 +3,67 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\TransactionRepository;
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
+use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 
-class EloquentTransactionRepository extends EloquentBaseRepository implements TransactionRepository
+class EloquentTransactionRepository extends EloquentCrudRepository implements TransactionRepository
 {
+  /**
+   * Filter names to replace
+   * @var array
+   */
+  protected $replaceFilters = [];
 
-  public function getItemsBy($params)
+  /**
+   * Relation names to replace
+   * @var array
+   */
+  protected $replaceSyncModelRelations = [];
+
+  /**
+   * Filter query
+   *
+   * @param $query
+   * @param $filter
+   * @param $params
+   * @return mixed
+   */
+  public function filterQuery($query, $filter, $params)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
 
-    // RELATIONSHIPS
-    $defaultInclude = [];
-    $query->with(array_merge($defaultInclude, $params->include));
+    /**
+     * Note: Add filter name to replaceFilters attribute before replace it
+     *
+     * Example filter Query
+     * if (isset($filter->status)) $query->where('status', $filter->status);
+     *
+     */
 
-    // FILTERS
-    if ($params->filter) {
-      $filter = $params->filter;
-
-      //set language translation
-      if (isset($params->filter->locale))
-        \App::setLocale($filter->locale ?? null);
-      $lang = \App::getLocale();
-
-      //add filter by search
-      if (isset($filter->search)) {
-
-        //find search in columns
-        $query->where(function ($query) use ($filter, $lang) {
-          $query->where('id', 'like', '%' . $filter->search . '%')
-            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-        });
-      }
-    }
-
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-
-    /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
-    }
+    //Response
+    return $query;
   }
 
-  public function getItem($criteria, $params = false)
+  /**
+   * Method to sync Model Relations
+   *
+   * @param $model ,$data
+   * @return $model
+   */
+  public function syncModelRelations($model, $data)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+    //Get model relations data from attribute of model
+    $modelRelationsData = ($model->modelRelations ?? []);
 
-    // RELATIONSHIPS
-    $includeDefault = [];
-    $query->with(array_merge($includeDefault, $params->include));
+    /**
+     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     *
+     * Example to sync relations
+     * if (array_key_exists(<relationName>, $data)){
+     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+     * }
+     *
+     */
 
-    /*== FIELDS ==*/
-    if (is_array($params->fields) && count($params->fields))
-      $query->select($params->fields);
-
-    // FILTERS
-    //get language translation
-    $lang = \App::getLocale();
-
-    /*== FILTER ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->slug) && $filter->slug)//Filter by slug
-        $result = $query->whereHas('translations', function ($query) use ($criteria, $lang) {
-          $query->where('locale', $lang)
-            ->where('slug', $criteria);
-        });
-      else//Filter by ID
-        $query->where('id', $criteria);
-
-    }
-
-    if (!isset($params->filter->field)) {
-      $query->where('id', $criteria);
-    }
-
-    return $query->first();
-  }
-
-  public function create($data)
-  {
-
-    $transaction = $this->model->create($data);
-
-    return $transaction;
-  }
-
-  public function updateBy($criteria, $data, $params = false)
-  {
-
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field))//Where field
-        $query->where($filter->field, $criteria);
-      else//where id
-        $query->where('id', $criteria);
-    }
-
-    // REQUEST
-    $model = $query->first();
-
-    if ($model) {
-      $model->update($data);
-    }
+    //Response
     return $model;
-  }
-
-  public function deleteBy($criteria, $params = false)
-  {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
-    }
-
-    // REQUEST
-    $model = $query->first();
-
-    if ($model) {
-      $model->delete();
-    }
   }
 }

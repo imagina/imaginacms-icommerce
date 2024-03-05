@@ -46,4 +46,8 @@ class UpdateProductRequest extends BaseFormRequest
       'slug.min:2' => trans('icommerce::common.messages.min 2 characters')
     ];
   }
+
+    public function getValidator(){
+        return $this->getValidatorInstance();
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Repositories\BaseRepository;
+use Modules\Core\Icrud\Repositories\BaseCrudRepository;
 
-interface PaymentMethodGeozoneRepository extends BaseRepository
+interface PaymentMethodGeozoneRepository extends BaseCrudRepository
 {
 }

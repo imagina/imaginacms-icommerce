@@ -30,7 +30,7 @@
 
                 @if(!$withTextInAddToCart && $wishlistEnable)
                    
-                    @php $wishUrlLE = json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]); @endphp
+                    @php $wishUrlLE = json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]) @endphp
                     <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist button-small"
                                      :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrlLE.')'"
                                      :withIcon="$withIconInAddToCart"

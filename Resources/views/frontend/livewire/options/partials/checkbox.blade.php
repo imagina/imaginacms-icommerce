@@ -26,7 +26,6 @@
         <label for="{{$productOption->option->description}}{{$productOption->id}}"/>
 
           <span>{{ $selectOption->optionValue->description }}</span>
-        </label>
       </div>
     @endif
   </div>

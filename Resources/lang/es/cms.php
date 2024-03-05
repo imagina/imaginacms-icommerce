@@ -4,6 +4,7 @@ return [
   "sidebar" => [
     "adminGroup" => "Tienda",
     "adminProducts" => "Productos",
+    "adminMagnitudes" => "Magnitudes",
     "adminProductCreate" => "Creación de Productos",
     "adminProductEdit" => "Editar Producto",
     "adminCategories" => "Categorias de Producto",
