@@ -4,6 +4,7 @@ return [
     'single'                => 'Producto',
     'plural'                => 'Productos',
     'related'               => 'PRODUCTOS RELACIONADOS',
+    'sizeGuide'             => 'Guía de tallas',
     'list resource'         => 'Listar productos',
     'create resource'       => 'Crear productos',
     'edit resource'         => 'Editar productos',

@@ -386,6 +386,7 @@ return [
       'gallery' => 'multiple',
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
+      'sizereference' => 'single',
     ]
   ],
 
