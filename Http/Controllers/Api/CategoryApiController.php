@@ -41,6 +41,7 @@ class CategoryApiController extends BaseApiController
             //Get Parameters from URL.
             $params = $this->getParamsRequest($request);
 
+            
             //Request to Repository
             $categories = $this->category->getItemsBy($params);
 
