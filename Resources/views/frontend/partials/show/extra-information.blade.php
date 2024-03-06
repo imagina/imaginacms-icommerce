@@ -30,7 +30,7 @@
             <a class="button-size-guide text-primary py-3 h4" target="_blank"
                href="{{$product->mediaFiles()->sizereference->path}}">
                     <span class="border rounded">
-                     <i class="fa-solid fa-ruler-horizontal"></i>
+                     <i class="{{trans('icommerce::products.sizeGuideIcon')}}"></i>
                     </span>
                 {{trans('icommerce::products.sizeGuide')}}
             </a>
