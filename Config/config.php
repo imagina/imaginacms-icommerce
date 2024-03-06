@@ -705,13 +705,13 @@ return [
       "icon" => "fa fa-bars",
     ],
     [
-      'title' => 'icommercepricelist::pricelists.title.pricelists',
+      'title' => 'icommerce::common.pricelists.title',
       'icon' => 'fa fa-list',
       'quasarUrl' => '/store/public/price-list',
       'showInMenuWithoutSession' => true,
     ],
     [
-      'title' => 'icommercepricelist::pricelists.title.pricelists',
+      'title' => 'icommerce::common.pricelists.title',
       'icon' => 'fa fa-list',
       'quasarUrl' => '/ipanel/#/store/price-list',
       'showInMenuWithoutSession' => false,
