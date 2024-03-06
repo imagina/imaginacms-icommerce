@@ -5,6 +5,7 @@ return [
     'plural'                => 'Productos',
     'related'               => 'PRODUCTOS RELACIONADOS',
     'sizeGuide'             => 'Guía de tallas',
+    'sizeGuideIcon'         => 'fa-solid fa-ruler-horizontal',
     'list resource'         => 'Listar productos',
     'create resource'       => 'Crear productos',
     'edit resource'         => 'Editar productos',
