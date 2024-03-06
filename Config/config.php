@@ -703,7 +703,18 @@ return [
       "routeName" => "icommerce.store.order.index",
       "quasarUrl" => '/ipanel/#/store/orders/',
       "icon" => "fa fa-bars",
-
+    ],
+    [
+      'title' => 'icommercepricelist::pricelists.title.pricelists',
+      'icon' => 'fa fa-list',
+      'quasarUrl' => '/store/public/price-list',
+      'showInMenuWithoutSession' => true,
+    ],
+    [
+      'title' => 'icommercepricelist::pricelists.title.pricelists',
+      'icon' => 'fa fa-list',
+      'quasarUrl' => '/ipanel/#/store/price-list',
+      'showInMenuWithoutSession' => false,
     ],
   ],
 

@@ -26,10 +26,11 @@
     @endif
 
     @if(isset($product->mediaFiles()->sizereference->id) && !is_null($product->mediaFiles()->sizereference->id))
-        <div class="col-12 py-3">
+        <div class="content-button-guide py-3">
             <a class="button-size-guide text-primary py-3 h4" target="_blank"
                href="{{$product->mediaFiles()->sizereference->path}}">
                     <span class="border rounded">
+                      <!--icommerce::products.sizeGuideIcon-->
                      <i class="{{trans('icommerce::products.sizeGuideIcon')}}"></i>
                     </span>
                 {{trans('icommerce::products.sizeGuide')}}
