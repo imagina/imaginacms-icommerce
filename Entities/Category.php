@@ -54,6 +54,8 @@ Category extends Model
   protected $casts = [
     'options' => 'array'
   ];
+
+  protected $forceDeleting = true;
   
   public function parent()
   {

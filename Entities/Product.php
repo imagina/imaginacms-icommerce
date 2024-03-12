@@ -97,6 +97,8 @@ class Product extends Model implements TaggableInterface
   protected $width = ['files','tags'];
   private $auth;
 
+  protected $forceDeleting = true;
+
   public function __construct(array $attributes = [])
   {
     $this->auth = Auth::user();
