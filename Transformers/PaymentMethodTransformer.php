@@ -3,6 +3,8 @@
 namespace Modules\Icommerce\Transformers;
 
 use Modules\Core\Icrud\Transformers\CrudResource;
+use Modules\Isite\Http\Controllers\Api\ConfigsApiController;
+use Illuminate\Http\Request;
 
 class PaymentMethodTransformer extends CrudResource
 {
@@ -14,10 +16,14 @@ class PaymentMethodTransformer extends CrudResource
   public function modelAttributes($request)
   {
     $calculations = isset($this->calculations) ? $this->calculations : null;
+    $name = isset($this->name) ? $this->name : null;
+    $parentName = isset($this->parent_name) ? $this->parent_name : null;
     $data = [
-      "calculations" => $calculations
+      "calculations" => $calculations,
+      "name" => $name,
+      "parentName" => $parentName,
     ];
-  
+
     // Add Crud Fields from Payment Method
     if (isset($this->name) && !empty($this->name)) {
       $config = ucfirst($data['name']) . ".crud-fields.formFields";
