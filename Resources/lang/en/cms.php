@@ -226,7 +226,8 @@ return [
     "generalWarehouse" => "General warehouse",
     "generalWarehouseHelp" => "You can efficiently manage detailed information for each product, segmented according to the different warehouses. This way, you can organize and centrally manage specific data for your products at each location, simplifying inventory management and optimizing your operational control.",
     "warehouseByOptions" => "Warehouse by options",
-    "warehouseByOptionsHelp" => "We provide you with the ability to efficiently manage detailed information for each product option, organized according to different warehouses. This allows you to centralize the management of specific data for each variant at each location, simplifying inventory administration and optimizing operational control effectively."
+    "warehouseByOptionsHelp" => "We provide you with the ability to efficiently manage detailed information for each product option, organized according to different warehouses. This allows you to centralize the management of specific data for each variant at each location, simplifying inventory administration and optimizing operational control effectively.",
+    "advancedSummaryHelp" => "Adds detailed and complex content, appears at the top right of the product, offering tables, collapsible sections and more."
   ],
   "message" => [
     "advanceEdit" => "Go to advanced Form",
