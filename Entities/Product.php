@@ -30,6 +30,7 @@ class Product extends Model implements TaggableInterface
     Rateable, Relationable, BelongsToTenant, hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait,
     IsQreable;
 
+  //public $forceDeleting = true;
   public $transformer = 'Modules\Icommerce\Transformers\ProductTransformer';
   public $entity = 'Modules\Icommerce\Entities\Product';
   public $repository = 'Modules\Icommerce\Repositories\ProductRepository';
@@ -97,9 +98,11 @@ class Product extends Model implements TaggableInterface
   protected $width = ['files','tags'];
   private $auth;
 
+
   public function __construct(array $attributes = [])
   {
     $this->auth = Auth::user();
+    $this->forceDeleting = true;
     parent::__construct($attributes);
   }
   
