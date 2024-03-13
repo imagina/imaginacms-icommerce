@@ -31,6 +31,7 @@ class SendOrder
   {
     try {
       $order = $event->order;
+      $children = \DB::table('icommerce__orders')->where('parent_id', $order->id)->first();
 
       //Subject
       $subject = trans('icommerce::orders.messages.purchase order') . " #" . $order->id . ": " . $order->status->title;
@@ -41,12 +42,7 @@ class SendOrder
       // si hay roles asignados a funcionar como tenant entonces el customer de la orden debe ser notificado sólo en las
       // ordenes hijas
       \Log::info('Icommerce: Events|Handlers|SendOrder|RolesToTenant: ' . json_encode($rolesToTenant));
-      if (!empty($rolesToTenant)) {
-        // only insert the customer if the order has a parentId
-        if (!is_null($order->parent_id)) {
-          list($emailTo, $users) = $this->getUsersAndEmails($order);
-        }
-      } else {
+      if ((!empty($rolesToTenant) && !is_null($order->parent_id)) || is_null($children)){
         list($emailTo, $users) = $this->getUsersAndEmails($order);
       }
 

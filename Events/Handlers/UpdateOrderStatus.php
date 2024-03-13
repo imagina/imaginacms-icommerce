@@ -36,7 +36,7 @@ class UpdateOrderStatus
 
       if (isset($data) && $data['notify']) {
         $order = $order->first();
-        $children = DB::table('icommerce__orders')->where('parent_id', $order->id)->first();
+        $children = \DB::table('icommerce__orders')->where('parent_id', $order->id)->first();
 
         //Roles to tenant
         $rolesToTenant = json_decode(setting("isite::rolesToTenant", null, "[]"));
