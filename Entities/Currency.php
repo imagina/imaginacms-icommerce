@@ -50,14 +50,6 @@ class Currency extends CrudModel
     'options' => 'array'
   ];
 
-  public function store()
-  {
-    if (is_module_enabled('Marketplace')) {
-      return $this->belongsTo('Modules\Marketplace\Entities\Store');
-    }
-    return $this->belongsTo(Store::class);
-  }
-
   public function orders()
   {
     return $this->hasMany(Order::class);

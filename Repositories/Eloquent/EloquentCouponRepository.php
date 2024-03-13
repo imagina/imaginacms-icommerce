@@ -24,7 +24,7 @@ class EloquentCouponRepository extends EloquentCrudRepository implements CouponR
    * @var array
    */
   protected $with = [
-    'show' => ['store', 'product', 'category', 'customer', 'orders', 'couponHistories']
+    'show' => ['product', 'category', 'customer', 'orders', 'couponHistories']
   ];
   
   /**

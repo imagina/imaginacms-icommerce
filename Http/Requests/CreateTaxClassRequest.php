@@ -4,22 +4,16 @@ namespace Modules\Icommerce\Http\Requests;
 
 use Modules\Core\Internationalisation\BaseFormRequest;
 
-class ProductRequest extends BaseFormRequest
+class CreateTaxClassRequest extends BaseFormRequest
 {
   public function rules()
   {
-    return [
-      'category_id' => 'required',
-    ];
+    return [];
   }
 
   public function translationRules()
   {
-    return [
-      'name' => 'required|min:2',
-      'slug' => 'required|min:2',
-      'summary' => 'required|min:2'
-    ];
+    return [];
   }
 
   public function authorize()
@@ -29,30 +23,11 @@ class ProductRequest extends BaseFormRequest
 
   public function messages()
   {
-    return [
-
-    ];
+    return [];
   }
 
   public function translationMessages()
   {
-    return [
-      // name
-      'name.required' => trans('icommerce::common.messages.field required'),
-      'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
-
-      // slug
-      'slug.required' => trans('icommerce::common.messages.field required'),
-      'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
-
-      // description
-      'summary.required' => trans('icommerce::common.messages.field required'),
-      'summary.min:2' => trans('icommerce::common.messages.min 2 characters'),
-    ];
+    return [];
   }
-
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
-    
 }

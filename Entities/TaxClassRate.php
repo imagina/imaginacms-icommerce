@@ -5,7 +5,7 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Modules\Core\Icrud\Entities\CrudModel;
 
-class TaxClassRate extends Model
+class TaxClassRate extends CrudModel
 {
   use Translatable;
 

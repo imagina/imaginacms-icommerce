@@ -50,14 +50,6 @@ class Manufacturer extends CrudModel
     'active' => 'boolean'
   ];
 
-  public function store()
-  {
-    if (is_module_enabled('Marketplace')) {
-      return $this->belongsTo('Modules\Marketplace\Entities\Store');
-    }
-    return $this->belongsTo(Store::class);
-  }
-
   public function products()
   {
     return $this->hasMany(Product::class);

@@ -69,14 +69,7 @@ class Coupon extends CrudModel
     $this->auth = Auth::user();
     parent::__construct($attributes);
   }
-  
-  public function store()
-  {
-    if (is_module_enabled('Marketplace')) {
-      return $this->belongsTo('Modules\Marketplace\Entities\Store');
-    }
-    return $this->belongsTo(Store::class);
-  }
+
   
   public function product()
   {
