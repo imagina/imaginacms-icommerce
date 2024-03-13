@@ -55,7 +55,15 @@ class Category extends Model
     'options' => 'array'
   ];
 
-  
+  /**
+   * Construct | Force Deleting
+   */
+  public function __construct(array $attributes = [])
+  {
+    $this->forceDeleting = true;
+    parent::__construct($attributes);
+  }
+
   public function parent()
   {
     return $this->belongsTo(Category::class, 'parent_id');

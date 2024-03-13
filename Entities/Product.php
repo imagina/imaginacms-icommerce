@@ -102,6 +102,7 @@ class Product extends Model implements TaggableInterface
   public function __construct(array $attributes = [])
   {
     $this->auth = Auth::user();
+    $this->forceDeleting = true;
     parent::__construct($attributes);
   }
   
