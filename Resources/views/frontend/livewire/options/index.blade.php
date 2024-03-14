@@ -18,7 +18,7 @@
       <div class="mb-0">
       <span class="text-primary font-weight-bold">
         {{isset($currency->id) ? $currency->symbol_left : '$'}}
-        {{formatMoney(($product->discount->price ?? $product->price) +$this->priceOptions )}}
+        {{formatMoney($dynamicPrice = ($product->discount->price ?? $product->price) +$this->priceOptions )}}
         {{isset($currency->id) ? $currency->symbol_right : ''}}
       </span>
         @if(isset($product->discount->price))
@@ -27,8 +27,7 @@
       </div>
     </div>
   @endif
-
-  @php $dynamicPrice = ($product->discount->price ?? $product->price) + $this->priceOptions;  @endphp
+  
 <!-- calculation according to the information of weight, volume, quantity, lenght-->
   @include('icommerce::frontend.components.product.calculate-pum',['dynamicPrice' => $dynamicPrice])
 
