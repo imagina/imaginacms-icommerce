@@ -20,6 +20,9 @@
 
               @include('icommerce::frontend.partials.show.gallery')
 
+              @includeFirst(["icommerce.partials.show.custom-extra-information-bottom-gallery",
+                             "icommerce::frontend.partials.show.custom-extra-information-bottom-gallery"])
+
               @include('icommerce::frontend.partials.show.share')
 
             </div>
