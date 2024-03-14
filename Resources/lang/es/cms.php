@@ -117,7 +117,7 @@ return [
     "warehouse" => "Bodega | Bodegas",
     "bannerPriceList" => "Dirígete a tu lista personal de productos para empezar a explorar. ¡Disfruta de los mejores precios!",
     "explorePriceList" => "Explorar Lista de Productos",
-    'data_sheet' => 'Ficha técnica',
+    'dataSheet' => 'Ficha técnica',
   ],
   "form" => [
     "formContent" => "Aquí podrás encontrar la información relacionada al nombre, slug, resumen y descripción.",
