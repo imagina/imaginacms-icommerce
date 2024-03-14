@@ -114,7 +114,11 @@
   #cartLayout3 .cart-remove {
     font-size: 14px;
   }
-
+  @if(!empty($styleCart))
+  #cartLayout3 .cart-link {
+  {!!$styleCart!!}
+  }
+  @endif
 </style>
 @include("icommerce::frontend.livewire.cart.quoteModal")
 

@@ -19,6 +19,10 @@
   #cartLayout2 .cart .quantity:after {
     content: ')';
   }
-
+  @if(!empty($styleCart))
+  #cartLayout2 .nav-link .cart {
+  {!!$styleCart!!}
+  }
+  @endif
 </style>
 @stop

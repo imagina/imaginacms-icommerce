@@ -32,7 +32,7 @@ class OrderTransformer extends JsonResource
       'email' => $this->when($this->email, $this->email),
       'paymentFirstName' => $this->when($this->payment_first_name, $this->payment_first_name),
       'url' => $this->url,
-      'paymentLastName' => $this->when($this->payment_last_name, $this->payment_last_name),
+      'paymentLastName' => $this->when(isset($this->payment_last_name), $this->payment_last_name),
       'paymentTelephone' => $this->when($this->payment_telephone, $this->payment_telephone),
       'paymentCompany' => $this->when($this->payment_company, $this->payment_company),
       'paymentAddress1' => $this->when($this->payment_address_1, $this->payment_address_1),
