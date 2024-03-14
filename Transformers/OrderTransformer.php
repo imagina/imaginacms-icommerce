@@ -267,11 +267,11 @@ class OrderTransformer extends CrudResource
         'values' => [
           [
             'label' => trans("icommerce::orders.informationBlocksOrder.labelTitleWarehouse"),
-            'value' => $item['warehouseTitle'] ?? ''
+            'value' => $this->warehouse_title ?? ''
           ],
           [
             'label' => trans("icommerce::orders.informationBlocksOrder.labelAddressWarehouse"),
-            'value' => $item['warehouseAddress'] ?? ''
+            'value' => $this->warehouse_address ?? ''
           ],
         ]
       ];

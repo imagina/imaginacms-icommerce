@@ -328,10 +328,6 @@ class WarehouseLocator extends Component
       $this->shippingAddress = $address;
       $this->warehouse = $warehouse;
       
-      //Save in Session
-      //session(['warehouse' => $this->warehouse]);
-      //session(['shippingAddress' => $this->shippingAddress]);
-
       //Show Session Vars in Log
       $this->warehouseService()->showSessionVars();
 
@@ -340,6 +336,11 @@ class WarehouseLocator extends Component
 
       //Verifying that it was a nearby warehouse
       if(isset($warehouseProcess['nearby'])){
+
+        //Save in Session
+        session(['warehouse' => $this->warehouse]);
+        session(['shippingAddress' => $this->shippingAddress]);
+
         //Show Sweet Alert in frontend
         session(['warehouseAlert' => true]);
         //Reload Page

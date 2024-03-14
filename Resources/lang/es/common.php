@@ -9,6 +9,9 @@ return [
   'button' => [
     'update' => 'Actualizar'
   ],
+  'pricelists' => [
+    'title' => 'Lista de precios',
+  ],
   'sidebar' => [
     'products' => 'Productos',
     'shipping' => 'Envío',
