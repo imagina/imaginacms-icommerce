@@ -337,12 +337,18 @@ class WarehouseLocator extends Component
       //Verifying that it was a nearby warehouse
       if(isset($warehouseProcess['nearby'])){
 
+        \Log::info($this->log.'checkAddress|Nearby Exist');
+
         //Save in Session
         session(['warehouse' => $this->warehouse]);
         session(['shippingAddress' => $this->shippingAddress]);
 
         //Show Sweet Alert in frontend
         session(['warehouseAlert' => true]);
+
+         //Show Session Vars in Log
+        $this->warehouseService()->showSessionVars();
+
         //Reload Page
         return redirect(request()->header('Referer'));
 
