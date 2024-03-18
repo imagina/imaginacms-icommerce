@@ -14,14 +14,13 @@ class CreateProductRequest extends BaseFormRequest
         ];
     }
 
-    public function translationRules()
-    {
-        return [
-            'name' => 'required|min:2',
-            'slug' => ['required', new UniqueSlugRule('icommerce__product_translations'), 'min:2'],
-            'description' => 'required|min:2',
-        ];
-    }
+  public function translationRules()
+  {
+    return [
+      'name' => 'required|min:2',
+      'slug' => ["required",new UniqueSlugRule("icommerce__product_translations"),"min:2"]
+    ];
+  }
 
     public function authorize()
     {
@@ -35,20 +34,21 @@ class CreateProductRequest extends BaseFormRequest
         ];
     }
 
-    public function translationMessages()
-    {
-        return [
-            // title
-            'name.required' => trans('icommerce::common.messages.field required'),
-            'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
+  public function translationMessages()
+  {
+    return [
+      // title
+      'name.required' => trans('icommerce::common.messages.field required'),
+      'name.min:2' => trans('icommerce::common.messages.min 2 characters'),
 
-            // slug
-            'slug.required' => trans('icommerce::common.messages.field required'),
-            'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      // slug
+      'slug.required' => trans('icommerce::common.messages.field required'),
+      'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
 
-            // description
-            'description.required' => trans('icommerce::common.messages.field required'),
-            'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
-        ];
+    ];
+  }
+
+    public function getValidator(){
+        return $this->getValidatorInstance();
     }
 }

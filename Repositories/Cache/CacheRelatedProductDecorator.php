@@ -2,10 +2,10 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Core\Repositories\Cache\BaseCacheDecorator;
 use Modules\Icommerce\Repositories\RelatedProductRepository;
+use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
 
-class CacheRelatedProductDecorator extends BaseCacheDecorator implements RelatedProductRepository
+class CacheRelatedProductDecorator extends BaseCacheCrudDecorator implements RelatedProductRepository
 {
     public function __construct(RelatedProductRepository $relatedproduct)
     {

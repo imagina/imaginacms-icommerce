@@ -97,7 +97,7 @@
       @endphp
 
       <td colspan="2"
-          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($subtotal,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
+          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($subtotal,2)}}{{$order->currency->symbol_right ?? ''}}</td>
     </tr>
     @if($order->coupon_total > 0)
       <tr class="couponTotal">

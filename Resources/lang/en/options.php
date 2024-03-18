@@ -21,4 +21,13 @@ return [
     ],
     'validation' => [
     ],
+    'types' => [
+        'checkbox' => 'Multiple selection (list)',
+        'radio' => 'Single selection (list)',
+        'select' => 'Single selection (Selector)',
+        'text' => 'Short text',
+        'textarea' => 'Long text',
+        'date' => 'Date',
+        'file' => 'File',
+    ],
 ];

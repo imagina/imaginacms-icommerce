@@ -2,6 +2,9 @@
 
 namespace Modules\Icommerce\Tests;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 class EloquenProductRepositoryTest extends BaseIcommerceTestCase
 {
     protected $product;

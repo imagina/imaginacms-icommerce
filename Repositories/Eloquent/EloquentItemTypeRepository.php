@@ -2,183 +2,73 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Icommerce\Repositories\ItemTypeRepository;
+use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 
-class EloquentItemTypeRepository extends EloquentBaseRepository implements ItemTypeRepository
+class EloquentItemTypeRepository extends EloquentCrudRepository implements ItemTypeRepository
 {
-    public function getItemsBy($params)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+  /**
+   * Filter names to replace
+   * @var array
+   */
+  protected $replaceFilters = [];
 
-        /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include)) {//If Request all relationships
-            $query->with([]);
-        } else {//Especific relationships
-            $includeDefault = ['translations']; //Default relationships
-            if (isset($params->include)) {//merge relations with default relationships
-                $includeDefault = array_merge($includeDefault, $params->include);
-            }
-            $query->with($includeDefault); //Add Relationships to query
-        }
+  /**
+   * Relation names to replace
+   * @var array
+   */
+  protected $replaceSyncModelRelations = [];
 
-        // FILTERS
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+  /**
+   * Attribute to customize relations by default
+   * @var array
+   */
+  protected $with = ['all' => ['translations']];
+  /**
+   * Filter query
+   *
+   * @param $query
+   * @param $filter
+   * @param $params
+   * @return mixed
+   */
+  public function filterQuery($query, $filter, $params)
+  {
 
-            //add filter by search
-            if (isset($filter->search)) {
-                //find search in columns
-                $query->where(function ($query) use ($filter) {
-                    $query->whereHas('translations', function ($query) use ($filter) {
-                        $query->where('locale', $filter->locale)
-                          ->where('title', 'like', '%'.$filter->search.'%');
-                    })->orWhere('icommerce__item_types.id', 'like', '%'.$filter->search.'%')
-                      ->orWhere('updated_at', 'like', '%'.$filter->search.'%')
-                      ->orWhere('created_at', 'like', '%'.$filter->search.'%');
-                });
-            }
+    /**
+     * Note: Add filter name to replaceFilters attribute before replace it
+     *
+     * Example filter Query
+     * if (isset($filter->status)) $query->where('status', $filter->status);
+     *
+     */
 
-            //add filter by ids
-            if (isset($filter->ids)) {
-                is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
-                $query->whereIn('icommerce__item_types.id', $filter->ids);
-            }
+    //Response
+    return $query;
+  }
 
-            //Filter by date
-            if (isset($filter->date)) {
-                $date = $filter->date; //Short filter date
-                $date->field = $date->field ?? 'created_at';
-                if (isset($date->from)) {//From a date
-                    $query->whereDate($date->field, '>=', $date->from);
-                }
-                if (isset($date->to)) {//to a date
-                    $query->whereDate($date->field, '<=', $date->to);
-                }
-            }
+  /**
+   * Method to sync Model Relations
+   *
+   * @param $model ,$data
+   * @return $model
+   */
+  public function syncModelRelations($model, $data)
+  {
+    //Get model relations data from attribute of model
+    $modelRelationsData = ($model->modelRelations ?? []);
 
-            //Order by
-            if (isset($filter->order)) {
-                $orderByField = $filter->order->field ?? 'created_at'; //Default field
-                $orderWay = $filter->order->way ?? 'desc'; //Default way
-                $query->orderBy($orderByField, $orderWay); //Add order to query
-            }
-        }
+    /**
+     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     *
+     * Example to sync relations
+     * if (array_key_exists(<relationName>, $data)){
+     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+     * }
+     *
+     */
 
-        /*== FIELDS ==*/
-        if (isset($params->fields) && is_array($params->fields) && count($params->fields) && $params->fields) {
-            $query->select($params->fields);
-        }
-
-        /*== REQUEST ==*/
-        //dd($query->toSql());
-        if (isset($params->page) && $params->page) {
-            return $query->paginate($params->take);
-        } else {
-            $params->take ? $query->take($params->take) : false; //Take
-
-            return $query->get();
-        }
-    }
-
-    public function getItem($criteria, $params = false)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
-
-        /*== RELATIONSHIPS ==*/
-        if (in_array('*', $params->include ?? [])) {//If Request all relationships
-            $query->with([]);
-        } else {//Especific relationships
-            $includeDefault = ['translations']; //Default relationships
-            if (isset($params->include)) {//merge relations with default relationships
-                $includeDefault = array_merge($includeDefault, $params->include ?? []);
-            }
-            $query->with($includeDefault); //Add Relationships to query
-        }
-
-        /*== FIELDS ==*/
-        if (isset($params->fields) && is_array($params->fields) && count($params->fields)) {
-            $query->select($params->fields);
-        }
-
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field)) {//Filter by specific field
-                $field = $filter->field;
-            }
-
-            // find translatable attributes
-            $translatedAttributes = $this->model->translatedAttributes;
-
-      // filter by translatable attributes
-            if (isset($field) && in_array($field, $translatedAttributes)) {//Filter by slug
-                $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
-                    $query->where('locale', $filter->locale)
-                      ->where($field, $criteria);
-                });
-            } else {
-                // find by specific attribute or by id
-                $query->where($field ?? 'id', $criteria);
-            }
-        }
-
-        if (! isset($params->filter->field)) {
-            $query->where('id', $criteria);
-        }
-
-        /*== REQUEST ==*/
-        return $query->first();
-    }
-
-    public function create($data)
-    {
-        $category = $this->model->create($data);
-
-        //Event to ADD media
-        event(new CreateMedia($category, $data));
-
-        return $category;
-    }
-
-    public function updateBy($criteria, $data, $params = false)
-    {
-        /*== initialize query ==*/
-        $query = $this->model->query();
-
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            //Update by field
-            if (isset($filter->field)) {
-                $field = $filter->field;
-            }
-        }
-
-        /*== REQUEST ==*/
-        $model = $query->where($field ?? 'id', $criteria)->first();
-
-        event(new UpdateMedia($model, $data)); //Event to Update media
-
-        return $model ? $model->update((array) $data) : false;
-    }
-
-    public function deleteBy($criteria, $params = false)
-    {
-        /*== initialize query ==*/
-        $query = $this->model->query();
-
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field)) {//Where field
-                $field = $filter->field;
-            }
-        }
-    }
+    //Response
+    return $model;
+  }
 }

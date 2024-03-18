@@ -24,15 +24,16 @@ return [
         'total' => 'Total: ',
         'secondary_total' => 'Total',
     ],
-    'button' => [
-        'continue_shopping' => 'Continuar comprando',
-        'proceed_to_checkout' => 'Proceder a pagar',
-        'view_cart' => 'Ver Carrito',
-        'checkout' => 'Finalizar Pedido',
-        'add_to_cart' => 'Agregar',
-        'add_to_cart_quote' => 'Agregar cotizacion',
-        'download_pdf' => 'Descargar PDF',
-        'request_quote' => 'Solicitar cotizacion',
+    'button'    => [
+        'continue_shopping'   	=> 'Continuar comprando',
+        'proceed_to_checkout'   => 'Proceder a pagar',
+        'view_cart'             => 'Ver Carrito',
+        'checkout'              => 'Finalizar Pedido',
+        'add_to_cart'           => 'Agregar',
+        'add_to_cart_quote'     => 'Agregar cotizacion',
+        'download_pdf'          => 'Descargar PDF',
+        'request_quote'         => 'Solicitar cotizacion',
+        'add_to_cart 2'         => 'Agregar al carrito'
     ],
     'empty_cart_message' => [
         'part_1' => 'No tienes artículos en tú carrito de compras. haz Click ',
@@ -48,6 +49,8 @@ return [
         'not_existence' => 'No puedes agregar mas ya que excede la existencia en el inventario',
         'min_exceeded' => 'La cantidad no puede ser menor a 1',
         'quantity_unavailable' => 'Quedan :quantity unidades del producto que deseas',
+        'warehouse_quantity_unavailable' => 'Este producto no está disponible para la bodega seleccionada',
+
     ],
 
 ];

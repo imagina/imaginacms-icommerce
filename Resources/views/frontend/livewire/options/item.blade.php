@@ -2,7 +2,7 @@
   <div class="title-option mb-2">
     {{ $productOption->option->description }}
     @if($productOption->required ?? false)
-      <label class="text-danger">({{setting("isite::cms.label.required")}})</label>
+      <label class="text-danger">({{trans("isite::cms.label.required")}})</label>
     @endif
   <!--Extra price-->
     @if($this->total)

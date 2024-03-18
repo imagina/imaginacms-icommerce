@@ -1,15 +1,25 @@
 <?php
 
 return [
-    'name' => 'Icommerce',
-    'frontendModuleName' => 'qcommerce',
+  'name' => 'Icommerce',
+  'frontendModuleName' => 'qcommerce',
 
-    /*
+  /*
    |--------------------------------------------------------------------------
-   | Default layout for the notification module
+   | Configuration by google sheet template id
    |--------------------------------------------------------------------------
    */
-    'defaultEmailLayout' => 'notification::emails.layouts.default',
+  'synchronizable' => [
+      'template_id' => '1ZVKNiaLZNEOsSFskBiIewNlHkYvrmArS0m_aWqu7-nM',
+      'entities' => ["icommerce_syncProducts", "icommerce_syncCategories"]
+  ],
+
+   /*
+    |--------------------------------------------------------------------------
+    | Default layout for the notification module
+    |--------------------------------------------------------------------------
+    */
+  'defaultEmailLayout' => 'notification::emails.layouts.default',
 
     /*
    |--------------------------------------------------------------------------
@@ -23,66 +33,242 @@ return [
    | Order Statuses to seed in the order status table
    |--------------------------------------------------------------------------
    */
-    'orderStatuses' => [
-        '1' => [
-            'id' => 1,
-            'title' => 'icommerce::orderstatuses.statuses.pending',
-        ],
-        '2' => [
-            'id' => 2,
-            'title' => 'icommerce::orderstatuses.statuses.shipped',
-        ],
-        '3' => [
-            'id' => 3,
-            'title' => 'icommerce::orderstatuses.statuses.canceled',
-        ],
-        '4' => [
-            'id' => 4,
-            'title' => 'icommerce::orderstatuses.statuses.completed',
-        ],
-        '5' => [
-            'id' => 5,
-            'title' => 'icommerce::orderstatuses.statuses.denied',
-        ],
-        '6' => [
-            'id' => 6,
-            'title' => 'icommerce::orderstatuses.statuses.canceledreversal',
-        ],
-        '7' => [
-            'id' => 7,
-            'title' => 'icommerce::orderstatuses.statuses.failed',
-        ],
-        '8' => [
-            'id' => 8,
-            'title' => 'icommerce::orderstatuses.statuses.refunded',
-        ],
-        '9' => [
-            'id' => 9,
-            'title' => 'icommerce::orderstatuses.statuses.reserved',
-        ],
-        '10' => [
-            'id' => 10,
-            'title' => 'icommerce::orderstatuses.statuses.chargeback',
-        ],
-        '11' => [
-            'id' => 11,
-            'title' => 'icommerce::orderstatuses.statuses.confirmingPayment',
-        ],
-        '12' => [
-            'id' => 12,
-            'title' => 'icommerce::orderstatuses.statuses.voided',
-        ],
-        '13' => [
-            'id' => 13,
-            'title' => 'icommerce::orderstatuses.statuses.processed',
-        ],
-        '14' => [
-            'id' => 14,
-            'title' => 'icommerce::orderstatuses.statuses.expired',
-        ],
+  'orderStatuses' => [
+    '1' => [
+      'id' => 1,
+      'title' => 'icommerce::orderstatuses.statuses.pending',
     ],
+    '2' => [
+      'id' => 2,
+      'title' => 'icommerce::orderstatuses.statuses.shipped',
+    ],
+    '3' => [
+      'id' => 3,
+      'title' => 'icommerce::orderstatuses.statuses.canceled',
+    ],
+    '4' => [
+      'id' => 4,
+      'title' => 'icommerce::orderstatuses.statuses.completed',
+    ],
+    '5' => [
+      'id' => 5,
+      'title' => 'icommerce::orderstatuses.statuses.denied',
+    ],
+    '6' => [
+      'id' => 6,
+      'title' => 'icommerce::orderstatuses.statuses.canceledreversal',
+    ],
+    '7' => [
+      'id' => 7,
+      'title' => 'icommerce::orderstatuses.statuses.failed',
+    ],
+    '8' => [
+      'id' => 8,
+      'title' => 'icommerce::orderstatuses.statuses.refunded',
+    ],
+    '9' => [
+      'id' => 9,
+      'title' => 'icommerce::orderstatuses.statuses.reserved',
+    ],
+    '10' => [
+      'id' => 10,
+      'title' => 'icommerce::orderstatuses.statuses.chargeback',
+    ],
+    '11' => [
+      'id' => 11,
+      'title' => 'icommerce::orderstatuses.statuses.confirmingPayment',
+    ],
+    '12' => [
+      'id' => 12,
+      'title' => 'icommerce::orderstatuses.statuses.voided',
+    ],
+    '13' => [
+      'id' => 13,
+      'title' => 'icommerce::orderstatuses.statuses.processed',
+    ],
+    '14' => [
+      'id' => 14,
+      'title' => 'icommerce::orderstatuses.statuses.expired',
+    ],
+  ],
 
-    /*
+  /*
+   |--------------------------------------------------------------------------
+   | Weight Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'weightClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.kilogram.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.kilogram.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 1000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.gram.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.gram.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.gram.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 2.20460000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.pound.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.pound.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.pound.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 35.27400000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"es"),
+        "unit" => trans("icommerce::weightclasses.classes.ounce.title",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::weightclasses.classes.ounce.title",[],"en"),
+        "unit" => trans("icommerce::weightclasses.classes.ounce.unit",[],"en")
+      ]
+    ]
+
+  ],
+
+  /*
+   |--------------------------------------------------------------------------
+   | Length Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'lengthClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::lengthclasses.classes.centimeter.title",[],"es"),
+        "unit" => trans("icommerce::lengthclasses.classes.centimeter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::lengthclasses.classes.centimeter.title",[],"en"),
+        "unit" => trans("icommerce::lengthclasses.classes.centimeter.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 10,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::lengthclasses.classes.millimeter.title",[],"es"),
+        "unit" => trans("icommerce::lengthclasses.classes.millimeter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::lengthclasses.classes.millimeter.title",[],"en"),
+        "unit" => trans("icommerce::lengthclasses.classes.millimeter.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 0.39370000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::lengthclasses.classes.inch.title",[],"es"),
+        "unit" => trans("icommerce::lengthclasses.classes.inch.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::lengthclasses.classes.inch.title",[],"en"),
+        "unit" => trans("icommerce::lengthclasses.classes.inch.unit",[],"en")
+      ]
+    ]
+  ],
+
+  /*
+   |--------------------------------------------------------------------------
+   | Volume Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'volumeClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::volumeclasses.classes.liter.title",[],"es"),
+        "unit" => trans("icommerce::volumeclasses.classes.liter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::volumeclasses.classes.liter.title",[],"en"),
+        "unit" => trans("icommerce::volumeclasses.classes.liter.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 1000,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::volumeclasses.classes.milliliter.title",[],"es"),
+        "unit" => trans("icommerce::volumeclasses.classes.milliliter.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::volumeclasses.classes.milliliter.title",[],"en"),
+        "unit" => trans("icommerce::volumeclasses.classes.milliliter.unit",[],"en")
+      ]
+    ]
+  ],
+
+  /*
+   |--------------------------------------------------------------------------
+   | Volume Classes to seed
+   |--------------------------------------------------------------------------
+   */
+  'quantityClasses' => [
+    [
+      "value" => 1,
+      "default" => true,
+      "es" => [
+        "title" => trans("icommerce::quantityclasses.classes.unit.title",[],"es"),
+        "unit" => trans("icommerce::quantityclasses.classes.unit.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::quantityclasses.classes.unit.title",[],"en"),
+        "unit" => trans("icommerce::quantityclasses.classes.unit.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 6,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::quantityclasses.classes.sixpack.title",[],"es"),
+        "unit" => trans("icommerce::quantityclasses.classes.sixpack.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::quantityclasses.classes.sixpack.title",[],"en"),
+        "unit" => trans("icommerce::quantityclasses.classes.sixpack.unit",[],"en")
+      ]
+    ],
+    [
+      "value" => 12,
+      "default" => false,
+      "es" => [
+        "title" => trans("icommerce::quantityclasses.classes.dozen.title",[],"es"),
+        "unit" => trans("icommerce::quantityclasses.classes.dozen.unit",[],"es")
+      ],
+      "en" => [
+        "title" => trans("icommerce::quantityclasses.classes.dozen.title",[],"en"),
+        "unit" => trans("icommerce::quantityclasses.classes.dozen.unit",[],"en")
+      ]
+    ]
+  ],
+  /*
    |--------------------------------------------------------------------------
    | Define routes to sites with old routes
    |--------------------------------------------------------------------------
@@ -692,18 +878,29 @@ return [
         ],
     ],
 
-    /*Translate keys of each entity. Based on the permission string*/
-    'documentation' => [
-        'products' => 'icommerce::cms.documentation.products',
-        'categories' => 'icommerce::cms.documentation.categories',
-        'options' => 'icommerce::cms.documentation.options',
-        'payment-methods' => 'icommerce::cms.documentation.payment-methods',
-        'shipping-methods' => 'icommerce::cms.documentation.shipping-methods',
-        'orders' => 'icommerce::cms.documentation.orders',
-        'coupons' => 'icommerce::cms.documentation.coupons',
-        'manufacturers' => 'icommerce::cms.documentation.manufacturers',
-        'taxclasses' => 'icommerce::cms.documentation.taxclasses',
-        'currencies' => 'icommerce::cms.documentation.currencies',
-        'quotes' => 'icommerce::cms.documentation.quotes',
-    ],
+  /*Translate keys of each entity. Based on the permission string*/
+  'documentation' => [
+    'products' => "icommerce::cms.documentation.products",
+    'categories' => "icommerce::cms.documentation.categories",
+    'options' => "icommerce::cms.documentation.options",
+    'payment-methods' => "icommerce::cms.documentation.payment-methods",
+    'shipping-methods' => "icommerce::cms.documentation.shipping-methods",
+    'orders' => "icommerce::cms.documentation.orders",
+    'coupons' => "icommerce::cms.documentation.coupons",
+    'manufacturers' => "icommerce::cms.documentation.manufacturers",
+    'taxclasses' => "icommerce::cms.documentation.taxclasses",
+    'currencies' => "icommerce::cms.documentation.currencies",
+    'quotes' => "icommerce::cms.documentation.quotes",
+  ],
+
+  /*
+   |--------------------------------------------------------------------------
+   |WAREHOUSE
+   |--------------------------------------------------------------------------
+  */
+  'warehouseShippingMethods' => [
+    'delivery' => 'icommerceordertotal', //Shipping Method Name
+    'pickup' => 'icommercepickup'
+  ],
+
 ];

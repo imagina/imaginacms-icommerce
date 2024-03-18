@@ -30,6 +30,8 @@
     @include('icommerce::frontend.partials.show.rating')
   @endif
 
+  <!-- information of lenght,weight -->
+  @include('icommerce::frontend.partials.show.extra-information')
 
 <!-- END PRICE -->
 
@@ -48,7 +50,7 @@
     <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
     
     @php
-      $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null);
+      $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null)
     @endphp
     @if($productAvailableForm)
       <br>

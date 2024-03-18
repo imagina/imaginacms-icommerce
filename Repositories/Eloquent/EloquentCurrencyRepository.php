@@ -2,179 +2,89 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-use Modules\Icommerce\Entities\Status;
 use Modules\Icommerce\Repositories\CurrencyRepository;
+use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 
-class EloquentCurrencyRepository extends EloquentBaseRepository implements CurrencyRepository
+class EloquentCurrencyRepository extends EloquentCrudRepository implements CurrencyRepository
 {
-    public function getItemsBy($params)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+  /**
+   * Filter names to replace
+   * @var array
+   */
+  protected $replaceFilters = [];
 
-        // RELATIONSHIPS
-        $defaultInclude = ['translations'];
-        $query->with(array_merge($defaultInclude, $params->include ?? []));
+  /**
+   * Relation names to replace
+   * @var array
+   */
+  protected $replaceSyncModelRelations = [];
 
-        // FILTERS
-        if (isset($params->filter)) {
-            $filter = $params->filter;
+  /**
+   * Attribute to customize relations by default
+   * @var array
+   */
+  protected $with = ['all' => ['translations']];
+  /**
+   * Filter query
+   *
+   * @param $query
+   * @param $filter
+   * @param $params
+   * @return mixed
+   */
+  public function filterQuery($query, $filter, $params)
+  {
 
-            //get language translation
-            $lang = \App::getLocale();
+    /**
+     * Note: Add filter name to replaceFilters attribute before replace it
+     *
+     * Example filter Query
+     * if (isset($filter->status)) $query->where('status', $filter->status);
+     *
+     */
 
-            //add filter by search
-            if (isset($filter->search)) {
-                //find search in columns
-                $query->where(function ($query) use ($filter, $lang) {
-                    $query->whereHas('translations', function ($query) use ($filter, $lang) {
-                        $query->where('locale', $lang)
-                          ->where('title', 'like', '%'.$filter->search.'%');
-                    })->orWhere('id', 'like', '%'.$filter->search.'%')
-                      ->orWhere('code', 'like', '%'.$filter->search.'%');
-                });
-            }
-            if (isset($filter->store)) {
-                $query->where('store_id', $filter->store);
-            }
-            //add filter by status
-            if (! empty($filter->status)) {
-                $query->where('status', $filter->status);
-            }
-        }
+    if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
 
-        if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
-        } else {
-            //Pre filters by default
-            $this->defaultPreFilters($query, $params);
-        }
+    } else {
 
-        /*== FIELDS ==*/
-        if (isset($params->fields) && count($params->fields)) {
-            $query->select($params->fields);
-        }
-
-        /*== REQUEST ==*/
-        if (isset($params->onlyQuery) && $params->onlyQuery) {
-            return $query;
-        } elseif (isset($params->page) && $params->page) {
-            //return $query->paginate($params->take);
-            return $query->paginate($params->take, ['*'], null, $params->page);
-        } else {
-            isset($params->take) && $params->take ? $query->take($params->take) : false; //Take
-
-            return $query->get();
-        }
+      //Pre filters by default
+      $this->defaultPreFilters($query, $params);
     }
 
-    public function getItem($criteria, $params = false)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
+    //Response
+    return $query;
+  }
 
-        /*== FILTER ==*/
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-            if (isset($filter->field)) {
-                $field = $filter->field;
-            }
-        }
+  /**
+   * Method to sync Model Relations
+   *
+   * @param $model ,$data
+   * @return $model
+   */
+  public function syncModelRelations($model, $data)
+  {
+    //Get model relations data from attribute of model
+    $modelRelationsData = ($model->modelRelations ?? []);
 
-        // RELATIONSHIPS
-        $includeDefault = ['translations'];
-        $query->with(array_merge($includeDefault, $params->include ?? []));
+    /**
+     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     *
+     * Example to sync relations
+     * if (array_key_exists(<relationName>, $data)){
+     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+     * }
+     *
+     */
 
-        // FIELDS
-        if (isset($params->fields) && ! empty($params->fields)) {
-            $query->select($params->fields);
-        }
+    //Response
+    return $model;
+  }
 
-        $query->where($field ?? 'id', $criteria);
+  public function defaultPreFilters($query, $params){
 
-        if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
-        } else {
-            //Pre filters by default
-            $this->defaultPreFilters($query, $params);
-        }
+    //Pre filters by default
+    //pre-filter status
+    $query->where("status", 1);
 
-        return $query->first();
-    }
-
-    public function create($data)
-    {
-        $currency = $this->model->create($data);
-
-        return $currency;
-    }
-
-    public function updateBy($criteria, $data, $params = false)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
-
-        // FILTER
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field)) {//Where field
-                $query->where($filter->field, $criteria);
-            } else {//where id
-                $query->where('id', $criteria);
-            }
-        }
-
-        // REQUEST
-        $model = $query->first();
-
-        if ($model) {
-            if (isset($data['default_currency']) && $data['default_currency']) {
-                $defaultCurrency = $this->findByAttributes(['default_currency' => true]);
-                if (isset($defaultCurrency->id) && $model->id != $defaultCurrency->id) {
-                    $defaultCurrency->default_currency = false;
-                    $defaultCurrency->save();
-                }
-            }
-
-            $model->update($data);
-        }
-
-        return $model;
-    }
-
-    public function deleteBy($criteria, $params = false)
-    {
-        // INITIALIZE QUERY
-        $query = $this->model->query();
-
-        // FILTER
-        if (isset($params->filter)) {
-            $filter = $params->filter;
-
-            if (isset($filter->field)) { //Where field
-                $query->where($filter->field, $criteria);
-            } else { //where id
-                $query->where('id', $criteria);
-            }
-        }
-
-        // REQUEST
-        $model = $query->first();
-
-        if ($model) {
-            $model->delete();
-        }
-    }
-
-    public function getActive()
-    {
-        return $this->model->where('default_currency', 1)->first();
-    }
-
-    public function defaultPreFilters(&$query, $params)
-    {
-        //Pre filters by default
-        //pre-filter status
-        $query->where('status', 1);
-    }
+  }
 }

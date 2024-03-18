@@ -8,8 +8,12 @@
 
   <div class="page icommerce icommerce-offers-index py-5">
 
+
     <div class="container">
       <div class="row">
+
+        {{-- Banner Top--}}
+        @includeFirst(["icommerce.partials.index.custom-banner","icommerce::frontend.partials.banner"])
 
         <div class="col-lg-12">
 

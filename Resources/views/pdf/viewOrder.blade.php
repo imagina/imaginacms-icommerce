@@ -56,7 +56,7 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       <tr class="product-order">
         <td>
             <h4>{{$product->title}}</h4>
-          </a>
+
 
           <!--Show item options-->
           @if($productOptionText->count())

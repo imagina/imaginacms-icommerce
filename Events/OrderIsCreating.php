@@ -2,6 +2,8 @@
 
 namespace Modules\Icommerce\Events;
 
+use Modules\User\Entities\Sentinel\User;
+
 class OrderIsCreating
 {
     public $order;
