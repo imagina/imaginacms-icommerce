@@ -118,6 +118,10 @@
         </div>
       @endif
     </div>
+
+    <!-- calculation according to the information of weight, volume, quantity, lenght-->
+    @include('icommerce::frontend.components.product.calculate-pum')
+
     @if($addToCartWithQuantity && !$product->is_call)
       @include("icommerce::frontend.components.product.addToCartWithQuantity")
     @endif

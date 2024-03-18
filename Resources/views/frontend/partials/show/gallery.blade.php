@@ -1,2 +1,3 @@
-<x-media::gallery :mediaFiles="$product->mediaFiles()" :zones="['mainimage','gallery']" layout="gallery-layout-4"
+<x-media::gallery :mediaFiles="$product->mediaFiles()" :zones="['mainimage','gallery']"
+                  :layout="setting('icommerce::productGalleryLayout')"
                   :dots="false" :aspectRatio="setting('icommerce::productAspect')" :loopGallery="false"/>

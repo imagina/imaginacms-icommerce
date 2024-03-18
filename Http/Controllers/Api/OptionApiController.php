@@ -2,211 +2,46 @@
 
 namespace Modules\Icommerce\Http\Controllers\Api;
 
-// Requests & Response
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Modules\Icommerce\Http\Requests\OptionRequest;
-// Base Api
+use Modules\Core\Icrud\Controllers\BaseCrudController;
+//Model
+use Modules\Icommerce\Entities\Option;
 use Modules\Icommerce\Repositories\OptionRepository;
-// Transformers
-use Modules\Icommerce\Repositories\OptionValueRepository;
-// Entities
 
-// Repositories
-use Modules\Icommerce\Support\OptionOrdener;
-use Modules\Icommerce\Transformers\OptionTransformer;
-// Supports
-use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
-
-class OptionApiController extends BaseApiController
+class OptionApiController extends BaseCrudController
 {
-    private $option;
+  public $model;
+  public $modelRepository;
 
-    private $optionValue;
+  public function __construct(Option $model, OptionRepository $modelRepository)
+  {
+    $this->model = $model;
+    $this->modelRepository = $modelRepository;
+  }
 
-    private $optionOrdener;
+  /** TODO REVISAR
+   * UPDATE ORDER
+   *
+   * @param Request $request
+   * @return mixed
+   */
+  public function updateOrderOptions (Request $request)
+  {
+    \DB::beginTransaction();
+    try {
+      $data = $request->input('attributes') ?? [];
 
-    public function __construct(OptionRepository $option, OptionValueRepository $optionValue, OptionOrdener $optionOrdener)
-    {
-        $this->option = $option;
-        $this->optionValue = $optionValue;
-        $this->optionOrdener = $optionOrdener;
+      $options = $this->optionOrdener->handle($data['options']);
+      $response = [
+        "data" => 'order Updated'
+      ];
+      $status = 200;
+      \DB::commit();
+    } catch (\Exception $e) {
+      \DB::rollback();
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
     }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        try {
-            //Get params
-            $params = $this->getParamsRequest($request);
-
-            //Request to Repository
-            $options = $this->option->getItemsBy($params);
-
-            //Response
-            $response = ['data' => OptionTransformer::collection($options)];
-            //If request pagination add meta-page
-            $request->page ? $response['meta'] = ['page' => $this->pageTransformer($options)] : false;
-        } catch (\Exception $e) {
-            //Message Error
-            $status = 500;
-            $response = [
-                'errors' => $e->getMessage(),
-            ];
-        }
-
-        return response()->json($response, $status ?? 200);
-    }
-
-    /**
-     * GET A ITEM
-     *
-     * @return mixed
-     */
-    public function show($criteria, Request $request)
-    {
-        try {
-            //Get Parameters from URL.
-            $params = $this->getParamsRequest($request);
-
-            //Request to Repository
-            $dataEntity = $this->option->getItem($criteria, $params);
-
-            //Break if no found item
-            if (! $dataEntity) {
-                throw new \Exception('Item not found', 404);
-            }
-
-            //Response
-            $response = ['data' => new OptionTransformer($dataEntity)];
-
-            //If request pagination add meta-page
-            $params->page ? $response['meta'] = ['page' => $this->pageTransformer($dataEntity)] : false;
-        } catch (\Exception $e) {
-            $status = $this->getStatusError($e->getCode());
-            $response = ['errors' => $e->getMessage()];
-        }
-
-        //Return response
-        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
-    }
-
-    /**
-     * CREATE A ITEM
-     *
-     * @return mixed
-     */
-    public function create(Request $request)
-    {
-        \DB::beginTransaction();
-        try {
-            $data = $request->input('attributes') ?? []; //Get data
-            //Validate Request
-            $this->validateRequestApi(new OptionRequest((array) $data));
-
-            //Create item
-            $option = $this->option->create($data);
-
-            //Response
-            $response = ['data' => ''];
-            \DB::commit(); //Commit to Data Base
-        } catch (\Exception $e) {
-            \DB::rollback(); //Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ['errors' => $e->getMessage()];
-        }
-        //Return response
-        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
-    }
-
-    /**
-     * UPDATE ITEM
-     *
-     * @return mixed
-     */
-    public function update($criteria, Request $request)
-    {
-        \DB::beginTransaction(); //DB Transaction
-        try {
-      //Get data
-            $data = $request->input('attributes') ?? []; //Get data
-
-            //Validate Request
-            $this->validateRequestApi(new OptionRequest((array) $data));
-
-            //Get Parameters from URL.
-            $params = $this->getParamsRequest($request);
-
-            //Request to Repository
-            $this->option->updateBy($criteria, $data, $params);
-
-            //Response
-            $response = ['data' => 'Item Updated'];
-            \DB::commit(); //Commit to DataBase
-        } catch (\Exception $e) {
-            \Log::error($e->getMessage());
-            \DB::rollback(); //Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ['errors' => $e->getMessage()];
-        }
-
-        //Return response
-        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
-    }
-
-    /**
-     * DELETE A ITEM
-     *
-     * @return mixed
-     */
-    public function delete($criteria, Request $request)
-    {
-        \DB::beginTransaction();
-        try {
-            //Get params
-            $params = $this->getParamsRequest($request);
-
-            //call Method delete
-            $this->option->deleteBy($criteria, $params);
-
-            //Response
-            $response = ['data' => 'Item deleted'];
-            \DB::commit(); //Commit to Data Base
-        } catch (\Exception $e) {
-            \DB::rollback(); //Rollback to Data Base
-            $status = $this->getStatusError($e->getCode());
-            $response = ['errors' => $e->getMessage()];
-        }
-
-        //Return response
-        return response()->json($response ?? ['data' => 'Request successful'], $status ?? 200);
-    }
-
-    /**
-     * UPDATE ORDER
-     *
-     * @return mixed
-     */
-    public function updateOrderOptions(Request $request)
-    {
-        \DB::beginTransaction();
-        try {
-            $data = $request->input('attributes') ?? [];
-
-            $options = $this->optionOrdener->handle($data['options']);
-            $response = [
-                'data' => 'order Updated',
-            ];
-            $status = 200;
-            \DB::commit();
-        } catch (\Exception $e) {
-            \DB::rollback();
-            $status = $this->getStatusError($e->getCode());
-            $response = ['errors' => $e->getMessage()];
-        }
-
-        return response()->json($response, 200);
-    }
+    return response()->json($response, 200);
+  }
 }

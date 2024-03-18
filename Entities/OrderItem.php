@@ -2,32 +2,49 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Translatable;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
 
-class OrderItem extends Model
+class OrderItem extends CrudModel
 {
-    use AuditTrait;
 
-    protected $table = 'icommerce__order_item';
+  protected $table = 'icommerce__order_item';
+  public $transformer = 'Modules\Icommerce\Transformers\OrderItemTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\OrderItemRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderItemRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderItemRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
-    protected $fillable = [
-        'order_id',
-        'product_id',
-        'item_type_id',
-        'title',
-        'reference',
-        'quantity',
-        'price',
-        'total',
-        'tax',
-        'reward',
-        'options',
-        'entity_type',
-        'entity_id',
-        'organization_id',
-        'discount',
-    ];
+  protected $fillable = [
+    'order_id',
+    'product_id',
+    'item_type_id',
+    'title',
+    'reference',
+    'quantity',
+    'price',
+    'total',
+    'tax',
+    'reward',
+    'options',
+    'entity_type',
+    'entity_id',
+    'organization_id',
+    'discount'
+  ];
+
 
     protected $casts = [
         'options' => 'array',

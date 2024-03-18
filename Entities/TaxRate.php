@@ -3,35 +3,40 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Icrud\Entities\CrudModel;
 
-class TaxRate extends Model
+class TaxRate extends CrudModel
 {
-    use Translatable;
+  use Translatable;
 
-    protected $table = 'icommerce__tax_rates';
-
-    public $translatedAttributes = [
-        'name',
-    ];
-
-    protected $fillable = [
-        'rate',
-        'type',
-        'geozone_id',
-        'customer',
-        'tax_class_id',
-        'store_id',
-    ];
-
-    public function store()
-    {
-        if (is_module_enabled('Marketplace')) {
-            return $this->belongsTo('Modules\Marketplace\Entities\Store');
-        }
-
-        return $this->belongsTo(Store::class);
-    }
+  protected $table = 'icommerce__tax_rates';
+  public $transformer = 'Modules\Icommerce\Transformers\TaxRateTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\TaxRateRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateTaxRateRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateTaxRateRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
+  public $translatedAttributes = [
+    'name'
+  ];
+  protected $fillable = [
+    'rate',
+    'type',
+    'geozone_id',
+    'customer',
+    'tax_class_id',
+    'store_id'
+  ];
 
     public function geozone()
     {

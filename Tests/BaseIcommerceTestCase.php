@@ -2,17 +2,17 @@
 
 namespace Modules\Icommerce\Tests;
 
-use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
-use Modules\Icommerce\Providers\IcommerceServiceProvider;
 use Orchestra\Testbench\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Icommerce\Providers\IcommerceServiceProvider;
+use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
 
 abstract class BaseIcommerceTestCase extends TestCase
 {
-    protected $category;
 
-    protected $product;
-
-    protected $option;
+  protected $category;
+  protected $product;
+  protected $option;
 
     public function setUp()
     {

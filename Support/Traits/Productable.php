@@ -1,11 +1,14 @@
 <?php
 
+
 namespace Modules\Icommerce\Support\Traits;
 
 use Modules\Icommerce\Entities\Product;
 
 /**
  * Trait Productable
+ * @package Modules\Icommerce\Support\Traits
+ *
  */
 trait Productable
 {

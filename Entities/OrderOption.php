@@ -2,11 +2,29 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Translatable;
+use Modules\Core\Icrud\Entities\CrudModel;
 
-class OrderOption extends Model
+class OrderOption extends CrudModel
 {
-    protected $table = 'icommerce__order_options';
+
+  protected $table = 'icommerce__order_options';
+  public $transformer = 'Modules\Icommerce\Transformers\OrderOptionTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\OrderOptionRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderOptionRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderOptionRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
     protected $fillable = [
         'order_id',

@@ -3,15 +3,17 @@
     <br/>
     <span class="alert alert-danger" role="alert">{{ $errors->first('userId') }}</span>
   @endif
-  @guest
-    <hr class="my-2"/>
-    <button wire:click.prevent="shopAsGuest"
-            class="btn btn-sm btn-primary" name="button">
-      @if (!$shopAsGuest){{trans('icommerce::customer.form.textButtonShopAsGuest')}}
-      @else {{trans('icommerce::customer.form.textButtonShopAsUser')}}@endif
-    </button>
-  @endguest
-  @if ($shopAsGuest)
+  @if (!$guestShopOnly && setting('icommerce::enableGuestShopping', null, true))
+    @guest
+      <hr class="my-2"/>
+      <button wire:click.prevent="shopAsGuest"
+              class="btn btn-sm btn-primary" name="button">
+        @if (!$shopAsGuest){{trans('icommerce::customer.form.textButtonShopAsGuest')}}
+        @else {{trans('icommerce::customer.form.textButtonShopAsUser')}}@endif
+      </button>
+    @endguest
+  @endif
+  @if ($shopAsGuest && setting('icommerce::enableGuestShopping', null, true))
     <hr class="py-2"/>
     <input id="userEmail" wire:model.defer="userEmail"
            placeholder="{{trans('icommerce::checkout.buttons.placeholderInputEmail')}}" class="form-control"

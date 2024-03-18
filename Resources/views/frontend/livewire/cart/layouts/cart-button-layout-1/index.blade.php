@@ -1,4 +1,4 @@
-<div id="cartLayout1" class="dropdown {{!$showButton ? 'd-none' : ''}}">
+<div wire:init="refreshCart" id="cartLayout1" class="dropdown {{!$showButton ? 'd-none' : ''}}">
 
   @include("icommerce::frontend.livewire.cart.layouts.$layout.button")
 
@@ -11,15 +11,9 @@
 
 @section('scripts-owl')
   @parent
-  <script type="text/javascript" defer>
-
-  $(document).ready(function () {
-    window.livewire.emit('refreshCart');
-  });
-  </script>
   <style>
     #cartLayout1 .cart {
-      width: 22px;
+      width: 15px;
     }
     #cartLayout1 .cart .quantity {
       width: 18px;
@@ -34,7 +28,12 @@
       font-size: 0.688rem;
       font-weight: bold;
       background: var(--primary);
+      color: #ffffff;
     }
-
+    @if(!empty($styleCart))
+    #cartLayout1 .nav-link {
+    {!!$styleCart!!}
+    }
+    @endif
   </style>
 @stop

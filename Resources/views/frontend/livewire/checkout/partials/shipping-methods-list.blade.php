@@ -26,8 +26,8 @@
           @if(isset($shippingMethod->calculations->priceshow) && $shippingMethod->calculations->priceshow)
             <div class="shipping-method-price">
 
-              Precio:
-              {{ isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($shippingMethod->calculations->price) }} {{isset($currency) ? $currency->symbol_right : ''}}
+            {{trans('icommerce::checkout.shippingMethods.labelPrice')}}
+            {{ isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($shippingMethod->calculations->price) }} {{isset($currency) ? $currency->symbol_right : ''}}
 
             </div>
           @endif
@@ -45,10 +45,16 @@
         </div>
       @endif
 
-      <div class="card-block">
-        {!! $shippingMethod->description !!}
-      </div>
-
+    <div class="card-block py-2">
+      {!! $shippingMethod->description !!}
     </div>
+    @if (setting('icommerce::warehouseFunctionality', null, false))
+      <div class="col py-2">
+        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalWarehouseLocator">
+          {{trans('icommerce::common.pages.buttonChangeShippingMethodWarehouse')}}
+        </a>
+      </div>
+    @endif
+  </div>
 
   @endforeach

@@ -2,11 +2,8 @@
 
 namespace Modules\Icommerce\Repositories;
 
-use Modules\Core\Repositories\BaseRepository;
+use Modules\Core\Icrud\Repositories\BaseCrudRepository;
 
-interface CouponRepository extends BaseRepository
+interface CouponRepository extends BaseCrudRepository
 {
-    public function getItemsBy($params);
-
-    public function getItem($criteria, $params = false);
 }
