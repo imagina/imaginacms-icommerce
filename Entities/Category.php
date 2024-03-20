@@ -17,12 +17,12 @@ use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Isite\Traits\RevisionableTrait;
 
-class
-Category extends Model
+class Category extends Model
 {
   use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant,
     hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait;
 
+  //public $forceDeleting = true;
   public $transformer = 'Modules\Icommerce\Transformers\CategoryTransformer';
   public $entity = 'Modules\Icommerce\Entities\Category';
   public $repository = 'Modules\Icommerce\Repositories\CategoryRepository';
@@ -54,7 +54,16 @@ Category extends Model
   protected $casts = [
     'options' => 'array'
   ];
-  
+
+  /**
+   * Construct | Force Deleting
+   */
+  public function __construct(array $attributes = [])
+  {
+    $this->forceDeleting = true;
+    parent::__construct($attributes);
+  }
+
   public function parent()
   {
     return $this->belongsTo(Category::class, 'parent_id');

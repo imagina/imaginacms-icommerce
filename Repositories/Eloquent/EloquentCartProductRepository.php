@@ -136,7 +136,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     //To include all products even if they are internal (as in the case of services in reservations)
     $params = [
       "filter" => [
-        "ValidationInternal" => true,
+        "validationInternal" => true,
       ],
       "include" => [],
       "fields" => [],

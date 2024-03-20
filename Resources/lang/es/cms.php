@@ -117,6 +117,7 @@ return [
     "warehouse" => "Bodega | Bodegas",
     "bannerPriceList" => "Dirígete a tu lista personal de productos para empezar a explorar. ¡Disfruta de los mejores precios!",
     "explorePriceList" => "Explorar Lista de Productos",
+    'dataSheet' => 'Ficha técnica',
   ],
   "form" => [
     "formContent" => "Aquí podrás encontrar la información relacionada al nombre, slug, resumen y descripción.",
@@ -226,7 +227,8 @@ return [
     "generalWarehouse" => "Bodega general",
     "generalWarehouseHelp" => "Puedes gestionar de manera eficiente la información detallada de cada producto, segmentada de acuerdo a las distintas bodegas. Así, puedes organizar y administrar de forma centralizada los datos específicos de tus productos en cada ubicación, simplificando la gestión de inventario y optimizando tu control operativo.",
     "warehouseByOptions" => "Bodega por Opcion",
-    "warehouseByOptionsHelp" => "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima."
+    "warehouseByOptionsHelp" => "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima.",
+    "advancedSummaryHelp" => "Agrega contenidos detallados y complejos, aparece en la parte superior derecha del producto, ofreciendo tablas, secciones plegables y más."
   ],
   "message" => [
     "advanceEdit" => "Ir al formulario avanzado",
