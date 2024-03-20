@@ -585,7 +585,7 @@ class Product extends Model implements TaggableInterface
     $priceList = is_module_enabled('Icommercepricelist');
     $setting = json_decode(request()->get('setting'));
 
-    if (isset($auth->id) && $priceList && !isset($setting->fromAdmin)) {
+    if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
       if ($this->priceLists) {
         foreach ($this->priceLists as $pList) {
           if ($pList->related_entity == "Modules\Iprofile\Entities\Department") {
