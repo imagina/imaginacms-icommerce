@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Icommerce\Entities\ProductOptionValue;
 use Modules\Icommerce\Events\ProductOptionValueWasUpdated;
 use Modules\Icommerce\Events\ProductOptionValueWasCreated;
+use Modules\Icommerce\Events\ProductOptionValueWasDeleted;
 use Modules\Icommerce\Repositories\ProductOptionValueRepository;
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 
@@ -197,5 +198,6 @@ class EloquentProductOptionValueRepository extends EloquentBaseRepository implem
     $model = $query->where($field ?? 'id', $criteria)->first();
     event(new DeleteMedia($model->id, get_class($model)));//Event to Delete media
     $model ? $model->delete() : false;
+    event(new ProductOptionValueWasDeleted($model));
   }
 }
