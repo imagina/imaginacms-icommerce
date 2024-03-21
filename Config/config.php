@@ -10,8 +10,35 @@ return [
    |--------------------------------------------------------------------------
    */
   'synchronizable' => [
-      'template_id' => '1ZVKNiaLZNEOsSFskBiIewNlHkYvrmArS0m_aWqu7-nM',
-      'entities' => ["icommerce_syncProducts", "icommerce_syncCategories"]
+    'base_template_id' => '1ZVKNiaLZNEOsSFskBiIewNlHkYvrmArS0m_aWqu7-nM',
+    'entities' => [
+      'icommerce_syncProducts' => [
+        'apiRoute' => '/icommerce/v3/products',
+        "supportedActions" =>  ["import", "export"],
+        'sheetName' => 'Icommerce Products',
+        'customColumns' => true,
+        'dependencies' => [
+          'icommerce_syncCategories' => [
+            'apiRoute' => '/icommerce/v3/categories',
+            'sheetName' => 'Icommerce Categories',
+            'columns' => [
+              'id' => 'ID',
+              'title' => 'NOMBRE',
+              'slug' => 'SLUG'
+            ]
+          ],
+          'icommerce_syncManufacturers' => [
+            'apiRoute' => '/icommerce/v3/manufacturers',
+            'sheetName' => 'Icommerce Manufacturers',
+            'columns' => [
+              'id' => 'ID',
+              'name' => 'NOMBRE',
+              'slug' => 'SLUG'
+            ]
+          ]
+        ]
+      ],
+    ]
   ],
 
    /*
