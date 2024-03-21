@@ -38,6 +38,34 @@ return [
           ]
         ]
       ],
+      'icommerce_syncCategories' => [
+        'apiRoute' => '/icommerce/v3/categories',
+        "supportedActions" =>  ["export"],
+        'sheetName' => 'Icommerce Categories',
+        'columns' => [
+          'id' => 'ID',
+          'title' => 'NOMBRE',
+          'slug' => 'SLUG'
+        ]
+      ],
+      'icommercepricelist_syncProductlists' => [
+        'apiRoute' => '/icommercepricelist/v3/product-lists',
+        "supportedActions" =>  ["import", "export"],
+        'sheetName' => 'Icommerce ProductList',
+        'customColumns' => true,
+        'dependencies' => [
+          'icommercepricelist_syncPricelists' => [
+            'apiRoute' => '/icommercepricelist/v3/price-lists',
+            'sheetName' => 'Icommerce PriceList',
+            'columns' => [
+              'id' => 'ID',
+              'name' => 'NOMBRE',
+              'operation_prefix' => "OPERACION",
+              'value' => 'VALOR'
+            ]
+          ],
+        ]
+      ],
     ]
   ],
 
