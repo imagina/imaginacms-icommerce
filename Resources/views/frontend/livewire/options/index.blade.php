@@ -96,15 +96,19 @@
           @endif
 
         </div>
-        <div class="d-inline-flex align-items-center p-1">
-          <!-- BUTTON WISHLIST -->
-          <a
-            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
-            class="btn btn-wishlist mx-2">
-            <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
-            <i class="fa fa-heart-o ml-1"></i>
-          </a>
-        </div>
+        
+        @if((boolean)setting('wishlistable::wishlistActive',null,false))
+          <div class="d-inline-flex align-items-center p-1">
+            <!-- BUTTON WISHLIST -->
+            <a
+              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
+              class="btn btn-wishlist mx-2">
+              <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
+              <i class="fa fa-heart-o ml-1"></i>
+            </a>
+          </div>
+        @endif
+
       </div>
       <hr>
     </div>
