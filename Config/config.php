@@ -10,9 +10,9 @@ return [
    |--------------------------------------------------------------------------
    */
   'synchronizable' => [
-    'base_template_id' => '1ZVKNiaLZNEOsSFskBiIewNlHkYvrmArS0m_aWqu7-nM',
     'entities' => [
       'icommerce_syncProducts' => [
+        'base_template_id' => '1OOyW4ySI7RJMdS9fgcJWOfnPpi41FRFq2WmMhcOQonE',
         'apiRoute' => '/icommerce/v3/products',
         "supportedActions" =>  ["import", "export"],
         'sheetName' => 'Icommerce Products',
@@ -39,6 +39,7 @@ return [
         ]
       ],
       'icommerce_syncCategories' => [
+        'base_template_id' => '1OOyW4ySI7RJMdS9fgcJWOfnPpi41FRFq2WmMhcOQonE',
         'apiRoute' => '/icommerce/v3/categories',
         "supportedActions" =>  ["export"],
         'sheetName' => 'Icommerce Categories',
@@ -46,24 +47,6 @@ return [
           'id' => 'ID',
           'title' => 'NOMBRE',
           'slug' => 'SLUG'
-        ]
-      ],
-      'icommercepricelist_syncProductlists' => [
-        'apiRoute' => '/icommercepricelist/v3/product-lists',
-        "supportedActions" =>  ["import", "export"],
-        'sheetName' => 'Icommerce ProductList',
-        'customColumns' => true,
-        'dependencies' => [
-          'icommercepricelist_syncPricelists' => [
-            'apiRoute' => '/icommercepricelist/v3/price-lists',
-            'sheetName' => 'Icommerce PriceList',
-            'columns' => [
-              'id' => 'ID',
-              'name' => 'NOMBRE',
-              'operation_prefix' => "OPERACION",
-              'value' => 'VALOR'
-            ]
-          ],
         ]
       ],
     ]
