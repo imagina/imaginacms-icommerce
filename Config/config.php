@@ -12,10 +12,11 @@ return [
   'synchronizable' => [
     'entities' => [
       'icommerce_syncProducts' => [
-        'base_template_id' => '1OOyW4ySI7RJMdS9fgcJWOfnPpi41FRFq2WmMhcOQonE',
+        'base_template_id' => '1OnBxmLWhdaQavewwAf-UlnvaWN6rI-seCnCrPOagnI0',
         'apiRoute' => '/icommerce/v3/products',
         "supportedActions" =>  ["import", "export"],
         'sheetName' => 'Icommerce Products',
+        'include' => 'categories,manufacturer,tags',
         'customColumns' => true,
         'dependencies' => [
           'icommerce_syncCategories' => [
@@ -39,7 +40,7 @@ return [
         ]
       ],
       'icommerce_syncCategories' => [
-        'base_template_id' => '1OOyW4ySI7RJMdS9fgcJWOfnPpi41FRFq2WmMhcOQonE',
+        'base_template_id' => '1OnBxmLWhdaQavewwAf-UlnvaWN6rI-seCnCrPOagnI0',
         'apiRoute' => '/icommerce/v3/categories',
         "supportedActions" =>  ["export"],
         'sheetName' => 'Icommerce Categories',
