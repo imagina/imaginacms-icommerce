@@ -12,6 +12,7 @@ $router->group(['prefix' => '/categories'], function (Router $router) {
     $router->get('/', [
         'as' => 'api.icommerce.categories.index',
         'uses' => 'CategoryApiController@index',
+        'middleware' => ['optional-auth']
     ]);
     $router->get('/{criteria}', [
         'as' => 'api.icommerce.categories.show',

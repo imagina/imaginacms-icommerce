@@ -9,6 +9,7 @@ use Modules\Core\Traits\NamespacedEntity;
 use Modules\Icommerce\Presenters\ProductPresenter;
 use Modules\Icurrency\Support\Facades\Currency;
 use Modules\Ihelpers\Traits\Relationable;
+use Modules\Isite\Relations\EmptyRelation;
 use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
 use Modules\Tag\Contracts\TaggableInterface;
@@ -95,7 +96,7 @@ class Product extends Model implements TaggableInterface
   protected $casts = [
     'options' => 'array'
   ];
-  protected $width = ['files','tags'];
+  protected $width = ['files','tags','authPriceLists'];
   private $auth;
 
 
@@ -105,33 +106,33 @@ class Product extends Model implements TaggableInterface
     $this->forceDeleting = true;
     parent::__construct($attributes);
   }
-  
+
   public function weightClass()
   {
     return $this->belongsTo(WeightClass::class);
   }
-  
+
   public function volumeClass()
   {
     return $this->belongsTo(VolumeClass::class);
   }
-  
+
   public function quantityClass()
   {
     return $this->belongsTo(QuantityClass::class);
   }
-  
-  
+
+
   public function lengthClass()
   {
     return $this->belongsTo(LengthClass::class);
   }
-  
+
   public function entity()
   {
 
       return $this->belongsTo($this->entity_type, 'entity_id');
-    
+
   }
 
   public function store()
@@ -346,7 +347,7 @@ class Product extends Model implements TaggableInterface
     } else {
       $this->attributes['rating'] = 5;
     }
-    
+
   }
   */
 
@@ -506,16 +507,16 @@ class Product extends Model implements TaggableInterface
         }
       else {
         $tenancyMode = config("tenancy.mode", null);
-  
-    
+
+
         if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
             return tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
-      
+
         }
-        
+
         $url = Str::replace(["{productSlug}"],[$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
         $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-       
+
       }
     }
 
@@ -586,21 +587,16 @@ class Product extends Model implements TaggableInterface
     $setting = json_decode(request()->get('setting'));
 
     if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
-      if ($this->priceLists) {
-        foreach ($this->priceLists as $pList) {
-          if ($pList->related_entity == "Modules\Iprofile\Entities\Department") {
-            if ($pList->related_id !== '0' && $pList->related_id !== 0) {
-              $depts = $auth->departments()->where('department_id', $pList->related_id)->get();
-              if ($auth && count($depts) > 0) {
-                $price = $pList->pivot->price;
-              }
-            } else {
-              $price = $pList->pivot->price;
-            }
-          } else {
-            $price = $pList->pivot->price;
-          }
-        }//has priceLists
+      $priceList = $this->authPriceLists->where('related_id', '!=', 0)->first() ?? $this->authPriceLists->first();
+
+      if($priceList) {
+        if($priceList->criteria === 'percentage') {
+          //Calculate percentage
+          $price = icommercepricelist_calculatePriceByPriceList($priceList, $value);
+        } else {
+          //Get value of fixed
+          $price = $priceList->pivot->price;
+        }
       }
     }
     return $price;
@@ -613,7 +609,29 @@ class Product extends Model implements TaggableInterface
         ->withPivot(['price', 'id'])
         ->withTimestamps();
     }
-    return collect([]);
+    return new EmptyRelation();
+  }
+
+  public function authPriceLists()
+  {
+    $user = $this->auth;
+    //Verify if exist module and the user
+    if (is_module_enabled('Icommercepricelist') && $user) {
+      //Get the priceList with the pivot
+      return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
+        ->withPivot(['price', 'id'])
+        ->withTimestamps()
+        ->where('related_entity', 'Modules\\Iprofile\\Entities\\Department')
+        ->where(function($query) use ($user) {
+          $query->whereNull('related_id')
+            ->orWhere('related_id', 0)
+            ->orWhereIn('related_id', function ($q) use($user) {
+              $q->select('department_id')->from('iprofile__user_department')->where('user_id', $user->id);
+            });
+        })->orderBy('created_at', 'desc');//Order by newest data
+    }
+
+    return new EmptyRelation();
   }
 
   public function tax($couponDiscount = 0)

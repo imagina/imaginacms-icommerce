@@ -26,6 +26,8 @@ class ProductTransformer extends BaseApiTransformer
     foreach ($this->tags as $tag) {
       $tags[] = $tag->name;
     }
+
+    $price = $this->discount->price ?? $this->price;
     
     $data = [
       'id' => $this->id,
@@ -40,8 +42,8 @@ class ProductTransformer extends BaseApiTransformer
       'quantity' => $this->when(isset($this->quantity), $this->quantity),
       'quantityClassId' => $this->when($this->quantity_class_id, intval($this->quantity_class_id)),
       'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
-      'price' => $this->discount->price ?? $this->price,
-      'formattedPrice' => formatMoney($this->price,true),
+      'price' => $price,
+      'formattedPrice' => formatMoney($price,true),
       'points' => $this->when($this->points, $this->points),
       'dateAvailable' => $this->when($this->date_available, $this->date_available),
       'weight' => $this->when($this->weight, $this->weight),

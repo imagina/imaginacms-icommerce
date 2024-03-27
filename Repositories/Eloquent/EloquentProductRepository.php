@@ -26,26 +26,16 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
   {
     /*== initialize query ==*/
     $query = $this->model->query();
-    $priceListEnable = is_module_enabled('Icommercepricelist');
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
       $includeDefault = ['category', 'translations', 'files', 'discount', 'organization'];
-      if ($priceListEnable)
-        $includeDefault[] = 'priceLists';
       $query->with($includeDefault);
     } else {//Especific relationships
       $includeDefault = ['category', 'translations', 'files', 'discount', 'organization'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
-      if ($priceListEnable) {
-        $includeDefault[] = 'priceLists';
-      } else {
-        //removing priceList if exist in the include
-        if (($key = array_search('priceLists', $includeDefault)) !== false) {
-          unset($includeDefault[$key]);
-        }
-      }
+
       $query->with($includeDefault);//Add Relationships to query
     }
     
@@ -417,26 +407,17 @@ class EloquentProductRepository extends EloquentBaseRepository implements Produc
     
     //Initialize query
     $query = $this->model->query();
-    $priceListEnable = is_module_enabled('Icommercepricelist');
     
     /*== RELATIONSHIPS ==*/
     if (in_array('*', $params->include ?? [])) {//If Request all relationships
       $includeDefault = ['category', 'categories', 'manufacturer', 'translations', 'files', 'productOptions', 'discount', 'organization'];
-      if ($priceListEnable)
-        $includeDefault[] = 'priceLists';
+
       $query->with($includeDefault);
     } else {//Especific relationships
       $includeDefault = ['category', 'categories', 'manufacturer', 'translations', 'files', 'productOptions', 'discount'];//Default relationships
       if (isset($params->include))//merge relations with default relationships
         $includeDefault = array_merge($includeDefault, $params->include ?? []);
-      if ($priceListEnable) {
-        $includeDefault[] = 'priceLists';
-      } else {
-        //removing priceList if exist in the include
-        if (($key = array_search('priceLists', $includeDefault)) !== false) {
-          unset($includeDefault[$key]);
-        }
-      }
+
       $query->with($includeDefault);//Add Relationships to query
     }
     
