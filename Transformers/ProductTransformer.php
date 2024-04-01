@@ -27,8 +27,8 @@ class ProductTransformer extends BaseApiTransformer
       $tags[] = $tag->name;
     }
 
-    $price = $this->discount->price ?? $this->price;
-    
+    $price = $this->discount->price ?? $this->priceByList ?? $this->price;
+
     $data = [
       'id' => $this->id,
       'externalId' => $this->when($this->external_id, $this->external_id),
