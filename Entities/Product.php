@@ -578,9 +578,9 @@ class Product extends Model implements TaggableInterface
     return $isAvailable;
   }
 
-  public function getPriceAttribute($value)
+  public function getPriceByListAttribute()
   {
-    $price = $value;
+    $price = null;
     $auth = $this->auth;
 
     $priceList = is_module_enabled('Icommercepricelist');
@@ -592,7 +592,7 @@ class Product extends Model implements TaggableInterface
       if($priceList) {
         if($priceList->criteria === 'percentage') {
           //Calculate percentage
-          $price = icommercepricelist_calculatePriceByPriceList($priceList, $value);
+          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->price);
         } else {
           //Get value of fixed
           $price = $priceList->pivot->price;
