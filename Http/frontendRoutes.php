@@ -2,14 +2,17 @@
 
 use Illuminate\Routing\Router;
 
+
+
 $locale = locale();
 $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
 
-/** @var Router $router */
-Route::middleware(array_merge(['localize'], $customMiddlewares))->group(function (Router $router) use ($locale) {
-    $router->get(trans('icommerce::routes.store.index.index', [], $locale), [
-        'as' => $locale.'.icommerce.store.index',
-        'uses' => 'PublicController@index',
+  /** @var Router $router */
+  Route::group(['middleware' => array_merge(['localize'], $customMiddlewares)], function (Router $router) use ($locale) {
+
+    $router->get(trans('icommerce::routes.store.index.index',[],$locale), [
+      'as' => $locale . '.icommerce.store.index',
+      'uses' => 'PublicController@index',
     ]);
 
     $router->get(trans('icommerce::routes.store.index.category', [], $locale), [

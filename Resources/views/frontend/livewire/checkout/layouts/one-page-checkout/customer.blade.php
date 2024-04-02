@@ -14,7 +14,7 @@
     @endif
   </div>
   <div id="customerData" class="collapse show" role="tablist" aria-multiselectable="true">
-    @if (!$guestShopOnly)
+    @if (!$guestShopOnly && setting('icommerce::enableGuestShopping', null, true))
       @guest
         <hr class="my-2"/>
         <button wire:click.prevent="shopAsGuest"

@@ -6,7 +6,8 @@ class LetMeKnowProductIsAvailable
 {
     public function handle($event = null)
     {
-        \Log::info('Icommerce: Evens|Handlers|Forms|LetMeKnowProductIsAvailable');
+
+        \Log::info("Icommerce: Evens|Handlers|Forms|LetMeKnowProductIsAvailable");
 
         $formRepository = app("Modules\Iforms\Repositories\FormRepository");
         $blockRepository = app("Modules\Iforms\Repositories\BlockRepository");

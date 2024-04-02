@@ -2,10 +2,10 @@
 
 namespace Modules\Icommerce\Repositories\Cache;
 
-use Modules\Core\Repositories\Cache\BaseCacheDecorator;
 use Modules\Icommerce\Repositories\PaymentMethodRepository;
+use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
 
-class CachePaymentMethodDecorator extends BaseCacheDecorator implements PaymentMethodRepository
+class CachePaymentMethodDecorator extends BaseCacheCrudDecorator implements PaymentMethodRepository
 {
     public function __construct(PaymentMethodRepository $paymentmethod)
     {
@@ -14,47 +14,10 @@ class CachePaymentMethodDecorator extends BaseCacheDecorator implements PaymentM
         $this->repository = $paymentmethod;
     }
 
-    /**
-     * List or resources
-     */
-    public function getItemsBy($params)
+    public function getCalculations($params)
     {
-        return $this->remember(function () use ($params) {
-            return $this->repository->getItemsBy($params);
-        });
+        return $this->repository->getCalculations($params);
+
     }
 
-    /**
-     * find a resource by id or slug
-     */
-    public function getItem($criteria, $params = false)
-    {
-        return $this->remember(function () use ($criteria, $params) {
-            return $this->repository->getItem($criteria, $params);
-        });
-    }
-
-    /**
-     * create a resource
-     *
-     * @return mixed
-     */
-    public function create($data)
-    {
-        $this->clearCache();
-
-        return $this->repository->create($data);
-    }
-
-    /**
-     * update a resource
-     *
-     * @return mixed
-     */
-    public function updateBy($criteria, $data, $params = false)
-    {
-        $this->clearCache();
-
-        return $this->repository->updateBy($criteria, $data, $params);
-    }
 }

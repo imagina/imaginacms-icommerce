@@ -21,4 +21,13 @@ return [
     ],
     'validation' => [
     ],
+    'types' => [
+        'checkbox' => 'Selección multiple (lista)',
+        'radio' => 'Selección unica (lista)',
+        'select' => 'Seleccion unica (Selector)',
+        'text' => 'Texto corto',
+        'textarea' => 'Texto extendido',
+        'date' => 'Fecha',
+        'file' => 'Archivo',
+    ],
 ];

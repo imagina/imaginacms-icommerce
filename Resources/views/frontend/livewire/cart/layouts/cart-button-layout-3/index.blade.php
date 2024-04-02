@@ -1,4 +1,4 @@
-<div id="cartLayout3" class="cart-layout-3" >
+<div wire:init="refreshCart" id="cartLayout3" class="cart-layout-3" >
 
     @include("icommerce::frontend.livewire.cart.requestquote")
 
@@ -114,17 +114,16 @@
   #cartLayout3 .cart-remove {
     font-size: 14px;
   }
-
+  @if(!empty($styleCart))
+  #cartLayout3 .cart-link {
+  {!!$styleCart!!}
+  }
+  @endif
 </style>
 @include("icommerce::frontend.livewire.cart.quoteModal")
 
 @section('scripts-owl')
     @parent
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            window.livewire.emit('refreshCart');
-        });
-    </script>
     <script>
         window.addEventListener('refresh-page', event => {
             setTimeout(()=>{

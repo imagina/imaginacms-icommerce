@@ -2,15 +2,33 @@
 
 namespace Modules\Icommerce\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Translatable;
+use Modules\Core\Icrud\Entities\CrudModel;
+use Kalnoy\Nestedset\NodeTrait;
 use Modules\Core\Support\Traits\AuditTrait;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class ProductOptionValue extends Model
+class ProductOptionValue extends CrudModel
 {
-    use BelongsToTenant, AuditTrait;
+  use BelongsToTenant, NodeTrait;
 
-    protected $table = 'icommerce__product_option_value';
+  protected $table = 'icommerce__product_option_value';
+  public $transformer = 'Modules\Icommerce\Transformers\ProductOptionValueTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\ProductOptionValueRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateProductOptionValueRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductOptionValueRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
     protected $fillable = [
         'product_option_id',
@@ -75,38 +93,86 @@ class ProductOptionValue extends Model
         return $this->hasMany(OrderOption::class);
     }
 
-    public function getAvailableAttribute()
-    {
-        return $this->stock_status && (($this->substract && $this->quantity) || ! $this->substract);
-    }
-
-    public function childrenProductOptionValue()
-    {
-        return $this->hasMany($this, 'parent_prod_opt_val_id', 'id');
-    }
-
-    public function updateStockByChildren()
-    {
-        $stock = 0;
-        if ($this->subtract) {
-            foreach ($this->childrenProductOptionValue as $key => $children) {
-                if ($children->subtract && $children->stock_status == 1) {
-                    $stock += $children->quantity;
-                }
-            }
-            $this->update(['quantity' => $stock]);
-            if ($stock == 0) {
-                $this->update(['stock_status' => 0]);
-            } elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where('stock_status', 1)->get()->isNotEmpty()) {
-                $this->update(['stock_status' => 1]);
-            }
-            if ($this->parentProductOptionValue) {
-                $this->parentProductOptionValue->updateStockByChildren();
-            }
-
-            return $stock;
+  public function getAvailableAttribute()
+  {
+    $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
+    if ($warehouseEnabled && $this->subtract) {
+      $warehouse = session('warehouse');
+      if (!is_null($warehouse)) {
+        $warehouseProductQuantity = \DB::table('icommerce__product_option_value_warehouse')
+          ->where('warehouse_id', $warehouse->id)
+          ->where('product_option_value_id', $this->id)
+          ->where('product_id', $this->product_id)
+          ->first();
+        if (isset($warehouseProductQuantity) && $warehouseProductQuantity->quantity == 0 || is_null($warehouseProductQuantity)) {
+          $this->quantity = 0;
+        } else {
+          $this->quantity = $warehouseProductQuantity->quantity;
         }
-
-        return $this->quantity;
+      }
     }
+    return $this->stock_status && (($this->subtract && $this->quantity) || !$this->subtract);
+  }
+
+  public function childrenProductOptionValue()
+  {
+    return $this->hasMany($this, 'parent_prod_opt_val_id', 'id');
+  }
+
+  public function updateStockByChildren()
+  {
+    $stock = 0;
+    if ($this->subtract) {
+      foreach ($this->childrenProductOptionValue as $key => $children) {
+        if ($children->subtract && $children->stock_status == 1) {
+          $stock += $children->quantity;
+        }
+      }
+      $this->update(["quantity" => $stock]);
+      if ($stock == 0) {
+        $this->update(["stock_status" => 0]);
+      } elseif ($this->stock_status == 0 && $this->childrenProductOptionValue()->where("stock_status", 1)->get()->isNotEmpty()) {
+        $this->update(["stock_status" => 1]);
+      }
+      if ($this->parentProductOptionValue) {
+        $this->parentProductOptionValue->updateStockByChildren();
+      }
+      return $stock;
+
+    }
+    return $this->quantity;
+  }
+
+  public function getLftName()
+  {
+    return 'lft';
+  }
+
+  public function getRgtName()
+  {
+    return 'rgt';
+  }
+
+  public function getDepthName()
+  {
+    return 'depth';
+  }
+
+  public function getParentIdName()
+  {
+    return 'parent_prod_opt_val_id';
+  }
+
+  public function getFullNameAttribute()
+  {
+    $ancestorsAndSelf = ProductOptionValue::with(["option","option.translations","optionValue","optionValue.translations","children"])->ancestorsAndSelf($this->id);
+    $fullname = "";
+
+  foreach ($ancestorsAndSelf as $productOptionValue)
+    $fullname .= ($productOptionValue->option ? $productOptionValue->option->description : "") . ": " .
+      ($productOptionValue->optionValue ? $productOptionValue->optionValue->description : "") . ($productOptionValue->children->isNotEmpty() ? " / " : "");
+
+
+    return $fullname;
+  }
 }

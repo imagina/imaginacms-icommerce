@@ -15,6 +15,9 @@
 
             <div class="col-lg-6 mb-5">
 
+              <!-- Wishlist Modal List -->
+			        @livewire("wishlistable::wishlist",["layout"=>"wishlist-layout-modal-list-1", "item" => $product])
+
               @include('icommerce::frontend.partials.show.gallery')
 
               @include('icommerce::frontend.partials.show.share')
