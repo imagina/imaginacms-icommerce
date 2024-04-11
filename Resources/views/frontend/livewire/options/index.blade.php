@@ -1,24 +1,24 @@
 <div>
-<div id="recursiveListOptionsComponent">
-  
-  @foreach($options as $index => $productOption)
-    @if(!empty($productOption) and is_null($productOption->parent_id))
-      <div>
-        <div class="content-option">
-          @include("icommerce::frontend.livewire.options.partials.option-item",["productOption" => $productOption,"options" => $options])
-        </div>
-      </div>
-    @endif
-  @endforeach
+  <div id="recursiveListOptionsComponent">
 
-</div>
+    @foreach($options as $index => $productOption)
+      @if(!empty($productOption) and is_null($productOption->parent_id))
+        <div>
+          <div class="content-option">
+            @include("icommerce::frontend.livewire.options.partials.option-item",["productOption" => $productOption,"options" => $options])
+          </div>
+        </div>
+      @endif
+    @endforeach
+
+  </div>
   @if(!$product->is_call || ($product->is_call && $product->show_price_is_call))
-    
+
     <div class="price ">
       <div class="mb-0">
       <span class="text-primary font-weight-bold">
         {{isset($currency->id) ? $currency->symbol_left : '$'}}
-        {{formatMoney(($product->discount->price ?? $product->price) +$this->priceOptions )}}
+        {{formatMoney($dynamicPrice = ($product->discount->price ?? $product->price) +$this->priceOptions )}}
         {{isset($currency->id) ? $currency->symbol_right : ''}}
       </span>
         @if(isset($product->discount->price))
@@ -27,8 +27,7 @@
       </div>
     </div>
   @endif
-
-  @php $dynamicPrice = ($product->discount->price ?? $product->price) + $this->priceOptions;  @endphp
+  
 <!-- calculation according to the information of weight, volume, quantity, lenght-->
   @include('icommerce::frontend.components.product.calculate-pum',['dynamicPrice' => $dynamicPrice])
 
@@ -40,25 +39,25 @@
           {{$product->quantity}} {{trans("icommerce::products.form.available")}}
         </div>
 
-    <!-- BUTTON QUANTITY -->
-    <div class="d-inline-flex align-items-center p-1">
-      <div class="input-group ">
-        <div class="input-group-prepend">
-          <button class="btn btn-outline-light font-weight-bold " field="quantity" type="button"
-                  onclick="icommerce_showSetQuantity(event,'-')">
-            <i class="fa fa-angle-left" aria-hidden="true"></i>
-          </button>
+        <!-- BUTTON QUANTITY -->
+        <div class="d-inline-flex align-items-center p-1">
+          <div class="input-group ">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-light font-weight-bold " field="quantity" type="button"
+                      onclick="icommerce_showSetQuantity(event,'-')">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+              </button>
+            </div>
+            <input type="text" class="form-control text-center quantity"
+                   name="quantityProduct" wire:model.defer="quantity">
+            <div class="input-group-append">
+              <button class="btn btn-outline-light font-weight-bold" field="quantity" type="button"
+                      onclick="icommerce_showSetQuantity(event,'+')">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
         </div>
-        <input type="text" class="form-control text-center quantity"
-               name="quantityProduct" wire:model.defer="quantity">
-        <div class="input-group-append">
-          <button class="btn btn-outline-light font-weight-bold" field="quantity" type="button"
-                  onclick="icommerce_showSetQuantity(event,'+')">
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-    </div>
 
         <div class="d-inline-flex align-items-center p-1">
           <!-- BUTTON ADD -->
@@ -97,15 +96,19 @@
           @endif
 
         </div>
-        <div class="d-inline-flex align-items-center p-1">
-          <!-- BUTTON WISHLIST -->
-          <a
-            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
-            class="btn btn-wishlist mx-2">
-            <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
-            <i class="fa fa-heart-o ml-1"></i>
-          </a>
-        </div>
+        
+        @if((boolean)setting('wishlistable::wishlistActive',null,false))
+          <div class="d-inline-flex align-items-center p-1">
+            <!-- BUTTON WISHLIST -->
+            <a
+              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
+              class="btn btn-wishlist mx-2">
+              <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
+              <i class="fa fa-heart-o ml-1"></i>
+            </a>
+          </div>
+        @endif
+
       </div>
       <hr>
     </div>
@@ -114,22 +117,23 @@
 
 </div>
 @section('scripts-owl')
-@parent
-<script type="text/javascript" defer>
-  function icommerce_showAddToCartWithOptions(e) {
-    window.livewire.emit('addToCartOptions',  {quantity:$('input[name=quantityProduct]').val()})
-  }
-    function icommerce_showSetQuantity(e,type) {
-    e.preventDefault();
-    var parent = $(e.target).closest('div.input-group');
-    var currentVal = parseInt(parent.find('input[name=quantityProduct]').val(), 10);
-    console.warn(currentVal)
-
-    if (!isNaN(currentVal)) {
-      parent.find('input[name=quantityProduct]').val(type == '-' ? currentVal - 1 : currentVal + 1);
-    } else {
-      parent.find('input[name=quantityProduct]').val(0);
+  @parent
+  <script type="text/javascript" defer>
+    function icommerce_showAddToCartWithOptions(e) {
+      window.livewire.emit('addToCartOptions', {quantity: $('input[name=quantityProduct]').val()})
     }
-  }
-</script>
+
+    function icommerce_showSetQuantity(e, type) {
+      e.preventDefault();
+      var parent = $(e.target).closest('div.input-group');
+      var currentVal = parseInt(parent.find('input[name=quantityProduct]').val(), 10);
+      console.warn(currentVal)
+
+      if (!isNaN(currentVal)) {
+        parent.find('input[name=quantityProduct]').val(type == '-' ? currentVal - 1 : currentVal + 1);
+      } else {
+        parent.find('input[name=quantityProduct]').val(0);
+      }
+    }
+  </script>
 @stop

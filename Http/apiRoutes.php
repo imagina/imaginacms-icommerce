@@ -10,7 +10,7 @@ Route::prefix('/icommerce/v3')->group(function (Router $router) use($locale) {
     'controller' => 'CategoryApiController',
     'middleware' => [
       'create' => ['auth:api', 'auth-can:icommerce.categories.create'],
-      'index' => [], 'show' => [],
+      'index' => ['optional-auth'], 'show' => [],
       'update' => ['auth:api', 'auth-can:icommerce.categories.edit'],
       'delete' => ['auth:api', 'auth-can:icommerce.categories.destroy'],
       // 'restore' => []

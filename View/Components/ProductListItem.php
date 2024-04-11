@@ -6,8 +6,8 @@ use Illuminate\View\Component;
 use Illuminate\Support\Facades\Cache;
 class ProductListItem extends Component
 {
-
-
+  
+  
   public $product;
   public $itemListLayout;
   public $imageAspect;
@@ -66,6 +66,7 @@ class ProductListItem extends Component
   public $labelButtonAddProduct;
   public $showDeleteBtn;
   public $productLayout;
+  public $currentRoute;
 
   /**
    * Create a new component instance.
@@ -73,8 +74,6 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item,
-                              $editLink,
-                              $tooltipEditLink,
                               $itemListLayout = null,
                               $layout = null,
                               $discountRibbonStyle = null,
@@ -123,19 +122,22 @@ class ProductListItem extends Component
                               $contentTitleFontWeight = null,
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
-                              $imageObjectFit = "contain",
+                              $imageObjectFit = null,
+                              $editLink,
+                              $tooltipEditLink,
                               $withDescription = false,
                               $withPrice = true,
                               $addToCartButtonAction = null,
                               $labelButtonAddProduct = null,
                               $showDeleteBtn = false,
-                              $productLayout=null
+                              $productLayout=null,
+                              $currentRoute = null
   )
   {
     $this->product = $item;
-
+    
     $this->itemListLayout = $itemListLayout ?? "product-list-item-layout-1";
-
+    
     $this->discountRibbonStyle = $discountRibbonStyle ?? setting('icommerce::productDiscountRibbonStyle', null, "flag");
     $this->discountPosition = $discountPosition ?? setting('icommerce::productDiscountPosition', null, "top-right");
     $this->imagePadding = $imagePadding ?? setting('icommerce::productImagePadding', null, 0);
@@ -192,19 +194,20 @@ class ProductListItem extends Component
     $this->labelButtonAddProduct = $labelButtonAddProduct;
     $this->showDeleteBtn = $showDeleteBtn;
     $this->productLayout=$productListItemLayout;
+    $this->currentRoute = $currentRoute;
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
-
+  
   private function getParentAttributes($parentAttributes)
   {
-
+    
     isset($parentAttributes["itemListLayout"]) ? $this->itemListLayout = $parentAttributes["itemListLayout"] : false;
     isset($parentAttributes["addToCartWithQuantity"]) ? $this->addToCartWithQuantity = $parentAttributes["addToCartWithQuantity"] : false;
-
+    
   }
-
+  
   /**
    * Get the view / contents that represent the component.
    *
