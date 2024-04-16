@@ -9,6 +9,9 @@ return [
   'button' => [
     'update' => 'Actualizar'
   ],
+  'pricelists' => [
+    'title' => 'Lista de precios',
+  ],
   'sidebar' => [
     'products' => 'Productos',
     'shipping' => 'Envío',
@@ -31,6 +34,7 @@ return [
     'labelEnableGuestShopping' => 'Habilitar la funcionalidad "Comprar como invitado"',
     'buttonChangeShippingAddressWarehouse' => 'Cambiar dirección de entrega',
     'buttonChangeShippingMethodWarehouse' => 'Cambiar Método de envío',
+    'buttonAddBillingAddressWarehouse' => 'Crear nueva dirección',
   ],
   'filters' => [
     'title' => 'Filtrar',
