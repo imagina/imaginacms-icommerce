@@ -21,6 +21,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Iqreable\Traits\IsQreable;
 use Modules\Tag\Contracts\TaggableInterface;
 use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Isite\Relations\EmptyRelation;
 
 class Product extends CrudModel implements TaggableInterface
 {
@@ -102,7 +103,7 @@ class Product extends CrudModel implements TaggableInterface
   protected $casts = [
     'options' => 'array'
   ];
-  protected $width = ['files','tags'];
+  protected $width = ['files','tags','authPriceLists'];
   private $auth;
 
   public function __construct(array $attributes = [])
@@ -494,30 +495,25 @@ class Product extends CrudModel implements TaggableInterface
     return $isAvailable;
   }
 
-  public function getPriceAttribute($value)
+  public function getPriceByListAttribute()
   {
-    $price = $value;
+    $price = null;
     $auth = $this->auth;
 
     $priceList = is_module_enabled('Icommercepricelist');
     $setting = json_decode(request()->get('setting'));
 
-    if (isset($auth->id) && $priceList && !isset($setting->fromAdmin)) {
-      if ($this->priceLists) {
-        foreach ($this->priceLists as $pList) {
-          if ($pList->related_entity == "Modules\Iprofile\Entities\Department") {
-            if ($pList->related_id !== '0' && $pList->related_id !== 0) {
-              $depts = $auth->departments()->where('department_id', $pList->related_id)->get();
-              if ($auth && count($depts) > 0) {
-                $price = $pList->pivot->price;
-              }
-            } else {
-              $price = $pList->pivot->price;
-            }
-          } else {
-            $price = $pList->pivot->price;
-          }
-        }//has priceLists
+    if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
+      $priceList = $this->authPriceLists->where('related_id', '!=', 0)->first() ?? $this->authPriceLists->first();
+
+      if($priceList) {
+        if($priceList->criteria === 'percentage') {
+          //Calculate percentage
+          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->price);
+        } else {
+          //Get value of fixed
+          $price = $priceList->pivot->price;
+        }
       }
     }
     return $price;
@@ -530,7 +526,29 @@ class Product extends CrudModel implements TaggableInterface
         ->withPivot(['price', 'id'])
         ->withTimestamps();
     }
-    return collect([]);
+    return new EmptyRelation();
+  }
+
+  public function authPriceLists()
+  {
+    $user = $this->auth;
+    //Verify if exist module and the user
+    if (is_module_enabled('Icommercepricelist') && $user) {
+      //Get the priceList with the pivot
+      return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
+        ->withPivot(['price', 'id'])
+        ->withTimestamps()
+        ->where('related_entity', 'Modules\\Iprofile\\Entities\\Department')
+        ->where(function($query) use ($user) {
+          $query->whereNull('related_id')
+            ->orWhere('related_id', 0)
+            ->orWhereIn('related_id', function ($q) use($user) {
+              $q->select('department_id')->from('iprofile__user_department')->where('user_id', $user->id);
+            });
+        })->orderBy('created_at', 'desc');//Order by newest data
+    }
+
+    return new EmptyRelation();
   }
 
   public function tax($couponDiscount = 0)

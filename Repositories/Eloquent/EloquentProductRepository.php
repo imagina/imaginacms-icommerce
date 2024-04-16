@@ -50,18 +50,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     try{
 
       parent::__construct($model);
-      $priceListEnable = is_module_enabled('Icommercepricelist');
 
-      if ($priceListEnable && !in_array('priceList', $this->includeToQuery)){
-
-        $this->includeToQuery[] = 'priceLists';
-
-      }
-      if ($priceListEnable && !in_array('priceList', $this->includeInShowToQuery)){
-
-        $this->includeInShowToQuery[] = 'priceLists';
-
-      }
     }catch(\Exception $e){}
 
 
