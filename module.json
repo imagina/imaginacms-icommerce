@@ -9,8 +9,7 @@
     "providers": [
         "Modules\\Icommerce\\Providers\\EventServiceProvider",
         "Modules\\Icommerce\\Providers\\IcommerceServiceProvider",
-        "Modules\\Icommerce\\Providers\\RouteServiceProvider",
-        "Modules\\Icommerce\\Providers\\BroadcastServiceProvider"
+        "Modules\\Icommerce\\Providers\\RouteServiceProvider"
     ],
     "aliases": [],
     "files": [

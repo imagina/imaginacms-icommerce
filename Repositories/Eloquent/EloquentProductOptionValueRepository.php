@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Icommerce\Entities\ProductOptionValue;
 use Modules\Icommerce\Events\ProductOptionValueWasUpdated;
 use Modules\Icommerce\Events\ProductOptionValueWasCreated;
+use Modules\Icommerce\Events\ProductOptionValueWasDeleted;
 use Modules\Icommerce\Repositories\ProductOptionValueRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 
@@ -105,5 +106,12 @@ class EloquentProductOptionValueRepository extends EloquentCrudRepository implem
       }
       return $model;
     }
+  }
+
+  public function deleteBy($criteria, $params = false)
+  {
+    $model = parent::deleteBy($criteria, $params = false);
+    event(new ProductOptionValueWasDeleted($model));
+    return $model;
   }
 }

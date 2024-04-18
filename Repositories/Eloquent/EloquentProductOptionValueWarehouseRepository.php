@@ -6,6 +6,7 @@ use Modules\Icommerce\Repositories\ProductOptionValueWarehouseRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 use Modules\Icommerce\Events\ProductOptionValueWarehouseWasUpdated;
 use Modules\Icommerce\Events\ProductOptionValueWarehouseWasCreated;
+use Modules\Icommerce\Events\ProductOptionValueWarehouseWasDeleted;
 
 class EloquentProductOptionValueWarehouseRepository extends EloquentCrudRepository implements ProductOptionValueWarehouseRepository
 {
@@ -89,6 +90,13 @@ class EloquentProductOptionValueWarehouseRepository extends EloquentCrudReposito
   {
     $model = parent::updateBy($criteria, $data, $params = false);
     event(new ProductOptionValueWarehouseWasUpdated($model));
+    return $model;
+  }
+
+  public function deleteBy($criteria, $params = false)
+  {
+    $model = parent::deleteBy($criteria, $params = false);
+    event(new ProductOptionValueWarehouseWasDeleted($model));
     return $model;
   }
 

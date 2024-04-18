@@ -6,6 +6,7 @@ use Modules\Icommerce\Repositories\ProductWarehouseRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 use Modules\Icommerce\Events\ProductWarehouseWasCreated;
 use Modules\Icommerce\Events\ProductWarehouseWasUpdated;
+use Modules\Icommerce\Events\ProductWarehouseWasDeleted;
 
 class EloquentProductWarehouseRepository extends EloquentCrudRepository implements ProductWarehouseRepository
 {
@@ -89,6 +90,13 @@ class EloquentProductWarehouseRepository extends EloquentCrudRepository implemen
   {
     $model = parent::updateBy($criteria, $data, $params = false);
     event(new ProductWarehouseWasUpdated($model));
+    return $model;
+  }
+
+  public function deleteBy($criteria, $params = false)
+  {
+    $model = parent::deleteBy($criteria, $params = false);
+    event(new ProductWarehouseWasDeleted($model));
     return $model;
   }
 
