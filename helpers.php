@@ -153,3 +153,28 @@ if (! function_exists('currentCurrency')) {
         return $currency;
     }
 }
+
+/**
+ * @param $base (weight,length,volume)
+ */
+if (!function_exists('getUnitClass')) {
+  function getUnitClass($product,$base="weight"){
+    $unit = "";
+
+    $baseClass = $base."Class";
+    $class = $product->$baseClass;
+
+    //Get Default
+    if(is_null($class)){
+      $params = ['filter' => ['default' => 1]];
+      $repository = "Modules\Icommerce\Repositories\\".ucfirst($baseClass)."Repository";
+      $default = app($repository)->getItemsBy(json_decode(json_encode($params)));
+      if(!empty($default->items))
+        $unit = $default[0]->unit;
+    }else{
+      $unit = $class->unit;
+    }
+
+    return $unit;
+  }
+}
