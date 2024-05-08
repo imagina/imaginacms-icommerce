@@ -34,6 +34,8 @@ class ProductTransformer extends CrudResource
       $data['priceLists'] = [];
     }
 
+    $data['price'] = $this->discount->price ?? $this->priceByList ?? $this->price;
+
 
     $this->entityRelation($data);
 
