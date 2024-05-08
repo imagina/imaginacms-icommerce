@@ -509,7 +509,7 @@ class Product extends CrudModel implements TaggableInterface
       if($priceList) {
         if($priceList->criteria === 'percentage') {
           //Calculate percentage
-          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->price);
+          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->getRawOriginal('price'));
         } else {
           //Get value of fixed
           $price = $priceList->pivot->price;
@@ -582,5 +582,13 @@ class Product extends CrudModel implements TaggableInterface
     }
 
     return $hasRequiredOptions;
+  }
+
+  // Mutator to return the product price in order of, priceList or product price
+  // IMPORTANT: if you need to get the price base for any calculation use $this->getRawOriginal('price')
+  // This will prevent to call this mutator and not generate an infinity loop
+  public function getPriceAttribute($value)
+  {
+    return $this->priceByList ?? $value;
   }
 }
