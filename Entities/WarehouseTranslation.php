@@ -18,7 +18,7 @@ class WarehouseTranslation extends Model
     ];
     protected $table = 'icommerce__warehouse_translations';
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [

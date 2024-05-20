@@ -23,7 +23,7 @@ class ManufacturerTranslation extends Model
     'translatable_options' => 'array'
   ];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
