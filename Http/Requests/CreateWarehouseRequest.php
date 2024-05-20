@@ -8,7 +8,10 @@ class CreateWarehouseRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'lat' => 'required|min:2',
+            'lng' => 'required|min:2',
+        ];
     }
 
     public function translationRules()
