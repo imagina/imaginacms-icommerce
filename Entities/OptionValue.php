@@ -50,7 +50,7 @@ class OptionValue extends CrudModel
     public function getOptionsAttribute($value)
     {
         try {
-            $response = json_decode(json_decode($value));
+            $response = json_decode($value);
         } catch (\Exception $e) {
             $response = json_decode($value);
         }

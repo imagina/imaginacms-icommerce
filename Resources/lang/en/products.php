@@ -43,6 +43,7 @@ return [
         'width' => 'Width',
         'height' => 'Height',
         'substract' => 'Substract Stock',
+        'volume' => 'Volume',
         'minimum' => 'Minimum amount that can be ordered for this product',
         'reference' => 'Reference or Model',
         'featured image' => 'Featured Image',

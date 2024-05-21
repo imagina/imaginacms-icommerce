@@ -8,9 +8,7 @@ class UpdateShippingMethodRequest extends BaseFormRequest
 {
   public function rules()
   {
-    return [
-      'name' => 'required'
-    ];
+    return [];
   }
 
   public function translationRules()
@@ -25,10 +23,7 @@ class UpdateShippingMethodRequest extends BaseFormRequest
 
   public function messages()
   {
-    return [
-      // Name
-      'name.required' => trans('icommerce::common.messages.field required'),
-    ];
+    return [];
   }
 
   public function translationMessages()
