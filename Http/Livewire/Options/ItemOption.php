@@ -37,7 +37,7 @@ class ItemOption extends Component
   public function mount(Request $request, $type, $product, $productOption)
   {
 
-    \Log::info($this->log."Mount");
+    \Log::info($this->log . "Mount");
 
     $this->type = $type;
     $this->productId = $product->id;
@@ -66,7 +66,7 @@ class ItemOption extends Component
   public function setOption($ProductOptionValueId)
   {
 
-    \Log::info($this->log."setOption");
+    \Log::info($this->log . "setOption");
 
     $oldValue = $this->selected;
 
@@ -91,7 +91,7 @@ class ItemOption extends Component
       }
     }
 
-    $this->emit('updateOption', $oldValue, $this->selected,$this->dynamic,$this->optionId);
+    $this->emit('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
   }
 
 
@@ -118,13 +118,14 @@ class ItemOption extends Component
   public function updatingSelected($value)
   {
     //\Log::info($this->log."updatingSelected");
-    $this->emit('updateOption', $this->selected, $value, $this->dynamic ,$this->optionId);
+    $this->emit('updateOption', $this->selected, $value, $this->dynamic, $this->optionId);
   }
 
   /**
    * Carga de propiedades protegidas
    */
-  private function loadProtectedAttributes(){
+  private function loadProtectedAttributes()
+  {
 
     //Product
     $this->product = Product::find($this->productId);

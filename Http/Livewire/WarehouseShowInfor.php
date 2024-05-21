@@ -19,17 +19,18 @@ class WarehouseShowInfor extends Component
    * MOUNT
    */
   public function mount(
-    $layout = 'warehouse-show-infor-layout-1', 
     $varName,
-    $varAtt  
-  ){
-      $this->log = "Icommerce::Livewire|WarehouseShowInfor|";
-      $this->layout = $layout;
-      $this->view = "icommerce::frontend.livewire.warehouse-show-infor.layouts.$this->layout.index";
+    $varAtt,
+    $layout = 'warehouse-show-infor-layout-1'
+  )
+  {
+    $this->log = "Icommerce::Livewire|WarehouseShowInfor|";
+    $this->layout = $layout;
+    $this->view = "icommerce::frontend.livewire.warehouse-show-infor.layouts.$this->layout.index";
 
-      $this->varName = $varName;
-      $this->varAtt = $varAtt;
-     
+    $this->varName = $varName;
+    $this->varAtt = $varAtt;
+
   }
 
   /**
@@ -37,7 +38,7 @@ class WarehouseShowInfor extends Component
    */
   public function loadWarehouseShowInfor()
   {
-      $this->readyToLoad = true;
+    $this->readyToLoad = true;
   }
 
   /**
@@ -45,7 +46,7 @@ class WarehouseShowInfor extends Component
    */
   public function getInfor()
   {
-    
+
     $warehouseSession = session($this->varName);
     $warehouseAtt = $this->varAtt;
 
@@ -61,12 +62,9 @@ class WarehouseShowInfor extends Component
    * @return mixed
    */
   public function render()
-  { 
-
-    return view($this->view,[
+  {
+    return view($this->view, [
       'infor' => $this->readyToLoad ? $this->getInfor() : ""
     ]);
-
   }
-
 }

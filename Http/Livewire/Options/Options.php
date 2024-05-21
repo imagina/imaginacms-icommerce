@@ -21,7 +21,7 @@ class Options extends Component
   public $quantity;
   public $optionsSelected;
 
-  protected $listeners = ['updateOption','addToCartOptions'];
+  protected $listeners = ['updateOption', 'addToCartOptions'];
 
   private $log = "Icommerce: Livewire|Options|Options|";
 
@@ -46,14 +46,14 @@ class Options extends Component
    * @param $newValue
    * @param $dynamic
    */
-  public function updateOption($oldValue, $newValue,$dynamic,$optionId)
+  public function updateOption($oldValue, $newValue, $dynamic, $optionId)
   {
 
     //\Log::info($this->log."updateOption");
 
     //Case Dynamics
-    if(is_string($oldValue)) $oldValue = strip_tags($oldValue);
-    if(is_string($newValue)) $newValue = strip_tags($newValue);
+    if (is_string($oldValue)) $oldValue = strip_tags($oldValue);
+    if (is_string($newValue)) $newValue = strip_tags($newValue);
 
     $oldValue = !is_array($oldValue) ? [$oldValue] : $oldValue;
 
@@ -62,25 +62,25 @@ class Options extends Component
 
     foreach ($oldValue as $value) {
       foreach ($this->optionsSelected as $key => $optionSelected) {
-         //Case Dynamic Option
-         if($dynamic && isset($optionSelected['value']) &&  $optionSelected['value']== $value){
-            unset($this->optionsSelected[$key]);
-         }else{
+        //Case Dynamic Option
+        if ($dynamic && isset($optionSelected['value']) && $optionSelected['value'] == $value) {
+          unset($this->optionsSelected[$key]);
+        } else {
           //Case No Dynamic Option
           if ($optionSelected == $value)
             unset($this->optionsSelected[$key]);
-         }
+        }
 
       }
     }
 
-    if(!empty($newValue)){
+    if (!empty($newValue)) {
       $newValue = !is_array($newValue) ? [$newValue] : $newValue;
 
-      if($dynamic){
-        $news[]  = ["option_id" => $optionId, "value" => $newValue[0]];
+      if ($dynamic) {
+        $news[] = ["option_id" => $optionId, "value" => $newValue[0]];
         $this->optionsSelected = array_merge($this->optionsSelected, $news);
-      }else{
+      } else {
         $this->optionsSelected = array_merge($this->optionsSelected, $newValue);
       }
 
@@ -96,7 +96,7 @@ class Options extends Component
   public function addToCartOptions($data)
   {
 
-    $this->emit('addToCartWithOptions', ["productId" =>$this->product->id,"quantity" => $data["quantity"],"productOptionValues" => $this->optionsSelected]);
+    $this->emit('addToCartWithOptions', ["productId" => $this->product->id, "quantity" => $data["quantity"], "productOptionValues" => $this->optionsSelected]);
 
   }
 
@@ -104,11 +104,12 @@ class Options extends Component
   //|--------------------------------------------------------------------------
   //| Livewire Properties
   //|--------------------------------------------------------------------------
-  public function getPriceOptionsProperty(){
+  public function getPriceOptionsProperty()
+  {
     $optionsPrice = 0;
-    foreach ($this->optionValues as $optionValue){
-      if(in_array($optionValue->id,$this->optionsSelected)){
-        $optionsPrice += $optionValue->price_prefix == "+" ? $optionValue->price : $optionValue->price*-1;
+    foreach ($this->optionValues as $optionValue) {
+      if (in_array($optionValue->id, $this->optionsSelected)) {
+        $optionsPrice += $optionValue->price_prefix == "+" ? $optionValue->price : $optionValue->price * -1;
       }
     }
 

@@ -89,10 +89,10 @@ class Checkout extends Component
       $this->shopAsGuest = true;
     }
 
-        $this->addressGuestShipping = [];
-        $this->addressGuest = [];
-        $this->addressGuestBillingCreated = false;
-        $this->addressGuestShippingCreated = false;
+    $this->addressGuestShipping = [];
+    $this->addressGuest = [];
+    $this->addressGuestBillingCreated = false;
+    $this->addressGuestShippingCreated = false;
 
 
     $this->layout = $layout ?? setting("icommerce::checkoutLayout");
@@ -123,16 +123,19 @@ class Checkout extends Component
     $this->addressGuestShippingCreated = false;
   }
 
-  public function billingAddressChanged($data){
+  public function billingAddressChanged($data)
+  {
 
     $this->billingAddressSelected = $data;
   }
 
-  public function shippingAddressChanged($data){
+  public function shippingAddressChanged($data)
+  {
 
     $this->shippingAddressSelected = $data;
 
   }
+
   public function emitCheckoutAddressBilling($data)
   {
     $this->addressGuest = $data;
@@ -197,48 +200,48 @@ class Checkout extends Component
 
   }
 
-    private function initUser()
-    {
-        $this->user = \Auth::user();
-    }
+  private function initUser()
+  {
+    $this->user = \Auth::user();
+  }
 
-    public function initAddresses()
-    {
-        if (isset($this->user->id)) {
-            $this->addresses = $this->user->addresses()->get() ?? [];
-        } else {
-            $this->addresses = collect([]);
-        }
+  public function initAddresses()
+  {
+    if (isset($this->user->id)) {
+      $this->addresses = $this->user->addresses()->get() ?? [];
+    } else {
+      $this->addresses = collect([]);
     }
+  }
 
-    private function initStep()
-    {
-        $this->step = 1;
-        if (isset($this->user->id)) {
-            $this->step = 2;
-        }
+  private function initStep()
+  {
+    $this->step = 1;
+    if (isset($this->user->id)) {
+      $this->step = 2;
     }
+  }
 
-    private function initOrder($order, $orderId)
-    {
-        if (isset($order->id)) {
-            $this->order = $order;
-        } elseif (! empty($orderId)) {
-            $order = $this->orderRepository()->getItem($orderId);
+  private function initOrder($order, $orderId)
+  {
+    if (isset($order->id)) {
+      $this->order = $order;
+    } elseif (!empty($orderId)) {
+      $order = $this->orderRepository()->getItem($orderId);
 
-            $this->order = new OrderTransformer($order);
-        } else {
-            $this->order = null;
-        }
+      $this->order = new OrderTransformer($order);
+    } else {
+      $this->order = null;
     }
+  }
 
-    public function initOrganization()
-    {
-        $this->organization = null;
-        if (function_exists('tenant') && isset(tenant()->id)) {
-            $this->organization = tenant();
-        }
+  public function initOrganization()
+  {
+    $this->organization = null;
+    if (function_exists('tenant') && isset(tenant()->id)) {
+      $this->organization = tenant();
     }
+  }
 
   /**
    *
@@ -760,7 +763,6 @@ class Checkout extends Component
 
   public function getCouponDiscount()
   {
-
     if (isset($this->couponSelected->id)) {
       $validateCoupons = new SupportCoupon();
       $this->couponDiscount = $validateCoupons->getDiscount($this->couponSelected, $this->cart->id);

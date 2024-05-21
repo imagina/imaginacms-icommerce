@@ -4,10 +4,11 @@ namespace Modules\Icommerce\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Cache;
+
 class ProductListItem extends Component
 {
-  
-  
+
+
   public $product;
   public $itemListLayout;
   public $imageAspect;
@@ -74,6 +75,15 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item,
+                              $editLink,
+                              $tooltipEditLink,
+                              $withDescription = false,
+                              $withPrice = true,
+                              $addToCartButtonAction = null,
+                              $labelButtonAddProduct = null,
+                              $showDeleteBtn = false,
+                              $productLayout = null,
+                              $currentRoute = null,
                               $itemListLayout = null,
                               $layout = null,
                               $discountRibbonStyle = null,
@@ -123,21 +133,12 @@ class ProductListItem extends Component
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
                               $imageObjectFit = null,
-                              $editLink,
-                              $tooltipEditLink,
-                              $withDescription = false,
-                              $withPrice = true,
-                              $addToCartButtonAction = null,
-                              $labelButtonAddProduct = null,
-                              $showDeleteBtn = false,
-                              $productLayout=null,
-                              $currentRoute = null
   )
   {
     $this->product = $item;
-    
+
     $this->itemListLayout = $itemListLayout ?? "product-list-item-layout-1";
-    
+
     $this->discountRibbonStyle = $discountRibbonStyle ?? setting('icommerce::productDiscountRibbonStyle', null, "flag");
     $this->discountPosition = $discountPosition ?? setting('icommerce::productDiscountPosition', null, "top-right");
     $this->imagePadding = $imagePadding ?? setting('icommerce::productImagePadding', null, 0);
@@ -157,7 +158,7 @@ class ProductListItem extends Component
     $this->addToCartWithQuantityStyle = $addToCartWithQuantityStyle ?? setting('icommerce::productAddToCartWithQuantityStyle', null, "square");
     $this->withTextInAddToCart = $withTextInAddToCart ?? setting('icommerce::productWithTextInAddToCart', null, true);
     $this->withIconInAddToCart = $withIconInAddToCart ?? setting('icommerce::productWithIconInAddToCart', null, true);
-    $this->addToCartWithQuantity = $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity',null,false);
+    $this->addToCartWithQuantity = $addToCartWithQuantity ?? setting('icommerce::product-add-to-cart-with-quantity', null, false);
     $this->showButtonsOnMouseHover = $showButtonsOnMouseHover ?? setting('icommerce::productShowButtonsOnMouseHover', null, false);
     $this->buttonsLayout = $buttonsLayout ?? setting('icommerce::productButtonsLayout', null, 'borders');
     $this->buttonsPosition = $buttonsPosition ?? setting('icommerce::productButtonsPosition', null, 'in-content');
@@ -177,11 +178,11 @@ class ProductListItem extends Component
     $this->contentPriceFontSize = $contentPriceFontSize ?? setting('icommerce::productContentPriceFontSize', null, 8);
     $this->contentPriceFontWeight = $contentPriceFontWeight ?? setting('icommerce::productContentPriceFontWeight', null, "normal");
     $this->bottomFontSize = $bottomFontSize ?? setting('icommerce::productBottomFontSize', null, 13);
-      $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
-    $this->view = $itemComponentView ?? "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout.".index";
+    $productListItemLayout = $layout ?? setting('icommerce::productListItemLayout', null, 'product-list-item-layout-1');
+    $this->view = $itemComponentView ?? "icommerce::frontend.components.product.product-list-item.layouts." . $productListItemLayout . ".index";
     $this->editLink = $editLink;
     $this->tooltipEditLink = $tooltipEditLink;
-    $this->customIndexContactLabel =   setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
+    $this->customIndexContactLabel = setting('icommerce::customIndexContactLabel', null, 'Contáctenos');
     $this->productBackgroundColor = $productBackgroundColor ?? setting('icommerce::productProductBackgroundColor', null, "transparent");
     $this->ribbonBackgroundColor = $ribbonBackgroundColor ?? setting('icommerce::productRibbonBackgroundColor', null, "#f2c037");
     $this->ribbonTextColor = $ribbonTextColor ?? setting('icommerce::productRibbonTextColor', null, "#333333");
@@ -193,21 +194,21 @@ class ProductListItem extends Component
     $this->addToCartButtonAction = $addToCartButtonAction;
     $this->labelButtonAddProduct = $labelButtonAddProduct;
     $this->showDeleteBtn = $showDeleteBtn;
-    $this->productLayout=$productListItemLayout;
+    $this->productLayout = $productListItemLayout;
     $this->currentRoute = $currentRoute;
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);
   }
-  
+
   private function getParentAttributes($parentAttributes)
   {
-    
+
     isset($parentAttributes["itemListLayout"]) ? $this->itemListLayout = $parentAttributes["itemListLayout"] : false;
     isset($parentAttributes["addToCartWithQuantity"]) ? $this->addToCartWithQuantity = $parentAttributes["addToCartWithQuantity"] : false;
-    
+
   }
-  
+
   /**
    * Get the view / contents that represent the component.
    *
