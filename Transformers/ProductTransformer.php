@@ -23,6 +23,13 @@ class ProductTransformer extends CrudResource
       'totalTaxes' => $this->getTotalTaxes($filter),
       'tags' => $tags,
       'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
+      'price' => $this->discount->price ?? $this->price,
+      'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
+      'freeshipping' => $this->when($this->freeshipping, ((int)$this->freeshipping ? true : false)),
+      'subtract' => $this->when($this->subtract, ((int)$this->subtract ? true : false)),
+      'featured' => $this->featured ? '1' : '0',
+      'isCall' => $this->is_call ? '1' : '0',
+      'showPriceIsCall' => $this->show_price_is_call ? '1' : '0'
     ];
 
     $discount = $this->discount;
@@ -36,13 +43,7 @@ class ProductTransformer extends CrudResource
       $data['priceLists'] = [];
     }
 
-    $data['price'] = $this->discount->price ?? $this->price;
-
-
     $this->entityRelation($data);
-
-    //ProductOption
-    $data['productOptions'] = ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions'));
 
     return $data;
   }
