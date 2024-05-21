@@ -3,14 +3,15 @@
 namespace Modules\Icommerce\Transformers;
 
 use Modules\Core\Icrud\Transformers\CrudResource;
+use Modules\Icommerce\Transformers\ProductOptionPivotTransformer;
 
 class ProductTransformer extends CrudResource
 {
   /**
-  * Method to merge values with response
-  *
-  * @return array
-  */
+   * Method to merge values with response
+   *
+   * @return array
+   */
   public function modelAttributes($request)
   {
     $filter = json_decode($request->filter);
@@ -39,23 +40,21 @@ class ProductTransformer extends CrudResource
 
     $this->entityRelation($data);
 
+    //ProductOption
+    $data['productOptions'] = ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions'));
+
     return $data;
   }
 
 
-  private function entityRelation(&$data){
-
-    if(!empty($this->entity_type) && !empty($this->entity_id)){
-
+  private function entityRelation(&$data)
+  {
+    if (!empty($this->entity_type) && !empty($this->entity_id)) {
       $entity = $this->entity_type::find($this->entity_id);
-
-      if(!empty($entity) && !empty($entity->transformer)){
-
+      if (!empty($entity) && !empty($entity->transformer)) {
         $data["entity"] = new $entity->transformer($entity);
       }
-
     }
-
   }
 
   private function getTotalTaxes($filter)
