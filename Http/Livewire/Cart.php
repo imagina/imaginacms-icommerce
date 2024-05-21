@@ -43,7 +43,7 @@ class Cart extends Component
     $this->icon = $icon;
     $this->iconquote = $iconquote;
     $this->warehouse = session('warehouse');
-    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
+    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
     $this->styleCart = $styleCart;
@@ -104,7 +104,7 @@ class Cart extends Component
               'product_id' => $cartProduct->product->id,
               'warehouse_id' => $warehouse->id,
               'cart_id' => $this->cart->id,
-              'product_option_values' =>  $cartProduct->productOptionValues->pluck('id')->toArray()
+              'product_option_values' => $cartProduct->productOptionValues->pluck('id')->toArray()
             ];
             $this->cartProductRepository()->updateBy($cartProduct->id, $data);
           }
@@ -114,7 +114,7 @@ class Cart extends Component
         $this->updateCart();
         $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
         if ($warehouseEnabled) {
-          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"),["timer" => "8000"]));
+          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"), ["timer" => "8000"]));
         } else {
           $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProduct"), config("asgard.isite.config.livewireAlerts"));
         }
@@ -125,10 +125,9 @@ class Cart extends Component
   }
 
 
-  public function addToCartWithOptions($data){
-
-    $this->addToCart($data["productId"],$data["quantity"],$data["productOptionValues"]);
-
+  public function addToCartWithOptions($data)
+  {
+    $this->addToCart($data["productId"], $data["quantity"], $data["productOptionValues"]);
   }
 
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
@@ -136,7 +135,7 @@ class Cart extends Component
 
     try {
 
-      if($quantity>0){
+      if ($quantity > 0) {
 
         $product = $this->productRepository()->getItem($productId);
 
@@ -157,9 +156,7 @@ class Cart extends Component
         } else {
           $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
         }
-
       }
-
     } catch (\Exception $e) {
 
       switch ($e->getMessage()) {
@@ -173,16 +170,13 @@ class Cart extends Component
           break;
 
         case 'Product Quantity Unavailable':
-          if($this->warehouseEnabled)
+          if ($this->warehouseEnabled)
             $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
           else
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
       }
-
     }
-
-
   }
 
   public function deleteFromCart($cartProductId)

@@ -2,22 +2,17 @@
 
 namespace Modules\Icommerce\Transformers;
 
-use Modules\Core\Icrud\Transformers\CrudResource;
-use Modules\Icommerce\Transformers\ProductOptionTransformer;
-use Modules\Icommerce\Transformers\ProductOptionValueTransformer;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductOptionPivotTransformer extends CrudResource
+class ProductOptionPivotTransformer extends JsonResource
 {
-  /**
-   * Method to merge values with response
-   *
-   * @return array
-   */
-  public function modelAttributes($request)
+  public function toArray($request)
   {
-    return [
+
+    //Transformer only data base
+    $data = [
       'id' => $this->when($this->pivot->id, $this->pivot->id),
-      'type' => $this->when($this->type, $this->type),
+      'type' => $this->when( $this->type, $this->type),
       'description' => $this->when($this->description, $this->description),
       'productId' => $this->when($this->pivot->product_id, $this->pivot->product_id),
       'optionId' => $this->when($this->pivot->option_id, $this->pivot->option_id),
@@ -28,5 +23,7 @@ class ProductOptionPivotTransformer extends CrudResource
       'option' => new ProductOptionTransformer($this->whenLoaded('option')),
       'productOptionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues')),
     ];
+
+    return $data;
   }
 }

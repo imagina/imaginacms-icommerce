@@ -22,6 +22,7 @@ class ProductTransformer extends CrudResource
     $data = [
       'totalTaxes' => $this->getTotalTaxes($filter),
       'tags' => $tags,
+      'productOptions' => ProductOptionPivotTransformer::collection($this->whenLoaded('productOptions')),
     ];
 
     $discount = $this->discount;

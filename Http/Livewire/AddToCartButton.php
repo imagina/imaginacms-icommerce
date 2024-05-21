@@ -46,10 +46,10 @@ class AddToCartButton extends Component
 
 //  protected $listeners = ['quantityButtonIsReady'];
 
-  public function mount($idButton = null, $style = "", $buttonClasses = "", $onclick = "", $withIcon = false,
+  public function mount($product, $idButton = null, $style = "", $buttonClasses = "", $onclick = "", $withIcon = false,
                         $iconClass = "", $withLabel = false, $label = "", $href = "", $color = "primary", $target = "",
                         $iconPosition = "left", $iconColor = 'currentcolor', $sizeLabel = "16", $dataItemId = "",
-                        $dataTarget = null, $product, $styleBlock = "", $styleBlockHover = "", $disabled = false,
+                        $dataTarget = null, $styleBlock = "", $styleBlockHover = "", $disabled = false,
                         $classesBlock = null, $sizePadding = "", $loadingIcon = "spinner-grow spinner-grow-sm",
                         $loading = false, $loadingLabel = null)
   {
