@@ -88,7 +88,7 @@ class ProductDiscount extends CrudModel
 
     public function getPriceAttribute()
     {
-        $basePrice = $this->product->present()->price;
+        $basePrice = $this->product->price;
         $valueDiscount = $this->calcDiscount($basePrice);
 
         return floatval($basePrice) - floatval($valueDiscount);
@@ -97,7 +97,7 @@ class ProductDiscount extends CrudModel
   public function getTotalDiscountAttribute()
   {
 
-    $basePrice = $this->product->present()->price;
+    $basePrice = $this->product->price;
     return $this->calcDiscount($basePrice);
 
   }
