@@ -21,13 +21,13 @@ class ProductTransformer extends BaseApiTransformer
     $filter = json_decode($request->filter);
     //$price = Currency::convert($this->price);
     //$price = $this->present()->price();
-  
+
     $tags = [];
     foreach ($this->tags as $tag) {
       $tags[] = $tag->name;
     }
 
-    $price = $this->discount->price ?? $this->priceByList ?? $this->price;
+    $price = $this->discount->price ?? $this->price;
 
     $data = [
       'id' => $this->id,
@@ -201,25 +201,25 @@ class ProductTransformer extends BaseApiTransformer
     $this->customIncludes($data);
 
     $this->entityRelation($data);
-    
+
     return $data;
   }
 
   private function entityRelation(&$data){
 
     if(!empty($this->entity_type) && !empty($this->entity_id)){
-      
+
       $entity = $this->entity_type::find($this->entity_id);
-      
+
       if(!empty($entity) && !empty($entity->transformer)){
-      
+
         $data["entity"] = new $entity->transformer($entity);
       }
-      
+
     }
-    
+
   }
-  
+
   private function getTotalTaxes($filter)
   {
     $basePrice = $this->price ? $this->price : 0;

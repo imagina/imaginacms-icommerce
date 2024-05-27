@@ -96,7 +96,7 @@ class Product extends Model implements TaggableInterface
   protected $casts = [
     'options' => 'array'
   ];
-  protected $width = ['files','tags','authPriceLists'];
+  protected $width = ['files', 'tags', 'authPriceLists'];
   private $auth;
 
 
@@ -131,7 +131,7 @@ class Product extends Model implements TaggableInterface
   public function entity()
   {
 
-      return $this->belongsTo($this->entity_type, 'entity_id');
+    return $this->belongsTo($this->entity_type, 'entity_id');
 
   }
 
@@ -354,7 +354,6 @@ class Product extends Model implements TaggableInterface
 
   public function discount()
   {
-
     $user = $this->auth;
     $userId = $user->id ?? 0;
     //dd($userId);
@@ -489,9 +488,9 @@ class Product extends Model implements TaggableInterface
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
 
     $currentLocale = $locale ?? locale();
-    if(!is_null($locale)){
-       $this->slug = $this->getTranslation($locale)->slug;
-       $this->category = $this->category->getTranslation($locale);
+    if (!is_null($locale)) {
+      $this->slug = $this->getTranslation($locale)->slug;
+      $this->category = $this->category->getTranslation($locale);
     }
 
     if (empty($this->slug)) return "";
@@ -500,21 +499,21 @@ class Product extends Model implements TaggableInterface
       $host = request()->getHost();
 
       if ($useOldRoutes)
-        if ($this->category->status && !empty($this->category->slug)){
-          $url = \LaravelLocalization::localizeUrl('/'. $this->category->slug.'/'.$this->slug, $currentLocale);
-        } else{
+        if ($this->category->status && !empty($this->category->slug)) {
+          $url = \LaravelLocalization::localizeUrl('/' . $this->category->slug . '/' . $this->slug, $currentLocale);
+        } else {
           $url = "";
         }
       else {
         $tenancyMode = config("tenancy.mode", null);
 
 
-        if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
-            return tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
+        if (!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)) {
+          return tenant_route(Str::remove('https://', $this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
 
         }
 
-        $url = Str::replace(["{productSlug}"],[$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
+        $url = Str::replace(["{productSlug}"], [$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
         $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
 
       }
@@ -589,10 +588,10 @@ class Product extends Model implements TaggableInterface
     if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
       $priceList = $this->authPriceLists->where('related_id', '!=', 0)->first() ?? $this->authPriceLists->first();
 
-      if($priceList) {
-        if($priceList->criteria === 'percentage') {
+      if ($priceList) {
+        if ($priceList->criteria === 'percentage') {
           //Calculate percentage
-          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->price);
+          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->getRawOriginal('price'));
         } else {
           //Get value of fixed
           $price = $priceList->pivot->price;
@@ -622,10 +621,10 @@ class Product extends Model implements TaggableInterface
         ->withPivot(['price', 'id'])
         ->withTimestamps()
         ->where('related_entity', 'Modules\\Iprofile\\Entities\\Department')
-        ->where(function($query) use ($user) {
+        ->where(function ($query) use ($user) {
           $query->whereNull('related_id')
             ->orWhere('related_id', 0)
-            ->orWhereIn('related_id', function ($q) use($user) {
+            ->orWhereIn('related_id', function ($q) use ($user) {
               $q->select('department_id')->from('iprofile__user_department')->where('user_id', $user->id);
             });
         })->orderBy('created_at', 'desc');//Order by newest data
@@ -656,5 +655,11 @@ class Product extends Model implements TaggableInterface
     return $taxes;
   }
 
-
+  // Mutator to return the product price in order of, priceList or product price
+  // IMPORTANT: if you need to get the price base for any calculation use $this->getRawOriginal('price')
+  // This will prevent to call this mutator and not generate an infinity loop
+  public function getPriceAttribute($value)
+  {
+    return $this->priceByList ?? $value;
+  }
 }
