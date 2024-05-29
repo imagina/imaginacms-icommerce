@@ -46,6 +46,8 @@ class WarehouseShowInfor extends Component
   public function getInfor()
   {
     
+    \Log::info($this->log.'getInfor');
+
     $warehouseSession = session($this->varName);
     $warehouseAtt = $this->varAtt;
 
@@ -64,7 +66,7 @@ class WarehouseShowInfor extends Component
   { 
 
     return view($this->view,[
-      'infor' => $this->readyToLoad ? $this->getInfor() : ""
+      'infor' => $this->readyToLoad ? $this->getInfor() : "Cargando..."
     ]);
 
   }
