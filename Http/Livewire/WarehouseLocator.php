@@ -500,7 +500,7 @@ class WarehouseLocator extends Component
     }
 
     //Show Session Vars in Log
-    //$this->warehouseService()->showSessionVars();
+    $this->warehouseService()->showSessionVars();
 
     //Reload Page
     //return redirect(request()->header('Referer'));
@@ -563,6 +563,14 @@ class WarehouseLocator extends Component
    */
   public function render()
   {
+
+    //FIXED - Bug - Con cache activado
+    //Cuando se ingresaba por primera vez en incognito, no carga bien y habia que recargar
+    $tmp = $this->readyToLoad ? $this->getWarehouseFromSession() : null;
+    if($this->readyToLoad && is_null($tmp)){
+      redirect(request()->header('Referer'));
+    }
+
 
     return view($this->view,[
       'warehouse' => $this->readyToLoad ? $this->getWarehouseFromSession() : null
