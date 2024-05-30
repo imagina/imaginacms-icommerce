@@ -33,7 +33,7 @@
       @endauth
     @else
       <div class="col py-2">
-        <a class="btn btn-sm btn-outline-primary" href="#" data-toggle="modal" data-target="#modalWarehouseLocator">
+        <a id="buttonModalWarehouse" class="btn btn-sm btn-outline-primary" href="#">
           <i class="fa-solid fa-circle-plus"></i>
           {{trans('icommerce::common.pages.buttonAddBillingAddressWarehouse')}}
         </a>
@@ -41,3 +41,14 @@
     @endif
   @endif
 </div>
+<script>
+  $(document).ready(function () {
+    // Al hacer clic en el botón "Abrir Modal"
+    $("#buttonModalWarehouse").click(function () {
+      // Mostrar la modal
+      $("#modalWarehouseLocator").modal();
+      // Activar el tab número 2
+      $("#homeTabModalWarehouseLocator").tab('show');
+    });
+  });
+</script>
