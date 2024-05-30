@@ -310,7 +310,7 @@ class WarehouseLocator extends Component
 
       //The address have a warehouse
       if (!is_null($warehouseToAddress)) {
-        \Log::info($this->log . 'Shipping Address has a warehouse');
+        \Log::info($this->log . 'Shipping Address:'.$address->id. ' has a warehouse: '.$warehouseToAddress->id);
         $warehouse = $warehouseToAddress;
       }else{
         //Proccess to get a Warehouse to the Address
@@ -326,10 +326,12 @@ class WarehouseLocator extends Component
 
       //Update Livewire Vars
       $this->shippingAddress = $address;
+      \Log::info($this->log.'checkAddress|ShippingAddressId: '.$this->shippingAddress->id);
       $this->warehouse = $warehouse;
+      \Log::info($this->log.'checkAddress|WarehouseId: '.$this->warehouse->id);
       
       //Show Session Vars in Log
-      $this->warehouseService()->showSessionVars();
+      //$this->warehouseService()->showSessionVars();
 
       //Close Address Form
       $this->showAddressForm = false;
@@ -341,7 +343,9 @@ class WarehouseLocator extends Component
 
         //Save in Session
         session(['warehouse' => $this->warehouse]);
-        session(['shippingAddress' => $this->shippingAddress]);
+        //session(['shippingAddress' => $this->shippingAddress]);
+        //session(['shippingAddress' => null]);
+        session(["shippingMethodName" => $this->shippingMethods['pickup']]);
 
         //Show Sweet Alert in frontend
         session(['warehouseAlert' => true]);
@@ -372,6 +376,7 @@ class WarehouseLocator extends Component
    */
   public function cleanWarehouseAlert()
   {
+    \Log::info($this->log.'cleanWarehouseAlert');
     session(['warehouseAlert' => null]);
   }
 
@@ -471,6 +476,7 @@ class WarehouseLocator extends Component
 
     //Case Pickup
     if($this->tabSelected==$this->shippingMethods['pickup']){
+      \Log::info($this->log.'confirmData|Case PICKUP');
 
       //Shipping Address Selected (From Delivery)
       if(!is_null(session('shippingAddress'))){
@@ -492,15 +498,44 @@ class WarehouseLocator extends Component
       
     }else{
       //Case Delivery
-      
+      \Log::info($this->log.'confirmData|Case DELIVERY');
+
       //Save in Session
       session(['warehouse' => $this->warehouse]);
-      session(['shippingAddress' => $this->shippingAddress]);
 
+      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
+
+      //Case: Address no has coverage (Check if address is nearby)
+      if(isset($warehouseProcess['nearby'])){
+
+        \Log::info($this->log.'confirmData|Case DELIVERY|Asigna metodo pickup');
+
+        //Set shipping method to Pickup
+        session(["shippingMethodName" => $this->shippingMethods['pickup']]);
+        //Show Sweet Alert in frontend
+        session(['warehouseAlert' => true]);
+
+         //Shipping Address Selected (From Delivery)
+        if(!is_null(session('shippingAddress'))){
+          //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
+          session(['shippingAddress' => null]);
+          //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
+          session(['shippingAddressChecked' => true]);
+        }
+
+      }else{
+        
+        \Log::info($this->log.'confirmData|Case DELIVERY|Si tiene cobertura');
+
+        //Case: Address has coverage 
+        //Save in Session
+        session(['shippingAddress' => $this->shippingAddress]);
+      }
+      
     }
 
     //Show Session Vars in Log
-    $this->warehouseService()->showSessionVars();
+    //$this->warehouseService()->showSessionVars();
 
     //Reload Page
     //return redirect(request()->header('Referer'));
