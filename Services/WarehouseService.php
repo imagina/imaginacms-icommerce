@@ -86,7 +86,7 @@ class WarehouseService
         foreach ($warehouses as $key => $warehouse) {
             $polygon = $warehouse->polygon;
             if(!is_null($polygon)){
-                \Log::info($this->log.'getWarehouseToAddress|WarehouseId: '.$warehouse->id.' | Title: '.$warehouse->title);
+                //\Log::info($this->log.'getWarehouseToAddress|WarehouseId: '.$warehouse->id.' | Title: '.$warehouse->title);
                 
                 //Get Points from Polygon
                 $points = $polygon->points;
@@ -103,7 +103,7 @@ class WarehouseService
                 
                 //Warehouse to Address Found 
                 if($this->isInPolygon($pointsPolygon, $vsX, $vsY, $address->lng,$address->lat)){
-                    \Log::info($this->log.'getWarehouseToAddress|FOUND to Polygon in WarehouseId: '.$warehouse->id);
+                    \Log::info($this->log.'getWarehouseToAddress|FOUND TO POLYGON in WarehouseId: '.$warehouse->id);
 
                     //Return 
                     return [
@@ -189,7 +189,7 @@ class WarehouseService
             )
         ),2);
         
-        \Log::info($this->log."Distance Aprox: ".$distance." Mts");
+        //\Log::info($this->log."Distance Aprox: ".$distance." Mts");
 
         return $distance;
 
