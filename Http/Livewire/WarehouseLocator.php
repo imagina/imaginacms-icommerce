@@ -310,7 +310,7 @@ class WarehouseLocator extends Component
 
       //The address have a warehouse
       if (!is_null($warehouseToAddress)) {
-        \Log::info($this->log . 'Shipping Address:'.$address->id. ' has a warehouse: '.$warehouseToAddress->id);
+        \Log::info($this->log . 'ShippingAddressId:'.$address->id. ' has a WarehouseId: '.$warehouseToAddress->id);
         $warehouse = $warehouseToAddress;
       }else{
         //Proccess to get a Warehouse to the Address
@@ -326,9 +326,7 @@ class WarehouseLocator extends Component
 
       //Update Livewire Vars
       $this->shippingAddress = $address;
-      \Log::info($this->log.'checkAddress|ShippingAddressId: '.$this->shippingAddress->id);
       $this->warehouse = $warehouse;
-      \Log::info($this->log.'checkAddress|WarehouseId: '.$this->warehouse->id);
       
       //Show Session Vars in Log
       //$this->warehouseService()->showSessionVars();
@@ -502,10 +500,22 @@ class WarehouseLocator extends Component
       //Case Delivery
       \Log::info($this->log.'confirmData|Case DELIVERY');
 
+      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
+      $warehouseIdCal = $warehouseProcess['warehouse']->id;
+
+      //Si el warehouse que se asigno cuando se creó la direccion es diferente al que se esta verificando
+      //Cambiaron la informacion del poligono
+      if($warehouseIdCal!= $this->warehouse->id){
+        //Setea nuevo warehouse
+        $this->warehouse = $warehouseProcess['warehouse']; 
+        //Actualiza la direccion con el nuevo warehouse
+        $addressUpdated = $this->addressRepository()->updateBy($this->shippingAddress->id,["warehouse_id"=>$warehouseIdCal]);
+        $this->shippingAddress = $addressUpdated;
+      }
+
+
       //Save in Session
       session(['warehouse' => $this->warehouse]);
-
-      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
 
       //Case: Address no has coverage (Check if address is nearby)
       if(isset($warehouseProcess['nearby'])){
