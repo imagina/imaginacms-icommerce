@@ -51,7 +51,15 @@ class WarehouseShowInfor extends Component
     $warehouseSession = session($this->varName);
     $warehouseAtt = $this->varAtt;
 
-    return $warehouseSession->{$warehouseAtt};
+    //Validation | Bug Cache
+    /*
+    Cuando se activaba el cache, a pesar de que por el log se observa que la variable de sesion existe
+    en este componente a veces aparecia vacia
+    */
+    if(!is_null($warehouseSession))
+      return $warehouseSession->{$warehouseAtt};
+    else
+      return "Cargando";
 
   }
 

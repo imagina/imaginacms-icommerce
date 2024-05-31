@@ -415,6 +415,8 @@ class WarehouseLocator extends Component
   public function updateTooltipStatus()
   {
     
+    \Log::info($this->log.'updateTooltipStatus');
+
     //Save in Session
     session(['showTooltip' => false]);
 
@@ -535,7 +537,7 @@ class WarehouseLocator extends Component
     }
 
     //Show Session Vars in Log
-    //$this->warehouseService()->showSessionVars();
+    $this->warehouseService()->showSessionVars();
 
     //Reload Page
     //return redirect(request()->header('Referer'));
