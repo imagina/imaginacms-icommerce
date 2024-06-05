@@ -1,5 +1,5 @@
 <div id="{{$warehouseLocatorId}}Tooltip">
-    <div class="warehouse-tooltip-screen">aaf</div>
+    <div class="warehouse-tooltip-screen"></div>
     <div class="warehouse-tooltip-container">
         <div class="warehouse-tooltip-body">
             <div class="warehouse-tooltip-close" onclick="closeTooltip('close')">×</div>
