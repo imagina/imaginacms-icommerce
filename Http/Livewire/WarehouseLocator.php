@@ -34,67 +34,66 @@ class WarehouseLocator extends Component
   public $loading;
 
   public $readyToLoad = false;
-
+  
   /**
-   * LISTENERS
-   */
+  * LISTENERS
+  */
   protected $listeners = [
-    'addressAdded' => 'checkAddress',
-    'cleanWarehouseAlert',
-    'cancelledNewAddress' => 'changeShowAddressForm',
-    'shippingAddressChanged' => 'checkAddress',
-    'markerSelectedFromMap',
-    'updateTooltipStatus',
-    'confirmData'
+      'addressAdded' => 'checkAddress',
+      'cleanWarehouseAlert',
+      'cancelledNewAddress' => 'changeShowAddressForm',
+      'shippingAddressChanged' => 'checkAddress',
+      'markerSelectedFromMap',
+      'updateTooltipStatus',
+      'confirmData'
   ];
-
+    
   /**
    * MOUNT
    */
   public function mount(
-    $warehouse,
-    $shippingAddress,
-    $shippingMethods,
     $layout = 'warehouse-locator-layout-1',
-  )
-  {
-    $this->log = "Icommerce::Livewire|WarehouseLocator|";
-    $this->layout = $layout;
-    $this->view = "icommerce::frontend.livewire.warehouse-locator.layouts.$this->layout.index";
+    $warehouse, 
+    $shippingAddress,
+    $shippingMethods          
+  ){
+      $this->log = "Icommerce::Livewire|WarehouseLocator|";
+      $this->layout = $layout;
+      $this->view = "icommerce::frontend.livewire.warehouse-locator.layouts.$this->layout.index";
 
+    
+      //Default values
+      $this->user = \Auth::user() ?? null;
+      $this->warehouse = $warehouse;
+      $this->shippingAddress = $shippingAddress;
+      $this->shippingMethods = $shippingMethods;
 
-    //Default values
-    $this->user = \Auth::user() ?? null;
-    $this->warehouse = $warehouse;
-    $this->shippingAddress = $shippingAddress;
-    $this->shippingMethods = $shippingMethods;
-
-    //Vars to Show and Hide HTML
-    $this->showAddressForm = false;
-    $this->chooseOtherWarehouse = false;
-    $this->tabSelected = $this->shippingMethods['delivery'];
-    $this->warehouseSelectedFromMap = null;
-    $this->showNotWarehouses = false;
-    $this->disableBtnConfirm = false;
-    $this->loading = false;
-
-    //Init Process
-    $this->getAllShippingAddressFromUser();
-    $this->init();
+      //Vars to Show and Hide HTML
+      $this->showAddressForm = false;
+      $this->chooseOtherWarehouse = false;
+      $this->tabSelected = $this->shippingMethods['delivery'];
+      $this->warehouseSelectedFromMap = null;
+      $this->showNotWarehouses = false;
+      $this->disableBtnConfirm = false;
+      $this->loading = false;
+      
+      //Init Process
+      $this->getAllShippingAddressFromUser();
+      $this->init();
 
   }
 
   /**
-   * @return warehouseRepository
-   */
+  * @return warehouseRepository
+  */
   public function warehouseRepository()
   {
     return app('Modules\Icommerce\Repositories\WarehouseRepository');
   }
 
   /**
-   * @return addressRepository
-   */
+  * @return addressRepository
+  */
   public function addressRepository()
   {
     return app('Modules\Iprofile\Repositories\AddressRepository');
@@ -111,22 +110,22 @@ class WarehouseLocator extends Component
   }
 
   /**
-   * @return warehouseService
-   */
+  * @return warehouseService
+  */
   public function warehouseService()
   {
     return app('Modules\Icommerce\Services\WarehouseService');
   }
-
+  
   /**
-   *  Get All Shipping address
-   */
+  *  Get All Shipping address
+  */
   public function getAllShippingAddressFromUser()
-  {
+  { 
     if (isset($this->user->id)) {
       $this->userShippingAddresses = $this->user->addresses()->where("type", "shipping")->get();
-    } else {
-      $this->userShippingAddresses = collect([]);
+    }else{
+        $this->userShippingAddresses = collect([]);
     }
   }
 
@@ -137,7 +136,7 @@ class WarehouseLocator extends Component
   {
 
     //Shipping Method Selected
-    if (!is_null(session("shippingMethodName"))) {
+    if (!is_null(session("shippingMethodName"))){
       $this->shippingMethodName = session("shippingMethodName");
       $this->tabSelected = session("shippingMethodName");
     }
@@ -150,17 +149,17 @@ class WarehouseLocator extends Component
   private function initProvinces()
   {
 
-    \Log::info($this->log . 'Init Provinces');
+    \Log::info($this->log.'Init Provinces');
 
-    if (!empty($this->warehouse)) $countryId = $this->warehouse->country_id;
-
+    if(!empty($this->warehouse)) $countryId = $this->warehouse->country_id;
+   
     if (isset($countryId)) {
-      $params = ["filter" => ["countryId" => $countryId ?? null, "order" => ["way" => "asc", "field" => "name"]]];
-
+      $params = ["filter" => ["countryId" => $countryId ?? null,"order" => ["way"=> "asc", "field" => "name"]]];
+      
       //Get Setting
-      $provincesIso2 = json_decode(setting('icommerce::availableProvincesMap', null, null));
+      $provincesIso2  = json_decode(setting('icommerce::availableProvincesMap',null,null));
       //Add Filter
-      if (!is_null($provincesIso2) && count($provincesIso2) > 0) {
+      if(!is_null($provincesIso2) && count($provincesIso2)>0){
         $params["filter"]['iso2'] = $provincesIso2;
       }
 
@@ -169,38 +168,38 @@ class WarehouseLocator extends Component
     } else {
       $this->provinces = collect([]);
     }
-
+   
   }
 
   /**
    * Init Provinces | Case Tab Pickup
    */
   private function initCities()
-  {
-
+  { 
+    
     $this->cities = collect([]);
     $this->showNotWarehouses = false;
 
-    if (!empty($this->mapPickup["state_id"])) {
+    if(!empty($this->mapPickup["state_id"])){
       $provinceId = $this->mapPickup["state_id"];
-    } else {
-      if (!empty($this->warehouse))
+    }else{
+      if(!empty($this->warehouse)) 
         $provinceId = $this->warehouse->province_id;
     }
     //\Log::info($this->log.'Init Cities from Province: '.$provinceId);
 
-    if (isset($provinceId)) {
-      \Log::info($this->log . 'Init Cities');
+    if(isset($provinceId)) {
+      \Log::info($this->log.'Init Cities');
 
       //Get Setting
-      $citiesId = json_decode(setting('icommerce::availableCitiesMap', null, null));
+      $citiesId  = json_decode(setting('icommerce::availableCitiesMap',null,null));
       //Add Filter
-      if (!is_null($citiesId) && count($citiesId) > 0) {
+      if(!is_null($citiesId) && count($citiesId)>0){
         //Get Only selecteds
         $params["filter"]['id'] = $citiesId;
-      } else {
+      }else{
         //Get all cities for the province
-        $params = ["filter" => ["provinceId" => $provinceId ?? null, "order" => ["way" => "asc", "field" => "name"]]];
+        $params = ["filter" => ["provinceId" => $provinceId ?? null,"order" => ["way"=> "asc", "field" => "name"]]];
       }
 
       $this->cities = $this->cityRepository()->getItemsBy(json_decode(json_encode($params)));
@@ -213,7 +212,7 @@ class WarehouseLocator extends Component
    */
   public function updated($name, $value)
   {
-    \Log::info($this->log . 'Updated General: ' . $name . ' | value: ' . $value);
+    \Log::info($this->log.'Updated General: '.$name.' | value: '.$value);
 
     switch ($name) {
       case 'mapPickup.country':
@@ -231,13 +230,13 @@ class WarehouseLocator extends Component
         break;
 
       case 'mapPickup.city':
-        if (!empty($value)) {
-          $this->setWarehousesLocation();
-        }
-        break;
+          if (!empty($value)) {
+            $this->setWarehousesLocation();
+          }
+          break;
       case 'chooseOtherWarehouse':
-        $this->otherWarehousesSelected($value);
-        break;
+            $this->otherWarehousesSelected($value);
+            break;
     }
 
   }
@@ -248,25 +247,25 @@ class WarehouseLocator extends Component
   public function setWarehousesLocation()
   {
 
-    \Log::info($this->log . 'setWarehousesLocation|CityId: ' . $this->mapPickup["city"]);
+    \Log::info($this->log.'setWarehousesLocation|CityId: '.$this->mapPickup["city"]);
     $this->warehousesLocation = [];
     $this->showNotWarehouses = false;
     $this->warehouseSelectedFromMap = null;
-
+    
     //Warehouses to the City Selected in Map
     $params['filter']['city_id'] = $this->mapPickup["city"];
     $params['filter']['status'] = 1;
     $warehouses = $this->warehouseRepository()->getItemsBy(json_decode(json_encode($params)));
 
     //Check warehouses
-    if (!is_null($warehouses) && count($warehouses) > 0) {
+    if(!is_null($warehouses) && count($warehouses)>0){
       foreach ($warehouses as $key => $warehouse) {
 
-        \Log::info($this->log . 'setWarehousesLocation|warehouse: ' . $warehouse->id);
+        \Log::info($this->log.'setWarehousesLocation|warehouse: '.$warehouse->id);
         array_push($this->warehousesLocation, [
           'lat' => $warehouse->lat,
           'lng' => $warehouse->lng,
-          'title' => $warehouse->title,
+          'title' =>  $warehouse->title,
           'id' => $warehouse->id,
           'address' => $warehouse->address, //Se agrego aqui para ser reutilizado
           'province' => $warehouse->province->name,//Se agrego aqui para ser reutilizado
@@ -275,7 +274,7 @@ class WarehouseLocator extends Component
 
       }
 
-    } else {
+    }else{
       $this->showNotWarehouses = true;
     }
 
@@ -288,32 +287,32 @@ class WarehouseLocator extends Component
   public function checkAddress($addressData)
   {
 
-    \Log::info($this->log . 'checkAddress');
+    \Log::info($this->log.'checkAddress');
 
-    if (!empty($addressData)) {
+    if(!empty($addressData)){
 
       $this->disabledBtnConfirm = false;
 
       //Added
-      if (isset($addressData['id'])) {
+      if(isset($addressData['id'])){
         $criteria = $addressData['id'];
-      } else {
+      }else{
         //Shipping Address Changed
         $criteria = $addressData;
       }
-
+    
       //Search Collection Entity
       $params['include'] = [];
-      $address = $this->addressRepository()->getItem($criteria, json_decode(json_encode($params)));
+      $address = $this->addressRepository()->getItem($criteria,json_decode(json_encode($params)));
 
       //Get warehouse to the address
       $warehouseToAddress = $address->warehouse;
 
       //The address have a warehouse
       if (!is_null($warehouseToAddress)) {
-        \Log::info($this->log . 'Shipping Address has a warehouse');
+        \Log::info($this->log . 'ShippingAddressId:'.$address->id. ' has a WarehouseId: '.$warehouseToAddress->id);
         $warehouse = $warehouseToAddress;
-      } else {
+      }else{
         //Proccess to get a Warehouse to the Address
         $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($address);
 
@@ -328,39 +327,41 @@ class WarehouseLocator extends Component
       //Update Livewire Vars
       $this->shippingAddress = $address;
       $this->warehouse = $warehouse;
-
+      
       //Show Session Vars in Log
-      $this->warehouseService()->showSessionVars();
+      //$this->warehouseService()->showSessionVars();
 
       //Close Address Form
       $this->showAddressForm = false;
 
       //Verifying that it was a nearby warehouse
-      if (isset($warehouseProcess['nearby'])) {
+      if(isset($warehouseProcess['nearby'])){
 
-        \Log::info($this->log . 'checkAddress|Nearby Exist');
+        \Log::info($this->log.'checkAddress|Nearby Exist');
 
         //Save in Session
         session(['warehouse' => $this->warehouse]);
-        session(['shippingAddress' => $this->shippingAddress]);
+        //session(['shippingAddress' => $this->shippingAddress]);
+        //session(['shippingAddress' => null]);
+        session(["shippingMethodName" => $this->shippingMethods['pickup']]);
 
         //Show Sweet Alert in frontend
         session(['warehouseAlert' => true]);
 
-        //Show Session Vars in Log
+         //Show Session Vars in Log
         $this->warehouseService()->showSessionVars();
 
         //Reload Page
         return redirect(request()->header('Referer'));
 
-      } else {
+      }else{
 
         //OJO CON ESTO / PROBAR
         $this->getAllShippingAddressFromUser();
-
+        
       }
 
-    } else {
+    }else{
       $this->shippingAddress = null;
       $this->disabledBtnConfirm = true;
     }
@@ -373,6 +374,7 @@ class WarehouseLocator extends Component
    */
   public function cleanWarehouseAlert()
   {
+    \Log::info($this->log.'cleanWarehouseAlert');
     session(['warehouseAlert' => null]);
   }
 
@@ -391,17 +393,17 @@ class WarehouseLocator extends Component
    */
   public function markerSelectedFromMap($warehouseId)
   {
-    \Log::info($this->log . 'markerSelectedFromMap: ' . $warehouseId);
+    \Log::info($this->log.'markerSelectedFromMap: '.$warehouseId);
 
     //Re use this array to search data
     $key = array_search($warehouseId, array_column($this->warehousesLocation, 'id'));
-
+    
     //To the front View
     $this->warehouseSelectedFromMap = $this->warehousesLocation[$key];
 
     //Show BTN Confirm
     $this->disabledBtnConfirm = false;
-
+   
   }
 
   /**
@@ -410,6 +412,8 @@ class WarehouseLocator extends Component
    */
   public function updateTooltipStatus()
   {
+    
+    \Log::info($this->log.'updateTooltipStatus');
 
     //Save in Session
     session(['showTooltip' => false]);
@@ -422,32 +426,32 @@ class WarehouseLocator extends Component
    */
   public function changeTabSelected($tabSelected)
   {
-    \Log::info($this->log . 'changeTabSelected|To: ' . $tabSelected);
+    \Log::info($this->log.'changeTabSelected|To: '.$tabSelected);
 
     $this->tabSelected = $tabSelected;
-
+    
     //Is tab Pickup but button confirm was disabled
-    if ($tabSelected == $this->shippingMethods['pickup'] && $this->disabledBtnConfirm) {
+    if($tabSelected==$this->shippingMethods['pickup'] && $this->disabledBtnConfirm){
       $this->disabledBtnConfirm = false;
     }
 
     //Is tab Delivery 
-    if ($tabSelected == $this->shippingMethods['delivery']) {
+    if($tabSelected==$this->shippingMethods['delivery']){
       //shipping address not selected
-      if (is_null($this->shippingAddress)) {
+      if(is_null($this->shippingAddress)){
         //Not Show BTN Confirm
         $this->disabledBtnConfirm = true;
-      } else {
+      }else{
         //Show BTN Confirm
         $this->disabledBtnConfirm = false;
       }
 
       //El usuario estaba en Pickup, escogiendo la ubicacion pero se cambio de tab
-      if ($this->chooseOtherWarehouse) {
-        $this->chooseOtherWarehouse = false;
-        $this->warehouseSelectedFromMap = null;
+      if($this->chooseOtherWarehouse){
+          $this->chooseOtherWarehouse = false;
+          $this->warehouseSelectedFromMap = null;
       }
-
+      
     }
 
   }
@@ -459,7 +463,7 @@ class WarehouseLocator extends Component
   public function confirmData()
   {
 
-    \Log::info($this->log . 'confirmData');
+    \Log::info($this->log.'confirmData');
 
     //Helper|Isite
     //clearResponseCache();
@@ -471,37 +475,79 @@ class WarehouseLocator extends Component
     session(['shippingMethodName' => $this->tabSelected]);
 
     //Case Pickup
-    if ($this->tabSelected == $this->shippingMethods['pickup']) {
+    if($this->tabSelected==$this->shippingMethods['pickup']){
+      \Log::info($this->log.'confirmData|Case PICKUP');
 
       //Shipping Address Selected (From Delivery)
-      if (!is_null(session('shippingAddress'))) {
+      if(!is_null(session('shippingAddress'))){
         //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
         session(['shippingAddress' => null]);
         //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
         session(['shippingAddressChecked' => true]);
       }
-
+      
       //User selected a warehouse from Map
-      if (!is_null($this->warehouseSelectedFromMap)) {
-
+      if(!is_null($this->warehouseSelectedFromMap)){
+        
         $criteria = $this->warehouseSelectedFromMap['id'];
         //Get All Data
         $warehouseSelected = $this->warehouseRepository()->getItem($criteria);
         //Save in Session
         session(['warehouse' => $warehouseSelected]);
       }
-
-    } else {
+      
+    }else{
       //Case Delivery
+      \Log::info($this->log.'confirmData|Case DELIVERY');
+
+      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
+      $warehouseIdCal = $warehouseProcess['warehouse']->id;
+
+      //Si el warehouse que se asigno cuando se creó la direccion es diferente al que se esta verificando
+      //Cambiaron la informacion del poligono
+      if($warehouseIdCal!= $this->warehouse->id){
+        //Setea nuevo warehouse
+        $this->warehouse = $warehouseProcess['warehouse']; 
+        //Actualiza la direccion con el nuevo warehouse
+        $addressUpdated = $this->addressRepository()->updateBy($this->shippingAddress->id,["warehouse_id"=>$warehouseIdCal]);
+        $this->shippingAddress = $addressUpdated;
+      }
+
 
       //Save in Session
       session(['warehouse' => $this->warehouse]);
-      session(['shippingAddress' => $this->shippingAddress]);
 
+      //Case: Address no has coverage (Check if address is nearby)
+      if(isset($warehouseProcess['nearby'])){
+
+        \Log::info($this->log.'confirmData|Case DELIVERY|Asigna metodo pickup');
+
+        //Set shipping method to Pickup
+        session(["shippingMethodName" => $this->shippingMethods['pickup']]);
+        //Show Sweet Alert in frontend
+        session(['warehouseAlert' => true]);
+
+         //Shipping Address Selected (From Delivery)
+        if(!is_null(session('shippingAddress'))){
+          //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
+          session(['shippingAddress' => null]);
+          //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
+          session(['shippingAddressChecked' => true]);
+        }
+
+      }else{
+        
+        \Log::info($this->log.'confirmData|Case DELIVERY|Si tiene cobertura');
+
+        //Case: Address has coverage 
+        //Save in Session
+        session(['shippingAddress' => $this->shippingAddress]);
+      }
+      
     }
 
     //Show Session Vars in Log
-    //$this->warehouseService()->showSessionVars();
+    $this->warehouseService()->showSessionVars();
 
     //Reload Page
     //return redirect(request()->header('Referer'));
@@ -520,19 +566,19 @@ class WarehouseLocator extends Component
 
     //Case Open Ilocations
     if ($value) {
-
-      if (is_null($this->provinces)) $this->initProvinces();
+      
+      if(is_null($this->provinces)) $this->initProvinces();
       //Disable BTN Confirm
       $this->disabledBtnConfirm = true;
 
-    } else {
+    }else{
 
       //Case | Click in "Back BTN"
-
+     
       $this->warehouseSelectedFromMap = null;
       //Active BTN Confirm
       $this->disabledBtnConfirm = false;
-
+      
     }
 
   }
@@ -542,15 +588,15 @@ class WarehouseLocator extends Component
    */
   public function loadWarehouseShowInfor()
   {
-    $this->readyToLoad = true;
+      $this->readyToLoad = true;
   }
-
+  
   /**
    *  Proccess to get Information | Case: Active Cache
    */
   public function getWarehouseFromSession()
   {
-
+    
     $this->warehouse = session("warehouse");
     return $this->warehouse;
 
@@ -565,9 +611,18 @@ class WarehouseLocator extends Component
   public function render()
   {
 
-    return view($this->view, [
+    //FIXED - Bug - Con cache activado
+    //Cuando se ingresaba por primera vez en incognito, no carga bien y habia que recargar
+    $tmp = $this->readyToLoad ? $this->getWarehouseFromSession() : null;
+    if($this->readyToLoad && is_null($tmp)){
+      redirect(request()->header('Referer'));
+    }
+
+
+    return view($this->view,[
       'warehouse' => $this->readyToLoad ? $this->getWarehouseFromSession() : null
     ]);
-
+   
   }
+
 }
