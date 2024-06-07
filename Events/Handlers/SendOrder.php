@@ -49,11 +49,13 @@ class SendOrder
       //if there are valid and not empty emailsTo
       if (isset($emailTo) && !empty($emailTo)) {
 
+        $userId = \Auth::id() ?? null;
+        $source = "icommerce";
+
         //send notification by email, broadcast and push -- by default only send by email
         $this->notificationService->to([
           "email" => $emailTo,
-          "broadcast" => $users->pluck('id')->toArray(),
-          "push" => $users->pluck('id')->toArray(),
+          "broadcast" => $users
         ])->push(
           [
             "title" => trans("icommerce::orders.title.confirmation_single_order_title"),
@@ -65,7 +67,9 @@ class SendOrder
             "setting" => [
               "saveInDatabase" => 1 // now, the notifications with type broadcast need to be save in database to really send the notification
             ],
-            "order" => $order
+            "order" => $order,
+            "user_id" => $userId,
+            "source" => $source
           ]
         );
 
@@ -104,10 +108,21 @@ class SendOrder
       $users = $users->merge($organizationUsers);
     }
 
+    $usersIds = [];
+
+    //Validation collection users | get only Ids
+    if(count($users)>0)
+      $usersIds = $users->pluck('id')->toArray();
+    
+    //Add Customer Order Id
+    if(!is_null($order->customer_id))
+      $usersIds[] = $order->customer_id;
+     
     //By last, gets the Email of the user in the order
     array_push($emailTo, $order->email);
-    
-    return [$emailTo, $users];
+
+    //Final return
+    return [$emailTo, $usersIds];
   }
 
 
