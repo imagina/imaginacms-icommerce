@@ -27,7 +27,8 @@ class ProductTransformer extends BaseApiTransformer
       $tags[] = $tag->name;
     }
 
-    $price = $this->discount->price ?? $this->price;
+    $price = $this->getRawOriginal('price');
+    $userPrice = $this->discount->price ?? $this->price;
 
     $data = [
       'id' => $this->id,
@@ -43,7 +44,9 @@ class ProductTransformer extends BaseApiTransformer
       'quantityClassId' => $this->when($this->quantity_class_id, intval($this->quantity_class_id)),
       'shipping' => $this->when($this->shipping, ((int)$this->shipping ? true : false)),
       'price' => $price,
-      'formattedPrice' => formatMoney($price,true),
+      'formattedPrice' => formatMoney($price, true),
+      'userPrice' => $userPrice,
+      'formattedUserPrice' => formatMoney($userPrice, true),
       'points' => $this->when($this->points, $this->points),
       'dateAvailable' => $this->when($this->date_available, $this->date_available),
       'weight' => $this->when($this->weight, $this->weight),
@@ -205,13 +208,14 @@ class ProductTransformer extends BaseApiTransformer
     return $data;
   }
 
-  private function entityRelation(&$data){
+  private function entityRelation(&$data)
+  {
 
-    if(!empty($this->entity_type) && !empty($this->entity_id)){
+    if (!empty($this->entity_type) && !empty($this->entity_id)) {
 
       $entity = $this->entity_type::find($this->entity_id);
 
-      if(!empty($entity) && !empty($entity->transformer)){
+      if (!empty($entity) && !empty($entity->transformer)) {
 
         $data["entity"] = new $entity->transformer($entity);
       }
