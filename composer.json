@@ -6,13 +6,13 @@
     "require": {
         "php": "^8.1",
         "composer/installers": "~1.0",
-        "imagina/core-module": "v10.x-dev",
-        "imagina/ihelpers-module": "v10.x-dev",
-        "imagina/notification-module": "v10.x-dev",
-        "imagina/icurrency-module": "v10.x-dev",
-        "imagina/icommercecheckmo-module": "v10.x-dev",
-        "imagina/icommerceagree-module": "v10.x-dev",
-        "imagina/wishlistable-module": "v10.x-dev"
+        "imagina/core-module": "^10.0",
+        "imagina/ihelpers-module": "^10.0",
+        "imagina/notification-module": "^10.0",
+        "imagina/icurrency-module": "^10.0",
+        "imagina/icommercecheckmo-module": "^10.0",
+        "imagina/icommerceagree-module": "^10.0",
+        "imagina/wishlistable-module": "^10.0"
     },
     "require-dev": {
         "orchestra/testbench": "^8.5",
