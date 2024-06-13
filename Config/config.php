@@ -956,4 +956,13 @@ return [
     'pickup' => 'icommercepickup'
   ],
 
+  /*
+  |--------------------------------------------------------------------------
+  | Notification Source Configuration
+  |--------------------------------------------------------------------------
+  */
+  'notificationSource' => [
+    'icommerce' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-message']
+  ],
+
 ];
