@@ -1,4 +1,4 @@
-<div class="block-owl-carousel">,
+<div class="block-owl-carousel">
     <x-isite::carousel.owl-carousel
         id="relatedProductsShow"
         repository="Modules\Icommerce\Repositories\ProductRepository"
