@@ -31,8 +31,8 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
    * @var array
    */
   protected $with = [
-    'index' => ['category', 'translations', 'files', 'discount', 'organization'],
-    'show' => ['category', 'categories', 'manufacturer', 'translations', 'files', 'productOptions', 'discount', 'organization'],
+    'index' => ['category', 'translations', 'files', 'discount.product', 'organization'],
+    'show' => ['category', 'categories', 'manufacturer', 'translations', 'files', 'productOptions', 'discount.product', 'organization'],
   ];
 
 
@@ -388,7 +388,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     * Se aplica para que el carrito pueda encontrar el producto a pesar
     de si el producto es "internal"
     */
-    if (isset($params->filter) && !isset($params->filter->ValidationInternal)) {
+    if (isset($params->filter) && !isset($params->filter->validationInternal)) {
       $query->where("is_internal", 0);
     }
 
