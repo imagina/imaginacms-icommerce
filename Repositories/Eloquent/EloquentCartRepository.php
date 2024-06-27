@@ -149,7 +149,9 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     
     //Create cart
     if (isset($userCart) && $userCart) return $userCart;
-    else return $this->model->create($data);
+	
+	$data["status"] = 1;
+     return $this->model->create($data);
   }
   
   
