@@ -59,11 +59,12 @@ class Cart extends Component
   {
 
     $cart = request()->session()->get('cart');
+    $cart= json_decode($cart);
 
-    if (isset($cart->id) && $cart->status == 1) {
+    if (isset($cart->id)) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
     }
-    if (isset($this->cart->id)) {
+    if (isset($this->cart->id) && $this->cart->status == 1) {
 
       $user = Auth::user();
       $data = [];
@@ -120,7 +121,7 @@ class Cart extends Component
         }
       }
     }
-    request()->session()->put('cart', $this->cart);
+    request()->session()->put('cart', json_encode($this->cart));
 
   }
 
@@ -206,7 +207,7 @@ class Cart extends Component
     $params = json_decode(json_encode(["include" => []]));
     $this->cart = $this->cartRepository()->getItem($this->cart->id, $params);
 
-    request()->session()->put('cart', $this->cart);
+    request()->session()->put('cart', json_encode($this->cart));
 
     $this->emit("cartUpdated", $this->cart);
 
