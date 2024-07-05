@@ -29,11 +29,6 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
    */
   public function filterQuery($query, $filter, $params)
   {
-
-    if (isset($filter->ip)) {
-      $query->where('ip', $filter->ip);
-    }
-
     if (isset($filter->store)) {
       $query->where('store_id', $filter->store);
     }
