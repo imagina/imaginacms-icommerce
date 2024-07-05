@@ -1,6 +1,5 @@
 <div class="warehouse-layout-tabs">
 
-    <!-- TABS LI -->
     <ul class="nav nav-tabs nav-justified" id="myTabModalWarehouseLocator" role="tablist">
         <li class="nav-item" role="presentation" >
             <a class="nav-link {{$tabSelected == $shippingMethods['delivery'] ? 'active' : ''}}" 
@@ -17,13 +16,9 @@
         </li>
     </ul>
     
-    <!-- TABS CONTENT -->
     <div class="tab-content mt-4" id="myTabContentmyTabModalWarehouseLocator">
-        <!--  Shipping Method | Delivery -->
         @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.tab-delivery')
-        <!-- Shipping Method | Pickup -->
         @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.tab-pickup')     
     </div>
-
 
 </div>                
