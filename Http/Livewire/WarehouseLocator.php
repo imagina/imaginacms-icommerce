@@ -64,7 +64,11 @@ class WarehouseLocator extends Component
     
       //Default values
       $this->user = \Auth::user() ?? null;
-      $this->warehouse = $warehouse;
+      
+      //$this->warehouse = $warehouse;
+      $this->warehouse = session("warehouse");
+      //\Log::info($this->log.'mount|warehouse: '.$this->warehouse);
+
       $this->shippingAddress = $shippingAddress;
       $this->shippingMethods = $shippingMethods;
 
@@ -516,6 +520,7 @@ class WarehouseLocator extends Component
 
       //Save in Session
       session(['warehouse' => $this->warehouse]);
+      //session()->flash('warehouse' , $this->warehouse);
 
       //Case: Address no has coverage (Check if address is nearby)
       if(isset($warehouseProcess['nearby'])){
@@ -554,6 +559,7 @@ class WarehouseLocator extends Component
 
     //Reload Page
     $this->dispatchBrowserEvent('refresh-page');
+    //$this->redirect('home');
 
   }
 
@@ -597,9 +603,23 @@ class WarehouseLocator extends Component
   public function getWarehouseFromSession()
   {
     
-    $this->warehouse = session("warehouse");
+    //$this->warehouse = session("warehouse");
     return $this->warehouse;
 
+  }
+
+  public function hydrate()
+  {
+    //\Log::info($this->log.'HYDRATE');
+    //\Log::info($this->log.'hydrate warehouse VAR: '.$this->warehouse);
+  }
+
+  public function dehydrate()
+  {
+    
+    //\Log::info($this->log.'DEHYDRATE');
+    //\Log::info($this->log.'dehydrate warehouse VAR: '.$this->warehouse);
+  
   }
 
   //|--------------------------------------------------------------------------
@@ -615,13 +635,20 @@ class WarehouseLocator extends Component
     //Cuando se ingresaba por primera vez en incognito, no carga bien y habia que recargar
     $tmp = $this->readyToLoad ? $this->getWarehouseFromSession() : null;
     if($this->readyToLoad && is_null($tmp)){
-      redirect(request()->header('Referer'));
-    }
+      //redirect(request()->header('Referer'));
+    } 
 
-
+    //Muestar las variables de Session
+    //$this->warehouseService()->showSessionVars();
+    
+    /*
     return view($this->view,[
       'warehouse' => $this->readyToLoad ? $this->getWarehouseFromSession() : null
     ]);
+    */
+
+    return view($this->view);
+    
    
   }
 
