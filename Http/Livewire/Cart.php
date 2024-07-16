@@ -11,10 +11,15 @@ use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Services\PdfService;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Cart extends Component
 {
+  use LivewireAlert;
 
+  /*
+  * Attributes From Config
+  */
   public $cart;
   public $view;
   public $layout;
@@ -209,7 +214,7 @@ class Cart extends Component
 
     request()->session()->put('cart', json_encode($this->cart));
 
-    $this->emit("cartUpdated", $this->cart);
+    $this->dispatch("cartUpdated", $this->cart);
 
   }
 

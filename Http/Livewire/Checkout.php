@@ -21,9 +21,11 @@ use Modules\Icommerce\Support\Coupon as SupportCoupon;
 use Illuminate\Support\Str;
 use Modules\User\Entities\Sentinel\User as entityUser;
 use Modules\Iprofile\Entities\Address as Address;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Checkout extends Component
 {
+  use LivewireAlert;
 
   protected $listeners = ['submit', 'addressAdded', 'cartUpdated', 'emitCheckoutAddressBilling',
     'emitCheckoutAddressShipping', 'editAddressBillingEmit', 'editAddressShippingEmit', 'billingAddressChanged',
@@ -154,7 +156,7 @@ class Checkout extends Component
       $this->addressGuestShipping = $data;
       $this->addressGuestShippingCreated = true;
     }
-    $this->emit("billingAddressSavedInCheckout");
+    $this->dispatch("billingAddressSavedInCheckout");
     $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
   }
 
@@ -163,7 +165,7 @@ class Checkout extends Component
     $this->addressGuestShipping = $data;
     $this->addressGuestShippingCreated = true;
 
-    $this->emit("shippingAddressSavedInCheckout");
+    $this->dispatch("shippingAddressSavedInCheckout");
     $this->alert('success', trans('iprofile::addresses.messages.created'), config("asgard.isite.config.livewireAlerts"));
   }
 
@@ -451,7 +453,7 @@ class Checkout extends Component
         break;
     }
 
-    $this->emit("addressSavedInCheckout");
+    $this->dispatch("addressSavedInCheckout");
     // Initializing shipping methods sending the new addresses selected if there are another calculations by each shipping method
     $this->initShippingMethods();
 
@@ -950,8 +952,8 @@ class Checkout extends Component
       $orderData = $orderService->create($data);
       if (isset($orderData["orderId"])) {
         $this->alert('success', trans('icommerce::orders.messages.order success'), config("asgard.isite.config.livewireAlerts"));
-        $this->emit("orderCreated", $orderData);
-        $this->emit("deleteCart");
+        $this->dispatch("orderCreated", $orderData);
+        $this->dispatch("deleteCart");
       } else {
         $this->alert('warning', trans('icommerce::orders.messages.order error'), config("asgard.isite.config.livewireAlerts"));
         \Log::info('Icommerce: Livewire|Checkout|Submit|Error: Order Data:' . json_encode($orderData));

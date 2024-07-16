@@ -101,7 +101,7 @@
           <div class="d-inline-flex align-items-center p-1">
             <!-- BUTTON WISHLIST -->
             <a
-              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
+              onClick="window.livewire.dispatch('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
               class="btn btn-wishlist mx-2">
               <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
               <i class="fa fa-heart-o ml-1"></i>
@@ -120,7 +120,7 @@
   @parent
   <script type="text/javascript" defer>
     function icommerce_showAddToCartWithOptions(e) {
-      window.livewire.emit('addToCartOptions', {quantity: $('input[name=quantityProduct]').val()})
+      window.livewire.dispatch('addToCartOptions', {quantity: $('input[name=quantityProduct]').val()})
     }
 
     function icommerce_showSetQuantity(e, type) {

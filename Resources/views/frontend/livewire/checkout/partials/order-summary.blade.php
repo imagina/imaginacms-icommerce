@@ -73,7 +73,7 @@
                     <!-- boton para eliminar-->
                       <div style="width: 20px;  position: absolute; right: -7px; top: 0;">
                         <a class="close cart-remove text-danger" style="font-size: 1rem;"
-                           onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
+                           onclick="window.livewire.dispatch('deleteFromCart',{{$cartProduct->id}})"
                            title="quitar producto">
                           <i class="fa fa-times"></i>
                         </a>

@@ -40,7 +40,7 @@
 @parent
 <script type="text/javascript" defer>
     document.addEventListener('DOMContentLoaded', function () {
-		window.livewire.emit('productListRendered',{!! json_encode($params) !!});
+		window.livewire.dispatch('productListRendered',{!! json_encode($params) !!});
     });
     
     $(document).on('click', '.page-link-scroll', function (e) {

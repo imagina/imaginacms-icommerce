@@ -10,7 +10,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 //Emit to clear Sesion Variable
-                window.livewire.emit('cleanWarehouseAlert');
+                window.livewire.dispatch('cleanWarehouseAlert');
             }
         });
         

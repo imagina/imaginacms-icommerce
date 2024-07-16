@@ -18,7 +18,7 @@
           
          
             <a
-              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+              onClick="window.livewire.dispatch('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
               class="btn btn-primary btn-sm mx-2">
               <i class="fa fa-heart-o"></i>
             
@@ -32,7 +32,7 @@
             @switch(setting("icommerce::addToCartButtonAction"))
               @case("add-to-cart")
               @if(!$addToCartWithQuantity)
-                <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)"
+                <a onClick="window.livewire.dispatch('addToCart',{{$product->id}},1,{},false)"
                    class="btn btn-primary btn-sm">
                   @if($withIconInAddToCart)
                     <i class="fa fa-shopping-basket"></i>
@@ -56,7 +56,7 @@
             @switch(setting("icommerce::addToCartQuoteButtonAction"))
               @case("add-to-cart-quote")
               @if(setting("icommerce::showButtonToQuoteInStore"))
-                <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true )"
+                <a onClick="window.livewire.dispatch('addToCart',{{$product->id}},1,{},true )"
                    class="btn btn-primary btn-sm">
                   <i class="fa fa-file"></i>
                   {{trans("icommerce::products.button.addToCartItemList")}}
@@ -67,7 +67,7 @@
               @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
             
                   <a
-                    onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+                    onClick="window.livewire.dispatch('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
                     class="btn btn-primary btn-sm">
                     <i class="fa fa-heart-o"></i>
       
@@ -76,7 +76,7 @@
               @endif
           
           @else
-            <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
+            <a onClick="window.livewire.dispatch('makeQuote',{{$product->id}})"
                class="btn btn-primary btn-sm">
               <i class="fa fa-envelope"></i> {{$customIndexContactLabel}}
             </a>
