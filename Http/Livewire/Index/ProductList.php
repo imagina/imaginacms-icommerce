@@ -181,7 +181,7 @@ class ProductList extends Component
 
     // Emit Finish Render
     //\Log::info("Emit list rendered: ".json_encode($this->emitProductListRendered));
-    $this->emitProductListRendered ? $this->dispatch('productListRendered', $params) : false;
+    $this->emitProductListRendered ? $this->emit('productListRendered', $params) : false;
 
     return view($tpl, ['products' => $products, 'params' => $params]);
   }

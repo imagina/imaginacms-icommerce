@@ -18,7 +18,7 @@
         @endif
         @if(setting("icommerce::showButtonThatGeneratesPdfOfTheCart"))
           <li class="list-group-item bg-light">
-            <a onClick="window.livewire.dispatch('download',{{$customer=null}})"
+            <a onClick="window.livewire.emit('download',{{$customer=null}})"
                class="btn btn-warning btn-block text-white">
               {{trans('icommerce::cart.button.download_pdf')}}
             </a>
@@ -26,7 +26,7 @@
         @endif
         @if($containIsCall)
           <li class="list-group-item bg-light">
-            <a onClick="window.livewire.dispatch('requestQuote')"
+            <a onClick="window.livewire.emit('requestQuote')"
                class="btn btn-warning btn-block text-white">
               {{trans('icommerce::cart.button.request_quote')}}
             </a>

@@ -89,7 +89,7 @@
         let quantitySelector = $(divParentAdd).children("div.number-input.input-group.quantity-selector")[0];
         let quantityInput = $(quantitySelector).children("input.quantity-field")[0];
         let productId = $(e.target).data('item-id');
-        window.livewire.dispatch('addToCart', productId, $(quantityInput).val())
+        window.livewire.emit('addToCart', productId, $(quantityInput).val())
         $(quantityInput).val(1)
       }
 
@@ -100,7 +100,7 @@
         let quantitySelector = $(divParentAdd).children("div.number-input.input-group.quantity-selector")[0];
         let quantityInput = $(quantitySelector).children("input.quantity-field")[0];
         let productId = $(e.target).data('item-id');
-        window.livewire.dispatch('addToCart', productId, $(quantityInput).val(), {}, true)
+        window.livewire.emit('addToCart', productId, $(quantityInput).val(), {}, true)
         $(quantityInput).val(1)
       }
 

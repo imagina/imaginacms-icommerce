@@ -72,12 +72,12 @@
       <div class="row">
         <div class="col my-2 my-md-0">
           <div class="d-flex px-2 ">
-            <a onClick="window.livewire.dispatch('makeQuote',{{$product->id}})"
+            <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
                class=" btn-comprar btn btn-secondary text-white mx-2">
               {{trans('icommerce::products.form.contactUs')}}</a>
             <!-- BUTTON WISHLIST -->
             <a
-              onClick="window.livewire.dispatch('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
               class="btn btn-wishlist mx-2">
               <span id="addToTheListSpan">{{trans("wishlistable::wishlistables.button.addToList")}}</span>
               <i class="fa fa-heart-o ml-1"></i>
