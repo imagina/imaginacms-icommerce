@@ -190,7 +190,7 @@
 
         if(from=='keep'){
             //Update variable session
-            window.livewire.emit('updateTooltipStatus');
+            window.livewire.dispatch('updateTooltipStatus');
         }
        
     }

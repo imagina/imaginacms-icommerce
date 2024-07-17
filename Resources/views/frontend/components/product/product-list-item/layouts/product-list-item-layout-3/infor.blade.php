@@ -33,7 +33,7 @@
             @switch(setting("icommerce::addToCartButtonAction"))
                 @case("add-to-cart")
                 @if(!$addToCartWithQuantity)
-                    <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)"
+                    <a onClick="window.livewire.dispatch('addToCart',{{$product->id}},1,{},false)"
                        class="cart text-primary cursor-pointer">
                         @if($withIconInAddToCart)
                             <i class="fa fa-shopping-cart icon"></i>
@@ -51,7 +51,7 @@
             @switch(setting("icommerce::addToCartQuoteButtonAction"))
                 @case("add-to-cart-quote")
                 @if(setting("icommerce::showButtonToQuoteInStore"))
-                    <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true)"
+                    <a onClick="window.livewire.dispatch('addToCart',{{$product->id}},1,{},true)"
                        class="cart text-primary cursor-pointer">
                         Añadir para cotizacion
                     </a>
