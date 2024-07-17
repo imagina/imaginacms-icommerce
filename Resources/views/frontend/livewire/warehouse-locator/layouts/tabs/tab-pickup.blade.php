@@ -5,19 +5,23 @@
         <div id="warehouseSelected">
 
         
-            <div class="list-address" wire:init="loadWarehouseShowInfor">
+            <div class="list-address">
                 <div class="item-address">
                     <div class="form-check d-flex align-items-center position-static">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked>
                         <label class="form-check-label active" for="exampleRadios2">
-                            <p class="mb-0">{{$warehouse->title}} | {{$warehouse->address}}</p>
+                            @if(!is_null($warehouse))
+                                <p class="mb-0">{{$warehouse->title}} | {{$warehouse->address}}</p>
+                            @else
+                                <h5>....</h5>
+                            @endif
                         </label>
                         <div class="marked"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- End Listado de tiendas marcadas -->
+           
             <div class="form-row justify-content-center mt-4">
                 <div class="form-group col-md-6">
                     <button wire:click="$set('chooseOtherWarehouse', true)" type="button" class="btn outline btn-primary btn-block">
@@ -41,16 +45,9 @@
             </p>
 
             <div class="form-point">
-
-                <!-- Selects Province and City -->
                 @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.selects-location')
-
-                <!-- Warehouse Selected -->
                 @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.warehouse-selected')
-
-                <!-- WAREHOUSES MAP -->
                 @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.pickup.warehouses-map')
-
             </div>
 
             
@@ -69,5 +66,4 @@
         </div>
     @endif
     
-
 </div>
