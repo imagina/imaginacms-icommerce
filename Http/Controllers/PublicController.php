@@ -443,11 +443,14 @@ class PublicController extends BaseApiController
 
     $tpl = "icommerce::frontend.checkout.index";
 
-    $cart = request()->session()->get('cart');
-    if (isset($cart->id)) {
-      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cart->id);
+    $cartS = request()->session()->get('cart');
+    $cartS = json_decode($cartS);
+
+    if (isset($cartS->id)) {
+      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cartS->id);
     } else {
       $cart = app('Modules\Icommerce\Services\CartService')->create(["userId" => \Auth::id() ?? null]);
+      request()->session()->put('cart', json_encode($cart));
     }
 
     $organization = null;

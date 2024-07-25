@@ -135,7 +135,7 @@ if (! function_exists('currentCurrency')) {
             }
 
             if (! isset($currency->id)) {
-                $currency = new Currency(Config::get('asgard.icommerce.config.formatmoney'));
+                $currency = new Currency(Config::get('asgard.icommerce.config.formatMoney'));
             }
 
             return $currency;

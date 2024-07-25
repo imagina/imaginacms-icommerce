@@ -16,10 +16,8 @@
                 <a class="address cursor-pointer {{$addressClass}}" data-toggle="modal" data-target="#modalWarehouseLocator">
                     {{trans('icommerce::warehouses.messages.hello')}} {{$user ? $user->first_name : ""}}, {{trans('icommerce::warehouses.messages.buying for')}} 
                     
-                    <!-- WAREHOUSE SHOW INFOR | LIVEWIRE COMPONENT -->
                     @livewire("icommerce::warehouse-show-infor",[
-                        "varName" => "warehouse",
-                        "varAtt" => "title"
+                        "warehouseVar" => $warehouse
                     ])
                     
                 </a>

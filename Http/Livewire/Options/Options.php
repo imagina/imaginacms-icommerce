@@ -96,7 +96,7 @@ class Options extends Component
   public function addToCartOptions($data)
   {
 
-    $this->emit('addToCartWithOptions', ["productId" => $this->product->id, "quantity" => $data["quantity"], "productOptionValues" => $this->optionsSelected]);
+    $this->dispatch('addToCartWithOptions', ["productId" => $this->product->id, "quantity" => $data["quantity"], "productOptionValues" => $this->optionsSelected]);
 
   }
 

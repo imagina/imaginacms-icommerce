@@ -50,4 +50,16 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
       return $this->repository->getProductOptions($params);
     });
   }
+
+  /**
+   * Get Product Types From Products Filtered
+   *
+   * @return collection
+   */
+  public function getProductTypes($params)
+  {
+    return $this->remember(function () use ($params) {
+      return $this->repository->getProductTypes($params);
+    });
+  }
 }

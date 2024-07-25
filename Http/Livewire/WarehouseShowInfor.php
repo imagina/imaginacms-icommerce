@@ -12,23 +12,24 @@ class WarehouseShowInfor extends Component
   public $log;
   public $readyToLoad = false;
 
-  public $varName;
-  public $varAtt;
+  public $warehouseSession;
+  public $warehouseVar;
 
   /**
    * MOUNT
    */
   public function mount(
     $layout = 'warehouse-show-infor-layout-1', 
-    $varName,
-    $varAtt  
+    $warehouseVar  
   ){
       $this->log = "Icommerce::Livewire|WarehouseShowInfor|";
+     
       $this->layout = $layout;
       $this->view = "icommerce::frontend.livewire.warehouse-show-infor.layouts.$this->layout.index";
 
-      $this->varName = $varName;
-      $this->varAtt = $varAtt;
+      $this->warehouseSession = session("warehouse");
+      //\Log::info($this->log."WarehouseSession: ".$this->warehouseSession);
+      $this->warehouseVar = $warehouseVar;
      
   }
 
@@ -48,18 +49,12 @@ class WarehouseShowInfor extends Component
     
     \Log::info($this->log.'getInfor');
 
-    $warehouseSession = session($this->varName);
-    $warehouseAtt = $this->varAtt;
-
-    //Validation | Bug Cache
-    /*
-    Cuando se activaba el cache, a pesar de que por el log se observa que la variable de sesion existe
-    en este componente a veces aparecia vacia
-    */
-    if(!is_null($warehouseSession))
-      return $warehouseSession->{$warehouseAtt};
-    else
-      return "Cargando";
+    if(!is_null($this->warehouseSession)){
+      return $this->warehouseSession->title;
+    }else{
+      \Log::info($this->log.'getInfor|warehouse|Session Warehouse NO EXISTE');
+      return "...";
+    }
 
   }
 
@@ -74,7 +69,7 @@ class WarehouseShowInfor extends Component
   { 
 
     return view($this->view,[
-      'infor' => $this->readyToLoad ? $this->getInfor() : "Cargando..."
+      'infor' => $this->readyToLoad ? $this->getInfor() : "..."
     ]);
 
   }

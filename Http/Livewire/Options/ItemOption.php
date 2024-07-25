@@ -91,7 +91,7 @@ class ItemOption extends Component
       }
     }
 
-    $this->emit('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
+    $this->dispatch('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
   }
 
 
@@ -118,7 +118,7 @@ class ItemOption extends Component
   public function updatingSelected($value)
   {
     //\Log::info($this->log."updatingSelected");
-    $this->emit('updateOption', $this->selected, $value, $this->dynamic, $this->optionId);
+    $this->dispatch('updateOption', $this->selected, $value, $this->dynamic, $this->optionId);
   }
 
   /**
