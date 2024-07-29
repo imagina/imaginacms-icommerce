@@ -1,7 +1,16 @@
 <div>
+
     <div id="{{$warehouseLocatorId}}" class="warehouse-locator position-relative d-inline-block {{$warehouseLocatorClass}}">
         @if(!$iconOrderRight) <i class="{{ $icon ?? ' ' }} {{ $iconClass }}"></i> @endif
 
+
+            @livewire("icommerce::warehouse-show-infor",[
+                "warehouseVar" => $warehouse,
+                "textClass" => $textClass,
+                "addressClass" => $addressClass
+            ])
+
+            {{--
             @if($user && !empty($shippingAddress))
                 <span class="{{ $textClass }}">
                 {{trans('icommerce::warehouses.messages.hello')}} {{$user->first_name}},
@@ -23,6 +32,7 @@
                 </a>
 
             @endif
+            --}}
 
         @if($iconOrderRight) <i class="{{ $icon ?? ' ' }} {{ $iconClass }}"></i> @endif
 
@@ -30,48 +40,26 @@
             @include('icommerce::frontend.components.warehouse.partials.tooltip')
         @endif
     </div>
-<style>
-@if($warehouseLocatorStyle)
-#{{$warehouseLocatorId}} {
-{!! $warehouseLocatorStyle !!}
-}
-@endif
-@if($warehouseLocatorStyleHover)
-#{{$warehouseLocatorId}}:hover {
-        {!! $warehouseLocatorStyleHover !!}
-}
-@endif
-@if($iconStyle)
-#{{$warehouseLocatorId}} i {
-        {!! $iconStyle !!}
-}
-@endif
-@if($iconStyleHover)
-#{{$warehouseLocatorId}}:hover i {
-         {!! $iconStyleHover !!}
-}
-@endif
-@if($textStyle)
-#{{$warehouseLocatorId}} span {
-        {!! $textStyle !!}
-}
-@endif
-@if($textStyleHover)
-#{{$warehouseLocatorId}}:hover span {
-         {!! $textStyleHover !!}
-}
-@endif
-@if($addressStyle)
-#{{$warehouseLocatorId}} .address {
-         {!! $addressStyle !!}
-}
-@endif
-@if($addressStyleHover)
-#{{$warehouseLocatorId}} .address:hover {
-         {!! $addressStyleHover !!}
-}
-@endif
-</style>
+
+@include('icommerce::frontend.components.warehouse.partials.style-layout-2')
 @include('icommerce::frontend.components.warehouse.partials.modal')
 @include('icommerce::frontend.components.warehouse.partials.alert')
+
+
 </div>
+
+@section('scripts')
+@parent
+<script type="text/javascript">
+    console.warn("============= WAREHOUSE LAYOUT 2 | INIT")
+
+    function showComponent()
+    {
+        console.warn("Emit: warehouseBladeIsReady")
+        window.livewire.emit('warehouseBladeIsReady');
+    }
+
+    document.addEventListener('DOMContentLoaded', showComponent);
+</script>
+
+@stop

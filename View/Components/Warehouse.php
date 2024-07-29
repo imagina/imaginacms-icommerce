@@ -73,6 +73,7 @@ class Warehouse extends Component
   ) {
 
     $this->log = "Icommerce::Components|Warehouse|";
+    //\Log::info($this->log."MOUNT");
     $this->layout = $layout;
     $this->layoutLocator = $layoutLocator;  //Layout To Warehouse Locator | Livewire Component
     $this->view = "icommerce::frontend.components.warehouse.layouts." . $layout . ".index";
@@ -107,7 +108,7 @@ class Warehouse extends Component
     $this->activeTooltip = false;
 
     //Init Process
-    $this->init();
+    //$this->init();
   }
 
   /**

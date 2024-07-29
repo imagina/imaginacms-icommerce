@@ -33,10 +33,20 @@ class WarehouseService
 
         \Log::info($this->log.'showSessionVars|===============================');
 
-        if(isset($warehouse))
+        /*
+        if(isset($warehouse)){
             \Log::info($this->log.'showSessionVars|warehouseId: '.$warehouse->id);
-        if(isset($shippingAddress))
+        }*/
+        $warehouse= json_decode($warehouse);
+        if (isset($warehouse->id)) {
+            \Log::info($this->log.'showSessionVars|warehouseId: '.$warehouse->id);
+        }   
+        $shippingAddress = json_decode($shippingAddress);
+        if(isset($shippingAddress)){
             \Log::info($this->log.'showSessionVars|shippingAddressId: '.$shippingAddress->id);
+        }
+
+
         if(isset($shippingMethodName))
             \Log::info($this->log.'showSessionVars|shippingMethodName: '.$shippingMethodName);
         if(isset($shippingAddressChecked))

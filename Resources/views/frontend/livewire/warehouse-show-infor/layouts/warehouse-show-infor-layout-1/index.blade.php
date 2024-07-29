@@ -1,3 +1,7 @@
-<div wire:init="loadWarehouseShowInfor" class="warehouseShowInfor d-inline">
-    {{$infor}}
+<div class="warehouseShowInfor">
+    @if($showComponent)
+
+        {!! $title!!}
+
+    @endif
 </div>
