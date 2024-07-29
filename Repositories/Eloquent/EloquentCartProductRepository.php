@@ -127,7 +127,12 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
   
-    $warehouse = session('warehouse');
+    $warehouse = request()->session()->get('warehouse');
+    $warehouse = json_decode($warehouse);
+    if (isset($warehouse->id)) {
+      $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+    }
+
     $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
   
     if($warehouseEnabled && isset($warehouse->id)){
@@ -430,7 +435,8 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
 
     if($product->subtract){ // si el producto se substrae de inventario
   
-      $warehouse = session('warehouse');
+      $warehouse = request()->session()->get('warehouse');
+      $warehouse = json_decode($warehouse);
       $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
    
       $productQuantity = $product->quantity;

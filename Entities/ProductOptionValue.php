@@ -81,7 +81,12 @@ class ProductOptionValue extends Model
   {
     $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
     if ($warehouseEnabled && $this->subtract) {
-      $warehouse = session('warehouse');
+      $warehouse = request()->session()->get('warehouse');
+      $warehouse = json_decode($warehouse);
+      if (isset($warehouse->id)) {
+        $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+      }
+
       if (!is_null($warehouse)) {
         $warehouseProductQuantity = \DB::table('icommerce__product_option_value_warehouse')
           ->where('warehouse_id', $warehouse->id)

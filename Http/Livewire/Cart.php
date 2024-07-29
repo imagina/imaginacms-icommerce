@@ -42,7 +42,14 @@ class Cart extends Component
     $this->layout = $layout;
     $this->icon = $icon;
     $this->iconquote = $iconquote;
-    $this->warehouse = session('warehouse');
+
+    //$this->warehouse = json_decode(request()->session()->get('warehouse'));
+    $warehouse = request()->session()->get('warehouse');
+    $warehouse = json_decode($warehouse);
+    if (isset($warehouse->id)) {
+      $this->warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+    }
+
     $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
@@ -100,7 +107,13 @@ class Cart extends Component
           $updateCart = true;
         } else {
           $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
-          $warehouse = Session('warehouse');
+
+          $warehouse = request()->session()->get('warehouse');
+          $warehouse = json_decode($warehouse);
+          if (isset($warehouse->id)) {
+            $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+          }
+
           if ($warehouseEnabled && $cartProduct->warehouse_id != $warehouse->id) {
             $data = [
               'product_id' => $cartProduct->product->id,
