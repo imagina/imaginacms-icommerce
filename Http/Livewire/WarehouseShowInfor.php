@@ -22,6 +22,7 @@ class WarehouseShowInfor extends Component
   public $textClass;
   public $addressClass;
   public $user;
+  public $warehouseLocatorId;
   public $activeTooltip;
 
   //Base
@@ -44,7 +45,8 @@ class WarehouseShowInfor extends Component
     $layout = 'warehouse-show-infor-layout-1', 
     $warehouseVar,
     $textClass = '',
-    $addressClass = ''
+    $addressClass = '',
+    $warehouseLocatorId = null
   ){
       $this->log = "Icommerce::Livewire|WarehouseShowInfor|";
       //\Log::info($this->log."MOUNT");
@@ -56,6 +58,7 @@ class WarehouseShowInfor extends Component
       $this->textClass = $textClass;
       $this->addressClass = $addressClass;
       $this->user = \Auth::user() ?? null;
+      $this->$warehouseLocatorId = $warehouseLocatorId;
 
       //Shipping Method Base
       $this->shippingMethods = config('asgard.icommerce.config.warehouseShippingMethods');
@@ -196,8 +199,8 @@ class WarehouseShowInfor extends Component
       }
     }
     
-    $activeTab = request()->session()->get("showTooltip");
-      $this->activeTooltip = $activeTab ?? false;
+    $showTooltip = request()->session()->get("showTooltip");
+    $this->activeTooltip = $showTooltip ?? true;
     
   }
 
@@ -253,7 +256,8 @@ class WarehouseShowInfor extends Component
     //Set Livewire Variables with Session Variables
     $this->setInitVars();
 
-    $showTooltipSession = request()->session()->get("showTooltip");
+    //$showTooltipSession = request()->session()->get("showTooltip");
+    
     //Case: User NOT LOGGED AND Null Warehouse to not repeat after process
     if (is_null($this->user) && is_null($this->warehouse)) {
       \Log::info($this->log . 'User NOT LOGGED');
@@ -278,7 +282,7 @@ class WarehouseShowInfor extends Component
             //Assign Default Warehouse
             $this->setDefaultWarehouse();
 
-            if(is_null($showTooltipSession)) $this->activeTooltip = true;
+            //if(is_null($showTooltipSession)) $this->activeTooltip = true;
   
             request()->session()->put('shippingAddressChecked', true);
 
@@ -333,13 +337,31 @@ class WarehouseShowInfor extends Component
 
     
     //Show Tooltip
-    if (is_null($this->shippingAddress) && is_null($showTooltipSession)) $this->activeTooltip = true;
+    //if (is_null($this->shippingAddress) && is_null($showTooltipSession)) $this->activeTooltip = true;
 
     
     //Show Session Vars in Log
     $this->warehouseService()->showSessionVars();
 
     \Log::info($this->log . 'Init|END');
+
+  }
+
+  /**
+   * CLICK EVENT
+   * Process Tooltip (Keep,Close)
+   */
+  public function processTooltip($process)
+  {
+    \Log::info($this->log . 'processTooltip: '.$process);
+
+    if($process=="keep"){
+      //Save in Session
+      request()->session()->put('showTooltip',false);
+    }
+
+    //Close in Frontend
+    $this->activeTooltip = false;
 
   }
 

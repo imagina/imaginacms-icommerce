@@ -46,7 +46,6 @@ class WarehouseLocator extends Component
       'cancelledNewAddress' => 'changeShowAddressForm',
       'shippingAddressChanged' => 'checkAddress',
       'markerSelectedFromMap',
-      'updateTooltipStatus',
       'confirmData',
       'warehouseShowInforIsReady' => 'checkComponentReady'
   ];
@@ -427,20 +426,6 @@ class WarehouseLocator extends Component
     //Show BTN Confirm
     $this->disabledBtnConfirm = false;
    
-  }
-
-  /**
-   * Listener
-   * User clicked in button "keep" inside Tooltip
-   */
-  public function updateTooltipStatus()
-  {
-    
-    \Log::info($this->log.'updateTooltipStatus');
-
-    //Save in Session
-    session(['showTooltip' => false]);
-
   }
 
   /*

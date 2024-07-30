@@ -7,15 +7,14 @@
             @livewire("icommerce::warehouse-show-infor",[
                 "warehouseVar" => $warehouse,
                 "textClass" => $textClass,
-                "addressClass" => $addressClass
+                "addressClass" => $addressClass,
+                "warehouseLocatorId" => $warehouseLocatorId
             ])
 
 
         @if($iconOrderRight) <i class="{{ $icon ?? ' ' }} {{ $iconClass }}"></i> @endif
 
-        @if($activeTooltip)
-            @include('icommerce::frontend.components.warehouse.partials.tooltip')
-        @endif
+       
     </div>
 
 @include('icommerce::frontend.components.warehouse.partials.style-layout-2')
