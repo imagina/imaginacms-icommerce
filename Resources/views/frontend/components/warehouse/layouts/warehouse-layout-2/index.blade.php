@@ -10,29 +10,6 @@
                 "addressClass" => $addressClass
             ])
 
-            {{--
-            @if($user && !empty($shippingAddress))
-                <span class="{{ $textClass }}">
-                {{trans('icommerce::warehouses.messages.hello')}} {{$user->first_name}},
-                {{ $text ?? trans('icommerce::warehouses.messages.your address is') }}
-                </span>
-                <a class="address cursor-pointer {{ $addressClass }}" data-toggle="modal" data-target="#modalWarehouseLocator">
-                    <u>{{$shippingAddress->address_1}}</u>
-                </a>
-
-            @else
-                
-                <a class="address cursor-pointer {{$addressClass}}" data-toggle="modal" data-target="#modalWarehouseLocator">
-                    {{trans('icommerce::warehouses.messages.hello')}} {{$user ? $user->first_name : ""}}, {{trans('icommerce::warehouses.messages.buying for')}} 
-                    
-                    @livewire("icommerce::warehouse-show-infor",[
-                        "warehouseVar" => $warehouse
-                    ])
-                    
-                </a>
-
-            @endif
-            --}}
 
         @if($iconOrderRight) <i class="{{ $icon ?? ' ' }} {{ $iconClass }}"></i> @endif
 
