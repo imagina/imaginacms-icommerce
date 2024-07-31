@@ -961,9 +961,9 @@ class Checkout extends Component
     if (setting('icommerce::warehouseFunctionality', null, false)) {
       
       $warehouse = request()->session()->get('warehouse');
-      $warehouse= json_decode($warehouse);
+      $warehouse = json_decode($warehouse);
       if (isset($warehouse->id)) {
-        $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')>getItem($warehouse->id);
+        $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
       }
       
       $data["warehouse_id"] = $warehouse->id ?? null;
