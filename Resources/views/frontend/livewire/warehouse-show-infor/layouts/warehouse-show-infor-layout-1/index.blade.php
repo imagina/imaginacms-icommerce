@@ -2,10 +2,11 @@
     @if($showComponent)
 
         {!! $title!!}
-
+        {{--
         @if($activeTooltip)
             @include('icommerce::frontend.livewire.warehouse-show-infor.partials.tooltip.index')
         @endif
+        --}}
 
     @else
 
