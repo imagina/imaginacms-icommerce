@@ -26,18 +26,13 @@
         @endif
         <div class="col-md-6">
           <div class="card mb-0 border-0">
-            <div class="card-header bg-white cursor-pointer">
-              <label class="form-check-label cursor-pointer">
-                {{ trans('icommerce::customer.sub_titles.im_client') }}
-              </label>
-            </div>
-            <div id="check-login">
-              <div class="card-block my-3 checkout-login">
-                <!-- FORMULARIO -->
-                <div class="alert alert-danger d-none" id="loginAlert"></div>
-                @includeFirst(['iprofile.widgets.login','iprofile::frontend.widgets.login'],["embedded" => true, "route" => $locale . '.icommerce.store.checkout', "register" => false])
+              <div class="col py-2">
+                  @php $reedirectUrl = "/ipanel/#/auth/login/?redirectTo=".url(route($locale . '.icommerce.store.checkout')); @endphp
+                  <a class="btn btn-sm btn-outline-primary" onclick="location.href='{{$reedirectUrl}}'">
+                      <i class="fa-solid fa-user"></i>
+                      {{ trans('icommerce::customer.sub_titles.logging') }}
+                  </a>
               </div>
-            </div>
           </div>
         </div>
         <div class="col-md-6">

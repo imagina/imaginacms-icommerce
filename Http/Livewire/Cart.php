@@ -28,22 +28,23 @@ class Cart extends Component
   public $iconquote;
   public $classCart;
   public $styleCart;
+  public $loading;
   private $params;
   private $request;
   protected $currencies;
   protected $listeners = [
-    'addToCart', 
-    'addToCartWithOptions', 
-    'download', 
-    'deleteFromCart', 
-    'updateCart', 
-    'deleteCart', 
-    'refreshCart', 
-    'makeQuote', 
-    'requestQuote', 
+    'addToCart',
+    'addToCartWithOptions',
+    'download',
+    'deleteFromCart',
+    'updateCart',
+    'deleteCart',
+    'refreshCart',
+    'makeQuote',
+    'requestQuote',
     'submitQuote',
     'warehouseShowInforIsReady' => 'refreshCart'
-  ];
+    ];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
                                 $iconquote = 'fas fa-file-alt', $showButton = true, $classCart = '', $styleCart = '')
@@ -66,7 +67,7 @@ class Cart extends Component
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
     $this->styleCart = $styleCart;
-
+    $this->loading = true;
     //$this->refreshCart();
     $this->load();
   }
@@ -76,7 +77,8 @@ class Cart extends Component
   //|--------------------------------------------------------------------------
   public function refreshCart()
   {
-
+  
+    $this->loading = true;
     $cart = request()->session()->get('cart');
 	$cart= json_decode($cart);
 
@@ -148,6 +150,8 @@ class Cart extends Component
       }
     }
     request()->session()->put('cart', json_encode($this->cart));
+  
+    $this->loading = false;
   }
 
 
@@ -162,7 +166,7 @@ class Cart extends Component
   {
 
     try {
-
+      $this->loading = true;
       if ($quantity > 0) {
 
         $product = $this->productRepository()->getItem($productId);
@@ -186,7 +190,7 @@ class Cart extends Component
         }
 
       }
-
+      $this->loading = false;
     } catch (\Exception $e) {
 
       switch ($e->getMessage()) {
@@ -206,7 +210,7 @@ class Cart extends Component
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
       }
-
+      $this->loading = false;
     }
 
 
@@ -214,13 +218,14 @@ class Cart extends Component
 
   public function deleteFromCart($cartProductId)
   {
+    $this->loading = true;
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartProductRepository()->deleteBy($cartProductId, $params);
 
     $this->updateCart();
 
     $this->alert('warning', trans('icommerce::cart.message.remove'), config("asgard.isite.config.livewireAlerts"));
-
+    $this->loading = false;
   }
 
   public function deleteCart()
@@ -231,6 +236,7 @@ class Cart extends Component
     request()->session()->put('cart', null);
 
     $this->refreshCart();
+    
   }
 
   public function updateCart()
