@@ -442,7 +442,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       $productQuantity = $product->quantity;
       //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
       //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
-      if($warehouseEnabled){
+      if($warehouseEnabled && isset($warehouse->id)){
         
         if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
         $productQuantity = \DB::table('icommerce__product_warehouse')
