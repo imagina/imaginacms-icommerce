@@ -37,7 +37,7 @@ class OrderTransformer extends JsonResource
       'paymentCompany' => $this->when($this->payment_company, $this->payment_company),
       'paymentAddress1' => $this->when($this->payment_address_1, $this->payment_address_1),
       'paymentAddress2' => $this->when($this->payment_address_2, $this->payment_address_2),
-      'paymentCity' => $this->when($this->payment_city, $this->payment_city),
+      'paymentCity' => $this->payment_city ?? '', //TODO check | Hubo un caso (Bruno) donde la direccion llegaba con esto vacio y en todos los demas staba bien
       'paymentZipCode' => $this->when($this->payment_zip_code, $this->payment_zip_code),
       'paymentCountry' => $this->when($this->payment_country, $this->payment_country),
       'paymentZone' => $this->when($this->payment_zone, $this->payment_zone),
