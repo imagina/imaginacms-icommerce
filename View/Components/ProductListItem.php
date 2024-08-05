@@ -77,7 +77,7 @@ class ProductListItem extends Component
   public function __construct($item,
                               $editLink,
                               $tooltipEditLink,
-                              $withDescription = false,
+                              $withDescription = null,
                               $withPrice = true,
                               $addToCartButtonAction = null,
                               $labelButtonAddProduct = null,
@@ -189,7 +189,7 @@ class ProductListItem extends Component
     $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
     $this->imageObjectFit = $imageObjectFit ?? setting('icommerce::productImageObjectFit', null, "contain");
-    $this->withDescription = $withDescription;
+    $this->withDescription = $withDescription ?? setting('icommerce::productWithDescription', null, '0');
     $this->withPrice = $withPrice;
     $this->addToCartButtonAction = $addToCartButtonAction;
     $this->labelButtonAddProduct = $labelButtonAddProduct;
