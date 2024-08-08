@@ -1136,24 +1136,24 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-        'label' => 'icommerce::common.settings.productImageObjectFit',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-            ["label" => "Contain", "value" => "contain"],
-            ["label" => "Cover", "value" => "cover"],
-            ["label" => "Fill", "value" => "fill"],
-            ["label" => "Inicial", "value" => "inicial"],
-            ["label" => "Revert", "value" => "revert"],
-            ["label" => "Scale-down", "value" => "scale Down"],
-            ["label" => "Unset", "value" => "unset"],
-            ["label" => "none", "value" => "none"]
-        ]
+      'label' => 'icommerce::common.settings.productImageObjectFit',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ["label" => "Contain", "value" => "contain"],
+        ["label" => "Cover", "value" => "cover"],
+        ["label" => "Fill", "value" => "fill"],
+        ["label" => "Inicial", "value" => "inicial"],
+        ["label" => "Revert", "value" => "revert"],
+        ["label" => "Scale-down", "value" => "scale Down"],
+        ["label" => "Unset", "value" => "unset"],
+        ["label" => "none", "value" => "none"]
+      ]
     ]
-   ],
+  ],
   'productWithDescription' => [
     "onlySuperAdmin" => true,
     'value' => '0',
@@ -1166,7 +1166,7 @@ return [
       'falseValue' => '0',
       'label' => 'icommerce::common.settings.productWithDescription'
     ]
-   ],
+  ],
   'layoutProductIcommerce' => [
     'name' => 'icommerce::layoutProductIcommerce',
     'value' => null,
@@ -1210,7 +1210,7 @@ return [
     ]
   ],
   'orderSearchResults' => [
-    'value' => ['scoreSearch1','icommerce__products.created_at','scoreSearch2'],
+    'value' => ['scoreSearch1', 'icommerce__products.created_at', 'scoreSearch2'],
     'name' => 'icommerce::orderSearchResults',
     'groupName' => 'searcher',
     'groupTitle' => 'icommerce::common.search.settings.groupName',
@@ -1232,7 +1232,7 @@ return [
     ]
   ],
   'selectSearchFieldsProducts' => [
-    'value' => ['name','summary','description'],
+    'value' => ['name', 'summary', 'description'],
     'name' => 'icommerce::selectSearchFieldsProducts',
     'groupName' => 'searcher',
     'groupTitle' => 'icommerce::common.search.settings.groupName',
@@ -1252,19 +1252,19 @@ return [
         ['label' => 'icommerce::common.search.settings.options.description', 'value' => 'description'],
       ]
     ]
-            ],
-	'checkoutRedirectUrl' => [
-		"onlySuperAdmin" => true,
-		'value' => null,
-		'name' => 'icommerce::checkoutRedirectUrl',
-		'type' => 'input',
-		'groupName' => 'checkoutPage',
-		'groupTitle' => 'icommerce::common.pages.checkout',
-		'props' => [
-			'type' => "text",
-			'label' => 'icommerce::common.settings.checkoutRedirectUrl'
-		]
-	],
+  ],
+  'checkoutRedirectUrl' => [
+    "onlySuperAdmin" => true,
+    'value' => null,
+    'name' => 'icommerce::checkoutRedirectUrl',
+    'type' => 'input',
+    'groupName' => 'checkoutPage',
+    'groupTitle' => 'icommerce::common.pages.checkout',
+    'props' => [
+      'type' => "text",
+      'label' => 'icommerce::common.settings.checkoutRedirectUrl'
+    ]
+  ],
   'warehouseFunctionality' => [
     "onlySuperAdmin" => true,
     'value' => "0",
@@ -1287,26 +1287,38 @@ return [
     'type' => 'select',
     'columns' => 'col-12 col-md-6',
     'props' => [
-        'label' => 'icommerce::common.settings.productShowGalleryLayout',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-            ['label' => 'Gallery 1', 'value' => 'gallery-layout-1'],
-            ['label' => 'Gallery 2', 'value' => 'gallery-layout-2'],
-            ['label' => 'Gallery 3', 'value' => 'gallery-layout-3'],
-            ['label' => 'Gallery 4', 'value' => 'gallery-layout-4'],
-            ['label' => 'Gallery 5', 'value' => 'gallery-layout-5'],
-            ['label' => 'Gallery 6', 'value' => 'gallery-layout-6'],
-            ['label' => 'Gallery 7', 'value' => 'gallery-layout-7']
-        ]
+      'label' => 'icommerce::common.settings.productShowGalleryLayout',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Gallery 1', 'value' => 'gallery-layout-1'],
+        ['label' => 'Gallery 2', 'value' => 'gallery-layout-2'],
+        ['label' => 'Gallery 3', 'value' => 'gallery-layout-3'],
+        ['label' => 'Gallery 4', 'value' => 'gallery-layout-4'],
+        ['label' => 'Gallery 5', 'value' => 'gallery-layout-5'],
+        ['label' => 'Gallery 6', 'value' => 'gallery-layout-6'],
+        ['label' => 'Gallery 7', 'value' => 'gallery-layout-7']
+      ]
     ]
-],
+  ],
+  'productResponsive' => [
+    "onlySuperAdmin" => true,
+    "value" => [0 => ["items" => 2], 640 => ["items" => 3], 992 => ["items" => 4]],
+    'name' => 'icommerce::productResponsive',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "type" => "json",
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      "label" => "icommerce::common.settings.productResponsive",
+    ]
+  ],
   'availableProvincesMap' => [
     'name' => 'icommerce::availableProvincesMap',
-    'value' =>  [],
+    'value' => [],
     'type' => 'select',
     'groupName' => 'warehouse',
     'groupTitle' => 'icommerce::common.settings.warehouse.groupName',
