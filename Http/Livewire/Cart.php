@@ -33,6 +33,7 @@ class Cart extends Component
   public $iconquote;
   public $classCart;
   public $styleCart;
+  public $loading;
   private $params;
   private $request;
   protected $currencies;
@@ -65,6 +66,7 @@ class Cart extends Component
     $this->classCart = $classCart;
     $this->styleCart = $styleCart;
 
+    $this->loading = true;
     //$this->refreshCart();
     $this->load();
   }
@@ -75,6 +77,7 @@ class Cart extends Component
   public function refreshCart()
   {
 
+    $this->loading = true;
     $cart = request()->session()->get('cart');
     $cart= json_decode($cart);
 
@@ -145,6 +148,8 @@ class Cart extends Component
     }
     request()->session()->put('cart', json_encode($this->cart));
 
+    $this->loading = false;
+
   }
 
 
@@ -157,7 +162,7 @@ class Cart extends Component
   {
 
     try {
-
+      $this->loading = true;
       if ($quantity > 0) {
 
         $product = $this->productRepository()->getItem($productId);
@@ -180,6 +185,7 @@ class Cart extends Component
           $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
         }
       }
+      $this->loading = false;
     } catch (\Exception $e) {
 
       switch ($e->getMessage()) {
@@ -199,6 +205,7 @@ class Cart extends Component
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
       }
+      $this->loading = false;
     }
   }
 
@@ -210,11 +217,12 @@ class Cart extends Component
     $this->updateCart();
 
     $this->alert('warning', trans('icommerce::cart.message.remove'), config("asgard.isite.config.livewireAlerts"));
-
+    $this->loading = false;
   }
 
   public function deleteCart()
   {
+    $this->loading = true;
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartRepository()->deleteBy($this->cart->id, $params);
     $this->cart = null;
