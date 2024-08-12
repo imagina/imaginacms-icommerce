@@ -596,7 +596,10 @@ class Checkout extends Component
     $shippingAddress = null;
 
     if (setting('icommerce::warehouseFunctionality', null, false)) {
-      $shippingAddressWarehouse = session('shippingAddress');
+      
+      $shippingAddressWarehouse = request()->session()->get('shippingAddress');
+      $shippingAddressWarehouse = json_decode($shippingAddressWarehouse);
+
       if (isset($shippingAddressWarehouse)) {
         $this->shippingAddressSelected = $shippingAddressWarehouse->id;
         $this->sameShippingAndBillingAddresses = false;
