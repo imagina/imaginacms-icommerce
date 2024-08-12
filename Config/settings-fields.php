@@ -1291,6 +1291,18 @@ return [
         ]
     ]
 ],
+  'productResponsive' => [
+    "onlySuperAdmin" => true,
+    "value" => [0 => ["items" => 2], 640 => ["items" => 3], 992 => ["items" => 4]],
+    'name' => 'icommerce::productResponsive',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "type" => "json",
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      "label" => "icommerce::common.settings.productResponsive",
+    ]
+  ],
   'availableProvincesMap' => [
     'name' => 'icommerce::availableProvincesMap',
     'value' =>  [],
