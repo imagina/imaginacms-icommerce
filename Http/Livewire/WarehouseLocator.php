@@ -34,6 +34,8 @@ class WarehouseLocator extends Component
   public $loading;
 
   public $readyToLoad = false;
+
+  public $showComponent = false;
   
   /**
   * LISTENERS
@@ -44,47 +46,23 @@ class WarehouseLocator extends Component
       'cancelledNewAddress' => 'changeShowAddressForm',
       'shippingAddressChanged' => 'checkAddress',
       'markerSelectedFromMap',
-      'updateTooltipStatus',
-      'confirmData'
+      'confirmData',
+      'warehouseShowInforIsReady' => 'checkComponentReady'
   ];
     
   /**
    * MOUNT
    */
   public function mount(
-    $layout = 'warehouse-locator-layout-1',
-    $warehouse, 
-    $shippingAddress,
-    $shippingMethods          
+    $layout = 'tabs'       
   ){
+      
       $this->log = "Icommerce::Livewire|WarehouseLocator|";
       $this->layout = $layout;
       $this->view = "icommerce::frontend.livewire.warehouse-locator.layouts.$this->layout.index";
 
+      //\Log::info($this->log.'MOUNT');
     
-      //Default values
-      $this->user = \Auth::user() ?? null;
-      
-      //$this->warehouse = $warehouse;
-      $this->warehouse = session("warehouse");
-      //\Log::info($this->log.'mount|warehouse: '.$this->warehouse);
-
-      $this->shippingAddress = $shippingAddress;
-      $this->shippingMethods = $shippingMethods;
-
-      //Vars to Show and Hide HTML
-      $this->showAddressForm = false;
-      $this->chooseOtherWarehouse = false;
-      $this->tabSelected = $this->shippingMethods['delivery'];
-      $this->warehouseSelectedFromMap = null;
-      $this->showNotWarehouses = false;
-      $this->disableBtnConfirm = false;
-      $this->loading = false;
-      
-      //Init Process
-      $this->getAllShippingAddressFromUser();
-      $this->init();
-
   }
 
   /**
@@ -139,11 +117,49 @@ class WarehouseLocator extends Component
   public function init()
   {
 
+    \Log::info($this->log.'Init');
+
+    //Default values
+    $this->user = \Auth::user() ?? null;
+      
+    //Set Warehouse
+    $warehouse = request()->session()->get('warehouse');
+    $warehouse = json_decode($warehouse);
+    if (isset($warehouse->id)) {
+      $this->warehouse = $this->warehouseRepository()->getItem($warehouse->id);
+      \Log::info($this->log.'Init|Warehouse: '.$this->warehouse->title);
+    }
+   
+    //Set Shipping Address
+    $shippingAddress = request()->session()->get('shippingAddress');
+    $shippingAddress = json_decode($shippingAddress);
+    if (isset($shippingAddress->id)) {
+      $this->shippingAddress = $this->addressRepository()->getItem($shippingAddress->id);
+    }
+   
+    //$this->shippingMethods = $shippingMethods;
+    $this->shippingMethods = config('asgard.icommerce.config.warehouseShippingMethods');
+
+    //Vars to Show and Hide HTML
+    $this->showAddressForm = false;
+    $this->chooseOtherWarehouse = false;
+    $this->tabSelected = $this->shippingMethods['delivery'];
+    $this->warehouseSelectedFromMap = null;
+    $this->showNotWarehouses = false;
+    $this->disableBtnConfirm = false;
+    $this->loading = false;
+    
+    //Init Process
+    $this->getAllShippingAddressFromUser();
+
+
     //Shipping Method Selected
     if (!is_null(session("shippingMethodName"))){
       $this->shippingMethodName = session("shippingMethodName");
       $this->tabSelected = session("shippingMethodName");
     }
+
+    \Log::info($this->log.'END');
 
   }
 
@@ -344,7 +360,9 @@ class WarehouseLocator extends Component
         \Log::info($this->log.'checkAddress|Nearby Exist');
 
         //Save in Session
-        session(['warehouse' => $this->warehouse]);
+        //session(['warehouse' => $this->warehouse]);
+        request()->session()->put('warehouse', json_encode($this->warehouse));
+
         //session(['shippingAddress' => $this->shippingAddress]);
         //session(['shippingAddress' => null]);
         session(["shippingMethodName" => $this->shippingMethods['pickup']]);
@@ -410,18 +428,22 @@ class WarehouseLocator extends Component
    
   }
 
-  /**
-   * Listener
-   * User clicked in button "keep" inside Tooltip
-   */
-  public function updateTooltipStatus()
+  /*
+  * LISTENER
+  */
+  public function checkComponentReady()
   {
-    
-    \Log::info($this->log.'updateTooltipStatus');
 
-    //Save in Session
-    session(['showTooltip' => false]);
+    \Log::info($this->log.'Listener|checkComponentReady|warehouseShowInforComponent: YES');
+   
+    //Init
+    $this->init();
 
+    //Show Session Vars in Log
+    $this->warehouseService()->showSessionVars();
+
+    // Show Component
+    $this->showComponent = true;
   }
 
   /**
@@ -469,25 +491,28 @@ class WarehouseLocator extends Component
 
     \Log::info($this->log.'confirmData');
 
-    //Helper|Isite
-    //clearResponseCache();
+    //Show Session Vars in Log
+    //$this->warehouseService()->showSessionVars();
 
     $this->loading = true;
     $this->disabledBtnConfirm = true;
 
     //Save in Session
-    session(['shippingMethodName' => $this->tabSelected]);
-
+    //session(['shippingMethodName' => $this->tabSelected]);
+    request()->session()->put('shippingMethodName', $this->tabSelected);
+    
     //Case Pickup
     if($this->tabSelected==$this->shippingMethods['pickup']){
       \Log::info($this->log.'confirmData|Case PICKUP');
 
       //Shipping Address Selected (From Delivery)
-      if(!is_null(session('shippingAddress'))){
+      if(!is_null($this->shippingAddress)){
         //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
         session(['shippingAddress' => null]);
         //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
         session(['shippingAddressChecked' => true]);
+        //Toco setear el warehouse porque con los tabs pierde las variables de sesion el Livewire
+        request()->session()->put('warehouse', json_encode($this->warehouse));
       }
       
       //User selected a warehouse from Map
@@ -497,7 +522,7 @@ class WarehouseLocator extends Component
         //Get All Data
         $warehouseSelected = $this->warehouseRepository()->getItem($criteria);
         //Save in Session
-        session(['warehouse' => $warehouseSelected]);
+        request()->session()->put('warehouse', json_encode($warehouseSelected));
       }
       
     }else{
@@ -519,8 +544,7 @@ class WarehouseLocator extends Component
 
 
       //Save in Session
-      session(['warehouse' => $this->warehouse]);
-      //session()->flash('warehouse' , $this->warehouse);
+      request()->session()->put('warehouse', json_encode($this->warehouse));
 
       //Case: Address no has coverage (Check if address is nearby)
       if(isset($warehouseProcess['nearby'])){
@@ -533,7 +557,7 @@ class WarehouseLocator extends Component
         session(['warehouseAlert' => true]);
 
          //Shipping Address Selected (From Delivery)
-        if(!is_null(session('shippingAddress'))){
+        if(!is_null($this->shippingAddress)){
           //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
           session(['shippingAddress' => null]);
           //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
@@ -546,7 +570,8 @@ class WarehouseLocator extends Component
 
         //Case: Address has coverage 
         //Save in Session
-        session(['shippingAddress' => $this->shippingAddress]);
+        request()->session()->put('shippingAddress', json_encode($this->shippingAddress));
+
       }
       
     }
@@ -559,7 +584,6 @@ class WarehouseLocator extends Component
 
     //Reload Page
     $this->dispatchBrowserEvent('refresh-page');
-    //$this->redirect('home');
 
   }
 
@@ -607,20 +631,7 @@ class WarehouseLocator extends Component
     return $this->warehouse;
 
   }
-
-  public function hydrate()
-  {
-    //\Log::info($this->log.'HYDRATE');
-    //\Log::info($this->log.'hydrate warehouse VAR: '.$this->warehouse);
-  }
-
-  public function dehydrate()
-  {
-    
-    //\Log::info($this->log.'DEHYDRATE');
-    //\Log::info($this->log.'dehydrate warehouse VAR: '.$this->warehouse);
-  
-  }
+ 
 
   //|--------------------------------------------------------------------------
   //| Render
