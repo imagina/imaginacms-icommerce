@@ -1154,6 +1154,19 @@ return [
         ]
     ]
    ],
+  'productWithDescription' => [
+    "onlySuperAdmin" => true,
+    'value' => '0',
+    'name' => 'icommerce::productWithDescription',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'checkbox',
+    'props' => [
+      'trueValue' => '1',
+      'falseValue' => '0',
+      'label' => 'icommerce::common.settings.productWithDescription'
+    ]
+  ],
   'layoutProductIcommerce' => [
     'name' => 'icommerce::layoutProductIcommerce',
     'value' => null,
