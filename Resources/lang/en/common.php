@@ -153,6 +153,7 @@ return [
     'checkoutRedirectUrl' => 'Checkout redirect URL',
     'productImageObjectFit' => 'Image object fit',
     'productShowGalleryLayout' => 'Gallery Template',
+    'productResponsive' => 'Responsive Gallery',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',

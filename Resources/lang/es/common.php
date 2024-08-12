@@ -166,6 +166,7 @@ return [
     'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'productImageObjectFit' => 'Ajuste de la imagen',
     'productShowGalleryLayout' => 'Plantilla de Galeria',
+    'productResponsive' => 'Responsive Galeria',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',
