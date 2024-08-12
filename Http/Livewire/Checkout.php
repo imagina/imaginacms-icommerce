@@ -944,7 +944,13 @@ class Checkout extends Component
     $data["guest_purchase"] = $this->shopAsGuest;
     $data["organizationId"] = $this->organization->id ?? null;
     if (setting('icommerce::warehouseFunctionality', null, false)) {
-      $warehouse = session('warehouse');
+      
+      $warehouse = request()->session()->get('warehouse');
+      $warehouse = json_decode($warehouse);
+      if (isset($warehouse->id)) {
+        $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+      }
+      
       $data["warehouse_id"] = $warehouse->id ?? null;
       $data["warehouse_title"] = $warehouse->title ?? null;
       $data["warehouse_address"] = $warehouse->address ?? null;
