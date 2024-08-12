@@ -36,7 +36,19 @@ class Cart extends Component
   private $params;
   private $request;
   protected $currencies;
-  protected $listeners = ['addToCart', 'addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
+  protected $listeners = [
+    'addToCart', 
+    'addToCartWithOptions', 
+    'download', 
+    'deleteFromCart', 
+    'updateCart', 
+    'deleteCart', 
+    'refreshCart', 
+    'makeQuote', 
+    'requestQuote', 
+    'submitQuote',
+    'warehouseShowInforIsReady' => 'refreshCart'
+  ];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
                                 $iconquote = 'fas fa-file-alt', $showButton = true, $classCart = '', $styleCart = '')
@@ -104,8 +116,13 @@ class Cart extends Component
           $updateCart = true;
         } else {
           $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
-          $warehouse = Session('warehouse');
-          if ($warehouseEnabled && $cartProduct->warehouse_id != $warehouse->id) {
+          
+          $warehouse = request()->session()->get('warehouse');
+          $warehouse = json_decode($warehouse);
+          if (isset($warehouse->id)) {
+            $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+          }
+          if ($warehouseEnabled && isset($warehouse->id) && $cartProduct->warehouse_id != $warehouse->id) {
             $data = [
               'product_id' => $cartProduct->product->id,
               'warehouse_id' => $warehouse->id,
