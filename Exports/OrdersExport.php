@@ -40,7 +40,6 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
     $this->userId = \Auth::id();//Set for ReportQueue
         $this->params = $params;
         $this->exportParams = $exportParams;
-        $this->inotification = app('Modules\Notification\Services\Inotification');
     }
 
     public function query(): Collection
@@ -121,7 +120,7 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
             AfterSheet::class => function (AfterSheet $event) {
         $this->unlockReport($this->exportParams->exportName);
                 //Send pusher notification
-                $this->inotification->to(['broadcast' => $this->params->user->id])->push([
+                app('Modules\Notification\Services\Inotification')->to(['broadcast' => $this->params->user->id])->push([
                     'title' => 'New report',
                     'message' => 'Your report is ready!',
                     'link' => url(''),
