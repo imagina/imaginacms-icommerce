@@ -123,7 +123,7 @@ class WarehouseShowInfor extends Component
     }
     if(isset($this->user->id) && !empty($this->shippingAddress)){
         $this->title = "<span class='{$this->textClass}'>".
-            trans("icommerce::warehouses.messages.hello") .$this->user->first_name. ",".
+            trans("icommerce::warehouses.messages.hello") ." ".$this->user->first_name. ",".
             ($this->text ?? trans('icommerce::warehouses.messages.your address is')) .
             "</span>" .
             "<a class='address cursor-pointer {$this->addressClass}' data-toggle='modal' data-target='#modalWarehouseLocator'>" .
