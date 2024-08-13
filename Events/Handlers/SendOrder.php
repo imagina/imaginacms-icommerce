@@ -50,7 +50,7 @@ class SendOrder
       if (isset($emailTo) && !empty($emailTo)) {
 
         $userId = \Auth::id() ?? null;
-        $source = "icommerce";
+        $source = "icommerce-order";
 
         //send notification by email, broadcast and push -- by default only send by email
         $this->notificationService->to([
@@ -113,11 +113,11 @@ class SendOrder
     //Validation collection users | get only Ids
     if(count($users)>0)
       $usersIds = $users->pluck('id')->toArray();
-    
+
     //Add Customer Order Id
     if(!is_null($order->customer_id))
       $usersIds[] = $order->customer_id;
-     
+
     //By last, gets the Email of the user in the order
     array_push($emailTo, $order->email);
 

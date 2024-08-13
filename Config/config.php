@@ -130,7 +130,7 @@ return [
       'title' => 'icommerce::orderstatuses.statuses.expired',
     ],
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Weight Classes to seed
@@ -185,9 +185,9 @@ return [
         "unit" => trans("icommerce::weightclasses.classes.ounce.unit",[],"en")
       ]
     ]
-  
+
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Length Classes to seed
@@ -231,7 +231,7 @@ return [
       ]
     ]
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Volume Classes to seed
@@ -263,7 +263,7 @@ return [
       ]
     ]
   ],
-  
+
   /*
    |--------------------------------------------------------------------------
    | Volume Classes to seed
@@ -962,7 +962,8 @@ return [
   |--------------------------------------------------------------------------
   */
   'notificationSource' => [
-    'icommerce' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-message']
+    'icommerce' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-message'],
+    'icommerce-order' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-receipt'],
   ],
 
 ];
