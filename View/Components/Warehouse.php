@@ -70,10 +70,10 @@ class Warehouse extends Component
     $titleModal = null,
     $subtitleModal = null,
     $shippingMethodsConfig = null
-  )
-  {
+  ) {
 
     $this->log = "Icommerce::Components|Warehouse|";
+    //\Log::info($this->log."MOUNT");
     $this->layout = $layout;
     $this->layoutLocator = $layoutLocator;  //Layout To Warehouse Locator | Livewire Component
     $this->view = "icommerce::frontend.components.warehouse.layouts." . $layout . ".index";
@@ -108,7 +108,7 @@ class Warehouse extends Component
     $this->activeTooltip = false;
 
     //Init Process
-    $this->init();
+    //$this->init();
   }
 
   /**
@@ -179,11 +179,11 @@ class Warehouse extends Component
     \Log::info($this->log . 'getAndSetShippingAddress');
 
     $shippingAddress = $this->user->addresses()
-      ->where(["type" => "shipping", "default" => 1])->first();
+    ->where(["type" =>"shipping","default" => 1])->first();
 
     if (!is_null($shippingAddress)) {
       //Get Default
-      $this->shippingAddress = $shippingAddress;
+      $this->shippingAddress = $shippingAddress ;
       //Save in Session Shipping Address
       session(['shippingAddress' => $this->shippingAddress]);
       session(['shippingMethodName' => $this->shippingMethods['delivery']]);
@@ -192,7 +192,7 @@ class Warehouse extends Component
       \Log::info($this->log . 'getAndsetShippingAddress|User has no address by default');
       session(['shippingAddress' => null]);
     }
-
+    
   }
 
   /**
@@ -229,7 +229,7 @@ class Warehouse extends Component
             //Assign Default Warehouse
             $this->setDefaultWarehouse();
 
-            if (is_null(session("showTooltip"))) $this->activeTooltip = true;
+            if(is_null(session("showTooltip"))) $this->activeTooltip = true;
 
             session(['shippingAddressChecked' => true]);
 
@@ -271,10 +271,10 @@ class Warehouse extends Component
           }
         }
 
-      } else {
-
+      }else{
+        
         //User Not Logged but at one point the shippingAddress session variable was created
-        if (!is_null(session("shippingAddress"))) {
+        if(!is_null(session("shippingAddress"))) {
           session(['shippingAddress' => null]);
         }
 
@@ -296,6 +296,7 @@ class Warehouse extends Component
    */
   public function render()
   {
+
     return view($this->view);
   }
 }

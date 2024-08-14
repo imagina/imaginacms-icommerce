@@ -15,14 +15,8 @@
                             {{$subtitleModal}}
                         </div>
                     @endif
-
-                    @livewire("icommerce::warehouse-locator", [
-                        "layout" => $layoutLocator,
-                        "warehouse" => $warehouse,
-                        "shippingAddress" => $shippingAddress,
-                        "shippingMethods" => $shippingMethods
-                    ])
-
+                    
+                    @livewire("icommerce::warehouse-locator")
 
                 </div>
             </div>

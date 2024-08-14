@@ -1,5 +1,7 @@
 <div class="warehouse-layout-tabs">
 
+@if($showComponent)
+
     <ul class="nav nav-tabs nav-justified" id="myTabModalWarehouseLocator" role="tablist">
         <li class="nav-item" role="presentation" >
             <a class="nav-link {{$tabSelected == $shippingMethods['delivery'] ? 'active' : ''}}" 
@@ -20,5 +22,9 @@
         @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.tab-delivery')
         @include('icommerce::frontend.livewire.warehouse-locator.layouts.tabs.tab-pickup')     
     </div>
+
+@else
+    <span>cargando... </span>
+@endif
 
 </div>                
