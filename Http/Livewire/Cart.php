@@ -60,7 +60,13 @@ class Cart extends Component
     $this->layout = $layout;
     $this->icon = $icon;
     $this->iconquote = $iconquote;
-    $this->warehouse = session('warehouse');
+    
+    $warehouse = request()->session()->get('warehouse');
+    $warehouse = json_decode($warehouse);
+    if (isset($warehouse->id)) {
+      $this->warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+    }
+
     $this->warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
