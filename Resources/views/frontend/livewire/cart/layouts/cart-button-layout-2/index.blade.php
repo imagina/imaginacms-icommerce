@@ -6,23 +6,25 @@
     @include('icommerce::frontend.livewire.cart.dropdown')
   @endif
   @include("icommerce::frontend.livewire.cart.quoteModal")
+
+  @section('scripts-owl')
+    @parent
+
+    <style>
+      #cartLayout2 .cart .quantity:before {
+        content: '(';
+      }
+      #cartLayout2 .cart .quantity:after {
+        content: ')';
+      }
+      @if(!empty($styleCart))
+        #cartLayout2 .nav-link .cart {
+            {!!$styleCart!!}
+        }
+      @endif
+    </style>
+  @stop
+
 </div>
 
 
-@section('scripts-owl')
-@parent
-
-<style>
-  #cartLayout2 .cart .quantity:before {
-    content: '(';
-  }
-  #cartLayout2 .cart .quantity:after {
-    content: ')';
-  }
-  @if(!empty($styleCart))
-  #cartLayout2 .nav-link .cart {
-  {!!$styleCart!!}
-  }
-  @endif
-</style>
-@stop
