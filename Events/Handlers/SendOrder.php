@@ -30,6 +30,7 @@ class SendOrder
   {
     try {
       $order = $event->order;
+      $children = \DB::table('icommerce__orders')->where('parent_id', $order->id)->first();
 
       //Subject
       $subject = trans('icommerce::orders.messages.purchase order') . " #" . $order->id . ": " . $order->status->title;
@@ -40,23 +41,20 @@ class SendOrder
       // si hay roles asignados a funcionar como tenant entonces el customer de la orden debe ser notificado sólo en las
       // ordenes hijas
       \Log::info('Icommerce: Events|Handlers|SendOrder|RolesToTenant: ' . json_encode($rolesToTenant));
-      if (!empty($rolesToTenant)) {
-        // only insert the customer if the order has a parentId
-        if (!is_null($order->parent_id)) {
-          list($emailTo, $users) = $this->getUsersAndEmails($order);
-        }
-      } else {
+      if ((!empty($rolesToTenant) && !is_null($order->parent_id)) || is_null($children)){
         list($emailTo, $users) = $this->getUsersAndEmails($order);
       }
 
       //if there are valid and not empty emailsTo
       if (isset($emailTo) && !empty($emailTo)) {
 
+        $userId = \Auth::id() ?? null;
+        $source = "icommerce-order";
+
         //send notification by email, broadcast and push -- by default only send by email
         $this->notificationService->to([
           "email" => $emailTo,
-          "broadcast" => $users->pluck('id')->toArray(),
-          "push" => $users->pluck('id')->toArray(),
+          "broadcast" => $users
         ])->push(
           [
             "title" => trans("icommerce::orders.title.confirmation_single_order_title"),
@@ -68,7 +66,9 @@ class SendOrder
             "setting" => [
               "saveInDatabase" => 1 // now, the notifications with type broadcast need to be save in database to really send the notification
             ],
-            "order" => $order
+            "order" => $order,
+            "user_id" => $userId,
+            "source" => $source
           ]
         );
 
@@ -107,10 +107,21 @@ class SendOrder
       $users = $users->merge($organizationUsers);
     }
 
+    $usersIds = [];
+
+    //Validation collection users | get only Ids
+    if(count($users)>0)
+      $usersIds = $users->pluck('id')->toArray();
+
+    //Add Customer Order Id
+    if(!is_null($order->customer_id))
+      $usersIds[] = $order->customer_id;
+
     //By last, gets the Email of the user in the order
     array_push($emailTo, $order->email);
-    
-    return [$emailTo, $users];
+
+    //Final return
+    return [$emailTo, $usersIds];
   }
 
 

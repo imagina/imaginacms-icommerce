@@ -290,7 +290,13 @@ class OrderService
       $orderData["ip"] = request()->ip();//Set Ip from request
       $orderData['key'] = substr(md5(date("Y-m-d H:i:s") . request()->ip()), 0, 20);
       if (setting('icommerce::warehouseFunctionality', null, false)) {
-        $warehouse = session('warehouse');
+        
+        $warehouse = request()->session()->get('warehouse');
+        $warehouse= json_decode($warehouse);
+        if (isset($warehouse->id)) {
+          $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+        }
+
         $orderData["warehouse_id"] = $data["warehouse_id"] ?? $data["warehouseId"] ?? $warehouse->id ?? null;
         $orderData["warehouse_title"] = $data["warehouse_title"] ?? $data["warehouseTitle"] ?? $warehouse->title ?? null;
         $orderData["warehouse_address"] = $data["warehouse_address"] ?? $data["warehouseAddress"] ?? $warehouse->address ?? null;

@@ -35,20 +35,12 @@
     @else
       @guest
         <div class="card mb-0 border-0">
-          <div class="card-header bg-white" role="tab" id="headingLogin"
-               data-toggle="collapse" href="#collapseLogin" aria-expanded="false"
-               style="cursor: pointer;">
-            <label class="form-check-label" style="cursor: pointer;">
-              {{ trans('icommerce::customer.sub_titles.im_client') }}
-            </label>
-          </div>
-          <div id="collapseLogin" class="collapse show" role="tabpanel" aria-labelledby="headingLogin">
-            <div class="card-block my-3">
-              <!-- FORMULARIO -->
-              <div class="alert alert-danger d-none" id="loginAlert"></div>
-              @include('iprofile::frontend.widgets.login',
-              ["embedded" => true, "route" => $locale . '.icommerce.store.checkout', "register" => false])
-            </div>
+          <div class="col py-2">
+            @php $reedirectUrl = "/ipanel/#/auth/login/?redirectTo=".url(route($locale . '.icommerce.store.checkout')); @endphp
+            <a class="btn btn-sm btn-outline-primary" onclick="location.href='{{$reedirectUrl}}'">
+              <i class="fa-solid fa-user"></i>
+              {{ trans('icommerce::customer.sub_titles.logging') }}
+            </a>
           </div>
         </div>
         <div class="card mb-0 border-0">

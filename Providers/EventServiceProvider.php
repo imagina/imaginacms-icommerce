@@ -26,12 +26,16 @@ use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Events\ProductOptionValueWarehouseWasCreated;
 use Modules\Icommerce\Events\ProductOptionValueWarehouseWasUpdated;
+use Modules\Icommerce\Events\ProductOptionValueWarehouseWasDeleted;
+use Modules\Icommerce\Events\ProductOptionValueWasCreated;
 use Modules\Icommerce\Events\ProductOptionValueWasUpdated;
+use Modules\Icommerce\Events\ProductOptionValueWasDeleted;
 use Modules\Icommerce\Events\ProductWarehouseWasUpdated;
+use Modules\Icommerce\Events\ProductWarehouseWasDeleted;
+use Modules\Icommerce\Events\ProductWarehouseWasCreated;
 use Modules\Icommerce\Events\ProductWasCreated;
 use Modules\Icommerce\Events\ProductWasUpdated;
 use Modules\Icommerce\Events\UpdateProductable;
-use Modules\Icommerce\Events\ProductOptionValueWasCreated;
 use Modules\Icommerce\Events\CouponWasCreated;
 use Modules\Icommerce\Events\CouponWasUpdated;
 use Modules\Icommerce\Events\CouponIsDeleting;
@@ -46,7 +50,7 @@ use Modules\Isite\Events\OrganizationWasCreated;
 
 class EventServiceProvider extends ServiceProvider
 {
-    protected $listen = [
+  protected $listen = [
     OrderIsCreating::class => [
       SaveOrderItems::class
     ],
@@ -105,10 +109,16 @@ class EventServiceProvider extends ServiceProvider
     ProductOptionValueWasUpdated::class => [
       ValidateQuantities::class,
     ],
+    ProductOptionValueWasDeleted::class => [
+      ValidateQuantities::class,
+    ],
     ProductOptionValueWarehouseWasCreated::class => [
       ValidateQuantitiesWarehouse::class,
     ],
     ProductOptionValueWarehouseWasUpdated::class => [
+      ValidateQuantitiesWarehouse::class,
+    ],
+    ProductOptionValueWarehouseWasDeleted::class => [
       ValidateQuantitiesWarehouse::class,
     ],
     ProductWarehouseWasUpdated::class => [
@@ -117,5 +127,8 @@ class EventServiceProvider extends ServiceProvider
     ProductWarehouseWasCreated::class => [
       ValidateProductQuantityWarehouse::class,
     ],
-    ];
+    ProductWarehouseWasDeleted::class => [
+      ValidateProductQuantityWarehouse::class,
+    ],
+  ];
 }

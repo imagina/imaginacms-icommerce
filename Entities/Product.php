@@ -3,48 +3,42 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
-use Modules\Core\Icrud\Entities\CrudModel;
+use Modules\Core\Traits\NamespacedEntity;
+use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Icurrency\Support\Facades\Currency;
+use Modules\Ihelpers\Traits\Relationable;
+use Modules\Isite\Relations\EmptyRelation;
+use Modules\Media\Entities\File;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Tag\Contracts\TaggableInterface;
+use Modules\Tag\Traits\TaggableTrait;
+use Modules\Isite\Traits\Rateable;
+use Illuminate\Support\Facades\Auth;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Isite\Entities\Organization;
+use Illuminate\Support\Str;
+use Modules\Isite\Traits\Typeable;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
-use Modules\Core\Traits\NamespacedEntity;
-use Modules\Ihelpers\Traits\Relationable;
-use Modules\Isite\Entities\Organization;
-use Modules\Isite\Traits\Rateable;
 use Modules\Isite\Traits\RevisionableTrait;
-use Modules\Isite\Traits\Typeable;
-use Modules\Media\Support\Traits\MediaRelation;
-use Modules\Tag\Traits\TaggableTrait;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Iqreable\Traits\IsQreable;
-use Modules\Tag\Contracts\TaggableInterface;
-use Modules\Icommerce\Presenters\ProductPresenter;
 
-class Product extends CrudModel implements TaggableInterface
+class Product extends Model implements TaggableInterface
 {
   use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,
-    Rateable, Relationable, BelongsToTenant, Typeable,
+    Rateable, Relationable, BelongsToTenant, hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait,
     IsQreable;
 
-  protected $table = 'icommerce__products';
+  //public $forceDeleting = true;
   public $transformer = 'Modules\Icommerce\Transformers\ProductTransformer';
+  public $entity = 'Modules\Icommerce\Entities\Product';
   public $repository = 'Modules\Icommerce\Repositories\ProductRepository';
-  public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateProductRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductRequest',
-  ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
+
+  protected $table = 'icommerce__products';
+  protected static $entityNamespace = 'asgardcms/product';
+  private $user;
   public $translatedAttributes = [
     'name',
     'description',
@@ -102,41 +96,51 @@ class Product extends CrudModel implements TaggableInterface
   protected $casts = [
     'options' => 'array'
   ];
-  protected $width = ['files','tags'];
+  protected $width = ['files', 'tags', 'authPriceLists'];
   private $auth;
+
 
   public function __construct(array $attributes = [])
   {
     $this->auth = Auth::user();
+    $this->forceDeleting = true;
     parent::__construct($attributes);
   }
-  
+
   public function weightClass()
   {
     return $this->belongsTo(WeightClass::class);
   }
-  
+
   public function volumeClass()
   {
     return $this->belongsTo(VolumeClass::class);
   }
-  
+
   public function quantityClass()
   {
     return $this->belongsTo(QuantityClass::class);
   }
-  
-  
+
+
   public function lengthClass()
   {
     return $this->belongsTo(LengthClass::class);
   }
-  
+
   public function entity()
   {
 
-      return $this->belongsTo($this->entity_type, 'entity_id');
-    
+    return $this->belongsTo($this->entity_type, 'entity_id');
+
+  }
+
+  public function store()
+  {
+    if (is_module_enabled('Marketplace')) {
+      return $this->belongsTo('Modules\Marketplace\Entities\Store');
+    }
+    return $this->belongsTo(Store::class);
   }
 
   public function addedBy()
@@ -241,6 +245,13 @@ class Product extends CrudModel implements TaggableInterface
       ->using(OrderItem::class);
   }
 
+  /*
+  public function coupons()
+  {
+    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_product')->withTimestamps();
+  }
+  */
+
   public function parent()
   {
     return $this->belongsTo('Modules\Icommerce\Entities\Product', 'parent_id');
@@ -327,10 +338,22 @@ class Product extends CrudModel implements TaggableInterface
     return json_decode($value);
   }
 
+  /*
+  protected function setRatingAttribute($value)
+  {
+    $defaultRating = config("asgard.icommerce.config.defaultProductRating");
+    if (!empty($value)) {
+      $this->attributes['rating'] = $defaultRating ?? $value;
+    } else {
+      $this->attributes['rating'] = 5;
+    }
+
+  }
+  */
+
 
   public function discount()
   {
-
     $user = $this->auth;
     $userId = $user->id ?? 0;
     //dd($userId);
@@ -387,6 +410,66 @@ class Product extends CrudModel implements TaggableInterface
 
   }
 
+
+  public function getSecondaryImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
+    if (!$thumbnail) {
+      $image = [
+        'mimeType' => 'image/jpeg',
+        'path' => url('modules/iblog/img/post/default.jpg')
+      ];
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
+
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'mainimage')->first();
+
+    if (!$thumbnail) {
+      if (isset($this->options->mainimage)) {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url($this->options->mainimage)
+        ];
+      } else {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url('modules/iblog/img/post/default.jpg')
+        ];
+      }
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+
+  }
+
+  public function getGalleryAttribute()
+  {
+
+    $gallery = $this->filesByZone('gallery')->get();
+    $response = [];
+    foreach ($gallery as $img) {
+      array_push($response, [
+        'mimeType' => $img->mimetype,
+        'path' => $img->path_string,
+        'alt' => $img->alt ?? null
+      ]);
+    }
+
+    return json_decode(json_encode($response));
+  }
+
   public function organization()
   {
     return $this->belongsTo(Organization::class);
@@ -405,9 +488,9 @@ class Product extends CrudModel implements TaggableInterface
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
 
     $currentLocale = $locale ?? locale();
-    if(!is_null($locale)){
-       $this->slug = $this->getTranslation($locale)->slug;
-       $this->category = $this->category->getTranslation($locale);
+    if (!is_null($locale)) {
+      $this->slug = $this->getTranslation($locale)->slug;
+      $this->category = $this->category->getTranslation($locale);
     }
 
     if (empty($this->slug)) return "";
@@ -416,23 +499,23 @@ class Product extends CrudModel implements TaggableInterface
       $host = request()->getHost();
 
       if ($useOldRoutes)
-        if ($this->category->status && !empty($this->category->slug)){
-          $url = \LaravelLocalization::localizeUrl('/'. $this->category->slug.'/'.$this->slug, $currentLocale);
-        } else{
+        if ($this->category->status && !empty($this->category->slug)) {
+          $url = \LaravelLocalization::localizeUrl('/' . $this->category->slug . '/' . $this->slug, $currentLocale);
+        } else {
           $url = "";
         }
       else {
         $tenancyMode = config("tenancy.mode", null);
-  
-    
-        if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
-            return tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
-      
+
+
+        if (!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)) {
+          return tenant_route(Str::remove('https://', $this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
+
         }
-        
-        $url = Str::replace(["{productSlug}"],[$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
+
+        $url = Str::replace(["{productSlug}"], [$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
         $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-       
+
       }
     }
 
@@ -494,30 +577,25 @@ class Product extends CrudModel implements TaggableInterface
     return $isAvailable;
   }
 
-  public function getPriceAttribute($value)
+  public function getPriceByListAttribute()
   {
-    $price = $value;
+    $price = null;
     $auth = $this->auth;
 
     $priceList = is_module_enabled('Icommercepricelist');
     $setting = json_decode(request()->get('setting'));
 
-    if (isset($auth->id) && $priceList && !isset($setting->fromAdmin)) {
-      if ($this->priceLists) {
-        foreach ($this->priceLists as $pList) {
-          if ($pList->related_entity == "Modules\Iprofile\Entities\Department") {
-            if ($pList->related_id !== '0' && $pList->related_id !== 0) {
-              $depts = $auth->departments()->where('department_id', $pList->related_id)->get();
-              if ($auth && count($depts) > 0) {
-                $price = $pList->pivot->price;
-              }
-            } else {
-              $price = $pList->pivot->price;
-            }
-          } else {
-            $price = $pList->pivot->price;
-          }
-        }//has priceLists
+    if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
+      $priceList = $this->authPriceLists->where('related_id', '!=', 0)->first() ?? $this->authPriceLists->first();
+
+      if ($priceList) {
+        if ($priceList->criteria === 'percentage') {
+          //Calculate percentage
+          $price = icommercepricelist_calculatePriceByPriceList($priceList, $this->getRawOriginal('price'));
+        } else {
+          //Get value of fixed
+          $price = $priceList->pivot->price;
+        }
       }
     }
     return $price;
@@ -530,7 +608,29 @@ class Product extends CrudModel implements TaggableInterface
         ->withPivot(['price', 'id'])
         ->withTimestamps();
     }
-    return collect([]);
+    return new EmptyRelation();
+  }
+
+  public function authPriceLists()
+  {
+    $user = $this->auth;
+    //Verify if exist module and the user
+    if (is_module_enabled('Icommercepricelist') && $user) {
+      //Get the priceList with the pivot
+      return $this->belongsToMany(\Modules\Icommercepricelist\Entities\PriceList::class, \Modules\Icommercepricelist\Entities\ProductList::class)
+        ->withPivot(['price', 'id'])
+        ->withTimestamps()
+        ->where('related_entity', 'Modules\\Iprofile\\Entities\\Department')
+        ->where(function ($query) use ($user) {
+          $query->whereNull('related_id')
+            ->orWhere('related_id', 0)
+            ->orWhereIn('related_id', function ($q) use ($user) {
+              $q->select('department_id')->from('iprofile__user_department')->where('user_id', $user->id);
+            });
+        })->orderBy('created_at', 'desc');//Order by newest data
+    }
+
+    return new EmptyRelation();
   }
 
   public function tax($couponDiscount = 0)
@@ -555,14 +655,11 @@ class Product extends CrudModel implements TaggableInterface
     return $taxes;
   }
 
-  public function hasRequiredOptions(){
-    $hasRequiredOptions = false;
-    if(isset($this->entity->productOptions)){
-      foreach ($this->entity->productOptions as $productOption){
-        isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
-      }
-    }
-    
-    return $hasRequiredOptions;
+  // Mutator to return the product price in order of, priceList or product price
+  // IMPORTANT: if you need to get the price base for any calculation use $this->getRawOriginal('price')
+  // This will prevent to call this mutator and not generate an infinity loop
+  public function getPriceAttribute($value)
+  {
+    return $this->priceByList ?? $value;
   }
 }

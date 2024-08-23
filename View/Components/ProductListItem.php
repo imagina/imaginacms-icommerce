@@ -66,6 +66,7 @@ class ProductListItem extends Component
   public $labelButtonAddProduct;
   public $showDeleteBtn;
   public $productLayout;
+  public $currentRoute;
 
   /**
    * Create a new component instance.
@@ -73,8 +74,6 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item,
-                              $editLink,
-                              $tooltipEditLink,
                               $itemListLayout = null,
                               $layout = null,
                               $discountRibbonStyle = null,
@@ -123,13 +122,16 @@ class ProductListItem extends Component
                               $contentTitleFontWeight = null,
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
-                              $imageObjectFit = "contain",
-                              $withDescription = false,
+                              $imageObjectFit = null,
+                              $editLink,
+                              $tooltipEditLink,
+                              $withDescription = null,
                               $withPrice = true,
                               $addToCartButtonAction = null,
                               $labelButtonAddProduct = null,
                               $showDeleteBtn = false,
-                              $productLayout=null
+                              $productLayout=null,
+                              $currentRoute = null
   )
   {
     $this->product = $item;
@@ -186,12 +188,13 @@ class ProductListItem extends Component
     $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
     $this->imageObjectFit = $imageObjectFit ?? setting('icommerce::productImageObjectFit', null, "contain");
-    $this->withDescription = $withDescription;
+    $this->withDescription = $withDescription ?? setting('icommerce::productWithDescription', null, '0');
     $this->withPrice = $withPrice;
     $this->addToCartButtonAction = $addToCartButtonAction;
     $this->labelButtonAddProduct = $labelButtonAddProduct;
     $this->showDeleteBtn = $showDeleteBtn;
     $this->productLayout=$productListItemLayout;
+    $this->currentRoute = $currentRoute;
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);

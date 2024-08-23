@@ -28,10 +28,23 @@ class Cart extends Component
   public $iconquote;
   public $classCart;
   public $styleCart;
+  public $loading;
   private $params;
   private $request;
   protected $currencies;
-  protected $listeners = ['addToCart', 'addToCartWithOptions', 'download', 'deleteFromCart', 'updateCart', 'deleteCart', 'refreshCart', 'makeQuote', 'requestQuote', 'submitQuote'];
+  protected $listeners = [
+    'addToCart',
+    'addToCartWithOptions',
+    'download',
+    'deleteFromCart',
+    'updateCart',
+    'deleteCart',
+    'refreshCart',
+    'makeQuote',
+    'requestQuote',
+    'submitQuote',
+    'warehouseShowInforIsReady' => 'refreshCart'
+    ];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
                                 $iconquote = 'fas fa-file-alt', $showButton = true, $classCart = '', $styleCart = '')
@@ -42,12 +55,19 @@ class Cart extends Component
     $this->layout = $layout;
     $this->icon = $icon;
     $this->iconquote = $iconquote;
-    $this->warehouse = session('warehouse');
+
+    //$this->warehouse = json_decode(request()->session()->get('warehouse'));
+    $warehouse = request()->session()->get('warehouse');
+    $warehouse = json_decode($warehouse);
+    if (isset($warehouse->id)) {
+      $this->warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+    }
+
     $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
     $this->styleCart = $styleCart;
-
+    $this->loading = true;
     //$this->refreshCart();
     $this->load();
   }
@@ -57,13 +77,16 @@ class Cart extends Component
   //|--------------------------------------------------------------------------
   public function refreshCart()
   {
-
+  
+    $this->loading = true;
     $cart = request()->session()->get('cart');
+	$cart= json_decode($cart);
 
-    if (isset($cart->id) && $cart->status == 1) {
+    if (isset($cart->id)) {
       $this->cart = $this->cartRepository()->getItem($cart->id);
     }
-    if (isset($this->cart->id)) {
+
+    if (isset($this->cart->id) && $this->cart->status == 1) {
 
       $user = Auth::user();
       $data = [];
@@ -98,8 +121,14 @@ class Cart extends Component
           $updateCart = true;
         } else {
           $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
-          $warehouse = Session('warehouse');
-          if ($warehouseEnabled && $cartProduct->warehouse_id != $warehouse->id) {
+
+          $warehouse = request()->session()->get('warehouse');
+          $warehouse = json_decode($warehouse);
+          if (isset($warehouse->id)) {
+            $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+          }
+
+          if ($warehouseEnabled && isset($warehouse->id) && $cartProduct->warehouse_id != $warehouse->id) {
             $data = [
               'product_id' => $cartProduct->product->id,
               'warehouse_id' => $warehouse->id,
@@ -120,24 +149,26 @@ class Cart extends Component
         }
       }
     }
-    request()->session()->put('cart', $this->cart);
+    request()->session()->put('cart', json_encode($this->cart));
+  
+    $this->loading = false;
+  }
+
+
+  public function addToCartWithOptions($data)
+  {
+
+    $this->addToCart($data["productId"], $data["quantity"], $data["productOptionValues"]);
 
   }
-  
-  
-  public function addToCartWithOptions($data){
 
-    $this->addToCart($data["productId"],$data["quantity"],$data["productOptionValues"]);
-    
-  }
-  
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
   {
 
     try {
+      $this->loading = true;
+      if ($quantity > 0) {
 
-      if($quantity>0){
-    
         $product = $this->productRepository()->getItem($productId);
 
         if (isset($product->id)) {
@@ -159,7 +190,7 @@ class Cart extends Component
         }
 
       }
-
+      $this->loading = false;
     } catch (\Exception $e) {
 
       switch ($e->getMessage()) {
@@ -179,7 +210,7 @@ class Cart extends Component
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
       }
-
+      $this->loading = false;
     }
 
 
@@ -187,13 +218,14 @@ class Cart extends Component
 
   public function deleteFromCart($cartProductId)
   {
+    $this->loading = true;
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartProductRepository()->deleteBy($cartProductId, $params);
 
     $this->updateCart();
 
     $this->alert('warning', trans('icommerce::cart.message.remove'), config("asgard.isite.config.livewireAlerts"));
-
+    $this->loading = false;
   }
 
   public function deleteCart()
@@ -204,6 +236,7 @@ class Cart extends Component
     request()->session()->put('cart', null);
 
     $this->refreshCart();
+    
   }
 
   public function updateCart()
@@ -212,12 +245,12 @@ class Cart extends Component
     $params = json_decode(json_encode(["include" => []]));
     $this->cart = $this->cartRepository()->getItem($this->cart->id, $params);
 
-    request()->session()->put('cart', $this->cart);
+    request()->session()->put('cart', json_encode($this->cart));
 
     $this->emit("cartUpdated", $this->cart);
 
   }
-  
+
   /**
    * @param $name
    * @param $value
@@ -234,11 +267,11 @@ class Cart extends Component
           $this->dispatchBrowserEvent('refresh-page');
         }
         break;
-        
+
     }
-    
+
   }
-  
+
   public function download()
   {
 
@@ -249,8 +282,9 @@ class Cart extends Component
       'filename' => trans("icommerce::pdf.settings.pdf.file_name"),
       'view' => 'icommerce::pdf.viewCart'
     ];
-  
-    return $this->PdfService()->create($content);
+
+    $archivo = $this->PdfService()->create($content);
+    return $archivo;
   }
 
   public function requestQuote()
@@ -286,8 +320,9 @@ class Cart extends Component
       'filename' => trans('icommerce::pdf.settings.pdf.file_name'),
       'view' => 'icommerce::pdf.viewOrder',
     ];
-  
-    return $this->PdfService()->create($content);
+
+    $archivo = $this->PdfService()->create($content);
+    return $archivo;
 
   }
 
@@ -318,7 +353,7 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\CartProductRepository');
   }
-  
+
   /**
    * @return productRepository
    */
@@ -326,7 +361,7 @@ class Cart extends Component
   {
     return app('Modules\Icommerce\Repositories\ProductRepository');
   }
-  
+
   /**
    * @return currencyRepository
    */
@@ -371,7 +406,7 @@ class Cart extends Component
     $this->currencies = $this->currencyRepository()->getItemsBy(json_decode(json_encode([])));
     $this->currencySelected = $this->currentCurrency->id;
   }
-  
+
 
   //|--------------------------------------------------------------------------
   //| Properties

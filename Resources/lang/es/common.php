@@ -34,6 +34,7 @@ return [
     'labelEnableGuestShopping' => 'Habilitar la funcionalidad "Comprar como invitado"',
     'buttonChangeShippingAddressWarehouse' => 'Cambiar dirección de entrega',
     'buttonChangeShippingMethodWarehouse' => 'Cambiar Método de envío',
+    'buttonAddBillingAddressWarehouse' => 'Crear nueva dirección',
   ],
   'filters' => [
     'title' => 'Filtrar',
@@ -165,6 +166,7 @@ return [
     'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'productImageObjectFit' => 'Ajuste de la imagen',
     'productShowGalleryLayout' => 'Plantilla de Galeria',
+    'productResponsive' => 'Responsive Galeria',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',

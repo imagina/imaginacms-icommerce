@@ -64,6 +64,7 @@ class CartService
       $cartData = [
         "ip" => request()->ip(),
         "session_id" => session('_token'),
+	      "status" => 1,
         "user_id" => $data["userId"] ?? $data["customerId"] ?? \Auth::id()
       ];
   

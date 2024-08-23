@@ -34,6 +34,8 @@ class WarehouseLocator extends Component
   public $loading;
 
   public $readyToLoad = false;
+
+  public $showComponent = false;
   
   /**
   * LISTENERS
@@ -44,43 +46,23 @@ class WarehouseLocator extends Component
       'cancelledNewAddress' => 'changeShowAddressForm',
       'shippingAddressChanged' => 'checkAddress',
       'markerSelectedFromMap',
-      'updateTooltipStatus',
-      'confirmData'
+      'confirmData',
+      'warehouseShowInforIsReady' => 'checkComponentReady'
   ];
     
   /**
    * MOUNT
    */
   public function mount(
-    $layout = 'warehouse-locator-layout-1',
-    $warehouse, 
-    $shippingAddress,
-    $shippingMethods          
+    $layout = 'tabs'       
   ){
+      
       $this->log = "Icommerce::Livewire|WarehouseLocator|";
       $this->layout = $layout;
       $this->view = "icommerce::frontend.livewire.warehouse-locator.layouts.$this->layout.index";
 
+      //\Log::info($this->log.'MOUNT');
     
-      //Default values
-      $this->user = \Auth::user() ?? null;
-      $this->warehouse = $warehouse;
-      $this->shippingAddress = $shippingAddress;
-      $this->shippingMethods = $shippingMethods;
-
-      //Vars to Show and Hide HTML
-      $this->showAddressForm = false;
-      $this->chooseOtherWarehouse = false;
-      $this->tabSelected = $this->shippingMethods['delivery'];
-      $this->warehouseSelectedFromMap = null;
-      $this->showNotWarehouses = false;
-      $this->disableBtnConfirm = false;
-      $this->loading = false;
-      
-      //Init Process
-      $this->getAllShippingAddressFromUser();
-      $this->init();
-
   }
 
   /**
@@ -135,11 +117,49 @@ class WarehouseLocator extends Component
   public function init()
   {
 
+    \Log::info($this->log.'Init');
+
+    //Default values
+    $this->user = \Auth::user() ?? null;
+      
+    //Set Warehouse
+    $warehouse = request()->session()->get('warehouse');
+    $warehouse = json_decode($warehouse);
+    if (isset($warehouse->id)) {
+      $this->warehouse = $this->warehouseRepository()->getItem($warehouse->id);
+      \Log::info($this->log.'Init|Warehouse: '.$this->warehouse->title);
+    }
+   
+    //Set Shipping Address
+    $shippingAddress = request()->session()->get('shippingAddress');
+    $shippingAddress = json_decode($shippingAddress);
+    if (isset($shippingAddress->id)) {
+      $this->shippingAddress = $this->addressRepository()->getItem($shippingAddress->id);
+    }
+   
+    //$this->shippingMethods = $shippingMethods;
+    $this->shippingMethods = config('asgard.icommerce.config.warehouseShippingMethods');
+
+    //Vars to Show and Hide HTML
+    $this->showAddressForm = false;
+    $this->chooseOtherWarehouse = false;
+    $this->tabSelected = $this->shippingMethods['delivery'];
+    $this->warehouseSelectedFromMap = null;
+    $this->showNotWarehouses = false;
+    $this->disableBtnConfirm = false;
+    $this->loading = false;
+    
+    //Init Process
+    $this->getAllShippingAddressFromUser();
+
+
     //Shipping Method Selected
     if (!is_null(session("shippingMethodName"))){
       $this->shippingMethodName = session("shippingMethodName");
       $this->tabSelected = session("shippingMethodName");
     }
+
+    \Log::info($this->log.'END');
 
   }
 
@@ -310,7 +330,7 @@ class WarehouseLocator extends Component
 
       //The address have a warehouse
       if (!is_null($warehouseToAddress)) {
-        \Log::info($this->log . 'Shipping Address has a warehouse');
+        \Log::info($this->log . 'ShippingAddressId:'.$address->id. ' has a WarehouseId: '.$warehouseToAddress->id);
         $warehouse = $warehouseToAddress;
       }else{
         //Proccess to get a Warehouse to the Address
@@ -329,7 +349,7 @@ class WarehouseLocator extends Component
       $this->warehouse = $warehouse;
       
       //Show Session Vars in Log
-      $this->warehouseService()->showSessionVars();
+      //$this->warehouseService()->showSessionVars();
 
       //Close Address Form
       $this->showAddressForm = false;
@@ -337,12 +357,22 @@ class WarehouseLocator extends Component
       //Verifying that it was a nearby warehouse
       if(isset($warehouseProcess['nearby'])){
 
+        \Log::info($this->log.'checkAddress|Nearby Exist');
+
         //Save in Session
-        session(['warehouse' => $this->warehouse]);
-        session(['shippingAddress' => $this->shippingAddress]);
+        //session(['warehouse' => $this->warehouse]);
+        request()->session()->put('warehouse', json_encode($this->warehouse));
+
+        //session(['shippingAddress' => $this->shippingAddress]);
+        //session(['shippingAddress' => null]);
+        session(["shippingMethodName" => $this->shippingMethods['pickup']]);
 
         //Show Sweet Alert in frontend
         session(['warehouseAlert' => true]);
+
+         //Show Session Vars in Log
+        $this->warehouseService()->showSessionVars();
+
         //Reload Page
         return redirect(request()->header('Referer'));
 
@@ -366,6 +396,7 @@ class WarehouseLocator extends Component
    */
   public function cleanWarehouseAlert()
   {
+    \Log::info($this->log.'cleanWarehouseAlert');
     session(['warehouseAlert' => null]);
   }
 
@@ -397,16 +428,22 @@ class WarehouseLocator extends Component
    
   }
 
-  /**
-   * Listener
-   * User clicked in button "keep" inside Tooltip
-   */
-  public function updateTooltipStatus()
+  /*
+  * LISTENER
+  */
+  public function checkComponentReady()
   {
-    
-    //Save in Session
-    session(['showTooltip' => false]);
 
+    \Log::info($this->log.'Listener|checkComponentReady|warehouseShowInforComponent: YES');
+   
+    //Init
+    $this->init();
+
+    //Show Session Vars in Log
+    $this->warehouseService()->showSessionVars();
+
+    // Show Component
+    $this->showComponent = true;
   }
 
   /**
@@ -454,24 +491,28 @@ class WarehouseLocator extends Component
 
     \Log::info($this->log.'confirmData');
 
-    //Helper|Isite
-    //clearResponseCache();
+    //Show Session Vars in Log
+    //$this->warehouseService()->showSessionVars();
 
     $this->loading = true;
     $this->disabledBtnConfirm = true;
 
     //Save in Session
-    session(['shippingMethodName' => $this->tabSelected]);
-
+    //session(['shippingMethodName' => $this->tabSelected]);
+    request()->session()->put('shippingMethodName', $this->tabSelected);
+    
     //Case Pickup
     if($this->tabSelected==$this->shippingMethods['pickup']){
+      \Log::info($this->log.'confirmData|Case PICKUP');
 
       //Shipping Address Selected (From Delivery)
-      if(!is_null(session('shippingAddress'))){
+      if(!is_null($this->shippingAddress)){
         //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
         session(['shippingAddress' => null]);
         //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
         session(['shippingAddressChecked' => true]);
+        //Toco setear el warehouse porque con los tabs pierde las variables de sesion el Livewire
+        request()->session()->put('warehouse', json_encode($this->warehouse));
       }
       
       //User selected a warehouse from Map
@@ -481,20 +522,62 @@ class WarehouseLocator extends Component
         //Get All Data
         $warehouseSelected = $this->warehouseRepository()->getItem($criteria);
         //Save in Session
-        session(['warehouse' => $warehouseSelected]);
+        request()->session()->put('warehouse', json_encode($warehouseSelected));
       }
       
     }else{
       //Case Delivery
-      
-      //Save in Session
-      session(['warehouse' => $this->warehouse]);
-      session(['shippingAddress' => $this->shippingAddress]);
+      \Log::info($this->log.'confirmData|Case DELIVERY');
 
+      $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
+      $warehouseIdCal = $warehouseProcess['warehouse']->id;
+
+      //Si el warehouse que se asigno cuando se creó la direccion es diferente al que se esta verificando
+      //Cambiaron la informacion del poligono
+      if($warehouseIdCal!= $this->warehouse->id){
+        //Setea nuevo warehouse
+        $this->warehouse = $warehouseProcess['warehouse']; 
+        //Actualiza la direccion con el nuevo warehouse
+        $addressUpdated = $this->addressRepository()->updateBy($this->shippingAddress->id,["warehouse_id"=>$warehouseIdCal]);
+        $this->shippingAddress = $addressUpdated;
+      }
+
+
+      //Save in Session
+      request()->session()->put('warehouse', json_encode($this->warehouse));
+
+      //Case: Address no has coverage (Check if address is nearby)
+      if(isset($warehouseProcess['nearby'])){
+
+        \Log::info($this->log.'confirmData|Case DELIVERY|Asigna metodo pickup');
+
+        //Set shipping method to Pickup
+        session(["shippingMethodName" => $this->shippingMethods['pickup']]);
+        //Show Sweet Alert in frontend
+        session(['warehouseAlert' => true]);
+
+         //Shipping Address Selected (From Delivery)
+        if(!is_null($this->shippingAddress)){
+          //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
+          session(['shippingAddress' => null]);
+          //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
+          session(['shippingAddressChecked' => true]);
+        }
+
+      }else{
+        
+        \Log::info($this->log.'confirmData|Case DELIVERY|Si tiene cobertura');
+
+        //Case: Address has coverage 
+        //Save in Session
+        request()->session()->put('shippingAddress', json_encode($this->shippingAddress));
+
+      }
+      
     }
 
     //Show Session Vars in Log
-    //$this->warehouseService()->showSessionVars();
+    $this->warehouseService()->showSessionVars();
 
     //Reload Page
     //return redirect(request()->header('Referer'));
@@ -544,10 +627,11 @@ class WarehouseLocator extends Component
   public function getWarehouseFromSession()
   {
     
-    $this->warehouse = session("warehouse");
+    //$this->warehouse = session("warehouse");
     return $this->warehouse;
 
   }
+ 
 
   //|--------------------------------------------------------------------------
   //| Render
@@ -558,9 +642,24 @@ class WarehouseLocator extends Component
   public function render()
   {
 
+    //FIXED - Bug - Con cache activado
+    //Cuando se ingresaba por primera vez en incognito, no carga bien y habia que recargar
+    $tmp = $this->readyToLoad ? $this->getWarehouseFromSession() : null;
+    if($this->readyToLoad && is_null($tmp)){
+      //redirect(request()->header('Referer'));
+    } 
+
+    //Muestar las variables de Session
+    //$this->warehouseService()->showSessionVars();
+    
+    /*
     return view($this->view,[
       'warehouse' => $this->readyToLoad ? $this->getWarehouseFromSession() : null
     ]);
+    */
+
+    return view($this->view);
+    
    
   }
 

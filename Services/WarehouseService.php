@@ -33,10 +33,20 @@ class WarehouseService
 
         \Log::info($this->log.'showSessionVars|===============================');
 
-        if(isset($warehouse))
+        /*
+        if(isset($warehouse)){
             \Log::info($this->log.'showSessionVars|warehouseId: '.$warehouse->id);
-        if(isset($shippingAddress))
+        }*/
+        $warehouse= json_decode($warehouse);
+        if (isset($warehouse->id)) {
+            \Log::info($this->log.'showSessionVars|warehouseId: '.$warehouse->id);
+        }   
+        $shippingAddress = json_decode($shippingAddress);
+        if(isset($shippingAddress)){
             \Log::info($this->log.'showSessionVars|shippingAddressId: '.$shippingAddress->id);
+        }
+
+
         if(isset($shippingMethodName))
             \Log::info($this->log.'showSessionVars|shippingMethodName: '.$shippingMethodName);
         if(isset($shippingAddressChecked))
@@ -86,7 +96,7 @@ class WarehouseService
         foreach ($warehouses as $key => $warehouse) {
             $polygon = $warehouse->polygon;
             if(!is_null($polygon)){
-                \Log::info($this->log.'getWarehouseToAddress|WarehouseId: '.$warehouse->id.' | Title: '.$warehouse->title);
+                //\Log::info($this->log.'getWarehouseToAddress|WarehouseId: '.$warehouse->id.' | Title: '.$warehouse->title);
                 
                 //Get Points from Polygon
                 $points = $polygon->points;
@@ -103,7 +113,7 @@ class WarehouseService
                 
                 //Warehouse to Address Found 
                 if($this->isInPolygon($pointsPolygon, $vsX, $vsY, $address->lng,$address->lat)){
-                    \Log::info($this->log.'getWarehouseToAddress|FOUND to Polygon in WarehouseId: '.$warehouse->id);
+                    \Log::info($this->log.'getWarehouseToAddress|FOUND TO POLYGON in WarehouseId: '.$warehouse->id);
 
                     //Return 
                     return [
@@ -189,7 +199,7 @@ class WarehouseService
             )
         ),2);
         
-        \Log::info($this->log."Distance Aprox: ".$distance." Mts");
+        //\Log::info($this->log."Distance Aprox: ".$distance." Mts");
 
         return $distance;
 

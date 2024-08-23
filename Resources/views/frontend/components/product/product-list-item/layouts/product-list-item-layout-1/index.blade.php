@@ -43,4 +43,13 @@
   @endif
 
   @include('icommerce::frontend.components.product.global-inline-css')
+
+ 
+ <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes --> 
+@if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
+  <!-- Wishlist Modal List -->
+  @livewire("wishlistable::wishlist",["layout"=>"wishlist-layout-modal-list-1","layoutButton"=>'btn', "item" => $product],key(uniqid()))
+@endif
+
+ 
 </div>

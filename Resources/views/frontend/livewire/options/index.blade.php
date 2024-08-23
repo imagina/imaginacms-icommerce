@@ -18,7 +18,7 @@
       <div class="mb-0">
       <span class="text-primary font-weight-bold">
         {{isset($currency->id) ? $currency->symbol_left : '$'}}
-        {{formatMoney(($product->discount->price ?? $product->price) +$this->priceOptions )}}
+        {{formatMoney($dynamicPrice = ($product->discount->price ?? $product->price) +$this->priceOptions )}}
         {{isset($currency->id) ? $currency->symbol_right : ''}}
       </span>
         @if(isset($product->discount->price))
@@ -27,8 +27,7 @@
       </div>
     </div>
   @endif
-
-  @php $dynamicPrice = ($product->discount->price ?? $product->price) + $this->priceOptions;  @endphp
+  
 <!-- calculation according to the information of weight, volume, quantity, lenght-->
   @include('icommerce::frontend.components.product.calculate-pum',['dynamicPrice' => $dynamicPrice])
 
@@ -97,15 +96,19 @@
           @endif
 
         </div>
-        <div class="d-inline-flex align-items-center p-1">
-          <!-- BUTTON WISHLIST -->
-          <a
-            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
-            class="btn btn-wishlist mx-2">
-            <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
-            <i class="fa fa-heart-o ml-1"></i>
-          </a>
-        </div>
+        
+        @if((boolean)setting('wishlistable::wishlistActive',null,false))
+          <div class="d-inline-flex align-items-center p-1">
+            <!-- BUTTON WISHLIST -->
+            <a
+              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id,"fromBtnAddWishlist"=>true])}})"
+              class="btn btn-wishlist mx-2">
+              <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
+              <i class="fa fa-heart-o ml-1"></i>
+            </a>
+          </div>
+        @endif
+
       </div>
       <hr>
     </div>

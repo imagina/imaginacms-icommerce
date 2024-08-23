@@ -1,4 +1,3 @@
-@once
 <div class="modal fade" id="modalWarehouseLocator" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modalWarehouseLocatorLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -16,15 +15,8 @@
                             {{$subtitleModal}}
                         </div>
                     @endif
-
-                    <!-- WAREHOUSE LOCATOR | LIVEWIRE COMPONENT -->
-                    @livewire("icommerce::warehouse-locator", [
-                        "layout" => $layoutLocator,
-                        "warehouse" => $warehouse,
-                        "shippingAddress" => $shippingAddress,
-                        "shippingMethods" => $shippingMethods
-                    ])
-
+                    
+                    @livewire("icommerce::warehouse-locator")
 
                 </div>
             </div>
@@ -34,4 +26,3 @@
 </div>
 
 @include('icommerce::frontend.components.warehouse.partials.style-modal')
-@endonce

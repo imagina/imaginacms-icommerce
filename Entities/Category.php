@@ -3,40 +3,32 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Support\Str;
-use Kalnoy\Nestedset\NodeTrait;
-use Modules\Core\Icrud\Entities\CrudModel;
-use Modules\Core\Icrud\Traits\hasEventsWithBindings;
-use Modules\Core\Support\Traits\AuditTrait;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Isite\Entities\Organization;
-use Modules\Isite\Traits\RevisionableTrait;
-use Modules\Isite\Traits\Typeable;
+use Modules\Media\Entities\File;
 use Modules\Media\Support\Traits\MediaRelation;
+use TypiCMS\NestableTrait;
+use Kalnoy\Nestedset\NodeTrait;
+use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Isite\Traits\Typeable;
+use Modules\Core\Icrud\Traits\hasEventsWithBindings;
+use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Isite\Traits\RevisionableTrait;
 
-class Category extends CrudModel
+class Category extends Model
 {
   use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant,
-     Typeable;
-  
-  protected $table = 'icommerce__categories';
+    hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait;
+
+  //public $forceDeleting = true;
   public $transformer = 'Modules\Icommerce\Transformers\CategoryTransformer';
+  public $entity = 'Modules\Icommerce\Entities\Category';
   public $repository = 'Modules\Icommerce\Repositories\CategoryRepository';
-  public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateCategoryRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateCategoryRequest',
-  ];
-  //Instance external/internal events to dispatch with extraData
-  public $dispatchesEventsWithBindings = [
-    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
-    'creating' => [],
-    'updated' => [],
-    'updating' => [],
-    'deleting' => [],
-    'deleted' => []
-  ];
+
+  protected $table = 'icommerce__categories';
+  protected static $entityNamespace = 'asgardcms/icommerceCategory';
   public $translatedAttributes = [
     'title',
     'h1_title',
@@ -57,32 +49,36 @@ class Category extends CrudModel
     'external_id',
   ];
   
-  protected $width = ['files', 'translations'];
-  
+  protected $width = ['files','translations'];
+
   protected $casts = [
     'options' => 'array'
   ];
-  
-  
+
+  /**
+   * Construct | Force Deleting
+   */
+  public function __construct(array $attributes = [])
+  {
+    $this->forceDeleting = true;
+    parent::__construct($attributes);
+  }
+
   public function parent()
   {
     return $this->belongsTo(Category::class, 'parent_id');
   }
-  
+
   public function children()
   {
     return $this->hasMany(Category::class, 'parent_id');
   }
-  
+
   public function products()
   {
     return $this->belongsToMany(Product::class, 'icommerce__product_category')->withTimestamps();
   }
 
-  /*
-   * Own Products
-   * Just used in Icommercepricelist module to create the list price by category
-   * */
   public function ownProducts()
   {
     return $this->hasMany(Product::class)->where(function ($query) {
@@ -96,91 +92,109 @@ class Category extends CrudModel
   {
     return $this->belongsToMany(Manufacturer::class, 'icommerce__products')->withTimestamps();
   }
+
+  public function store()
+  {
+    if (is_module_enabled('Marketplace')) {
+      return $this->belongsTo('Modules\Marketplace\Entities\Store');
+    }
+    return $this->belongsTo(Store::class);
+  }
+
   /*
-* Polimorphy Relations
-*/
+  * Polimorphy Relations
+  */
   public function coupons()
   {
-    return $this->morphToMany(Coupon::class, 'couponable', 'icommerce__couponables');
+    return $this->morphToMany(Coupon::class, 'couponable','icommerce__couponables');
   }
   
   public function organization()
   {
     return $this->belongsTo(Organization::class);
   }
-  
   /*
- * Mutators / Accessors
- */
+  * Mutators / Accessors
+  */
   public function getUrlAttribute($locale = null)
   {
     $url = "";
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
     
     $currentLocale = $locale ?? locale();
-    if (!is_null($locale)) {
-      $this->slug = $this->getTranslation($locale)->slug;
+    if(!is_null($locale)){
+       $this->slug = $this->getTranslation($locale)->slug;
     }
-    
+  
     if (empty($this->slug)) return "";
     
     $routeName = request()->route()->getName();
-    
-    $currentDomain = !empty($this->organization_id) ? tenant()->domain ?? tenancy()->find($this->organization_id)->domain :
-      parse_url(config('app.url'), PHP_URL_HOST);
-    
-    if (config("app.url") != $currentDomain) {
-      $savedDomain = config("app.url");
-      config(["app.url" => "https://" . $currentDomain]);
-    }
-    
-    if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')) {
-      if ($useOldRoutes) {
-        $url = \LaravelLocalization::localizeUrl('/' . $this->slug, $currentLocale);
-      } else {
-        switch ($routeName) {
-          
-          case locale() . ".icommerce.store.index.categoryManufacturer":
-          case locale() . ".icommerce.store.index.manufacturer":
-            $manufacturerSlug = explode("/", request()->path());
-            if($routeName == locale() . ".icommerce.store.index.categoryManufacturer"){
-              $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[5] : $manufacturerSlug[4];
-            }else{
-              $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[3] : $manufacturerSlug[2];
   
+    $currentDomain = !empty($this->organization_id) ? tenant()->domain ?? tenancy()->find($this->organization_id)->domain :
+      parse_url(config('app.url'),PHP_URL_HOST);
+  
+    if(config("app.url") != $currentDomain){
+      $savedDomain = config("app.url");
+      config(["app.url" => "https://".$currentDomain]);
+    }
+  
+    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+      if ($useOldRoutes) {
+        $url = \LaravelLocalization::localizeUrl('/'. $this->slug, $currentLocale);
+      } else {
+        switch($routeName){
+          
+          case locale().".icommerce.store.index.categoryManufacturer":
+            $manufacturerSlug = explode("/",request()->path());
+            $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[5]: $manufacturerSlug[4];
+            
+            if(!is_null($locale)){
+              $manufacturer = Manufacturer::whereTranslation("slug", $manufacturerSlug, locale())->first();
+              $manufacturerSlug = $manufacturer->getTranslation($currentLocale)->slug ?? null;
+              if(empty($manufacturerSlug)) return "";
             }
             
-            if (!is_null($locale)) {
+            $url = Str::replace(["{categorySlug}","{manufacturerSlug}"],[$this->slug,$manufacturerSlug], trans('icommerce::routes.store.index.categoryManufacturer', [], $currentLocale));
+            $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
+            break;
+            
+          case locale().".icommerce.store.index.manufacturer":
+            $manufacturerSlug = explode("/",request()->path());
+            $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[3]: $manufacturerSlug[2];
+  
+            if(!is_null($locale)) {
               $manufacturer = Manufacturer::whereTranslation("slug", $manufacturerSlug, locale())->first();
               $manufacturerSlug = $manufacturer->getTranslation($currentLocale)->slug ?? null;
               if (empty($manufacturerSlug)) return "";
             }
-            
-            $url = Str::replace(["{categorySlug}", "{manufacturerSlug}"], [$this->slug, $manufacturerSlug], trans('icommerce::routes.store.index.categoryManufacturer', [], $currentLocale));
+  
+            $url = Str::replace(["{categorySlug}","{manufacturerSlug}"],[$this->slug,$manufacturerSlug], trans('icommerce::routes.store.index.categoryManufacturer', [], $currentLocale));
             $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
             break;
           
           default:
-            $url = Str::replace(["{categorySlug}"], [$this->slug], trans('icommerce::routes.store.index.category', [], $currentLocale));
+            $url = Str::replace(["{categorySlug}"],[$this->slug], trans('icommerce::routes.store.index.category', [], $currentLocale));
             $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
             
             $tenancyMode = config("tenancy.mode", null);
-            
-            if (!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)) {
-              $url = tenant_route(Str::remove('https://', $this->organization->url), $currentLocale . '.icommerce.store.index.category', [$this->slug]);
-              
+  
+            if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
+              $url = tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.index.category', [$this->slug]);
+
             }
             break;
         }
       }
     }
+  
+
+
     
-    
-    if (isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
-    
+    if(isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
+  
     return $url;
   }
-  
+
   public function urlManufacturer(Manufacturer $manufacturer)
   {
     $url = "";
@@ -190,7 +204,6 @@ class Category extends CrudModel
     }
     return $url;
   }
-  
   public function getOptionsAttribute($value)
   {
     try {
@@ -199,27 +212,85 @@ class Category extends CrudModel
       return json_decode($value);
     }
   }
-  
+
+  public function getMainImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'mainimage')->first();
+    if (!$thumbnail) {
+      if (isset($this->options->mainimage)) {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url($this->options->mainimage)
+        ];
+      } else {
+        $image = [
+          'mimeType' => 'image/jpeg',
+          'path' => url('modules/iblog/img/post/default.jpg')
+        ];
+      }
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
+
+  public function getSecondaryImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
+    if (!$thumbnail) {
+      $image = [
+        'mimeType' => 'image/jpeg',
+        'path' => url('modules/iblog/img/post/default.jpg')
+      ];
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
+
+  public function getTertiaryImageAttribute()
+  {
+    $thumbnail = $this->files->where('zone', 'tertiaryimage')->first();
+    if (!$thumbnail) {
+      $image = [
+        'mimeType' => 'image/jpeg',
+        'path' => url('modules/iblog/img/post/default.jpg')
+      ];
+    } else {
+      $image = [
+        'mimeType' => $thumbnail->mimetype,
+        'path' => $thumbnail->path_string
+      ];
+    }
+    return json_decode(json_encode($image));
+  }
+
   public function getLftName()
   {
     return 'lft';
   }
-  
+
   public function getRgtName()
   {
     return 'rgt';
   }
-  
+
   public function getDepthName()
   {
     return 'depth';
   }
-  
+
   public function getParentIdName()
   {
     return 'parent_id';
   }
-  
+
   // Specify parent id attribute mutator
   public function setParentAttribute($value)
   {

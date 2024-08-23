@@ -1,4 +1,4 @@
-<div id="checkout" class="page checkout checkout-tabs">
+<div id="checkout" class="page checkout checkout-tabs" wire:init="init">
   
 
   

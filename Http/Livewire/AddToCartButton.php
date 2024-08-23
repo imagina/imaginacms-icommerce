@@ -44,7 +44,7 @@ class AddToCartButton extends Component
   public $loadingIcon;
   public $loadingLabel;
 
-//  protected $listeners = ['quantityButtonIsReady'];
+  protected $listeners = ['warehouseShowInforIsReady' => 'quantityButtonIsReady'];
 
   public function mount($idButton = null, $style = "", $buttonClasses = "", $onclick = "", $withIcon = false,
                         $iconClass = "", $withLabel = false, $label = "", $href = "", $color = "primary", $target = "",
@@ -90,8 +90,14 @@ class AddToCartButton extends Component
   //|--------------------------------------------------------------------------
   public function quantityButtonIsReady()
   {
+    $this->loading = $this->warehouseEnabled == true && $this->quantityCalculated == false;
     if ($this->warehouseEnabled && $this->product->subtract) {
-      $warehouse = Session('warehouse');
+      $warehouse = request()->session()->get('warehouse');
+      $warehouse = json_decode($warehouse);
+      if (isset($warehouse->id)) {
+        $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+      }
+
       if (!is_null($warehouse)) {
         $warehouseProductQuantity = \DB::table('icommerce__product_warehouse')
           ->where('warehouse_id', $warehouse->id)
