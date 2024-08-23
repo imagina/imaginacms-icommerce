@@ -3,6 +3,7 @@
 return [
   "sidebar" => [
     "adminGroup" => "Commerce",
+    "adminMagnitudes" => "Magnitudes",
     "adminProducts" => "Product List",
     "adminProductCreate" => "Product Create",
     "adminProductEdit" => "Product Edit",

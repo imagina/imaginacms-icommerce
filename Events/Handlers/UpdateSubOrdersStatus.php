@@ -2,12 +2,8 @@
 
 namespace Modules\Icommerce\Events\Handlers;
 
-use Illuminate\Http\Request;
 use Modules\Icommerce\Entities\Order;
 use Modules\Icommerce\Entities\OrderStatusHistory;
-use Modules\Icommerce\Entities\PaymentMethod;
-use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
-use Modules\Icommerce\Http\Controllers\Api\OrderApiController;
 use Modules\Icommerce\Events\OrderWasUpdated;
 
 class UpdateSubOrdersStatus

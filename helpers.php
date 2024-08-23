@@ -52,8 +52,7 @@ if (!function_exists('icommerce_getTotalWeight')) {
 }
 
 if (!function_exists('icommerce_geCategories')) {
-  
-  function icommerce_geCategories($options = array())
+    function icommerce_geCategories($options = [])
   {
     $default_options = array(
       'take' => 12, //Numero de posts a obtener,
@@ -94,8 +93,9 @@ if (!function_exists('icommerce_totalDimensions')) {
 
         }
   
-      return array($tWidth, $tHeight, $tLength);
+        $dimensions = [$tWidth, $tHeight, $tLength];
 
+        return $dimensions;
     }
 
 }
@@ -140,18 +140,16 @@ if (!function_exists('currentCurrency')) {
 
     function currentCurrency()
     {
-      
-      $currency = \Cache::store(config("cache.default"))->remember('currency_' . (tenant()->id ?? "") . locale(), 60*60*24*30, function () {
-    
+        $currency = \Cache::store(config('cache.default'))->remember('currency_'.(tenant()->id ?? '').locale(), 60 * 60 * 24 * 30, function () {
         $currencyRepository = app("Modules\Icommerce\Repositories\CurrencyRepository");
-        $params = ["filter" => ["language" => locale(), "field" => "status"]];
+            $params = ['filter' => ['language' => locale(), 'status' => Status::ENABLED, 'withoutWhereCriteria' => true]];
         //getting currency by current locale
-        $currency = $currencyRepository->getItem(Status::ENABLED,json_decode(json_encode($params)));
+            $currency = $currencyRepository->getItem('', json_decode(json_encode($params)));
     
         if(!isset($currency->id)){
           //getting default currency
-          $params = ["filter" => ["default_currency" => 1, "field" => "status"]];
-          $currency = $currencyRepository->getItem(Status::ENABLED,json_decode(json_encode($params)));
+                $params = ['filter' => ['default_currency' => 1, 'status' => Status::ENABLED, 'withoutWhereCriteria' => true]];
+                $currency = $currencyRepository->getItem('', json_decode(json_encode($params)));
         }
 
         if(!isset($currency->id)){
@@ -186,7 +184,7 @@ if (!function_exists('getUnitClass')) {
 
     //Get Default
     if(is_null($class)){
-        $params = ['filter' => ['default' => 1], 'include' => ['translations']];
+      $params = ['filter' => ['default' => 1]];
         $repository = "Modules\Icommerce\Repositories\\".ucfirst($baseClass)."Repository";
         $default = app($repository)->getItemsBy(json_decode(json_encode($params)));
         if($default->isNotEmpty())

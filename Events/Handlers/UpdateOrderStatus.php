@@ -42,8 +42,13 @@ class UpdateOrderStatus
 
         // si hay roles asignados a funcionar como tenant entonces el customer de la orden debe ser notificado sólo en las
         // ordenes hijas
-        if ((!empty($rolesToTenant) && !is_null($order->parent_id)) || is_null($children)){
-          list($emailTo, $users) = $this->getUsersAndEmails($order);
+                if (! empty($rolesToTenant)) {
+                    // only insert the customer if the order has a parentId
+                    if (! is_null($order->parent_id)) {
+                        [$emailTo, $users] = $this->getUsersAndEmails($order);
+                    }
+                } else {
+                    [$emailTo, $users] = $this->getUsersAndEmails($order);
         }
 
         if (isset($emailTo) && !empty($emailTo)) {

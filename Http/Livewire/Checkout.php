@@ -205,17 +205,11 @@ class Checkout extends Component
 
   }
 
-  /**
-   *
-   */
   private function initUser()
   {
     $this->user = \Auth::user();
   }
 
-  /**
-   *
-   */
   public function initAddresses()
   {
     if (isset($this->user->id)) {
@@ -225,9 +219,6 @@ class Checkout extends Component
     }
   }
 
-  /**
-   *
-   */
   private function initStep()
   {
 
@@ -237,9 +228,6 @@ class Checkout extends Component
 
   }
 
-  /**
-   * @param $order
-   */
   private function initOrder($order, $orderId)
   {
 

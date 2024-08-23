@@ -10,6 +10,9 @@
         @if(!$iconOrderRight) <i class="{{ $icon ?? 'fa-solid fa-map-location' }} {{ $iconClass }}"></i> @endif
         <span class="{{ $textClass }}">{{ $text ?? 'Tu Ubicación' }}</span>
         @if($iconOrderRight) <i class="{{ $icon ?? 'fa-solid fa-map-location' }} {{ $iconClass }}"></i> @endif
+        @if($activeTooltip)
+            @include('icommerce::frontend.livewire.warehouse-locator.partials.tooltip')
+        @endif
 
     </div>
 

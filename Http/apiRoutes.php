@@ -9,7 +9,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
     'controller' => 'CategoryApiController',
     'middleware' => [
       'create' => ['auth:api', 'auth-can:icommerce.categories.create'],
-      'index' => [], 'show' => [],
+      'index' => ['optional-auth'], 'show' => [],
       'update' => ['auth:api', 'auth-can:icommerce.categories.edit'],
       'delete' => ['auth:api', 'auth-can:icommerce.categories.destroy'],
       // 'restore' => []

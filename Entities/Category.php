@@ -16,19 +16,30 @@ use Modules\Isite\Traits\Typeable;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Isite\Traits\RevisionableTrait;
+use Modules\Core\Icrud\Entities\CrudModel;
 
-class Category extends Model
+class Category extends CrudModel
 {
   use Translatable, NamespacedEntity, MediaRelation, NodeTrait, BelongsToTenant,
-    hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait;
-
-  //public $forceDeleting = true;
-  public $transformer = 'Modules\Icommerce\Transformers\CategoryTransformer';
-  public $entity = 'Modules\Icommerce\Entities\Category';
-  public $repository = 'Modules\Icommerce\Repositories\CategoryRepository';
+     Typeable;
 
   protected $table = 'icommerce__categories';
-  protected static $entityNamespace = 'asgardcms/icommerceCategory';
+  public $transformer = 'Modules\Icommerce\Transformers\CategoryTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\CategoryRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateCategoryRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateCategoryRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
   public $translatedAttributes = [
     'title',
     'h1_title',
@@ -79,6 +90,10 @@ class Category extends Model
     return $this->belongsToMany(Product::class, 'icommerce__product_category')->withTimestamps();
   }
 
+  /*
+   * Own Products
+   * Just used in Icommercepricelist module to create the list price by category
+   * */
   public function ownProducts()
   {
     return $this->hasMany(Product::class)->where(function ($query) {
@@ -92,15 +107,6 @@ class Category extends Model
   {
     return $this->belongsToMany(Manufacturer::class, 'icommerce__products')->withTimestamps();
   }
-
-  public function store()
-  {
-    if (is_module_enabled('Marketplace')) {
-      return $this->belongsTo('Modules\Marketplace\Entities\Store');
-    }
-    return $this->belongsTo(Store::class);
-  }
-
   /*
   * Polimorphy Relations
   */
@@ -138,7 +144,7 @@ class Category extends Model
       config(["app.url" => "https://".$currentDomain]);
     }
   
-    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+    if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')) {
       if ($useOldRoutes) {
         $url = \LaravelLocalization::localizeUrl('/'. $this->slug, $currentLocale);
       } else {
@@ -194,7 +200,34 @@ class Category extends Model
   
     return $url;
   }
-
+  
+  public function getMainImageAttribute()
+  {
+    //Default
+    $image = [
+      'mimeType' => 'image/jpeg',
+      'path' => url('modules/iblog/img/post/default.jpg')
+    ];
+  
+    //Get and Set mainimage
+    $mainimageFile = null;
+    if ($this->relationLoaded('files')) {
+      foreach ($this->files as $file) {
+        if ($file->pivot->zone == "mainimage") $mainimageFile = $file;
+      }
+    }
+  
+    if (!is_null($mainimageFile)) {
+      $image = [
+        'mimeType' => $mainimageFile->mimetype,
+        'path' => $mainimageFile->path_string
+      ];
+    }
+  
+    return json_decode(json_encode($image));
+  
+  }
+  
   public function urlManufacturer(Manufacturer $manufacturer)
   {
     $url = "";
@@ -206,69 +239,13 @@ class Category extends Model
   }
   public function getOptionsAttribute($value)
   {
-    try {
-      return json_decode(json_decode($value));
-    } catch (\Exception $e) {
-      return json_decode($value);
-    }
+    $response = json_decode($value);
+
+    if(is_string($response)) {
+      $response = json_decode($response);
   }
 
-  public function getMainImageAttribute()
-  {
-    $thumbnail = $this->files->where('zone', 'mainimage')->first();
-    if (!$thumbnail) {
-      if (isset($this->options->mainimage)) {
-        $image = [
-          'mimeType' => 'image/jpeg',
-          'path' => url($this->options->mainimage)
-        ];
-      } else {
-        $image = [
-          'mimeType' => 'image/jpeg',
-          'path' => url('modules/iblog/img/post/default.jpg')
-        ];
-      }
-    } else {
-      $image = [
-        'mimeType' => $thumbnail->mimetype,
-        'path' => $thumbnail->path_string
-      ];
-    }
-    return json_decode(json_encode($image));
-  }
-
-  public function getSecondaryImageAttribute()
-  {
-    $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
-    if (!$thumbnail) {
-      $image = [
-        'mimeType' => 'image/jpeg',
-        'path' => url('modules/iblog/img/post/default.jpg')
-      ];
-    } else {
-      $image = [
-        'mimeType' => $thumbnail->mimetype,
-        'path' => $thumbnail->path_string
-      ];
-    }
-    return json_decode(json_encode($image));
-  }
-
-  public function getTertiaryImageAttribute()
-  {
-    $thumbnail = $this->files->where('zone', 'tertiaryimage')->first();
-    if (!$thumbnail) {
-      $image = [
-        'mimeType' => 'image/jpeg',
-        'path' => url('modules/iblog/img/post/default.jpg')
-      ];
-    } else {
-      $image = [
-        'mimeType' => $thumbnail->mimetype,
-        'path' => $thumbnail->path_string
-      ];
-    }
-    return json_decode(json_encode($image));
+    return $response;
   }
 
   public function getLftName()

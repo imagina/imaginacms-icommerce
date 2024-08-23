@@ -97,7 +97,7 @@ class EloquentProductOptionRepository extends EloquentCrudRepository implements 
   {
   
     /*== REQUEST ==*/
-    $model = $query->where($field ?? 'id', $criteria)->first();
+    $model = $this->model->where($field ?? 'id', $criteria)->first();
   
     //If parent id change, set null all product parent option Values
     if ($model->parent_id != $data['parent_id']) {

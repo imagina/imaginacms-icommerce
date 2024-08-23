@@ -57,10 +57,9 @@ class CategoryTranslation extends Model
   
   public function getTranslatableOptionAttribute($value)
   {
-  
-    return json_decode($value);
+        $options = json_decode($value);
     
-    
+        return $options;
   }
   
   

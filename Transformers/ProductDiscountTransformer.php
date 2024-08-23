@@ -6,6 +6,8 @@ use Modules\Core\Icrud\Transformers\CrudResource;
 
 class ProductDiscountTransformer extends CrudResource
 {
+  protected $excludeRelations = ['product'];
+
   /**
   * Method to merge values with response
   *
