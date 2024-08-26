@@ -227,4 +227,31 @@ class Category extends CrudModel
   {
     $this->setParentIdAttribute($value);
   }
+
+    public function getMainImageAttribute()
+    {
+        //Default
+        $image = [
+            'mimeType' => 'image/jpeg',
+            'path' => url('modules/iblog/img/post/default.jpg')
+        ];
+
+        //Get and Set mainimage
+        $mainimageFile = null;
+        if ($this->relationLoaded('files')) {
+            foreach ($this->files as $file) {
+                if ($file->pivot->zone == "mainimage") $mainimageFile = $file;
+            }
+        }
+
+        if (!is_null($mainimageFile)) {
+            $image = [
+                'mimeType' => $mainimageFile->mimetype,
+                'path' => $mainimageFile->path_string
+            ];
+        }
+
+        return json_decode(json_encode($image));
+
+    }
 }

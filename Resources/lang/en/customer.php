@@ -4,6 +4,7 @@ return [
     'title' => 'Customer Data',
     'sub_titles' => [
         'new_client' => 'New Client',
+        'logging' => 'Log in',
         'register_account' => 'Register new Account',
         'guest_client' => 'Buy as Guest',
         'im_client' => "I'm a client",
