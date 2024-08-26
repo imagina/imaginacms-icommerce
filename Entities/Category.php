@@ -137,8 +137,7 @@ class Category extends Model
       $savedDomain = config("app.url");
       config(["app.url" => "https://".$currentDomain]);
     }
-  
-    if (!(request()->wantsJson() || Str::startsWith(request()->path(), 'api'))) {
+    if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')) {
       if ($useOldRoutes) {
         $url = \LaravelLocalization::localizeUrl('/'. $this->slug, $currentLocale);
       } else {
