@@ -4,6 +4,7 @@ return [
     'title' => 'Datos del Cliente',
     'sub_titles' => [
         'new_client' => 'Nuevo Cliente',
+        'logging' => 'Iniciar sesión',
         'register_account' => 'Registrar Cuenta',
         'guest_client' => 'Comprar como Invitado',
         'im_client' => 'Soy Cliente',

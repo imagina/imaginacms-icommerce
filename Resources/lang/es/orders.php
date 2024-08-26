@@ -13,7 +13,8 @@ return [
     'quote' => 'Cotización',
     'confirmation_single_order_title' => 'Confirmación de orden de compra',
     'myOrders' => 'Mis Ordenes',
-    'detail order' => 'Detalle de  la Orden'
+    'detail order' => 'Detalle de  la Orden',
+      'orderUpdated' => 'Orden de compra #:orderId | Estado: :statusName'
   ],
   'breadcrumb' => [
     'single_order' => 'Orden de servicio',

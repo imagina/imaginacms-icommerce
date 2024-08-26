@@ -14,6 +14,7 @@ return [
         'confirmation_single_order_title' => 'Order Confirmation',
         'myOrders' => 'My Orders',
         'detail order' => 'Order Detail',
+        'orderUpdated' => 'Order #:orderId | Status: :statusName'
     ],
     'breadcrumb' => [
         'single_order' => 'Service Order',
