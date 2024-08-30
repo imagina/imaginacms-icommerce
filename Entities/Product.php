@@ -3,26 +3,25 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Laracasts\Presenter\PresentableTrait;
-use Modules\Core\Traits\NamespacedEntity;
-use Modules\Icommerce\Presenters\ProductPresenter;
-use Modules\Icurrency\Support\Facades\Currency;
-use Modules\Ihelpers\Traits\Relationable;
-use Modules\Isite\Relations\EmptyRelation;
-use Modules\Media\Entities\File;
-use Modules\Media\Support\Traits\MediaRelation;
-use Modules\Tag\Contracts\TaggableInterface;
-use Modules\Tag\Traits\TaggableTrait;
-use Modules\Isite\Traits\Rateable;
 use Illuminate\Support\Facades\Auth;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use Modules\Isite\Entities\Organization;
 use Illuminate\Support\Str;
-use Modules\Isite\Traits\Typeable;
+use Laracasts\Presenter\PresentableTrait;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Core\Traits\NamespacedEntity;
+use Modules\Ihelpers\Traits\Relationable;
+use Modules\Isite\Entities\Organization;
+use Modules\Isite\Traits\Rateable;
 use Modules\Isite\Traits\RevisionableTrait;
+use Modules\Isite\Traits\Typeable;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Tag\Traits\TaggableTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Iqreable\Traits\IsQreable;
+use Modules\Tag\Contracts\TaggableInterface;
+use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Isite\Relations\EmptyRelation;
 
 class Product extends CrudModel implements TaggableInterface
 {
@@ -572,6 +571,17 @@ class Product extends CrudModel implements TaggableInterface
     }
 
     return $taxes;
+  }
+
+  public function hasRequiredOptions(){
+    $hasRequiredOptions = false;
+    if(isset($this->entity->productOptions)){
+      foreach ($this->entity->productOptions as $productOption){
+        isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
+      }
+    }
+
+    return $hasRequiredOptions;
   }
 
   // Mutator to return the product price in order of, priceList or product price

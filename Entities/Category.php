@@ -3,20 +3,17 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Traits\NamespacedEntity;
-use Modules\Isite\Entities\Organization;
-use Modules\Media\Entities\File;
-use Modules\Media\Support\Traits\MediaRelation;
-use TypiCMS\NestableTrait;
-use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Str;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use Modules\Isite\Traits\Typeable;
+use Kalnoy\Nestedset\NodeTrait;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Core\Traits\NamespacedEntity;
+use Modules\Isite\Entities\Organization;
 use Modules\Isite\Traits\RevisionableTrait;
-use Modules\Core\Icrud\Entities\CrudModel;
+use Modules\Isite\Traits\Typeable;
+use Modules\Media\Support\Traits\MediaRelation;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Category extends CrudModel
 {
@@ -66,14 +63,6 @@ class Category extends CrudModel
     'options' => 'array'
   ];
 
-  /**
-   * Construct | Force Deleting
-   */
-  public function __construct(array $attributes = [])
-  {
-    $this->forceDeleting = true;
-    parent::__construct($attributes);
-  }
 
   public function parent()
   {
@@ -151,23 +140,15 @@ class Category extends CrudModel
         switch($routeName){
           
           case locale().".icommerce.store.index.categoryManufacturer":
+          case locale() . ".icommerce.store.index.manufacturer":
             $manufacturerSlug = explode("/",request()->path());
+            if($routeName == locale() . ".icommerce.store.index.categoryManufacturer"){
             $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[5]: $manufacturerSlug[4];
-            
-            if(!is_null($locale)){
-              $manufacturer = Manufacturer::whereTranslation("slug", $manufacturerSlug, locale())->first();
-              $manufacturerSlug = $manufacturer->getTranslation($currentLocale)->slug ?? null;
-              if(empty($manufacturerSlug)) return "";
-            }
-            
-            $url = Str::replace(["{categorySlug}","{manufacturerSlug}"],[$this->slug,$manufacturerSlug], trans('icommerce::routes.store.index.categoryManufacturer', [], $currentLocale));
-            $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-            break;
-            
-          case locale().".icommerce.store.index.manufacturer":
-            $manufacturerSlug = explode("/",request()->path());
+            }else{
             $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[3]: $manufacturerSlug[2];
   
+            }
+
             if(!is_null($locale)) {
               $manufacturer = Manufacturer::whereTranslation("slug", $manufacturerSlug, locale())->first();
               $manufacturerSlug = $manufacturer->getTranslation($currentLocale)->slug ?? null;
@@ -199,33 +180,6 @@ class Category extends CrudModel
     if(isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
   
     return $url;
-  }
-  
-  public function getMainImageAttribute()
-  {
-    //Default
-    $image = [
-      'mimeType' => 'image/jpeg',
-      'path' => url('modules/iblog/img/post/default.jpg')
-    ];
-  
-    //Get and Set mainimage
-    $mainimageFile = null;
-    if ($this->relationLoaded('files')) {
-      foreach ($this->files as $file) {
-        if ($file->pivot->zone == "mainimage") $mainimageFile = $file;
-      }
-    }
-  
-    if (!is_null($mainimageFile)) {
-      $image = [
-        'mimeType' => $mainimageFile->mimetype,
-        'path' => $mainimageFile->path_string
-      ];
-    }
-  
-    return json_decode(json_encode($image));
-  
   }
   
   public function urlManufacturer(Manufacturer $manufacturer)
@@ -273,4 +227,31 @@ class Category extends CrudModel
   {
     $this->setParentIdAttribute($value);
   }
+
+    public function getMainImageAttribute()
+    {
+        //Default
+        $image = [
+            'mimeType' => 'image/jpeg',
+            'path' => url('modules/iblog/img/post/default.jpg')
+        ];
+
+        //Get and Set mainimage
+        $mainimageFile = null;
+        if ($this->relationLoaded('files')) {
+            foreach ($this->files as $file) {
+                if ($file->pivot->zone == "mainimage") $mainimageFile = $file;
+            }
+        }
+
+        if (!is_null($mainimageFile)) {
+            $image = [
+                'mimeType' => $mainimageFile->mimetype,
+                'path' => $mainimageFile->path_string
+            ];
+        }
+
+        return json_decode(json_encode($image));
+
+    }
 }

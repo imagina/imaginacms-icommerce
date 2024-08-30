@@ -180,18 +180,13 @@ if (!function_exists('getUnitClass')) {
     $unit = "";
     
     $baseClass = $base."Class";
-    $class = $product->$baseClass;
-
-    //Get Default
-    if(is_null($class)){
-      $params = ['filter' => ['default' => 1]];
+    
+      $params = ['filter' => ['default' => 1],'include' => ['translations']];
         $repository = "Modules\Icommerce\Repositories\\".ucfirst($baseClass)."Repository";
         $default = app($repository)->getItemsBy(json_decode(json_encode($params)));
         if($default->isNotEmpty())
           $unit = $default[0]->unit;
-    }else{
-      $unit = $class->unit;
-    }
+    
 
     return $unit;
   }

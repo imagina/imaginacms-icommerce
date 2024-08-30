@@ -122,4 +122,5 @@ class ProductApiController extends BaseCrudController
     //Response
     return $fileService->store($uploadedFile, 0, 'publicmedia');
   }
+  
 }
