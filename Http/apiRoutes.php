@@ -30,6 +30,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'tax-rates',
+    'permission' => 'icommerce.taxrates',
     'controller' => 'TaxRateApiController',
     'middleware' => [
       'create' => ['auth:api', 'auth-can:icommerce.taxrates.create'],
@@ -42,6 +43,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'tax-classes',
+    'permission' => 'icommerce.taxclasses',
     'controller' => 'TaxClassApiController',
     'middleware' => [
       'create' => ['auth:api', 'auth-can:icommerce.taxclasses.create'],
@@ -127,6 +129,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'order-statuses',
+    'permission' => 'icommerce.orderstatuses',
     'controller' => 'OrderStatusApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.orderstatus.create'],
@@ -152,6 +155,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'option-values',
+    'permission' => 'icommerce.optionvalues',
     'controller' => 'OptionValueApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.optionvalues.create'],
@@ -173,6 +177,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'product-option',
+    'permission' => 'icommerce.productoptions',
     'controller' => 'ProductOptionApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.productoptions.create'],
@@ -194,6 +199,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'product-discounts',
+    'permission' => 'icommerce.productdiscounts',
     'controller' => 'ProductDiscountApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.productdiscounts.create'],
@@ -206,6 +212,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'item-types',
+    'permission' => 'icommerce.itemtypes',
     'controller' => 'ItemTypeApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.itemtypes.create'],
@@ -230,6 +237,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'order-status-history',
+    'permission' => 'icommerce.orderstatushistories',
     'controller' => 'OrderStatusHistoryApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.orderhistories.create'],
@@ -346,6 +354,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'weight-classes',
+    'permission' => 'icommerce.weightclasses',
     'controller' => 'WeightClassApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.weightclasses.create'],
@@ -358,6 +367,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'length-classes',
+    'permission' => 'icommerce.lengthclasses',
     'controller' => 'LengthClassApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.lengthclasses.create'],
@@ -370,6 +380,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'volume-classes',
+    'permission' => 'icommerce.volumeclasses',
     'controller' => 'VolumeClassApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.volumeclasses.create'],
@@ -382,6 +393,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'quantity-classes',
+    'permission' => 'icommerce.quantityclasses',
     'controller' => 'QuantityClassApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.quantityclasses.create'],
@@ -394,6 +406,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'product-option-values',
+    'permission' => 'icommerce.productoptionvalues',
     'controller' => 'ProductOptionValueApiController',
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.productoptionvalues.create'],
@@ -407,6 +420,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'option-types',
+    'permission' => 'icommerce.optiontypes',
     'staticEntity' => 'Modules\Icommerce\Entities\OptionType'
   ]);
     $router->apiCrud([
@@ -426,6 +440,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
     $router->apiCrud([
       'module' => 'icommerce',
       'prefix' => 'product-warehouse',
+      'permission' => 'icommerce.productwarehouses',
       'controller' => 'ProductWarehouseApiController',
       //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
       // 'customRoutes' => [ // Include custom routes if needed
@@ -440,6 +455,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
     $router->apiCrud([
       'module' => 'icommerce',
       'prefix' => 'product-option-value-warehouse',
+      'permission' => 'icommerce.productoptionvaluewarehouses',
       'controller' => 'ProductOptionValueWarehouseApiController',
       //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
       // 'customRoutes' => [ // Include custom routes if needed
