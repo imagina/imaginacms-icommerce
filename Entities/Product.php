@@ -591,4 +591,15 @@ class Product extends CrudModel implements TaggableInterface
   {
     return $this->priceByList ?? $value;
   }
+
+    public function getCacheClearableData()
+    {
+        return [
+            'urls' => array_merge(
+                [config("app.url"),
+                    $this->url],
+                $this->categories->pluck('url')->toArray())
+        ];
+    }
+
 }
