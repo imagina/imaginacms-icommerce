@@ -8,6 +8,8 @@ use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class OrderTransformer extends CrudResource
 {
+  
+  protected $excludeRelations = ['orderHistory','orderItems'];
   /**
   * Method to merge values with response
   *
@@ -21,6 +23,8 @@ class OrderTransformer extends CrudResource
       'shippingDepartment' => new ProvinceTransformer($this->whenLoaded('shippingDepartment')),
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions')),
+      'histories' => OrderStatusHistoryTransformer::collection($this->orderHistory),
+      'items' => OrderItemTransformer::collection($this->orderItems),
     ];
 
     //Add information blocks
@@ -29,7 +33,7 @@ class OrderTransformer extends CrudResource
         'title' => trans("icommerce::orders.informationBlocksOrder.orderingInformation"),
         'values' => [
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderStatus"),
-            'value' => $this->statusName],
+            'value' => $this->status->title],
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderDate"),
             'value' =>  $this->created_at],
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderIP"),
@@ -106,11 +110,11 @@ class OrderTransformer extends CrudResource
               'label' => trans("iprofile::frontend.form.shipping_address"),
               'value' => ($this->shipping_first_name ?? '') . ", " . ($this->shipping_last_name ?? '') . ", " .
                 ($this->shipping_address_1 ?? '') . ", " . ($this->shipping_city ?? '') . ", " . ($this->shipping_zip_code ?? '') . ", " .
-                (isset($item['shippingDepartment']->name) ? $item['shippingDepartment']->name : '') . ", " . (isset($item['shippingCountry']->name) ? $item['shippingCountry']->name : '')
+                (isset($this->shippingDepartment->name) ? $this->shippingDepartment->name : '') . ", " . (isset($this->shippingCountry->name) ? $this->shippingCountry->name : '')
             ],
             [
               'label' => trans("iprofile::frontend.form.cellularPhone"),
-              'value' => $this->shippingTelephone ?? ''
+              'value' => $this->shipping_telephone ?? ''
             ]
 
           ]
@@ -165,12 +169,12 @@ class OrderTransformer extends CrudResource
           ],
           [
             'label' => trans("iprofile::frontend.form.billing_address"),
-            'value' => "{$this->paymentFirstName}, {$this->paymentLastName}, {$this->paymentAddress1}, ".($this->paymentCity).", {$this->payment_zip_code}, " .
-              ($item["paymentDepartment"]->name ?? '') . ", " . ($item["paymentCountry"]->name ?? '')
+            'value' => "{$this->payment_first_name}, {$this->payment_last_name}, {$this->payment_address_1}, ".($this->payment_city).", {$this->payment_zip_code}, " .
+              ($this->paymentDepartment->name ?? '') . ", " . ($this->paymentCountry->name ?? '')
           ],
           [
             'label' => trans("iprofile::frontend.form.cellularPhone"),
-            'value' => $this->paymentTelephone ?? ''
+            'value' => $this->payment_telephone ?? ''
           ]
         ]
       ];
@@ -237,11 +241,11 @@ class OrderTransformer extends CrudResource
         'title' => trans("icommerce::orders.informationBlocksOrder.titleOrderPayShippingMethod"),
         'values' => [
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderPayMethod"),
-            'value' => $this->paymentMethod],
+            'value' => $this->payment_method],
           [
             'label' => trans("icommerce::orders.informationBlocksOrder.titleOrderShippingMethod"),
             'value' => !$this->require_shipping ? trans('icommerce::orders.messages.orderNotRequireShipping')
-              : (!empty($this->shippingMethod) ? $this->shippingMethod : '-')
+              : (!empty($this->shipping_method) ? $this->shipping_method : '-')
           ]
 
         ]
