@@ -21,9 +21,11 @@ use Modules\Icommerce\Support\Coupon as SupportCoupon;
 use Illuminate\Support\Str;
 use Modules\User\Entities\Sentinel\User as entityUser;
 use Modules\Iprofile\Entities\Address as Address;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Checkout extends Component
 {
+  use LivewireAlert;
 
   protected $listeners = ['submit', 'addressAdded', 'cartUpdated', 'emitCheckoutAddressBilling',
     'emitCheckoutAddressShipping', 'editAddressBillingEmit', 'editAddressShippingEmit', 'billingAddressChanged',
