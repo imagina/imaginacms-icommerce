@@ -29,10 +29,10 @@
                 @foreach($cart->products as $cartProduct)
                   <div class="item_carting px-3 w-100 row m-0">
                     <hr class="mt-0 mb-3 w-100">
-                  @php($mediaFiles = $cartProduct->product->mediaFiles())
-                  @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
-                  @if($withImage)
-                    <!-- imagen -->
+                    @php($mediaFiles = $cartProduct->product->mediaFiles())
+                    @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
+                    @if($withImage)
+                      <!-- imagen -->
                       <div class="col-3 px-0 mb-3">
                         <div class="img-product-cart">
                           <x-media::single-image
@@ -44,8 +44,8 @@
                             :mediaFiles="$cartProduct->product->mediaFiles()"/>
                         </div>
                       </div>
-                  @endif
-                  <!-- descripción -->
+                    @endif
+                    <!-- descripción -->
                     <div class="{{$withImage ? 'col-9' : 'col-12'}}">
                       <!-- titulo -->
                       <h6 class="mb-2 w-100 __title">
@@ -69,8 +69,8 @@
                                aria-hidden="true"></i> {{trans("icommerce::products.table.shipping")}}
                           </small>
                         </p>
-                    @endif
-                    <!-- boton para eliminar-->
+                      @endif
+                      <!-- boton para eliminar-->
                       <div style="width: 20px;  position: absolute; right: -7px; top: 0;">
                         <a class="close cart-remove text-danger" style="font-size: 1rem;"
                            onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
@@ -121,7 +121,7 @@
                 </div>
               @endif
               @if(!empty($totalTaxes))
-              <!--  TAXES  -->
+                <!--  TAXES  -->
                 <div class="row">
                   <div class="col-12">
                     <p>
@@ -139,7 +139,7 @@
                 </div>
               @endif
               @if($requireShippingMethod)
-              <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
+                <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
                 <div class="row">
                   <div class="col-4">
                     <p>
@@ -231,7 +231,7 @@
           </div>
         @endif
         <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                wire:click="{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}">
+                onclick="orderSumamryPlaceOrder()">
           <div>
             {{ trans('icommerce::order_summary.submit') }}
           </div>
@@ -240,3 +240,40 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  function orderSumamryPlaceOrder() {
+    gTagFireEventPurchase()
+    // Trigger the Livewire action
+    window.livewire.emit("{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}")
+  }
+
+  function gTagFireEventPurchase() {
+    // Check if gtag function is available
+    if (typeof gtag !== "function") return;
+
+    //Instance the main data
+    let gTagData = {
+      transaction_id: {{$cart->id}},
+      value: {{$total}},
+      currency: "COP",
+      items: []
+    }
+
+
+    //Added items!
+    const products = {!! $cart->products !!};
+    products.forEach((item, index) => {
+      gTagData.items.push({
+        item_id: item.product.id,
+        item_name: item.product.name,
+        index: index,
+        price: parseFloat(item.product.discount?.price ?? item.product.price ?? 0),
+        quantity: item.quantity
+      })
+    });
+
+    //Emit gtag event
+    gtag("event", "purchase", gTagData);
+  }
+</script>
