@@ -35,27 +35,6 @@
               </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card mb-0 border-0">
-            <div class="card-header bg-white cursor-pointer">
-              <label class="form-check-label cursor-pointer">
-                {{ trans('icommerce::customer.sub_titles.new_client') }}
-              </label>
-            </div>
-            <div id="check-register">
-              <div class="card-block">
-                <div class="card mb-0 border-0">
-                  <div class="card-block my-3 checkout-register">
-                    <div class="alert alert-danger d-none" id="registerAlert"></div>
-                    <div class="formUser">
-                      @includeFirst(['iprofile.widgets.register','iprofile::frontend.widgets.register'],["embedded" => true, "route" => $locale . '.icommerce.store.checkout'])
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         @if (!$shopAsGuest)
         @endguest
       @endif
