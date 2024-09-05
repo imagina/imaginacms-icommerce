@@ -746,7 +746,7 @@ return [
     [
       'title' => 'icommerce::common.pricelists.title',
       'icon' => 'fa fa-list',
-      'quasarUrl' => '/store/public/price-list',
+      'quasarUrl' => '/ipanel/#/store/public/price-list',
       'showInMenuWithoutSession' => true,
     ],
     [
