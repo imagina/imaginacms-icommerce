@@ -11,9 +11,11 @@ use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Services\PdfService;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Cart extends Component
 {
+  use LivewireAlert;
 
   public $cart;
   public $view;
