@@ -58,7 +58,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
   
   public function getItem($criteria, $params = false)
   {
-    dd("asdads");
+   
     // compare parameters validate use of query
     $differentParameters = $this->compareParameters($params);
     //reusing query if exist
