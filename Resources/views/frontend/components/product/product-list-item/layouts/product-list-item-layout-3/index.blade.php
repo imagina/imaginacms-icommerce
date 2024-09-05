@@ -1,6 +1,5 @@
 <div class="product-layout product-layout-3 card-product position-relative"  style="padding: {{$externalPadding}}px;
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
-{{--    <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>--}}
     @livewire('isite::edit-link', ['link' => "{{$editLink}}{{$product->id}}",
     'tooltip' => "{{$tooltipEditLink}}"])
   @php($discount = $product->discount ?? null)
