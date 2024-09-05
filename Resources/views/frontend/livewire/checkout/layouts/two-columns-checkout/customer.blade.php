@@ -40,31 +40,6 @@
             </a>
           </div>
         </div>
-
-        <div class="card mb-0 border-0">
-          <div class="card-header bg-white" role="tab" id="headingRegister"
-               data-toggle="collapse" href="#collapseRegister" aria-expanded="false"
-               style="cursor: pointer;">
-            <label class="form-check-label" style="cursor: pointer;">
-              {{ trans('icommerce::customer.sub_titles.new_client') }}
-            </label>
-          </div>
-
-          <div id="collapseRegister" class="collapse " role="tabpanel" aria-labelledby="headingRegister">
-            <div class="card-block">
-              <div class="card mb-0 border-0">
-
-                <div class="card-block my-3">
-                  <div class="alert alert-danger d-none" id="registerAlert"></div>
-                  <div class="formUser">
-                    @include('iprofile::frontend.widgets.register',
-                    ["embedded" => true, "route" => $locale . '.icommerce.store.checkout'])
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       @endguest
       @include("icommerce::frontend.livewire.checkout.partials.customer-logged")
     @endif
