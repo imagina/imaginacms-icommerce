@@ -4,7 +4,7 @@
 @if($product->is_sold_out) sold-out @endif ribbon-discount-position-{{$discountPosition}}
 @if($product->is_new) is-new @endif">
     @livewire('isite::edit-link', ['link' => "{{$editLink}}{{$product->id}}",
-    'tooltip' => "{{$tooltipEditLink}}"])
+    'tooltip' => "{{$tooltipEditLink}}"],key(uniqid()))
   @include('icommerce::frontend.components.product.meta')
 
   @if(isset($itemListLayout) && $itemListLayout=='one')

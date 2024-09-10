@@ -5,7 +5,7 @@
      style="padding: {{$externalPadding}}px;
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
     @livewire('isite::edit-link', ['link' => "{{$editLink}}{{$product->id}}",
-    'tooltip' => "{{$tooltipEditLink}}"])
+    'tooltip' => "{{$tooltipEditLink}}"],key(uniqid()))
   @include('icommerce::frontend.components.product.meta')
 
 
