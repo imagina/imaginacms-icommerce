@@ -57,7 +57,7 @@ class WarehouseShowInfor extends Component
       //Vars Blade Component
       $this->textClass = $textClass;
       $this->addressClass = $addressClass;
-      $this->user = \Auth::user() ?? null;
+      //$this->user = \Auth::user() ?? null;
       $this->$warehouseLocatorId = $warehouseLocatorId;
 
       //Shipping Method Base
@@ -175,6 +175,8 @@ class WarehouseShowInfor extends Component
   {
     \Log::info($this->log . 'setInitVars');
 
+    $this->user = \Auth::user() ?? null;
+    
     //Clean Values | Only Testing
     //$this->warehouseService()->cleanSessionVars();
 
