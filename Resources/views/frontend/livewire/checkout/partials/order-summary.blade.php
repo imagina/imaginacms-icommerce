@@ -1,3 +1,22 @@
+@php
+  $currencyGtag = $currency->code ?? 'COP';
+  $paymentMethodsGtag = json_encode($paymentMethods->pluck('title')->toArray());
+  //map product to gtag
+  $productsGtag = $cart->products->map(function($carProduct, $index) {
+    // Calculate price using the discount if available, otherwise use the base price
+    $price = $carProduct->product->discount->price ?? $carProduct->product->price;
+    return [
+      'index' => $index,
+      'item_id' => $carProduct->product->id,
+      'item_name' => $carProduct->product->name,
+      'price' => $price,
+      'currency' =>  "COP",
+      'quantity' => $carProduct->quantity
+    ];
+  })
+@endphp
+
+
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">
@@ -216,7 +235,7 @@
                   <div>{{ trans('icommerce::order_summary.payment') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <p>
+                  <p id="orderSummaryPaymentMethodTitleContainer">
                     {{$paymentMethod->title ?? trans("icommerce::paymentmethods.messages.noPaymentMethodSelected") }}
                   </p>
                 </div>
@@ -226,7 +245,8 @@
         </div>
         @if((Setting::has('icommerce::orderSummaryDescription')))
           <div class="order-summary-description py-2">
-            @livewire('isite::edit-link', ['link' => "/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"])
+            @livewire('isite::edit-link', ['link' =>
+            "/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"])
             {!! setting('icommerce::orderSummaryDescription') !!}
           </div>
         @endif
@@ -241,7 +261,7 @@
   </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" defer>
   function orderSumamryPlaceOrder() {
     gTagFireEventPurchase()
     // Trigger the Livewire action
@@ -252,28 +272,22 @@
     // Check if gtag function is available
     if (typeof gtag !== "function") return;
 
-    //Instance the main data
-    let gTagData = {
-      transaction_id: {{$cart->id}},
-      value: {{$total}},
-      currency: "COP",
-      items: []
+    //Validate paymentMethodSelected
+    const paymentMethod = document.getElementById('orderSummaryPaymentMethodTitleContainer').innerText
+    const paymentMethods = {!! $paymentMethodsGtag !!};
+
+    if (paymentMethods.includes(paymentMethod)) {
+      //Instance the main data
+      let gTagData = {
+        transaction_id: {{$cart->id}},
+        value: {{$total}},
+        currency: "{{$currencyGtag}}",
+        payment_type: paymentMethod,
+        items: {!! $productsGtag !!}
+      }
+
+      //Emit gtag event
+      gtag("event", "purchase", gTagData);
     }
-
-
-    //Added items!
-    const products = {!! $cart->products !!};
-    products.forEach((item, index) => {
-      gTagData.items.push({
-        item_id: item.product.id,
-        item_name: item.product.name,
-        index: index,
-        price: parseFloat(item.product.discount?.price ?? item.product.price ?? 0),
-        quantity: item.quantity
-      })
-    });
-
-    //Emit gtag event
-    gtag("event", "purchase", gTagData);
   }
 </script>
