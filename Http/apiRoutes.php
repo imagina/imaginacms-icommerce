@@ -144,7 +144,7 @@ Route::prefix('/icommerce/v3')->group(function (Router $router) use($locale) {
     'middleware' => [
       'create' => ['auth:api','auth-can:icommerce.orders.create'],
       'index' => ['auth:api','auth-can:icommerce.orders.index'],
-      'show' => [],
+      'show' => ['auth:api','auth-can:icommerce.orders.edit'],
       'update' => ['auth:api','auth-can:icommerce.orders.edit'],
       'delete' => ['auth:api','auth-can:icommerce.orders.destroy'],
       //'restore' => []
