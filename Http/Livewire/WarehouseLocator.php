@@ -549,7 +549,7 @@ class WarehouseLocator extends Component
       //Case: Address no has coverage (Check if address is nearby)
       if(isset($warehouseProcess['nearby'])){
 
-        \Log::info($this->log.'confirmData|Case DELIVERY|Asigna metodo pickup');
+        \Log::info($this->log.'confirmData|Case DELIVERY|Address no tiene cobertura|Asigna metodo pickup');
 
         //Set shipping method to Pickup
         session(["shippingMethodName" => $this->shippingMethods['pickup']]);

@@ -116,7 +116,7 @@ class WarehouseShowInfor extends Component
     {
       \Log::info($this->log.'Listener|checkComponentReady|warehouse: '.$this->warehouse->title);
       $this->title = "<a class='address cursor-pointer {$this->addressClass}' data-toggle='modal' data-target='#modalWarehouseLocator'> ".
-                trans('icommerce::warehouses.messages.hello'). ($this->user ? $this->user->first_name : "") . ", " . trans('icommerce::warehouses.messages.buying for') . " " .
+                trans('icommerce::warehouses.messages.hello'). " ".($this->user ? $this->user->first_name : "") . ", " . trans('icommerce::warehouses.messages.buying for') . " " .
                 $this->warehouse->title .
             "</a>";
       
@@ -203,7 +203,11 @@ class WarehouseShowInfor extends Component
     
     $showTooltip = request()->session()->get("showTooltip");
     $this->activeTooltip = $showTooltip ?? true;
-    
+
+    $warehouseAlert = request()->session()->get('warehouseAlert');
+    if(!is_null($warehouseAlert) && $warehouseAlert)
+      $this->dispatchBrowserEvent('show-modal-alert-warehouse-coverage');
+
   }
 
   /**
@@ -328,7 +332,7 @@ class WarehouseShowInfor extends Component
         }
 
       }else{
-        
+        \Log::info($this->log . 'User NOT LOGGED | Case 2');
         //User Not Logged but at one point the shippingAddress session variable was created
         if(!is_null(request()->session()->get("shippingAddress"))) {
           request()->session()->put('shippingAddress', null);
