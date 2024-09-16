@@ -21,7 +21,15 @@ class EloquentOrderStatusHistoryRepository extends EloquentCrudRepository implem
    * @var array
    */
   protected $replaceSyncModelRelations = [];
-
+  
+  /**
+   * Attribute to customize relations by default
+   * @var array
+   */
+  protected $with = [
+    'all' => ['orderStatus']
+  ];
+  
   /**
    * Filter query
    *

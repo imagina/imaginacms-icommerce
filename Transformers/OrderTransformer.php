@@ -5,11 +5,12 @@ namespace Modules\Icommerce\Transformers;
 use Modules\Core\Icrud\Transformers\CrudResource;
 use Modules\Ilocations\Transformers\CountryTransformer;
 use Modules\Ilocations\Transformers\ProvinceTransformer;
+use Modules\Iprofile\Transformers\UserTransformer;
 
 class OrderTransformer extends CrudResource
 {
   
-  protected $excludeRelations = ['orderHistory','orderItems'];
+  protected $excludeRelations = ['orderHistory','orderItems','customer'];
   /**
   * Method to merge values with response
   *
@@ -25,6 +26,7 @@ class OrderTransformer extends CrudResource
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions')),
       'histories' => OrderStatusHistoryTransformer::collection($this->orderHistory),
       'items' => OrderItemTransformer::collection($this->orderItems),
+      'customer' => new UserTransformer($this->whenLoaded('customer')),
     ];
 
     //Add information blocks
@@ -271,11 +273,11 @@ class OrderTransformer extends CrudResource
         'values' => [
           [
             'label' => trans("icommerce::orders.informationBlocksOrder.labelTitleWarehouse"),
-            'value' => $item['warehouseTitle'] ?? ''
+            'value' => $this->warehouse_title ?? ''
           ],
           [
             'label' => trans("icommerce::orders.informationBlocksOrder.labelAddressWarehouse"),
-            'value' => $item['warehouseAddress'] ?? ''
+            'value' => $this->warehouse_address ?? ''
           ],
         ]
       ];
