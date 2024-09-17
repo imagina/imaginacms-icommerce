@@ -9,7 +9,6 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 // Transformers
-use Modules\Icommerce\Transformers\OrderTransformer;
 
 class OrderWasUpdated /*implements ShouldBroadcast*/
 {
@@ -30,7 +29,7 @@ class OrderWasUpdated /*implements ShouldBroadcast*/
   public function broadcastWith()
   {
     return [
-      'id' => $this->order->id
+            'id' => $this->order->id,
     ];
   }
   

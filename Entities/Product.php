@@ -3,42 +3,49 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
-use Laracasts\Presenter\PresentableTrait;
-use Modules\Core\Traits\NamespacedEntity;
-use Modules\Icommerce\Presenters\ProductPresenter;
-use Modules\Icurrency\Support\Facades\Currency;
-use Modules\Ihelpers\Traits\Relationable;
-use Modules\Isite\Relations\EmptyRelation;
-use Modules\Media\Entities\File;
-use Modules\Media\Support\Traits\MediaRelation;
-use Modules\Tag\Contracts\TaggableInterface;
-use Modules\Tag\Traits\TaggableTrait;
-use Modules\Isite\Traits\Rateable;
 use Illuminate\Support\Facades\Auth;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
-use Modules\Isite\Entities\Organization;
 use Illuminate\Support\Str;
-use Modules\Isite\Traits\Typeable;
+use Laracasts\Presenter\PresentableTrait;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Core\Traits\NamespacedEntity;
+use Modules\Ihelpers\Traits\Relationable;
+use Modules\Isite\Entities\Organization;
+use Modules\Isite\Traits\Rateable;
 use Modules\Isite\Traits\RevisionableTrait;
+use Modules\Isite\Traits\Typeable;
+use Modules\Media\Support\Traits\MediaRelation;
+use Modules\Tag\Traits\TaggableTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Iqreable\Traits\IsQreable;
+use Modules\Tag\Contracts\TaggableInterface;
+use Modules\Icommerce\Presenters\ProductPresenter;
+use Modules\Isite\Relations\EmptyRelation;
 
-class Product extends Model implements TaggableInterface
+class Product extends CrudModel implements TaggableInterface
 {
   use Translatable, NamespacedEntity, TaggableTrait, MediaRelation, PresentableTrait,
-    Rateable, Relationable, BelongsToTenant, hasEventsWithBindings, Typeable, AuditTrait, RevisionableTrait,
+    Rateable, Relationable, BelongsToTenant, Typeable,
     IsQreable;
 
-  //public $forceDeleting = true;
-  public $transformer = 'Modules\Icommerce\Transformers\ProductTransformer';
-  public $entity = 'Modules\Icommerce\Entities\Product';
-  public $repository = 'Modules\Icommerce\Repositories\ProductRepository';
-
   protected $table = 'icommerce__products';
-  protected static $entityNamespace = 'asgardcms/product';
-  private $user;
+  public $transformer = 'Modules\Icommerce\Transformers\ProductTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\ProductRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateProductRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
   public $translatedAttributes = [
     'name',
     'description',
@@ -103,7 +110,6 @@ class Product extends Model implements TaggableInterface
   public function __construct(array $attributes = [])
   {
     $this->auth = Auth::user();
-    $this->forceDeleting = true;
     parent::__construct($attributes);
   }
 
@@ -133,14 +139,6 @@ class Product extends Model implements TaggableInterface
 
     return $this->belongsTo($this->entity_type, 'entity_id');
 
-  }
-
-  public function store()
-  {
-    if (is_module_enabled('Marketplace')) {
-      return $this->belongsTo('Modules\Marketplace\Entities\Store');
-    }
-    return $this->belongsTo(Store::class);
   }
 
   public function addedBy()
@@ -245,13 +243,6 @@ class Product extends Model implements TaggableInterface
       ->using(OrderItem::class);
   }
 
-  /*
-  public function coupons()
-  {
-    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_product')->withTimestamps();
-  }
-  */
-
   public function parent()
   {
     return $this->belongsTo('Modules\Icommerce\Entities\Product', 'parent_id');
@@ -338,19 +329,6 @@ class Product extends Model implements TaggableInterface
     return json_decode($value);
   }
 
-  /*
-  protected function setRatingAttribute($value)
-  {
-    $defaultRating = config("asgard.icommerce.config.defaultProductRating");
-    if (!empty($value)) {
-      $this->attributes['rating'] = $defaultRating ?? $value;
-    } else {
-      $this->attributes['rating'] = 5;
-    }
-
-  }
-  */
-
 
   public function discount()
   {
@@ -408,66 +386,6 @@ class Product extends Model implements TaggableInterface
       ->where('date_end', '>=', date('Y-m-d'))
       ->where('date_start', '<=', date('Y-m-d'));
 
-  }
-
-
-  public function getSecondaryImageAttribute()
-  {
-    $thumbnail = $this->files->where('zone', 'secondaryimage')->first();
-    if (!$thumbnail) {
-      $image = [
-        'mimeType' => 'image/jpeg',
-        'path' => url('modules/iblog/img/post/default.jpg')
-      ];
-    } else {
-      $image = [
-        'mimeType' => $thumbnail->mimetype,
-        'path' => $thumbnail->path_string
-      ];
-    }
-    return json_decode(json_encode($image));
-  }
-
-  public function getMainImageAttribute()
-  {
-    $thumbnail = $this->files->where('zone', 'mainimage')->first();
-
-    if (!$thumbnail) {
-      if (isset($this->options->mainimage)) {
-        $image = [
-          'mimeType' => 'image/jpeg',
-          'path' => url($this->options->mainimage)
-        ];
-      } else {
-        $image = [
-          'mimeType' => 'image/jpeg',
-          'path' => url('modules/iblog/img/post/default.jpg')
-        ];
-      }
-    } else {
-      $image = [
-        'mimeType' => $thumbnail->mimetype,
-        'path' => $thumbnail->path_string
-      ];
-    }
-    return json_decode(json_encode($image));
-
-  }
-
-  public function getGalleryAttribute()
-  {
-
-    $gallery = $this->filesByZone('gallery')->get();
-    $response = [];
-    foreach ($gallery as $img) {
-      array_push($response, [
-        'mimeType' => $img->mimetype,
-        'path' => $img->path_string,
-        'alt' => $img->alt ?? null
-      ]);
-    }
-
-    return json_decode(json_encode($response));
   }
 
   public function organization()
@@ -655,6 +573,17 @@ class Product extends Model implements TaggableInterface
     return $taxes;
   }
 
+  public function hasRequiredOptions(){
+    $hasRequiredOptions = false;
+    if(isset($this->entity->productOptions)){
+      foreach ($this->entity->productOptions as $productOption){
+        isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
+      }
+    }
+
+    return $hasRequiredOptions;
+  }
+
   // Mutator to return the product price in order of, priceList or product price
   // IMPORTANT: if you need to get the price base for any calculation use $this->getRawOriginal('price')
   // This will prevent to call this mutator and not generate an infinity loop
@@ -662,4 +591,15 @@ class Product extends Model implements TaggableInterface
   {
     return $this->priceByList ?? $value;
   }
+
+    public function getCacheClearableData()
+    {
+        return [
+            'urls' => array_merge(
+                [config("app.url"),
+                    $this->url],
+                $this->categories->pluck('url')->toArray())
+        ];
+    }
+
 }

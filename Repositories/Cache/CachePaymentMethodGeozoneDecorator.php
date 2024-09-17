@@ -3,9 +3,9 @@
 namespace Modules\Icommerce\Repositories\Cache;
 
 use Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository;
-use Modules\Core\Repositories\Cache\BaseCacheDecorator;
+use Modules\Core\Icrud\Repositories\Cache\BaseCacheCrudDecorator;
 
-class CachePaymentMethodGeozoneDecorator extends BaseCacheDecorator implements PaymentMethodGeozoneRepository
+class CachePaymentMethodGeozoneDecorator extends BaseCacheCrudDecorator implements PaymentMethodGeozoneRepository
 {
     public function __construct(PaymentMethodGeozoneRepository $paymentmethodgeozone)
     {

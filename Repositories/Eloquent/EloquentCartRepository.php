@@ -3,74 +3,47 @@
 namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\CartRepository;
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-use Illuminate\Support\Arr;
-use Modules\Icommerce\Entities\CartProduct;
-
-class EloquentCartRepository extends EloquentBaseRepository implements CartRepository
-{
+use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
   
-  public function getItemsBy($params = false)
+class EloquentCartRepository extends EloquentCrudRepository implements CartRepository
   {
-    /*== initialize query ==*/
-    $query = $this->model->query();
-    
-    /*== RELATIONSHIPS ==*/
-    if (in_array('*', $params->include)) {//If Request all relationships
-      $query->with([]);
-    } else {//Especific relationships
-      $includeDefault = ['products'];//Default relationships
-      if (isset($params->include))//merge relations with default relationships
-        $includeDefault = array_merge($includeDefault, $params->include);
-      $query->with($includeDefault);//Add Relationships to query
-    }
-    
-    /*== FILTERS ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;//Short filter
+  /**
+   * Filter names to replace
+   * @var array
+   */
+  protected $replaceFilters = [];
       
-      //Filter by date
-      if (isset($filter->date)) {
-        $date = $filter->date;//Short filter date
-        $date->field = $date->field ?? 'created_at';
-        if (isset($date->from))//From a date
-          $query->whereDate($date->field, '>=', $date->from);
-        if (isset($date->to))//to a date
-          $query->whereDate($date->field, '<=', $date->to);
-      }
+  /**
+   * Relation names to replace
+   * @var array
+   */
+  protected $replaceSyncModelRelations = [];
       
-      //Order by
-      if (isset($filter->order)) {
-        $orderByField = $filter->order->field ?? 'created_at';//Default field
-        $orderWay = $filter->order->way ?? 'desc';//Default way
-        $query->orderBy($orderByField, $orderWay);//Add order to query
-      }
-      
-      //add filter by search
-      if (isset($filter->search)) {
-        //find search in columns
-        $query->where(function ($query) use ($filter) {
-          $query->where('id', 'like', '%' . $filter->search . '%')
-            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-        });
-      }
-      
-      if (isset($filter->ip)) {
-        $query->where('ip', $filter->ip);
+  /**
+   * Filter query
+   *
+   * @param $query
+   * @param $filter
+   * @param $params
+   * @return mixed
+   */
+  public function filterQuery($query, $filter, $params)
+  {
+    if (isset($filter->store)) {
+      $query->where('store_id', $filter->store);
       }
       
       if (isset($filter->user)) {
         $query->where('user_id', $filter->userId);
       }
-      if (isset($filter->store)) {
-        $query->where('store_id', $filter->store);
-      }
-      if (isset($filter->status)) {
-        $query->whereStatus($filter->status);
-      }
-    }
     
+    /**
+     * Note: Add filter name to replaceFilters attribute before replace it
+     *
+     * Example filter Query
+     * if (isset($filter->status)) $query->where('status', $filter->status);
+     *
+     */
     if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
       
@@ -81,62 +54,34 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
       });
     }
     
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-    
-    /*== REQUEST ==*/
-    if (isset($params->page) && $params->page) {
-      return $query->paginate($params->take);
-    } else {
-      $params->take ? $query->take($params->take) : false;//Take
-      return $query->get();
+    //Response
+    return $query;
     }
-  }
   
-  
-  public function getItem($criteria, $params = false)
+  /**
+   * Method to sync Model Relations
+   *
+   * @param $model ,$data
+   * @return $model
+   */
+  public function syncModelRelations($model, $data)
   {
-    //Initialize query
-    $query = $this->model->query();
+    //Get model relations data from attribute of model
+    $modelRelationsData = ($model->modelRelations ?? []);
     
-    /*== RELATIONSHIPS ==*/
-    if (in_array('*', $params->include ?? [])) {//If Request all relationships
-      $query->with([]);
-    } else {//Especific relationships
-      $includeDefault = ['products'];//Default relationships
-      if (isset($params->include))//merge relations with default relationships
-        $includeDefault = array_merge($includeDefault, $params->include);
-      $query->with($includeDefault);//Add Relationships to query
-    }
+    /**
+     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     *
+     * Example to sync relations
+     * if (array_key_exists(<relationName>, $data)){
+     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+     * }
+     *
+     */
     
-    /*== FILTER ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      if (isset($filter->user)) {
-        $query->where('user_id', $filter->user);
+    //Response
+    return $model;
       }
-      if (isset($filter->status)) {
-        $query->whereStatus($filter->status);
-      }
-      if (isset($filter->ip)) {
-        $query->where('ip', $filter->ip);
-      }
-      if (isset($filter->store)) {
-        $query->where('store_id', $filter->store);
-      }
-      if (isset($filter->field))//Filter by specific field
-        $field = $filter->field;
-    }
-    
-    /*== FIELDS ==*/
-    if (isset($params->fields) && count($params->fields))
-      $query->select($params->fields);
-    
-    /*== REQUEST ==*/
-    return $query->where($field ?? 'id', $criteria)->first();
-  }
-  
   
   public function create($data)
   {
@@ -199,25 +144,4 @@ class EloquentCartRepository extends EloquentBaseRepository implements CartRepos
     //Response
     return $model;
   }
-  
-  
-  public function deleteBy($criteria, $params = false)
-  {
-    /*== initialize query ==*/
-    $query = $this->model->query();
-    
-    /*== FILTER ==*/
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-      
-      if (isset($filter->field))//Where field
-        $field = $filter->field;
-    }
-    
-    /*== REQUEST ==*/
-    $model = $query->where($field ?? 'id', $criteria)->first();
-    $model ? $model->delete() : false;
-  }
-  
-  
 }

@@ -205,17 +205,11 @@ class Checkout extends Component
 
   }
 
-  /**
-   *
-   */
   private function initUser()
   {
     $this->user = \Auth::user();
   }
 
-  /**
-   *
-   */
   public function initAddresses()
   {
     if (isset($this->user->id)) {
@@ -225,9 +219,6 @@ class Checkout extends Component
     }
   }
 
-  /**
-   *
-   */
   private function initStep()
   {
 
@@ -237,9 +228,6 @@ class Checkout extends Component
 
   }
 
-  /**
-   * @param $order
-   */
   private function initOrder($order, $orderId)
   {
 
@@ -273,7 +261,7 @@ class Checkout extends Component
 
     $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $this->cart->id ?? null, "validateCurrency" => true]];
 
-    $this->paymentMethods = $this->paymentMethodRepository()->getItemsBy(json_decode(json_encode($params)));
+    $this->paymentMethods = $this->paymentMethodRepository()->getCalculations(json_decode(json_encode($params)));
 
     // Validate if the Shipping Method selected has an status error to deactivated
     $paymentMethod = $this->paymentMethods->where("id", $this->paymentMethodSelected)->first();

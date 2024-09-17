@@ -5,8 +5,6 @@
   @if(isset($cart->id))
     @include('icommerce::frontend.livewire.cart.dropdown')
   @endif
-</div>
-
 @include("icommerce::frontend.livewire.cart.quoteModal")
 
 @section('scripts-owl')
@@ -26,3 +24,7 @@
   @endif
 </style>
 @stop
+
+</div>
+
+
