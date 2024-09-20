@@ -43,30 +43,30 @@ class ProductOption extends CrudModel
     'sort_order'
   ];
 
-    public function option()
-    {
-        return $this->belongsTo(Option::class);
-    }
+  public function option()
+  {
+    return $this->belongsTo(Option::class);
+  }
 
-    public function parent()
-    {
-        return $this->belongsTo(Option::class, 'parent_id');
-    }
+  public function parent()
+  {
+    return $this->belongsTo(Option::class, 'parent_id');
+  }
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+  public function product()
+  {
+    return $this->belongsTo(Product::class);
+  }
 
-    public function productOptionValues()
-    {
-        return $this->hasMany(ProductOptionValue::class);
-    }
+  public function productOptionValues()
+  {
+    return $this->hasMany(ProductOptionValue::class);
+  }
 
-    public function orderOptions()
-    {
-        return $this->hasMany(OrderOption::class);
-    }
+  public function orderOptions()
+  {
+    return $this->hasMany(OrderOption::class);
+  }
 
   public function parentOptionValue()
   {
@@ -78,18 +78,18 @@ class ProductOption extends CrudModel
     return 'lft';
   }
 
-    public function getRgtName()
-    {
-        return 'rgt';
-    }
+  public function getRgtName()
+  {
+    return 'rgt';
+  }
 
-    public function getDepthName()
-    {
-        return 'depth';
-    }
+  public function getDepthName()
+  {
+    return 'depth';
+  }
 
-    public function getParentIdName()
-    {
-        return 'parent_id';
-    }
+  public function getParentIdName()
+  {
+    return 'parent_id';
+  }
 }

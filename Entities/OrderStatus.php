@@ -13,9 +13,9 @@ class OrderStatus extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\OrderStatusTransformer';
   public $repository = 'Modules\Icommerce\Repositories\OrderStatusRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateOrderStatusRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderStatusRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderStatusRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderStatusRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -32,18 +32,18 @@ class OrderStatus extends CrudModel
     'parent_id'
   ];
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
+  public function orders()
+  {
+    return $this->hasMany(Order::class);
+  }
 
-    public function orderHistories()
-    {
-        return $this->hasMany(OrderStatusHistory::class);
-    }
+  public function orderHistories()
+  {
+    return $this->hasMany(OrderStatusHistory::class);
+  }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transactions::class);
-    }
+  public function transactions()
+  {
+    return $this->hasMany(Transactions::class);
+  }
 }

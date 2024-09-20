@@ -13,9 +13,9 @@ class ItemType extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\ItemTypeTransformer';
   public $repository = 'Modules\Icommerce\Repositories\ItemTypeRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateItemTypeRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateItemTypeRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateItemTypeRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateItemTypeRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

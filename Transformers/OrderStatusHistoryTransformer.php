@@ -13,6 +13,8 @@ class OrderStatusHistoryTransformer extends CrudResource
   */
   public function modelAttributes($request)
   {
-    return [];
+    return [
+      'status' => $this->when($this->orderStatus,$this->orderStatus),
+    ];
   }
 }

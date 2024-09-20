@@ -12,9 +12,9 @@ class PaymentMethodGeozone extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\PaymentMethodGeozoneTransformer';
   public $repository = 'Modules\Icommerce\Repositories\PaymentMethodGeozoneRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreatePaymentMethodGeozoneRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdatePaymentMethodGeozoneRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreatePaymentMethodGeozoneRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdatePaymentMethodGeozoneRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -26,9 +26,9 @@ class PaymentMethodGeozone extends CrudModel
     'deleted' => []
   ];
 
-    protected $fillable = [
-        'id',
-        'payment_method_id',
-        'geozone_id',
-    ];
+  protected $fillable = [
+    'id',
+    'payment_method_id',
+    'geozone_id',
+  ];
 }

@@ -6,10 +6,10 @@ namespace Modules\Icommerce\Events;
 
 class OrderWasProcessed
 {
-    public $order;
+  public $order;
 
-    public function __construct($order)
-    {
-        $this->order = $order;
-    }
+  public function __construct($order)
+  {
+    $this->order = $order;
+  }
 }

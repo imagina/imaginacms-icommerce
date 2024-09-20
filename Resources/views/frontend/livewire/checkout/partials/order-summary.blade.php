@@ -1,3 +1,22 @@
+@php
+  $currencyGtag = $currency->code ?? 'COP';
+  $paymentMethodsGtag = json_encode($paymentMethods->pluck('title')->toArray());
+  //map product to gtag
+  $productsGtag = $cart->products->map(function($carProduct, $index) {
+    // Calculate price using the discount if available, otherwise use the base price
+    $price = $carProduct->product->discount->price ?? $carProduct->product->price;
+    return [
+      'index' => $index,
+      'item_id' => $carProduct->product->id,
+      'item_name' => $carProduct->product->name,
+      'price' => $price,
+      'currency' =>  "COP",
+      'quantity' => $carProduct->quantity
+    ];
+  })
+@endphp
+
+
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">
@@ -216,7 +235,7 @@
                   <div>{{ trans('icommerce::order_summary.payment') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <p>
+                  <p id="orderSummaryPaymentMethodTitleContainer">
                     {{$paymentMethod->title ?? trans("icommerce::paymentmethods.messages.noPaymentMethodSelected") }}
                   </p>
                 </div>
@@ -231,7 +250,7 @@
           </div>
         @endif
         <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                wire:click="{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}">
+                onclick="orderSumamryPlaceOrder()">
           <div>
             {{ trans('icommerce::order_summary.submit') }}
           </div>
@@ -240,3 +259,34 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript" defer>
+  function orderSumamryPlaceOrder() {
+    gTagFireEventPurchase()
+    // Trigger the Livewire action
+    window.livewire.emit("{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}")
+  }
+
+  function gTagFireEventPurchase() {
+    // Check if gtag function is available
+    if (typeof gtag !== "function") return;
+
+    //Validate paymentMethodSelected
+    const paymentMethod = document.getElementById('orderSummaryPaymentMethodTitleContainer').innerText
+    const paymentMethods = {!! $paymentMethodsGtag !!};
+
+    if (paymentMethods.includes(paymentMethod)) {
+      //Instance the main data
+      let gTagData = {
+        transaction_id: {{$cart->id}},
+        value: {{$total}},
+        currency: "{{$currencyGtag}}",
+        payment_type: paymentMethod,
+        items: {!! $productsGtag !!}
+      }
+
+      //Emit gtag event
+      gtag("event", "purchase", gTagData);
+    }
+  }
+</script>

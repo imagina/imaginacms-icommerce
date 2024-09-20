@@ -21,15 +21,15 @@ class ProductTranslation extends Model
   ];
   protected $table = 'icommerce__product_translations';
 
-    /**
-     * Return the sluggable configuration array for this model.
-     */
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
-    }
+  /**
+   * Return the sluggable configuration array for this model.
+   */
+  public function sluggable(): array
+  {
+    return [
+      'slug' => [
+        'source' => 'name',
+      ],
+    ];
+  }
 }

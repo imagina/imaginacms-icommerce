@@ -104,7 +104,7 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       @endphp
 
       <td colspan="2"
-          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($subtotal,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
+          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($subtotal,2)}}{{$order->currency->symbol_right ?? ''}}</td>
     </tr>
     @if($order->coupon_total > 0)
       <tr class="couponTotal">
@@ -124,7 +124,7 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       <tr class="shippingTotal">
         <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.shipping_method')}}</td>
         <td colspan="2"
-            style="text-align: right">{{$order->shipping_method}} {{ $order->shipping_amount>0 ? ' - '.number_format($order->shipping_amount,2,".",",") : ''}}{{$order->currency->symbol_right ?? ''}}</td>
+            style="text-align: right">{{$order->shipping_method}} {{ $order->shipping_amount>0 ? ' - '.number_format($order->shipping_amount,2) : ''}}{{$order->currency->symbol_right ?? ''}}</td>
       </tr>
     @endif
 
@@ -132,14 +132,14 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       <tr class="taxAmount">
         <td colspan="3" style="text-align: right">{{trans('icommerce::order_summary.tax')}}</td>
         <td colspan="2"
-            style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->tax_amount,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
+            style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->tax_amount,2)}}{{$order->currency->symbol_right ?? ''}}</td>
       </tr>
     @endif
 
     <tr class="total">
       <td colspan="3" style="text-align: right">Total</td>
       <td colspan="2"
-          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->total,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
+          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->total,2)}}{{$order->currency->symbol_right ?? ''}}</td>
     </tr>
     <tr class="user-information">
       <td class="row" style=" width: 100%; display: inline-block;

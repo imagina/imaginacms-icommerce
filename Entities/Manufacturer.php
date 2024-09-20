@@ -18,9 +18,9 @@ class Manufacturer extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\ManufacturerTransformer';
   public $repository = 'Modules\Icommerce\Repositories\ManufacturerRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateManufacturerRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateManufacturerRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateManufacturerRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateManufacturerRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

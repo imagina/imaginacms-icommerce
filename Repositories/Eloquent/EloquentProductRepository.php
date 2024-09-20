@@ -54,8 +54,91 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     }catch(\Exception $e){}
 
 
-  }
+    }
 
+  public function getItem($criteria, $params = false)
+  {
+
+    // compare parameters validate use of query
+    $differentParameters = $this->compareParameters($params);
+    //reusing query if exist
+    if (empty($this->query) || $differentParameters) {
+
+      //Instance Query
+      $query = $this->model->query();
+
+      //Include relationships
+      $query = $this->includeToQuery($query, ($params->include ?? []), "show");
+
+      //Check field name to criteria
+      if (isset($params->filter->field)) $field = $params->filter->field;
+
+
+      // find translatable attributes
+      $translatedAttributes = $this->model->translatedAttributes ?? [];
+
+
+      // filter by translatable attributes
+      if (isset($field) && in_array($field, $translatedAttributes)) {//Filter by slug
+        $filter = $params->filter;
+        $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
+          $query->where('locale', $filter->locale ?? \App::getLocale())
+            ->where($field, $criteria);
+        });
+      } else
+        // find by specific attribute or by id
+        $query->where($field ?? 'id', $criteria);
+
+      //Filter Query
+      if (isset($params->filter)) {
+        $filters = $params->filter;//Short data filter
+        //Instance model fillable
+        $modelFillable = array_merge(
+          $this->model->getFillable(),
+          ['id', 'created_at', 'updated_at', 'created_by', 'updated_by']
+        );
+
+        //Add Requested Filters
+        foreach ($filters as $filterName => $filterValue) {
+          $filterNameSnake = camelToSnake($filterName);//Get filter name as snakeCase
+          if (!in_array($filterName, $this->replaceFilters)) {
+            //Add fillable filter
+            if (in_array($filterNameSnake, $modelFillable)) {
+              $query = $this->setFilterQuery($query, $filterValue, $filterNameSnake);
+            }
+          }
+        }
+
+        //Filter by not organization
+        if (isset($filters->withoutTenancy) && $filters->withoutTenancy) $query->withoutTenancy();
+
+        //Set params into filters, to keep uploader code
+        if (is_array($filters)) $filters = (object)$filters;
+
+        //Add model filters
+        $query = $this->filterQuery($query, $filters, $params);
+      }
+    } else {
+      //reusing query if exist
+      $query = $this->query;
+    }
+
+    //Response as query
+    if (isset($params->returnAsQuery) && $params->returnAsQuery) return $query;
+
+    //Request
+    $response = $query->first();
+
+    //Event retrived model
+    $this->dispatchesEvents(['eventName' => 'retrievedShow', 'data' => [
+      "requestParams" => $params,
+      "response" => $response,
+      "criteria" => $criteria
+    ]]);
+
+    //Response
+    return $response;
+  }
   public function filterQuery($query, $filter, $params)
   {
 
