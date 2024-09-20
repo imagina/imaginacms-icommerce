@@ -16,7 +16,6 @@
   })
 @endphp
 
-
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">

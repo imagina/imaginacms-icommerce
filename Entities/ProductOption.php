@@ -29,7 +29,7 @@ class ProductOption extends CrudModel
     'deleting' => [],
     'deleted' => []
   ];
-
+  protected $forceDeleting = true;
 
   protected $with = ["productOptionValues"];
 
@@ -93,3 +93,4 @@ class ProductOption extends CrudModel
     return 'parent_id';
   }
 }
+

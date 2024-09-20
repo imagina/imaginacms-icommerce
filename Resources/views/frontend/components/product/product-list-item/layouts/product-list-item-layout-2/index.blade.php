@@ -4,8 +4,8 @@
 @if($product->is_new) is-new @endif"
      style="padding: {{$externalPadding}}px;
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
-    <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
-
+    @livewire('isite::edit-link', ['link' => "{{$editLink}}{{$product->id}}",
+    'tooltip' => "{{$tooltipEditLink}}"],key(uniqid()))
   @include('icommerce::frontend.components.product.meta')
 
 
