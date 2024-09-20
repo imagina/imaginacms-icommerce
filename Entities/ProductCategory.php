@@ -30,18 +30,18 @@ class ProductCategory extends CrudModel
     'category_id'
   ];
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+  public function product()
+  {
+    return $this->belongsTo(Product::class);
+  }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+  public function category()
+  {
+    return $this->belongsTo(Category::class);
+  }
 
-    public function manufacturers()
-    {
-        return $this->hasManyThrough(Manufacturer::class, Product::class);
-    }
+  public function manufacturers()
+  {
+    return $this->hasManyThrough(Manufacturer::class, Product::class);
+  }
 }

@@ -18,9 +18,9 @@ class PaymentMethod extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\PaymentMethodTransformer';
   public $repository = 'Modules\Icommerce\Repositories\PaymentMethodRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreatePaymentMethodRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdatePaymentMethodRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreatePaymentMethodRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdatePaymentMethodRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -107,7 +107,7 @@ class PaymentMethod extends CrudModel
 
     }
 
-   return $calculations;
+    return $calculations;
   }
 
 }

@@ -27,8 +27,7 @@
         </button>
       @endguest
     @endif
-
-    @if ($shopAsGuest)
+    @if ($shopAsGuest && setting('icommerce::enableGuestShopping', null, true))
       <hr class="py-2"/>
       <input id="userEmail" wire:model.defer="userEmail"
              placeholder="{{trans('icommerce::checkout.buttons.placeholderInputEmail')}}" class="form-control"

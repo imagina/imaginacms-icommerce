@@ -46,55 +46,55 @@ class OrderItem extends CrudModel
   ];
 
 
-    protected $casts = [
-        'options' => 'array',
-        'discount' => 'array',
-    ];
+  protected $casts = [
+    'options' => 'array',
+    'discount' => 'array',
+  ];
 
-    public function entity()
-    {
-        return $this->belongsTo($this->entity_type, 'entity_id');
-    }
+  public function entity()
+  {
+    return $this->belongsTo($this->entity_type, 'entity_id');
+  }
 
-    public function orderOption()
-    {
-        return $this->hasMany(OrderOption::class);
-    }
+  public function orderOption()
+  {
+    return $this->hasMany(OrderOption::class);
+  }
 
-    public function type()
-    {
-        return $this->belongsTo(ItemType::class);
-    }
+  public function type()
+  {
+    return $this->belongsTo(ItemType::class);
+  }
 
-    public function order()
-    {
-        return $this->belongsTo(Order::class, 'order_id');
-    }
+  public function order()
+  {
+    return $this->belongsTo(Order::class, 'order_id');
+  }
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');
-    }
+  public function product()
+  {
+    return $this->belongsTo(Product::class, 'product_id');
+  }
 
-    public function getOptionsAttribute($value)
-    {
-        return json_decode($value);
-    }
+  public function getOptionsAttribute($value)
+  {
+    return json_decode($value);
+  }
 
-    public function setOptionsAttribute($value)
-    {
-        $this->attributes['options'] = json_encode($value);
-    }
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
 
-    public function getDiscountAttribute($value)
-    {
-        return json_decode($value);
-    }
+  public function getDiscountAttribute($value)
+  {
+    return json_decode($value);
+  }
 
-    public function setDiscountAttribute($value)
-    {
-        $this->attributes['discount'] = json_encode($value);
-    }
+  public function setDiscountAttribute($value)
+  {
+    $this->attributes['discount'] = json_encode($value);
+  }
 
   public function getProductOptionsLabelAttribute()
   {
@@ -102,5 +102,4 @@ class OrderItem extends CrudModel
       return $item->option_description . ": " . $item->option_value_description;
     })->implode(', ');
   }
-
 }

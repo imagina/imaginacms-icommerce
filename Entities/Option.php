@@ -15,9 +15,9 @@ class Option extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\OptionTransformer';
   public $repository = 'Modules\Icommerce\Repositories\OptionRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateOptionRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateOptionRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOptionRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOptionRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -35,14 +35,13 @@ class Option extends CrudModel
     'options'
   ];
 
-    protected $casts = [
-        'options' => 'array',
-    ];
+  protected $casts = [
+    'options' => 'array'
+  ];
 
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'icommerce__product_option')->withPivot('value', 'required')->withTimestamps();
-    }
+  public function products(){
+    return $this->belongsToMany(Product::class, 'icommerce__product_option')->withPivot('value', 'required')->withTimestamps();
+  }
 
   public function optionValues(){
     return $this->hasMany(OptionValue::class);

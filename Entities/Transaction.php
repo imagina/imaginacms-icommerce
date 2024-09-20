@@ -26,26 +26,26 @@ class Transaction extends CrudModel
     'deleted' => []
   ];
 
-    protected $fillable = [
-        'external_code',
-        'order_id',
-        'payment_method_id',
-        'amount',
-        'status',
-        'external_status',
-    ];
+  protected $fillable = [
+    'external_code',
+    'order_id',
+    'payment_method_id',
+    'amount',
+    'status',
+    'external_status',
+  ];
 
-    protected $with = [
-        'paymentMethod',
-    ];
+  protected $with = [
+    'paymentMethod',
+  ];
 
-    public function paymentMethod()
-    {
-        return $this->belongsTo(PaymentMethod::class)->withoutTenancy();
-    }
+  public function paymentMethod()
+  {
+    return $this->belongsTo(PaymentMethod::class)->withoutTenancy();
+  }
 
-    public function orderStatus()
-    {
-        return $this->belongsTo(OrderStatus::class, 'status');
-    }
+  public function orderStatus()
+  {
+    return $this->belongsTo(OrderStatus::class, 'status');
+  }
 }

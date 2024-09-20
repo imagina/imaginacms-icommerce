@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-
-class changeQuantityAndStockDefaultInProductsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,11 +14,11 @@ class changeQuantityAndStockDefaultInProductsTable extends Migration
     public function up()
     {
 
-      \DB::statement("ALTER TABLE icommerce__products ALTER COLUMN stock_status SET DEFAULT 1");
-      
-      Schema::table('icommerce__products', function (Blueprint $table) {
-        $table->integer('quantity')->default(1)->unsigned()->change();
-      });
+        \DB::statement("ALTER TABLE icommerce__products ALTER COLUMN stock_status SET DEFAULT 1");
+
+        Schema::table('icommerce__products', function (Blueprint $table) {
+            $table->integer('quantity')->default(1)->unsigned()->change();
+        });
 
     }
 
@@ -32,4 +31,4 @@ class changeQuantityAndStockDefaultInProductsTable extends Migration
     {
         //
     }
-}
+};

@@ -23,8 +23,7 @@ id="homeModalWarehouseLocator" role="tabpanel" aria-labelledby="homeTabModalWare
         @else
             
             <livewire:iprofile::address-list :addresses="$userShippingAddresses" :addressSelected="$shippingAddress" emit="shippingAddressChanged"/>
-            
-            {{-- BTN NEW ADDRESS --}}
+
             <div class="form-row justify-content-center mt-4">
 
                 <div class="form-group col-md-6">

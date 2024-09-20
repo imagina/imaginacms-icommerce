@@ -14,9 +14,9 @@ class TaxClass extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\TaxClassTransformer';
   public $repository = 'Modules\Icommerce\Repositories\TaxClassRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateTaxClassRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateTaxClassRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateTaxClassRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateTaxClassRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

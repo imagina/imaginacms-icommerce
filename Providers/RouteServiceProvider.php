@@ -18,9 +18,9 @@ class RouteServiceProvider extends CoreRoutingServiceProvider
         return __DIR__.'/../Http/frontendRoutes.php';
     }
 
-    protected function getBackendRoute(): string
+    protected function getBackendRoute(): bool
     {
-        return __DIR__.'/../Http/backendRoutes.php';
+        return false;
     }
 
     protected function getApiRoute(): string

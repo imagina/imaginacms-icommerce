@@ -234,7 +234,7 @@
                   <div>{{ trans('icommerce::order_summary.payment') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <p>
+                  <p id="orderSummaryPaymentMethodTitleContainer">
                     {{$paymentMethod->title ?? trans("icommerce::paymentmethods.messages.noPaymentMethodSelected") }}
                   </p>
                 </div>

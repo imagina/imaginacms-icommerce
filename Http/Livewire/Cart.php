@@ -11,11 +11,9 @@ use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Services\PdfService;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Cart extends Component
 {
-  use LivewireAlert;
 
   public $cart;
   public $view;
@@ -35,15 +33,15 @@ class Cart extends Component
   private $request;
   protected $currencies;
   protected $listeners = [
-    'addToCart', 
-    'addToCartWithOptions', 
-    'download', 
-    'deleteFromCart', 
-    'updateCart', 
-    'deleteCart', 
-    'refreshCart', 
-    'makeQuote', 
-    'requestQuote', 
+    'addToCart',
+    'addToCartWithOptions',
+    'download',
+    'deleteFromCart',
+    'updateCart',
+    'deleteCart',
+    'refreshCart',
+    'makeQuote',
+    'requestQuote',
     'submitQuote',
     'warehouseShowInforIsReady' => 'refreshCart'
   ];
@@ -57,18 +55,17 @@ class Cart extends Component
     $this->layout = $layout;
     $this->icon = $icon;
     $this->iconquote = $iconquote;
-    
+
     $warehouse = request()->session()->get('warehouse');
     $warehouse = json_decode($warehouse);
     if (isset($warehouse->id)) {
       $this->warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
     }
 
-    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
+    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
     $this->styleCart = $styleCart;
-
     $this->loading = true;
     //$this->refreshCart();
     $this->load();
@@ -122,7 +119,7 @@ class Cart extends Component
           $updateCart = true;
         } else {
           $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
-          
+
           $warehouse = request()->session()->get('warehouse');
           $warehouse = json_decode($warehouse);
           if (isset($warehouse->id)) {
@@ -133,7 +130,7 @@ class Cart extends Component
               'product_id' => $cartProduct->product->id,
               'warehouse_id' => $warehouse->id,
               'cart_id' => $this->cart->id,
-              'product_option_values' => $cartProduct->productOptionValues->pluck('id')->toArray()
+              'product_option_values' =>  $cartProduct->productOptionValues->pluck('id')->toArray()
             ];
             $this->cartProductRepository()->updateBy($cartProduct->id, $data);
           }
@@ -143,7 +140,7 @@ class Cart extends Component
         $this->updateCart();
         $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
         if ($warehouseEnabled) {
-          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"), ["timer" => "8000"]));
+          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"),["timer" => "8000"]));
         } else {
           $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProduct"), config("asgard.isite.config.livewireAlerts"));
         }
@@ -152,7 +149,6 @@ class Cart extends Component
     request()->session()->put('cart', json_encode($this->cart));
 
     $this->loading = false;
-
   }
 
 
@@ -202,7 +198,7 @@ class Cart extends Component
           break;
 
         case 'Product Quantity Unavailable':
-          if ($this->warehouseEnabled)
+          if($this->warehouseEnabled)
             $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
           else
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
@@ -214,6 +210,7 @@ class Cart extends Component
 
   public function deleteFromCart($cartProductId)
   {
+    $this->loading = true;
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartProductRepository()->deleteBy($cartProductId, $params);
 

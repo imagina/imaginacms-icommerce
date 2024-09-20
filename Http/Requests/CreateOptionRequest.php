@@ -10,34 +10,34 @@ class CreateOptionRequest extends BaseFormRequest
   {
     return [
       'type' => 'required',
-    
+
     ];
   }
-  
+
   public function translationRules()
   {
     return [
       'description' => 'required|min:1',
     ];
   }
-  
+
   public function authorize()
   {
     return true;
   }
-  
+
   public function messages()
   {
     return [
       // type
       'type.required' => trans('icommerce::common.messages.field required'),
-      
+
       // sort_order
       'sort_order.required' => trans('icommerce::common.messages.field required'),
-    
+
     ];
   }
-  
+
   public function translationMessages()
   {
     return [
@@ -47,8 +47,8 @@ class CreateOptionRequest extends BaseFormRequest
     ];
   }
 
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
-    
+  public function getValidator(){
+    return $this->getValidatorInstance();
+  }
+
 }

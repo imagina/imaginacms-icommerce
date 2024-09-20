@@ -12,9 +12,9 @@ class CartProduct extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\CartProductTransformer';
   public $repository = 'Modules\Icommerce\Repositories\CartProductRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateCartProductRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateCartProductRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateCartProductRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateCartProductRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

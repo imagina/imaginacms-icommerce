@@ -45,33 +45,30 @@ class ShippingMethod extends CrudModel
     'options' => 'array'
   ];
 
-    public $tenantWithCentralData = false;
+  public $tenantWithCentralData = false;
 
-    public function __construct(array $attributes = [])
-    {
-        try {
-            $entitiesWithCentralData = json_decode(setting('icommerce::tenantWithCentralData', null, '[]'));
-            $this->tenantWithCentralData = in_array('shippingMethods', $entitiesWithCentralData);
-        } catch(\Exception $e) {
-        }
-        parent::__construct($attributes);
+  public function __construct(array $attributes = [])
+  {
+    try {
+      $entitiesWithCentralData = json_decode(setting('icommerce::tenantWithCentralData', null, '[]'));
+      $this->tenantWithCentralData = in_array('shippingMethods', $entitiesWithCentralData);
+    } catch (\Exception $e) {
     }
+    parent::__construct($attributes);
+  }
 
   public function getOptionsAttribute($value)
   {
-
     return json_decode($value);
-
   }
 
-    public function setOptionsAttribute($value)
-    {
-        $this->attributes['options'] = json_encode($value);
-    }
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
 
-    public function geozones()
-    {
-        return $this->belongsToMany('Modules\Ilocations\Entities\Geozones', 'icommerce__shipping_methods_geozones', 'shipping_method_id', 'geozone_id')->withTimestamps();
-    }
-
+  public function geozones()
+  {
+    return $this->belongsToMany('Modules\Ilocations\Entities\Geozones', 'icommerce__shipping_methods_geozones', 'shipping_method_id', 'geozone_id')->withTimestamps();
+  }
 }

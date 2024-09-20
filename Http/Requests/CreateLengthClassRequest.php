@@ -36,8 +36,8 @@ class CreateLengthClassRequest extends BaseFormRequest
     return [];
   }
 
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
-    
+  public function getValidator(){
+    return $this->getValidatorInstance();
+  }
+
 }

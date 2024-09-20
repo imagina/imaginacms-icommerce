@@ -75,15 +75,6 @@ class ProductListItem extends Component
    * @return void
    */
   public function __construct($item,
-                              $editLink,
-                              $tooltipEditLink,
-                              $withDescription = null,
-                              $withPrice = true,
-                              $addToCartButtonAction = null,
-                              $labelButtonAddProduct = null,
-                              $showDeleteBtn = false,
-                              $productLayout = null,
-                              $currentRoute = null,
                               $itemListLayout = null,
                               $layout = null,
                               $discountRibbonStyle = null,
@@ -133,6 +124,15 @@ class ProductListItem extends Component
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
                               $imageObjectFit = null,
+                              $editLink,
+                              $tooltipEditLink,
+                              $withDescription = null,
+                              $withPrice = true,
+                              $addToCartButtonAction = null,
+                              $labelButtonAddProduct = null,
+                              $showDeleteBtn = false,
+                              $productLayout=null,
+                              $currentRoute = null
   )
   {
     $this->product = $item;
