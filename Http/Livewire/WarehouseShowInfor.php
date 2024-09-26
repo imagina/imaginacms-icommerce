@@ -318,7 +318,7 @@ class WarehouseShowInfor extends Component
               $this->shippingAddress->save();
 
               //Verifying that it was a nearby warehouse to show de Modal wiht message in front
-              if (isset($warehouseProcess['nearby'])) {
+              if (isset($warehouseProcess['nearby']) && $warehouseProcess['nearby']==true) {
 
                 request()->session()->put('warehouse', json_encode($warehouse));
 

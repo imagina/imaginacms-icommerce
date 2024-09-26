@@ -117,7 +117,8 @@ class WarehouseService
 
                     //Return 
                     return [
-                        'warehouse' => $warehouse
+                        'warehouse' => $warehouse,
+                        'nearby' => false
                     ];
 
                 }else{
