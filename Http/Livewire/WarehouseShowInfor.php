@@ -293,19 +293,23 @@ class WarehouseShowInfor extends Component
             request()->session()->put('shippingAddressChecked', true);
 
           } else {
-            //User has a Shipping Address
-
+            \Log::info($this->log . 'User has a Shipping Address');
             //Get warehouse to the address
             $warehouseToAddress = $this->shippingAddress->warehouse;
 
-            //The address have a warehouse
-            if (!is_null($warehouseToAddress)) {
+            //Proccess to get a Warehouse to the Address
+            $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
+
+            //The address have a Warehouse and the Warehouse is active
+            //WarehouseProcess(From calculations) must be the same that WarehouseToAddress
+            //Nearby indica que el warehouse que se obtiene de WarehouseProcess, es el warehouse mas cercano (Caso que la direccion no tenga cobertura)
+            if (!is_null($warehouseToAddress) && $warehouseToAddress->status==1 && $warehouseToAddress->id==$warehouseProcess['warehouse']->id && $warehouseProcess['nearby']==false) {
               \Log::info($this->log . 'Shipping Address has a warehouse');
               $warehouse = $warehouseToAddress;
             } else {
-              //Proccess to get a Warehouse to the Address
-              $warehouseProcess = $this->warehouseService()->getWarehouseToAddress($this->shippingAddress);
-
+              //El warehouse de la direccion no cumple con los requisitos, por lo tanto toca asignar el de los calculos.
+              \Log::info($this->log . 'Set Warehouse to address with Calculations');
+              
               //Get Warehouse Data
               $warehouse = $warehouseProcess['warehouse'];
 
@@ -313,15 +317,29 @@ class WarehouseShowInfor extends Component
               $this->shippingAddress->warehouse_id = $warehouse->id;
               $this->shippingAddress->save();
 
-              //Verifying that it was a nearby warehouse
+              //Verifying that it was a nearby warehouse to show de Modal wiht message in front
               if (isset($warehouseProcess['nearby'])) {
+
+                request()->session()->put('warehouse', json_encode($warehouse));
+
+                //Set shipping method to Pickup
+                session(["shippingMethodName" => $this->shippingMethods['pickup']]);
+
                 //Show Sweet Alert in frontend
                 request()->session()->put('warehouseAlert', true);
+
+                //Para que en el layout no muestre la direccion del Usuario sino la del Warehouse
+                session(['shippingAddress' => null]);
+                //No entre a la validacion donde revisa las direcciones del usuario y asigna como seleccionada | Warehouse Component Blade
+                session(['shippingAddressChecked' => true]);
+
                 //Reload Page
                 return redirect(request()->header('Referer'));
               }
+
             }
 
+            //Solo si existe el warehouse (Recordar que en el caso de Nearby recarga)
             if (!is_null($warehouse)) {
               //Set Sessions
               $this->warehouse = $warehouse;
