@@ -115,15 +115,19 @@ class WarehouseShowInfor extends Component
     if(!is_null($this->warehouse))
     {
       \Log::info($this->log.'Listener|checkComponentReady|warehouse: '.$this->warehouse->title);
+
+      $space = "";
+      if(isset($this->user) && !empty($this->user->first_name)) $space = " ";
+      
       $this->title = "<a class='address cursor-pointer {$this->addressClass}' data-toggle='modal' data-target='#modalWarehouseLocator'> ".
-                trans('icommerce::warehouses.messages.hello'). " ".($this->user ? $this->user->first_name : "") . ", " . trans('icommerce::warehouses.messages.buying for') . " " .
+                trans('icommerce::warehouses.messages.hello').$space.($this->user ? $this->user->first_name : "") . ", " . trans('icommerce::warehouses.messages.buying for') . " " .
                 $this->warehouse->title .
             "</a>";
       
     }
     if(isset($this->user->id) && !empty($this->shippingAddress)){
         $this->title = "<span class='{$this->textClass}'>".
-            trans("icommerce::warehouses.messages.hello") ." ".$this->user->first_name. ",".
+            trans("icommerce::warehouses.messages.hello").$space.$this->user->first_name. ",".
             ($this->text ?? trans('icommerce::warehouses.messages.your address is')) .
             "</span>" .
             "<a class='address cursor-pointer {$this->addressClass}' data-toggle='modal' data-target='#modalWarehouseLocator'>" .
