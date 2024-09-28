@@ -19,9 +19,9 @@ class Order extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\OrderTransformer';
   public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -112,66 +112,64 @@ class Order extends CrudModel
     'status'
   ];
 
-    public function customer()
-    {
-        $driver = config('asgard.user.config.driver');
+  public function customer()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
+  }
 
-        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'customer_id');
-    }
+  public function addedBy()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'added_by_id');
+  }
 
-    public function addedBy()
-    {
-        $driver = config('asgard.user.config.driver');
+  public function products()
+  {
+    return $this->belongsToMany(Product::class, 'icommerce__order_item')
+      ->withPivot(
+        'title', 'reference', 'quantity',
+        'price', 'total', 'tax', 'reward')
+      ->withTimestamps()
+      ->using(OrderItem::class);
+  }
 
-        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'added_by_id');
-    }
+  public function orderItems()
+  {
+    return $this->hasMany(OrderItem::class);
+  }
 
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'icommerce__order_item')
-          ->withPivot(
-              'title', 'reference', 'quantity',
-              'price', 'total', 'tax', 'reward')
-          ->withTimestamps()
-          ->using(OrderItem::class);
-    }
+  public function parent()
+  {
+    return $this->belongsTo(Order::class, 'parent_id');
+  }
 
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
+  public function children()
+  {
+    return $this->hasMany(Order::class, 'parent_id');
+  }
 
-    public function parent()
-    {
-        return $this->belongsTo(Order::class, 'parent_id');
-    }
+  public function coupons()
+  {
+    return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
+      ->withPivot('amount')
+      ->withTimestamps();
+  }
 
-    public function children()
-    {
-        return $this->hasMany(Order::class, 'parent_id');
-    }
+  public function orderHistory()
+  {
+    return $this->hasMany(OrderStatusHistory::class);
+  }
 
-    public function coupons()
-    {
-        return $this->belongsToMany(Coupon::class, 'icommerce__coupon_order_history')
-          ->withPivot('amount')
-          ->withTimestamps();
-    }
+  public function orderOption()
+  {
+    return $this->hasMany(OrderOption::class);
+  }
 
-    public function orderHistory()
-    {
-        return $this->hasMany(OrderStatusHistory::class);
-    }
-
-    public function orderOption()
-    {
-        return $this->hasMany(OrderOption::class);
-    }
-
-    public function status()
-    {
-        return $this->belongsTo(OrderStatus::class, 'status_id');
-    }
+  public function status()
+  {
+    return $this->belongsTo(OrderStatus::class, 'status_id');
+  }
 
   public function getStatusNameAttribute()
   {
@@ -188,60 +186,60 @@ class Order extends CrudModel
     return $this->belongsTo(Currency::class);
   }
 
-    public function conversation()
-    {
-        return $this->hasOne("Modules\Ichat\Entities\Conversation", 'entity_id');
-    }
+  public function conversation()
+  {
+    return $this->hasOne("Modules\Ichat\Entities\Conversation", 'entity_id');
+  }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
+  public function transactions()
+  {
+    return $this->hasMany(Transaction::class);
+  }
 
-    public function shippings()
-    {
-        return $this->hasMany(Shipping::class);
-    }
+  public function shippings()
+  {
+    return $this->hasMany(Shipping::class);
+  }
 
-    public function getOptionsAttribute($value)
-    {
-        return json_decode($value);
-    }
+  public function getOptionsAttribute($value)
+  {
+    return json_decode($value);
+  }
 
-    public function getUrlAttribute()
-    {
-        $panel = config('asgard.iprofile.config.panel') ?? 'blade';
-        if ($panel == 'blade' || $this->guest_purchase) {
-            return \URL::route(locale().'.icommerce.store.order.show', ['orderId' => $this->id, 'orderKey' => $this->key]);
-        } else {
-            return \URL::to('/ipanel/#/store/orders/'.$this->id);
-        }
+  public function getUrlAttribute()
+  {
+    $panel = config('asgard.iprofile.config.panel') ?? 'blade';
+    if ($panel == 'blade' || $this->guest_purchase) {
+      return \URL::route(locale() . '.icommerce.store.order.show', ['orderId' => $this->id, 'orderKey' => $this->key]);
+    } else {
+      return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
+  }
 
-    public function getCouponTotalAttribute()
-    {
-        return $this->coupons->sum('pivot.amount');
-    }
+  public function getCouponTotalAttribute()
+  {
+    return $this->coupons->sum('pivot.amount');
+  }
 
-    public function setOptionsAttribute($value)
-    {
-        $this->attributes['options'] = json_encode($value);
-    }
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
 
-    public function paymentCountry()
-    {
-        return $this->belongsTo(Country::class, 'payment_country', 'iso_2')->with('translations');
-    }
+  public function paymentCountry()
+  {
+    return $this->belongsTo(Country::class, 'payment_country', 'iso_2')->with('translations');
+  }
 
-    public function shippingCountry()
-    {
-        return $this->belongsTo(Country::class, 'shipping_country_code', 'iso_2')->with('translations');
-    }
+  public function shippingCountry()
+  {
+    return $this->belongsTo(Country::class, 'shipping_country_code', 'iso_2')->with('translations');
+  }
 
-    public function paymentDepartment()
-    {
-        return $this->belongsTo(Province::class, 'payment_zone', 'iso_2')->with('translations');
-    }
+  public function paymentDepartment()
+  {
+    return $this->belongsTo(Province::class, 'payment_zone', 'iso_2')->with('translations');
+  }
 
   public function shippingDepartment()
   {

@@ -13,9 +13,9 @@ class TaxClassRate extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\TaxClassRateTransformer';
   public $repository = 'Modules\Icommerce\Repositories\TaxClassRateRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateTaxClassRateRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateTaxClassRateRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateTaxClassRateRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateTaxClassRateRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -34,13 +34,13 @@ class TaxClassRate extends CrudModel
     'priority'
   ];
 
-    public function taxRate()
-    {
-        return $this->belongsTo(TaxRate::class);
-    }
+  public function taxRate()
+  {
+    return $this->belongsTo(TaxRate::class);
+  }
 
-    public function taxClass()
-    {
-        return $this->belongsTo(TaxClass::class);
-    }
+  public function taxClass()
+  {
+    return $this->belongsTo(TaxClass::class);
+  }
 }

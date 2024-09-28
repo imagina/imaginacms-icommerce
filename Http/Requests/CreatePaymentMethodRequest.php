@@ -13,15 +13,15 @@ class CreatePaymentMethodRequest extends BaseFormRequest
     ];
   }
 
-    public function translationRules()
-    {
-        return [];
-    }
+  public function translationRules()
+  {
+    return [];
+  }
 
-    public function authorize()
-    {
-        return true;
-    }
+  public function authorize()
+  {
+    return true;
+  }
 
   public function messages()
   {
@@ -31,7 +31,7 @@ class CreatePaymentMethodRequest extends BaseFormRequest
     ];
   }
 
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
+  public function getValidator(){
+    return $this->getValidatorInstance();
+  }
 }

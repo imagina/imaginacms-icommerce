@@ -11,6 +11,7 @@ class CacheOrderStatusHistoryDecorator extends BaseCacheCrudDecorator implements
     {
         parent::__construct();
         $this->entityName = 'icommerce.orderstatushistories';
+        $this->tags = ['icommerce.orders'];
         $this->repository = $orderstatushistory;
     }
 }

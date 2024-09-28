@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ManufacturerTranslation extends Model
 {
-    use Sluggable;
+  use Sluggable;
 
   public $timestamps = false;
   protected $fillable = [
@@ -23,12 +23,12 @@ class ManufacturerTranslation extends Model
     'translatable_options' => 'array'
   ];
 
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
-    }
+  public function sluggable(): array
+  {
+    return [
+      'slug' => [
+        'source' => 'name',
+      ],
+    ];
+  }
 }

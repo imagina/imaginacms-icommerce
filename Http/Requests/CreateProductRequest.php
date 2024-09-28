@@ -7,12 +7,12 @@ use Modules\Ihelpers\Rules\UniqueSlugRule;
 
 class CreateProductRequest extends BaseFormRequest
 {
-    public function rules()
-    {
-        return [
-            'category_id' => 'required',
-        ];
-    }
+  public function rules()
+  {
+    return [
+      'category_id' => 'required',
+    ];
+  }
 
   public function translationRules()
   {
@@ -22,17 +22,17 @@ class CreateProductRequest extends BaseFormRequest
     ];
   }
 
-    public function authorize()
-    {
-        return true;
-    }
+  public function authorize()
+  {
+    return true;
+  }
 
-    public function messages()
-    {
-        return [
+  public function messages()
+  {
+    return [
 
-        ];
-    }
+    ];
+  }
 
   public function translationMessages()
   {
@@ -48,7 +48,7 @@ class CreateProductRequest extends BaseFormRequest
     ];
   }
 
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
+  public function getValidator(){
+    return $this->getValidatorInstance();
+  }
 }

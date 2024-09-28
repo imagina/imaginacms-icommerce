@@ -30,80 +30,76 @@ class ProductOptionValue extends CrudModel
     'deleted' => []
   ];
 
-    protected $fillable = [
-        'product_option_id',
-        'product_id',
-        'option_id',
-        'option_value_id',
-        'parent_option_value_id',
-        'parent_prod_opt_val_id',
-        'quantity',
-        'subtract',
-        'price',
-        'price_prefix',
-        'points',
-        'points_prefix',
-        'weight',
-        'weight_prefix',
-        'stock_status',
-    ];
+  protected $fillable = [
+    'product_option_id',
+    'product_id',
+    'option_id',
+    'option_value_id',
+    'parent_option_value_id',
+    'parent_prod_opt_val_id',
+    'quantity',
+    'subtract',
+    'price',
+    'price_prefix',
+    'points',
+    'points_prefix',
+    'weight',
+    'weight_prefix',
+    'stock_status'
+  ];
 
-    // OK YA PROBADAS
-    public function cartproductoptions()
-    {
-        return $this->hasMany(CartProductOption::class);
-    }
+  public function cartproductoptions()
+  {
+    return $this->hasMany(CartProductOption::class);
+  }
 
-    //************* OJO DUDAS PROBAR ********************
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+  public function product()
+  {
+    return $this->belongsTo(Product::class);
+  }
 
-    //************* OJO DUDAS PROBAR ********************
-    public function productOption()
-    {
-        return $this->belongsTo(ProductOption::class);
-    }
+  public function productOption()
+  {
+    return $this->belongsTo(ProductOption::class);
+  }
 
-    public function parentProductOptionValue()
-    {
-        return $this->belongsTo(ProductOptionValue::class, 'parent_prod_opt_val_id');
-    }
+  public function parentProductOptionValue()
+  {
+    return $this->belongsTo(ProductOptionValue::class, 'parent_prod_opt_val_id');
+  }
 
-    //************* OJO DUDAS PROBAR ********************
-    public function option()
-    {
-        return $this->belongsTo(Option::class);
-    }
+  //************* OJO DUDAS PROBAR ********************
+  public function option()
+  {
+    return $this->belongsTo(Option::class);
+  }
 
-    //************* OJO DUDAS PROBAR ********************
-    public function optionValue()
-    {
-        return $this->belongsTo(OptionValue::class);
-    }
+  //************* OJO DUDAS PROBAR ********************
+  public function optionValue()
+  {
+    return $this->belongsTo(OptionValue::class);
+  }
 
-    public function parentOptionValue()
-    {
-        return $this->belongsTo(OptionValue::class, 'parent_option_value_id');
-    }
+  public function parentOptionValue()
+  {
+    return $this->belongsTo(OptionValue::class, 'parent_option_value_id');
+  }
 
-    public function orderOption()
-    {
-        return $this->hasMany(OrderOption::class);
-    }
+  public function orderOption()
+  {
+    return $this->hasMany(OrderOption::class);
+  }
 
   public function getAvailableAttribute()
   {
     $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
     if ($warehouseEnabled && $this->subtract) {
-      
       $warehouse = request()->session()->get('warehouse');
       $warehouse = json_decode($warehouse);
       if (isset($warehouse->id)) {
         $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
       }
-      
+
       if (!is_null($warehouse)) {
         $warehouseProductQuantity = \DB::table('icommerce__product_option_value_warehouse')
           ->where('warehouse_id', $warehouse->id)
@@ -174,9 +170,9 @@ class ProductOptionValue extends CrudModel
     $ancestorsAndSelf = ProductOptionValue::with(["option","option.translations","optionValue","optionValue.translations","children"])->ancestorsAndSelf($this->id);
     $fullname = "";
 
-  foreach ($ancestorsAndSelf as $productOptionValue)
-    $fullname .= ($productOptionValue->option ? $productOptionValue->option->description : "") . ": " .
-      ($productOptionValue->optionValue ? $productOptionValue->optionValue->description : "") . ($productOptionValue->children->isNotEmpty() ? " / " : "");
+    foreach ($ancestorsAndSelf as $productOptionValue)
+      $fullname .= ($productOptionValue->option ? $productOptionValue->option->description : "") . ": " .
+        ($productOptionValue->optionValue ? $productOptionValue->optionValue->description : "") . ($productOptionValue->children->isNotEmpty() ? " / " : "");
 
 
     return $fullname;

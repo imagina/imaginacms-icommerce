@@ -11,5 +11,5 @@ class LengthClassTranslation extends Model
     "title",
     "unit"
   ];
-    protected $table = 'icommerce__length_class_translations';
+  protected $table = 'icommerce__length_class_translations';
 }

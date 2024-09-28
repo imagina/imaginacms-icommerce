@@ -5,7 +5,6 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Icrud\Entities\CrudModel;
-use Modules\Core\Support\Traits\AuditTrait;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Cart extends CrudModel
@@ -16,9 +15,9 @@ class Cart extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\CartTransformer';
   public $repository = 'Modules\Icommerce\Repositories\CartRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateCartRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateCartRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateCartRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateCartRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]

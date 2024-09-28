@@ -43,11 +43,11 @@ class OrderApiController extends BaseCrudController
     return $response;
   }
 
-    /**
-     * creating a new resource.
-     * @return Response
-     */
-    public function create(Request $request)
+  /**
+   * creating a new resource.
+   * @return Response
+   */
+  public function create(Request $request)
   {
 
     \Log::info('Icommerce: OrderApiController|Create');

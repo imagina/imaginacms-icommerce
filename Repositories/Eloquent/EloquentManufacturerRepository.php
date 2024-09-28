@@ -53,8 +53,8 @@ class EloquentManufacturerRepository extends EloquentCrudRepository implements M
 
     if(!isset($params->order) || empty($params->order)){
       $query->orderBy('sort_order', 'desc');//Add order to query
-//      $query->leftJoin("icommerce__manufacturer_trans as mt", "mt.manufacturer_id", "icommerce__manufacturers.id")
-//        ->orderBy('mt.name', 'asc');
+      $query->leftJoin("icommerce__manufacturer_trans as mt", "mt.manufacturer_id", "icommerce__manufacturers.id")
+        ->orderBy('mt.name', 'asc');
     }
     //Response
     return $query;

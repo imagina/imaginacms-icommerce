@@ -131,19 +131,16 @@ class Checkout extends Component
     $this->addressGuestShippingCreated = false;
   }
 
-  public function billingAddressChanged($data)
-  {
+  public function billingAddressChanged($data){
 
     $this->billingAddressSelected = $data;
   }
 
-  public function shippingAddressChanged($data)
-  {
+  public function shippingAddressChanged($data){
 
     $this->shippingAddressSelected = $data;
 
   }
-
   public function emitCheckoutAddressBilling($data)
   {
     $this->addressGuest = $data;
@@ -225,9 +222,8 @@ class Checkout extends Component
   private function initStep()
   {
     $this->step = 1;
-    if (isset($this->user->id)) {
+    if (isset($this->user->id))
       $this->step = 2;
-    }
   }
 
   private function initOrder($order, $orderId)
@@ -594,7 +590,7 @@ class Checkout extends Component
     $shippingAddress = null;
 
     if (setting('icommerce::warehouseFunctionality', null, false)) {
-      
+
       $shippingAddressWarehouse = request()->session()->get('shippingAddress');
       $shippingAddressWarehouse = json_decode($shippingAddressWarehouse);
 
@@ -942,13 +938,13 @@ class Checkout extends Component
     $data["guest_purchase"] = $this->shopAsGuest;
     $data["organizationId"] = $this->organization->id ?? null;
     if (setting('icommerce::warehouseFunctionality', null, false)) {
-      
+
       $warehouse = request()->session()->get('warehouse');
       $warehouse = json_decode($warehouse);
       if (isset($warehouse->id)) {
         $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
       }
-      
+
       $data["warehouse_id"] = $warehouse->id ?? null;
       $data["warehouse_title"] = $warehouse->title ?? null;
       $data["warehouse_address"] = $warehouse->address ?? null;

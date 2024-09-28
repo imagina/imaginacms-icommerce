@@ -13,9 +13,9 @@ class ShippingMethodGeozone extends Pivot
   public $transformer = 'Modules\Icommerce\Transformers\ShippingMethodGeozoneTransformer';
   public $repository = 'Modules\Icommerce\Repositories\ShippingMethodGeozoneRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateShippingMethodGeozoneRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateShippingMethodGeozoneRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateShippingMethodGeozoneRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateShippingMethodGeozoneRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -27,9 +27,9 @@ class ShippingMethodGeozone extends Pivot
     'deleted' => []
   ];
 
-    protected $fillable = [
-        'id',
-        'shipping_method_id',
-        'geozone_id',
-    ];
+  protected $fillable = [
+    'id',
+    'shipping_method_id',
+    'geozone_id',
+  ];
 }
