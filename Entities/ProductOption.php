@@ -92,4 +92,13 @@ class ProductOption extends CrudModel
   {
     return 'parent_id';
   }
+
+  public function getCacheClearableData()
+  {
+    return [
+      'urls' => [
+        $this->product->url
+      ]
+    ];
+  }
 }
