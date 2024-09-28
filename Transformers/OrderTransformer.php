@@ -8,6 +8,8 @@ use Modules\Ilocations\Transformers\ProvinceTransformer;
 
 class OrderTransformer extends CrudResource
 {
+  
+  protected $excludeRelations = ['orderItems','orderHistory'];
   /**
   * Method to merge values with response
   *
@@ -21,6 +23,8 @@ class OrderTransformer extends CrudResource
       'shippingDepartment' => new ProvinceTransformer($this->whenLoaded('shippingDepartment')),
       'paymentDepartment' => new ProvinceTransformer($this->whenLoaded('paymentDepartment')),
       'transactions' => TransactionTransformer::collection($this->whenLoaded('transactions')),
+      'histories' => OrderHistoryTransformer::collection($this->orderHistory),
+      'items' => OrderItemTransformer::collection($this->orderItems),
      ];
 
     //Add information blocks
