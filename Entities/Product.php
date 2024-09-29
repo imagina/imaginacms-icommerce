@@ -322,7 +322,7 @@ class Product extends CrudModel implements TaggableInterface
 
   public function getOptionsAttribute($value)
   {
-    return json_decode($value);
+    return $value != null ? json_decode($value) : $value;
   }
 
 
@@ -497,7 +497,8 @@ class Product extends CrudModel implements TaggableInterface
     $auth = $this->auth;
 
     $priceList = is_module_enabled('Icommercepricelist');
-    $setting = json_decode(request()->get('setting'));
+    $requestSetting = request()->get('setting');
+    $setting = $requestSetting != null ?json_decode(request()->get('setting')) : (object)[];
 
     if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
       $priceList = $this->authPriceLists->where('related_id', '!=', 0)->first() ?? $this->authPriceLists->first();

@@ -41,7 +41,7 @@ class WarehouseService
         if (isset($warehouse->id)) {
             \Log::info($this->log.'showSessionVars|warehouseId: '.$warehouse->id);
         }   
-        $shippingAddress = json_decode($shippingAddress);
+        $shippingAddress = $shippingAddress != null ? json_decode($shippingAddress) : $shippingAddress;
         if(isset($shippingAddress)){
             \Log::info($this->log.'showSessionVars|shippingAddressId: '.$shippingAddress->id);
         }

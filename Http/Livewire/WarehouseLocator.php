@@ -132,7 +132,7 @@ class WarehouseLocator extends Component
    
     //Set Shipping Address
     $shippingAddress = request()->session()->get('shippingAddress');
-    $shippingAddress = json_decode($shippingAddress);
+    $shippingAddress = $shippingAddress != null ? json_decode($shippingAddress) : $shippingAddress;
     if (isset($shippingAddress->id)) {
       $this->shippingAddress = $this->addressRepository()->getItem($shippingAddress->id);
     }
