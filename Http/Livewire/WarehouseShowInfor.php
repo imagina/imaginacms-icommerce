@@ -42,8 +42,8 @@ class WarehouseShowInfor extends Component
    * MOUNT
    */
   public function mount(
-    $layout = 'warehouse-show-infor-layout-1', 
     $warehouseVar,
+    $layout = 'warehouse-show-infor-layout-1',
     $textClass = '',
     $addressClass = '',
     $warehouseLocatorId = null
