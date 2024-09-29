@@ -12,5 +12,6 @@ class CacheProductOptionValueDecorator extends BaseCacheCrudDecorator implements
         parent::__construct();
         $this->entityName = 'icommerce.productoptionvalues';
         $this->repository = $productoptionvalue;
+        $this->tags = ['icommerce.productoptions','icommerce.products'];
     }
 }

@@ -177,4 +177,14 @@ class ProductOptionValue extends CrudModel
 
     return $fullname;
   }
+
+  public function getCacheClearableData()
+  {
+    return [
+      'urls' => [
+        $this->product->url
+      ]
+    ];
+}
+
 }
