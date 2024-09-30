@@ -14,11 +14,10 @@ class CreateCategoryRequest extends BaseFormRequest
 
   public function translationRules()
   {
-
     return [
-      'title' => 'required|min:2',
-      'slug' => ["required",new UniqueSlugRule("icommerce__category_translations"),"min:2"],
-      'description' => 'required|min:2',
+            'title' => 'required|min:2',
+            'slug' => ['required', new UniqueSlugRule('icommerce__category_translations'), 'min:2'],
+            'description' => 'required|min:2',
     ];
   }
 
@@ -48,8 +47,9 @@ class CreateCategoryRequest extends BaseFormRequest
       'description.min:2' => trans('icommerce::common.messages.min 2 characters'),
     ];
   }
-  
-  public function getValidator(){
-    return $this->getValidatorInstance();
-  }
+
+    public function getValidator(){
+        return $this->getValidatorInstance();
+    }
+    
 }

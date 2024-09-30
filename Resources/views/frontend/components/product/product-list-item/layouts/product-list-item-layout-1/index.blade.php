@@ -3,8 +3,8 @@
 @if(isset($discount) && $discount) with-discount @else without-discount @endif
 @if($product->is_sold_out) sold-out @endif ribbon-discount-position-{{$discountPosition}}
 @if($product->is_new) is-new @endif">
-  <x-isite::edit-link link="{{$editLink}}{{$product->id}}" tooltip="{{$tooltipEditLink}}"/>
-
+    @livewire('isite::edit-link', ['link' => "{{$editLink}}{{$product->id}}",
+    'tooltip' => "{{$tooltipEditLink}}"],key(uniqid()))
   @include('icommerce::frontend.components.product.meta')
 
   @if(isset($itemListLayout) && $itemListLayout=='one')
@@ -45,11 +45,11 @@
   @include('icommerce::frontend.components.product.global-inline-css')
 
  
- <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes --> 
+ <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes -->
 @if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
   <!-- Wishlist Modal List -->
   @livewire("wishlistable::wishlist",["layout"=>"wishlist-layout-modal-list-1","layoutButton"=>'btn', "item" => $product],key(uniqid()))
 @endif
 
- 
+
 </div>

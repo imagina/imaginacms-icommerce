@@ -52,8 +52,7 @@ if (!function_exists('icommerce_getTotalWeight')) {
 }
 
 if (!function_exists('icommerce_geCategories')) {
-  
-  function icommerce_geCategories($options = array())
+    function icommerce_geCategories($options = [])
   {
     $default_options = array(
       'take' => 12, //Numero de posts a obtener,
@@ -93,11 +92,10 @@ if (!function_exists('icommerce_totalDimensions')) {
             $tLength += ($item->length > 0) ? $item->length : 1;
 
         }
-
-        $dimensions = array($tWidth, $tHeight, $tLength);
+  
+        $dimensions = [$tWidth, $tHeight, $tLength];
 
         return $dimensions;
-
     }
 
 }
@@ -142,25 +140,23 @@ if (!function_exists('currentCurrency')) {
 
     function currentCurrency()
     {
-      
-      $currency = \Cache::store(config("cache.default"))->remember('currency_' . (tenant()->id ?? "") . locale(), 60*60*24*30, function () {
-    
+        //$currency = \Cache::store(config('cache.default'))->remember('currency_'.(tenant()->id ?? '').locale(), 60 * 60 * 24 * 30, function () {
         $currencyRepository = app("Modules\Icommerce\Repositories\CurrencyRepository");
-        $params = ["filter" => ["language" => locale(), "field" => "status"]];
+            $params = ['filter' => ['language' => locale(), 'field' => 'status']];
         //getting currency by current locale
-        $currency = $currencyRepository->getItem(Status::ENABLED,json_decode(json_encode($params)));
-    
+            $currency = $currencyRepository->getItem(Status::ENABLED, json_decode(json_encode($params)));
+      
         if(!isset($currency->id)){
           //getting default currency
-          $params = ["filter" => ["default_currency" => 1, "field" => "status"]];
-          $currency = $currencyRepository->getItem(Status::ENABLED,json_decode(json_encode($params)));
+                $params = ['filter' => ['default_currency' => 1, 'field' => 'status']];
+                $currency = $currencyRepository->getItem(Status::ENABLED, json_decode(json_encode($params)));
         }
 
         if(!isset($currency->id)){
           $currency = new Currency(Config::get('asgard.icommerce.config.formatMoney'));
         }
-        return $currency;
-      });
+        //return $currency;
+      //});
   
       //trycatching this request->session() because is failing when the request comes from API, this only works for blade session
       try{
@@ -184,18 +180,13 @@ if (!function_exists('getUnitClass')) {
     $unit = "";
     
     $baseClass = $base."Class";
-    $class = $product->$baseClass;
-
-    //Get Default
-    if(is_null($class)){
-        $params = ['filter' => ['default' => 1]];
+    
+      $params = ['filter' => ['default' => 1],'include' => ['translations']];
         $repository = "Modules\Icommerce\Repositories\\".ucfirst($baseClass)."Repository";
         $default = app($repository)->getItemsBy(json_decode(json_encode($params)));
         if($default->isNotEmpty())
           $unit = $default[0]->unit;
-    }else{
-      $unit = $class->unit;
-    }
+    
 
     return $unit;
   }

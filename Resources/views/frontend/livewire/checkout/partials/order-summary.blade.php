@@ -1,3 +1,22 @@
+@php
+  $currencyGtag = $currency->code ?? 'COP';
+  $paymentMethodsGtag = json_encode($paymentMethods->pluck('title')->toArray());
+  //map product to gtag
+  $productsGtag = $cart->products->map(function($carProduct, $index) {
+    // Calculate price using the discount if available, otherwise use the base price
+    $price = $carProduct->product->discount->price ?? $carProduct->product->price;
+    return [
+      'index' => $index,
+      'item_id' => $carProduct->product->id,
+      'item_name' => $carProduct->product->name,
+      'price' => $price,
+      'currency' =>  "COP",
+      'quantity' => $carProduct->quantity
+    ];
+  })
+@endphp
+
+
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">
@@ -29,10 +48,10 @@
                 @foreach($cart->products as $cartProduct)
                   <div class="item_carting px-3 w-100 row m-0">
                     <hr class="mt-0 mb-3 w-100">
-                  @php($mediaFiles = $cartProduct->product->mediaFiles())
-                  @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
-                  @if($withImage)
-                    <!-- imagen -->
+                    @php($mediaFiles = $cartProduct->product->mediaFiles())
+                    @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
+                    @if($withImage)
+                      <!-- imagen -->
                       <div class="col-3 px-0 mb-3">
                         <div class="img-product-cart">
                           <x-media::single-image
@@ -44,8 +63,8 @@
                             :mediaFiles="$cartProduct->product->mediaFiles()"/>
                         </div>
                       </div>
-                  @endif
-                  <!-- descripción -->
+                    @endif
+                    <!-- descripción -->
                     <div class="{{$withImage ? 'col-9' : 'col-12'}}">
                       <!-- titulo -->
                       <h6 class="mb-2 w-100 __title">
@@ -69,8 +88,8 @@
                                aria-hidden="true"></i> {{trans("icommerce::products.table.shipping")}}
                           </small>
                         </p>
-                    @endif
-                    <!-- boton para eliminar-->
+                      @endif
+                      <!-- boton para eliminar-->
                       <div style="width: 20px;  position: absolute; right: -7px; top: 0;">
                         <a class="close cart-remove text-danger" style="font-size: 1rem;"
                            onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
@@ -121,7 +140,7 @@
                 </div>
               @endif
               @if(!empty($totalTaxes))
-              <!--  TAXES  -->
+                <!--  TAXES  -->
                 <div class="row">
                   <div class="col-12">
                     <p>
@@ -139,7 +158,7 @@
                 </div>
               @endif
               @if($requireShippingMethod)
-              <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
+                <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
                 <div class="row">
                   <div class="col-4">
                     <p>
@@ -216,7 +235,7 @@
                   <div>{{ trans('icommerce::order_summary.payment') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <p>
+                  <p id="orderSummaryPaymentMethodTitleContainer">
                     {{$paymentMethod->title ?? trans("icommerce::paymentmethods.messages.noPaymentMethodSelected") }}
                   </p>
                 </div>
@@ -226,12 +245,13 @@
         </div>
         @if((Setting::has('icommerce::orderSummaryDescription')))
           <div class="order-summary-description py-2">
-            <x-isite::edit-link link="/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"/>
+            @livewire('isite::edit-link', ['link' =>
+            "/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"])
             {!! setting('icommerce::orderSummaryDescription') !!}
           </div>
         @endif
         <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                wire:click="{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}">
+                onclick="orderSumamryPlaceOrder()">
           <div>
             {{ trans('icommerce::order_summary.submit') }}
           </div>
@@ -240,3 +260,34 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript" defer>
+  function orderSumamryPlaceOrder() {
+    gTagFireEventPurchase()
+    // Trigger the Livewire action
+    window.livewire.emit("{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}")
+  }
+
+  function gTagFireEventPurchase() {
+    // Check if gtag function is available
+    if (typeof gtag !== "function") return;
+
+    //Validate paymentMethodSelected
+    const paymentMethod = document.getElementById('orderSummaryPaymentMethodTitleContainer').innerText
+    const paymentMethods = {!! $paymentMethodsGtag !!};
+
+    if (paymentMethods.includes(paymentMethod)) {
+      //Instance the main data
+      let gTagData = {
+        transaction_id: {{$cart->id}},
+        value: {{$total}},
+        currency: "{{$currencyGtag}}",
+        payment_type: paymentMethod,
+        items: {!! $productsGtag !!}
+      }
+
+      //Emit gtag event
+      gtag("event", "purchase", gTagData);
+    }
+  }
+</script>

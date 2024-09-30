@@ -5,7 +5,7 @@
     //currency from index or show variable
     $currencySymbol = isset($currency) ? $currency->symbol_left : '$';
     //get pum for this product
-    $pum = $product->present()->getCalculateInfor($currencySymbol,$dynamicPrice);
+    $pum = $product->present()->getCalculateInfor($currencySymbol,$dynamicPrice)
 
 @endphp
 

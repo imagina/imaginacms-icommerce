@@ -2,56 +2,48 @@
 
 namespace Modules\Icommerce\Repositories\Eloquent;
 
-use Modules\Icommerce\Entities\Cart;
-use Modules\Icommerce\Entities\ProductOptionValue;
-use Modules\Icommerce\Repositories\CartProductRepository;
-use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
-// Entities
-use Modules\Icommerce\Entities\CartProduct;
 use Illuminate\Support\Arr;
+use Modules\Icommerce\Repositories\CartProductRepository;
+use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
+use Modules\Icommerce\Entities\ProductOptionValue;
+use Modules\Icommerce\Entities\CartProduct;
+use Modules\Icommerce\Entities\Cart;
 
-class EloquentCartProductRepository extends EloquentBaseRepository implements CartProductRepository
+class EloquentCartProductRepository extends EloquentCrudRepository implements CartProductRepository
 { 
+  /**
+   * Filter names to replace
+   * @var array
+   */
+  protected $replaceFilters = [];
+
+  /**
+   * Relation names to replace
+   * @var array
+   */
+  protected $replaceSyncModelRelations = [];
+
+  /**
+   * Filter query
+   *
+   * @param $query
+   * @param $filter
+   * @param $params
+   * @return mixed
+   */
 
   private $log = "Icommerce: Repositories|CartProduct|";
   
-
-  public function getItemsBy($params = false)
+  public function filterQuery($query, $filter, $params)
   {
-      /*== initialize query ==*/
-      $query = $this->model->query();
 
-      /*== RELATIONSHIPS ==*/
-      if(in_array('*',$params->include ?? [])){//If Request all relationships
-        $query->with([]);
-      }else{//Especific relationships
-        $includeDefault = [];//Default relationships
-        if (isset($params->include))//merge relations with default relationships
-          $includeDefault = array_merge($includeDefault, $params->include);
-        $query->with($includeDefault);//Add Relationships to query
-      }
-
-      /*== FILTERS ==*/
-      if (isset($params->filter)) {
-        $filter = $params->filter;//Short filter
-
-        //Filter by date
-        if (isset($filter->date)) {
-          $date = $filter->date;//Short filter date
-          $date->field = $date->field ?? 'created_at';
-          if (isset($date->from))//From a date
-            $query->whereDate($date->field, '>=', $date->from);
-          if (isset($date->to))//to a date
-            $query->whereDate($date->field, '<=', $date->to);
-        }
-
-        //Order by
-        if (isset($filter->order)) {
-          $orderByField = $filter->order->field ?? 'created_at';//Default field
-          $orderWay = $filter->order->way ?? 'desc';//Default way
-          $query->orderBy($orderByField, $orderWay);//Add order to query
-        }
-
+    /**
+     * Note: Add filter name to replaceFilters attribute before replace it
+     *
+     * Example filter Query
+     * if (isset($filter->status)) $query->where('status', $filter->status);
+     *
+     */
         //add filter by search
         if (isset($filter->search)) {
           //find search in columns
@@ -62,67 +54,43 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
             });
         }
 
-        if (isset($filter->cartId)){
-          $query->where('cart_id', $filter->cartId);
-        }
-
-        if (isset($filter->productId)){
-          $query->where('product_id', $filter->productId);
-        }
-
-        if (isset($filter->isCall)){
-          $query->where('is_call', $filter->isCall);
-        }
-
         if (isset($filter->dynamicOptionsIds)){
           $dynamicOptionsIds = $filter->dynamicOptionsIds;
           $query->whereHas('dynamicOptions', function ($query) use ($dynamicOptionsIds) {
             $query->whereIn("option_id",$dynamicOptionsIds);
           });
         }
-
+    //Response
+    return $query;
       }
 
-      /*== FIELDS ==*/
-      if (isset($params->fields) && count($params->fields))
-        $query->select($params->fields);
-
-      /*== REQUEST ==*/
-      if (isset($params->page) && $params->page) {
-        return $query->paginate($params->take);
-      } else {
-        isset($params->take) && $params->take ? $query->take($params->take) : false;//Take
-        return $query->get();
-      }
-
-  }
-
-  public function getItem($criteria, $params = false)
+  /**
+   * Method to sync Model Relations
+   *
+   * @param $model ,$data
+   * @return $model
+   */
+  public function syncModelRelations($model, $data)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
+    //Get model relations data from attribute of model
+    $modelRelationsData = ($model->modelRelations ?? []);
 
-    $query->where('id', $criteria);
+    /**
+     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     *
+     * Example to sync relations
+     * if (array_key_exists(<relationName>, $data)){
+     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+     * }
+     *
+     */
 
-    // RELATIONSHIPS
-    $includeDefault = ['productOptionValues'];
-    if (isset($params->include))//merge relations with default relationships
-      $includeDefault = array_merge($includeDefault, $params->include);
-
-    $query->with($includeDefault);//Add Relationships to query
-
-
-    // FIELDS
-    if (isset($params->fields) && count($params->fields)) {
-      $query->select($params->fields);
-    }
-    return $query->first();
-
+    //Response
+    return $model;
   }
 
   public function create($data){
     
-    //\Log::info($this->log."Create");
 
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
@@ -141,7 +109,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     //To include all products even if they are internal (as in the case of services in reservations)
     $params = [
       "filter" => [
-        "validationInternal" => true,
+        "ValidationInternal" => true,
       ],
       "include" => [],
       "fields" => [],
@@ -302,37 +270,8 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
     return $cartProduct;
   }
 
-  public function deleteBy($criteria, $params = false)
+  public function findByAttributesOrOptions($data)
   {
-    // INITIALIZE QUERY
-    $query = $this->model->query();
-
-    // FILTER
-    if (isset($params->filter)) {
-      $filter = $params->filter;
-
-      if (isset($filter->field)) //Where field
-        $query->where($filter->field, $criteria);
-      else //where id
-        $query->where('id', $criteria);
-    }else{
-      $query->where('id', $criteria);
-    }
-
-
-    // REQUEST
-    $model = $query->first();
-
-    if($model) {
-      $model->delete();
-      
-      return true;
-    }else{
-      return false;
-    }
-  }
-  
-  public function findByAttributesOrOptions($data){
 
     // if the request has product without options
     if(!count(Arr::get($data, 'product_option_values', []))) {
@@ -541,9 +480,7 @@ class EloquentCartProductRepository extends EloquentBaseRepository implements Ca
       ]
     ];
 
-    $cartProducts = $this->getItemsBy(json_decode(json_encode($params)));
-
-    return $cartProducts;
+    return $this->getItemsBy(json_decode(json_encode($params)));
 
   }
 

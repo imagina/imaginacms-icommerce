@@ -3,15 +3,32 @@
 namespace Modules\Icommerce\Entities;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Icrud\Entities\CrudModel;
 use Kalnoy\Nestedset\NodeTrait;
-use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 use Modules\Core\Support\Traits\AuditTrait;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
-class ProductOptionValue extends Model
+class ProductOptionValue extends CrudModel
 {
-  use BelongsToTenant, AuditTrait, NodeTrait;
+  use BelongsToTenant, NodeTrait;
+
   protected $table = 'icommerce__product_option_value';
+  public $transformer = 'Modules\Icommerce\Transformers\ProductOptionValueTransformer';
+  public $repository = 'Modules\Icommerce\Repositories\ProductOptionValueRepository';
+  public $requestValidation = [
+    'create' => 'Modules\Icommerce\Http\Requests\CreateProductOptionValueRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductOptionValueRequest',
+  ];
+  //Instance external/internal events to dispatch with extraData
+  public $dispatchesEventsWithBindings = [
+    //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
+    'created' => [],
+    'creating' => [],
+    'updated' => [],
+    'updating' => [],
+    'deleting' => [],
+    'deleted' => []
+  ];
 
   protected $fillable = [
     'product_option_id',
@@ -31,30 +48,27 @@ class ProductOptionValue extends Model
     'stock_status'
   ];
 
-  // OK YA PROBADAS
   public function cartproductoptions()
   {
     return $this->hasMany(CartProductOption::class);
   }
-
-  //************* OJO DUDAS PROBAR ********************
+  
   public function product()
   {
     return $this->belongsTo(Product::class);
   }
-
-  //************* OJO DUDAS PROBAR ********************
+  
   public function productOption()
   {
     return $this->belongsTo(ProductOption::class);
   }
-  
-  
+
+
   public function parentProductOptionValue()
   {
-    return $this->belongsTo(ProductOptionValue::class,'parent_prod_opt_val_id');
+    return $this->belongsTo(ProductOptionValue::class, 'parent_prod_opt_val_id');
   }
-  
+
   //************* OJO DUDAS PROBAR ********************
   public function option()
   {
@@ -164,4 +178,14 @@ class ProductOptionValue extends Model
     
     return $fullname;
   }
+
+  public function getCacheClearableData()
+  {
+    return [
+      'urls' => [
+        $this->product->url
+      ]
+    ];
+  }
+
 }

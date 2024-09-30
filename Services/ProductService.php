@@ -41,9 +41,7 @@ class ProductService
        
         
         $schemaJson = json_encode($schema,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-        $schemaScript = '<script type="application/ld+json"> '.$schemaJson.'</script>';
-
-        return $schemaScript;
+      return '<script type="application/ld+json"> '.$schemaJson.'</script>';
 
     }
 

@@ -3,10 +3,7 @@
 namespace Modules\Icommerce\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Log;
-use Mockery\CountValidator\Exception;
 use Modules\Icommerce\Repositories\ManufacturerRepository;
-use Route;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 class ManufacturerController extends BaseApiController

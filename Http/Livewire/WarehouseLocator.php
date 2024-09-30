@@ -355,7 +355,7 @@ class WarehouseLocator extends Component
       $this->showAddressForm = false;
 
       //Verifying that it was a nearby warehouse
-      if(isset($warehouseProcess['nearby'])){
+      if(isset($warehouseProcess['nearby']) && $warehouseProcess['nearby']==true){
 
         \Log::info($this->log.'checkAddress|Nearby Exist');
 
@@ -547,9 +547,9 @@ class WarehouseLocator extends Component
       request()->session()->put('warehouse', json_encode($this->warehouse));
 
       //Case: Address no has coverage (Check if address is nearby)
-      if(isset($warehouseProcess['nearby'])){
+      if(isset($warehouseProcess['nearby']) && $warehouseProcess['nearby']==true){
 
-        \Log::info($this->log.'confirmData|Case DELIVERY|Asigna metodo pickup');
+        \Log::info($this->log.'confirmData|Case DELIVERY|Address no tiene cobertura|Asigna metodo pickup');
 
         //Set shipping method to Pickup
         session(["shippingMethodName" => $this->shippingMethods['pickup']]);

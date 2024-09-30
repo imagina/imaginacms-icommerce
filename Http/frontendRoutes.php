@@ -49,7 +49,7 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
     $router->get(trans('icommerce::routes.store.show.product',[],$locale), [
       'as' => $locale . '.icommerce.store.show',
       'uses' => 'PublicController@show',
-      'middleware' => ['doNotCacheResponse']
+//      'middleware' => ['doNotCacheResponse']
     ]);
     
     $router->get(trans('icommerce::routes.store.checkout.create',[],$locale), [
@@ -83,8 +83,7 @@ if(config('asgard.icommerce.config.useOldRoutes')){
   
   if (!App::runningInConsole()) {
     $categoryRepository = app('Modules\Icommerce\Repositories\CategoryRepository');
-    $categories = $categoryRepository->getItemsBy(json_decode(json_encode(['fields' => 'id', 'include' => [], 'take' => null])));
-    
+    $categories = $categoryRepository->getItemsBy(json_decode(json_encode(['fields' => 'id', 'include' => ['translations'], 'take' => null])));
     foreach ($categories as $category) {
       if(empty($category->slug)){
         continue;

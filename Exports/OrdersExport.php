@@ -44,7 +44,20 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
    */
   public function query()
   {
-    return OrderItem::orderBy('id', 'desc')->with(['order.customer']);
+    
+    $baseQuery = OrderItem::orderBy('id', 'desc')->with(['order.customer']);
+
+    $indexAll = $this->params->permissions['icommerce.orders.index-all'] ?? false; 
+
+    //Filter only orders to User Logged
+    if($indexAll==false){
+      $userId = $this->userId;
+      $baseQuery->whereHas('order', function ($query) use ($userId) {
+        $query->where("customer_id",$userId);
+      });
+    }
+
+    return $baseQuery;
 
   }
 

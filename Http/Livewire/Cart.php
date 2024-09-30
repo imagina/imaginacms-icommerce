@@ -56,7 +56,6 @@ class Cart extends Component
     $this->icon = $icon;
     $this->iconquote = $iconquote;
 
-    //$this->warehouse = json_decode(request()->session()->get('warehouse'));
     $warehouse = request()->session()->get('warehouse');
     $warehouse = json_decode($warehouse);
     if (isset($warehouse->id)) {
@@ -230,6 +229,7 @@ class Cart extends Component
 
   public function deleteCart()
   {
+    $this->loading = true;
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartRepository()->deleteBy($this->cart->id, $params);
     $this->cart = null;
@@ -283,8 +283,7 @@ class Cart extends Component
       'view' => 'icommerce::pdf.viewCart'
     ];
 
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+    return $this->PdfService()->create($content);
   }
 
   public function requestQuote()
@@ -321,8 +320,7 @@ class Cart extends Component
       'view' => 'icommerce::pdf.viewOrder',
     ];
 
-    $archivo = $this->PdfService()->create($content);
-    return $archivo;
+    return $this->PdfService()->create($content);
 
   }
 
