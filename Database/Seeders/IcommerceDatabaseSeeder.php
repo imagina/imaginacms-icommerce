@@ -19,7 +19,7 @@ class IcommerceDatabaseSeeder extends Seeder
     ProcessSeeds::dispatch([
       "baseClass" => "\Modules\Icommerce\Database\Seeders",
       "seeds" => ["IcommerceModuleTableSeeder", "OrderStatusTableSeeder", "ItemTypeTableSeeder", "CurrencyTableSeeder",
-        "StoreTableSeeder", "NotificationRulesTableSeeder", "IformRequestQuoteTableSeeder", "CreateFormsTableSeeder",
+        "NotificationRulesTableSeeder", "IformRequestQuoteTableSeeder", "CreateFormsTableSeeder",
         "IcommerceFixOrdersStatusPendingDuplicatedTableSeeder","WeightAndLengthTableSeeder",
         "VolumeAndQuantityTableSeeder"]
     ]);
