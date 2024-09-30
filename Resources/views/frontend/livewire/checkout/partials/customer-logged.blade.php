@@ -17,10 +17,10 @@
   
   </div>
   <div class='d-block'>
-    {{ trans('icommerce::customer.logged.name') }}<strong> {{$user->present()->fullname}}</strong>
+    {{ trans('icommerce::customer.logged.name') }}<strong> {{$user != null ? $user->present()->fullname : ''}}</strong>
   </div>
   <div class='d-block'>
-    {{ trans('icommerce::customer.logged.email') }} <strong>{{$user->email}}</strong>
+    {{ trans('icommerce::customer.logged.email') }} <strong>{{$user != null ? $user->email: ''}}</strong>
   </div>
 
 </div>
