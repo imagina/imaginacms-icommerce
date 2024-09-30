@@ -202,7 +202,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'payment-methods',
-    'permission' => 'icommerce.paymentmethods',
+    'permission' => 'icommerce.payment-methods',
     'controller' => 'PaymentMethodApiController',
     'middleware' => [
       'index' => [], 'show' => [],
@@ -247,7 +247,7 @@ $router->group(['prefix' => '/icommerce/v3'], function (Router $router) use($loc
   $router->apiCrud([
     'module' => 'icommerce',
     'prefix' => 'shipping-methods',
-    'permission' => 'icommerce.shippingmethods',
+    'permission' => 'icommerce.shipping-methods',
     'controller' => 'ShippingMethodApiController',
     'middleware' => [
       'index' => [], 'show' => [],

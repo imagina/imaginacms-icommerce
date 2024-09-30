@@ -164,7 +164,7 @@ return [
     'destroy' => 'icommerce::couponorderhistories.destroy resource',
     'restore' => 'icommerce::couponorderhistories.restore resource',
   ],
-  'icommerce.paymentmethods' => [
+  'icommerce.payment-methods' => [
     'manage' => 'icommerce::paymentmethods.manage resource',
     'index' => 'icommerce::paymentmethods.list resource',
     'create' => 'icommerce::paymentmethods.create resource',
@@ -212,7 +212,7 @@ return [
     'destroy' => 'icommerce::cartproductoptions.destroy resource',
     'restore' => 'icommerce::cartproductoptions.restore resource',
   ],
-  'icommerce.shippingmethods' => [
+  'icommerce.shipping-methods' => [
     'manage' => 'icommerce::shippingmethods.manage resource',
     'index' => 'icommerce::shippingmethods.list resource',
     'create' => 'icommerce::shippingmethods.create resource',
