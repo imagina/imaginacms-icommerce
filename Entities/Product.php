@@ -96,6 +96,10 @@ class Product extends CrudModel implements TaggableInterface
     'quantity_class_id',
   ];
 
+  public $modelRelations = [
+    'productWarehouses' => 'belongsToMany',
+  ];
+
   protected $presenter = ProductPresenter::class;
   protected $casts = [
     'options' => 'array'
