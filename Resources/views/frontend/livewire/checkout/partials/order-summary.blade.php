@@ -245,8 +245,9 @@
         </div>
         @if((Setting::has('icommerce::orderSummaryDescription')))
           <div class="order-summary-description py-2">
-            @livewire('isite::edit-link', ['link' =>
-            "/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"])
+            <x-isite::edit-link
+                    link="/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"
+            />
             {!! setting('icommerce::orderSummaryDescription') !!}
           </div>
         @endif
