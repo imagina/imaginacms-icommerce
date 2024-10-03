@@ -122,8 +122,7 @@ class Category extends CrudModel
     }
 
     if (empty($this->slug)) return "";
-
-    $routeName = request()->route()->getName();
+    $routeName = app()->runningInConsole() ? '-' : request()->route()->getName();
 
     $currentDomain = !empty($this->organization_id) ? tenant()->domain ?? tenancy()->find($this->organization_id)->domain :
       parse_url(config('app.url'),PHP_URL_HOST);
