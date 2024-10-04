@@ -56,7 +56,7 @@ class Category extends CrudModel
     'sort_order',
     'external_id',
   ];
-  
+
   protected $width = ['files','translations'];
 
   protected $casts = [
@@ -103,7 +103,7 @@ class Category extends CrudModel
   {
     return $this->morphToMany(Coupon::class, 'couponable','icommerce__couponables');
   }
-  
+
   public function organization()
   {
     return $this->belongsTo(Organization::class);
@@ -115,30 +115,29 @@ class Category extends CrudModel
   {
     $url = "";
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
-    
+
     $currentLocale = $locale ?? locale();
     if(!is_null($locale)){
        $this->slug = $this->getTranslation($locale)->slug;
     }
-  
+
     if (empty($this->slug)) return "";
-    
-    $routeName = request()->route()->getName();
-  
+    $routeName = app()->runningInConsole() ? '-' : request()->route()->getName();
+
     $currentDomain = !empty($this->organization_id) ? tenant()->domain ?? tenancy()->find($this->organization_id)->domain :
       parse_url(config('app.url'),PHP_URL_HOST);
-  
+
     if(config("app.url") != $currentDomain){
       $savedDomain = config("app.url");
       config(["app.url" => "https://".$currentDomain]);
     }
-  
+
     if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')) {
       if ($useOldRoutes) {
         $url = \LaravelLocalization::localizeUrl('/'. $this->slug, $currentLocale);
       } else {
         switch($routeName){
-          
+
           case locale().".icommerce.store.index.categoryManufacturer":
           case locale() . ".icommerce.store.index.manufacturer":
             $manufacturerSlug = explode("/",request()->path());
@@ -146,7 +145,7 @@ class Category extends CrudModel
             $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[5]: $manufacturerSlug[4];
             }else{
             $manufacturerSlug = $manufacturerSlug[0] == locale() ? $manufacturerSlug[3]: $manufacturerSlug[2];
-  
+
             }
 
             if(!is_null($locale)) {
@@ -154,17 +153,17 @@ class Category extends CrudModel
               $manufacturerSlug = $manufacturer->getTranslation($currentLocale)->slug ?? null;
               if (empty($manufacturerSlug)) return "";
             }
-  
+
             $url = Str::replace(["{categorySlug}","{manufacturerSlug}"],[$this->slug,$manufacturerSlug], trans('icommerce::routes.store.index.categoryManufacturer', [], $currentLocale));
             $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
             break;
-          
+
           default:
             $url = Str::replace(["{categorySlug}"],[$this->slug], trans('icommerce::routes.store.index.category', [], $currentLocale));
             $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-            
+
             $tenancyMode = config("tenancy.mode", null);
-  
+
             if(!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)){
               $url = tenant_route( Str::remove('https://',$this->organization->url), $currentLocale . '.icommerce.store.index.category', [$this->slug]);
 
@@ -173,15 +172,15 @@ class Category extends CrudModel
         }
       }
     }
-  
 
 
-    
+
+
     if(isset($savedDomain) && !empty($savedDomain)) config(["app.url" => $savedDomain]);
-  
+
     return $url;
   }
-  
+
   public function urlManufacturer(Manufacturer $manufacturer)
   {
     $url = "";
