@@ -17,7 +17,7 @@ class UpdateCategoryRequest extends BaseFormRequest
 
     return [
       'title' => 'min:2',
-      'slug' => [new UniqueSlugRule("icommerce__category_translations", $this->id, "category_id") ,"min:2"],
+      'slug' => [new UniqueSlugRule("icommerce__category_translations", $this->id, "category_id") ,"min:2","alpha_dash:ascii"],
       'description' => 'min:2',
     ];
   }
