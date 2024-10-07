@@ -5,6 +5,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 use Modules\Icommerce\Repositories\OrderRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
+use Modules\Icommerce\Events\OrderStatusHistoryWasCreated;
 
 class EloquentOrderRepository extends EloquentCrudRepository implements OrderRepository
 {
