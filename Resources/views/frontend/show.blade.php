@@ -16,8 +16,8 @@
 						<div class="col-lg-6 mb-5">
 
 							@if(setting('wishlistable::wishlistActive',null,false))
-								<!-- Wishlist Modal List -->
-								@livewire("wishlistable::wishlist",["layout"=>"wishlist-layout-modal-list-1", "item" => $product])
+								<!-- Wishlist Modal List | ICON -->
+								@include('wishlistable::frontend.partials.buttons',["type"=>"icon","entityName" => "Modules\\Icommerce\\Entities\\Product","entityId" => $product->id])
 							@endif
 
 							@include('icommerce::frontend.partials.show.gallery')
