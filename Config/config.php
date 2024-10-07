@@ -966,4 +966,60 @@ return [
     'icommerce-order' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-receipt']
   ],
 
+  /*
+   |--------------------------------------------------------------------------
+   | Options Frenquencies
+   |--------------------------------------------------------------------------
+   */
+  'option-frequencies' => [
+
+    'option' => [
+      'type' => 'select',
+      'group' => 'payment-frequency',
+      'es' => ['description' => trans("icommerce::options.frequency",[],"es")],
+      'en' => ['description' => trans("icommerce::options.frequency",[],"en")]
+    ],
+
+    'frequencies' => [
+      [ 
+        'system_name' => 'monthly',
+        'options' => ['type' => 1,'days' => 30],
+        'es' => ['description' => trans("icommerce::optionvalues.frequencies.monthly",[],"es")],
+        'en' => ['description' => trans("icommerce::optionvalues.frequencies.monthly",[],"en")]
+      ],
+      [ 
+        'system_name' => 'quarterly',
+        'options' => ['type' => 1,'days' => 90],
+        'es' => ['description' => trans("icommerce::optionvalues.frequencies.quarterly",[],"es")],
+        'en' => ['description' => trans("icommerce::optionvalues.frequencies.quarterly",[],"en")]
+      ],
+      [ 
+        'system_name' => 'semiannually',
+        'options' => ['type' => 1,'days' => 180],
+        'es' => ['description' => trans("icommerce::optionvalues.frequencies.semiannually",[],"es")],
+        'en' => ['description' => trans("icommerce::optionvalues.frequencies.semiannually",[],"en")]
+      ],
+      [ 
+        'system_name' => 'annually',
+        'options' => ['type' => 1,'days' => 365],
+        'es' => ['description' => trans("icommerce::optionvalues.frequencies.annually",[],"es")],
+        'en' => ['description' => trans("icommerce::optionvalues.frequencies.annually",[],"en")]
+      ],
+      [ 
+        'system_name' => 'biannually',
+        'options' => ['type' => 1,'days' => 730],
+        'es' => ['description' => trans("icommerce::optionvalues.frequencies.biannually",[],"es")],
+        'en' => ['description' => trans("icommerce::optionvalues.frequencies.biannually",[],"en")]
+      ],
+      [ 
+        'system_name' => 'triannually',
+        'options' => ['type' => 1,'days' => 1095],
+        'es' => ['description' => trans("icommerce::optionvalues.frequencies.triannually",[],"es")],
+        'en' => ['description' => trans("icommerce::optionvalues.frequencies.triannually",[],"en")]
+      ],
+
+    ]
+
+  ]
+
 ];
