@@ -40,6 +40,7 @@ class ProductOption extends CrudModel
     'parent_option_value_id',
     'value',
     'required',
+    'status',
     'sort_order'
   ];
 
