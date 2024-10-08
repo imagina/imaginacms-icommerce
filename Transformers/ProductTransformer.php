@@ -14,7 +14,7 @@ class ProductTransformer extends CrudResource
    */
   public function modelAttributes($request)
   {
-    $filter = json_decode($request->filter);
+    $filter = is_string($request->filter) ? json_decode($request->filter) : (object)$request->filter;
     $tags = [];
     foreach ($this->tags as $tag) {
       $tags[] = $tag->name;
