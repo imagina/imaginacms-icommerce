@@ -75,6 +75,13 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
         'uses' => 'OrderController@show',
         'middleware' => 'doNotCacheResponse',
     ]);
+
+    $router->get('/payment/o/{encrip}',[
+        'as' => 'icommerce.payment.order',
+        'uses' => 'OrderController@reedirectToPayment',
+        'middleware' => 'doNotCacheResponse'
+    ]);
+    
 });
 
 if (config('asgard.icommerce.config.useOldRoutes')) {

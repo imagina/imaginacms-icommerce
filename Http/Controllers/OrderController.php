@@ -94,4 +94,48 @@ class OrderController extends BasePublicController
             return redirect()->route('homepage')->withError(trans('icommerce::orders.order_not_found'));
         }
     }
+
+    /**
+     *  From link to payment 
+     */
+    public function reedirectToPayment(Request $request)
+    {
+
+        try{
+
+            $orderId = base64_decode($request->encrip);
+
+            //Search Order
+            $order = $this->order->getItem($orderId);
+
+            //Validations
+            if(is_null($order)) throw new \Exception("Order not found", 404);
+            if($order->status_id==13) throw new \Exception("Order has already been processed", 404);
+            if(!isset($order->paymentMethod)) throw new \Exception("Payment Method not found", 404);
+
+            //Get payment method
+            $paymentMethod =  $order->paymentMethod;
+
+            //Data to Init method in Payment Method Module
+            $data = ["orderId" => $order->id,"orderID" => $order->id];
+
+            //Get Response
+            $paymentMethodResponse = json_decode(app($paymentMethod->options->init)->init(new Request($data))->content())->data;
+
+            //Validation
+            if(!isset($paymentMethodResponse->redirectRoute)) throw new \Exception("redirect is null", 404);
+
+            //Reedirection
+            return redirect($paymentMethodResponse->redirectRoute);
+         
+        }catch(\Exception $e){
+
+            $errorMsj = $e->getMessage();
+
+            \Log::error($errorMsj);
+            return redirect()->route('home')->withError("ERROR: ".$errorMsj);
+           
+        }
+
+    }
 }
