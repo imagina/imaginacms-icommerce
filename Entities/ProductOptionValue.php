@@ -45,7 +45,12 @@ class ProductOptionValue extends CrudModel
     'points_prefix',
     'weight',
     'weight_prefix',
-    'stock_status'
+    'stock_status',
+    'options'
+  ];
+
+  protected $casts = [
+    'options' => 'array'
   ];
 
   public function cartproductoptions()
@@ -185,6 +190,18 @@ class ProductOptionValue extends CrudModel
         $this->product->url
       ]
     ];
+}
+
+//Importante: getOptionsAttribute funcionaba bien en el proceso web, pero en los JOBS fallaba
+//Por lo tanto si se extrae, se manipula como array los Options
+//public function getOptionsAttribute($value){ return json_decode($value);
+
+/**
+ * SETTER
+ */
+public function setOptionsAttribute($value)
+{
+  $this->attributes['options'] = json_encode($value);
 }
 
 }
