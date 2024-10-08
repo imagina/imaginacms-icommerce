@@ -19,9 +19,9 @@ class Order extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\OrderTransformer';
   public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
   public $requestValidation = [
-    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
-    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
-  ];
+      'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
+      'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
+    ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -93,9 +93,11 @@ class Order extends CrudModel
     'key',
     'require_shipping',
     'options',
-    'suscription_id',
+    'subscription_id',
     'organization_id',
-    'suscription_token',
+    'subscription_token',
+    'subscription_type',
+    'payment_attemps',
     'type',
     'guest_purchase',
     'warehouse_id',
@@ -146,7 +148,7 @@ class Order extends CrudModel
 
   public function children()
   {
-    return $this->hasMany(Order::class, 'parent_id');
+    return $this->hasMany(Order::class, "parent_id");
   }
 
   public function coupons()
@@ -160,6 +162,7 @@ class Order extends CrudModel
   {
     return $this->hasMany(OrderStatusHistory::class);
   }
+
 
   public function orderOption()
   {
@@ -188,7 +191,7 @@ class Order extends CrudModel
 
   public function conversation()
   {
-    return $this->hasOne("Modules\Ichat\Entities\Conversation", 'entity_id');
+    return $this->hasOne("Modules\Ichat\Entities\Conversation", "entity_id");
   }
 
   public function transactions()
@@ -201,6 +204,16 @@ class Order extends CrudModel
     return $this->hasMany(Shipping::class);
   }
 
+  public function paymentMethod()
+  {
+    return $this->belongsTo(PaymentMethod::class,"payment_code");
+  }
+
+  public function subscription()
+  {
+    return $this->belongsTo(Subscription::class,"subscription_id");
+  }
+
   public function getOptionsAttribute($value)
   {
     return json_decode($value);
@@ -208,13 +221,14 @@ class Order extends CrudModel
 
   public function getUrlAttribute()
   {
-    $panel = config('asgard.iprofile.config.panel') ?? 'blade';
-    if ($panel == 'blade' || $this->guest_purchase) {
-      return \URL::route(locale() . '.icommerce.store.order.show', ['orderId' => $this->id, 'orderKey' => $this->key]);
-    } else {
+    $panel = config("asgard.iprofile.config.panel") ?? 'blade';
+    if ($panel == 'blade' || $this->guest_purchase)
+      return \URL::route(locale() . '.icommerce.store.order.show', ["orderId" => $this->id, "orderKey" => $this->key]);
+    else {
       return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
   }
+
 
   public function getCouponTotalAttribute()
   {
