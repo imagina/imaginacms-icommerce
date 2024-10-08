@@ -535,6 +535,31 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheProductOptionValueWarehouseDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\SubscriptionRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentSubscriptionRepository(new \Modules\Icommerce\Entities\Subscription());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheSubscriptionDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\SubscriptionStatusHistoryRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentSubscriptionStatusHistoryRepository(new \Modules\Icommerce\Entities\SubscriptionStatusHistory());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheSubscriptionStatusHistoryDecorator($repository);
+            }
+        );
+
 
         // add bindings
     }
