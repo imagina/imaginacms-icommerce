@@ -30,4 +30,7 @@ return [
         'date' => 'Date',
         'file' => 'File',
     ],
+   
+    'frequency' => 'Frequency'
+    
 ];

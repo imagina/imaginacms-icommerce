@@ -31,6 +31,7 @@ class Option extends CrudModel
   public $translatedAttributes = [  'description'];
   protected $fillable = [
     'type',
+    'group',
     'sort_order',
     'options'
   ];

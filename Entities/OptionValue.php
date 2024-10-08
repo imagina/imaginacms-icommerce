@@ -33,6 +33,7 @@ class OptionValue extends CrudModel
   public $translatedAttributes = ['description'];
   protected $fillable = [
     'option_id',
+    'system_name',
     'sort_order',
     'options'
   ];

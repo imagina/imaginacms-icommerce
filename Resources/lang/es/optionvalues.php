@@ -21,4 +21,12 @@ return [
     ],
     'validation' => [
     ],
+    'frequencies' => [
+        'monthly' => 'Mensual',
+        'quarterly' => 'Trimestral',
+        'semiannually' => 'Semestral',
+        'annually' => 'Anual',
+        'biannually' => 'Bianual',
+        'triannually' => 'Trianual'
+    ]
 ];

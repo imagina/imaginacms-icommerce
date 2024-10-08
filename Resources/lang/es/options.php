@@ -30,4 +30,6 @@ return [
         'date' => 'Fecha',
         'file' => 'Archivo',
     ],
+    'frequency' => 'Frecuencia'
+   
 ];
