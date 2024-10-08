@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 
 class CartService
 {
-
+  
   public function __construct(
 
     CartRepository $cart,
@@ -28,7 +28,7 @@ class CartService
     $this->cartProduct = $cartProduct;
     $this->user = $user;
   }
-
+  
   /**
    * CREATE A ITEM
    *
@@ -37,7 +37,7 @@ class CartService
    */
   public function create($data)
   {
-
+  
     $needTobeCreated = true;
     if (isset($data['cartId']) || isset($data['cart_id'])) {
       $cart = $this->cart->find($data['cartId'] ?? $data['cart_id']);
@@ -54,20 +54,20 @@ class CartService
     }
 
     if($needTobeCreated){
-
+      
       $userId = \Auth::id();
-
+  
       if(!empty($userId)){
         Cart::where("user_id",$userId)->where("status",1)->delete();
       }
-
+  
       $cartData = [
         "ip" => request()->ip(),
-        "session_id" => session('_token'),
-        "status" => 1,
+        "session_id" => session('_token') ?? null,
+	      "status" => 1,
         "user_id" => $data["userId"] ?? $data["customerId"] ?? \Auth::id()
       ];
-
+      
       //Create cart
       $cart = $this->cart->create($cartData);
 
@@ -75,7 +75,6 @@ class CartService
         $products = !is_array($data["products"]) ? [$data["products"]] : $data["products"];
         //Creating Products in the cart
         foreach ($products as $product) {
-
           $cartProductData = [
             "cart_id" => $cart->id,
             "product_id" => $product["id"],
@@ -83,32 +82,33 @@ class CartService
             "options" => $product["options"] ?? null,
             "product_option_values" => $product["productOptionValues"] ?? []
           ];
-
+    
           //Create cart item
           $this->cartProduct->create($cartProductData);
         }
       }
 
-      request()->session()->put('cart', $cart);
-
+      if(!is_null($cartData['session_id']))
+        request()->session()->put('cart', $cart);
+      
     }
     return $cart;
   }
-
+  
   public function totalTaxes($data = null){
-
+   
    $cart = $this->create($data);
-
+  
    $couponDiscounts = collect($data["couponDiscounts"])->keyBy("productId");
 
    $taxes = [];
    foreach ($cart->products as $cartProduct) {
-
+  
      array_push($taxes,$cartProduct->product->tax($couponDiscounts[$cartProduct->product->id]["discount"] ?? 0));
    }
-
+   
    return $taxes;
   }
-
-
+  
+  
 }
