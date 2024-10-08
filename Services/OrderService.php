@@ -302,6 +302,13 @@ class OrderService
         $orderData["warehouse_address"] = $data["warehouse_address"] ?? $data["warehouseAddress"] ?? $warehouse->address ?? null;
       }
 
+      // Data Subscription
+      $orderData["subscription_id"] = $data["subscription_id"] ?? $data["suscriptionId"] ?? null;
+      $orderData["subscription_type"] = $data["subscription_type"] ?? $data["subscriptionType"] ?? null;
+ 
+      //Payment Attemps
+      $orderData["payment_attemps"] = $data["payment_attemps"] ?? 0;
+
       // Data Order History
       $supportOrderHistory = new orderHistorySupport(1, 1);
       $dataOrderHistory = $supportOrderHistory->getData();
