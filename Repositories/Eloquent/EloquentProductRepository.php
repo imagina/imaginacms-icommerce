@@ -448,7 +448,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     $query->where("status", 1);
 
     //pre-filter quantity and subtract
-    $query->whereRaw("((stock_status = 0) or (subtract = 1 and quantity > 0) or (subtract = 0))");
+    $query->whereRaw("((stock_status = 1) or (subtract = 1 and quantity > 0) or (subtract = 0))");
 
     //pre-filter if the organization is enabled (organization status = 1)
     $query->where(function ($query) {
