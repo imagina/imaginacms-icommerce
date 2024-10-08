@@ -154,6 +154,17 @@ return [
     'productImageObjectFit' => 'Image object fit',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
+    'warehouse' => [
+      'groupName' => 'Warehouses',
+      'warehouseFunctionality' => 'Activate functionality to Warehouse',
+    ],
+    'subscription' => [
+      'groupName' => 'Subscriptions',
+      'daysBeforeDue' => 'Cantidad de dias en el cual se realizará el cobro',
+      'daysBeforeDueHelp' => 'Si es 0, el cobro se hará el mismo dia de la finalización, si es mayor a 0, el cobro esos dias antes de la finalización de la subscripción',
+      'daysForSuspension' => 'Subscription due days',
+      'daysForSuspensionHelp' => 'If the subscription is in status: [pending payment] and the number of days is the same as the one you added, its status will change to [suspended]'
+    ],
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
@@ -269,13 +280,13 @@ return [
     ],
   ],
 
-    'social' => [
-        'share' => 'Share',
-    ],
+  'social' => [
+    'share' => 'Share'
+  ],
 
-    'offers' => [
-        'title' => 'Offers',
-    ],
+  'offers' => [
+    'title' => 'Offers'
+  ],
   'featured' => [
     'title' => 'Featured Products'
   ]

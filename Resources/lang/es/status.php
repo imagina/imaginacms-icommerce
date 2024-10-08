@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'disabled' => 'Disabled',
-    'enabled' => 'Enabled',
+    'disabled' => 'Inactivo',
+    'enabled' => 'Activo',
 ];

@@ -14,7 +14,8 @@ return [
     'confirmation_single_order_title' => 'Confirmación de orden de compra',
     'myOrders' => 'Mis Ordenes',
     'detail order' => 'Detalle de  la Orden',
-      'orderUpdated' => 'Orden de compra #:orderId | Estado: :statusName'
+    'orderUpdated' => 'Orden de compra #:orderId | Estado: :statusName',
+    'paymentLink' => 'Link de pago | Orden #:orderId'
   ],
   'breadcrumb' => [
     'single_order' => 'Orden de servicio',
@@ -23,7 +24,8 @@ return [
   'button' => [
     'create order' => 'Crear un pedido',
     'Back_to_order_list' => 'Salir',
-    'Back_to_profile' => 'Volver al perfil'
+    'Back_to_profile' => 'Volver al perfil',
+    'pay' => 'Pagar'
   ],
   'table' => [
     'id' => 'ID',
@@ -72,7 +74,9 @@ return [
     'rights' => 'Todos los derechos reservados por ',
     'notificationOrder' => 'Notificación Orden de compra',
     'statusChanged' => 'su orden <b>#:orderId</b> fue actualizada a estado: <strong>:statusName</strong>',
-    'order updated by' => 'Orden actualizada por: :paymentMethod'
+    'order updated by' => 'Orden actualizada por: :paymentMethod',
+    'order updated by attempt' => 'Orden actualizada para un reintento de pago con: :paymentMethod',
+    'paymentLink' => 'Haz click en el botón para iniciar el proceso de pago de la orden'
   ],
   'validation' => [
   ],
