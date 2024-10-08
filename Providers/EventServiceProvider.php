@@ -45,12 +45,18 @@ use Modules\Icommerce\Events\FormIsCreating;
 use Modules\Icommerce\Events\Handlers\Forms\LetMeKnowProductIsAvailable;
 use Modules\Icommerce\Events\Handlers\Forms\Quote;
 
+//Subscriptions
+use Modules\Icommerce\Events\SubscriptionWasCreated;
+use Modules\Icommerce\Events\SubscriptionWasUpdated;
+use Modules\Icommerce\Events\Handlers\ProcessSubscriptionOrder;
+use Modules\Icommerce\Events\Handlers\SaveSubscriptionStatusHistory;
+
 // Isite Events
 use Modules\Isite\Events\OrganizationWasCreated;
 
 class EventServiceProvider extends ServiceProvider
 {
-    protected $listen = [
+  protected $listen = [
     OrderIsCreating::class => [
       SaveOrderItems::class
     ],
@@ -64,6 +70,7 @@ class EventServiceProvider extends ServiceProvider
     OrderWasUpdated::class => [
       SendOrder::class,
       SendOrderWarehouse::class,
+      ProcessSubscriptionOrder::class
     ],
     OrderStatusHistoryWasCreated::class => [
       UpdateOrderStatus::class,
@@ -129,6 +136,9 @@ class EventServiceProvider extends ServiceProvider
     ],
     ProductWarehouseWasDeleted::class => [
       ValidateProductQuantityWarehouse::class,
+    ],
+    SubscriptionWasCreated::class => [
+      SaveSubscriptionStatusHistory::class,
     ],
   ];
 }
