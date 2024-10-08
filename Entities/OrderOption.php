@@ -29,7 +29,9 @@ class OrderOption extends CrudModel
   protected $fillable = [
     'order_id',
     'order_item_id',
+    'option_id',
     'option_description',
+    'option_value_id',
     'option_value_description',
     'price',
     'price_prefix',
@@ -38,7 +40,12 @@ class OrderOption extends CrudModel
     'weight',
     'weight_prefix',
     'value',
-    'required'
+    'required',
+    'options'
+  ];
+
+  protected $casts = [
+    'options' => 'array'
   ];
 
   public function order()
@@ -60,4 +67,25 @@ class OrderOption extends CrudModel
   {
     return $this->belongsTo(ProductOptionValue::class);
   }
+
+  public function option()
+  {
+    return $this->belongsTo(Option::class);
+  }
+
+  public function optionValue()
+  {
+    return $this->belongsTo(OptionValue::class);
+  }
+
+  public function getOptionsAttribute($value)
+  {
+    return json_decode($value);
+  }
+
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
+
 }
