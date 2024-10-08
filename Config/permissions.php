@@ -92,9 +92,9 @@ return [
     'icommerce.orders' => [
         'manage' => 'icommerce::orders.manage resource',
         'index' => 'icommerce::orders.list resource',
-        'index-all' => 'icommerce::orders.list-all resource',
-        'show' => 'icommerce::orders.show resource',
-        'show-others' => 'icommerce::orders.show-others resource',
+    'index-all' => 'icommerce::orders.list-all resource',
+    'show' => 'icommerce::orders.show resource',
+    'show-others' => 'icommerce::orders.show-others resource',
         'create' => 'icommerce::orders.create resource',
         'edit' => 'icommerce::orders.edit resource',
         'destroy' => 'icommerce::orders.destroy resource',
@@ -324,5 +324,32 @@ return [
         'destroy' => 'icommerce::productoptionvaluewarehouses.destroy resource',
         'restore' => 'icommerce::productoptionvaluewarehouses.restore resource',
     ],
+    'icommerce.subscriptions' => [
+        'manage' => 'icommerce::subscriptions.manage resource',
+        'index' => 'icommerce::subscriptions.list resource',
+        'create' => 'icommerce::subscriptions.create resource',
+        'edit' => 'icommerce::subscriptions.edit resource',
+        'destroy' => 'icommerce::subscriptions.destroy resource',
+        'restore' => 'icommerce::subscriptions.restore resource',
+    ],
+    'icommerce.subscriptionstatushistories' => [
+        'manage' => 'icommerce::subscriptionstatushistories.manage resource',
+        'index' => 'icommerce::subscriptionstatushistories.list resource',
+        'create' => 'icommerce::subscriptionstatushistories.create resource',
+        'edit' => 'icommerce::subscriptionstatushistories.edit resource',
+        'destroy' => 'icommerce::subscriptionstatushistories.destroy resource',
+        'restore' => 'icommerce::subscriptionstatushistories.restore resource',
+    ],
 // append
+
+
+
+
+
+
+
+
+
+
+
 ];
