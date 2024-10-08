@@ -18,7 +18,7 @@ class UpdateProductRequest extends BaseFormRequest
   {
     return [
       'name' => 'min:2',
-      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2"]
+      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2", "alpha_dash:ascii"]
     ];
   }
 

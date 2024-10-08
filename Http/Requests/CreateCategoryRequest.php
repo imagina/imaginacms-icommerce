@@ -16,7 +16,7 @@ class CreateCategoryRequest extends BaseFormRequest
   {
     return [
       'title' => 'required|min:2',
-      'slug' => ['required', new UniqueSlugRule('icommerce__category_translations'), 'min:2'],
+      'slug' => ['required', new UniqueSlugRule('icommerce__category_translations'), 'min:2',"alpha_dash:ascii"],
       'description' => 'required|min:2',
     ];
   }
@@ -48,7 +48,8 @@ class CreateCategoryRequest extends BaseFormRequest
     ];
   }
 
-  public function getValidator(){
+  public function getValidator()
+  {
     return $this->getValidatorInstance();
   }
 }
