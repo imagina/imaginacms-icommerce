@@ -96,7 +96,10 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
     $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
   
     if (!$showOthersPermission && !isset($filter->field)) {
-      $query->where('customer_id', $params->user->id)->where('parent_id', null);
+      //Extra validation when call from API
+      $authUser = \Auth::user() ?? null;
+      if(!is_null($authUser))
+        $query->where('customer_id', $authUser->id)->where('parent_id', null);
     }
 
 
