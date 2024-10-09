@@ -174,9 +174,9 @@ return [
     'subscription' => [
       'groupName' => 'Subscripciones',
       'daysBeforeDue' => 'Cantidad de dias en el cual se realizará el cobro',
-      'daysBeforeDueHelp' => 'Si es 0, el cobro se hará el mismo dia de la finalización, si es mayor a 0, el cobro esos dias antes de la finalización de la subscripción',
+      'daysBeforeDueHelp' => 'Si es 0, el cobro se hará el mismo dia de la finalización, si es mayor a 0, el cobro se realizará esos dias antes de la finalización de la subscripción',
       'daysForSuspension' => 'Dias de vencimiento de la subscription',
-      'daysForSuspensionHelp' => 'Si la subscription esta en estatus: [pendiente de pago] y la cantidad de dias es igual a la que agregaste, su estado cambiará a [suspendidad]'
+      'daysForSuspensionHelp' => 'Si la subscription esta en estatus: [pendiente de pago] y la cantidad de dias es igual a la que agregaste, su estado cambiará a [suspendida]'
     ],
     'tenant' => [
       'group' => 'Inquilinos',
