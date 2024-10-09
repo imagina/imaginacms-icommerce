@@ -1362,4 +1362,36 @@ return [
       ]
     ]
   ],
+  'daysBeforeDue' => [
+    'name' => 'icommerce::daysBeforeDue',
+    'value' => 0,
+    'type' => 'input',
+    'groupName' => 'subscription',
+    'groupTitle' => 'icommerce::common.settings.subscription.groupName',
+    "onlySuperAdmin" => true,
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.subscription.daysBeforeDue',
+      'type' => 'number'
+    ],
+    'help' => [
+      "description" => "icommerce::common.settings.subscription.daysBeforeDueHelp"
+    ],
+  ],
+  'daysForSuspension' => [
+    'name' => 'icommerce::daysForSuspension',
+    'value' => 5,
+    'type' => 'input',
+    'groupName' => 'subscription',
+    'groupTitle' => 'icommerce::common.settings.subscription.groupName',
+    "onlySuperAdmin" => true,
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.subscription.daysForSuspension',
+      'type' => 'number'
+    ],
+    'help' => [
+      "description" => "icommerce::common.settings.subscription.daysForSuspensionHelp"
+    ],
+  ],
 ];
