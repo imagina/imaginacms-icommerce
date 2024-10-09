@@ -95,17 +95,18 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
 
-    $warehouse = request()->session()->get('warehouse');
-    $warehouse = json_decode($warehouse);
-    if (isset($warehouse->id)) {
-      $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
-    }
-
     $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
 
-    if($warehouseEnabled && isset($warehouse->id)){
-      $data["warehouse_id"] = $warehouse->id;
+    //Se refactoriza validacion porque el request->session cuando se mandaba a crear el carrito desde un job fallaba
+    if($warehouseEnabled){
+      $warehouse = request()->session()->get('warehouse');
+      $warehouse = json_decode($warehouse);
+      if (isset($warehouse->id)) {
+        $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
+        $data["warehouse_id"] = $warehouse->id;
+      }
     }
+
     //To include all products even if they are internal (as in the case of services in reservations)
     $params = [
       "filter" => [
