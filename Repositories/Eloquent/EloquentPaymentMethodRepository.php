@@ -116,7 +116,7 @@ class EloquentPaymentMethodRepository extends EloquentCrudRepository implements 
     $items = [];
 
     if (isset($params->filter->withCalculations)) {
-      $filters = $params->filter;//Short data filter
+      $filter = $params->filter;//Short data filter
       $items = $this->getItemsBy($params);
 
       if (isset($items) && $items->count() > 0) {
