@@ -577,10 +577,11 @@ class Product extends CrudModel implements TaggableInterface
     return $taxes;
   }
 
-  public function hasRequiredOptions(){
+  public function hasRequiredOptions()
+  {
     $hasRequiredOptions = false;
-    if(isset($this->entity->productOptions)){
-      foreach ($this->entity->productOptions as $productOption){
+    if (isset($this->entity->productOptions)) {
+      foreach ($this->entity->productOptions as $productOption) {
         isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
       }
     }
@@ -596,14 +597,16 @@ class Product extends CrudModel implements TaggableInterface
     return $this->priceByList ?? $value;
   }
 
-    public function getCacheClearableData()
-    {
-        return [
-            'urls' => array_merge(
-                [config("app.url"),
-                    $this->url],
-                $this->categories->pluck('url')->toArray())
-        ];
-    }
+  public function getCacheClearableData()
+  {
+    $baseUrls = [config("app.url")];
+    $categoryUrls = $this->categories->pluck('url')->toArray();
 
+    if (!$this->wasRecentlyCreated) {
+      $baseUrls[] = $this->url;
+    }
+    $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];
+
+    return $urls;
+  }
 }
