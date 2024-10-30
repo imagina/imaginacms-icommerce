@@ -1,6 +1,8 @@
 @if($product->price>0 && $product->stock_status && $product->quantity)
+
     <div class="col no-padding">
-        <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-between"
+
+        <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-center justify-content-lg-between"
              style="padding-left: {{$addToCartWithQuantityPaddingX}}px; padding-right: {{$addToCartWithQuantityPaddingX}}px;
                      padding-top: {{$addToCartWithQuantityPaddingY}}px; padding-bottom: {{$addToCartWithQuantityPaddingY}}px;
                      margin-bottom: {{$addToCartWithQuantityMarginBottom}}px !important;">
@@ -108,5 +110,21 @@
 
 @stop
 @endonce
+
+@else
+
+    @if($product->is_sold_out)
+        <div class="buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} my-3">
+        @php $contactUrl=setting('icommerce::customIndexContactLabel', null, 'Contáctenos'); @endphp
+        <x-isite::button :style="$buttonsLayout" buttonClasses="contact button-small"
+                         :withIcon="$withIconInAddToCart"
+                         :onclick="'window.livewire.emit(\'makeQuote\','.$product->id.')'"
+                         iconClass="fa fa-envelope"
+                         :withLabel="$withTextInAddToCart"
+                         :label="$contactUrl"
+                         :sizeLabel="$bottomFontSize"
+        />
+        </div>
+    @endif
 
 @endif
