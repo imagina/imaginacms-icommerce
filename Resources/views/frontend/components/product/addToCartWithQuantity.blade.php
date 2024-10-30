@@ -1,13 +1,11 @@
 @if($product->price>0 && $product->stock_status && $product->quantity)
-
     <div class="col no-padding">
-
-        <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-center justify-content-lg-between"
+        <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-between"
              style="padding-left: {{$addToCartWithQuantityPaddingX}}px; padding-right: {{$addToCartWithQuantityPaddingX}}px;
                      padding-top: {{$addToCartWithQuantityPaddingY}}px; padding-bottom: {{$addToCartWithQuantityPaddingY}}px;
                      margin-bottom: {{$addToCartWithQuantityMarginBottom}}px !important;">
             <!-- BUTTON QUANTITY -->
-            <div class="number-input input-group quantity-selector">
+            <div class="elem-buttom number-input input-group quantity-selector">
                 <button onclick="icommerce_quantityAction(event)" type="button" class="button-minus"
                         data-action="decrement" aria-label="minus">
                   <i class="fa fa-minus" aria-hidden="true"></i>
@@ -18,7 +16,7 @@
             </div>
 
             <!-- BUTTON ADD  -->
-            <div class="add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
+            <div class="elem-buttom add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
                
                 <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-cart add-to-cart-with-quantity-button"
                                  onclick="icommerce_addToCartWithQuantity(event)"
