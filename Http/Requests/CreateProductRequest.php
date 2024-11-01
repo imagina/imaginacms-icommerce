@@ -18,7 +18,7 @@ class CreateProductRequest extends BaseFormRequest
   {
     return [
       'name' => 'required|min:2',
-      'slug' => ["required",new UniqueSlugRule("icommerce__product_translations"),"min:2"]
+      'slug' => ["required",new UniqueSlugRule("icommerce__product_translations"),"min:2","alpha_dash:ascii"]
     ];
   }
 

@@ -6,7 +6,7 @@
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
     <x-isite::edit-link
             link="{{$editLink}}{{$product->id}}"
-            tooltip="{{$tooltipEditLink}}"
+            :tooltip="$tooltipEditLink"
     />
   @include('icommerce::frontend.components.product.meta')
 

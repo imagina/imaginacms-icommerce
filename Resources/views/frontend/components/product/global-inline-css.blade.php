@@ -1,6 +1,6 @@
 @once
 <style>
-.button-minus i, .button-plus i{
+.product-layout .button-minus i, .product-layout .button-plus i{
     pointer-events: none;
 }
 .product-layout .add-to-cart-with-quantity .quantity-selector input[type=number]::-webkit-outer-spin-button,
@@ -34,7 +34,7 @@
     font-size: 0.825rem !important;
     line-height: 1.5 !important;*/
     @if($addToCartWithQuantityStyle == "square")
-    border-radius: opx;
+    border-radius: 0;
     @endif
 }
 @endif
@@ -64,7 +64,7 @@
     @if($contentCategoryToUppercase)text-transform: uppercase; @endif
 }
 .product-layout-1 .price {
-    font-size: {{$contentPriceFontSize}}px;
+    font-size: {{$contentPriceFontSize}}px !important;
     font-weight: {{$contentPriceFontWeight}};
 }
 .product-layout-1 .col-buttons-unset {
@@ -77,6 +77,7 @@
     -o-object-fit: {{$imageObjectFit}} !important;
     object-fit: {{$imageObjectFit}} !important;
 }
+
 @endif
 </style>
 @endonce

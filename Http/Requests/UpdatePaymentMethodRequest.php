@@ -13,7 +13,10 @@ class UpdatePaymentMethodRequest extends BaseFormRequest
 
   public function translationRules()
   {
-    return [];
+    return [
+      'title' => 'required|min:3',
+      'description' => 'required|min:3'
+    ];
   }
 
   public function authorize()

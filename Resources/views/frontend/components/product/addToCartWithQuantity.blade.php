@@ -5,7 +5,7 @@
                      padding-top: {{$addToCartWithQuantityPaddingY}}px; padding-bottom: {{$addToCartWithQuantityPaddingY}}px;
                      margin-bottom: {{$addToCartWithQuantityMarginBottom}}px !important;">
             <!-- BUTTON QUANTITY -->
-            <div class="number-input input-group quantity-selector">
+            <div class="elem-buttom number-input input-group quantity-selector">
                 <button onclick="icommerce_quantityAction(event)" type="button" class="button-minus"
                         data-action="decrement" aria-label="minus">
                   <i class="fa fa-minus" aria-hidden="true"></i>
@@ -16,7 +16,7 @@
             </div>
 
             <!-- BUTTON ADD  -->
-            <div class="add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
+            <div class="elem-buttom add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
                
                 <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-cart add-to-cart-with-quantity-button"
                                  onclick="icommerce_addToCartWithQuantity(event)"
@@ -108,5 +108,21 @@
 
 @stop
 @endonce
+
+@else
+
+    @if($product->is_sold_out)
+        <div class="buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} my-3">
+        @php $contactUrl=setting('icommerce::customIndexContactLabel', null, 'Contáctenos'); @endphp
+        <x-isite::button :style="$buttonsLayout" buttonClasses="contact button-small"
+                         :withIcon="$withIconInAddToCart"
+                         :onclick="'window.livewire.emit(\'makeQuote\','.$product->id.')'"
+                         iconClass="fa fa-envelope"
+                         :withLabel="$withTextInAddToCart"
+                         :label="$contactUrl"
+                         :sizeLabel="$bottomFontSize"
+        />
+        </div>
+    @endif
 
 @endif

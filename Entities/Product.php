@@ -595,12 +595,15 @@ class Product extends CrudModel implements TaggableInterface
 
   public function getCacheClearableData()
   {
-    return [
-      'urls' => array_merge(
-        [config("app.url"),
-          $this->url],
-        $this->categories->pluck('url')->toArray())
-    ];
+    $baseUrls = [config("app.url")];
+    $categoryUrls = $this->categories->pluck('url')->toArray();
+
+    if (!$this->wasRecentlyCreated) {
+      $baseUrls[] = $this->url;
+    }
+    $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];
+
+    return $urls;
   }
 
 }

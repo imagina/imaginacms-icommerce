@@ -1,6 +1,6 @@
 <div>
 
-    <div id="{{$warehouseLocatorId}}" class="warehouse-locator position-relative d-inline-block {{$warehouseLocatorClass}}">
+    <div id="{{$warehouseLocatorId}}" class="warehouse-locator position-relative {{$warehouseLocatorClass}}">
         @if(!$iconOrderRight) <i class="{{ $icon ?? ' ' }} {{ $iconClass }}"></i> @endif
 
 
