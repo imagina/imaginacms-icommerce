@@ -117,7 +117,11 @@ class PaymentMethodService
             $moduleName = $paymenMethod->name;
 
             //Es un metodo Hijo
-            if(!is_null($paymenMethod->parent_name)) $moduleName = $paymenMethod->parent_name;
+            $childModuleName = null;
+            if(!is_null($paymenMethod->parent_name)){
+                $childModuleName = $moduleName;
+                $moduleName = $paymenMethod->parent_name;
+            } 
 
             //Validation Class
             $baseClass = "Modules\\".ucfirst($moduleName)."\Services\RecurrenceService";
@@ -125,12 +129,15 @@ class PaymentMethodService
             $isRecurrence = false;
             if(class_exists($baseClass)){
                 $service = app($baseClass);
-                $isRecurrence = $service->isRecurrence($moduleName);
+
+                $isRecurrence = !is_null($childModuleName) ? $service->isRecurrence($childModuleName) : $service->isRecurrence($ModuleName);
                 //Validation Method
                 if($isRecurrence && method_exists($service, "init")){
                     \Log::info($this->log."Payment Method | Is Recurrence");
                     //Init Payment Process
                     $result = $service->init($order,$paymenMethod);
+                }else{
+                    \Log::info($this->log."Payment Method | NOT Is Recurrence");
                 }
             }
 
