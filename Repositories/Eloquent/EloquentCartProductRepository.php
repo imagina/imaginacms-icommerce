@@ -376,22 +376,30 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     if ($product->subtract) { // si el producto se substrae de inventario
 
-      $warehouse = request()->session()->get('warehouse');
-      $warehouse = json_decode($warehouse);
+     
       $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
 
       $productQuantity = $product->quantity;
       //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
       //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
-      if($warehouseEnabled && isset($warehouse->id)){
 
-        if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
-        $productQuantity = \DB::table('icommerce__product_warehouse')
-            ->where('warehouse_id', $warehouse->id)
-            ->where('product_id', $product->id)
-            ->first();
+      //Se refactoriza validacion porque el request->session cuando se mandaba a crear el carrito desde un job fallaba
+      if($warehouseEnabled){
 
-        $productQuantity = $productQuantity->quantity ?? 0;
+        $warehouse = request()->session()->get('warehouse');
+        $warehouse = json_decode($warehouse);
+
+        if($warehouseEnabled && isset($warehouse->id)){
+
+          if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+          $productQuantity = \DB::table('icommerce__product_warehouse')
+              ->where('warehouse_id', $warehouse->id)
+              ->where('product_id', $product->id)
+              ->first();
+
+          $productQuantity = $productQuantity->quantity ?? 0;
+        }
+
       }
 
       // si la cantidad del producto no alcanza para lo solicitado
