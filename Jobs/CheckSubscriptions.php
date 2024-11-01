@@ -134,7 +134,7 @@ class CheckSubscriptions implements ShouldQueue
             $product = [
                 "id" => $carProduct->product_id,
                 "quantity" => $carProduct->quantity,
-                "productOptionValues" => $carProduct->productOptionValues
+                "productOptionValues" => $carProduct->productOptionValues->pluck('id')->toArray()//OJO: Estaba asi: $carProduct->productOptionValues
             ];
             array_push($products,$product);
         }
@@ -211,7 +211,7 @@ class CheckSubscriptions implements ShouldQueue
                     $data['payment_attemps'] = $paymentAttemps - 1;
             }
         }
-       
+
         //Create
         $response = app("Modules\Icommerce\Services\OrderService")->create($data);
         
