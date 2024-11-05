@@ -58,7 +58,7 @@ class CheckSubscriptions implements ShouldQueue
             ->get();
 
             //Info msj
-            \Log::info($this->log."Ended: ".count($subscriptions));
+            \Log::info($this->log."Ended: ".count($subscriptions)." |==========================");
 
             //Exist Subscriptions to check
             if(count($subscriptions) > 0) 
@@ -87,7 +87,7 @@ class CheckSubscriptions implements ShouldQueue
 
                 }
 
-                \Log::info($this->log."Subscriptions|END");
+                \Log::info($this->log."Subscriptions|END| ==========================");
             }
 
             //FINAL COMMIT
