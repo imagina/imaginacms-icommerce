@@ -50,7 +50,7 @@ class OrdersToPaymentRetry implements ShouldQueue
             ->get();
 
             //Info msj
-            \Log::info($this->log."Orders: ".count($orders));
+            \Log::info($this->log."Orders: ".count($orders). " |===============---------------");
 
             //Exist Orders to retry
             if(count($orders) > 0) 
@@ -76,6 +76,8 @@ class OrdersToPaymentRetry implements ShouldQueue
                     //Process Payment
                     $payment = app("Modules\Icommerce\Services\PaymentMethodService")->checkPaymentMethod($order);
                 }
+
+                \Log::info($this->log."END| ===============---------------");
 
             }
 
