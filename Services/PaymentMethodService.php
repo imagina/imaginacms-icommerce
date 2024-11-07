@@ -130,7 +130,7 @@ class PaymentMethodService
             if(class_exists($baseClass)){
                 $service = app($baseClass);
 
-                $isRecurrence = !is_null($childModuleName) ? $service->isRecurrence($childModuleName) : $service->isRecurrence($ModuleName);
+                $isRecurrence = !is_null($childModuleName) ? $service->isRecurrence($childModuleName) : $service->isRecurrence($moduleName);
                 //Validation Method
                 if($isRecurrence && method_exists($service, "init")){
                     \Log::info($this->log."Payment Method | Is Recurrence");
