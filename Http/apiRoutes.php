@@ -401,6 +401,7 @@ Route::prefix('/icommerce/v3')->group(function (Router $router) use($locale) {
       'module' => 'icommerce',
       'prefix' => 'subscription-status-history',
       'controller' => 'SubscriptionStatusHistoryApiController',
+      'permission' => 'icommerce.subscriptionstatushistories',
       //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
       // 'customRoutes' => [ // Include custom routes if needed
       //  [
