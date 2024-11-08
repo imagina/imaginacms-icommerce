@@ -413,5 +413,13 @@ Route::prefix('/icommerce/v3')->group(function (Router $router) use($locale) {
       // ]
     ]);
 
+    //======  Subscription Status - STATIC
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'subscription-statuses',
+      'permission' => 'icommerce.subscriptions',
+      'staticEntity' => 'Modules\Icommerce\Entities\SubscriptionStatus'
+    ]);
+
 // append
 });

@@ -55,4 +55,20 @@ class SubscriptionStatus
 
     return $this->statuses[self::PENDING];
   }
+
+   /**
+   * Index Method To API
+   */
+  public function index()
+  {
+    //Instance response
+    $response = [];
+    //AMp status
+    foreach ($this->statuses as $key => $status) {
+      array_push($response, ['value' => $key, 'label' => $status]);
+    }
+    //Repsonse
+    return collect($response);
+  }
+
 }
