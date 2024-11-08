@@ -71,6 +71,12 @@ class SubscriptionsToSuspend implements ShouldQueue
                     $subscription->status_id = SubscriptionStatus::SUSPENDED;
                     $subscription->save();
                     \Log::info($this->log."Suspended -> SubscriptionId: ".$subscription->id);
+
+                    //History
+                    $subscription->subscriptionStatusHistory()->create([
+                        'status_id' => $subscription->status_id,
+                        'notify' => 0
+                    ]);
                 }
                
             }
