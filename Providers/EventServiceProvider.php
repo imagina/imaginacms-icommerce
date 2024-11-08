@@ -140,5 +140,8 @@ class EventServiceProvider extends ServiceProvider
     SubscriptionWasCreated::class => [
       SaveSubscriptionStatusHistory::class,
     ],
+    SubscriptionWasUpdated::class => [
+      SaveSubscriptionStatusHistory::class,
+    ],
   ];
 }
