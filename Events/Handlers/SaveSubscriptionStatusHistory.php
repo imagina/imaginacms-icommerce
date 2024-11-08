@@ -20,7 +20,7 @@ class SaveSubscriptionStatusHistory
   {
 
     \Log::info($this->log);
-    
+
     // Get All params Event
     $params = $event->params;
 
@@ -32,6 +32,13 @@ class SaveSubscriptionStatusHistory
       "subscription_id" => $subscription->id,
       "status_id" => $subscription->status_id
     ];
+
+    // Case | Data from API Subscription
+    $extra = $params['data'];
+
+    if(isset($extra['subscriptionHistory']))
+      if(isset($extra['subscriptionHistory']['comment'])) $data['comment'] = $extra['subscriptionHistory']['comment'];
+  
 
     //Create History
     $this->subscriptionStatusHistoryService->create($data);
