@@ -39,6 +39,7 @@ class Checkout extends Component
   public $currency;
   public $requireShippingMethod;
   public $title;
+  public $comment;
   public $cartEmpty;
   public $useExistingOrNewPaymentAddress;
   public $billingAddressSelected;
@@ -944,6 +945,7 @@ class Checkout extends Component
     $data["shippingMethod"] = $this->shippingMethod;
     $data["paymentMethod"] = $this->paymentMethod;
     $data["coupon"] = $this->couponSelected;
+    $data["comment"] = $this->comment;
     $data["guest_purchase"] = $this->shopAsGuest;
     $data["organizationId"] = $this->organization->id ?? null;
     if (setting('icommerce::warehouseFunctionality', null, false)) {

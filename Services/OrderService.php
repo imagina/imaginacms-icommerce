@@ -282,6 +282,7 @@ class OrderService
       $orderData["require_shipping"] = $cart->require_shipping;
       $orderData["cart_id"] = $cart->id ?? null;
       $orderData["parent_id"] = $data["parentId"] ?? $data["parent_id"] ?? null;
+      $orderData["comment"] = strip_tags($data["comment"]) ?? null;
       $orderData["status_id"] = 1;
       $orderData["total"] = $total;
       $orderData["organization_id"] = $data["organizationId"] ?? $data["organization_id"] ?? null;

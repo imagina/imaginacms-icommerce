@@ -266,7 +266,7 @@ class OrderTransformer extends CrudResource
         $paymentInfo
       );
     }
-
+  
     if (setting('icommerce::warehouseFunctionality', null, false)) {
       $warehouseBlockInfo = [
         'title' => trans("icommerce::orders.informationBlocksOrder.titleOrderInfoWarehouse"),
@@ -283,6 +283,20 @@ class OrderTransformer extends CrudResource
       ];
       array_push($item['informationBlocks'], $warehouseBlockInfo);
     }
+  
+
+      $commentBlock = [
+        'title' => trans("icommerce::checkout.comment"),
+        'values' => [
+          [
+          // 'label' => trans("icommerce::checkout.comment"),
+            'value' => $this->comment ?? ''
+          ],
+        
+        ]
+      ];
+      array_push($item['informationBlocks'], $commentBlock);
+    
 
     return $item;
   }

@@ -2,6 +2,8 @@
 
 return [
   'title' => 'Finalizar Pedido',
+  'comment' => '¿Algún comentario?',
+  'commentPlaceholder' => 'Déjanos detalles adicionales que quieres que tengamos en cuenta sobre tu pedido',
   'no_products_1' => 'No tienes artículos en tú carrito de compras. haz Click',
   'no_products_here' => 'aquí',
   'no_products_2' => ' para continuar comprando.',

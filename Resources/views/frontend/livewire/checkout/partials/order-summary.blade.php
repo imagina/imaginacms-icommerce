@@ -243,6 +243,20 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <div class="from-group">
+              <label for="comment">
+               {{trans('icommerce::checkout.comment')}}
+              </label>
+              <textarea class="form-control"
+                        placeholder="{{trans('icommerce::checkout.commentPlaceholder')}}"
+                     id="comment"
+                     wire:model.defer="comment"></textarea>
+
+            </div>
+          </div>
+        </div>
         @if((Setting::has('icommerce::orderSummaryDescription')))
           <div class="order-summary-description py-2">
             <x-isite::edit-link

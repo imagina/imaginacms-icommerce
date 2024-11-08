@@ -2,6 +2,8 @@
 
 return [
   'title' => 'Finalize Order',
+  'comment' => 'Some comment?',
+  'commentPlaceholder' => 'Leave us additional details that you want us to consider about your order',
   'no_products_1' => 'You have no items in your shopping cart. click',
   'no_products_here' => 'here',
   'no_products_2' => ' To continue shopping.',
