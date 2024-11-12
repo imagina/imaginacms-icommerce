@@ -80,7 +80,8 @@ class CartService
             "product_id" => $product["id"],
             "quantity" => $product["quantity"],
             "options" => $product["options"] ?? null,
-            "product_option_values" => $product["productOptionValues"] ?? []
+            "product_option_values" => $product["productOptionValues"] ?? [],
+            "ValidationInternal" => $product["ValidationInternal"] ?? null
           ];
     
           //Create cart item

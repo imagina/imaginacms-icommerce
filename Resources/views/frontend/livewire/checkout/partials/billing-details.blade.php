@@ -26,29 +26,29 @@
       </div>
     @endif
   @else
-    @if (!setting('icommerce::warehouseFunctionality', null, false))
+{{--    @if (!setting('icommerce::warehouseFunctionality', null, false))--}}
       @auth
         <livewire:iprofile::address-form :embedded="true" :route="$locale.'.icommerce.store.checkout'" type="billing"
                                          key="checkoutBillingAddress" :openInModal="true"/>
       @endauth
-    @else
-      <div class="col py-2">
-          <a id="buttonModalWarehouse" class="btn btn-sm btn-outline-primary" href="#">
-              <i class="fa-solid fa-circle-plus"></i>
-              {{trans('icommerce::common.pages.buttonAddBillingAddressWarehouse')}}
-          </a>
-      </div>
-    @endif
+{{--    @else--}}
+{{--      <div class="col py-2">--}}
+{{--          <a id="buttonModalWarehouse" class="btn btn-sm btn-outline-primary" href="#">--}}
+{{--              <i class="fa-solid fa-circle-plus"></i>--}}
+{{--              {{trans('icommerce::common.pages.buttonAddBillingAddressWarehouse')}}--}}
+{{--          </a>--}}
+{{--      </div>--}}
+{{--    @endif--}}
   @endif
 </div>
-<script>
-    $(document).ready(function () {
-        // Al hacer clic en el botón "Abrir Modal"
-        $("#buttonModalWarehouse").click(function () {
-            // Mostrar la modal
-            $("#modalWarehouseLocator").modal();
-            // Activar el tab número 2
-            $("#homeTabModalWarehouseLocator").tab('show');
-        });
-    });
-</script>
+{{--<script>--}}
+{{--    $(document).ready(function () {--}}
+{{--        // Al hacer clic en el botón "Abrir Modal"--}}
+{{--        $("#buttonModalWarehouse").click(function () {--}}
+{{--            // Mostrar la modal--}}
+{{--            $("#modalWarehouseLocator").modal();--}}
+{{--            // Activar el tab número 2--}}
+{{--            $("#homeTabModalWarehouseLocator").tab('show');--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}

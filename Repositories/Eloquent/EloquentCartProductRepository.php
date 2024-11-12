@@ -108,16 +108,16 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     }
 
     //To include all products even if they are internal (as in the case of services in reservations)
+    $ValidationInternal = $data['ValidationInternal'] ?? true;
     $params = [
       "filter" => [
-        "ValidationInternal" => true,
+        "ValidationInternal" => $ValidationInternal,
       ],
       "include" => [],
       "fields" => [],
     ];
 
     $product = $productRepository->getItem($data["product_id"], json_decode(json_encode($params)));
-
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
     }

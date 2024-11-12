@@ -598,7 +598,7 @@ class Product extends CrudModel implements TaggableInterface
     $baseUrls = [config("app.url")];
     $categoryUrls = $this->categories->pluck('url')->toArray();
 
-    if (!$this->wasRecentlyCreated) {
+    if (!$this->wasRecentlyCreated && !$this->is_internal) {
       $baseUrls[] = $this->url;
     }
     $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];

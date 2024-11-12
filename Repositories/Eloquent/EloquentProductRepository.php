@@ -471,7 +471,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     * Se aplica para que el carrito pueda encontrar el producto a pesar
     de si el producto es "internal"
     */
-    if (isset($params->filter) && !isset($params->filter->validationInternal)) {
+    if (isset($params->filter) && !isset($params->filter->ValidationInternal) || $params->filter->ValidationInternal) {
       $query->where("is_internal", 0);
     }
 
