@@ -122,6 +122,21 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       throw new \Exception("Invalid product", 400);
     }
 
+    //Ya hay productos en el carrito y se quiere agregar otro con opcion de producto
+    if($data['cartProductsCount']>0 && !is_null($data['product_option_values'])){
+      
+      if($product->isPaymentFrequency()){
+        $cartWithPaymentFrequency = request()->session()->get('cartWithPaymentFrequency');
+        //El producto que ya esta agregado, es un producto normal y no se puede combinar con uno de recurrencia
+        if(!$cartWithPaymentFrequency){
+          throw new \Exception("Different type combination", 400);
+        }
+          
+      }
+      
+    }
+    
+
     //Separate Options to new process
     $result = $this->separateOptions($data["product_option_values"]);
 
@@ -156,6 +171,17 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       if (count($data["product_option_values"]) > 0) {
         //\Log::info($this->log.'Create|Sync Product Options Values');
         $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
+
+        //Se revisa si la opcion es de un producto con recurrencia
+        foreach ($productOptionValues as $key => $pov) {
+          if($pov->option->group=="payment-frequency"){
+            request()->session()->put('cartWithPaymentFrequency', true);
+            break;
+          }
+        }
+      
+       
+        
       }
 
       //Sync Dynamics options

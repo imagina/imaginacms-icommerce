@@ -50,6 +50,7 @@ return [
         'min_exceeded' => 'La cantidad no puede ser menor a 1',
         'quantity_unavailable' => 'Quedan :quantity unidades del producto que deseas',
         'warehouse_quantity_unavailable' => 'Este producto no está disponible para la bodega seleccionada',
+        'different type combination' => 'No se puede combinar productos de pago frecuente con productos genericos'
 
     ],
 

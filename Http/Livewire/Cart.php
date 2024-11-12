@@ -169,18 +169,34 @@ class Cart extends Component
         $product = $this->productRepository()->getItem($productId);
 
         if (isset($product->id)) {
+
+          $cartProductsCount = $this->cart->products()->count();
+
           $data = [
             "cart_id" => $this->cart->id,
             "product_id" => $productId,
             "quantity" => $quantity,
             "product_option_values" => $productOptionValues,
-            "is_call" => $isCall
+            "is_call" => $isCall,
+            "cartProductsCount" => $cartProductsCount
           ];
 
-          $this->cartProductRepository()->create($data);
-          $this->updateCart();
+         
+          //Cuando se crea un producto con opcion y es de pago frecuente, se guarda en el repo esta variable de sesion | Case Recurrence
+          $cartWithPaymentFrequency = request()->session()->get('cartWithPaymentFrequency');
+        
+          //Limita solo 1 producto con pago frecuente 
+          if($cartWithPaymentFrequency && $cartProductsCount>0){
+            throw new \Exception("Different type combination", 400);
 
-          $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+          }else{
+            
+            $this->cartProductRepository()->create($data);
+            $this->updateCart();
+
+            $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+
+          }
 
         } else {
           $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
@@ -205,6 +221,11 @@ class Cart extends Component
           else
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
           break;
+
+        case 'Different type combination':
+          $this->alert('warning', trans('icommerce::cart.message.different type combination'), config("asgard.isite.config.livewireAlerts"));
+          break;
+
       }
       $this->loading = false;
     }
@@ -215,6 +236,7 @@ class Cart extends Component
     $this->loading = true;
     $params = json_decode(json_encode(["include" => []]));
     $result = $this->cartProductRepository()->deleteBy($cartProductId, $params);
+    request()->session()->put('cartWithPaymentFrequency',null);
 
     $this->updateCart();
 
@@ -229,6 +251,7 @@ class Cart extends Component
     $result = $this->cartRepository()->deleteBy($this->cart->id, $params);
     $this->cart = null;
     request()->session()->put('cart', null);
+    request()->session()->put('cartWithPaymentFrequency',null);
 
     $this->refreshCart();
   }
