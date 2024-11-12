@@ -151,6 +151,22 @@ class EloquentPaymentMethodRepository extends EloquentCrudRepository implements 
             }
           }
 
+          $cartWithPaymentFrequency = request()->session()->get('cartWithPaymentFrequency');
+         
+          //Procces to validate if Payment Method is acceptable with recurrence
+          if($cartWithPaymentFrequency){
+            
+            $moduleName =  (!is_null($method->parent_name)) ? $method->parent_name : $method->name;
+            $baseClass = "Modules\\".ucfirst($moduleName)."\Services\RecurrenceService";
+
+            //Si no existe este archivo en ese metodo de pago, quiere decir que mas adelante no se podrá cobrar con ese mismo metodo de pago
+            if(!class_exists($baseClass)){
+              unset($items[$key]);
+              $methodDeleted = true;
+            }
+            
+          }
+
           if($methodDeleted==false){
             //Process to calculation validation in each method
             $methodApiController = app($method->options->init);
