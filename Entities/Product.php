@@ -606,4 +606,18 @@ class Product extends CrudModel implements TaggableInterface
     return $urls;
   }
 
+  /**
+   * Check if product has an option and this options is payment frequency | Case Recurrence
+   */
+  public function isPaymentFrequency()
+  { 
+
+    $option = $this->productOptions->first();
+    if(!is_null($option) && $option->group=="payment-frequency")
+      return true;
+    
+    return false;
+
+  }
+
 }
