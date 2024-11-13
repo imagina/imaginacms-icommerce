@@ -17,6 +17,12 @@ use Modules\Icommerce\Events\OrderWasProcessed;
 use Modules\Icommerce\Entities\OrderStatusHistory;
 use Modules\Core\Icrud\Transformers\CrudResource;
 
+//Requests
+use Modules\Icommerce\Http\Requests\SendOrderRequest;
+
+//Handler
+use Modules\Icommerce\Events\Handlers\SendOrder;
+
 class OrderApiController extends BaseCrudController
 {
   public $model;
@@ -154,6 +160,41 @@ class OrderApiController extends BaseCrudController
     \Log::info('Icommerce: OrderApiController|Update|END');
 
     return response()->json($response, $status ?? 200);
+  }
+
+  /**
+   * Send order via email
+   * Example: Button to iadmin
+   */
+  public function sendOrder(Request $request)
+  {
+
+    try {
+
+      $data = $request->input('attributes') ?? [];
+
+      $this->validateRequestApi(new SendOrderRequest($data));
+      
+      //Request data to Repository
+      $model = $this->modelRepository->getItem($data['order_id']);
+
+      //Throw exception if no found item
+      if (! $model) {
+          throw new \Exception('Item not found', 204);
+      }
+      
+      //Handler to send email
+      (new SendOrder())->handle((object)[ 'order' => $model]);
+
+      $response = ["data" => trans('icommerce::common.messages.email sent')];
+      
+    } catch (\Exception $e) {
+      \Log::error($e->getMessage());
+      $status = $this->getStatusError($e->getCode());
+      $response = ["errors" => $e->getMessage()];
+    }
+    
+    return $response;
   }
 
 }

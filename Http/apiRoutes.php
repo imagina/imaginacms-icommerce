@@ -117,6 +117,15 @@ Route::prefix('/icommerce/v3')->group(function (Router $router) use($locale) {
     'controller' => 'OrderApiController',
     'middleware' => [
       'show' => [],
+    ],
+    'customRoutes' => [
+      [
+        'method' => 'post',
+        'path' => '/send-order',
+        'as' => $locale . 'api.icommerce.option-values.order',
+        'uses' => 'sendOrder',
+        'middleware' => ['auth:api','auth-can:icommerce.orders.index']
+      ]
     ]
   ]);
   $router->apiCrud([
