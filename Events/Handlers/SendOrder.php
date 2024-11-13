@@ -13,16 +13,13 @@ class SendOrder
   /**
    * @var Mailer
    */
-  private $mail;
   private $setting;
-  private $notification;
   public $notificationService;
 
-  public function __construct(Mailer $mail, Notification $notification)
+  public function __construct()
   {
-    $this->mail = $mail;
+   
     $this->setting = app('Modules\Setting\Contracts\Setting');
-    $this->notification = $notification;
     $this->notificationService = app("Modules\Notification\Services\Inotification");
 
   }
