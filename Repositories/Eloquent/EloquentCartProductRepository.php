@@ -136,6 +136,9 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       
     }
     
+    //Solo 1 quantity si es este tipo de producto
+    if($product->isPaymentFrequency() && $data['quantity']>1)
+      throw new \Exception("Only one quantity is allowed", 400);
 
     //Separate Options to new process
     $result = $this->separateOptions($data["product_option_values"]);
@@ -393,8 +396,9 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
     foreach ($cartProducts as $cartSingleProduct) {
+
         if($cartSingleProduct->product_id == $product->id) {
-        $cartProductQuantity += $cartSingleProduct->quantity;
+          $cartProductQuantity += $cartSingleProduct->quantity;
       }
     }
 

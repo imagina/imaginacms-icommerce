@@ -226,6 +226,10 @@ class Cart extends Component
           $this->alert('warning', trans('icommerce::cart.message.different type combination'), config("asgard.isite.config.livewireAlerts"));
           break;
 
+        case 'Only one quantity is allowed':
+          $this->alert('warning', trans('icommerce::cart.message.only one quantity is allowed'), config("asgard.isite.config.livewireAlerts"));
+          break;
+
       }
       $this->loading = false;
     }
