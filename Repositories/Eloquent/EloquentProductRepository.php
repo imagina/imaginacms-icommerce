@@ -68,7 +68,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       $query = $this->model->query();
 
       //Include relationships
-      $query = $this->includeToQuery($query, ($params->include ?? []), "show");
+      $query = $this->includeToQuery($query, $params, "show");
 
       //Check field name to criteria
       if (isset($params->filter->field)) $field = $params->filter->field;
