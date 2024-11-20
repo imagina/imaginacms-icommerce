@@ -13,7 +13,7 @@ class ProcessSubscriptionOrder
   
   public function __construct()
   {
-    $this->log = 'Icommerce: Handler|ProcessSubscriptionOrder|';
+    $this->log = 'Icommerce: Handler||ProcessSubscriptionOrder|';
     $this->subscriptionService = app("Modules\Icommerce\Services\SubscriptionService");
     
   }
@@ -27,6 +27,8 @@ class ProcessSubscriptionOrder
 
      //Order is Proccesed
      if ($order->status_id == 13) {
+
+      \Log::info($this->log."Order Processed");
 
       //Items
       foreach ($order->orderItems as $item) 
