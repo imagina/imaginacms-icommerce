@@ -123,7 +123,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     }
 
     //Ya hay productos en el carrito y se quiere agregar otro con opcion de producto
-    if($data['cartProductsCount']>0 && !is_null($data['product_option_values'])){
+    if(isset($data['cartProductsCount']) && $data['cartProductsCount']>0 && !is_null($data['product_option_values'])){
       
       if($product->isPaymentFrequency()){
         $cartWithPaymentFrequency = request()->session()->get('cartWithPaymentFrequency');
@@ -175,15 +175,16 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         //\Log::info($this->log.'Create|Sync Product Options Values');
         $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
 
-        //Se revisa si la opcion es de un producto con recurrencia
-        foreach ($productOptionValues as $key => $pov) {
-          if($pov->option->group=="payment-frequency"){
-            request()->session()->put('cartWithPaymentFrequency', true);
-            break;
+        //Si no se esta llamando desde un job
+        if(!app()->runningInConsole()){
+          //Se revisa si la opcion es de un producto con recurrencia
+          foreach ($productOptionValues as $key => $pov) {
+            if($pov->option->group=="payment-frequency"){
+              request()->session()->put('cartWithPaymentFrequency', true);
+              break;
+            }
           }
         }
-      
-       
         
       }
 
