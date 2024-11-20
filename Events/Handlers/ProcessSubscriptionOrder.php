@@ -21,7 +21,7 @@ class ProcessSubscriptionOrder
   public function handle($event)
   {
 
-    \Log::info($this->log."INIT");
+    \Log::info($this->log."INIT ==============---------- HANDLER");
     
     $order = $event->order;
 
@@ -71,6 +71,12 @@ class ProcessSubscriptionOrder
 
                 $subscription->save();
 
+                //History
+                $subscription->subscriptionStatusHistory()->create([
+                  'status_id' => $subscription->status_id,
+                  'notify' => 0
+                ]);
+
               }
             }
 
@@ -82,7 +88,7 @@ class ProcessSubscriptionOrder
 
     }
 
-    \Log::info($this->log."END");
+    \Log::info($this->log."END ==============---------- HANDLER");
 
   }// If handle
 
