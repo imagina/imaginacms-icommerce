@@ -31,7 +31,7 @@ class CheckSubscriptions implements ShouldQueue
      */
     public function __construct()
     {
-        $this->log = 'Icommerce: Jobs|CheckSubscriptions|';
+        $this->log = 'Icommerce: Jobs||CheckSubscriptions|';
     }
 
     /**
