@@ -79,15 +79,6 @@ class EloquentCategoryRepository extends EloquentCrudRepository implements Categ
       $query->whereNotNull("organization_id");
     }
   
-    //Filter by parent ID
-    if (isset($filter->parentId)) {
-      if ($filter->parentId == 0) {
-        $query->whereNull("parent_id");
-      } else {
-        $query->where("parent_id", $filter->parentId);
-      }
-    }
-  
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
     
     } else {
