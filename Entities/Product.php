@@ -432,8 +432,13 @@ class Product extends CrudModel implements TaggableInterface
         }
 
         $url = Str::replace(["{productSlug}"], [$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
-        $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-
+        
+        /**
+         * Cuando se ejecutaba un JOB, y ejecuta el clearCache, la url no la encontraba
+         * EL \LaravelLocalization::localizeUrl quita los '/'
+         */
+        $url = !app()->runningInConsole() ? \LaravelLocalization::localizeUrl('/' . $url, $currentLocale) : url($url);
+       
       }
     }
 

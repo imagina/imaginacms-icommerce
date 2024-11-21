@@ -160,7 +160,7 @@ class Category extends CrudModel
 
           default:
             $url = Str::replace(["{categorySlug}"],[$this->slug], trans('icommerce::routes.store.index.category', [], $currentLocale));
-            $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
+            $url = !app()->runningInConsole() ? \LaravelLocalization::localizeUrl('/' . $url, $currentLocale) : url($url); // Mismo caso de la URL de productos en JOBS
 
             $tenancyMode = config("tenancy.mode", null);
 
