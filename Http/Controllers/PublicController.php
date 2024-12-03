@@ -110,7 +110,7 @@ class PublicController extends BaseApiController
       if(isset($result["reedirect"]))
         return redirect()->to($result["url"]);
       
-      if (isset($category->id)) {
+      if (isset($category->id) && $category->status == 1) {
         $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
 
         $ptpl = "icommerce.category.{$category->parent_id}%.index";
