@@ -199,17 +199,17 @@ class ProductPresenter extends Presenter
     // Weight Case
     if($product->weight>0){
       $total = $price / $product->weight;
-      $unit = getUnitClass($product);
+      if($product->weightClass) $unit = $product->weightClass->unit; else $unit = getUnitClass($product);
     }else{
       // Length Case
       if($product->length>0){
         $total = $price / $product->length;
-        $unit = getUnitClass($product,"length");
+        if($product->lengthClass) $unit = $product->lengthClass->unit; else $unit = getUnitClass($product,"length");
       }else{
         // Volumen Case
         if($product->volumen>0){
           $total = $price / $product->volumen;
-          $unit = getUnitClass($product,"volume");
+          if($product->volumeClass) $unit = $product->volumeClass->unit; else $unit = getUnitClass($product,"volume");
         }
         // Quantity Case - TODO
       }
