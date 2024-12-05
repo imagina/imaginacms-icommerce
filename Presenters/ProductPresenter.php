@@ -207,8 +207,8 @@ class ProductPresenter extends Presenter
         if($product->lengthClass) $unit = $product->lengthClass->unit; else $unit = getUnitClass($product,"length");
       }else{
         // Volumen Case
-        if($product->volumen>0){
-          $total = $price / $product->volumen;
+        if($product->volume>0){
+          $total = $price / $product->volume;
           if($product->volumeClass) $unit = $product->volumeClass->unit; else $unit = getUnitClass($product,"volume");
         }
         // Quantity Case - TODO
