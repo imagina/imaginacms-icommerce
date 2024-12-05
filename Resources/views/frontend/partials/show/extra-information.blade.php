@@ -15,13 +15,13 @@
 
     @if($product->weight>0)
         <div class="infor-weight">
-            {{trans("icommerce::products.table.weight")}}: {{$product->weight}} {{getUnitClass($product)}}
+            {{trans("icommerce::products.table.weight")}}: {{$product->weight}} {{ isset($product->weightClass) ?  $product->weightClass->unit : getUnitClass($product)}}
         </div>
     @endif
 
     @if($product->volume>0)
         <div class="infor-volume">
-            {{trans("icommerce::products.table.volume")}}: {{$product->volume}} {{ getUnitClass($product,"volume") }}
+            {{trans("icommerce::products.table.volume")}}: {{$product->volume}} {{ isset($product->volumeClass) ?  $product->volumeClass->unit : getUnitClass($product,"volume") }}
         </div>
     @endif
 
