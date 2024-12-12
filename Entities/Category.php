@@ -253,4 +253,23 @@ class Category extends CrudModel
         return json_decode(json_encode($image));
 
     }
+
+  public function getCacheClearableData()
+  {
+    $baseUrls = [config("app.url")];
+  
+    $parentCategories = $this->getAncestors();
+    
+    foreach ($parentCategories as $category){
+      $baseUrls[] = $category->url;
+    }
+    
+    if (!$this->wasRecentlyCreated && $this->status == 1) {
+      $baseUrls[] = $this->url;
+    }
+    $urls = ['urls' => $baseUrls];
+
+    return $urls;
+  }
+
 }
