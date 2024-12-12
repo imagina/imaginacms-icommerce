@@ -8,7 +8,11 @@ class CreateProductDiscountRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'discount' => 'required',
+            'date_start' => 'required|date_format:Y-m-d',
+            'date_end' => 'required|date_format:Y-m-d'
+        ];
     }
 
     public function translationRules()
