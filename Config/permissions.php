@@ -48,6 +48,7 @@ return [
     'edit' => 'icommerce::products.edit resource',
     'destroy' => 'icommerce::products.destroy resource',
     'restore' => 'icommerce::products.restore resource',
+    'bulk' => 'icommerce::products.bulk resource',
   ],
   'icommerce.productcategories' => [
     'manage' => 'icommerce::productcategories.manage resource',
