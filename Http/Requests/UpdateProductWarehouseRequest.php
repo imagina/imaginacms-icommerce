@@ -8,7 +8,9 @@ class UpdateProductWarehouseRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'warehouse_id' => 'required'
+        ];
     }
 
     public function translationRules()

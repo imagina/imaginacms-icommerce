@@ -8,7 +8,10 @@ class CreateProductWarehouseRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'warehouse_id' => 'required',
+            'quantity' => 'required'
+        ];
     }
 
     public function translationRules()

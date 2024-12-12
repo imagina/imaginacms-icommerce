@@ -11,6 +11,7 @@ class CreateProductRequest extends BaseFormRequest
   {
     return [
       'category_id' => 'required',
+      'summary' => 'required',
     ];
   }
 
