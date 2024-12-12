@@ -34,4 +34,7 @@ class VolumeClass extends CrudModel
     "value",
     "default"
   ];
+  protected $with = [
+    "translations"
+  ];
 }

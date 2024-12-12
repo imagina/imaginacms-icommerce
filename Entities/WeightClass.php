@@ -34,4 +34,8 @@ class WeightClass extends CrudModel
     "value",
     "default"
   ];
+  
+  protected $with = [
+    "translations"
+  ];
 }

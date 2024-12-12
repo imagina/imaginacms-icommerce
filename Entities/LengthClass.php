@@ -34,4 +34,7 @@ class LengthClass extends CrudModel
     "value",
     "default"
   ];
+  protected $with = [
+    "translations"
+  ];
 }
