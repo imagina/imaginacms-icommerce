@@ -31,8 +31,9 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
    * @var array
    */
   protected $with = [
-    'index' => ['category', 'translations', 'files', 'discount.product', 'organization'],
-    'show' => ['category', 'categories', 'manufacturer', 'translations', 'files', 'productOptions', 'discount.product', 'organization'],
+    'all' => ['category','translations', 'files', 'discount.product', 'organization','weightClass', 'lengthClass', 'volumeClass'],
+    'index' => [],
+    'show' => [ 'categories', 'manufacturer', 'productOptions'],
   ];
 
 
