@@ -408,7 +408,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
 
       if(isset($data["category_id"])){
         $categories = $model->categories->pluck("id")->toArray();
-        $model->categories()->sync(array_merge($categories ?? [], $data["category_id"]));
+        $model->categories()->sync(array_merge($categories ?? [], [$data["category_id"]]));
       }
       
       // sync tables
