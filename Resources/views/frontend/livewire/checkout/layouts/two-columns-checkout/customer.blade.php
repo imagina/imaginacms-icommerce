@@ -33,7 +33,7 @@
       @guest
         <div class="card mb-0 border-0">
           <div class="col py-2">
-            @php $reedirectUrl = "/ipanel/#/auth/login/?redirectTo=".url(route($locale . '.icommerce.store.checkout')); @endphp
+              @php $reedirectUrl = "/ipanel/#/auth/login/?redirectTo=".tenant_route(request()->getHost(), \LaravelLocalization::getCurrentLocale() . '.icommerce.store.checkout'); @endphp
             <a class="btn btn-sm btn-outline-primary" onclick="location.href='{{$reedirectUrl}}'">
               <i class="fa-solid fa-user"></i>
               {{ trans('icommerce::customer.sub_titles.logging') }}
