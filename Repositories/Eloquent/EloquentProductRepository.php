@@ -413,7 +413,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       
       // sync tables
       if (isset($data['categories']))
-        $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), $data["category_id"] ?? [$model->category_id]));
+        $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$data["category_id"] ?? $model->category_id]));
 
       $priceListEnable = is_module_enabled('Icommercepricelist');
 
