@@ -99,7 +99,7 @@ class Product extends CrudModel implements TaggableInterface
     'quantity_class_id',
   ];
 
-  
+
   public $modelRelations = [
     'productWarehouses' => [
       'relation' => 'belongsToMany',
@@ -112,7 +112,7 @@ class Product extends CrudModel implements TaggableInterface
       'model' => 'Modules\Icommerce\Entities\ProductDiscount'
     ]
   ];
-  
+
   protected $presenter = ProductPresenter::class;
   protected $casts = [
     'options' => 'array'
@@ -612,7 +612,7 @@ class Product extends CrudModel implements TaggableInterface
     $baseUrls = [config("app.url")];
     $categoryUrls = $this->categories->pluck('url')->toArray();
 
-    if (!$this->wasRecentlyCreated) {
+    if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status) {
       $baseUrls[] = $this->url;
     }
     $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];

@@ -30,7 +30,8 @@ class ProductTransformer extends CrudResource
       'subtract' => $this->when($this->subtract, ((int)$this->subtract ? true : false)),
       'featured' => $this->featured ? '1' : '0',
       'isCall' => $this->is_call ? '1' : '0',
-      'showPriceIsCall' => $this->show_price_is_call ? '1' : '0'
+      'showPriceIsCall' => $this->show_price_is_call ? '1' : '0',
+      'formattedPrice' => formatMoney($this->price)
     ];
 
     $discount = $this->discount;
