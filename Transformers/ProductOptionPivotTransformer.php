@@ -21,6 +21,7 @@ class ProductOptionPivotTransformer extends JsonResource
       'value' => $this->when($this->pivot->value, $this->pivot->value),
       'required' => $this->when($this->pivot->required, (int)$this->pivot->required ? true : false),
       'option' => new ProductOptionTransformer($this->whenLoaded('option')),
+      'options' => is_string($this->pivot->options) ? json_decode($this->pivot->options) : $this->pivot->options,
       'productOptionValues' => ProductOptionValueTransformer::collection($this->whenLoaded('productOptionValues')),
     ];
 

@@ -13,6 +13,7 @@ class OptionType
   const TEXTAREA = "textarea";
   const DATE = "date";
   const FILE = "file";
+  const COLOR_IMAGE = "color_image";
 
 
   private $types;
@@ -24,7 +25,8 @@ class OptionType
       self::RADIO => ['title' => trans('icommerce::options.types.radio'), 'dynamic' => 0],
       self::SELECT => ['title' => trans('icommerce::options.types.select'), 'dynamic' => 0],
       self::TEXT => ['title' => trans('icommerce::options.types.text'), 'dynamic' => 1],
-      self::TEXTAREA => ['title' => trans('icommerce::options.types.textarea'), 'dynamic' => 1]
+      self::TEXTAREA => ['title' => trans('icommerce::options.types.textarea'), 'dynamic' => 1],
+      self::COLOR_IMAGE => ['title' => trans('icommerce::options.types.color_image'), 'dynamic' => 1]
       //self::DATE => ['title' => trans('icommerce::options.types.date'), 'dynamic' => 1],
       //self::FILE => ['title' => trans('icommerce::options.types.file'), 'dynamic' => 1]
     ];

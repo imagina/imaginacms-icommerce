@@ -6,11 +6,12 @@ use Astrotomic\Translatable\Translatable;
 use Kalnoy\Nestedset\NodeTrait;
 use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Media\Support\Traits\MediaRelation;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ProductOption extends CrudModel
 {
-  use NodeTrait, BelongsToTenant;
+  use NodeTrait, BelongsToTenant, MediaRelation;
 
   protected $table = 'icommerce__product_option';
   public $transformer = 'Modules\Icommerce\Transformers\ProductOptionTransformer';
@@ -40,7 +41,12 @@ class ProductOption extends CrudModel
     'parent_option_value_id',
     'value',
     'required',
-    'sort_order'
+    'sort_order',
+    'options'
+  ];
+
+  protected $casts = [
+    'options' => 'array'
   ];
 
   public function option()
@@ -100,5 +106,11 @@ class ProductOption extends CrudModel
         $this->product->url
       ]
     ];
-}
+  }
+
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
+
 }

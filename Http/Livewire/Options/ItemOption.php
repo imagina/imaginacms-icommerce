@@ -92,6 +92,13 @@ class ItemOption extends Component
     }
 
     $this->emit('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
+
+    if (!is_null($this->selected)) {
+      $productOptionValueSelected = $this->productOptionValues->where('id', $ProductOptionValueId)->first();
+      $this->emit('updateGallery', $productOptionValueSelected->mediaFiles());
+    } else {
+      $this->emit('updateGallery', $this->product->mediaFiles());
+    }
   }
 
 

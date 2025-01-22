@@ -426,6 +426,14 @@ return [
       'secondaryimage' => 'single',
       'quaternaryimage' => 'single',
       'sizereference' => 'single',
+    ],
+    'productoption' => [
+      'mainimage' => 'single',
+      'gallery' => 'multiple'
+    ],
+    'productoptionvalue' => [
+      'mainimage' => 'single',
+      'gallery' => 'multiple'
     ]
   ],
 

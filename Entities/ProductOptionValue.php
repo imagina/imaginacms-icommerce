@@ -6,11 +6,12 @@ use Astrotomic\Translatable\Translatable;
 use Modules\Core\Icrud\Entities\CrudModel;
 use Kalnoy\Nestedset\NodeTrait;
 use Modules\Core\Support\Traits\AuditTrait;
+use Modules\Media\Support\Traits\MediaRelation;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class ProductOptionValue extends CrudModel
 {
-  use BelongsToTenant, NodeTrait;
+  use BelongsToTenant, NodeTrait, MediaRelation;
 
   protected $table = 'icommerce__product_option_value';
   public $transformer = 'Modules\Icommerce\Transformers\ProductOptionValueTransformer';
@@ -45,7 +46,12 @@ class ProductOptionValue extends CrudModel
     'points_prefix',
     'weight',
     'weight_prefix',
-    'stock_status'
+    'stock_status',
+    'options'
+  ];
+
+  protected $casts = [
+    'options' => 'array'
   ];
 
   public function cartproductoptions()
@@ -167,7 +173,7 @@ class ProductOptionValue extends CrudModel
 
   public function getFullNameAttribute()
   {
-    $ancestorsAndSelf = ProductOptionValue::with(["option","option.translations","optionValue","optionValue.translations","children"])->ancestorsAndSelf($this->id);
+    $ancestorsAndSelf = ProductOptionValue::with(["option", "option.translations", "optionValue", "optionValue.translations", "children"])->ancestorsAndSelf($this->id);
     $fullname = "";
 
     foreach ($ancestorsAndSelf as $productOptionValue)
@@ -185,6 +191,11 @@ class ProductOptionValue extends CrudModel
         $this->product->url
       ]
     ];
-}
+  }
+
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
 
 }

@@ -214,7 +214,7 @@ class Product extends CrudModel implements TaggableInterface
   {
 
     return $this->belongsToMany(Option::class, 'icommerce__product_option')
-      ->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required')
+      ->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required','options')
       ->withTimestamps();
   }
 
