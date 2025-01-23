@@ -93,10 +93,12 @@ class ItemOption extends Component
 
     $this->emit('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
 
-    if (!is_null($this->selected)) {
-      $this->emit('updateGallery', json_decode(json_encode($productOptionValueMediaFiles)));
-    } else {
-      $this->emit('updateGallery', $this->product->mediaFiles());
+    if ($this->type == "color_image") {
+      if (!is_null($this->selected)) {
+        $this->emit('updateGallery', json_decode(json_encode($productOptionValueMediaFiles)));
+      } else {
+        $this->emit('updateGallery', $this->product->mediaFiles());
+      }
     }
   }
 
