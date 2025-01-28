@@ -21,6 +21,7 @@ class ItemOption extends Component
   protected $optionValues;
   protected $productOptions;
   protected $productOptionValues;
+  public $emitComponents;
 
   public $productId;
   public $type;
@@ -34,7 +35,7 @@ class ItemOption extends Component
 
   private $log = "Icommerce: Livewire|Options|ItemOption|";
 
-  public function mount(Request $request, $type, $product, $productOption)
+  public function mount(Request $request, $type, $product, $productOption, $emitComponents = null)
   {
 
     \Log::info($this->log . "Mount");
@@ -44,6 +45,7 @@ class ItemOption extends Component
     $this->productOptionId = $productOption->id;
     $this->dynamic = $productOption->option->dynamic;
     $this->optionId = $productOption->option_id;
+    $this->emitComponents = $emitComponents;
 
     $this->loadProtectedAttributes();
 
@@ -65,7 +67,6 @@ class ItemOption extends Component
    */
   public function setOption($ProductOptionValueId, $productOptionValueMediaFiles)
   {
-
     \Log::info($this->log . "setOption");
 
     $oldValue = $this->selected;
@@ -93,11 +94,23 @@ class ItemOption extends Component
 
     $this->emit('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
 
-    if ($this->type == "color_image") {
-      if (!is_null($this->selected)) {
-        $this->emit('updateGallery', json_decode(json_encode($productOptionValueMediaFiles)));
-      } else {
-        $this->emit('updateGallery', $this->product->mediaFiles());
+    if (!is_null($this->emitComponents)) {
+      if ($this->type == "color_image") {
+        if (!is_null($this->selected)) {
+          if ($this->emitComponents == 'dynamicSingle') {
+            $this->emit('updateSingleImage', json_decode(json_encode($productOptionValueMediaFiles)), $this->product->id);
+          }
+          if ($this->emitComponents == 'dynamicGallery') {
+            $this->emit('updateGallery', json_decode(json_encode($productOptionValueMediaFiles)), $this->product->id);
+          }
+        } else {
+          if ($this->emitComponents == 'dynamicSingle') {
+            $this->emit('updateSingleImage', $this->product->mediaFiles(), $this->product->id);
+          }
+          if ($this->emitComponents == 'dynamicGallery') {
+            $this->emit('updateGallery', $this->product->mediaFiles(), $this->product->id);
+          }
+        }
       }
     }
   }
@@ -190,7 +203,8 @@ class ItemOption extends Component
         "productOptions" => $this->productOptions,
         "product" => $this->product,
         "optionValues" => $this->optionValues,
-        "productOptionValues" => $this->productOptionValues
+        "productOptionValues" => $this->productOptionValues,
+        "emitComponents" => $this->emitComponents
       ]);
   }
 

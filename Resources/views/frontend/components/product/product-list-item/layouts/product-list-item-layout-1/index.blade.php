@@ -7,51 +7,54 @@
             link="{{$editLink}}{{$product->id}}"
             tooltip="{{$tooltipEditLink}}"
     />
-  @include('icommerce::frontend.components.product.meta')
+    @include('icommerce::frontend.components.product.meta')
 
-  @if(isset($itemListLayout) && $itemListLayout=='one')
-    <div class="row product-list-layout-one">
+    @if(isset($itemListLayout) && $itemListLayout=='one')
+        <div class="row product-list-layout-one">
 
-      <div class="col-6">
-        <div class="row justify-content-center position-relative m-0">
-          @include('icommerce::frontend.components.product.ribbon')
-          <div
-            class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
-            <x-media::single-image
-              :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-              :mediaFiles="$product->mediaFiles()"
-              imgClasses="product-img"/>
-          </div>
+            <div class="col-6">
+                <div class="row justify-content-center position-relative m-0">
+                    @include('icommerce::frontend.components.product.ribbon')
+                    <div
+                            class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
+                        <x-media::single-image
+                                :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                                :mediaFiles="$product->mediaFiles()"
+                                imgClasses="product-img"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
+            </div>
         </div>
-      </div>
-      <div class="col-6">
+    @else
+
+        <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden position-relative">
+            @include('icommerce::frontend.components.product.ribbon')
+            <livewire:media::dynamic-image
+                    :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                    :mediaFiles="$product->mediaFiles()"
+                    imgClasses="product-img" productId="{{$product->id}}"/>
+
+            @if(Str::contains($buttonsPosition, 'in-photo'))
+                @include("icommerce::frontend.components.product.buttons")
+            @endif
+        </div>
+        <div class="options-section">
+            <livewire:icommerce::options :product="$product" emitComponents="dynamicSingle"/>
+        </div>
         @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
-      </div>
-    </div>
-  @else
+    @endif
 
-    <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden position-relative">
-      @include('icommerce::frontend.components.product.ribbon')
-      <x-media::single-image
-        :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-        :mediaFiles="$product->mediaFiles()"
-        imgClasses="product-img" />
+    @include('icommerce::frontend.components.product.global-inline-css')
 
-      @if(Str::contains($buttonsPosition, 'in-photo'))
-        @include("icommerce::frontend.components.product.buttons")
-      @endif
-    </div>
-    @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
-  @endif
 
-  @include('icommerce::frontend.components.product.global-inline-css')
+    <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes -->
+    @if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
+        <!-- Wishlist Modal List | BTN -->
+        @include('wishlistable::frontend.partials.buttons',["type"=>"btn","entityName" => "Modules\\Icommerce\\Entities\\Product","entityId" => $product->id])
+    @endif
 
-  
- <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes -->
-@if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
-  <!-- Wishlist Modal List | BTN -->
-  @include('wishlistable::frontend.partials.buttons',["type"=>"btn","entityName" => "Modules\\Icommerce\\Entities\\Product","entityId" => $product->id])
-@endif
 
- 
 </div>
