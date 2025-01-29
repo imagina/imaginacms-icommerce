@@ -126,6 +126,17 @@ return [
       'label' => 'Mostrar Categorías Hijas en el header del Index'
     ]
   ],
+  'showTitleInCarouselCategory' => [
+    'value' => false,
+    'name' => 'icommerce::showTitleInCarouselCategory',
+    "onlySuperAdmin" => true,
+    'type' => 'checkbox',
+    'groupName' => 'indexPage',
+    'groupTitle' => 'icommerce::common.pages.index',
+    'props' => [
+      'label' => 'Mostrar título de las categoria en el carousel'
+    ]
+  ],
   'categoryChildrenIndexHeader' => [
     'value' => 'basic',
     'name' => 'icommerce::filterCategoriesTitle',
