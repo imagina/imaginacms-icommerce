@@ -15,7 +15,7 @@
 	  	@foreach($gallery as $index => $img)
 		    <div class="carousel-item @if($loop->first) active @endif">
 					<div class="content-item position-relative d-flex justify-content-center align-items-center">
-						@if(setting('icommerce::showTitleInCarouselCategory'))
+						@if(!is_null(setting('icommerce::showTitleInCarouselCategory')))
 							<p class="title-category position-absolute text-white">{{$title}}</p>
 						@endif
 						<img class="d-block w-100" src="{{$img->path}}" alt="slide-{{$index}}">
