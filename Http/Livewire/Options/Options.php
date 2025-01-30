@@ -25,8 +25,9 @@ class Options extends Component
   protected $listeners = ['updateOption', 'addToCartOptions'];
 
   private $log = "Icommerce: Livewire|Options|Options|";
+  public $onlyType;
 
-  public function mount(Request $request, $product, $emitComponents = null)
+  public function mount(Request $request, $product, $emitComponents = null, $onlyType = null)
   {
 
     $this->options = $product->optionsPivot->sortByDesc("sort_order");
@@ -38,6 +39,7 @@ class Options extends Component
     $this->view = "icommerce::frontend.livewire.options.index";
     $this->optionsPrice = 0;
     $this->emitComponents = $emitComponents;
+    $this->onlyType = $onlyType;
   }
 
   //|--------------------------------------------------------------------------

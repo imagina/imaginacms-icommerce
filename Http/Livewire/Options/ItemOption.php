@@ -32,20 +32,18 @@ class ItemOption extends Component
   //No dynamic - The data comes via DB (Example: colors)
   public $dynamic;
   public $optionId;
+  public $onlyType;
 
   private $log = "Icommerce: Livewire|Options|ItemOption|";
 
-  public function mount(Request $request, $type, $product, $productOption, $emitComponents = null)
+  public function mount(Request $request, $type, $product, $productOption, $onlyType = null)
   {
-
-    \Log::info($this->log . "Mount");
-
     $this->type = $type;
     $this->productId = $product->id;
     $this->productOptionId = $productOption->id;
     $this->dynamic = $productOption->option->dynamic;
     $this->optionId = $productOption->option_id;
-    $this->emitComponents = $emitComponents;
+    $this->onlyType = $onlyType;
 
     $this->loadProtectedAttributes();
 
@@ -67,8 +65,6 @@ class ItemOption extends Component
    */
   public function setOption($ProductOptionValueId, $productOptionValueMediaFiles)
   {
-    \Log::info($this->log . "setOption");
-
     $oldValue = $this->selected;
 
     //si el tipo es checkbox hay que tratar el $selected como un array
@@ -94,23 +90,11 @@ class ItemOption extends Component
 
     $this->emit('updateOption', $oldValue, $this->selected, $this->dynamic, $this->optionId);
 
-    if (!is_null($this->emitComponents)) {
-      if ($this->type == "color_image") {
-        if (!is_null($this->selected)) {
-          if ($this->emitComponents == 'dynamicSingle') {
-            $this->emit('updateSingleImage', json_decode(json_encode($productOptionValueMediaFiles)), $this->product->id);
-          }
-          if ($this->emitComponents == 'dynamicGallery') {
-            $this->emit('updateGallery', json_decode(json_encode($productOptionValueMediaFiles)), $this->product->id);
-          }
-        } else {
-          if ($this->emitComponents == 'dynamicSingle') {
-            $this->emit('updateSingleImage', $this->product->mediaFiles(), $this->product->id);
-          }
-          if ($this->emitComponents == 'dynamicGallery') {
-            $this->emit('updateGallery', $this->product->mediaFiles(), $this->product->id);
-          }
-        }
+    if ($this->type == "color_image") {
+      if (!is_null($this->selected)) {
+        $this->emit("updateMediaFilesItem-$this->productId", json_decode(json_encode($productOptionValueMediaFiles)));
+      } else {
+        $this->emit("updateMediaFilesItem-$this->productId");
       }
     }
   }

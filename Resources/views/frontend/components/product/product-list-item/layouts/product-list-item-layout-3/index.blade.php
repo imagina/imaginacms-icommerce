@@ -14,10 +14,12 @@
           @include('icommerce::frontend.components.product.ribbon')
           <div
             class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
-            <x-media::single-image
+            <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+              productId="{{$product->id}}"
+            />
           </div>
         </div>
       </div>
@@ -28,10 +30,12 @@
   @else
     @include('icommerce::frontend.components.product.ribbon')
     <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
-      <x-media::single-image
+      <livewire:media::dynamic-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
-        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+        productId="{{$product->id}}"
+      />
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif

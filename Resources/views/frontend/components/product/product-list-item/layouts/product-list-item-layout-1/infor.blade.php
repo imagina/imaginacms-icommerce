@@ -1,3 +1,6 @@
+<div class="options-section">
+  <livewire:icommerce::options :product="$product" onlyType="color_image"/>
+</div>
 <div class="infor text-{{$contentAlign}}">
   <a class="title" href="{{$product->url}}">
     {!! Str::limit( $product->name, $contentTitleNumberOfCharacters) !!}
@@ -13,7 +16,7 @@
       {{$product->summary}}
     </div>
   @endif
-  
+
   <div class="row align-items-center">
     @if((!$product->is_call || $product->show_price_is_call) && $withPrice)
       <div class="col col-price @if(!$withTextInAddToCart || $buttonsPosition!="in-content") w-100 @endif">
@@ -38,7 +41,7 @@
       </div>
     @endif
   </div>
-  
+
   @if((!$addToCartWithQuantity || $withTextInAddToCart) && Str::contains($buttonsPosition, 'after-content'))
     <div class="row buttons-after-content">
       <div class="col col-buttons {{$buttonsPosition}}">

@@ -4,10 +4,10 @@
 @if($product->is_new) is-new @endif"
      style="padding: {{$externalPadding}}px;
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
-    <x-isite::edit-link
-            link="{{$editLink}}{{$product->id}}"
-            :tooltip="$tooltipEditLink"
-    />
+  <x-isite::edit-link
+    link="{{$editLink}}{{$product->id}}"
+    :tooltip="$tooltipEditLink"
+  />
   @include('icommerce::frontend.components.product.meta')
 
 
@@ -21,18 +21,17 @@
           <div
             class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden"
             style="padding: {{$imageSpacing}}px;">
-            <x-media::single-image
+            <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+              productId="{{$product->id}}"
+            />
           </div>
         </div>
-
       </div>
       <div class="col-6">
         @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.infor')
-
-
       </div>
     </div>
   @else
@@ -41,5 +40,5 @@
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.infor')
   @endif
 
-    @include('icommerce::frontend.components.product.global-inline-css')
+  @include('icommerce::frontend.components.product.global-inline-css')
 </div>
