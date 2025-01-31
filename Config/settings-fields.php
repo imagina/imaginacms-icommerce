@@ -231,6 +231,7 @@ return [
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
+    'value'=> '1-1',
     'props' => [
       'label' => 'Relación de Aspecto'
     ]
