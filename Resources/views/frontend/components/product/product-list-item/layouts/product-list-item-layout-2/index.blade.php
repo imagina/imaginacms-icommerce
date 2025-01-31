@@ -19,12 +19,21 @@
         <div class="row justify-content-center position-relative m-0">
           @include('icommerce::frontend.components.product.ribbon')
           <div
-            class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden"
+            class="bg-img d-inline-block position-relative overflow-hidden"
             style="padding: {{$imageSpacing}}px;">
             <x-media::single-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+
+            @if($secondaryImageHover && $issetSecondaryImage)
+              <x-media::single-image
+                :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                zone="secondaryimage"
+                :mediaFiles="$product->mediaFiles()"
+                imgClasses="product-img image-transition"
+                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+            @endif
           </div>
         </div>
 
@@ -42,4 +51,5 @@
   @endif
 
     @include('icommerce::frontend.components.product.global-inline-css')
+
 </div>

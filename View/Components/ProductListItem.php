@@ -60,6 +60,9 @@ class ProductListItem extends Component
   public $contentTitleFontWeight;
   public $contentCategoryFontWeight;
   public $itemComponentView;
+  public $secondaryImageHover;
+  public  $issetSecondaryImage;
+  public $transitionImage;
   public $imageObjectFit;
   public $withDescription;
   public $withPrice;
@@ -127,6 +130,9 @@ class ProductListItem extends Component
                               $contentTitleFontWeight = null,
                               $contentCategoryFontWeight = null,
                               $itemComponentView = null,
+                              $secondaryImageHover= null,
+                              $issetSecondaryImage= null,
+                              $transitionImage= null,
                               $imageObjectFit = null,
                               $withDescription = null,
                               $withPrice = true,
@@ -149,7 +155,7 @@ class ProductListItem extends Component
     $this->imageBorder = $imageBorder ?? setting('icommerce::productImageBorder', null, false);
     $this->imageBorderColor = $imageBorderColor ?? setting('icommerce::productImageBorderColor', null, "#dddddd");
     $this->imageBorderRadius = $imageBorderRadius ?? setting('icommerce::productImageBorderRadius', null, 0);
-    $this->imageAspect = $imageAspect ?? setting('icommerce::productAspect', null, '1-1');
+    $this->imageAspect = str_replace('-', '/', $imageAspect ?? setting('icommerce::productAspect', null, '1-1')) ;
     $this->externalPadding = $externalPadding ?? setting('icommerce::productExternalPadding', null, 0);
     $this->externalBorder = $externalBorder ?? setting('icommerce::productExternalBorder', null, false);
     $this->externalBorderRadius = $externalBorderRadius ?? setting('icommerce::productExternalBorderRadius', null, 0);
@@ -192,6 +198,13 @@ class ProductListItem extends Component
     $this->ribbonTextColor = $ribbonTextColor ?? setting('icommerce::productRibbonTextColor', null, "#333333");
     $this->contentTitleFontWeight = $contentTitleFontWeight ?? setting('icommerce::productContentTitleFontWeight', null, "normal");
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
+    $this->secondaryImageHover =  setting('icommerce::productSecondaryImageHover') !== null && setting('icommerce::productSecondaryImageHover') === '1';
+    if ($this->secondaryImageHover){
+      $this->issetSecondaryImage = isset($this->product->mediaFiles()->secondaryimage) && $this->product->mediaFiles()->secondaryimage->id !== null;
+      $this->transitionImage = setting('icommerce::transitionImage') !== null && !empty(setting('icommerce::transitionImage'))
+                              ? setting('icommerce::transitionImage')
+                              : 'opacity 0.5s ease-in-out';
+    }
     $this->imageObjectFit = $imageObjectFit ?? setting('icommerce::productImageObjectFit', null, "contain");
     $this->withDescription = $withDescription ?? setting('icommerce::productWithDescription', null, '0');
     $this->withPrice = $withPrice;

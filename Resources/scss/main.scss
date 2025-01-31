@@ -2,7 +2,6 @@
 @import "modules/icommerce/filters/categories";
 @import "modules/icommerce/filters/range-prices";
 @import "modules/icommerce/filters/manufacturers";
-@import "modules/icommerce/product/product-aspect";
 @import "modules/icommerce/product/product-layout";
 @import "modules/icommerce/product/product-ribbon";
 @import "modules/icommerce/product/product-options";
@@ -64,18 +63,18 @@
 	animation-duration: 0.80s;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
-	
+
 	position: absolute;
 	left:50%;
 	margin-left: -42.5px;  /* 50% del ancho de la div en px */
-	
+
 	top: 30%;
 }
 
 #content_index_commerce {
-	
+
 	.store-header {
-		
+
 		.store-card {
 			background-color: var(--primary);
 			color: #fff;
@@ -84,9 +83,9 @@
 				text-align: center;
 				border-radius: 15px 15px 0 0;
 			}
-			
+
 			.card-body { padding: 2rem; }
-			
+
 			.store-logo img {
 				height: 130px;
 				width: 130px;
@@ -96,7 +95,7 @@
 			.store-raiting {
 				font-size: 15px;
 			}
-			
+
 			.store-name {
 				font-size: 20px;
 				line-height: 20px;
@@ -112,13 +111,13 @@
 					position: absolute;
 				}
 			}
-			
+
 			.store-followers {
 				color: #B3D3E9;
 				font-size: 16px;
 				margin-bottom: 15px;
 			}
-			
+
 			.btn-store {
 				font-size: 15px;
 				border: 2px solid #fff;
@@ -126,7 +125,7 @@
 				color: #fff;
 				padding: 5px 20px;
 			}
-			
+
 			.store-social {
 				font-size: 16px;
 				a {
@@ -136,7 +135,7 @@
 					i {
 						font-size: 15px;
 					}
-					
+
 					&:hover {
 						color: #B3D3E9;
 					}
@@ -231,6 +230,6 @@
 			padding: 25px 0;
 		}
 	}
-	
-	
+
+
 }
