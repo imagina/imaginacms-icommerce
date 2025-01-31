@@ -25,7 +25,7 @@
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-              productId="{{$product->id}}"
+              itemId="{{$product->id}}"
             />
           </div>
         </div>

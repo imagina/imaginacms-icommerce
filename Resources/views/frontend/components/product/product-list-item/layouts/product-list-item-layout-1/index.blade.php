@@ -18,7 +18,7 @@
             <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              imgClasses="product-img" productId="{{$product->id}}"/>
+              imgClasses="product-img" itemId="{{$product->id}}"/>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
       <livewire:media::dynamic-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
-        imgClasses="product-img" productId="{{$product->id}}"/>
+        imgClasses="product-img" itemId="{{$product->id}}"/>
 
       @if(Str::contains($buttonsPosition, 'in-photo'))
         @include("icommerce::frontend.components.product.buttons")

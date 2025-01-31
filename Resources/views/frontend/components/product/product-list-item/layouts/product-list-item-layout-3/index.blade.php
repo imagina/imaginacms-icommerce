@@ -18,7 +18,7 @@
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-              productId="{{$product->id}}"
+              itemId="{{$product->id}}"
             />
           </div>
         </div>
@@ -34,7 +34,7 @@
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-        productId="{{$product->id}}"
+        itemId="{{$product->id}}"
       />
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
