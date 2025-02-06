@@ -84,7 +84,6 @@
   aspect-ratio: {{ $imageAspect }};
   position: relative;
 }
-
   @if($secondaryImageHover && $issetSecondaryImage)
     .product-layout .bg-img img {
       transition: {{ $transitionImage }};

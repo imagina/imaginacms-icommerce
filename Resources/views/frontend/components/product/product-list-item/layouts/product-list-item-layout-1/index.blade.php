@@ -18,52 +18,70 @@
           <div
             class="bg-img d-inline-block position-relative overflow-hidden">
             <livewire:media::dynamic-image
-              :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+              :alt="$product->name"
+              :title="$product->name"
+              :url="$product->url"
+              :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              imgClasses="product-img image-static"  itemId="{{$product->id}}"/>
+              imgClasses="product-img image-static"
+              itemId="{{$product->id}}"/>
 
             @if($secondaryImageHover && $issetSecondaryImage)
 
-              <x-media::single-image
-                :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true" zone="gallery"
+              <livewire:media::dynamic-image
+                :alt="$product->name"
+                :title="$product->name"
+                :url="$product->url"
+                :isMedia="true"
+                zone="gallery"
                 :mediaFiles="$product->mediaFiles()"
-                imgClasses="product-img image-transition"/>
+                imgClasses="product-img image-transition"
+                itemId="{{$product->id}}/>
             @endif
           </div>
         </div>
       </div>
-      <div class="col-6">
-        @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
+      <div class=" col-6">
+              @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
+          </div>
+        </div>
+        @else
+          <div
+            class="bg-img d-inline-block position-relative overflow-hidden">
+            @include('icommerce::frontend.components.product.ribbon')
+            <livewire:media::dynamic-image
+              :alt="$product->name"
+              :title="$product->name"
+              :url="$product->url"
+              :isMedia="true"
+              :mediaFiles="$product->mediaFiles()"
+              imgClasses="product-img image-static"
+              itemId="{{$product->id}}"
+            />
+
+            @if($secondaryImageHover && $issetSecondaryImage)
+              <livewire:media::dynamic-image
+                :alt="$product->name"
+                :title="$product->name"
+                :url="$product->url"
+                :isMedia="true"
+                zone="secondaryimage"
+                :mediaFiles="$product->mediaFiles()"
+                imgClasses="product-img image-transition"
+                itemId="{{$product->id}}"
+              />
+            @endif
+            @if(Str::contains($buttonsPosition, 'in-photo'))
+              @include("icommerce::frontend.components.product.buttons")
+            @endif
+          </div>
+          @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
+        @endif
+
+        @include('icommerce::frontend.components.product.global-inline-css')
+        <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes -->
+        @if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
+          <!-- Wishlist Modal List | BTN -->
+          @include('wishlistable::frontend.partials.buttons',["type"=>"btn","entityName" => "Modules\\Icommerce\\Entities\\Product","entityId" => $product->id])
+        @endif
       </div>
-    </div>
-  @else
-    <div
-      class="bg-img d-inline-block position-relative overflow-hidden">
-      @include('icommerce::frontend.components.product.ribbon')
-      <livewire:media::dynamic-image
-        :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-        :mediaFiles="$product->mediaFiles()"
-        imgClasses="product-img image-static"/>
-        itemId="{{$product->id}}"/>
-
-      @if($secondaryImageHover && $issetSecondaryImage)
-        <x-media::single-image
-          :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-          zone="secondaryimage"
-          :mediaFiles="$product->mediaFiles()"
-          imgClasses="product-img image-transition"/>
-      @endif
-      @if(Str::contains($buttonsPosition, 'in-photo'))
-        @include("icommerce::frontend.components.product.buttons")
-      @endif
-    </div>
-    @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-1.infor')
-  @endif
-
-  @include('icommerce::frontend.components.product.global-inline-css')
-  <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes -->
-  @if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
-    <!-- Wishlist Modal List | BTN -->
-    @include('wishlistable::frontend.partials.buttons',["type"=>"btn","entityName" => "Modules\\Icommerce\\Entities\\Product","entityId" => $product->id])
-  @endif
-</div>

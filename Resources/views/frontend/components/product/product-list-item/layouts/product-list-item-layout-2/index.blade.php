@@ -22,19 +22,28 @@
             class="bg-img d-inline-block position-relative overflow-hidden"
             style="padding: {{$imageSpacing}}px;">
             <livewire:media::dynamic-image
-              :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+              :alt="$product->name"
+              :title="$product->name"
+              :url="$product->url"
+              :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
+              imgClasses="product-img image-static"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
               itemId="{{$product->id}}"
             />
 
             @if($secondaryImageHover && $issetSecondaryImage)
-              <x-media::single-image
-                :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+              <livewire:media::dynamic-image
+                :alt="$product->name"
+                :title="$product->name"
+                :url="$product->url"
+                :isMedia="true"
                 zone="secondaryimage"
                 :mediaFiles="$product->mediaFiles()"
                 imgClasses="product-img image-transition"
-                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+                itemId="{{$product->id}}"
+              />
             @endif
           </div>
         </div>
@@ -52,5 +61,5 @@
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-2.infor')
   @endif
 
-    @include('icommerce::frontend.components.product.global-inline-css')
+  @include('icommerce::frontend.components.product.global-inline-css')
 </div>

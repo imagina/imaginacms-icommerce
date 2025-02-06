@@ -17,16 +17,18 @@
             <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
+              imgClasses="product-img image-static"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
               itemId="{{$product->id}}"
             />
 
             @if($secondaryImageHover && $issetSecondaryImage)
 
-              <x-media::single-image
+              <livewire:media::dynamic-image
                 :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                 zone="secondaryimage"
                 :mediaFiles="$product->mediaFiles()"
+                imgClasses="product-img image-transition"
                 :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
             @endif
           </div>
@@ -40,7 +42,10 @@
     @include('icommerce::frontend.components.product.ribbon')
     <div class="bg-img d-inline-block overflow-hidden">
       <livewire:media::dynamic-image
-        :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+        :alt="$product->name"
+        :title="$product->name"
+        :url="$product->url"
+        :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
         imgClasses="product-img image-static"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
@@ -48,8 +53,11 @@
       />
       @if($secondaryImageHover && $issetSecondaryImage)
 
-        <x-media::single-image
-          :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+        <livewire:media::dynamic-image
+          :alt="$product->name"
+          :title="$product->name"
+          :url="$product->url"
+          :isMedia="true"
           zone="secondaryimage"
           :mediaFiles="$product->mediaFiles()"
           imgClasses="product-img image-transition"
