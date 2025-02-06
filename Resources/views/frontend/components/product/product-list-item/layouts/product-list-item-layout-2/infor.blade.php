@@ -4,20 +4,22 @@
       @if(!isset($itemListLayout) || $itemListLayout!='one')
 
         <div class="bg-img d-inline-block position-relative overflow-hidden">
-          <x-media::single-image :alt="$product->name" :title="$product->name" :url="$product->url"
-                                 :isMedia="true"
-                                 :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-                                 :mediaFiles="$product->mediaFiles()"/>
-
-          @if($secondaryImageHover && $issetSecondaryImage)
-            <x-media::single-image
-              :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-              zone="secondaryimage"
-              :mediaFiles="$product->mediaFiles()"
-              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-              imgClasses="product-img image-transition"/>
-          @endif
+          <livewire:media::dynamic-image
+            :alt="$product->name" :title="$product->name" :url="$product->url"
+            :isMedia="true"
+            :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+            :mediaFiles="$product->mediaFiles()"
+            itemId="{{$product->id}}"/>
         </div>
+
+        @if($secondaryImageHover && $issetSecondaryImage)
+          <x-media::single-image
+            :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+            zone="secondaryimage"
+            :mediaFiles="$product->mediaFiles()"
+            :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+            imgClasses="product-img image-transition"/>
+        @endif
 
       @endif
       <div class="card-overlay text-center">
@@ -35,6 +37,9 @@
 
         </div>
         @endif
+          <div class="options-section">
+            <livewire:icommerce::options :product="$product" onlyType="color_image"/>
+          </div>
         <div class="bottom buttons {{$buttonsLayout}}">
 
           @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status && $product->quantity)
@@ -52,7 +57,7 @@
                 </a>
               @endif
               @break
-              @case("go-to-show-view")
+            @case("go-to-show-view")
               <a href="{{$product->url}}"
                  class="btn btn-primary btn-sm">
                 <i class="fa fa-shopping-basket"></i>
@@ -61,9 +66,9 @@
                 @endif
               </a>
               @break
-            @endswitch
-            @switch(setting("icommerce::addToCartQuoteButtonAction"))
-              @case("add-to-cart-quote")
+          @endswitch
+          @switch(setting("icommerce::addToCartQuoteButtonAction"))
+            @case("add-to-cart-quote")
               @if(setting("icommerce::showButtonToQuoteInStore"))
                 <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},true )"
                    class="btn btn-primary btn-sm">

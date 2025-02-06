@@ -17,10 +17,11 @@
           @include('icommerce::frontend.components.product.ribbon')
           <div
             class="bg-img d-inline-block position-relative overflow-hidden">
-            <x-media::single-image
+            <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              imgClasses="product-img image-static"/>
+              imgClasses="product-img image-static"  itemId="{{$product->id}}"/>
+
             @if($secondaryImageHover && $issetSecondaryImage)
 
               <x-media::single-image
@@ -39,10 +40,11 @@
     <div
       class="bg-img d-inline-block position-relative overflow-hidden">
       @include('icommerce::frontend.components.product.ribbon')
-      <x-media::single-image
+      <livewire:media::dynamic-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
         imgClasses="product-img image-static"/>
+        itemId="{{$product->id}}"/>
 
       @if($secondaryImageHover && $issetSecondaryImage)
         <x-media::single-image
@@ -59,14 +61,9 @@
   @endif
 
   @include('icommerce::frontend.components.product.global-inline-css')
-
-
   <!-- Validacion aca porque se reutiliza el mismo componente, con diferentes layouts en varias partes -->
   @if(setting('wishlistable::wishlistActive',null,false) && wishlistableShowBtn($currentRoute))
     <!-- Wishlist Modal List | BTN -->
     @include('wishlistable::frontend.partials.buttons',["type"=>"btn","entityName" => "Modules\\Icommerce\\Entities\\Product","entityId" => $product->id])
   @endif
 </div>
-
-
-

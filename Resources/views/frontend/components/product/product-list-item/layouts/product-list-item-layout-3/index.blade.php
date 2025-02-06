@@ -14,11 +14,13 @@
           @include('icommerce::frontend.components.product.ribbon')
           <div
             class="bg-img d-inline-block overflow-hidden">
-            <x-media::single-image
+            <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              imgClasses="product-img image-static"
-              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+              itemId="{{$product->id}}"
+            />
+
             @if($secondaryImageHover && $issetSecondaryImage)
 
               <x-media::single-image
@@ -28,7 +30,6 @@
                 :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
             @endif
           </div>
-
         </div>
       </div>
       <div class="col-6">
@@ -38,12 +39,13 @@
   @else
     @include('icommerce::frontend.components.product.ribbon')
     <div class="bg-img d-inline-block overflow-hidden">
-      <x-media::single-image
+      <livewire:media::dynamic-image
         :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
         imgClasses="product-img image-static"
-        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
-
+        :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+        itemId="{{$product->id}}"
+      />
       @if($secondaryImageHover && $issetSecondaryImage)
 
         <x-media::single-image
@@ -51,10 +53,11 @@
           zone="secondaryimage"
           :mediaFiles="$product->mediaFiles()"
           imgClasses="product-img image-transition"
-          :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+          :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+          itemId="{{$product->id}}"
+        />
       @endif
     </div>
-
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif
 

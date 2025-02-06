@@ -3,4 +3,5 @@
                                  :dots="false" :aspectRatio="setting('icommerce::productAspect')"
                                  :loopGallery="false"
                                  :responsive="setting('icommerce::productResponsive')"
+                                 :itemId="$product->id"
 />

@@ -4,10 +4,10 @@
 @if($product->is_new) is-new @endif"
      style="padding: {{$externalPadding}}px;
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
-    <x-isite::edit-link
-            link="{{$editLink}}{{$product->id}}"
-            :tooltip="$tooltipEditLink"
-    />
+  <x-isite::edit-link
+    link="{{$editLink}}{{$product->id}}"
+    :tooltip="$tooltipEditLink"
+  />
   @include('icommerce::frontend.components.product.meta')
 
 
@@ -21,10 +21,12 @@
           <div
             class="bg-img d-inline-block position-relative overflow-hidden"
             style="padding: {{$imageSpacing}}px;">
-            <x-media::single-image
+            <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
-              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+              :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+              itemId="{{$product->id}}"
+            />
 
             @if($secondaryImageHover && $issetSecondaryImage)
               <x-media::single-image
@@ -51,5 +53,4 @@
   @endif
 
     @include('icommerce::frontend.components.product.global-inline-css')
-
 </div>

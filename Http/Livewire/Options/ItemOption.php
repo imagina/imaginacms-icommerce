@@ -21,6 +21,7 @@ class ItemOption extends Component
   protected $optionValues;
   protected $productOptions;
   protected $productOptionValues;
+  public $emitComponents;
 
   public $productId;
   public $type;
@@ -31,19 +32,18 @@ class ItemOption extends Component
   //No dynamic - The data comes via DB (Example: colors)
   public $dynamic;
   public $optionId;
+  public $onlyType;
 
   private $log = "Icommerce: Livewire|Options|ItemOption|";
 
-  public function mount(Request $request, $type, $product, $productOption)
+  public function mount(Request $request, $type, $product, $productOption, $onlyType = null)
   {
-
-    \Log::info($this->log . "Mount");
-
     $this->type = $type;
     $this->productId = $product->id;
     $this->productOptionId = $productOption->id;
     $this->dynamic = $productOption->option->dynamic;
     $this->optionId = $productOption->option_id;
+    $this->onlyType = $onlyType;
 
     $this->loadProtectedAttributes();
 
@@ -65,9 +65,6 @@ class ItemOption extends Component
    */
   public function setOption($ProductOptionValueId, $productOptionValueMediaFiles)
   {
-
-    \Log::info($this->log . "setOption");
-
     $oldValue = $this->selected;
 
     //si el tipo es checkbox hay que tratar el $selected como un array
@@ -95,9 +92,9 @@ class ItemOption extends Component
 
     if ($this->type == "color_image") {
       if (!is_null($this->selected)) {
-        $this->emit('updateGallery', json_decode(json_encode($productOptionValueMediaFiles)));
+        $this->emit("updateMediaFilesItem-$this->productId", json_decode(json_encode($productOptionValueMediaFiles)));
       } else {
-        $this->emit('updateGallery', $this->product->mediaFiles());
+        $this->emit("updateMediaFilesItem-$this->productId");
       }
     }
   }
@@ -190,7 +187,8 @@ class ItemOption extends Component
         "productOptions" => $this->productOptions,
         "product" => $this->product,
         "optionValues" => $this->optionValues,
-        "productOptionValues" => $this->productOptionValues
+        "productOptionValues" => $this->productOptionValues,
+        "emitComponents" => $this->emitComponents
       ]);
   }
 
