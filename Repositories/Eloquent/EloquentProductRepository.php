@@ -455,7 +455,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     //pre-filter if the organization is enabled (organization status = 1)
     $query->where(function ($query) {
       $query->whereNull("organization_id")
-        ->orWhereRaw("icommerce__products.organization_id IN (SELECT id from isite__organizations where status = 1)");
+        ->orWhereRaw("icommerce__products.organization_id IN (SELECT id from itenant__organizations where status = 1)");
 
     });
 

@@ -9,7 +9,7 @@ use Laracasts\Presenter\PresentableTrait;
 use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Ihelpers\Traits\Relationable;
-use Modules\Isite\Entities\Organization;
+use Modules\Itenant\Entities\Organization;
 use Modules\Isite\Traits\Rateable;
 use Modules\Isite\Traits\Typeable;
 use Modules\Media\Support\Traits\MediaRelation;

@@ -7,7 +7,7 @@ use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Ilocations\Entities\Country;
 use Modules\Ilocations\Entities\Province;
-use Modules\Isite\Entities\Organization;
+use Modules\Itenant\Entities\Organization;
 use Modules\Isite\Traits\RevisionableTrait;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 

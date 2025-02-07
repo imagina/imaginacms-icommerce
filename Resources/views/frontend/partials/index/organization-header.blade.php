@@ -1,5 +1,5 @@
 <div id="content_index_commerce">
-  
+
       <!-- store-header -->
       <div class="row pb-4 no-gutters store-header">
         <div class="col-lg-5">
@@ -7,7 +7,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6 pb-3 text-center">
-                  
+
                   <div class="store-logo mb-3">
                     <x-media::single-image :mediaFiles="$organization->mediaFiles()" :isMedia="true" />
                   </div>
@@ -18,7 +18,7 @@
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star-half-o"></i>
                   </div>
-                  
+
                 </div>
                 <div class="col-md-6 pl-2 pb-3">
                   <div class="store-name">
@@ -26,11 +26,11 @@
                   </div>
                   <div class="store-followers">
                     <livewire:ifollow::followers :followableId="$organization->id"
-                                                 followableType="Modules\Isite\Entities\Organization" />
-                    
+                                                 followableType="Modules\Itenant\Entities\Organization" />
+
                   </div>
-  
-                  <livewire:ifollow::follow :followableId="$organization->id" followableType="Modules\Isite\Entities\Organization" />
+
+                  <livewire:ifollow::follow :followableId="$organization->id" followableType="Modules\Itenant\Entities\Organization" />
 
                 </div>
 {{--                <div class="col-12">--}}
@@ -57,5 +57,5 @@
           </div>
         </div>
       </div>
-  
+
   </div>

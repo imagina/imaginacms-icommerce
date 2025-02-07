@@ -9,7 +9,7 @@ use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Core\Icrud\Traits\hasEventsWithBindings;
 use Modules\Core\Support\Traits\AuditTrait;
 use Modules\Core\Traits\NamespacedEntity;
-use Modules\Isite\Entities\Organization;
+use Modules\Itenant\Entities\Organization;
 use Modules\Isite\Traits\RevisionableTrait;
 use Modules\Isite\Traits\Typeable;
 use Modules\Media\Support\Traits\MediaRelation;

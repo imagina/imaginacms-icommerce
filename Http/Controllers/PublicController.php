@@ -23,7 +23,7 @@ use Modules\Iprofile\Repositories\UserApiRepository;
 use Modules\Icommerce\Transformers\PaymentMethodTransformer;
 use Modules\Icommerce\Transformers\ShippingMethodTransformer;
 use Modules\Icommerce\Transformers\ProductTransformer;
-use Modules\Isite\Entities\Organization;
+use Modules\Itenant\Entities\Organization;
 use Route;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 use Modules\Page\Repositories\PageRepository;
