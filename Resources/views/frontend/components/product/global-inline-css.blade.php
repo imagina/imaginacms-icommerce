@@ -79,5 +79,39 @@
 }
 
 @endif
+
+.product-layout img {
+  aspect-ratio: {{ $imageAspect }};
+  position: relative;
+}
+  @if($secondaryImageHover && $issetSecondaryImage)
+    .product-layout .bg-img img {
+      transition: {{ $transitionImage }};
+      background: #fff;
+      position: relative;
+      object-fit: contain;
+    }
+
+    .product-layout .bg-img img.image-static {
+      opacity: 1;
+    }
+
+    .product-layout .bg-img img.image-transition {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .product-layout:hover {
+      .bg-img img .image-static {
+        opacity: 0;
+      }
+
+      .bg-img img.image-transition {
+        opacity: 1;
+      }
+    }
+  @endif
 </style>
 @endonce

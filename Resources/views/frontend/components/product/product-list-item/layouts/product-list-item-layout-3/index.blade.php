@@ -8,18 +8,30 @@
   @include('icommerce::frontend.components.product.meta')
   @if(isset($itemListLayout) && $itemListLayout=='one')
     <div class="row product-list-layout-one">
+
       <div class="col-6">
         <div class="position-relative">
           @include('icommerce::frontend.components.product.ribbon')
           <div
-            class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
+            class="bg-img d-inline-block overflow-hidden">
             <livewire:media::dynamic-image
               :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
+              imgClasses="product-img image-static"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
               itemId="{{$product->id}}"
               wire:key="product-image-{{$product->id}}"
             />
+
+            @if($secondaryImageHover && $issetSecondaryImage)
+
+              <livewire:media::dynamic-image
+                :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+                zone="secondaryimage"
+                :mediaFiles="$product->mediaFiles()"
+                imgClasses="product-img image-transition"
+                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+            @endif
           </div>
         </div>
       </div>
@@ -29,16 +41,35 @@
     </div>
   @else
     @include('icommerce::frontend.components.product.ribbon')
-    <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
+    <div class="bg-img d-inline-block overflow-hidden">
       <livewire:media::dynamic-image
-        :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+        :alt="$product->name"
+        :title="$product->name"
+        :url="$product->url"
+        :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
+        imgClasses="product-img image-static"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
         itemId="{{$product->id}}"
-        wire:key="product-image-{{$product->id}}"
       />
+      @if($secondaryImageHover && $issetSecondaryImage)
+
+        <livewire:media::dynamic-image
+          :alt="$product->name"
+          :title="$product->name"
+          :url="$product->url"
+          :isMedia="true"
+          zone="secondaryimage"
+          :mediaFiles="$product->mediaFiles()"
+          imgClasses="product-img image-transition"
+          :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+          itemId="{{$product->id}}"
+        />
+      @endif
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif
+
   @include('icommerce::frontend.components.product.global-inline-css')
+
 </div>

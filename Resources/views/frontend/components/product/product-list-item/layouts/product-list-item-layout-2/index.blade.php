@@ -15,15 +15,32 @@
         <div class="row justify-content-center position-relative m-0">
           @include('icommerce::frontend.components.product.ribbon')
           <div
-            class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden"
+            class="bg-img d-inline-block position-relative overflow-hidden"
             style="padding: {{$imageSpacing}}px;">
             <livewire:media::dynamic-image
-              :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+              :alt="$product->name"
+              :title="$product->name"
+              :url="$product->url"
+              :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
               itemId="{{$product->id}}"
               wire:key="product-image-{{$product->id}}"
             />
+
+            @if($secondaryImageHover && $issetSecondaryImage)
+              <livewire:media::dynamic-image
+                :alt="$product->name"
+                :title="$product->name"
+                :url="$product->url"
+                :isMedia="true"
+                zone="secondaryimage"
+                :mediaFiles="$product->mediaFiles()"
+                imgClasses="product-img image-transition"
+                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+                itemId="{{$product->id}}"
+              />
+            @endif
           </div>
         </div>
       </div>

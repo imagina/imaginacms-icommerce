@@ -229,19 +229,10 @@ return [
     'name' => 'icommerce::productAspect',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
-    'type' => 'select',
+    'type' => 'input',
     'columns' => 'col-12 col-md-6',
     'props' => [
-      'label' => 'Relación de Aspecto',
-      'useInput' => false,
-      'useChips' => false,
-      'multiple' => false,
-      'hideDropdownIcon' => true,
-      'newValueMode' => 'add-unique',
-      'options' => [
-        ['label' => '1 : 1', 'value' => "1-1"],
-        ['label' => '4 : 3', 'value' => "4-3"],
-      ]
+      'label' => 'Relación de Aspecto'
     ]
   ],
   'product-add-to-cart-with-quantity' => [
@@ -639,6 +630,30 @@ return [
       'trueValue' => "1",
       'falseValue' => "0",
       'label' => 'icommerce::common.settings.productImageBorder'
+    ]
+  ],
+  'productSecondaryImageHover' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::productSecondaryImageHover',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productSecondaryImageHover'
+    ]
+  ],
+  'transitionImage' => [
+    "onlySuperAdmin" => true,
+    'name' => 'icommerce::transitionImage',
+    'type' => 'input',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'value'=>'opacity 0.5s ease-in-out',
+    'props' => [
+      'label' => 'icommerce::common.settings.transitionImage',
     ]
   ],
   'productImageBorderColor' => [

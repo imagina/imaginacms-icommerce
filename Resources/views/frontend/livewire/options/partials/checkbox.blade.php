@@ -1,7 +1,7 @@
 @foreach($productOptionValues as $selectOption)
   <div
     class="text-left {{$selectOption->optionValue->options->type != 1 ? 'd-inline-block' : 'radio-square'}}">
-    
+
     <!--Color box-->
     @if($selectOption->optionValue->options->type == 3)
       <div title="{{!$selectOption->available ? '(Agotado)' : ''}}"
@@ -25,7 +25,7 @@
         />
         <label for="{{$productOption->option->description}}{{$productOption->id}}"/>
 
-          <span>{{ $selectOption->optionValue->description }}</span>
+          <span>{{ $selectOption->optionValue->description }} ({{formatMoney($selectOption->price)}})</span>
       </div>
     @endif
   </div>
