@@ -8,7 +8,6 @@
   @include('icommerce::frontend.components.product.meta')
   @if(isset($itemListLayout) && $itemListLayout=='one')
     <div class="row product-list-layout-one">
-
       <div class="col-6">
         <div class="position-relative">
           @include('icommerce::frontend.components.product.ribbon')
@@ -22,15 +21,16 @@
               itemId="{{$product->id}}"
               wire:key="product-image-{{$product->id}}"
             />
-
             @if($secondaryImageHover && $issetSecondaryImage)
-
               <livewire:media::dynamic-image
                 :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                 zone="secondaryimage"
                 :mediaFiles="$product->mediaFiles()"
                 imgClasses="product-img image-transition"
-                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+                itemId="{{$product->id}}"
+                wire:key="product-image-{{$product->id}}"
+              />
             @endif
           </div>
         </div>
@@ -51,9 +51,9 @@
         imgClasses="product-img image-static"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
         itemId="{{$product->id}}"
+        wire:key="product-image-{{$product->id}}"
       />
       @if($secondaryImageHover && $issetSecondaryImage)
-
         <livewire:media::dynamic-image
           :alt="$product->name"
           :title="$product->name"
@@ -64,12 +64,11 @@
           imgClasses="product-img image-transition"
           :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
           itemId="{{$product->id}}"
+          wire:key="product-image-{{$product->id}}"
         />
       @endif
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif
-
   @include('icommerce::frontend.components.product.global-inline-css')
-
 </div>

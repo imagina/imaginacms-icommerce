@@ -1,50 +1,47 @@
-
-  <div class="card-product">
-    <div class="cursor-pointer position-relative">
-      @if(!isset($itemListLayout) || $itemListLayout!='one')
-
-        <div class="bg-img d-inline-block position-relative overflow-hidden">
-          <livewire:media::dynamic-image
-            :alt="$product->name" :title="$product->name" :url="$product->url"
-            :isMedia="true"
-            :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-            :mediaFiles="$product->mediaFiles()"
-            itemId="{{$product->id}}"/>
-        </div>
-
-        @if($secondaryImageHover && $issetSecondaryImage)
-          <x-media::single-image
-            :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
-            zone="secondaryimage"
-            :mediaFiles="$product->mediaFiles()"
-            :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-            imgClasses="product-img image-transition"/>
-        @endif
-
+<div class="card-product">
+  <div class="cursor-pointer position-relative">
+    @if(!isset($itemListLayout) || $itemListLayout!='one')
+      <div class="bg-img d-inline-block position-relative overflow-hidden">
+        <livewire:media::dynamic-image
+          :alt="$product->name" :title="$product->name" :url="$product->url"
+          :isMedia="true"
+          :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+          :mediaFiles="$product->mediaFiles()"
+          itemId="{{$product->id}}"
+          wire:key="product-image-{{$product->id}}"
+        />
+      </div>
+      @if($secondaryImageHover && $issetSecondaryImage)
+        <x-media::single-image
+          :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
+          zone="secondaryimage"
+          :mediaFiles="$product->mediaFiles()"
+          :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+          imgClasses="product-img image-transition"
+          wire:key="product-image-{{$product->id}}"
+        />
       @endif
-      <div class="card-overlay text-center">
-        @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity)
-            && !in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
+    @endif
+    <div class="card-overlay text-center">
+      @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity)
+          && !in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
         <div class="top">
-
-
-            <a
-              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
-              class="btn btn-primary btn-sm mx-2">
-              <i class="fa fa-heart-o"></i>
-
-            </a>
-
+          <a
+            onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+            class="btn btn-primary btn-sm mx-2">
+            <i class="fa fa-heart-o"></i>
+          </a>
         </div>
-        @endif
-          <div class="options-section">
-            <livewire:icommerce::options :product="$product" onlyType="color_image"/>
-          </div>
-        <div class="bottom buttons {{$buttonsLayout}}">
-
-          @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status && $product->quantity)
-            @switch(setting("icommerce::addToCartButtonAction"))
-              @case("add-to-cart")
+      @endif
+      <div class="options-section">
+        <livewire:icommerce::options :product="$product" onlyType="color_image"
+                                     wire:key="options-product-{{$product->id}}"
+        />
+      </div>
+      <div class="bottom buttons {{$buttonsLayout}}">
+        @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status && $product->quantity)
+          @switch(setting("icommerce::addToCartButtonAction"))
+            @case("add-to-cart")
               @if(!$addToCartWithQuantity)
                 <a onClick="window.livewire.emit('addToCart',{{$product->id}},1,{},false)"
                    class="btn btn-primary btn-sm">
@@ -76,68 +73,49 @@
                   {{trans("icommerce::products.button.addToCartItemList")}}
                 </a>
               @endif
-            @endswitch
-
-              @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
-
-                  <a
-                    onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
-                    class="btn btn-primary btn-sm">
-                    <i class="fa fa-heart-o"></i>
-
-                  </a>
-
-              @endif
-
-          @else
-            <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
-               class="btn btn-primary btn-sm">
-              <i class="fa fa-envelope"></i> {{$customIndexContactLabel}}
+          @endswitch
+          @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
+            <a
+              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+              class="btn btn-primary btn-sm">
+              <i class="fa fa-heart-o"></i>
             </a>
-
           @endif
-        </div>
-
+        @else
+          <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
+             class="btn btn-primary btn-sm">
+            <i class="fa fa-envelope"></i> {{$customIndexContactLabel}}
+          </a>
+        @endif
       </div>
-
     </div>
-
-    <div class="infor text-{{$contentAlign}}" style="padding-left: {{$contentExternalPaddingX}}px; padding-right: {{$contentExternalPaddingX}}px;
+  </div>
+  <div class="infor text-{{$contentAlign}}" style="padding-left: {{$contentExternalPaddingX}}px; padding-right: {{$contentExternalPaddingX}}px;
       padding-top: {{$contentExternalPaddingY}}px; padding-bottom: {{$contentExternalPaddingY}}px;">
-
-      <a href="{{$product->url}}" class="name cursor-pointer d-block">
-        {{$product->name}}
-      </a>
-
-      <div class="category">{{$product->category->title}}</div>
-
-      @if(isset($productListLayout) && $productListLayout=='one')
-        <div class="d-none d-md-block summary">
-          {{$product->summary}}
-        </div>
-      @endif
-
-      @if((!$product->is_call  || $product->show_price_is_call) && $withPrice)
-        <div class="price">
-
-          {{isset($currency) ? $currency->symbol_left : '$'}}
-          {{formatMoney($discount->price ?? $product->price)}}
-
-          @if(isset($discount) && $discount)
-            <del
-              class="d-inline-block">{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
-
-          @endif
-
-        </div>
-      @endif
-    </div>
-
-    <!-- calculation according to the information of weight, volume, quantity, lenght-->
-    @include('icommerce::frontend.components.product.calculate-pum')
-
-    @if($addToCartWithQuantity && !$product->is_call)
-      @include("icommerce::frontend.components.product.addToCartWithQuantity")
+    <a href="{{$product->url}}" class="name cursor-pointer d-block">
+      {{$product->name}}
+    </a>
+    <div class="category">{{$product->category->title}}</div>
+    @if(isset($productListLayout) && $productListLayout=='one')
+      <div class="d-none d-md-block summary">
+        {{$product->summary}}
+      </div>
+    @endif
+    @if((!$product->is_call  || $product->show_price_is_call) && $withPrice)
+      <div class="price">
+        {{isset($currency) ? $currency->symbol_left : '$'}}
+        {{formatMoney($discount->price ?? $product->price)}}
+        @if(isset($discount) && $discount)
+          <del
+            class="d-inline-block">{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
+        @endif
+      </div>
     @endif
   </div>
+  <!-- calculation according to the information of weight, volume, quantity, lenght-->
+  @include('icommerce::frontend.components.product.calculate-pum')
 
+  @if($addToCartWithQuantity && !$product->is_call)
+    @include("icommerce::frontend.components.product.addToCartWithQuantity")
+  @endif
+</div>

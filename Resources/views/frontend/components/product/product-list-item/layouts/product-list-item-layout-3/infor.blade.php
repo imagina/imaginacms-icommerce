@@ -1,26 +1,23 @@
 <div class="options-section">
-  <livewire:icommerce::options :product="$product" onlyType="color_image"/>
+  <livewire:icommerce::options :product="$product" onlyType="color_image"
+                               wire:key="options-product-{{$product->id}}"
+  />
 </div>
 <div class="infor text-{{$contentAlign}}" style="padding-left: {{$contentExternalPaddingX}}px; padding-right: {{$contentExternalPaddingX}}px;
   padding-top: {{$contentExternalPaddingY}}px; padding-bottom: {{$contentExternalPaddingY}}px;">
-
   <div class="category">
     {{$product->category->title}}
   </div>
-
   <div class="name">
     <a href="{{$product->url}}" class="name cursor-pointer">
       {{$product->name}}
     </a>
   </div>
-
-
   @if(isset($productListLayout) && $productListLayout=='one')
     <div class="d-none d-md-block summary">
       {{$product->summary}}
     </div>
   @endif
-
   @if((!$product->is_call  || $product->show_price_is_call) && $withPrice)
     <div class="price">
       {{isset($currency) ? $currency->symbol_left : '$'}}{{formatMoney($product->discount->price ?? $product->price)}}
@@ -29,9 +26,7 @@
           Antes: {{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
       @endif
     </div>
-
   @endif
-
   <div class="buttons {{$buttonsLayout}}">
     @if(!$product->is_call && $product->stock_status && $product->quantity)
       @switch(setting("icommerce::addToCartButtonAction"))
@@ -61,20 +56,15 @@
             </a>
           @endif
       @endswitch
-
     @else
       <a href="{{ URL::to('/contacto') }}" class="cart text-primary cursor-pointer">
         {{$customIndexContactLabel}}
       </a>
     @endif
   </div>
-
-
   <!-- calculation according to the information of weight, volume, quantity, lenght-->
   @include('icommerce::frontend.components.product.calculate-pum')
-
   @if($addToCartWithQuantity && !$product->is_call)
     @include("icommerce::frontend.components.product.addToCartWithQuantity")
   @endif
-
 </div>
