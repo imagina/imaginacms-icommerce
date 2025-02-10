@@ -1,14 +1,13 @@
-<div class="product-layout product-layout-3 card-product position-relative"  style="padding: {{$externalPadding}}px;
+<div class="product-layout product-layout-3 card-product position-relative" style="padding: {{$externalPadding}}px;
         border-radius: {{$externalBorderRadius}}px; border: {{$externalBorder ? '1' : '0'}}px solid {{$externalBorderColor}};">
-    <x-isite::edit-link
-            link="{{$editLink}}{{$product->id}}"
-            :tooltip="$tooltipEditLink"
-    />
+  <x-isite::edit-link
+    link="{{$editLink}}{{$product->id}}"
+    :tooltip="$tooltipEditLink"
+  />
   @php($discount = $product->discount ?? null)
   @include('icommerce::frontend.components.product.meta')
   @if(isset($itemListLayout) && $itemListLayout=='one')
     <div class="row product-list-layout-one">
-
       <div class="col-6">
         <div class="position-relative">
           @include('icommerce::frontend.components.product.ribbon')
@@ -19,6 +18,7 @@
               :mediaFiles="$product->mediaFiles()"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
               itemId="{{$product->id}}"
+              wire:key="product-image-{{$product->id}}"
             />
           </div>
         </div>
@@ -35,10 +35,10 @@
         :mediaFiles="$product->mediaFiles()"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
         itemId="{{$product->id}}"
+        wire:key="product-image-{{$product->id}}"
       />
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif
-
-    @include('icommerce::frontend.components.product.global-inline-css')
+  @include('icommerce::frontend.components.product.global-inline-css')
 </div>

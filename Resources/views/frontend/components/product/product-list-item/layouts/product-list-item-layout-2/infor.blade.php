@@ -1,37 +1,33 @@
 <div class="card-product">
   <div class="cursor-pointer position-relative">
     @if(!isset($itemListLayout) || $itemListLayout!='one')
-
       <div class="bg-img bg-img-{{$imageAspect}} d-flex justify-content-center align-items-center overflow-hidden">
         <livewire:media::dynamic-image
           :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
           :mediaFiles="$product->mediaFiles()"
           :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
           itemId="{{$product->id}}"
+          wire:key="product-image-{{$product->id}}"
         />
       </div>
-
     @endif
     <div class="card-overlay text-center">
       @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity)
           && !in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
         <div class="top">
-
-
           <a
             onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
             class="btn btn-primary btn-sm mx-2">
             <i class="fa fa-heart-o"></i>
-
           </a>
-
         </div>
       @endif
       <div class="options-section">
-        <livewire:icommerce::options :product="$product" onlyType="color_image"/>
+        <livewire:icommerce::options :product="$product" onlyType="color_image"
+                                     wire:key="options-product-{{$product->id}}"
+        />
       </div>
       <div class="bottom buttons {{$buttonsLayout}}">
-
         @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status && $product->quantity)
           @switch(setting("icommerce::addToCartButtonAction"))
             @case("add-to-cart")
@@ -67,65 +63,46 @@
                 </a>
               @endif
           @endswitch
-
           @if((($withTextInAddToCart && $addToCartWithQuantity) || !$addToCartWithQuantity) && in_array($buttonsLayout,["aw-together-square", "aw-together-circle"]))
-
             <a
               onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
               class="btn btn-primary btn-sm">
               <i class="fa fa-heart-o"></i>
-
             </a>
-
           @endif
-
         @else
           <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
              class="btn btn-primary btn-sm">
             <i class="fa fa-envelope"></i> {{$customIndexContactLabel}}
           </a>
-
         @endif
       </div>
-
     </div>
-
   </div>
-
   <div class="infor text-{{$contentAlign}}" style="padding-left: {{$contentExternalPaddingX}}px; padding-right: {{$contentExternalPaddingX}}px;
       padding-top: {{$contentExternalPaddingY}}px; padding-bottom: {{$contentExternalPaddingY}}px;">
-
     <a href="{{$product->url}}" class="name cursor-pointer d-block">
       {{$product->name}}
     </a>
-
     <div class="category">{{$product->category->title}}</div>
-
     @if(isset($productListLayout) && $productListLayout=='one')
       <div class="d-none d-md-block summary">
         {{$product->summary}}
       </div>
     @endif
-
     @if((!$product->is_call  || $product->show_price_is_call) && $withPrice)
       <div class="price">
-
         {{isset($currency) ? $currency->symbol_left : '$'}}
         {{formatMoney($discount->price ?? $product->price)}}
-
         @if(isset($discount) && $discount)
           <del
             class="d-inline-block">{{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
-
         @endif
-
       </div>
     @endif
   </div>
-
   <!-- calculation according to the information of weight, volume, quantity, lenght-->
   @include('icommerce::frontend.components.product.calculate-pum')
-
   @if($addToCartWithQuantity && !$product->is_call)
     @include("icommerce::frontend.components.product.addToCartWithQuantity")
   @endif
