@@ -10,7 +10,7 @@ use Modules\Icommerce\Entities\CartProduct;
 use Modules\Icommerce\Entities\Cart;
 
 class EloquentCartProductRepository extends EloquentCrudRepository implements CartProductRepository
-{ 
+{
   /**
    * Filter names to replace
    * @var array
@@ -33,7 +33,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
    */
 
   private $log = "Icommerce: Repositories|CartProduct|";
-  
+
   public function filterQuery($query, $filter, $params)
   {
 
@@ -90,11 +90,11 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   }
 
   public function create($data){
-    
+
 
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
-  
+
     $warehouse = request()->session()->get('warehouse');
     $warehouse = json_decode($warehouse);
     if (isset($warehouse->id)) {
@@ -102,30 +102,30 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     }
 
     $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
-  
+
     if($warehouseEnabled && isset($warehouse->id)){
       $data["warehouse_id"] = $warehouse->id;
     }
     //To include all products even if they are internal (as in the case of services in reservations)
     $params = [
       "filter" => [
-        "ValidationInternal" => true,
+        "validationInternal" => true,
       ],
       "include" => [],
       "fields" => [],
     ];
 
     $product = $productRepository->getItem($data["product_id"],json_decode(json_encode($params)));
-  
+
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
     }
-    
+
     //Separate Options to new process
     $result = $this->separateOptions($data["product_option_values"]);
     $optionsDynamic = $result['optionsDynamic'];
     $data["product_option_values"] = $result['pov'];
-   
+
     //Search Product Option Values
     $productOptionValues = ProductOptionValue::whereIn("id",$data["product_option_values"] ?? [])->get();
 
@@ -136,7 +136,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     // if the request has product without options
     $cartProduct = $this->findByAttributesOrOptions($data);
- 
+
     //validate setting canAddIsCallProductsIntoCart
     if(!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])){
       // validate valid quantity
@@ -155,17 +155,17 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         //\Log::info($this->log.'Create|Sync Product Options Values');
         $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
       }
-     
+
       //Sync Dynamics options
       if(count($optionsDynamic)>0){
         //\Log::info($this->log.'Create|Sync Dinamics Options');
-       
+
         //#CasoX = Si existe una opcion "NoDinamica" y una "Dinamica". Agregaba la "NoDinamica" pero la "Dinamica" negative.
         //$cartProduct->dynamicOptions()->sync($optionsDynamic);
-        
+
         //Con esto se soluciono
         $cartProduct->dynamicOptions()->attach($optionsDynamic);
-       
+
       }
 
     }else {
@@ -179,7 +179,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
         //Cart Products con la informacion de opciones dinamicas
         $cartProducts = $this->findCartProductsWithDynamics($optionsDynamic,$data);
-        
+
         //Opciones dinamicas agrupadas
         $allOptionsDynamicsInCart = $this->groupAllOptionsDynamics($cartProducts);
 
@@ -208,23 +208,23 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
           }
 
         }
-        
+
       }else{
 
         \Log::info($this->log."create|NOT Options Dynamics");
-    
+
         // get product options
         $productOptionValues = $cartProduct->productOptionValues;
         // get options from front
         $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
 
         $productOptionDynamics = $cartProduct->dynamicOptions;
-        
+
         // if product doesn't have the same options wil be created and sync options
         $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
 
         /**
-         * Agregada validacion $productOptionDynamics->isNotEmpty() 
+         * Agregada validacion $productOptionDynamics->isNotEmpty()
          * Caso de Uso: Cuando ya existe producto con opciones dinamicas y se envia a guardar sin opciones dinamicas (q deberia ser otro)
          * se rectifica con esa relacion para evitar que le sume "quantity" al producto anterior
          */
@@ -248,24 +248,24 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     // INITIALIZE QUERY
     $cartProduct = $this->findByAttributesOrOptions($data);
-    
+
     if($cartProduct) {
- 
+
       // get product options
       $productOptionValues = $cartProduct->productOptionValues;
-      
+
       // get options from front
       $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
-  
+
       $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
 
       // if is the same option values ids
       if( array_diff($productOptionValuesIds, $productOptionValuesFront) === array_diff($productOptionValuesFront, $productOptionValuesIds)){
         $cartProduct->update($data);
-  
+
       }else{ // if not the same options create cart product
         $cartProduct = $this->model->create($data);
-      } 
+      }
     }
     return $cartProduct;
   }
@@ -299,15 +299,15 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
           if( array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)){
 
             $cartProduct = $cartProductQuery;
-        
+
           }
       }
     }
 
     return $cartProduct ?? false;
   }
-  
-  
+
+
   private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues,$optionsDynamic)
   {
 
@@ -332,28 +332,28 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       }
       !$optionOk ? $allRequiredOptionsOk = false : false;
     }
-    
+
     return $allRequiredOptionsOk;
   }
-  
+
   public function productHasValidQuantity($cartProduct, $product = null, $productOptionsValues = null, $data = null, $productOptionValuesFrontend = null)
   {
     $validQuantity = true;
-  
+
     $cartProductQuantity = 0;
-  
+
     if(empty($product)){
       $product = $cartProduct->product;
     }
-  
+
     if(empty($productOptionsValues)){
       $productOptionsValues = $product->optionValues;
     }
- 
+
     if(empty($productOptionValuesFrontend)){
       //Search Product Option Values
       $productOptionValuesFrontend = $cartProduct->productOptionValues;
-      
+
     }
     //buscamos los productos que ya estén añadidos al carrito actual
     if(isset($cartProduct->id)){
@@ -362,27 +362,27 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       $cart = Cart::find($data["cart_id"]);
       $cartProducts = $cart->products;
     }
-  
+
     //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
       foreach ($cartProducts as $cartSingleProduct){
         if($cartSingleProduct->product_id == $product->id) {
           $cartProductQuantity+= $cartSingleProduct->quantity;
         }
       }
-      
+
     $quantity = ($data["quantity"] ?? 0) + $cartProductQuantity;
 
     if($product->subtract){ // si el producto se substrae de inventario
-  
+
       $warehouse = request()->session()->get('warehouse');
       $warehouse = json_decode($warehouse);
       $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
-   
+
       $productQuantity = $product->quantity;
       //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
       //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
       if($warehouseEnabled && isset($warehouse->id)){
-        
+
         if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
         $productQuantity = \DB::table('icommerce__product_warehouse')
             ->where('warehouse_id', $warehouse->id)
@@ -391,29 +391,29 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
         $productQuantity = $productQuantity->quantity ?? 0;
       }
- 
+
       // si la cantidad del producto no alcanza para lo solicitado
       if($productQuantity < $quantity){
         $validQuantity = false;
       }else{
         if(!empty($productOptionValuesFrontend) && $productOptionValuesFrontend->isNotEmpty() && !empty($productOptionsValues) && $productOptionsValues->isNotEmpty()){ // si están añadiendo el producto con opciones
           foreach ($productOptionValuesFrontend as $productOptionValueFrontend) { // recorriendo las opciones añadidas
-        
+
             foreach ($productOptionsValues as $productOptionsValue) { // recorriendo las options values del producto
-              
+
               //si el value del producto se debe substraer de inventario y coincide con el que se está añadiendo al carrito
              if($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValueFrontend->option_value_id){
 
                $productOptionsValueQuantity = $productOptionsValue->quantity;
                if($warehouseEnabled){
-    
+
                  if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
                  $productOptionsValueQuantity = \DB::table('icommerce__product_option_value_warehouse')
                    ->where('warehouse_id', $warehouse->id)
                    ->where('product_option_value_id', $productOptionsValue->id)
                    ->where('product_id', $productOptionsValue->product_id)
                    ->first();
-  
+
                  $productOptionsValueQuantity = $productOptionsValueQuantity->quantity ?? 0;
                }
                //dd($quantity,$productOptionsValue->subtract,$productOptionValueFrontend["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValueFrontend["optionValueId"]);
@@ -460,7 +460,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
    * Se obtienen las opciones dinamicas de cada producto (CartProducts)
    * Este metodo se realizó por separado para no combinarlo con el metodo findByAttributesOrOptions
    * que trabaja con la misma tabla pivote pero con otra relacion y validaciones
-   * 
+   *
    * @param $dynamicOptions (From Frontend) [option_id,value]
    * @return $cartProducts (Solo los productos que contengan opciones dinamicas)
    */
