@@ -122,7 +122,7 @@
   @parent
   <script type="text/javascript" defer>
     function icommerce_showAddToCartWithOptions(e) {
-      window.livewire.emit('addToCartOptions', {quantity: $('input[name=quantityProduct]').val()})
+      window.livewire.emit('addToCartOptions-{{$product->id}}', {quantity: $('input[name=quantityProduct]').val()})
     }
 
     function icommerce_showSetQuantity(e, type) {

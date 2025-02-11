@@ -4,4 +4,5 @@
                                  :loopGallery="false"
                                  :responsive="setting('icommerce::productResponsive')"
                                  :itemId="$product->id"
+                                 wire:key="product-gallery-{{$product->id}}"
 />
