@@ -20,7 +20,7 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
    * @var array
    */
   protected $replaceSyncModelRelations = [];
-  
+
   /**
    * Attribute to customize relations by default
    * @var array
@@ -31,7 +31,7 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
       'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment']
   ];
 
-  
+
   /**
    * Filter query
    *
@@ -50,7 +50,7 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
      * if (isset($filter->status)) $query->where('status', $filter->status);
      *
      */
-  
+
     //add filter by search
     if (isset($filter->search)) {
       //find search in columns
@@ -67,34 +67,34 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
         ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
         ->orWhere('created_at', 'like', '%' . $filter->search . '%');
     }
-  
+
     if (isset($filter->status)) {
       $query->where('status_id', $filter->status);
     }
-  
+
       if (isset($filter->warehouseId)) {
         $query->where('warehouse_id', $filter->warehouseId);
       }
 
     if (isset($filter->customer)) {
-    
+
       // if has permission
       $indexPermission = $params->permissions['icommerce.orders.index'] ?? false; // index orders
       $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
-    
+
       $user = $params->user;
       if ($showOthersPermission || ($filter->customer == $user->id && $indexPermission)) {
         $query->where('customer_id', $filter->customer);
       }
     }
-  
+
     if (!isset($params->filter->order)) {
       $query->orderBy("created_at", "desc");//Add order to query
     }
-  
+
     // if has permission show-others
     $showOthersPermission = $params->permissions['icommerce.orders.show-others'] ?? false; // show orders of others
-  
+
     if (!$showOthersPermission && !isset($filter->field)) {
       //Extra validation when call from API
       $authUser = \Auth::user() ?? null;
@@ -105,22 +105,21 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
 
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
     $tenantWithCentralData = in_array("orders", $entitiesWithCentralData);
-  
-  
+
+
     if ($tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
-    
+
       $query->withoutTenancy();
       $query->where(function ($query) use ($model) {
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhere(function ($query) use ($model) {
             $authUser = \Auth::user();
-            $query->whereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn))
-              ->where("customer_id", $authUser->id ?? null);
+            $query->where("customer_id", $authUser->id ?? null);
           });
       });
     }
-    
+
     //Response
     return $query;
   }
