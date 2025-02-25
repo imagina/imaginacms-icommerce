@@ -76,7 +76,7 @@ class PublicController extends BaseApiController
   public function index(Request $request)
   {
     $argv = explode("/", $request->path());
-    $slug = end($argv); 
+    $slug = end($argv);
 
     $tpl = 'icommerce::frontend.index';
     $ttpl = 'icommerce.index';
@@ -104,12 +104,12 @@ class PublicController extends BaseApiController
 
       $category = $this->category->findBySlug($slug);
 
-     
+
       //Validation with lang from URL
       $result = validateLocaleFromUrl($request,['entity' => $category]);
       if(isset($result["reedirect"]))
         return redirect()->to($result["url"]);
-      
+
       if (isset($category->id) && $category->status == 1) {
         $categoryBreadcrumb = $this->getCategoryBreadcrumb($category);
 
@@ -147,8 +147,8 @@ class PublicController extends BaseApiController
       ]);
       if(isset($result["reedirect"]))
         return redirect()->to($result["url"]);
-      
-      
+
+
 
     }
 
@@ -430,7 +430,7 @@ class PublicController extends BaseApiController
 
   }
 
-  public function checkout(Request $request)
+  public function checkout(Request $request,  $orderId = null)
   {
     //Validation with lang from URL
     $result = validateLocaleFromUrl($request,[
@@ -443,21 +443,35 @@ class PublicController extends BaseApiController
 
     $tpl = "icommerce::frontend.checkout.index";
 
-    $cartS = request()->session()->get('cart');
-	$cartS = json_decode($cartS);
+    //Create new cart from order
+    if(!is_null($orderId))
+    {
 
-    if (isset($cartS->id)) {
-      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cartS->id);
-    } else {
-      $cart = app('Modules\Icommerce\Services\CartService')->create(["userId" => \Auth::id() ?? null]);
-	    request()->session()->put('cart', json_encode($cart));
+      //Get data
+      $cart = app('Modules\Icommerce\Services\CartService')->createCartFromOrder($orderId);
+      //Validation not order or not cart
+      if (is_null($cart))
+        return redirect()->route(locale().'.homepage');
+
+    }else{
+
+      $cartS = request()->session()->get('cart');
+      $cartS = json_decode($cartS);
+
+      if (isset($cartS->id)) {
+        $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cartS->id);
+      } else {
+        $cart = app('Modules\Icommerce\Services\CartService')->create(["userId" => \Auth::id() ?? null]);
+        request()->session()->put('cart', json_encode($cart));
+      }
+
     }
 
     $organization = null;
     if (isset(tenant()->id)) {
       $organization = tenant();
     }
-  
+
     $currency = currentCurrency();
 
     if (setting("icommerce::customCheckoutTitle")) {
@@ -473,24 +487,24 @@ class PublicController extends BaseApiController
     $layout = setting("icommerce::checkoutLayout", null, "one-page-checkout");
 
     $tpl = "icommerce::frontend.checkout.index";
-    
+
     $currency = currentCurrency();
 
     $order = $this->order->getItem($orderId);
-    
+
     if (isset($order->cart_id)) {
       $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($order->cart_id);
     }
-    
+
     if(isset($order->id) && $order->created_at<'2023-05-01' || !isset($cart->id))
       return view('isite::frontend.errors.maintenance');
-    
+
     if (setting("icommerce::customCheckoutTitle")) {
       $title = setting("icommerce::customCheckoutTitle");
     } else {
       $title = trans('icommerce::checkout.title');
     }
-    
+
     return view($tpl, ["cart" => $cart, "currency" => $currency, "title" => $title, "order" => $order]);
   }
 
