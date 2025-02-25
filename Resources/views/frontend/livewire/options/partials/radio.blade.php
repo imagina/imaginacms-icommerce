@@ -11,7 +11,7 @@
 
     @elseif(($selectOption->optionValue->options->type ?? 0) == 2)
     <!--Image box-->
-      <div title="{{!$selectOption->available ? '(Agotado)' : ''}}"
+      <div title="{{!$selectOption->available ? '(Agotado)' : $selectOption->optionValue->description}}"
            class="box-image {{$selected == $selectOption->id ? 'box-image-active' : ''}}"
            wire:click="setOption({{$selectOption->id}}, {{json_encode($selectOption->mediaFiles())}})"
            style="background-image : url({{$selectOption->optionValue->mediaFiles()->mainimage->path}}); cursor: {{$selectOption->available ? 'pointer' : 'not-allowed'}}"></div>
