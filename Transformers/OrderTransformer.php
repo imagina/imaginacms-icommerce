@@ -9,7 +9,7 @@ use Modules\Iprofile\Transformers\UserTransformer;
 
 class OrderTransformer extends CrudResource
 {
-  
+
   protected $excludeRelations = ['orderHistory','orderItems','customer'];
   /**
   * Method to merge values with response
@@ -27,6 +27,7 @@ class OrderTransformer extends CrudResource
       'histories' => OrderStatusHistoryTransformer::collection($this->orderHistory),
       'items' => OrderItemTransformer::collection($this->orderItems),
       'customer' => new UserTransformer($this->whenLoaded('customer')),
+      'buyAgainUrl' => route(locale().'.icommerce.store.checkout',['orderId' => $this->id]),
     ];
 
     //Add information blocks
@@ -266,7 +267,7 @@ class OrderTransformer extends CrudResource
         $paymentInfo
       );
     }
-  
+
     if (setting('icommerce::warehouseFunctionality', null, false)) {
       $warehouseBlockInfo = [
         'title' => trans("icommerce::orders.informationBlocksOrder.titleOrderInfoWarehouse"),
@@ -283,7 +284,7 @@ class OrderTransformer extends CrudResource
       ];
       array_push($item['informationBlocks'], $warehouseBlockInfo);
     }
-  
+
 
       $commentBlock = [
         'title' => trans("icommerce::checkout.comment"),
@@ -292,11 +293,11 @@ class OrderTransformer extends CrudResource
           // 'label' => trans("icommerce::checkout.comment"),
             'value' => $this->comment ?? ''
           ],
-        
+
         ]
       ];
       array_push($item['informationBlocks'], $commentBlock);
-    
+
 
     return $item;
   }
