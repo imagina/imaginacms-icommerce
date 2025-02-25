@@ -8,6 +8,7 @@ return [
   ],
   'button' => [
     'update' => 'Update',
+    'buy again' => 'Buy this order again',
   ],
   'sidebar' => [
     'products' => 'Products',
