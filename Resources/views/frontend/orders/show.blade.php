@@ -153,6 +153,12 @@
             {{--{{trans('icommerce::orders.button.Back_to_order_list')}}--}}
           </a>
         @endif
+
+        <a href="{{ route(locale().'.icommerce.store.checkout',['orderId' => $order->id]) }}"
+            class="btn btn-outline-primary btn-rounded btn-lg my-2">
+            {{trans('icommerce::common.button.buy again')}}
+        </a>
+
       </div>
     </div>
 

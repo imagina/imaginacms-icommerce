@@ -142,4 +142,8 @@
         border-radius: 0.25rem;
     }
 
+    .custom-title-alert {
+      text-align: left;
+    }
+
 </style>
