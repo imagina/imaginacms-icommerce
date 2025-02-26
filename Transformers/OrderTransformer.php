@@ -9,7 +9,7 @@ use Modules\Iprofile\Transformers\UserTransformer;
 
 class OrderTransformer extends CrudResource
 {
-  
+
   protected $excludeRelations = ['orderItems','orderHistory'];
   /**
   * Method to merge values with response
@@ -27,6 +27,7 @@ class OrderTransformer extends CrudResource
       'histories' => OrderStatusHistoryTransformer::collection($this->orderHistory),
       'items' => OrderItemTransformer::collection($this->orderItems),
       'customer' => new UserTransformer($this->whenLoaded('customer')),
+      'buyAgainUrl' => route(locale().'.icommerce.store.checkout',['orderId' => $this->id]),
     ];
 
     //Add information blocks
