@@ -6,16 +6,12 @@
   @endforeach
 @endif
 
-@if($cartProduct->dynamicOptions)
+@if($cartProduct->cartProductOptions)
   <br>
-  @foreach($cartProduct->dynamicOptions as $option)
-    @php
-      $productOptionValueRepository = app('Modules\Icommerce\Repositories\ProductOptionValueRepository');
-      $optionValueRepository = app('Modules\Icommerce\Repositories\OptionValueRepository');
-      $productOptionValue = $productOptionValueRepository->getItem($option->pivot->value);
-      $optionValue = $optionValueRepository->getItem($productOptionValue->option_value_id);
-    @endphp
-    <label>{{$option->description}}
-      : {{$optionValue->description ?? $option->pivot->value}}</label>
+  @foreach($cartProduct->cartProductOptions as $cartOption)
+    @if($cartOption->option)
+    <label>{{$cartOption->option->description ?? '-'}}
+      : {{$cartOption->dynamicProductOptionValue->OptionValue->description ?? '-'}}</label>
+    @endif
   @endforeach
 @endif
