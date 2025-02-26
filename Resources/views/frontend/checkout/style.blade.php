@@ -245,4 +245,9 @@
         border-color: var(--primary);
         color: #fff;
     }
+
+    .custom-title-alert {
+      text-align: left;
+    }
+
 </style>
