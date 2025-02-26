@@ -34,8 +34,8 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
       'as' => $locale . '.icommerce.store.index.featured',
       'uses' => 'PublicController@indexFeatured',
     ]);
-    
-    
+
+
     $router->get(trans('icommerce::routes.store.manufacturer.index', [], $locale), [
         'as' => $locale.'.icommerce.store.manufacturer.index',
         'uses' => 'ManufacturerController@index',
@@ -52,7 +52,7 @@ $customMiddlewares = config('asgard.icommerce.config.middlewares') ?? [];
 //      'middleware' => ['doNotCacheResponse']
     ]);
 
-    $router->get(trans('icommerce::routes.store.checkout.create', [], $locale), [
+    $router->get(trans('icommerce::routes.store.checkout.create', [], $locale).'/{orderId?}', [
         'as' => $locale.'.icommerce.store.checkout',
         'uses' => 'PublicController@checkout',
         'middleware' => ['doNotCacheResponse'],
