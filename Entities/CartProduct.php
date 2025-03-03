@@ -60,6 +60,10 @@ class CartProduct extends CrudModel
     return $this->belongsToMany(ProductOptionValue::class, 'icommerce__cart_product_options')->withTimestamps();
   }
 
+  public function cartProductOptions()
+  {
+    return $this->hasMany(CartProductOptions::class , 'cart_product_id');
+  }
 
   public function dynamicOptions()
   {

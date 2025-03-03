@@ -64,7 +64,7 @@ class Cart extends Component
       $this->warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
     }
 
-    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
+    $this->warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
     $this->view = "icommerce::frontend.livewire.cart.layouts.$this->layout.index";
     $this->classCart = $classCart;
     $this->styleCart = $styleCart;
@@ -78,13 +78,14 @@ class Cart extends Component
   //|--------------------------------------------------------------------------
   public function refreshCart()
   {
-
     $this->loading = true;
     $cart = request()->session()->get('cart');
-    $cart= json_decode($cart);
+    $cart = json_decode($cart);
 
     if (isset($cart->id)) {
-      $this->cart = $this->cartRepository()->getItem($cart->id);
+      $params = json_decode(json_encode(["include" => ['products.cartProductOptions.option',
+        'products.cartProductOptions.dynamicProductOptionValue.optionValue']]));
+      $this->cart = $this->cartRepository()->getItem($cart->id, $params);
     }
     if (isset($this->cart->id) && $this->cart->status == 1) {
 
@@ -132,7 +133,7 @@ class Cart extends Component
               'product_id' => $cartProduct->product->id,
               'warehouse_id' => $warehouse->id,
               'cart_id' => $this->cart->id,
-              'product_option_values' =>  $cartProduct->productOptionValues->pluck('id')->toArray()
+              'product_option_values' => $cartProduct->productOptionValues->pluck('id')->toArray()
             ];
             $this->cartProductRepository()->updateBy($cartProduct->id, $data);
           }
@@ -142,7 +143,7 @@ class Cart extends Component
         $this->updateCart();
         $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
         if ($warehouseEnabled) {
-          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"),["timer" => "8000"]));
+          $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProductWarehouse"), array_merge(config("asgard.isite.config.livewireAlerts"), ["timer" => "8000"]));
         } else {
           $this->alert('warning', trans("icommerce::common.components.alerts.updateCartByDeleteProduct"), config("asgard.isite.config.livewireAlerts"));
         }
@@ -161,7 +162,6 @@ class Cart extends Component
 
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
   {
-
     try {
       $this->loading = true;
       if ($quantity > 0) {
@@ -200,7 +200,7 @@ class Cart extends Component
           break;
 
         case 'Product Quantity Unavailable':
-          if($this->warehouseEnabled)
+          if ($this->warehouseEnabled)
             $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
           else
             $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
@@ -235,8 +235,8 @@ class Cart extends Component
 
   public function updateCart()
   {
-
-    $params = json_decode(json_encode(["include" => []]));
+    $params = json_decode(json_encode(["include" => ['products.cartProductOptions.option',
+      'products.cartProductOptions.dynamicProductOptionValue.optionValue']]));
     $this->cart = $this->cartRepository()->getItem($this->cart->id, $params);
 
     request()->session()->put('cart', json_encode($this->cart));
