@@ -11,6 +11,8 @@ class CreateCurrencyRequest extends BaseFormRequest
     return [
       'code' => 'required|min:2',
       'value' => 'required',
+      'decimal_separator' => 'required',
+      'thousands_separator' => 'required',
     ];
   }
 
