@@ -67,7 +67,8 @@ return [
     "value" => "Value",
     "status" => "Status",
     "default_currency" => "Default Currency",
-    "warehouses" => "Warehouses"
+    "warehouses" => "Warehouses",
+    "adminOrderStatuses" => "Order Status",
   ],
   "newProduct" => "New Product",
   "updateProduct" => "Update Product",
@@ -121,6 +122,7 @@ return [
     "bannerPriceList" => "Head to your personal product list to start exploring. Enjoy the best prices!",
     "explorePriceList" => "Browse Product List",
     'dataSheet' => 'Data sheet',
+    'buyAgain' => 'Buy Again',
   ],
   "form" => [
     "formContent" => "Here you can find the information related to the name, slug, summary and description.",

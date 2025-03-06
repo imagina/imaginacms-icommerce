@@ -7,7 +7,8 @@ return [
     'details' => 'DETALLES',
   ],
   'button' => [
-    'update' => 'Actualizar'
+    'update' => 'Actualizar',
+    'buy again' => 'Comprar de nuevo esta orden',
   ],
   'pricelists' => [
     'title' => 'Lista de precios',
@@ -322,6 +323,7 @@ return [
     'alerts' => [
       'updateCartByDeleteProductWarehouse' => 'Hemos Actualizado tu compra De acuerdo a la disponibilidad en la bodega seleccionada',
       'updateCartByDeleteProduct' => 'Hemos Actualizado tu compra de acuerdo a la disponibilidad del Producto',
+      'deleteProductsInCart' => 'Los siguientes productos se han eliminado porque no poseen disponibilidad:',
     ],
   ],
 ];
