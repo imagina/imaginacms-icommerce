@@ -1,6 +1,6 @@
 <div id="btn-continue-buying-up" class="row">
   <div class="col py-2">
-    <a class="btn btn-primary waves-effect waves-light"
+    <a class="btn btn-primary-ecommerce waves-effect waves-light"
        href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
   </div>
 </div>
@@ -30,7 +30,7 @@
 
 <div class="row">
   <div class="col py-2">
-    <a class="btn btn-primary" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
+    <a class="btn btn-primary-ecommerce" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
   </div>
 </div>
 
