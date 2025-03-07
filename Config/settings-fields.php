@@ -1225,6 +1225,7 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
+        ['label' => 'icommerce::common.search.settings.options.name_position', 'value' => 'name_position'],
         ['label' => 'icommerce::common.search.settings.options.fullWord', 'value' => 'scoreSearch1'],
         ['label' => 'icommerce::common.search.settings.options.createDate', 'value' => 'icommerce__products.created_at'],
         ['label' => 'icommerce::common.search.settings.options.uniqueWord', 'value' => 'scoreSearch2'],

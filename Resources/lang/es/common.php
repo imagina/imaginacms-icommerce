@@ -276,6 +276,7 @@ return [
       'labelSearcherOrder' => 'Ordenamiento de búsqueda',
       'labelSearchFields' => 'Campos de búsqueda para productos',
       'options' => [
+        'name_position' => 'Posicion Palabras',
         'name' => 'Nombre Del Producto',
         'summary' => 'Resumen Del Producto',
         'description' => 'Descripción Del Producto',
