@@ -247,12 +247,12 @@
           <div class="col">
             <div class="from-group">
               <label for="comment">
-               {{trans('icommerce::checkout.comment')}}
+                {{trans('icommerce::checkout.comment')}}
               </label>
               <textarea class="form-control"
                         placeholder="{{trans('icommerce::checkout.commentPlaceholder')}}"
-                     id="comment"
-                     wire:model.defer="comment"></textarea>
+                        id="comment"
+                        wire:model.defer="comment"></textarea>
 
             </div>
           </div>
@@ -260,17 +260,25 @@
         @if((Setting::has('icommerce::orderSummaryDescription')))
           <div class="order-summary-description py-2">
             <x-isite::edit-link
-                    link="/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"
+              link="/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"
             />
             {!! setting('icommerce::orderSummaryDescription') !!}
           </div>
         @endif
-        <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                onclick="orderSumamryPlaceOrder()">
-          <div>
-            {{ trans('icommerce::order_summary.submit') }}
-          </div>
-        </button>
+        <div class="d-flex mt-3">
+          <button type="button" class="btn btn-primary btn-lg w-40 mx-1 placeOrder"
+                  href="{{url('/')}}">
+            <div>
+              {{ trans('icommerce::checkout.continue_buying') }}
+            </div>
+          </button>
+          <button type="button" class="btn btn-warning btn-lg w-40 mx-1 placeOrder"
+                  onclick="orderSumamryPlaceOrder()">
+            <div>
+              {{ trans('icommerce::order_summary.submit') }}
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>

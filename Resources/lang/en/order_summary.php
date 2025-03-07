@@ -8,7 +8,7 @@ return [
     'shipping'      => 'Shipping',
     'payment'       => 'Payment',
     'total'         => 'ORDER TOTAL',
-    'submit'        => 'Submit Order',
+    'submit'        => 'Complete Purchase',
     'sending'       => 'Sending',
     'coupon'       => 'Applied Coupon',
     'couponCode'       => 'Coupon Code',

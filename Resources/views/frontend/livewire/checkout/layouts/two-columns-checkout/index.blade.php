@@ -28,9 +28,3 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col py-2">
-    <a class="btn btn-primary" href="{{url('/')}}">{{ trans('icommerce::checkout.continue_buying') }}</a>
-  </div>
-</div>
-

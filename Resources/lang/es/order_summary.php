@@ -8,7 +8,7 @@ return [
     'shipping'      => 'Envío',
     'payment'       => 'Pago',
     'total'         => 'TOTAL DE LA ORDEN',
-    'submit'        => 'Procesar Orden',
+    'submit'        => 'Finalizar Compra',
     'sending'       => 'Enviando',
     'coupon'       => 'Cupón Aplicado',
     'couponCode'       => 'Código de Cupón',
