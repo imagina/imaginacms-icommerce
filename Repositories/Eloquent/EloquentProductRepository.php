@@ -157,35 +157,39 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     // add filter by search
     if (isset($filter->search) && !empty($filter->search)) {
 
-      $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
+      if (ctype_digit($filter->search)) {
+        $query->where('id', $filter->search);
+      } else {
+        $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
 
-      // removing symbols used by MySQL
-      $filter->search = sanitizeSearchParameter($filter->search);
-      $words = explode(" ", $filter->search);//Explode
+        // removing symbols used by MySQL
+        $filter->search = sanitizeSearchParameter($filter->search);
+        $words = explode(" ", $filter->search);//Explode
 
-      //Search query
-      $query->leftJoin(\DB::raw(
-        "(SELECT MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN BOOLEAN MODE) scoreSearch1, product_id, name, " .
-        " MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 ," .
-        "LOCATE('" . $filter->search . "', name) as name_position " .
-        "from icommerce__product_translations " .
-        "where `locale` = '" . ($filter->locale ?? locale()) . "') as ptrans"
-      ), 'ptrans.product_id', 'icommerce__products.id')
-        ->where(function ($query) {
-          $query->where('scoreSearch1', '>', 0)
-            ->orWhere('scoreSearch2', '>', 0);
-        });
+        //Search query
+        $query->leftJoin(\DB::raw(
+          "(SELECT MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN BOOLEAN MODE) scoreSearch1, product_id, name, " .
+          " MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 ," .
+          "LOCATE('" . $filter->search . "', name) as name_position " .
+          "from icommerce__product_translations " .
+          "where `locale` = '" . ($filter->locale ?? locale()) . "') as ptrans"
+        ), 'ptrans.product_id', 'icommerce__products.id')
+          ->where(function ($query) {
+            $query->where('scoreSearch1', '>', 0)
+              ->orWhere('scoreSearch2', '>', 0);
+          });
 
-      foreach ($orderSearchResults ?? [] as $orderSearch) {
-        if ($orderSearch == 'name_position') {
-          $query->orderBy($orderSearch, 'asc');
-        } else {
-          $query->orderBy($orderSearch, 'desc');
+        foreach ($orderSearchResults ?? [] as $orderSearch) {
+          if ($orderSearch == 'name_position') {
+            $query->orderBy($orderSearch, 'asc');
+          } else {
+            $query->orderBy($orderSearch, 'desc');
+          }
         }
-      }
 
-      //Remove order by
-      unset($filter->order);
+        //Remove order by
+        unset($filter->order);
+      }
     }
     //Filter by catgeory ID
     if (isset($filter->category) && !empty($filter->category)) {
