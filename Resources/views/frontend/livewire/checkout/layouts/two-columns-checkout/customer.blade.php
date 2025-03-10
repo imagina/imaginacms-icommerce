@@ -1,7 +1,7 @@
-<div class="card card-block  p-3 mb-3">
-  <div class="row m-0 pointer" data-toggle="collapse" href="#customerData" role="button" aria-expanded="false"
+<div class="card card-block p-3 mb-3">
+  <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#customerData" role="button" aria-expanded="false"
        aria-controls="customerData">
-    <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-3 py-2">
+    <div class="number-check">
       1
     </div>
     <h3 class="d-flex align-items-center my-1 h5">

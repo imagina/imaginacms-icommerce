@@ -51,7 +51,7 @@
     </div>
     @if (setting('icommerce::warehouseFunctionality', null, false))
       <div class="col py-2">
-        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalWarehouseLocator">
+        <a class="btn btn-sm btn-primary-ecommerce" href="#" data-toggle="modal" data-target="#modalWarehouseLocator">
           {{trans('icommerce::common.pages.buttonChangeShippingMethodWarehouse')}}
         </a>
       </div>
