@@ -16,16 +16,15 @@
   })
 @endphp
 
-
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">
-      <div class="row m-0 pointer" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false"
+      <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false"
            aria-controls="CheckList">
-        <div class="rounded-circle bg-primary text-white mr-3 d-flex align-items-center px-2 py-2">
+        <div class="number-check">
           <i class="fa fa-check px-1"></i>
         </div>
-        <h3 class="d-flex align-items-center h5">
+        <h3 class="d-flex align-items-center my-1 h5">
           {{ trans('icommerce::order_summary.title') }}
         </h3>
       </div>
@@ -41,7 +40,7 @@
                 <span>{{ trans('icommerce::order_summary.item_car') }}</span>
               @endif
             </h5>
-            <hr class="mt-0 mb-3"/>
+            {{-- <hr class="mt-0 mb-3"/> --}}
             <div class="box-items-cart">
               <!-- CART | ITEMS -->
               @if($cart->products->count())
@@ -68,13 +67,13 @@
                     <div class="{{$withImage ? 'col-9' : 'col-12'}}">
                       <!-- titulo -->
                       <h6 class="mb-2 w-100 __title">
-                        <a href="{{$cartProduct->product->url}}">
+                        <a class="product-title" href="{{$cartProduct->product->url}}">
                           {{ $cartProduct->product->name }}
                           @include("icommerce::frontend.livewire.cart.productOptions")
                         </a>
                       </h6>
                       <!-- valor y cantidad -->
-                      <p class="mb-0 text-muted pb-2" style="font-size: 13px">
+                      <p class="text-quantity mb-0 text-muted pb-2">
                         {{trans('icommerce::cart.table.quantity')}}
                         : {{ $cartProduct->quantity }} <br>
                         {{trans('icommerce::cart.table.price_per_unit')}}
@@ -88,10 +87,10 @@
                                aria-hidden="true"></i> {{trans("icommerce::products.table.shipping")}}
                           </small>
                         </p>
-                      @endif
-                      <!-- boton para eliminar-->
-                      <div style="width: 20px;  position: absolute; right: -7px; top: 0;">
-                        <a class="close cart-remove text-danger" style="font-size: 1rem;"
+                    @endif
+                    <!-- boton para eliminar-->
+                      <div class="button-remove">
+                        <a class="close cart-remove text-danger"
                            onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
                            title="quitar producto">
                           <i class="fa fa-times"></i>
@@ -107,45 +106,35 @@
               <!-- CART | SUB TOTAL -->
               <div class="row">
                 <div class="col-4">
-                  <p>
-                  <div>{{ trans('icommerce::order_summary.car_sub') }}</div>
-                  </p>
+                  <div class="my-2">{{ trans('icommerce::order_summary.car_sub') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <p>
-                  <div>
+                  <div  class="my-2">
                     {{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney( $cart->total )}} {{isset($currency) ? $currency->symbol_right : ''}}
                   </div>
-                  </p>
                 </div>
               </div>
               <!--  COUPON | CODE AND AMOUNT -->
               @if(isset($couponSelected->id))
                 <div class="row">
                   <div class="col-4">
-                    <p>
-                    <div>{{ trans('icommerce::order_summary.coupon') }}</div>
-                    </p>
+                    <div class="my-2">{{ trans('icommerce::order_summary.coupon') }}</div>
                   </div>
                   <div class="col-8 text-right">
-                    <p>
-                    <div>
+                    <div class="my-2">
                       {{ trans('icommerce::order_summary.couponCode') }}
                       {{$couponSelected->code }}
                       <br>
                       {{ isset($currency) ? $currency->symbol_left : '$'}} {{ "(".formatMoney($couponDiscount->discount).")" }} {{isset($currency) ? $currency->symbol_right : ''}}
                     </div>
-                    </p>
                   </div>
                 </div>
               @endif
               @if(!empty($totalTaxes))
-                <!--  TAXES  -->
+              <!--  TAXES  -->
                 <div class="row">
                   <div class="col-12">
-                    <p>
-                    <div>{{ trans('icommerce::order_summary.taxes') }}</div>
-                    </p>
+                    <div class="my-2">{{ trans('icommerce::order_summary.taxes') }}</div>
                   </div>
                   @foreach($totalTaxes as $totalTax)
                     <div class="col-5">
@@ -158,21 +147,18 @@
                 </div>
               @endif
               @if($requireShippingMethod)
-                <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
+              <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
                 <div class="row">
                   <div class="col-4">
-                    <p>
-                    <div>{{ trans('icommerce::order_summary.shipping') }}</div>
-                    </p>
+                    <div class="my-2">{{ trans('icommerce::order_summary.shipping') }}</div>
                   </div>
                   <div class="col-8 text-right">
-                    <p>
                     @if(!isset($shippingMethod->id))
-                      <div>
+                      <div class="my-2">
                         {{ trans('icommerce::order_summary.shipping_not_selected')}}
                       </div>
                     @else
-                      <div>
+                      <div class="my-2">
                         {{$shippingMethod->title }}
                         <br>
                         @if(isset($shippingMethod->calculations->priceshow) && $shippingMethod->calculations->priceshow)
@@ -180,7 +166,6 @@
                         @endif
                       </div>
                       @endif
-                      </p>
                   </div>
                 </div>
               @endif
