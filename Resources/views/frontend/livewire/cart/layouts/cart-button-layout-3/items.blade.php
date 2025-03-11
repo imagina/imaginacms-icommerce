@@ -15,21 +15,21 @@
                                     :mediaFiles="$cartProduct->product->mediaFiles()"/>
                         </div>
                     </div>
-                    <div class="col pr-0">
+                    <div class="col pr-1">
                         <!-- titulo -->
                         <h6 class="mb-1 __title">
-                            <a href="{{$cartProduct->product->url}}" class="text-dark">
+                            <a href="{{$cartProduct->product->url}}" class="name-product text-dark">
                                 {{ $cartProduct->product->name }}
                                 @include("icommerce::frontend.livewire.cart.productOptions")
                             </a>
                         </h6>
                         <!-- valor y cantidad -->
-                        <p class="mb-0 text-muted pb-2" style="font-size: 13px">
-                            {{trans('icommerce::cart.table.quantity')}}: {{ $cartProduct->quantity }} <br>
-                            {{trans('icommerce::cart.table.price_per_unit')}}
-                            : {{isset($currency) ? $currency->symbol_left : '$'}}
-                            {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
-                        </p>
+                      <p class="price-text mb-0 text-muted py-1 pb-2">
+                        {{trans('icommerce::cart.table.quantity')}}: {{ $cartProduct->quantity }} <br>
+                        {{trans('icommerce::cart.table.price_per_unit')}}: {{isset($currency) ? $currency->symbol_left : '$'}}
+                        {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
+                      </p>
+
                     </div>
                     <div class="col-auto">
                         <a class="cart-remove text-danger"  wire:click="deleteFromCart({{$cartProduct->id}})" title="quitar producto">

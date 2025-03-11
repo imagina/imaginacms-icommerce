@@ -168,6 +168,9 @@
     .checkout-tabs .product-title {
       color: var(--primary) !important;
     }
+    .checkout-tabs .quantity-selector {
+      width: 115px;
+    }
     .checkout-tabs .quantity-selector input[type=number]::-webkit-outer-spin-button,
     .checkout-tabs .quantity-selector input[type=number]::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -176,18 +179,17 @@
     .checkout-tabs .quantity-selector input[type=number] {
       -moz-appearance:textfield !important;
     }
-    .checkout-tabs .quantity-field {
+    .checkout-tabs .quantity-selector .quantity-field {
       text-align: center;
-      height: 25px !important;
+      height: 28px !important;
       border: 1px solid rgba(82, 81, 81, 16%);
       box-sizing: border-box;
       margin: 0;
       outline: none;
       padding: 0 10px;
-      line-height: 25px;
+      line-height: 28px;
       font-size: 12px;
       font-weight: bold;
-      width: 75px;
     }
     .checkout-tabs .quantity-selector .button-minus {
       border-radius: 24px 0 0 24px;
@@ -206,12 +208,16 @@
       outline: none;
       padding: 0 10px;
       text-align: center;
-      height: 25px;
-      line-height: 25px;
+      height: 28px;
+      line-height: 28px;
       flex: unset;
-    &  i {
+      &  i {
          pointer-events: none;
-       }
+      }
+      &:hover, &:focus {
+        background-color: var(--primary);
+        color: #ffffff;
+      }
     }
     .checkout-tabs .price-text {
       font-size: 12px;
