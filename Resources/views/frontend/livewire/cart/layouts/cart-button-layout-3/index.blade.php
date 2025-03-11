@@ -115,10 +115,70 @@
             font-size: 14px;
         }
         @if(!empty($styleCart))
-  #cartLayout3 .cart-link {
-        {!!$styleCart!!}
-}
+        #cartLayout3 .cart-link {
+            {!!$styleCart!!}
+        }
         @endif
+        #cartLayout3 .name-product {
+            font-size: 14px;
+        }
+        #cartLayout3 .quantity-selector {
+            width: 115px;
+        }
+        #cartLayout3 .quantity-selector input[type=number]::-webkit-outer-spin-button,
+        #cartLayout3 .quantity-selector input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        #cartLayout3 .quantity-selector input[type=number] {
+            -moz-appearance:textfield !important;
+        }
+        #cartLayout3 .quantity-selector .quantity-field {
+            text-align: center;
+            height: 25px;
+            border: 1px solid rgba(82, 81, 81, 16%);
+            box-sizing: border-box;
+            margin: 0;
+            outline: none;
+            padding: 0 10px;
+            line-height: 25px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        #cartLayout3 .quantity-selector .button-minus {
+            border-radius: 24px 0 0 24px;
+        }
+        #cartLayout3 .quantity-selector .button-plus {
+            border-radius: 0 24px 24px 0;
+        }
+        #cartLayout3 .quantity-selector .button-minus,
+        #cartLayout3 .quantity-selector .button-plus {
+            font-size: 10px;
+            color: var(--primary);
+            border: 1px solid rgba(82, 81, 81, 16%);
+            background: transparent;
+            box-sizing: border-box;
+            margin: 0;
+            outline: none;
+            padding: 0 10px;
+            text-align: center;
+            height: 25px;
+            line-height: 25px;
+            flex: unset;
+            &  i {
+               pointer-events: none;
+            }
+            &:hover, &:focus {
+              background-color: var(--primary);
+              color: #ffffff;
+            }
+        }
+        #cartLayout3 .price-text {
+            font-size: 12px;
+        }
+        #cartLayout3 .cart-total .bg-light-md {
+            background-color: #eeeeee;
+        }
     </style>
     @include("icommerce::frontend.livewire.cart.quoteModal")
 

@@ -2,7 +2,6 @@
 <div class="cart-items h-100">
   @if($cart->products->count())
     @foreach($cart->products as $cartProduct)
-
       <div class="item_carting border-bottom pt-4">
         <div class="row item_carting">
           <div class="col-3 pr-0 pb-2">
@@ -24,7 +23,11 @@
               </a>
             </h6>
             <!-- valor y cantidad -->
-            {{-- <p> {{trans('icommerce::cart.table.quantity')}}: {{ $cartProduct->quantity }} </p> --}}
+            <p class="price-text mb-0 text-muted py-1 pb-2">
+                        {{trans('icommerce::cart.table.quantity')}}: {{ $cartProduct->quantity }} <br>
+                        {{trans('icommerce::cart.table.price_per_unit')}}: {{isset($currency) ? $currency->symbol_left : '$'}}
+                        {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
+                      </p>
             <div class="input-group quantity-selector">
               <button type="button" class="button-minus"
                       wire:click="updateQuantityCartProduct({{ $cartProduct->id }}, {{$cartProduct->quantity - 1}})"
