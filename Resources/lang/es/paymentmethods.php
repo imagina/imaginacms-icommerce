@@ -26,6 +26,7 @@ return [
         'no payment methods' => 'no payment methods',
         'noPaymentMethodSelected' => 'No hay método de pago seleccionado',
         'showInCurrencies' => 'Mostrar el metodo de pago en estas monedas',
+        "update by" => "Actualizado por: :paymentMethod"
     ],
     'validation' => [
     ],
