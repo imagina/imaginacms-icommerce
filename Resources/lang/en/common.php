@@ -155,6 +155,7 @@ return [
     'productImageObjectFit' => 'Image object fit',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
+    'enableProductDetails' => 'Activate Product Details',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',

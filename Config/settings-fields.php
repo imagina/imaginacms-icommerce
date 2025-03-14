@@ -1363,4 +1363,15 @@ return [
       ]
     ]
   ],
+  'enableProductDetails' => [
+    'value' => false,
+    'name' => 'icommerce::enableProductDetails',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "onlySuperAdmin" => true,
+    'props' => [
+      'label' => 'icommerce::common.settings.enableProductDetails'
+    ]
+  ],
 ];

@@ -34,7 +34,7 @@
 
               <input aria-label="quantity" type="number" step="1" min="1" max="{{$cartProduct->product->quantity}}"
                      class="quantity-field form-control" value="{{$cartProduct->quantity}}"
-                     wire:change="updateQuantityCartProduct({{ $cartProduct->id }}, $event.target.value, {{$cartProduct->product->quantity}})"
+                     wire:keydown.debounce.500ms="updateQuantityCartProduct({{ $cartProduct->id }}, $event.target.value, {{$cartProduct->product->quantity}})"
               />
 
               <button type="button" class="button-plus"

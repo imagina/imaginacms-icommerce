@@ -43,7 +43,8 @@ class Cart extends Component
     'makeQuote',
     'requestQuote',
     'submitQuote',
-    'warehouseShowInforIsReady' => 'refreshCart'
+    'warehouseShowInforIsReady' => 'refreshCart',
+    'updateQuantityCartProduct'
   ];
 
   public function mount(Request $request, $layout = 'cart-button-layout-1', $icon = 'fa fa-shopping-cart',
@@ -156,12 +157,17 @@ class Cart extends Component
 
   public function addToCartWithOptions($data)
   {
-
-    $this->addToCart($data["productId"], $data["quantity"], $data["productOptionValues"]);
+    $this->addToCart(
+      $data["productId"],
+      $data["quantity"],
+      $data["productOptionValues"],
+      $data["isCall"] ?? false,
+      $data['details'] ?? null
+    );
 
   }
 
-  public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false)
+  public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false, $details = null)
   {
 
     try {
@@ -176,7 +182,8 @@ class Cart extends Component
             "product_id" => $productId,
             "quantity" => $quantity,
             "product_option_values" => $productOptionValues,
-            "is_call" => $isCall
+            "is_call" => $isCall,
+            'details' => $details
           ];
 
           $this->cartProductRepository()->create($data);
@@ -441,16 +448,18 @@ class Cart extends Component
 
   public function updateQuantityCartProduct($cartProductId, $newValue = null, $stockProduct = null)
   {
-    if ($newValue == 0) {
-      $this->deleteFromCart($cartProductId);
-      $this->updateCart();
-    } else {
-      if (empty($stockProduct) || $stockProduct >= $newValue) {
-        $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
-        $this->cartProductRepository()->update($cartProduct, ['quantity' => $newValue]);
+    if (!empty($newValue)) {
+      if ($newValue == 0) {
+        $this->deleteFromCart($cartProductId);
         $this->updateCart();
       } else {
-        $this->alert('warning', trans('icommerce::cart.message.no_stock') . $stockProduct, config("asgard.isite.config.livewireAlerts"));
+        if (empty($stockProduct) || $stockProduct >= $newValue) {
+          $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
+          $this->cartProductRepository()->update($cartProduct, ['quantity' => $newValue]);
+          $this->updateCart();
+        } else {
+          $this->alert('warning', trans('icommerce::cart.message.no_stock') . $stockProduct, config("asgard.isite.config.livewireAlerts"));
+        }
       }
     }
   }

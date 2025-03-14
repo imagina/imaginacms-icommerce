@@ -19,7 +19,8 @@
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">
-      <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false"
+      <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#CheckList" role="button"
+           aria-expanded="false"
            aria-controls="CheckList">
         <div class="number-check">
           <i class="fa fa-check px-1"></i>
@@ -73,12 +74,34 @@
                         </a>
                       </h6>
                       <!-- valor y cantidad -->
-                      <p class="text-quantity mb-0 text-muted pb-2">
-                        {{trans('icommerce::cart.table.quantity')}}
-                        : {{ $cartProduct->quantity }} <br>
+                      <div class="input-group quantity-selector">
+                        <a class="button-minus"
+                           onclick="window.livewire.emit('updateQuantityCartProduct',{{ $cartProduct->id }}, {{$cartProduct->quantity - 1}})"
+                           aria-label="minus">
+                          <i class="fa fa-minus"></i>
+                        </a>
+
+                        <input aria-label="quantity" type="number" step="1" min="1"
+                               max="{{ $cartProduct->product->quantity }}"
+                               class="quantity-field form-control" value="{{ $cartProduct->quantity }}"
+                               onchange="window.livewire.emit('updateQuantityCartProduct', {{ $cartProduct->id }}, this.value, {{ $cartProduct->product->quantity }})"
+                        />
+
+                        <a class="button-plus"
+                           onclick="window.livewire.emit('updateQuantityCartProduct', {{ $cartProduct->id }}, {{$cartProduct->quantity + 1}})"
+                           aria-label="plus">
+                          <i class="fa fa-plus"></i>
+                        </a>
+                      </div>
+                      <p class="text-quantity mb-0 text-muted py-2">
+                        {{-- {{trans('icommerce::cart.table.quantity')}} : {{ $cartProduct->quantity }} <br> --}}
                         {{trans('icommerce::cart.table.price_per_unit')}}
                         : {{isset($currency) ? $currency->symbol_left : '$'}}
                         {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
+                        <br>
+                        @if(isset($cartProduct->details))
+                          {{trans('icommerce::cart.table.details')}}: {{ $cartProduct->details}}
+                        @endif
                       </p>
                       @if($cartProduct->product->shipping)
                         <p>
@@ -87,8 +110,8 @@
                                aria-hidden="true"></i> {{trans("icommerce::products.table.shipping")}}
                           </small>
                         </p>
-                    @endif
-                    <!-- boton para eliminar-->
+                      @endif
+                      <!-- boton para eliminar-->
                       <div class="button-remove">
                         <a class="close cart-remove text-danger"
                            onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
@@ -109,7 +132,7 @@
                   <div class="my-2">{{ trans('icommerce::order_summary.car_sub') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <div  class="my-2">
+                  <div class="my-2">
                     {{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney( $cart->total )}} {{isset($currency) ? $currency->symbol_right : ''}}
                   </div>
                 </div>
@@ -131,7 +154,7 @@
                 </div>
               @endif
               @if(!empty($totalTaxes))
-              <!--  TAXES  -->
+                <!--  TAXES  -->
                 <div class="row">
                   <div class="col-12">
                     <div class="my-2">{{ trans('icommerce::order_summary.taxes') }}</div>
@@ -147,7 +170,7 @@
                 </div>
               @endif
               @if($requireShippingMethod)
-              <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
+                <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
                 <div class="row">
                   <div class="col-4">
                     <div class="my-2">{{ trans('icommerce::order_summary.shipping') }}</div>
@@ -165,7 +188,7 @@
                           {{ isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($shippingMethod->calculations->price) }} {{isset($currency) ? $currency->symbol_right : ''}}
                         @endif
                       </div>
-                      @endif
+                    @endif
                   </div>
                 </div>
               @endif

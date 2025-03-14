@@ -168,6 +168,7 @@ return [
     'productImageObjectFit' => 'Ajuste de la imagen',
     'productShowGalleryLayout' => 'Plantilla de Galeria',
     'productResponsive' => 'Responsive Galeria',
+    'enableProductDetails' => 'Activar Detalles de producto',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',

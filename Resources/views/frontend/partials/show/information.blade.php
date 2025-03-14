@@ -16,7 +16,7 @@
     </div>
   @endif
 
-<!-- SUMMARY -->
+  <!-- SUMMARY -->
   <div class="options">
     @if(!is_null($product->advanced_summary))
       {!! $product->advanced_summary !!}
@@ -33,8 +33,7 @@
   <!-- information of lenght,weight -->
   @include('icommerce::frontend.partials.show.extra-information')
 
-<!-- END PRICE -->
-
+  <!-- END PRICE -->
   @if($product->pdf)
     <div class=" align-items-center mb-4">
       <a href="{{$product->pdf}}"
@@ -44,29 +43,37 @@
       </a>
     </div>
   @endif
-  
+
+  @if(setting('icommerce::enableProductDetails'))
+    <div class="product-details py-2">
+      <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.productDetails")}} </p>
+      <br>
+      <textarea name="productDetails" rows="4" cols="50" wire:model.defer="details"></textarea>
+    </div>
+  @endif
+
   @if( $product->is_sold_out )
-  <div>
-    <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
-    
-    @php
-      $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null)
-    @endphp
-    @if($productAvailableForm)
-      <br>
-      <br>
-      <span class="text-primary">{{trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title")}}</span>
-      <x-iforms::form :id="$productAvailableForm"
-                      :fieldsParams="['productName' => ['readonly' => 'readonly', 'value' => $product->name]]"/>
-    @endif
-    <hr>
-  </div>
-<!-- OPCIONES DE PRODUCTO -->
+    <div>
+      <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.outOfStock")}} </p>
+
+      @php
+        $productAvailableForm = setting('icommerce::letMeKnowProductIsAvailableForm',null,null)
+      @endphp
+      @if($productAvailableForm)
+        <br>
+        <br>
+        <span class="text-primary">{{trans("icommerce::forms.letMeKnowWhenProductIsAvailable.title")}}</span>
+        <x-iforms::form :id="$productAvailableForm"
+                        :fieldsParams="['productName' => ['readonly' => 'readonly', 'value' => $product->name]]"/>
+      @endif
+      <hr>
+    </div>
+    <!-- OPCIONES DE PRODUCTO -->
   @elseif((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart") || ($product->is_call && $product->show_price_is_call)) && $product->stock_status )
     <livewire:icommerce::options :product="$product"/>
-@endif
+  @endif
   @if($product->is_call)
-  <!-- BUTTON CONSULT -->
+    <!-- BUTTON CONSULT -->
     <div class="add-cart">
       <hr>
       <div class="row">
@@ -77,7 +84,8 @@
               {{trans('icommerce::products.form.contactUs')}}</a>
             <!-- BUTTON WISHLIST -->
             <a
-              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}})"
+              onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}}
+        )"
               class="btn btn-wishlist mx-2">
               <span id="addToTheListSpan">{{trans("wishlistable::wishlistables.button.addToList")}}</span>
               <i class="fa fa-heart-o ml-1"></i>
@@ -90,7 +98,7 @@
     </div>
   @endif
 
-<!-- Points Product -->
+  <!-- Points Product -->
   @include('icommerce::frontend.partials.show.points')
 
   @if(isset($organization->id))

@@ -7,16 +7,16 @@
       <a
         href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}">{{trans('icommerce::orders.title.orders')}}</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}} #{{$order->id}}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{trans('icommerce::orders.title.detail order')}}
+      #{{$order->id}}</li>
   </x-isite::breadcrumb>
-
-
 
 @endsection
 
 @section('profileTitle')
   <div class="float-right">
-    <x-isite::print-button containerId="showOrder{{$order->id}}" icon="fa fa-file-pdf-o" text="{{ trans('icommerce::common.download') }}" />
+    <x-isite::print-button containerId="showOrder{{$order->id}}" icon="fa fa-file-pdf-o"
+                           text="{{ trans('icommerce::common.download') }}"/>
   </div>
 
   {{trans('icommerce::orders.title.detail order')}} #{{$order->id}}
@@ -78,6 +78,7 @@
             <div class="table-responsive">
               <table class="table ">
                 <th>{{trans('icommerce::orders.table.product')}}</th>
+                <th>{{trans("icommerce::products.form.productDetails")}}</th>
                 <th>{{trans('icommerce::orders.table.sku')}}</th>
                 <th>{{trans('icommerce::orders.table.quantity')}}</th>
                 <th>{{trans('icommerce::orders.table.unit price')}}</th>
@@ -94,6 +95,11 @@
                         </div>
                       @endif
                     </td>
+                    @if(isset($product->details))
+                      <td>
+                        {{$product->details}}
+                      </td>
+                    @endif
                     <td>
                       {{$product->product->sku}}<br>
                     </td>
@@ -111,9 +117,14 @@
                 @if($order->coupon_total > 0)
                   <tr class="couponTotal">
                     @php($coupon = $order->coupons->first())
-                    <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.coupon')}} ({{$coupon->code}} - {{$coupon->type_discount ? $coupon->discount ."%" : $currency->symbol_left.' '.formatMoney($coupon->discount).' '.$currency->symbol_right }})</td>
+                    <td colspan="4" class="text-right font-weight-bold">{{trans('icommerce::orders.table.coupon')}}
+                      ({{$coupon->code}}
+                      - {{$coupon->type_discount ? $coupon->discount ."%" : $currency->symbol_left.' '.formatMoney($coupon->discount).' '.$currency->symbol_right }}
+                      )
+                    </td>
                     <td
-                      class="text-right"> - {{$currency->symbol_left}}  {{formatMoney($order->coupon_total) }} {{$currency->symbol_right}}</td>
+                      class="text-right">
+                      - {{$currency->symbol_left}}  {{formatMoney($order->coupon_total) }} {{$currency->symbol_right}}</td>
                   </tr>
                 @endif
                 <tr class="shippingTotal">
@@ -155,8 +166,8 @@
         @endif
 
         <a href="{{ route(locale().'.icommerce.store.checkout',['orderId' => $order->id]) }}"
-            class="btn btn-outline-primary btn-rounded btn-lg my-2">
-            {{trans('icommerce::common.button.buy again')}}
+           class="btn btn-outline-primary btn-rounded btn-lg my-2">
+          {{trans('icommerce::common.button.buy again')}}
         </a>
 
       </div>

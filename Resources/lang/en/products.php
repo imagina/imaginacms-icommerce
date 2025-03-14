@@ -82,7 +82,8 @@ return [
     'available' => 'Available',
     'contactUs' => 'Contact us',
     'soldByOrganization' => 'Sold by:',
-    'outOfStock' => 'Out of stock'
+    'outOfStock' => 'Out of stock',
+    'productDetails' => 'Product Details',
   ],
   'messages'          => [
     'error delete product'  => 'The product could not be deleted',

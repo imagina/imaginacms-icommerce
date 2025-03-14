@@ -23,6 +23,7 @@ return [
     'subtotal' => 'Sub Total',
     'total' => 'Total: ',
     'secondary_total' => 'Total',
+    'details' => 'Detalles del producto',
   ],
   'button' => [
     'continue_shopping' => 'Continuar comprando',

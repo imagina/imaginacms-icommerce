@@ -33,7 +33,8 @@ class CartProduct extends CrudModel
     'quantity',
     'is_call',
     'organization_id',
-    'options'
+    'options',
+    'details'
   ];
 
   protected $casts = [
