@@ -98,10 +98,6 @@
                         {{trans('icommerce::cart.table.price_per_unit')}}
                         : {{isset($currency) ? $currency->symbol_left : '$'}}
                         {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
-                        <br>
-                        @if(isset($cartProduct->details))
-                          {{trans('icommerce::cart.table.details')}}: {{ $cartProduct->details}}
-                        @endif
                       </p>
                       @if($cartProduct->product->shipping)
                         <p>
@@ -111,8 +107,14 @@
                           </small>
                         </p>
                       @endif
-                      <!-- boton para eliminar-->
-                      <div class="button-remove">
+                      <!-- boton para eliminar y detalles del producto-->
+                      <div class="button-remove d-flex align-items-center">
+                        @if(isset($cartProduct->details))
+                          <div class="product-details mx-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="{{ $cartProduct->details }}">
+                            <i class="fa-solid fa-circle-info text-primary"></i>
+                          </div>
+                        @endif
                         <a class="close cart-remove text-danger"
                            onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
                            title="quitar producto">
@@ -273,14 +275,14 @@
             {!! setting('icommerce::orderSummaryDescription') !!}
           </div>
         @endif
-        <div class="d-flex mt-3">
-          <button type="button" class="btn btn-primary btn-lg w-40 mx-1 placeOrder"
+        <div class="mt-3">
+          <button type="button" class="btn btn-link p-0 w-100 text-right"
                   href="{{url('/')}}">
             <div>
               {{ trans('icommerce::checkout.continue_buying') }}
             </div>
           </button>
-          <button type="button" class="btn btn-warning btn-lg w-40 mx-1 placeOrder"
+          <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
                   onclick="orderSumamryPlaceOrder()">
             <div>
               {{ trans('icommerce::order_summary.submit') }}

@@ -78,7 +78,6 @@
             <div class="table-responsive">
               <table class="table ">
                 <th>{{trans('icommerce::orders.table.product')}}</th>
-                <th>{{trans("icommerce::products.form.productDetails")}}</th>
                 <th>{{trans('icommerce::orders.table.sku')}}</th>
                 <th>{{trans('icommerce::orders.table.quantity')}}</th>
                 <th>{{trans('icommerce::orders.table.unit price')}}</th>
@@ -94,12 +93,12 @@
                                                     }})
                         </div>
                       @endif
+                      @if(isset($product->details))
+                        <p class="product-details m-0" style="font-size: 12px">
+                          {{$product->details}}
+                        </p>
+                      @endif
                     </td>
-                    @if(isset($product->details))
-                      <td>
-                        {{$product->details}}
-                      </td>
-                    @endif
                     <td>
                       {{$product->product->sku}}<br>
                     </td>
@@ -166,7 +165,7 @@
         @endif
 
         <a href="{{ route(locale().'.icommerce.store.checkout',['orderId' => $order->id]) }}"
-           class="btn btn-outline-primary btn-rounded btn-lg my-2">
+           class="btn btn-primary btn-rounded btn-lg my-2">
           {{trans('icommerce::common.button.buy again')}}
         </a>
 

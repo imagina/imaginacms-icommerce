@@ -156,6 +156,7 @@ return [
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
     'enableProductDetails' => 'Activate Product Details',
+    'maximumNumberOfCharactersInputDetails' => 'Maximum number of characters in the Details field',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',

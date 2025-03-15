@@ -169,6 +169,7 @@ return [
     'productShowGalleryLayout' => 'Plantilla de Galeria',
     'productResponsive' => 'Responsive Galeria',
     'enableProductDetails' => 'Activar Detalles de producto',
+    'maximumNumberOfCharactersInputDetails' => 'Número máximo de caracteres del campo Detalles',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',

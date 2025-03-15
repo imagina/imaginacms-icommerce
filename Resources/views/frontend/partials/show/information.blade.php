@@ -46,9 +46,19 @@
 
   @if(setting('icommerce::enableProductDetails'))
     <div class="product-details py-2">
-      <p class="label d-inline-block px-3 py-2 mb-0">{{trans("icommerce::products.form.productDetails")}} </p>
-      <br>
-      <textarea name="productDetails" rows="4" cols="50" wire:model.defer="details"></textarea>
+      <textarea
+        name="productDetails"
+        rows="4"
+        cols="25"
+        wire:model.defer="details"
+        placeholder="{{trans("icommerce::products.form.productDetails")}}"
+        maxlength="{{setting('icommerce::maximumNumberOfCharactersInputDetails')}}"
+        class="form-control"></textarea>
+      <div class="d-flex justify-content-end">
+        <span class="text-muted small mt-1">
+          {{trans("icommerce::products.form.maxCharactersProductDetails"). setting('icommerce::maximumNumberOfCharactersInputDetails')}}
+         </span>
+      </div>
     </div>
   @endif
 

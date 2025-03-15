@@ -87,6 +87,7 @@ return [
       'soldByOrganization' => 'Vendido por:',
       'outOfStock' => 'Producto Agotado',
       'productDetails' => 'Detalles Del Producto',
+      'maxCharactersProductDetails' => 'Maximo de caracteres permitidos: ',
     ],
 
     'messages'          => [

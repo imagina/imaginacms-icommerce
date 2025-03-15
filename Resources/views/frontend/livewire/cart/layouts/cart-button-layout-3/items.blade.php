@@ -24,11 +24,11 @@
             </h6>
             <!-- valor y cantidad -->
             <p class="price-text mb-0 text-muted py-1 pb-2">
-                        {{trans('icommerce::cart.table.quantity')}}: {{ $cartProduct->quantity }} <br>
-                        {{trans('icommerce::cart.table.price_per_unit')}}: {{isset($currency) ? $currency->symbol_left : '$'}}
-                        {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
-                      </p>
-            <div class="input-group quantity-selector">
+              {{trans('icommerce::cart.table.quantity')}}: {{ $cartProduct->quantity }} <br>
+              {{trans('icommerce::cart.table.price_per_unit')}}: {{isset($currency) ? $currency->symbol_left : '$'}}
+              {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
+            </p>
+            <div class="input-group quantity-selector py-2">
               <button type="button" class="button-minus"
                       wire:click="updateQuantityCartProduct({{ $cartProduct->id }}, {{$cartProduct->quantity - 1}})"
                       aria-label="minus">
@@ -38,6 +38,7 @@
               <input aria-label="quantity" type="number" step="1" min="1" max="{{$cartProduct->product->quantity}}"
                      class="quantity-field form-control" value="{{$cartProduct->quantity}}"
                      wire:keydown.debounce.500ms="updateQuantityCartProduct({{ $cartProduct->id }}, $event.target.value, {{$cartProduct->product->quantity}})"
+                     wire:change="refreshCart"
               />
 
               <button type="button" class="button-plus"
@@ -47,13 +48,15 @@
               </button>
             </div>
 
-            <p class="price-text mb-0 text-muted py-1 pb-2">
-              {{trans('icommerce::cart.table.price_per_unit')}}: {{isset($currency) ? $currency->symbol_left : '$'}}
-              {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
-            </p>
-
           </div>
-          <div class="col-auto">
+
+          <div class="col-auto d-flex align-items-start">
+            @if(isset($cartProduct->details))
+              <div class="product-details mx-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                   title="{{ $cartProduct->details }}">
+                <i class="fa-solid fa-circle-info text-primary"></i>
+              </div>
+            @endif
             <a class="cart-remove text-danger" wire:click="deleteFromCart({{$cartProduct->id}})"
                title="quitar producto">
               <i class="fa fa-times"></i>

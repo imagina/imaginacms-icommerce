@@ -1374,4 +1374,16 @@ return [
       'label' => 'icommerce::common.settings.enableProductDetails'
     ]
   ],
+  'maximumNumberOfCharactersInputDetails' => [
+    'name' => 'icommerce::maximumNumberOfCharactersInputDetails',
+    'value' => 100,
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "onlySuperAdmin" => true,
+    'type' => 'input',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.maximumNumberOfCharactersInputDetails'
+    ],
+  ],
 ];

@@ -84,6 +84,7 @@ return [
     'soldByOrganization' => 'Sold by:',
     'outOfStock' => 'Out of stock',
     'productDetails' => 'Product Details',
+    'maxCharactersProductDetails' => 'Maximum characters allowed: ',
   ],
   'messages'          => [
     'error delete product'  => 'The product could not be deleted',

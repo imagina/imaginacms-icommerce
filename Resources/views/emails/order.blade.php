@@ -43,7 +43,6 @@
     <thead style="background-color: #eee;">
     <tr>
       <th>{{trans('icommerce::orders.table.product')}}</th>
-      <th>{{trans("icommerce::products.form.productDetails")}}</th>
       <th>Sku</th>
       <th>{{trans('icommerce::orders.table.quantity')}}</th>
       <th>{{trans('icommerce::orders.table.unit price')}}</th>
@@ -68,12 +67,12 @@
               }})
             </div>
           @endif
+          @if(isset($product->details))
+            <p class="product-details m-0" style="font-size: 12px">
+              {{$product->details}}
+            </p>
+          @endif
         </td>
-        @if(isset($product->details))
-          <td>
-            {{$product->details}}
-          </td>
-        @endif
         <td>
           {{$product->product->sku}}<br>
         </td>

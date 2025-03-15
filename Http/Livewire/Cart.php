@@ -455,12 +455,31 @@ class Cart extends Component
       } else {
         if (empty($stockProduct) || $stockProduct >= $newValue) {
           $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
+
+//          dd($cartProduct);
+//
+//          $data = [
+//            "cart_id" => $cartProduct->cart_id,
+//            "product_id" => $cartProduct->product_id,
+//            "quantity" => $newValue,
+//            "product_option_values" => $cartProduct,
+//            "is_call" => $cartProduct->is_call,
+//            'details' => $cartProduct->details,
+//            'replaceQuantity' => true
+//          ];
+//
+//          $this->cartProductRepository()->create($data);
+
           $this->cartProductRepository()->update($cartProduct, ['quantity' => $newValue]);
           $this->updateCart();
         } else {
+          $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
+          $this->cartProductRepository()->update($cartProduct, ['quantity' => $stockProduct]);
           $this->alert('warning', trans('icommerce::cart.message.no_stock') . $stockProduct, config("asgard.isite.config.livewireAlerts"));
         }
       }
+    } else {
+      $this->refreshCart();
     }
   }
 }
