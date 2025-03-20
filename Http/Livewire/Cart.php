@@ -77,7 +77,6 @@ class Cart extends Component
   //|--------------------------------------------------------------------------
   public function refreshCart()
   {
-
     $this->loading = true;
     $cart = request()->session()->get('cart');
     $cart = json_decode($cart);
@@ -448,38 +447,39 @@ class Cart extends Component
 
   public function updateQuantityCartProduct($cartProductId, $newValue = null, $stockProduct = null)
   {
+    $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
+    $data = [
+      "cart_id" => $cartProduct->cart_id,
+      "product_id" => $cartProduct->product_id,
+      "product_option_values" => $cartProduct->productOptionValues,
+      "is_call" => $cartProduct->is_call,
+      'details' => $cartProduct->details,
+      'replaceQuantity' => true
+    ];
     if (!empty($newValue)) {
       if ($newValue == 0) {
         $this->deleteFromCart($cartProductId);
         $this->updateCart();
       } else {
-        if (empty($stockProduct) || $stockProduct >= $newValue) {
-          $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
-
-//          dd($cartProduct);
-//
-//          $data = [
-//            "cart_id" => $cartProduct->cart_id,
-//            "product_id" => $cartProduct->product_id,
-//            "quantity" => $newValue,
-//            "product_option_values" => $cartProduct,
-//            "is_call" => $cartProduct->is_call,
-//            'details' => $cartProduct->details,
-//            'replaceQuantity' => true
-//          ];
-//
-//          $this->cartProductRepository()->create($data);
-
-          $this->cartProductRepository()->update($cartProduct, ['quantity' => $newValue]);
+        try {
+          $data["quantity"] = $newValue;
+          $this->cartProductRepository()->create($data);
           $this->updateCart();
-        } else {
-          $cartProduct = $this->cartProductRepository()->getItem($cartProductId);
-          $this->cartProductRepository()->update($cartProduct, ['quantity' => $stockProduct]);
-          $this->alert('warning', trans('icommerce::cart.message.no_stock') . $stockProduct, config("asgard.isite.config.livewireAlerts"));
+        } catch (\Exception $e) {
+          $data = [
+            "cart_id" => $cartProduct->cart_id,
+            "product_id" => $cartProduct->product_id,
+            "product_option_values" => $cartProduct->productOptionValues,
+            "is_call" => $cartProduct->is_call,
+            "details" => $cartProduct->details,
+            "replaceQuantity" => true,
+            "quantity" => 1
+          ];
+          $this->cartProductRepository()->create($data);
+          $this->alert('warning', trans('icommerce::cart.message.no_stock'), config("asgard.isite.config.livewireAlerts"));
+          $this->updateCart();
         }
       }
-    } else {
-      $this->refreshCart();
     }
   }
 }

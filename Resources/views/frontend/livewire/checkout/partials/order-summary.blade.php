@@ -74,24 +74,19 @@
                         </a>
                       </h6>
                       <!-- valor y cantidad -->
-                      <div class="input-group quantity-selector">
-                        <a class="button-minus"
-                           onclick="window.livewire.emit('updateQuantityCartProduct',{{ $cartProduct->id }}, {{$cartProduct->quantity - 1}})"
-                           aria-label="minus">
-                          <i class="fa fa-minus"></i>
-                        </a>
+                      <div class="input-group quantity-selector quantity-selector-checkout py-2">
+                        <button type="button" class="button-minus" onclick="decreaseQuantity(this)" aria-label="minus">
+                          <i class="fa fa-minus" aria-hidden="true"></i>
+                        </button>
 
-                        <input aria-label="quantity" type="number" step="1" min="1"
-                               max="{{ $cartProduct->product->quantity }}"
-                               class="quantity-field form-control" value="{{ $cartProduct->quantity }}"
-                               onchange="window.livewire.emit('updateQuantityCartProduct', {{ $cartProduct->id }}, this.value, {{ $cartProduct->product->quantity }})"
-                        />
+                        <input type="number" step="1" min="1" max="{{$cartProduct->product->quantity}}"
+                               class="quantity-field form-control" value="{{$cartProduct->quantity}}"
+                               oninput="if(this.value == '') this.value = 1"
+                               onchange="debouncedLivewireEmit(this, {{ $cartProduct->id }}, {{ $cartProduct->product->quantity }})">
 
-                        <a class="button-plus"
-                           onclick="window.livewire.emit('updateQuantityCartProduct', {{ $cartProduct->id }}, {{$cartProduct->quantity + 1}})"
-                           aria-label="plus">
-                          <i class="fa fa-plus"></i>
-                        </a>
+                        <button type="button" class="button-plus" onclick="increaseQuantity(this)" aria-label="plus">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
                       </div>
                       <p class="text-quantity mb-0 text-muted py-2">
                         {{-- {{trans('icommerce::cart.table.quantity')}} : {{ $cartProduct->quantity }} <br> --}}
@@ -108,9 +103,9 @@
                         </p>
                       @endif
                       <!-- boton para eliminar y detalles del producto-->
-                      <div class="button-remove d-flex align-items-center">
-                        @if(isset($cartProduct->details))
-                          <div class="product-details mx-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                      <div class="button-remove d-flex align-items-center justify-content-end">
+                        @if(isset($cartProduct->details) && !empty($cartProduct->details))
+                          <div class="product-details mx-2" data-toggle="tooltip" data-placement="top"
                                title="{{ $cartProduct->details }}">
                             <i class="fa-solid fa-circle-info text-primary"></i>
                           </div>
@@ -323,4 +318,49 @@
       gtag("event", "purchase", gTagData);
     }
   }
+
+  let debounceTimeout;
+
+  function debouncedLivewireEmit(input, productId, maxQuantity) {
+    clearTimeout(debounceTimeout);
+
+    debounceTimeout = setTimeout(() => {
+      let value = parseInt(input.value) || 1;
+
+      if (value < 1) {
+        value = 1;
+      } else if (value > maxQuantity) {
+        value = maxQuantity;
+      }
+
+      input.value = value;
+
+      // Emitir evento a Livewire
+      Livewire.emit('updateQuantityCartProduct', productId, value);
+    }, 500); // Debounce de 500ms
+  }
+
+  window.decreaseQuantity = function(button) {
+    let input = button.closest('.input-group').querySelector('.quantity-field');
+    let min = parseInt(input.min);
+    let value = parseInt(input.value) || 1;
+
+    if (value > min) {
+      input.value = value - 1;
+      input.dispatchEvent(new Event('change')); // Disparar onchange con debounce
+    }
+  };
+
+  window.increaseQuantity = function(button) {
+    let input = button.closest('.input-group').querySelector('.quantity-field');
+    let max = parseInt(input.max);
+    let value = parseInt(input.value) || 1;
+
+    if (value < max) {
+      input.value = value + 1;
+      input.dispatchEvent(new Event('change'));
+    }
+  };
+
+
 </script>

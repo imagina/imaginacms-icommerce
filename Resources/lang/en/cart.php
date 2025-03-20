@@ -50,7 +50,7 @@ return [
     'min_exceeded' => 'Quantity must be at least 1',
     'quantity_unavailable' => 'There are :quantity units left of the product you want',
     'warehouse_quantity_unavailable' => 'This product is not available for the selected Warehouse',
-    'no_stock' => 'La cantidad requerida no cumple con el stock disponible de producto, Stock del Producto: '
+    'no_stock' => 'The required quantity does not meet the available product stock.'
   ],
 
 ];

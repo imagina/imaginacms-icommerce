@@ -14,10 +14,10 @@ class AddColumnDetailsInCartProductAndOrderItemTable extends Migration
   public function up()
   {
     Schema::table('icommerce__cart_product', function (Blueprint $table) {
-      $table->longText('details')->after('options')->nullable();
+      $table->string('details', 300)->after('options')->nullable();
     });
     Schema::table('icommerce__order_item', function (Blueprint $table) {
-      $table->longText('details')->after('options')->nullable();
+      $table->string('details', 300)->after('options')->nullable();
     });
   }
 

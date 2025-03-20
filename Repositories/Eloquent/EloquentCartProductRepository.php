@@ -44,25 +44,25 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
      * if (isset($filter->status)) $query->where('status', $filter->status);
      *
      */
-        //add filter by search
-        if (isset($filter->search)) {
-          //find search in columns
-          $query->where(function ($query) use ($filter) {
-          $query->where('id', 'like', '%' . $filter->search . '%')
-            ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
-            ->orWhere('created_at', 'like', '%' . $filter->search . '%');
-            });
-        }
+    //add filter by search
+    if (isset($filter->search)) {
+      //find search in columns
+      $query->where(function ($query) use ($filter) {
+        $query->where('id', 'like', '%' . $filter->search . '%')
+          ->orWhere('updated_at', 'like', '%' . $filter->search . '%')
+          ->orWhere('created_at', 'like', '%' . $filter->search . '%');
+      });
+    }
 
-        if (isset($filter->dynamicOptionsIds)){
-          $dynamicOptionsIds = $filter->dynamicOptionsIds;
-          $query->whereHas('dynamicOptions', function ($query) use ($dynamicOptionsIds) {
-            $query->whereIn("option_id",$dynamicOptionsIds);
-          });
-        }
+    if (isset($filter->dynamicOptionsIds)) {
+      $dynamicOptionsIds = $filter->dynamicOptionsIds;
+      $query->whereHas('dynamicOptions', function ($query) use ($dynamicOptionsIds) {
+        $query->whereIn("option_id", $dynamicOptionsIds);
+      });
+    }
     //Response
     return $query;
-      }
+  }
 
   /**
    * Method to sync Model Relations
@@ -89,7 +89,8 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     return $model;
   }
 
-  public function create($data){
+  public function create($data)
+  {
 
 
     $data["quantity"] = abs($data["quantity"]);
@@ -101,9 +102,9 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
     }
 
-    $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
+    $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
 
-    if($warehouseEnabled && isset($warehouse->id)){
+    if ($warehouseEnabled && isset($warehouse->id)) {
       $data["warehouse_id"] = $warehouse->id;
     }
     //To include all products even if they are internal (as in the case of services in reservations)
@@ -115,7 +116,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       "fields" => [],
     ];
 
-    $product = $productRepository->getItem($data["product_id"],json_decode(json_encode($params)));
+    $product = $productRepository->getItem($data["product_id"], json_decode(json_encode($params)));
 
     if (!isset($product->id)) {
       throw new \Exception("Invalid product", 400);
@@ -127,7 +128,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     $data["product_option_values"] = $result['pov'];
 
     //Search Product Option Values
-    $productOptionValues = ProductOptionValue::whereIn("id",$data["product_option_values"] ?? [])->get();
+    $productOptionValues = ProductOptionValue::whereIn("id", $data["product_option_values"] ?? [])->get();
 
     // validate required options
     if ($product->present()->hasRequiredOptions && !$this->productHasAllOptionsRequiredOk($product->productOptions, $productOptionValues, $optionsDynamic)) {
@@ -138,7 +139,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     $cartProduct = $this->findByAttributesOrOptions($data);
 
     //validate setting canAddIsCallProductsIntoCart
-    if(!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])){
+    if (!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])) {
       // validate valid quantity
       if (!$this->productHasValidQuantity($cartProduct, $product, $product->optionValues, $data, $productOptionValues)) {
         throw new \Exception("Product Quantity Unavailable", 400);
@@ -146,18 +147,18 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     }
 
     //if not found product into cart with the same options
-    if(!$cartProduct) {
+    if (!$cartProduct) {
       $data["organization_id"] = $product->organization_id ?? null;
       $cartProduct = $this->model->create($data);
 
       //Sync NO dynamics options
-      if(count($data["product_option_values"])>0){
+      if (count($data["product_option_values"]) > 0) {
         //\Log::info($this->log.'Create|Sync Product Options Values');
         $cartProduct->productOptionValues()->sync(Arr::get($data, 'product_option_values', []));
       }
 
       //Sync Dynamics options
-      if(count($optionsDynamic)>0){
+      if (count($optionsDynamic) > 0) {
         //\Log::info($this->log.'Create|Sync Dinamics Options');
 
         //#CasoX = Si existe una opcion "NoDinamica" y una "Dinamica". Agregaba la "NoDinamica" pero la "Dinamica" negative.
@@ -168,17 +169,17 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
       }
 
-    }else {
+    } else {
 
       //Case - Cart Product Exist
 
       //Dynamics options - Check
-      if(count($optionsDynamic)>0){
+      if (count($optionsDynamic) > 0) {
 
-        \Log::info($this->log."create|Options Dynamics");
+        \Log::info($this->log . "create|Options Dynamics");
 
         //Cart Products con la informacion de opciones dinamicas
-        $cartProducts = $this->findCartProductsWithDynamics($optionsDynamic,$data);
+        $cartProducts = $this->findCartProductsWithDynamics($optionsDynamic, $data);
 
         //Opciones dinamicas agrupadas
         $allOptionsDynamicsInCart = $this->groupAllOptionsDynamics($cartProducts);
@@ -188,35 +189,40 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
           $cartProductId = null;
           //Se evaluan todas las opciones del carrito, para ver si ya existe una con la misma informacion
           foreach ($allOptionsDynamicsInCart as $key => $optionCart) {
-            if($optionsFront['option_id']==$optionCart['option_id'] && $optionsFront['value']==$optionCart['value']){
+            if ($optionsFront['option_id'] == $optionCart['option_id'] && $optionsFront['value'] == $optionCart['value']) {
               $cartProductId = $optionCart['cartProductId']; //Ya existe esa opcion, con esto ya sabemos que producto actualizar del carrito
               break;
             }
           }
 
           //Check Result
-          if(is_null($cartProductId)){
-              //Create cart product
+          if (is_null($cartProductId)) {
+            //Create cart product
             $cartProduct = $this->model->create($data);
-              $newDataOption[] = $optionsFront;
-              $cartProduct->dynamicOptions()->attach($newDataOption);
-          }else{
-              //Update a specific cart product
-              $cartProductUpdate =  $this->getItem($cartProductId);
+            $newDataOption[] = $optionsFront;
+            $cartProduct->dynamicOptions()->attach($newDataOption);
+          } else {
+            //Update a specific cart product
+            $cartProductUpdate = $this->getItem($cartProductId);
+            if (!isset($data['replaceQuantity']) || !$data['replaceQuantity']) {
+              // if product have the same options update quantity and update
               $data['quantity'] += $cartProductUpdate->quantity;
-              $cartProductUpdate->update($data);
+            }
+            $cartProductUpdate->update($data);
           }
 
         }
 
-      }else{
+      } else {
 
-        \Log::info($this->log."create|NOT Options Dynamics");
+        \Log::info($this->log . "create|NOT Options Dynamics");
+
 
         // get product options
         $productOptionValues = $cartProduct->productOptionValues;
         // get options from front
         $productOptionValuesFront = Arr::get($data, 'product_option_values', []);
+        $productOptionValuesFront = is_array($productOptionValuesFront) ? $productOptionValuesFront : $productOptionValuesFront->toArray();
 
         $productOptionDynamics = $cartProduct->dynamicOptions;
 
@@ -228,13 +234,14 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
          * Caso de Uso: Cuando ya existe producto con opciones dinamicas y se envia a guardar sin opciones dinamicas (q deberia ser otro)
          * se rectifica con esa relacion para evitar que le sume "quantity" al producto anterior
          */
-        if($productOptionDynamics->isNotEmpty() || array_diff($productOptionValuesIds, $productOptionValuesFront) !== array_diff($productOptionValuesFront, $productOptionValuesIds)){
-            $cartProduct = $this->model->create($data);
-            $cartProduct->productOptionValues()->sync($productOptionValuesFront);
-        }else{
-
-          // if product have the same options update quantity and update
-          $data['quantity'] += $cartProduct->quantity;
+        if ($productOptionDynamics->isNotEmpty() || array_diff($productOptionValuesIds, $productOptionValuesFront) !== array_diff($productOptionValuesFront, $productOptionValuesIds)) {
+          $cartProduct = $this->model->create($data);
+          $cartProduct->productOptionValues()->sync($productOptionValuesFront);
+        } else {
+          if (!isset($data['replaceQuantity']) || !$data['replaceQuantity']) {
+            // if product have the same options update quantity and update
+            $data['quantity'] += $cartProduct->quantity;
+          }
           $cartProduct->update($data);
         }
 
@@ -244,12 +251,13 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     return $cartProduct;
   }
 
-  public function updateBy($criteria, $data, $params = false){
+  public function updateBy($criteria, $data, $params = false)
+  {
 
     // INITIALIZE QUERY
     $cartProduct = $this->findByAttributesOrOptions($data);
 
-    if($cartProduct) {
+    if ($cartProduct) {
 
       // get product options
       $productOptionValues = $cartProduct->productOptionValues;
@@ -260,10 +268,10 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       $productOptionValuesIds = $productOptionValues->pluck('id')->toArray();
 
       // if is the same option values ids
-      if( array_diff($productOptionValuesIds, $productOptionValuesFront) === array_diff($productOptionValuesFront, $productOptionValuesIds)){
+      if (array_diff($productOptionValuesIds, $productOptionValuesFront) === array_diff($productOptionValuesFront, $productOptionValuesIds)) {
         $cartProduct->update($data);
 
-      }else{ // if not the same options create cart product
+      } else { // if not the same options create cart product
         $cartProduct = $this->model->create($data);
       }
     }
@@ -273,34 +281,37 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   public function findByAttributesOrOptions($data)
   {
 
+
     // if the request has product without options
-    if(!count(Arr::get($data, 'product_option_values', []))) {
+    if (!count(Arr::get($data, 'product_option_values', []))) {
       // find product into cart by attributes
-      $cartProduct = CartProduct::where('cart_id',$data['cart_id'])
+      $cartProduct = CartProduct::where('cart_id', $data['cart_id'])
         ->where('product_id', $data['product_id'])
         ->where('is_call', $data['is_call'] ?? false)
+        ->where('details', $data['details'] ?? null)
         ->has('productOptionValues', 0)->first();
-    }else{
+    } else {
       // get options from front
       $productOptionValuesIdsFront = Arr::get($data, 'product_option_values', []);
 
       // find product into cart where has the same options
-      $cartProducts = CartProduct::where('cart_id',$data['cart_id'])
+      $cartProducts = CartProduct::where('cart_id', $data['cart_id'])
         ->where('product_id', $data['product_id'])
         ->where('is_call', $data['is_call'] ?? false)
+        ->where('details', $data['details'] ?? null)
         ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
-          $query->whereIn("product_option_value_id",$productOptionValuesIdsFront);
+          $query->whereIn("product_option_value_id", $productOptionValuesIdsFront);
         })->get();
 
-      foreach ($cartProducts as $cartProductQuery){
+      foreach ($cartProducts as $cartProductQuery) {
         // get product options
         $productOptionValuesIds = $cartProductQuery->productOptionValues->pluck('id')->toArray();
 
-          if( array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)){
+        if (array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)) {
 
-            $cartProduct = $cartProductQuery;
+          $cartProduct = $cartProductQuery;
 
-          }
+        }
       }
     }
 
@@ -308,7 +319,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   }
 
 
-  private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues,$optionsDynamic)
+  private function productHasAllOptionsRequiredOk($productOptions, $productOptionValues, $optionsDynamic)
   {
 
     $allRequiredOptionsOk = true;
@@ -318,11 +329,11 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         $optionOk = false;
 
         //No Dynamic
-        if($productOption->dynamic==0){
+        if ($productOption->dynamic == 0) {
           foreach ($productOptionValues as $productOptionValue) {
             $productOption->id == $productOptionValue->option_id ? $optionOk = true : false;
           }
-        }else{
+        } else {
           //Dynamic
           foreach ($optionsDynamic as $od) {
             $productOption->id == $od['option_id'] ? $optionOk = true : false;
@@ -342,87 +353,87 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     $cartProductQuantity = 0;
 
-    if(empty($product)){
+    if (empty($product)) {
       $product = $cartProduct->product;
     }
 
-    if(empty($productOptionsValues)){
+    if (empty($productOptionsValues)) {
       $productOptionsValues = $product->optionValues;
     }
 
-    if(empty($productOptionValuesFrontend)){
+    if (empty($productOptionValuesFrontend)) {
       //Search Product Option Values
       $productOptionValuesFrontend = $cartProduct->productOptionValues;
 
     }
     //buscamos los productos que ya estén añadidos al carrito actual
-    if(isset($cartProduct->id)){
+    if (isset($cartProduct->id)) {
       $cartProducts = $cartProduct->cart->products;
-    }else{
+    } else {
       $cart = Cart::find($data["cart_id"]);
       $cartProducts = $cart->products;
     }
 
     //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
-      foreach ($cartProducts as $cartSingleProduct){
-        if($cartSingleProduct->product_id == $product->id) {
-          $cartProductQuantity+= $cartSingleProduct->quantity;
-        }
+    foreach ($cartProducts as $cartSingleProduct) {
+      if ($cartSingleProduct->product_id == $product->id) {
+        $cartProductQuantity += $cartSingleProduct->quantity;
       }
+    }
 
     $quantity = ($data["quantity"] ?? 0) + $cartProductQuantity;
 
-    if($product->subtract){ // si el producto se substrae de inventario
+    if ($product->subtract) { // si el producto se substrae de inventario
 
       $warehouse = request()->session()->get('warehouse');
       $warehouse = json_decode($warehouse);
-      $warehouseEnabled = setting('icommerce::warehouseFunctionality',null,false);
+      $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
 
       $productQuantity = $product->quantity;
       //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
       //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
-      if($warehouseEnabled && isset($warehouse->id)){
+      if ($warehouseEnabled && isset($warehouse->id)) {
 
-        if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+        if (!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
         $productQuantity = \DB::table('icommerce__product_warehouse')
-            ->where('warehouse_id', $warehouse->id)
-            ->where('product_id', $product->id)
-            ->first();
+          ->where('warehouse_id', $warehouse->id)
+          ->where('product_id', $product->id)
+          ->first();
 
         $productQuantity = $productQuantity->quantity ?? 0;
       }
 
       // si la cantidad del producto no alcanza para lo solicitado
-      if($productQuantity < $quantity){
+      if ($productQuantity < $quantity) {
         $validQuantity = false;
-      }else{
-        if(!empty($productOptionValuesFrontend) && $productOptionValuesFrontend->isNotEmpty() && !empty($productOptionsValues) && $productOptionsValues->isNotEmpty()){ // si están añadiendo el producto con opciones
+      } else {
+        if (!empty($productOptionValuesFrontend) && $productOptionValuesFrontend->isNotEmpty() && !empty($productOptionsValues) && $productOptionsValues->isNotEmpty()) { // si están añadiendo el producto con opciones
           foreach ($productOptionValuesFrontend as $productOptionValueFrontend) { // recorriendo las opciones añadidas
 
             foreach ($productOptionsValues as $productOptionsValue) { // recorriendo las options values del producto
 
               //si el value del producto se debe substraer de inventario y coincide con el que se está añadiendo al carrito
-             if($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValueFrontend->option_value_id){
+              if ($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValueFrontend->option_value_id) {
 
-               $productOptionsValueQuantity = $productOptionsValue->quantity;
-               if($warehouseEnabled){
+                $productOptionsValueQuantity = $productOptionsValue->quantity;
+                if ($warehouseEnabled) {
 
-                 if(!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
-                 $productOptionsValueQuantity = \DB::table('icommerce__product_option_value_warehouse')
-                   ->where('warehouse_id', $warehouse->id)
-                   ->where('product_option_value_id', $productOptionsValue->id)
-                   ->where('product_id', $productOptionsValue->product_id)
-                   ->first();
+                  if (!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+                  $productOptionsValueQuantity = \DB::table('icommerce__product_option_value_warehouse')
+                    ->where('warehouse_id', $warehouse->id)
+                    ->where('product_option_value_id', $productOptionsValue->id)
+                    ->where('product_id', $productOptionsValue->product_id)
+                    ->first();
 
-                 $productOptionsValueQuantity = $productOptionsValueQuantity->quantity ?? 0;
-               }
-               //dd($quantity,$productOptionsValue->subtract,$productOptionValueFrontend["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValueFrontend["optionValueId"]);
-               //si la cantidad de unidades para el valor de opcion no alcanza para lo solicitado
-              if($productOptionsValueQuantity < $quantity){
-                //dd($productOptionsValueQuantity,$quantity, $productOptionsValue);
-                $validQuantity = false;
+                  $productOptionsValueQuantity = $productOptionsValueQuantity->quantity ?? 0;
+                }
+                //dd($quantity,$productOptionsValue->subtract,$productOptionValueFrontend["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValueFrontend["optionValueId"]);
+                //si la cantidad de unidades para el valor de opcion no alcanza para lo solicitado
+                if ($productOptionsValueQuantity < $quantity) {
+                  //dd($productOptionsValueQuantity,$quantity, $productOptionsValue);
+                  $validQuantity = false;
+                }
               }
-             }
             }
           }
         }
@@ -440,17 +451,17 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   {
 
     $optionsDynamic = [];
-    \Log::info($this->log.'separateOptions|ProductOptionValuesOld: '.json_encode($pov));
+    \Log::info($this->log . 'separateOptions|ProductOptionValuesOld: ' . json_encode($pov));
 
     foreach ($pov as $key => $value) {
-      if(is_array($value)){
+      if (is_array($value)) {
         $optionsDynamic[] = $value;
         unset($pov[$key]);
       }
     }
 
-    \Log::info($this->log.'separateOptions|ProductOptionValuesNews: '.json_encode($pov));
-    \Log::info($this->log.'separateOptions|OptionsDynamics: '.json_encode($optionsDynamic));
+    \Log::info($this->log . 'separateOptions|ProductOptionValuesNews: ' . json_encode($pov));
+    \Log::info($this->log . 'separateOptions|OptionsDynamics: ' . json_encode($optionsDynamic));
 
     return ['optionsDynamic' => $optionsDynamic, 'pov' => $pov];
 
@@ -464,7 +475,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
    * @param $dynamicOptions (From Frontend) [option_id,value]
    * @return $cartProducts (Solo los productos que contengan opciones dinamicas)
    */
-  public function findCartProductsWithDynamics($optionsDynamic,$data)
+  public function findCartProductsWithDynamics($optionsDynamic, $data)
   {
 
     //\Log::info($this->log."findCartProductsWithDynamics");
@@ -504,11 +515,11 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
        */
       foreach ($cartProduct->dynamicOptions as $key => $option) {
         $oldOption = [
-              'cartProductId' => $cartProductId,
-              'option_id' => $option->pivot->option_id,
-              'value' => $option->pivot->value
+          'cartProductId' => $cartProductId,
+          'option_id' => $option->pivot->option_id,
+          'value' => $option->pivot->value
         ];
-        array_push($allOptionsDynamicsInCart,$oldOption);
+        array_push($allOptionsDynamicsInCart, $oldOption);
       }
     }
 
