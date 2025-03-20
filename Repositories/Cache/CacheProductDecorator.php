@@ -12,6 +12,8 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
     parent::__construct();
     $this->entityName = 'icommerce.products';
     $this->repository = $product;
+    $this->tags = ['icommerce.productdiscounts','icommerce.productwarehouses'];
+
   }
 
 
