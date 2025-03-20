@@ -12,9 +12,11 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
     parent::__construct();
     $this->entityName = 'icommerce.products';
     $this->repository = $product;
+    $this->tags = ['icommerce.productdiscounts','icommerce.productwarehouses'];
+
   }
-  
-  
+
+
   /**
    * Min and Max Price
    *
@@ -26,7 +28,7 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
       return $this->repository->getPriceRange($params);
     });
   }
-  
+
   /**
    * Get Manufactures From Products Filtered
    *
@@ -38,7 +40,7 @@ class CacheProductDecorator extends BaseCacheCrudDecorator implements ProductRep
       return $this->repository->getManufacturers($params);
     });
   }
-  
+
   /**
    * Get Product Options From Products Filtered
    *
