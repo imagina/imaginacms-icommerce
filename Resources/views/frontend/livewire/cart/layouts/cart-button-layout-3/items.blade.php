@@ -17,7 +17,7 @@
           <div class="col pr-0">
             <!-- titulo -->
             <h6 class="mb-1 __title">
-              <a data-toggle="tooltip" data-placement="left" title="hola" href="{{$cartProduct->product->url}}" class="name-product text-dark">
+              <a data-toggle="tooltip" data-placement="left" title="{{ $cartProduct->product->name }}" href="{{$cartProduct->product->url}}" class="name-product text-dark">
                 {{ $cartProduct->product->name }}
                 @include("icommerce::frontend.livewire.cart.productOptions")
               </a>

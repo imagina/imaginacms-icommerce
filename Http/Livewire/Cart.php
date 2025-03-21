@@ -176,20 +176,26 @@ class Cart extends Component
         $product = $this->productRepository()->getItem($productId);
 
         if (isset($product->id)) {
-          $data = [
-            "cart_id" => $this->cart->id,
-            "product_id" => $productId,
-            "quantity" => $quantity,
-            "product_option_values" => $productOptionValues,
-            "is_call" => $isCall,
-            'details' => $details
-          ];
+          try {
+            $data = [
+              "cart_id" => $this->cart->id,
+              "product_id" => $productId,
+              "quantity" => $quantity,
+              "product_option_values" => $productOptionValues,
+              "is_call" => $isCall,
+              'details' => $details
+            ];
+            $this->cartProductRepository()->create($data);
+            $this->updateCart();
 
-          $this->cartProductRepository()->create($data);
-          $this->updateCart();
-
-          $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
-
+            $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+          } catch (\Exception $e) {
+            switch ($e->getMessage()) {
+              case 'Invalid detail':
+                $this->alert('warning', trans('icommerce::cart.message.details_unavailable') . setting('icommerce::maximumNumberOfCharactersInputDetails'), config("asgard.isite.config.livewireAlerts"));
+                break;
+            }
+          }
         } else {
           $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
         }
@@ -466,18 +472,25 @@ class Cart extends Component
           $this->cartProductRepository()->create($data);
           $this->updateCart();
         } catch (\Exception $e) {
-          $data = [
-            "cart_id" => $cartProduct->cart_id,
-            "product_id" => $cartProduct->product_id,
-            "product_option_values" => $cartProduct->productOptionValues,
-            "is_call" => $cartProduct->is_call,
-            "details" => $cartProduct->details,
-            "replaceQuantity" => true,
-            "quantity" => 1
-          ];
-          $this->cartProductRepository()->create($data);
-          $this->alert('warning', trans('icommerce::cart.message.no_stock'), config("asgard.isite.config.livewireAlerts"));
-          $this->updateCart();
+          switch ($e->getMessage()) {
+            case 'Invalid product':
+              $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
+              break;
+
+            case 'Missing required product options':
+              $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
+              $this->redirect($product->url);
+              break;
+
+            case 'Product Quantity Unavailable':
+              if ($this->warehouseEnabled) {
+                $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
+              } else {
+                $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
+              }
+              break;
+          }
+          $this->hydrate();
         }
       }
     }

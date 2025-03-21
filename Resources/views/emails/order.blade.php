@@ -58,7 +58,7 @@
       <tr class="product-order">
         <td>
           <a href="{{$product->product->url}}">
-            <h4 class="mb-0">{{$product->title}}</h4>
+            <h4 style="margin-bottom: 0;">{{$product->title}}</h4>
           </a>
           <!--Show item options-->
           @if($product->orderOption()->count())
@@ -68,7 +68,7 @@
             </div>
           @endif
           @if(isset($product->details))
-            <p class="product-details mt-0" style="font-size: 12px">
+            <p class="product-details" style="font-size: 12px; margin-top: 0;">
               {{$product->details}}
             </p>
           @endif

@@ -50,6 +50,7 @@ return [
     'not_existence' => 'No puedes agregar mas ya que excede la existencia en el inventario',
     'min_exceeded' => 'La cantidad no puede ser menor a 1',
     'quantity_unavailable' => 'Quedan :quantity unidades del producto que deseas',
+    'details_unavailable' => 'La cantidad de caracteres permitidos en el campo "detalles de producto" es de: ',
     'warehouse_quantity_unavailable' => 'Este producto no está disponible para la bodega seleccionada',
     'no_stock' => 'La cantidad requerida no cumple con el stock disponible de producto'
   ],
