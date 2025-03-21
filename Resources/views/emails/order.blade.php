@@ -1,5 +1,6 @@
 @php
   $order = $data["order"];
+  $order->refresh(); //It was added because the order status title was not correct.
 @endphp
 <div>
   <h1 class="title" style="text-align: center;
