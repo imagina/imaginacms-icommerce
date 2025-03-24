@@ -974,4 +974,18 @@ return [
     'icommerce-order' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-receipt']
   ],
 
+  //Tenant
+  'tenant' => [
+    'dbPrefix' => 'icommerce',
+    'dependencies' => [
+      'icommerceagree' => [],
+      'icommercecheckmo' => [],
+      'wishlistable' => ['dbPrefix' => 'wishlistable'],
+    ],
+    'client' => [
+      'icon' => 'fal fa-cash-register',
+      'title' => '(pt) Store',
+      'description' => '(pt) Sell Your Products',
+    ]
+  ],
 ];
