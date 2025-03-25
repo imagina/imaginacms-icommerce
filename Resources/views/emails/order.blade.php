@@ -1,6 +1,5 @@
 @php
-  $order = $data["order"];
-  $order->refresh(); //It was added because the order status title was not correct.
+  $order = $data["order"]
 @endphp
 <div>
   <h1 class="title" style="text-align: center;
@@ -31,7 +30,7 @@
   @if(isset($order->organization_id) && !empty($order->organization_id))
     @php
       $organizationRepository = app("Modules\Isite\Repositories\OrganizationRepository");
-      $organization = $organizationRepository->getItem($order->organization_id);
+      $organization = $organizationRepository->getItem($order->organization_id)
     @endphp
     <p>
       {{trans("icommerce::orders.sub-orders.details_1").' '.$order->parent_id.', '.trans("icommerce::orders.sub-orders.details_2").' '.$organization->title.'.'}}
@@ -53,21 +52,25 @@
     <tbody>
 
     @php
-      $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD');
+      $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD')
     @endphp
     @foreach($order->orderItems as $product)
       <tr class="product-order">
         <td>
           <a href="{{$product->product->url}}">
-            <h4>{{$product->title}}</h4>
+            <h4 style="margin-bottom: 0;">{{$product->title}}</h4>
           </a>
-
           <!--Show item options-->
           @if($product->orderOption()->count())
             <div class="text-muted" style="font-size: 13px">({{
                   $product->product_options_label
               }})
             </div>
+          @endif
+          @if(isset($product->details))
+            <p class="product-details" style="font-size: 12px; margin-top: 0;">
+              {{$product->details}}
+            </p>
           @endif
         </td>
         <td>
@@ -96,7 +99,7 @@
         if(!empty($order->tax_amount)){
             $rest = $rest + $order->tax_amount;
         }
-        $subtotal = $order->total + $order->coupon_total - $rest;
+        $subtotal = $order->total + $order->coupon_total - $rest
       @endphp
 
       <td colspan="2"
@@ -120,7 +123,7 @@
       <tr class="shippingTotal">
         <td colspan="3" style="text-align: right">{{trans('icommerce::orders.table.shipping_method')}}</td>
         <td colspan="2"
-            style="text-align: right">{{$order->shipping_method}} {{ $order->shipping_amount>0 ? ' - '.number_format($order->shipping_amount,2,".",",") : ''}}{{$order->currency->symbol_right ?? ''}}</td>
+            style="text-align: right">{{$order->shipping_method}} {{ $order->shipping_amount>0 ? ' - '.number_format($order->shipping_amount,2) : ''}}{{$order->currency->symbol_right ?? ''}}</td>
       </tr>
     @endif
 
@@ -128,7 +131,7 @@
       <tr class="taxAmount">
         <td colspan="3" style="text-align: right">{{trans('icommerce::order_summary.tax')}}</td>
         <td colspan="2"
-            style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->tax_amount,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
+            style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->tax_amount,2)}}{{$order->currency->symbol_right ?? ''}}</td>
       </tr>
     @endif
 
@@ -136,7 +139,7 @@
     <tr class="total">
       <td colspan="3" style="text-align: right">Total</td>
       <td colspan="2"
-          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->total,2,".",",")}}{{$order->currency->symbol_right ?? ''}}</td>
+          style="text-align: right">{{$order->currency->symbol_left ?? ''}}{{number_format($order->total,2)}}{{$order->currency->symbol_right ?? ''}}</td>
     </tr>
     </tbody>
   </table>

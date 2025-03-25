@@ -33,7 +33,8 @@ class CartProduct extends CrudModel
     'quantity',
     'is_call',
     'organization_id',
-    'options'
+    'options',
+    'details'
   ];
 
   protected $casts = [
@@ -62,7 +63,7 @@ class CartProduct extends CrudModel
 
   public function cartProductOptions()
   {
-    return $this->hasMany(CartProductOptions::class , 'cart_product_id');
+    return $this->hasMany(CartProductOptions::class, 'cart_product_id');
   }
 
   public function dynamicOptions()
@@ -127,6 +128,16 @@ class CartProduct extends CrudModel
   public function getNameProductAttribute()
   {
     return Product::find($this->product_id)->name;
+  }
+
+  public function setDetailsAttribute($value)
+  {
+    $value = strip_tags($value);
+    if (strlen($value) <= setting('icommerce::maximumNumberOfCharactersInputDetails')) {
+      $this->attributes['details'] = $value;
+    } else {
+      throw new \Exception("Invalid detail", 400);
+    }
   }
 
 }

@@ -31,9 +31,9 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
    * @var array
    */
   protected $with = [
-    'all' => ['category','translations', 'files', 'discount.product', 'organization','weightClass', 'lengthClass', 'volumeClass'],
+    'all' => ['category', 'translations', 'files', 'discount.product', 'organization', 'weightClass', 'lengthClass', 'volumeClass'],
     'index' => [],
-    'show' => [ 'categories', 'manufacturer', 'productOptions'],
+    'show' => ['categories', 'manufacturer', 'productOptions'],
   ];
 
 
@@ -48,14 +48,15 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
 
   public function __construct($model)
   {
-    try{
+    try {
 
       parent::__construct($model);
 
-    }catch(\Exception $e){}
-
-
+    } catch (\Exception $e) {
     }
+
+
+  }
 
   public function getItem($criteria, $params = false)
   {
@@ -140,6 +141,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     //Response
     return $response;
   }
+
   public function filterQuery($query, $filter, $params)
   {
 
@@ -155,30 +157,39 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     // add filter by search
     if (isset($filter->search) && !empty($filter->search)) {
 
-      $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
+      if (ctype_digit($filter->search)) {
+        $query->where('id', $filter->search);
+      } else {
 
-      // removing symbols used by MySQL
-      $filter->search = sanitizeSearchParameter($filter->search);
-      $words = explode(" ", $filter->search);//Explode
+        $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
 
-      //Search query
-      $query->leftJoin(\DB::raw(
-        "(SELECT MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN BOOLEAN MODE) scoreSearch1, product_id, name, " .
-        " MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 " .
-        "from icommerce__product_translations " .
-        "where `locale` = '" . ($filter->locale ?? locale()) . "') as ptrans"
-      ), 'ptrans.product_id', 'icommerce__products.id')
-        ->where(function ($query) {
-          $query->where('scoreSearch1', '>', 0)
-            ->orWhere('scoreSearch2', '>', 0);
-        });
+        // removing symbols used by MySQL
+        $filter->search = sanitizeSearchParameter($filter->search);
+        $words = explode(" ", $filter->search);//Explode
 
-      foreach ($orderSearchResults ?? [] as $orderSearch) {
-        $query->orderBy($orderSearch, 'desc');
+        //Search query
+        $query->leftJoin(\DB::raw(
+          "(SELECT MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN BOOLEAN MODE) scoreSearch1, product_id, name, " .
+          " MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 " .
+          "LOCATE('" . $filter->search . "', name) as name_position " .
+          "from icommerce__product_translations " .
+          "where `locale` = '" . ($filter->locale ?? locale()) . "') as ptrans"
+        ), 'ptrans.product_id', 'icommerce__products.id')
+          ->where(function ($query) {
+            $query->where('scoreSearch1', '>', 0)
+              ->orWhere('scoreSearch2', '>', 0);
+          });
+
+        foreach ($orderSearchResults ?? [] as $orderSearch) {
+          if ($orderSearch == 'name_position') {
+            $query->orderBy($orderSearch, 'asc');
+          } else {
+            $query->orderBy($orderSearch, 'desc');
+          }
+        }
+        //Remove order by
+        unset($filter->order);
       }
-
-      //Remove order by
-      unset($filter->order);
     }
 
 
@@ -345,8 +356,8 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     }
 
     //Filter Used in Index - List Item - Wishlist
-    if(isset($filter->wishlist)){
-      $query->whereRaw("icommerce__products.id IN (SELECT wishlistable_id from  wishlistable__wishlistables WHERE wishlistable_type = 'Modules\\\Icommerce\\\Entities\\\Product' AND deleted_at is null AND wishlist_id = ".$filter->wishlist.")");
+    if (isset($filter->wishlist)) {
+      $query->whereRaw("icommerce__products.id IN (SELECT wishlistable_id from  wishlistable__wishlistables WHERE wishlistable_type = 'Modules\\\Icommerce\\\Entities\\\Product' AND deleted_at is null AND wishlist_id = " . $filter->wishlist . ")");
     }
 
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
@@ -359,7 +370,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
 
     //Order by "Sort order"
     if (!isset($params->filter->noSortOrder) || !$params->filter->noSortOrder) {
-     $query->orderBy('sort_order', 'desc');//Add order to query
+      $query->orderBy('sort_order', 'desc');//Add order to query
     }
 
     $entitiesWithCentralData = json_decode(setting("icommerce::tenantWithCentralData", null, "[]"));
@@ -402,7 +413,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
 
     if ($model) {
 
-      if(isset($data["category_id"])){
+      if (isset($data["category_id"])) {
         $categories = $model->categories->pluck("id")->toArray();
         $model->categories()->sync(array_merge($categories ?? [], [$data["category_id"]]));
       }

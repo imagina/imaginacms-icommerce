@@ -158,6 +158,8 @@ return [
     'productRibbonTextSize' => 'Discount value size',
     'productRibbonLabelSize' => 'Discount text size',
     'productWithDescription' => 'Show Description',
+    'enableProductDetails' => 'Activate Product Details',
+    'maximumNumberOfCharactersInputDetails' => 'Maximum number of characters in the Details field',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
@@ -251,6 +253,20 @@ return [
     'no_results' => 'No results',
     'see_all' => 'See all results ...',
     'search_result' => 'Search result for',
+    'settings' => [
+      'groupName' => 'Search Engine Store',
+      'labelSearcherOrder' => 'Search sorting',
+      'labelSearchFields' => 'Search fields for products',
+      'options' => [
+        'name_position' => 'Position Words',
+        'name' => 'Product Name',
+        'summary' => 'Product Summary',
+        'description' => 'Product Description',
+        'uniqueWord' => 'Individual Words',
+        'createDate' => 'Creation Date',
+        'fullWord' => 'Complete Word',
+      ],
+    ],
   ],
   'related' => [
     'page' => 'RELATED PAGE',
@@ -273,13 +289,13 @@ return [
     ],
   ],
 
-    'social' => [
-        'share' => 'Share',
-    ],
+  'social' => [
+    'share' => 'Share',
+  ],
 
-    'offers' => [
-        'title' => 'Offers',
-    ],
+  'offers' => [
+    'title' => 'Offers',
+  ],
   'featured' => [
     'title' => 'Featured Products'
   ]

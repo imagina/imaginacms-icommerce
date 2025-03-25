@@ -1262,6 +1262,7 @@ return [
       'hideDropdownIcon' => true,
       'newValueMode' => 'add-unique',
       'options' => [
+        ['label' => 'icommerce::common.search.settings.options.name_position', 'value' => 'name_position'],
         ['label' => 'icommerce::common.search.settings.options.fullWord', 'value' => 'scoreSearch1'],
         ['label' => 'icommerce::common.search.settings.options.createDate', 'value' => 'icommerce__products.created_at'],
         ['label' => 'icommerce::common.search.settings.options.uniqueWord', 'value' => 'scoreSearch2'],
@@ -1398,5 +1399,28 @@ return [
         ]
       ]
     ]
+  ],
+  'enableProductDetails' => [
+    'value' => false,
+    'name' => 'icommerce::enableProductDetails',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "onlySuperAdmin" => true,
+    'props' => [
+      'label' => 'icommerce::common.settings.enableProductDetails'
+    ]
+  ],
+  'maximumNumberOfCharactersInputDetails' => [
+    'name' => 'icommerce::maximumNumberOfCharactersInputDetails',
+    'value' => 100,
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "onlySuperAdmin" => true,
+    'type' => 'input',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.maximumNumberOfCharactersInputDetails'
+    ],
   ],
 ];
