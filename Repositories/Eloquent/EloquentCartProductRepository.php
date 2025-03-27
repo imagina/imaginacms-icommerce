@@ -92,6 +92,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
   public function create($data)
   {
 
+//    dd('epaaa',$data );
 
     $data["quantity"] = abs($data["quantity"]);
     $productRepository = app('Modules\Icommerce\Repositories\ProductRepository');
@@ -279,8 +280,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
   public function findByAttributesOrOptions($data)
   {
-
-
     // if the request has product without options
     if (!count(Arr::get($data, 'product_option_values', []))) {
 
@@ -289,7 +288,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         $cartProduct = CartProduct::where('cart_id', $data['cart_id'])
           ->where('product_id', $data['product_id'])
           ->where('is_call', $data['is_call'] ?? false)
-          ->whereNull('details')->orWhere('details', '')
+          ->whereNull('details')
           ->has('productOptionValues', 0)->first();
       } else {
         $cartProduct = CartProduct::where('cart_id', $data['cart_id'])
@@ -307,7 +306,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         $cartProducts = CartProduct::where('cart_id', $data['cart_id'])
           ->where('product_id', $data['product_id'])
           ->where('is_call', $data['is_call'] ?? false)
-          ->whereNull('details')->orWhere('details', '')
+          ->whereNull('details')
           ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
             $query->whereIn("product_option_value_id", $productOptionValuesIdsFront);
           })->get();

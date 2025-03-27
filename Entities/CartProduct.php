@@ -130,7 +130,9 @@ class CartProduct extends CrudModel
   {
     $value = strip_tags($value);
     if (strlen($value) <= setting('icommerce::maximumNumberOfCharactersInputDetails')) {
-      $this->attributes['details'] = $value;
+      if (!empty($value)) {
+        $this->attributes['details'] = $value;
+      }
     } else {
       throw new \Exception("Invalid detail", 400);
     }
