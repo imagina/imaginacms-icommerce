@@ -610,6 +610,9 @@ class Product extends CrudModel implements TaggableInterface
   public function getCacheClearableData()
   {
     $baseUrls = [config("app.url")];
+    if (isset($this->organization_id) && !empty($this->organization_id)) {
+      $baseUrls[] = $this->organization->url;
+    }
     $categoryUrls = $this->categories->pluck('url')->toArray();
 
     if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status) {

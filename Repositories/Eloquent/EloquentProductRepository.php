@@ -31,9 +31,9 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
    * @var array
    */
   protected $with = [
-    'all' => ['category','translations', 'files', 'discount.product', 'organization','weightClass', 'lengthClass', 'volumeClass'],
+    'all' => ['category', 'translations', 'files', 'discount.product', 'organization', 'weightClass', 'lengthClass', 'volumeClass'],
     'index' => [],
-    'show' => [ 'categories', 'manufacturer', 'productOptions'],
+    'show' => ['categories', 'manufacturer', 'productOptions'],
   ];
 
 
@@ -47,38 +47,39 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
    */
 
   public function __construct($model)
-{
-    try{
+  {
+    try {
 
       parent::__construct($model);
 
-    }catch(\Exception $e){}
-
-
+    } catch (\Exception $e) {
     }
-  
+
+
+  }
+
   public function getItem($criteria, $params = false)
   {
-   
+
     // compare parameters validate use of query
     $differentParameters = $this->compareParameters($params);
     //reusing query if exist
     if (empty($this->query) || $differentParameters) {
-      
+
       //Instance Query
       $query = $this->model->query();
-      
+
       //Include relationships
       $query = $this->includeToQuery($query, $params, "show");
-      
+
       //Check field name to criteria
       if (isset($params->filter->field)) $field = $params->filter->field;
-      
-      
+
+
       // find translatable attributes
       $translatedAttributes = $this->model->translatedAttributes ?? [];
-      
-      
+
+
       // filter by translatable attributes
       if (isset($field) && in_array($field, $translatedAttributes)) {//Filter by slug
         $filter = $params->filter;
@@ -89,7 +90,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       } else
         // find by specific attribute or by id
         $query->where($field ?? 'id', $criteria);
-      
+
       //Filter Query
       if (isset($params->filter)) {
         $filters = $params->filter;//Short data filter
@@ -98,7 +99,7 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
           $this->model->getFillable(),
           ['id', 'created_at', 'updated_at', 'created_by', 'updated_by']
         );
-        
+
         //Add Requested Filters
         foreach ($filters as $filterName => $filterValue) {
           $filterNameSnake = camelToSnake($filterName);//Get filter name as snakeCase
@@ -109,13 +110,13 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
             }
           }
         }
-        
+
         //Filter by not organization
         if (isset($filters->withoutTenancy) && $filters->withoutTenancy) $query->withoutTenancy();
-        
+
         //Set params into filters, to keep uploader code
         if (is_array($filters)) $filters = (object)$filters;
-        
+
         //Add model filters
         $query = $this->filterQuery($query, $filters, $params);
       }
@@ -123,23 +124,24 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
       //reusing query if exist
       $query = $this->query;
     }
-    
+
     //Response as query
     if (isset($params->returnAsQuery) && $params->returnAsQuery) return $query;
-    
+
     //Request
     $response = $query->first();
-    
+
     //Event retrived model
     $this->dispatchesEvents(['eventName' => 'retrievedShow', 'data' => [
       "requestParams" => $params,
       "response" => $response,
       "criteria" => $criteria
     ]]);
-    
+
     //Response
     return $response;
   }
+
   public function filterQuery($query, $filter, $params)
   {
 
@@ -152,9 +154,12 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
      */
 
 
-      // add filter by search
-      if (isset($filter->search) && !empty($filter->search)) {
+    // add filter by search
+    if (isset($filter->search) && !empty($filter->search)) {
 
+      if (ctype_digit($filter->search)) {
+        $query->where('id', $filter->search);
+      } else {
         $orderSearchResults = json_decode(setting("icommerce::orderSearchResults"));
 
         // removing symbols used by MySQL
@@ -164,7 +169,8 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
         //Search query
         $query->leftJoin(\DB::raw(
           "(SELECT MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(\"" . $filter->search . "\")' IN BOOLEAN MODE) scoreSearch1, product_id, name, " .
-          " MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 " .
+          " MATCH (" . implode(',', json_decode(setting('icommerce::selectSearchFieldsProducts'))) . ") AGAINST ('(+" . $filter->search . "*)' IN BOOLEAN MODE) scoreSearch2 ," .
+          "LOCATE('" . $filter->search . "', name) as name_position " .
           "from icommerce__product_translations " .
           "where `locale` = '" . ($filter->locale ?? locale()) . "') as ptrans"
         ), 'ptrans.product_id', 'icommerce__products.id')
@@ -174,183 +180,188 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
           });
 
         foreach ($orderSearchResults ?? [] as $orderSearch) {
-          $query->orderBy($orderSearch, 'desc');
+          if ($orderSearch == 'name_position') {
+            $query->orderBy($orderSearch, 'asc');
+          } else {
+            $query->orderBy($orderSearch, 'desc');
+          }
         }
 
         //Remove order by
         unset($filter->order);
       }
-      //Filter by catgeory ID
-      if (isset($filter->category) && !empty($filter->category)) {
+    }
+    //Filter by catgeory ID
+    if (isset($filter->category) && !empty($filter->category)) {
 
-        $categories = Category::descendantsAndSelf($filter->category);
+      $categories = Category::descendantsAndSelf($filter->category);
 
-        if ($categories->isNotEmpty()) {
-          $query->where(function ($query) use ($categories) {
-            $query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (" . (join(",", $categories->pluck("id")->toArray())) . "))")
-              ->orWhereIn('icommerce__products.category_id', $categories->pluck("id"));
-          });
-
-
-        }
-
-      }
-
-      if (isset($filter->tagId)) {
-        $query->whereTag($filter->tagId, "id");
-      }
-
-      // Filter by category SLUG
-      if (isset($filter->categorySlug) && !empty($filter->categorySlug)) {
-        $query->whereHas('categories', function ($query) use ($filter) {
-          $query->whereHas('translations', function ($query) use ($filter) {
-            $query
-              ->where('icommerce__category_translations.locale', $filter->locale)
-              ->where('icommerce__category_translations.slug', $filter->categorySlug);
-          });
+      if ($categories->isNotEmpty()) {
+        $query->where(function ($query) use ($categories) {
+          $query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (" . (join(",", $categories->pluck("id")->toArray())) . "))")
+            ->orWhereIn('icommerce__products.category_id', $categories->pluck("id"));
         });
+
+
       }
 
-      //Filter by stock status
-      if (isset($filter->stockStatus)) {
-        if ($filter->stockStatus)
-          $query->where('quantity', ">", 0);
-        else {
-          $query->where('quantity', "=", 0);
-        }
-      }
+    }
 
-      // add filter by related product Ids
-      if (isset($filter->related) && !empty($filter->related)) {
+    if (isset($filter->tagId)) {
+      $query->whereTag($filter->tagId, "id");
+    }
+
+    // Filter by category SLUG
+    if (isset($filter->categorySlug) && !empty($filter->categorySlug)) {
+      $query->whereHas('categories', function ($query) use ($filter) {
+        $query->whereHas('translations', function ($query) use ($filter) {
+          $query
+            ->where('icommerce__category_translations.locale', $filter->locale)
+            ->where('icommerce__category_translations.slug', $filter->categorySlug);
+        });
+      });
+    }
+
+    //Filter by stock status
+    if (isset($filter->stockStatus)) {
+      if ($filter->stockStatus)
+        $query->where('quantity', ">", 0);
+      else {
+        $query->where('quantity', "=", 0);
+      }
+    }
+
+    // add filter by related product Ids
+    if (isset($filter->related) && !empty($filter->related)) {
+
+      //Check validation array
+      is_array($filter->related) ? true : $filter->related = [$filter->related];
+
+      //Query
+      $query->whereIn('icommerce__products.id', $filter->related);
+
+      // If categories exist, search for products in that category as well
+      if (isset($filter->categories) && !empty($filter->categories)) {
 
         //Check validation array
-        is_array($filter->related) ? true : $filter->related = [$filter->related];
+        is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
 
         //Query
-        $query->whereIn('icommerce__products.id', $filter->related);
-
-        // If categories exist, search for products in that category as well
-        if (isset($filter->categories) && !empty($filter->categories)) {
-
-          //Check validation array
-          is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-
-          //Query
-          $query->orWhere(function ($query) use ($filter) {
-            $query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (" . (join(",", $filter->categories)) . "))")
-              ->orWhereIn('icommerce__products.category_id', $filter->categories);
-          });
-
-
-          //Null so it doesn't take the category filter again
-          $filter->categories = null;
-
-          //Order by to include always related id products
-          $query->orderByRaw("FIELD(id," . join($filter->related) . ") DESC, id DESC");
-
-          //Null so it doesn't take the order filter again
-          $filter->order = null;
-
-        }
-
-
-      }
-
-      // add filter by Categories 1 or more than 1, in array/*
-      if (isset($filter->categories) && !empty($filter->categories)) {
-        is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
-        $query->where(function ($query) use ($filter) {
+        $query->orWhere(function ($query) use ($filter) {
           $query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (" . (join(",", $filter->categories)) . "))")
             ->orWhereIn('icommerce__products.category_id', $filter->categories);
         });
 
 
-      }
+        //Null so it doesn't take the category filter again
+        $filter->categories = null;
 
-      // add filter by Categories 1 or more than 1, in array
-      if (isset($filter->optionValues) && !empty($filter->optionValues)) {
-        is_array($filter->optionValues) ? true : $filter->optionValues = [$filter->optionValues];
-        if (count($filter->optionValues) > 0) {
-          $query->whereHas('optionValues', function ($query) use ($filter) {
-            $query->whereIn("option_value_id", $filter->optionValues);
-          });
-        }
-      }//filter->optionValues
+        //Order by to include always related id products
+        $query->orderByRaw("FIELD(id," . join($filter->related) . ") DESC, id DESC");
 
-      //add filter by Manufacturers 1 or more than 1, in array
-      if (isset($filter->manufacturers) && !empty($filter->manufacturers)) {
-        is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
-        $query->whereIn("manufacturer_id", $filter->manufacturers);
-      }
-
-      // add filter by Tax Class 1 or more than 1, in array
-      if (isset($filter->taxClass) && !empty($filter->taxClass)) {
-        $query->whereIn("tax_class_id", $filter->taxClass);
-      }
-
-      // add filter by Price Range
-      if (isset($filter->priceRange) && !empty($filter->priceRange)) {
-        $query->where("price", '>=', $filter->priceRange->from);
-        $query->where("price", '<=', $filter->priceRange->to);
-      }
-
-      // add filter by Rating
-      if (isset($filter->rating) && !empty($filter->rating)) {
-        $query->where("rating", '>=', $filter->rating->from);
-        $query->where("rating", '<=', $filter->rating->to);
-      }
-
-      //Order by
-      if (isset($filter->order) && !empty($filter->order)) {
-        $orderByField = $filter->order->field ?? 'created_at';//Default field
-        $orderWay = $filter->order->way ?? 'desc';//Default way
-        if (in_array($orderByField, ["slug", "name"])) {
-          $query->orderBy("translations.{$orderByField}", $orderWay);
-        } else
-          $query->orderBy($orderByField, $orderWay);//Add order to query
-      }
-
-      if (isset($filter->visible) && !empty($filter->visible)) {
-        $query->where("featured", $filter->visible);
-      }
-
-      if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut) && $filter->soonToSoldOut) {
-        $query->where("quantity", "<=", setting("icommerce::productMinimumQuantityToNotify"))
-          ->where("quantity", "!=", 0)
-          ->where("subtract", 1);
-      }
-
-      if (isset($filter->withDiscount) && is_bool($filter->withDiscount) && $filter->withDiscount) {
-
-        $query->has('discount');
+        //Null so it doesn't take the order filter again
+        $filter->order = null;
 
       }
 
-      if (isset($filter->productType) && !empty($filter->productType)) {
 
-        $type = $filter->productType;
+    }
 
-        if ($type == "searchable")
-          $query->where("price", 0);
+    // add filter by Categories 1 or more than 1, in array/*
+    if (isset($filter->categories) && !empty($filter->categories)) {
+      is_array($filter->categories) ? true : $filter->categories = [$filter->categories];
+      $query->where(function ($query) use ($filter) {
+        $query->whereRaw("icommerce__products.id IN (SELECT product_id from icommerce__product_category where category_id IN (" . (join(",", $filter->categories)) . "))")
+          ->orWhereIn('icommerce__products.category_id', $filter->categories);
+      });
 
-        if ($type == "affordable")
-          $query->where("price", ">", 0);
 
+    }
+
+    // add filter by Categories 1 or more than 1, in array
+    if (isset($filter->optionValues) && !empty($filter->optionValues)) {
+      is_array($filter->optionValues) ? true : $filter->optionValues = [$filter->optionValues];
+      if (count($filter->optionValues) > 0) {
+        $query->whereHas('optionValues', function ($query) use ($filter) {
+          $query->whereIn("option_value_id", $filter->optionValues);
+        });
       }
+    }//filter->optionValues
 
-      if (isset($filter->exclude) && !empty($filter->exclude)) {
-        $exclude = is_array($filter->exclude) ? $filter->exclude : [$filter->exclude];
-        $query->whereNotIn('id', $exclude);
-      }
+    //add filter by Manufacturers 1 or more than 1, in array
+    if (isset($filter->manufacturers) && !empty($filter->manufacturers)) {
+      is_array($filter->manufacturers) ? true : $filter->manufacturers = [$filter->manufacturers];
+      $query->whereIn("manufacturer_id", $filter->manufacturers);
+    }
 
-      if (isset($filter->onlyWithOrganization)) {
-        $query->whereNotNull("organization_id");
-      }
+    // add filter by Tax Class 1 or more than 1, in array
+    if (isset($filter->taxClass) && !empty($filter->taxClass)) {
+      $query->whereIn("tax_class_id", $filter->taxClass);
+    }
 
-      //Filter Used in Index - List Item - Wishlist
-      if(isset($filter->wishlist)){
-        $query->whereRaw("icommerce__products.id IN (SELECT wishlistable_id from  wishlistable__wishlistables WHERE wishlistable_type = 'Modules\\\Icommerce\\\Entities\\\Product' AND deleted_at is null AND wishlist_id = ".$filter->wishlist.")");
-      }
+    // add filter by Price Range
+    if (isset($filter->priceRange) && !empty($filter->priceRange)) {
+      $query->where("price", '>=', $filter->priceRange->from);
+      $query->where("price", '<=', $filter->priceRange->to);
+    }
+
+    // add filter by Rating
+    if (isset($filter->rating) && !empty($filter->rating)) {
+      $query->where("rating", '>=', $filter->rating->from);
+      $query->where("rating", '<=', $filter->rating->to);
+    }
+
+    //Order by
+    if (isset($filter->order) && !empty($filter->order)) {
+      $orderByField = $filter->order->field ?? 'created_at';//Default field
+      $orderWay = $filter->order->way ?? 'desc';//Default way
+      if (in_array($orderByField, ["slug", "name"])) {
+        $query->orderBy("translations.{$orderByField}", $orderWay);
+      } else
+        $query->orderBy($orderByField, $orderWay);//Add order to query
+    }
+
+    if (isset($filter->visible) && !empty($filter->visible)) {
+      $query->where("featured", $filter->visible);
+    }
+
+    if (isset($filter->soonToSoldOut) && !empty($filter->soonToSoldOut) && $filter->soonToSoldOut) {
+      $query->where("quantity", "<=", setting("icommerce::productMinimumQuantityToNotify"))
+        ->where("quantity", "!=", 0)
+        ->where("subtract", 1);
+    }
+
+    if (isset($filter->withDiscount) && is_bool($filter->withDiscount) && $filter->withDiscount) {
+
+      $query->has('discount');
+
+    }
+
+    if (isset($filter->productType) && !empty($filter->productType)) {
+
+      $type = $filter->productType;
+
+      if ($type == "searchable")
+        $query->where("price", 0);
+
+      if ($type == "affordable")
+        $query->where("price", ">", 0);
+
+    }
+
+    if (isset($filter->exclude) && !empty($filter->exclude)) {
+      $exclude = is_array($filter->exclude) ? $filter->exclude : [$filter->exclude];
+      $query->whereNotIn('id', $exclude);
+    }
+
+    if (isset($filter->onlyWithOrganization)) {
+      $query->whereNotNull("organization_id");
+    }
+
+    //Filter Used in Index - List Item - Wishlist
+    if (isset($filter->wishlist)) {
+      $query->whereRaw("icommerce__products.id IN (SELECT wishlistable_id from  wishlistable__wishlistables WHERE wishlistable_type = 'Modules\\\Icommerce\\\Entities\\\Product' AND deleted_at is null AND wishlist_id = " . $filter->wishlist . ")");
+    }
 
     if (isset($params->setting) && isset($params->setting->fromAdmin) && $params->setting->fromAdmin) {
 
@@ -377,10 +388,10 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
-        }
+    }
 
     //Response
-      return $query;
+    return $query;
   }
 
   /**
@@ -406,11 +417,11 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
 
     if ($model) {
 
-      if(isset($data["category_id"])){
+      if (isset($data["category_id"])) {
         $categories = $model->categories->pluck("id")->toArray();
         $model->categories()->sync(array_merge($categories ?? [], [$data["category_id"]]));
       }
-      
+
       // sync tables
       if (isset($data['categories']))
         $model->categories()->sync(array_merge(Arr::get($data, 'categories', []), [$data["category_id"] ?? $model->category_id]));
@@ -501,9 +512,9 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
   {
     $model = parent::updateBy($criteria, $data, $params); // TODO: Change the autogenerated stub
 
-      event(new ProductWasUpdated($model));
-      return $model;
-    }
+    event(new ProductWasUpdated($model));
+    return $model;
+  }
 
 
   public function getPriceRange($params = false)

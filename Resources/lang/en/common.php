@@ -155,6 +155,8 @@ return [
     'productImageObjectFit' => 'Image object fit',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
+    'enableProductDetails' => 'Activate Product Details',
+    'maximumNumberOfCharactersInputDetails' => 'Maximum number of characters in the Details field',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
@@ -244,10 +246,25 @@ return [
     'recommended' => 'RECOMMENDED',
   ],
   'search' => [
+    'title' => 'Product search',
     'go' => 'GO',
     'no_results' => 'No results',
-    'see_all' => 'See all results ...',
+    'see_all' => 'See all results...',
     'search_result' => 'Search result for',
+    'settings' => [
+      'groupName' => 'Search Engine Store',
+      'labelSearcherOrder' => 'Search sorting',
+      'labelSearchFields' => 'Search fields for products',
+      'options' => [
+        'name_position' => 'Position Words',
+        'name' => 'Product Name',
+        'summary' => 'Product Summary',
+        'description' => 'Product Description',
+        'uniqueWord' => 'Individual Words',
+        'createDate' => 'Creation Date',
+        'fullWord' => 'Complete Word',
+      ],
+    ],
   ],
   'related' => [
     'page' => 'RELATED PAGE',

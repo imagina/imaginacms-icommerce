@@ -42,7 +42,8 @@ class OrderItem extends CrudModel
     'entity_type',
     'entity_id',
     'organization_id',
-    'discount'
+    'discount',
+    'details'
   ];
 
 

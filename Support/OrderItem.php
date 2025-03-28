@@ -31,7 +31,8 @@ class OrderItem
         "tax" => 0,
         "reward" => 0,
         "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null, //No Dynamic Options
-        "productOptions" => (count($item->dynamicOptions)>0) ? $item->dynamicOptions : null //Dynamic Options
+        "productOptions" => (count($item->dynamicOptions)>0) ? $item->dynamicOptions : null, //Dynamic Options
+        "details" => $item->details ?? null,
       ]);
 
 
@@ -41,9 +42,9 @@ class OrderItem
         $productDiscount->save();
       }
     }
-    
+
     return $products;
-    
+
 
   }
 }

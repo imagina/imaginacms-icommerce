@@ -27,8 +27,8 @@
       </div>
     </div>
   @endif
-  
-<!-- calculation according to the information of weight, volume, quantity, lenght-->
+
+  <!-- calculation according to the information of weight, volume, quantity, lenght-->
   @include('icommerce::frontend.components.product.calculate-pum',['dynamicPrice' => $dynamicPrice])
 
   @if(!$product->is_call)
@@ -96,7 +96,7 @@
           @endif
 
         </div>
-        
+
         @if((boolean)setting('wishlistable::wishlistActive',null,false))
           <div class="d-inline-flex align-items-center p-1">
             <!-- BUTTON WISHLIST -->
@@ -112,15 +112,18 @@
       </div>
       <hr>
     </div>
-@endif
-<!-- PRICE -->
+  @endif
+  <!-- PRICE -->
 
 </div>
 @section('scripts-owl')
   @parent
   <script type="text/javascript" defer>
     function icommerce_showAddToCartWithOptions(e) {
-      window.livewire.emit('addToCartOptions', {quantity: $('input[name=quantityProduct]').val()})
+      window.livewire.emit('addToCartOptions', {
+        quantity: $('input[name=quantityProduct]').val(),
+        details: $('textarea[name=productDetails]').val()
+      })
     }
 
     function icommerce_showSetQuantity(e, type) {

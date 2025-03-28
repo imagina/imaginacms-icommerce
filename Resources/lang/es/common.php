@@ -168,6 +168,8 @@ return [
     'productImageObjectFit' => 'Ajuste de la imagen',
     'productShowGalleryLayout' => 'Plantilla de Galeria',
     'productResponsive' => 'Responsive Galeria',
+    'enableProductDetails' => 'Activar Detalles de producto',
+    'maximumNumberOfCharactersInputDetails' => 'Número máximo de caracteres del campo Detalles',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',
@@ -276,6 +278,7 @@ return [
       'labelSearcherOrder' => 'Ordenamiento de búsqueda',
       'labelSearchFields' => 'Campos de búsqueda para productos',
       'options' => [
+        'name_position' => 'Posicion Palabras',
         'name' => 'Nombre Del Producto',
         'summary' => 'Resumen Del Producto',
         'description' => 'Descripción Del Producto',

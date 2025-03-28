@@ -12,9 +12,9 @@ class CartProduct extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\CartProductTransformer';
   public $repository = 'Modules\Icommerce\Repositories\CartProductRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateCartProductRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateCartProductRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateCartProductRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateCartProductRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -33,7 +33,8 @@ class CartProduct extends CrudModel
     'quantity',
     'is_call',
     'organization_id',
-    'options'
+    'options',
+    'details'
   ];
 
   protected $casts = [
@@ -125,4 +126,15 @@ class CartProduct extends CrudModel
     return Product::find($this->product_id)->name;
   }
 
+  public function setDetailsAttribute($value)
+  {
+    $value = strip_tags($value);
+    if (strlen($value) <= setting('icommerce::maximumNumberOfCharactersInputDetails')) {
+      if (!empty($value)) {
+        $this->attributes['details'] = $value;
+      }
+    } else {
+      throw new \Exception("Invalid detail", 400);
+    }
+  }
 }
