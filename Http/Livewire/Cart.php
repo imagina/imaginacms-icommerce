@@ -475,7 +475,7 @@ class Cart extends Component
 
             case 'Product Quantity Unavailable':
               if ($this->warehouseEnabled) {
-                $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
+                $this->alert('warning', trans('icommerce::cart.message.update_warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
               } else {
                 $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
               }

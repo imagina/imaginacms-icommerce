@@ -278,7 +278,7 @@
             </div>
           </button>
           <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                  onclick="orderSumamryPlaceOrder()">
+                  onclick="orderSumamryPlaceOrder(this)">
             <div>
               {{ trans('icommerce::order_summary.submit') }}
             </div>
@@ -290,7 +290,9 @@
 </div>
 
 <script type="text/javascript" defer>
-  function orderSumamryPlaceOrder() {
+  function orderSumamryPlaceOrder(button) {
+    button.disabled = true;
+
     gTagFireEventPurchase()
     // Trigger the Livewire action
     window.livewire.emit("{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}")
