@@ -89,7 +89,7 @@
         console.warn(addBtn);
         let divParentAdd = addBtn.closest('div.add-to-cart-with-quantity')
         let divParentDetails = addBtn.closest('div.col.no-padding').siblings('div.product-details');
-        let detailsTextarea = $(divParentDetails).children("textarea")[0].value;
+        let detailsTextarea = $(divParentDetails).children("textarea")[0]?.value ?? '';
         let quantitySelector = $(divParentAdd).children("div.number-input.input-group.quantity-selector")[0];
         let quantityInput = $(quantitySelector).children("input.quantity-field")[0];
         let productId = $(e.target).data('item-id');
