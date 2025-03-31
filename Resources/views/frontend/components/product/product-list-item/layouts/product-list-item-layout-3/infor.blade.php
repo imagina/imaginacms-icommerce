@@ -25,7 +25,7 @@
                 <del class="d-inline-block">Antes: {{isset($currency) ? $currency->symbol_left : '$'}}{{ formatMoney($product->price) }}</del>
             @endif
         </div>
-       
+
     @endif
 
     <div class="buttons {{$buttonsLayout}}">
@@ -57,18 +57,28 @@
                     </a>
                 @endif
             @endswitch
-    
+
         @else
             <a href="{{ URL::to('/contacto') }}" class="cart text-primary cursor-pointer">
                 {{$customIndexContactLabel}}
             </a>
         @endif
     </div>
-  
+
 
     <!-- calculation according to the information of weight, volume, quantity, lenght-->
     @include('icommerce::frontend.components.product.calculate-pum')
 
+
+  <div class="product-details py-2 collapse show" id="collapseExample" style="font-size: 10px;">
+    <textarea name="productDetails" rows="4" cols="25" wire:model.defer="details" placeholder="Detalles Del Producto" maxlength="100" class="form-control" style="height: 40px; font-size: 10px;"></textarea>
+    <div class="d-flex justify-content-end">
+        <span class="text-muted small mt-1">
+          Maximo de caracteres permitidos: 100
+         </span>
+    </div>
+  </div>
+  
     @if($addToCartWithQuantity && !$product->is_call)
         @include("icommerce::frontend.components.product.addToCartWithQuantity")
     @endif

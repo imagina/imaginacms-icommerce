@@ -1,4 +1,5 @@
 @if($product->price>0 && $product->stock_status && $product->quantity)
+  @include('icommerce::frontend.partials.show.extra-details')
     <div class="col no-padding">
         <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-between"
              style="padding-left: {{$addToCartWithQuantityPaddingX}}px; padding-right: {{$addToCartWithQuantityPaddingX}}px;
@@ -17,7 +18,7 @@
 
             <!-- BUTTON ADD  -->
             <div class="elem-buttom add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
-               
+
                 <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-cart add-to-cart-with-quantity-button"
                                  onclick="icommerce_addToCartWithQuantity(event)"
                                  :withIcon="$withIconInAddToCart"
@@ -29,7 +30,7 @@
                 />
 
                 @if(!$withTextInAddToCart && $wishlistEnable)
-                   
+
                     @php $wishUrlLE = json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]) @endphp
                     <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist button-small"
                                      :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrlLE.')'"
@@ -46,7 +47,7 @@
             <!-- BUTTON ADD QUOTE -->
             @if(setting("icommerce::showButtonToQuoteInStore"))
                 <div class="add-to-cart-quote-button">
-                 
+
                     <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-to-cart-quote-with-quantity-button"
                                      onclick="icommerce_addToCartQuoteWithQuantity(event)"
                                      :withIcon="true"
@@ -67,13 +68,13 @@
     <script type="text/javascript" defer>
 
       function icommerce_quantityAction(e) {
-      
+
         e.preventDefault();
         var action = $(e.target).data('action');
         var parent = $(e.target).closest('div');
         var quantityInput = parent.find('input[name=quantity]');
         var currentVal = parseInt(quantityInput.val(), 10);
-        
+
         if (!isNaN(currentVal)) quantityInput.val(1);
           if(action == "increment")
             quantityInput.val(currentVal + 1);
@@ -85,11 +86,14 @@
       function icommerce_addToCartWithQuantity(e) {
         e.preventDefault();
         let addBtn = $(e.target)
+        console.warn(addBtn);
         let divParentAdd = addBtn.closest('div.add-to-cart-with-quantity')
+        let divParentDetails = addBtn.closest('div.col.no-padding').siblings('div.product-details');
+        let detailsTextarea = $(divParentDetails).children("textarea")[0].value;
         let quantitySelector = $(divParentAdd).children("div.number-input.input-group.quantity-selector")[0];
         let quantityInput = $(quantitySelector).children("input.quantity-field")[0];
         let productId = $(e.target).data('item-id');
-        window.livewire.emit('addToCart', productId, $(quantityInput).val())
+        window.livewire.emit('addToCart', productId, $(quantityInput).val(), {},false, detailsTextarea)
         $(quantityInput).val(1)
       }
 

@@ -13,7 +13,7 @@
       {{$product->summary}}
     </div>
   @endif
-  
+
   <div class="row align-items-center">
     @if((!$product->is_call || $product->show_price_is_call) && $withPrice)
       <div class="col col-price @if(!$withTextInAddToCart || $buttonsPosition!="in-content") w-100 @endif">
@@ -38,7 +38,7 @@
       </div>
     @endif
   </div>
-  
+
   @if((!$addToCartWithQuantity || $withTextInAddToCart) && Str::contains($buttonsPosition, 'after-content'))
     <div class="row buttons-after-content">
       <div class="col col-buttons {{$buttonsPosition}}">
@@ -46,7 +46,7 @@
       </div>
     </div>
   @endif
- 
+
   @include('icommerce::frontend.components.product.btn-delete')
 
 </div>
