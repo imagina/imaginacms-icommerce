@@ -42,6 +42,7 @@ class Order extends CrudModel
     'status_id',
     'customer_id',
     'added_by_id',
+    'expired_by_id',
     'first_name',
     'last_name',
     'email',
