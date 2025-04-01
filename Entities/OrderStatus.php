@@ -29,7 +29,12 @@ class OrderStatus extends CrudModel
   public $translatedAttributes = ['title'];
   protected $fillable = [
     'status',
-    'parent_id'
+    'parent_id',
+    'type',
+    'final',
+    'default',
+    'color',
+    'category_id',
   ];
 
   public function orders()
