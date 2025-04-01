@@ -45,6 +45,8 @@ use Modules\Icommerce\Events\FormIsCreating;
 use Modules\Icommerce\Events\Handlers\Forms\LetMeKnowProductIsAvailable;
 use Modules\Icommerce\Events\Handlers\Forms\Quote;
 
+use Modules\Icommerce\Events\Handlers\CheckExpiredStatus;
+
 // Isite Events
 use Modules\Isite\Events\OrganizationWasCreated;
 
@@ -68,6 +70,7 @@ class EventServiceProvider extends ServiceProvider
     OrderStatusHistoryWasCreated::class => [
       UpdateOrderStatus::class,
       UpdateSubOrdersStatus::class,
+      CheckExpiredStatus::class,
     ],
     OrderWasProcessed::class => [
       SavePoints::class,
