@@ -538,7 +538,20 @@ class IcommerceServiceProvider extends ServiceProvider
                 return new \Modules\Icommerce\Repositories\Cache\CacheProductOptionValueWarehouseDecorator($repository);
             }
         );
+        $this->app->bind(
+            'Modules\Icommerce\Repositories\OrderStatusCategoryRepository',
+            function () {
+                $repository = new \Modules\Icommerce\Repositories\Eloquent\EloquentOrderStatusCategoryRepository(new \Modules\Icommerce\Entities\OrderStatusCategory());
+
+                if (! config('app.cache')) {
+                    return $repository;
+                }
+
+                return new \Modules\Icommerce\Repositories\Cache\CacheOrderStatusCategoryDecorator($repository);
+            }
+        );
 // add bindings
+
 
 
 
