@@ -22,6 +22,7 @@ return [
         'create product' => 'Create a product',
         'addToCartItemList' => 'Buy',
         'wishList' => 'Wish List',
+        'labelBuyWhatsApp' => 'Buy'
     ],
     'table' => [
         'title' => 'Title',
