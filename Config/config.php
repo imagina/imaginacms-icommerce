@@ -974,4 +974,119 @@ return [
     'icommerce-order' => ['label' => 'Tienda', 'color' => 'green', 'icon' => 'fa-light fa-receipt']
   ],
 
+  /*
+  |--------------------------------------------------------------------------
+  | Order Status Category with Order Statuses
+  |--------------------------------------------------------------------------
+  */
+  'orderStatusCategory' => [
+
+    'leads' => [
+      "type" => "leads",
+      "title" => "icommerce::orderstatuscategories.leads.title",
+      "internal" => true,
+      "statuses" => [
+        1 => [
+          "id" => 1,
+          "title" => "icommerce::orderstatuses.statuses.pending",
+          "type" => 0, //In Progress
+          "color" => "#bf5454",
+          "default" => true
+        ],
+        13 => [
+          'id' => 13,
+          'title' => 'icommerce::orderstatuses.statuses.processed',
+          "type" => 2, //Success
+          "color" => "#2cc03d",
+          "final" => true
+        ],
+        3 => [
+          'id' => 3,
+          'title' => 'icommerce::orderstatuses.statuses.canceled',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+          "final" => true
+        ],
+        5 => [
+          'id' => 5,
+          'title' => 'icommerce::orderstatuses.statuses.denied',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        6 => [
+          'id' => 6,
+          'title' => 'icommerce::orderstatuses.statuses.canceledreversal',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        7 => [
+          'id' => 7,
+          'title' => 'icommerce::orderstatuses.statuses.failed',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        8 => [
+          'id' => 8,
+          'title' => 'icommerce::orderstatuses.statuses.refunded',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        10 => [
+          'id' => 10,
+          'title' => 'icommerce::orderstatuses.statuses.chargeback',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        11 => [
+          'id' => 11,
+          'title' => 'icommerce::orderstatuses.statuses.confirmingPayment',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        12 => [
+          'id' => 12,
+          'title' => 'icommerce::orderstatuses.statuses.voided',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+        14 => [
+          'id' => 14,
+          'title' => 'icommerce::orderstatuses.statuses.expired',
+          "type" => 1, //Failed
+          "color" => "#e34b4b",
+        ],
+      ]
+    ],
+
+    'negotiations' => [
+      "type" => "negotiations",
+      "title" => "icommerce::orderstatuscategories.negotiations.title",
+      "internal" => true,
+      "statuses" => [
+        2 => [
+          'id' => 2,
+          'title' => 'icommerce::orderstatuses.statuses.shipped',
+          "type" => 2, //Success
+          "color" => "#2cc03d",
+          "final" => true
+        ],
+        4 => [
+          'id' => 4,
+          'title' => 'icommerce::orderstatuses.statuses.completed',
+          "type" => 2, //Success
+          "color" => "#2cc03d",
+          "final" => true
+        ],
+        9 => [
+          'id' => 9,
+          'title' => 'icommerce::orderstatuses.statuses.reserved',
+          "type" => 2, //Success
+          "color" => "#2cc03d",
+          "final" => true
+        ],
+      ]
+    ],
+
+  ],
+
 ];
