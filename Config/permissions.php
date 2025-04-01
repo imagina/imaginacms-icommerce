@@ -325,5 +325,13 @@ return [
         'destroy' => 'icommerce::productoptionvaluewarehouses.destroy resource',
         'restore' => 'icommerce::productoptionvaluewarehouses.restore resource',
     ],
+    'icommerce.orderstatuscategories' => [
+      'manage' => 'icommerce::orderstatuscategories.manage resource',
+      'index' => 'icommerce::orderstatuscategories.list resource',
+      'create' => 'icommerce::orderstatuscategories.create resource',
+      'edit' => 'icommerce::orderstatuscategories.edit resource',
+      'destroy' => 'icommerce::orderstatuscategories.destroy resource',
+      'restore' => 'icommerce::orderstatuscategories.restore resource',
+  ],
 // append
 ];
