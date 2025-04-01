@@ -28,7 +28,7 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
   protected $with = [
     'index' => ['customer', 'addedBy', 'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment'],
     'show' => ['customer', 'addedBy', 'orderItems', 'orderHistory', 'transactions', 'coupons',
-      'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment']
+      'paymentCountry', 'shippingCountry', 'shippingDepartment', 'paymentDepartment','expiredBy']
   ];
 
 
