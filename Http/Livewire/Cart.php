@@ -384,6 +384,9 @@ class Cart extends Component
   //|--------------------------------------------------------------------------
   public function render()
   {
+    if (!setting('icommerce::productShowButtonBuy', null, true)) {
+      return ''; // No renderiza nada si está desactivado
+    }
     return view($this->view);
   }
 
