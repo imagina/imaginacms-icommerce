@@ -5,6 +5,9 @@ namespace Modules\Icommerce\Entities;
 use Astrotomic\Translatable\Translatable;
 use Modules\Core\Icrud\Entities\CrudModel;
 
+//Static Classes
+use Modules\Icommerce\Entities\OrderStatusType;
+
 class OrderStatus extends CrudModel
 {
   use Translatable;
@@ -51,4 +54,11 @@ class OrderStatus extends CrudModel
   {
     return $this->hasMany(Transactions::class);
   }
+
+  public function getTypeNameAttribute()
+  {
+    $type = new OrderStatusType();
+    return $type->get($this->type);
+  }
+
 }
