@@ -5,14 +5,14 @@ use Modules\Isite\Entities\Organization;
 
 class CreateChatByOrder
 {
-  
-  
+
+
   public function handle($event = null)
   {
-    
-    //\Log::info('Icommerce: Handler - Save Points =======');
-    if (is_module_enabled('Ichat') && setting("icommerce::chatByOrderEnable", null, false)) {
-      
+    //if (is_module_enabled('Ichat') && setting("icommerce::chatByOrderEnable", null, false)) {
+    //TODO: Settings helper is not working when the flow is called from aliveware event
+    if (is_module_enabled('Ichat')) {
+
       $order = $event->order;
       $tenant = function_exists("tenant") ? tenant() : null;
       $users = [];
@@ -29,7 +29,7 @@ class CreateChatByOrder
           "user_id" => $organization->user_id
         ]);
       }else{
-  
+
         $usersToNotify = json_decode(setting("icommerce::usersToNotify",null,"[]"));
         foreach ($usersToNotify as $userId){
           array_push($users, [
@@ -37,9 +37,9 @@ class CreateChatByOrder
           ]);
         }
       }
-      
-     
-      
+
+
+
       $data = [
         'entity_id' => $order->id,
         'entity_type' => get_class($order),
@@ -49,10 +49,10 @@ class CreateChatByOrder
      // dd($data,app("Modules\Ichat\Services\ConversationService"));
       // Create Point
       $pointCreated = app("Modules\Ichat\Services\ConversationService")->create($data);
-      
+
     }// Validation If Module
-    
+
   }
-  
-  
+
+
 }
