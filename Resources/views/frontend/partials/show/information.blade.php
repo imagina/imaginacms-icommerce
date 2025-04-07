@@ -44,23 +44,7 @@
     </div>
   @endif
 
-  @if(setting('icommerce::enableProductDetails'))
-    <div class="product-details py-2">
-      <textarea
-        name="productDetails"
-        rows="4"
-        cols="25"
-        wire:model.defer="details"
-        placeholder="{{trans("icommerce::products.form.productDetails")}}"
-        maxlength="{{setting('icommerce::maximumNumberOfCharactersInputDetails')}}"
-        class="form-control"></textarea>
-      <div class="d-flex justify-content-end">
-        <span class="text-muted small mt-1">
-          {{trans("icommerce::products.form.maxCharactersProductDetails"). setting('icommerce::maximumNumberOfCharactersInputDetails')}}
-         </span>
-      </div>
-    </div>
-  @endif
+  @include('icommerce::frontend.partials.show.extra-details')
 
   @if( $product->is_sold_out )
     <div>

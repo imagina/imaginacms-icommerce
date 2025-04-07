@@ -108,9 +108,10 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       $data["warehouse_id"] = $warehouse->id;
     }
     //To include all products even if they are internal (as in the case of services in reservations)
+    $ValidationInternal = $data['ValidationInternal'] ?? true;
     $params = [
       "filter" => [
-        "validationInternal" => true,
+        "ValidationInternal" => $ValidationInternal,
       ],
       "include" => [],
       "fields" => [],
@@ -284,23 +285,41 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     // if the request has product without options
     if (!count(Arr::get($data, 'product_option_values', []))) {
       // find product into cart by attributes
-      $cartProduct = CartProduct::where('cart_id', $data['cart_id'])
-        ->where('product_id', $data['product_id'])
-        ->where('is_call', $data['is_call'] ?? false)
-        ->where('details', $data['details'] ?? null)
-        ->has('productOptionValues', 0)->first();
+      if (!isset($data['details']) || empty($data['details'])) {
+        $cartProduct = CartProduct::where('cart_id', $data['cart_id'])
+          ->where('product_id', $data['product_id'])
+          ->where('is_call', $data['is_call'] ?? false)
+          ->whereNull('details')
+          ->has('productOptionValues', 0)->first();
+      } else {
+        $cartProduct = CartProduct::where('cart_id', $data['cart_id'])
+          ->where('product_id', $data['product_id'])
+          ->where('is_call', $data['is_call'] ?? false)
+          ->where('details', $data['details'])
+          ->has('productOptionValues', 0)->first();
+      }
     } else {
       // get options from front
       $productOptionValuesIdsFront = Arr::get($data, 'product_option_values', []);
 
       // find product into cart where has the same options
-      $cartProducts = CartProduct::where('cart_id', $data['cart_id'])
-        ->where('product_id', $data['product_id'])
-        ->where('is_call', $data['is_call'] ?? false)
-        ->where('details', $data['details'] ?? null)
-        ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
-          $query->whereIn("product_option_value_id", $productOptionValuesIdsFront);
-        })->get();
+      if (!isset($data['details']) || empty($data['details'])) {
+        $cartProducts = CartProduct::where('cart_id', $data['cart_id'])
+          ->where('product_id', $data['product_id'])
+          ->where('is_call', $data['is_call'] ?? false)
+          ->whereNull('details')
+          ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
+            $query->whereIn("product_option_value_id", $productOptionValuesIdsFront);
+          })->get();
+      } else {
+        $cartProducts = CartProduct::where('cart_id', $data['cart_id'])
+          ->where('product_id', $data['product_id'])
+          ->where('is_call', $data['is_call'] ?? false)
+          ->where('details', $data['details'])
+          ->whereHas('productOptionValues', function ($query) use ($productOptionValuesIdsFront) {
+            $query->whereIn("product_option_value_id", $productOptionValuesIdsFront);
+          })->get();
+      }
 
       foreach ($cartProducts as $cartProductQuery) {
         // get product options

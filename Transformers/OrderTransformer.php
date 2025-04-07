@@ -10,7 +10,7 @@ use Modules\Iprofile\Transformers\UserTransformer;
 class OrderTransformer extends CrudResource
 {
 
-  protected $excludeRelations = ['orderItems','orderHistory'];
+  protected $excludeRelations = ['orderHistory','orderItems','customer'];
   /**
   * Method to merge values with response
   *
@@ -285,6 +285,20 @@ class OrderTransformer extends CrudResource
       array_push($item['informationBlocks'], $warehouseBlockInfo);
     }
 
-        return $item;
-    }
+
+      $commentBlock = [
+        'title' => trans("icommerce::checkout.comment"),
+        'values' => [
+          [
+          // 'label' => trans("icommerce::checkout.comment"),
+            'value' => $this->comment ?? ''
+          ],
+
+        ]
+      ];
+      array_push($item['informationBlocks'], $commentBlock);
+
+
+    return $item;
+  }
 }

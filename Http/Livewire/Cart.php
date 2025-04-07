@@ -11,9 +11,11 @@ use Modules\Icommerce\Repositories\CartProductRepository;
 use Modules\Icommerce\Repositories\CartRepository;
 use Illuminate\Support\Facades\Auth;
 use Modules\Isite\Services\PdfService;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Cart extends Component
 {
+  use LivewireAlert;
 
   public $cart;
   public $view;
@@ -169,62 +171,53 @@ class Cart extends Component
   public function addToCart($productId, $quantity = 1, $productOptionValues = [], $isCall = false, $details = null)
   {
 
-    try {
-      $this->loading = true;
-      if ($quantity > 0) {
+    $this->loading = true;
+    if ($quantity > 0) {
 
-        $product = $this->productRepository()->getItem($productId);
+      $product = $this->productRepository()->getItem($productId);
 
-        if (isset($product->id)) {
-          try {
-            $data = [
-              "cart_id" => $this->cart->id,
-              "product_id" => $productId,
-              "quantity" => $quantity,
-              "product_option_values" => $productOptionValues,
-              "is_call" => $isCall,
-              "details" => $details
-            ];
-            $this->cartProductRepository()->create($data);
-            $this->updateCart();
+      if (isset($product->id)) {
+        try {
+          $data = [
+            "cart_id" => $this->cart->id,
+            "product_id" => $productId,
+            "quantity" => $quantity,
+            "product_option_values" => $productOptionValues,
+            "is_call" => $isCall,
+            "details" => $details
+          ];
+          $this->cartProductRepository()->create($data);
+          $this->updateCart();
 
-            $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
-          } catch (\Exception $e) {
-            switch ($e->getMessage()) {
-              case 'Invalid detail':
-                $this->alert('warning', trans('icommerce::cart.message.details_unavailable') . setting('icommerce::maximumNumberOfCharactersInputDetails'), config("asgard.isite.config.livewireAlerts"));
-                break;
-            }
+          $this->alert('success', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
+        } catch (\Exception $e) {
+          switch ($e->getMessage()) {
+            case 'Invalid detail':
+              $this->alert('warning', trans('icommerce::cart.message.details_unavailable') . setting('icommerce::maximumNumberOfCharactersInputDetails'), config("asgard.isite.config.livewireAlerts"));
+              break;
+
+            case 'Invalid product':
+              $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
+              break;
+
+            case 'Missing required product options':
+              $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
+              $this->redirect($product->url);
+              break;
+
+            case 'Product Quantity Unavailable':
+              if ($this->warehouseEnabled)
+                $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
+              else
+                $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
+              break;
           }
-        } else {
-          $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
         }
-
+      } else {
+        $this->alert('warning', trans('icommerce::cart.message.add'), config("asgard.isite.config.livewireAlerts"));
       }
-      $this->loading = false;
-    } catch (\Exception $e) {
-
-      switch ($e->getMessage()) {
-        case 'Invalid product':
-          $this->alert('warning', trans('icommerce::cart.message.invalid_product'), config("asgard.isite.config.livewireAlerts"));
-          break;
-
-        case 'Missing required product options':
-          $this->alert('warning', trans('icommerce::cart.message.product_with_required_options'), config("asgard.isite.config.livewireAlerts"));
-          $this->redirect($product->url);
-          break;
-
-        case 'Product Quantity Unavailable':
-          if ($this->warehouseEnabled)
-            $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
-          else
-            $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
-          break;
-      }
-      $this->loading = false;
     }
-
-
+    $this->loading = false;
   }
 
   public function deleteFromCart($cartProductId)
@@ -254,7 +247,8 @@ class Cart extends Component
   public function updateCart()
   {
 
-    $params = json_decode(json_encode(["include" => []]));
+    $params = json_decode(json_encode(["include" => ['products.cartProductOptions.option',
+      'products.cartProductOptions.dynamicProductOptionValue.optionValue']]));
     $this->cart = $this->cartRepository()->getItem($this->cart->id, $params);
 
     request()->session()->put('cart', json_encode($this->cart));
@@ -484,7 +478,7 @@ class Cart extends Component
 
             case 'Product Quantity Unavailable':
               if ($this->warehouseEnabled) {
-                $this->alert('warning', trans('icommerce::cart.message.warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
+                $this->alert('warning', trans('icommerce::cart.message.update_warehouse_quantity_unavailable'), config("asgard.isite.config.livewireAlerts"));
               } else {
                 $this->alert('warning', trans('icommerce::cart.message.quantity_unavailable', ["quantity" => $product->quantity ?? 0]), config("asgard.isite.config.livewireAlerts"));
               }
