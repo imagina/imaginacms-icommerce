@@ -22,8 +22,8 @@
               :isMedia="true"
               :mediaFiles="$product->mediaFiles()"
               imgClasses="product-img image-static"
-              itemId="{{$product->id}}"
-              wire:key="product-image-{{$product->id}}"
+              itemId="{{$product->id}}-{{rand(0,1000)}}"
+              wire:key="product-image-{{$product->id}}-{{rand(0,1000)}}"
             />
             @if($secondaryImageHover && $issetSecondaryImage)
               <livewire:media::dynamic-image
@@ -34,8 +34,8 @@
                 zone="secondaryimage"
                 :mediaFiles="$product->mediaFiles()"
                 imgClasses="product-img image-transition"
-                itemId="{{$product->id}}"
-                wire:key="product-image-secondary-{{$product->id}}"
+                itemId="{{$product->id}}-{{rand(0,1000)}}"
+                wire:key="product-image-secondary-{{$product->id}}-{{rand(0,1000)}}"
               />
             @endif
           </div>
@@ -56,8 +56,8 @@
         :isMedia="true"
         :mediaFiles="$product->mediaFiles()"
         imgClasses="product-img image-static"
-        itemId="{{$product->id}}"
-        wire:key="product-image-{{$product->id}}"
+        itemId="{{$product->id}}-{{rand(0,1000)}}"
+        wire:key="product-image-{{$product->id}}-{{rand(0,1000)}}"
       />
       @if($secondaryImageHover && $issetSecondaryImage)
         <livewire:media::dynamic-image
@@ -68,8 +68,8 @@
           zone="secondaryimage"
           :mediaFiles="$product->mediaFiles()"
           imgClasses="product-img image-transition"
-          itemId="{{$product->id}}"
-          wire:key="product-image-secondary-{{$product->id}}"
+          itemId="{{$product->id}}-{{rand(0,1000)}}"
+          wire:key="product-image-secondary-{{$product->id}}-{{rand(0,1000)}}"
         />
       @endif
       @if(Str::contains($buttonsPosition, 'in-photo'))
