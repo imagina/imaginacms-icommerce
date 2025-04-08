@@ -1,6 +1,6 @@
 
 @if(setting('icommerce::enableProductDetails'))
-  <div class="product-details py-2">
+  <div class="product-details py-2"  style="font-size: 10px;">
       <textarea
         name="productDetails"
         rows="2"
