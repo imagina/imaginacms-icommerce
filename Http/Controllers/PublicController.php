@@ -430,7 +430,7 @@ class PublicController extends BaseApiController
 
   }
 
-  public function checkout(Request $request)
+  public function checkout(Request $request,  $orderId = null)
   {
     //Validation with lang from URL
     $result = validateLocaleFromUrl($request,[
@@ -443,14 +443,28 @@ class PublicController extends BaseApiController
 
     $tpl = "icommerce::frontend.checkout.index";
 
-    $cartS = request()->session()->get('cart');
-    $cartS = json_decode($cartS);
+    //Create new cart from order
+    if(!is_null($orderId))
+    {
 
-    if (isset($cartS->id)) {
-      $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cartS->id);
-    } else {
-      $cart = app('Modules\Icommerce\Services\CartService')->create(["userId" => \Auth::id() ?? null]);
-      request()->session()->put('cart', json_encode($cart));
+      //Get data
+      $cart = app('Modules\Icommerce\Services\CartService')->createCartFromOrder($orderId);
+      //Validation not order or not cart
+      if (is_null($cart))
+        return redirect()->route(locale().'.homepage');
+
+    }else{
+
+      $cartS = request()->session()->get('cart');
+      $cartS = json_decode($cartS);
+
+      if (isset($cartS->id)) {
+        $cart = app('Modules\Icommerce\Repositories\CartRepository')->getItem($cartS->id);
+      } else {
+        $cart = app('Modules\Icommerce\Services\CartService')->create(["userId" => \Auth::id() ?? null]);
+        request()->session()->put('cart', json_encode($cart));
+      }
+
     }
 
     $organization = null;

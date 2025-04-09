@@ -45,21 +45,41 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
    */
   public function query()
   {
-
-    $baseQuery = OrderItem::orderBy('id', 'desc')->with(['order.customer']);
-
+    $userId = $this->userId;
     $indexAll = $this->params->permissions['icommerce.orders.index-all'] ?? false;
 
-    //Filter only orders to User Logged
-    if ($indexAll == false) {
-      $userId = $this->userId;
-      $baseQuery->whereHas('order', function ($query) use ($userId) {
-        $query->where("customer_id", $userId);
-      });
+    $query = \DB::table('icommerce__order_item as oi')
+      ->select(
+        'oi.order_id',
+        'oi.product_id',
+        'oi.reference as product_sku',
+        'ot.title as order_status',
+        'oi.title as product_title',
+        'oi.quantity',
+        'oi.price',
+        'oi.total',
+        \DB::raw("CONCAT(u.first_name, ' ', u.last_name) as customer_full_name"),
+        \DB::raw("COALESCE(o.telephone, o.shipping_telephone, o.payment_telephone) as telephone"),
+        'u.email as customer_email',
+        'o.shipping_method',
+        'o.payment_method',
+        'oi.created_at',
+        'oi.updated_at'
+      )
+      ->join('icommerce__orders as o', 'oi.order_id', '=', 'o.id')
+      ->join('icommerce__order_status_trans as ot', function($join) {
+        $join->on('o.status_id', '=', 'ot.order_status_id')
+          ->where('ot.locale', app()->getLocale()); // Use current app locale
+      })
+      ->join('users as u', 'o.customer_id', '=', 'u.id')
+      ->orderBy('oi.id', 'desc');
+
+    // Filter orders for the logged-in user if 'index-all' permission is not granted
+    if (!$indexAll) {
+      $query->where('o.customer_id', $userId);
     }
 
-    return $baseQuery;
-
+    return $query;
   }
 
   /**
@@ -93,23 +113,21 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
    */
   public function map($item): array
   {
-    //Order Transform
-    $order = json_decode(json_encode(new OrderTransformer($item->order)));
     //Map data
     return [
       $item->order_id ?? null,
       $item->product_id ?? null,
-      $item->reference ?? null,
-      $order->statusName ?? null,
-      $item->title ?? null,
+      $item->product_sku ?? null,
+      $item->order_status ?? null,
+      $item->product_title ?? null,
       $item->quantity ?? null,
       $item->price ?? null,
       $item->total ?? null,
-      $order->customer->fullName ?? null,
-      $item->telephone ?? $item->order->shipping_telephone ?? $item->order->payment_telephone ?? null,
-      $order->customer->email ?? null,
-      $order->shippingMethod ?? null,
-      $order->paymentMethod ?? null,
+      $item->customer_full_name ?? null,
+      $item->telephone ?? null,
+      $item->customer_email ?? null,
+      $item->shipping_method ?? null,
+      $item->payment_method ?? null,
       $item->created_at ?? null,
       $item->updated_at ?? null,
     ];
@@ -135,18 +153,42 @@ class OrdersExport implements FromQuery, WithEvents, ShouldQueue, WithMapping, W
       AfterSheet::class => function (AfterSheet $event) {
         $this->unlockReport($this->exportParams->exportName);
         //Send pusher notification
-        app('Modules\Notification\Services\Inotification')->to(['broadcast' => $this->params->user->id])->push([
-          'title' => 'New report',
-          'message' => 'Your report is ready!',
-          'link' => url(''),
-          'isAction' => true,
-          'frontEvent' => [
-            'name' => 'isite.export.ready',
-            'data' => $this->exportParams,
+         app('Modules\Notification\Services\Inotification')->to([
+          "email" => $this->params->user->email,
+          'broadcast' => $this->params->user->id
+        ])->push([
+          "title" => trans('icommerce::common.export.ordersExportTitle'),
+          "message" => trans('icommerce::common.export.ordersExportDescription'),
+          "link" => url(''),
+          "isAction" => true,
+          "frontEvent" => [
+            "name" => "isite.export.ready",
+            "data" => $this->exportParams
           ],
-          'setting' => ['saveInDatabase' => 1],
+          "setting" => ["saveInDatabase" => 1]
         ]);
       },
     ];
+  }
+
+  public function failed(Throwable $exception)
+  {
+    $this->unlockReport($this->exportParams->exportName);
+    \Log::error("Export failed: " . $exception->getMessage());
+
+    app('Modules\Notification\Services\Inotification')->to([
+      "email" => $this->params->user->email,
+      'broadcast' => $this->params->user->id
+    ])->push([
+      "title" => trans('icommerce::common.export.ordersExportFailedTitle'),
+      "message" => trans('icommerce::common.export.ordersExportFailedDescription'),
+      "link" => url(''),
+      "isAction" => true,
+      "frontEvent" => [
+        "name" => "isite.export.failed",
+        "data" => $this->exportParams
+      ],
+      "setting" => ["saveInDatabase" => 1]
+    ]);
   }
 }

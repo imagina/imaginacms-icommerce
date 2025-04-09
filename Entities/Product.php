@@ -99,7 +99,7 @@ class Product extends CrudModel implements TaggableInterface
   public $modelRelations = [
     'productWarehouses' => [
       'relation' => 'belongsToMany',
-      'type' => 'UpdateOrCreateMany',
+      'type' => 'updateOrCreateMany',
       'compareKeys' => ['warehouse_id'],
       'model' => 'Modules\Icommerce\Entities\ProductWarehouse'
     ],

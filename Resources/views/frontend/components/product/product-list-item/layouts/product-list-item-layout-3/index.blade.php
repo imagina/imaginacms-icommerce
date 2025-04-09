@@ -8,7 +8,6 @@
   @include('icommerce::frontend.components.product.meta')
   @if(isset($itemListLayout) && $itemListLayout=='one')
     <div class="row product-list-layout-one">
-
       <div class="col-6">
         <div class="position-relative">
           @include('icommerce::frontend.components.product.ribbon')
@@ -19,17 +18,19 @@
               :mediaFiles="$product->mediaFiles()"
               imgClasses="product-img image-static"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-              itemId="{{$product->id}}"
+              itemId="{{$product->id}}-{{rand(0,100)}}"
+              wire:key="product-image-{{$product->id}}-{{rand(0,100)}}"
             />
-
             @if($secondaryImageHover && $issetSecondaryImage)
-
               <livewire:media::dynamic-image
                 :alt="$product->name" :title="$product->name" :url="$product->url" :isMedia="true"
                 zone="secondaryimage"
                 :mediaFiles="$product->mediaFiles()"
                 imgClasses="product-img image-transition"
-                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"/>
+                :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
+                itemId="{{$product->id}}-{{rand(0,1000)}}"
+                wire:key="product-image-secondary-{{$product->id}}-{{rand(0,1000)}}"
+              />
             @endif
           </div>
         </div>
@@ -49,10 +50,10 @@
         :mediaFiles="$product->mediaFiles()"
         imgClasses="product-img image-static"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-        itemId="{{$product->id}}"
+        itemId="{{$product->id}}-{{rand(0,1000)}}"
+        wire:key="product-image-{{$product->id}}-{{rand(0,1000)}}"
       />
       @if($secondaryImageHover && $issetSecondaryImage)
-
         <livewire:media::dynamic-image
           :alt="$product->name"
           :title="$product->name"
@@ -62,13 +63,12 @@
           :mediaFiles="$product->mediaFiles()"
           imgClasses="product-img image-transition"
           :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-          itemId="{{$product->id}}"
+          itemId="{{$product->id}}-{{rand(0,1000)}}"
+          wire:key="product-image-secondary-{{$product->id}}-{{rand(0,1000)}}"
         />
       @endif
     </div>
     @include('icommerce::frontend.components.product.product-list-item.layouts.product-list-item-layout-3.infor')
   @endif
-
   @include('icommerce::frontend.components.product.global-inline-css')
-
 </div>

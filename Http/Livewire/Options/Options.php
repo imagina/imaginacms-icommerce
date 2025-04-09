@@ -22,7 +22,7 @@ class Options extends Component
   public $optionsSelected;
   public $emitComponents;
 
-  protected $listeners = ['updateOption', 'addToCartOptions'];
+//  protected $listeners = ['updateOption', 'addToCartOptions'];
 
   private $log = "Icommerce: Livewire|Options|Options|";
   public $onlyType;
@@ -40,6 +40,11 @@ class Options extends Component
     $this->optionsPrice = 0;
     $this->emitComponents = $emitComponents;
     $this->onlyType = $onlyType;
+  }
+
+  protected function getListeners()
+  {
+    return ["addToCartOptions-".$this->product->id => "addToCartOptions", 'updateOption' => 'updateOption'];
   }
 
   //|--------------------------------------------------------------------------

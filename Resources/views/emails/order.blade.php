@@ -1,5 +1,6 @@
 @php
   $order = $data["order"];
+  $order->refresh(); //It was added because the order status title was not correct.
 @endphp
 <div>
   <h1 class="title" style="text-align: center;
@@ -21,9 +22,11 @@
        background-color: {{Setting::get('isite::brandSecondary')}};
        padding: 10px;
        margin: 10px 0;
-       color: white;"
+       color: white;
+       display: inline-block;"
      target="_blank">{{trans("icommerce::orders.table.details")}}: #{{$order->id}}</a>
-  <br>
+
+  @include('icommerce::emails.button-buy-again')
 
   @if(isset($order->organization_id) && !empty($order->organization_id))
     @php
@@ -161,4 +164,8 @@ $informationBlocks = $orderTransformed["informationBlocks"];
       </div>
     @endforeach
   </div>
+</div>
+
+<div class="buy-again">
+  @include('icommerce::emails.button-buy-again')
 </div>

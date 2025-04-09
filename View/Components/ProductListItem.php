@@ -61,7 +61,7 @@ class ProductListItem extends Component
   public $contentCategoryFontWeight;
   public $itemComponentView;
   public $secondaryImageHover;
-  public  $issetSecondaryImage;
+  public $issetSecondaryImage;
   public $transitionImage;
   public $imageObjectFit;
   public $withDescription;

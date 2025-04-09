@@ -383,6 +383,7 @@ class Checkout extends Component
   {
     //\Log::info('Icommerce: Livewire|Checkout|Hydrate');
     $this->load();
+    $this->showWarning();
 
   }
 
@@ -960,7 +961,7 @@ class Checkout extends Component
       if (isset($orderData["orderId"])) {
         $this->alert('success', trans('icommerce::orders.messages.order success'), config("asgard.isite.config.livewireAlerts"));
         $this->emit("orderCreated", $orderData);
-        $this->emit("deleteCart");
+        request()->session()->put('cart', null);
       } else {
         $this->alert('warning', trans('icommerce::orders.messages.order error'), config("asgard.isite.config.livewireAlerts"));
         \Log::info('Icommerce: Livewire|Checkout|Submit|Error: Order Data:' . json_encode($orderData));
@@ -968,6 +969,27 @@ class Checkout extends Component
     }
 
     //\Log::info('Icommerce: Livewire|Checkout|Submit - END');
+  }
+
+  /**
+   * show warning msj
+   */
+  private function showWarning()
+  {
+    //Validation Warnings | Case: Used by "Create new cart from order"
+    $warnings = request()->session()->pull('warningProductsDeleted');
+    if($warnings){
+
+      $allWarnings = trans("icommerce::common.components.alerts.deleteProductsInCart") . '<br><br>';
+      foreach (json_decode($warnings) as $warning) {
+        \Log::info('Advertencia: ' . $warning->productName);
+        $allWarnings .= "* ".$warning->productName .'<br>';
+      }
+
+      if($allWarnings)
+          $this->alert('warning', $allWarnings,  array_merge(config("asgard.isite.config.livewireAlerts"), ['customClass' => ['title' => 'custom-title-alert']]));
+
+    }
   }
 
   //|--------------------------------------------------------------------------
