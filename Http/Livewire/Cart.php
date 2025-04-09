@@ -396,6 +396,12 @@ class Cart extends Component
   //|--------------------------------------------------------------------------
   public function render()
   {
+    $productToBuy = \DB::table('icommerce__products')->where("is_call", 0)->first();
+    if (!isset($productToBuy->id)) {
+      $this->showButton = false;
+    } else {
+      $this->showButton = true;
+    }
     return view($this->view);
   }
 

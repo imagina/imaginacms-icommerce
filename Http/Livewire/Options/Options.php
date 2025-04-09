@@ -108,7 +108,7 @@ class Options extends Component
       "productId" => $this->product->id,
       "quantity" => $data["quantity"],
       "productOptionValues" => $this->optionsSelected,
-      "details" => $data["details"]
+      "details" => $data["details"] ?? ''
     ]);
   }
 
