@@ -11,20 +11,26 @@ class ProductOptionValueWarehouse extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\ProductOptionValueWarehouseTransformer';
   public $repository = 'Modules\Icommerce\Repositories\ProductOptionValueWarehouseRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateProductOptionValueWarehouseRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateProductOptionValueWarehouseRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateProductOptionValueWarehouseRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateProductOptionValueWarehouseRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
+    'created' => [
+      ['path' => 'Modules\Icommerce\Events\ProductOptionValueWarehouseWasCreated']
+    ],
     'creating' => [],
-    'updated' => [],
+    'updated' => [
+      ['path' => 'Modules\Icommerce\Events\ProductOptionValueWarehouseWasUpdated']
+    ],
     'updating' => [],
     'deleting' => [],
-    'deleted' => []
+    'deleted' => [
+      ['path' => 'Modules\Icommerce\Events\ProductOptionValueWarehouseWasDeleted']
+    ]
   ];
- 
+
   protected $fillable = [
     'product_option_value_id',
     'warehouse_id',
@@ -58,5 +64,4 @@ class ProductOptionValueWarehouse extends CrudModel
   {
     return $this->belongsTo(OptionValue::class);
   }
-
 }
