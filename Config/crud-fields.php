@@ -146,6 +146,17 @@ return [
           'entity' => "Modules\\Iblog\\Entities\\Post", //the productable item must have an entity
       ],*/
         ],
+        'secondaryimage' => [
+          'value' => (object) [],
+          'name' => 'mediasSingle',
+          'type' => 'media',
+          'props' => [
+            'label' => 'Imagen secundaria',
+            'zone' => 'secondaryimage',
+            'entity' => "Modules\Icommerce\Entities\Product",
+            'entityId' => null,
+          ],
+        ],
     ],
 
 ];
