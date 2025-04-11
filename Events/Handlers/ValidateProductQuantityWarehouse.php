@@ -17,6 +17,7 @@ class ValidateProductQuantityWarehouse
 
   public function handle($event)
   {
+    dd('epaaaa x333333');
     //si se crea un producto en una bodega se debe actualizar el producto global
     $productWarehouse = $event->entity;
     //se busca el producto que se actualiza o se crea en todas las bodegas tomando su cantidades en un array

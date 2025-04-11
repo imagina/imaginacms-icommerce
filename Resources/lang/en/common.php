@@ -64,6 +64,7 @@ return [
     'no products' => 'There are no products available',
     'field required' => 'This field is required',
     'min 2 characters' => 'Minimum of 2 characters',
+    'deleteValidation' => 'The category cannot be deleted because it has related products.'
   ],
   'validation' => [
     'maximumAmount' => "The order total exceed the maximum amount available (:maximumAmount) for this payment method",

@@ -71,6 +71,7 @@ return [
     'description is required' => 'La descripción es requerida',
     'description min 2' => 'La descripción debe contener mínimo dos caracteres',
     'no products' => 'No existen productos disponibles',
+    'deleteValidation' => 'No se puede eliminar la categoría porque tiene productos relacionados.'
   ],
   'validation' => [
     'maximumAmount' => "El Monto de la orden excede el máximo permitido (:maximumAmount) para este método de pago",
