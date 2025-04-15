@@ -128,3 +128,6 @@
     @endif
 
 @endif
+@if(!$positionButtonBuyWhatsApp)
+    @include('icommerce::frontend.components.product.buttonBuyWhatsApp')
+@endif
