@@ -10,8 +10,8 @@ class UpdateProductDiscountRequest extends BaseFormRequest
     {
         return [
             'discount' => 'required',
-            'date_start' => 'required|date_format:Y-m-d',
-            'date_end' => 'required|date_format:Y-m-d'
+            'date_start' => 'required|date_format:Y/m/d',
+            'date_end' => 'required|date_format:Y/m/d'
         ];
     }
 
