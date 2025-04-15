@@ -82,6 +82,7 @@
               <span id="addToTheListSpan">{{trans("wishlistable::wishlistables.button.addToList")}}</span>
               <i class="fa fa-heart-o ml-1"></i>
             </a>
+            @include('icommerce::frontend.partials.show.buttonWhatsApp')
           </div>
 
         </div>
