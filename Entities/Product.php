@@ -105,7 +105,10 @@ class Product extends CrudModel implements TaggableInterface
       'relation' => 'belongsToMany',
       'type' => 'updateOrCreateMany',
       'compareKeys' => ['warehouse_id'],
-      'model' => 'Modules\Icommerce\Entities\ProductWarehouse'
+      'model' => 'Modules\Icommerce\Entities\ProductWarehouse',
+      'events' => [
+        'created' => ['Modules\Icommerce\Events\ProductWarehouseWasCreated']
+      ]
     ],
     'discounts' => [
       'relation' => 'hasMany', //Important: For this relationship remember the mandatory parameters to create and update
