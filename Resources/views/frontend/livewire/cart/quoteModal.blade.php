@@ -27,7 +27,7 @@
       window.addEventListener('productToQuoteModal', event => {
         // Bricklayer needed
 
-        $("#inputproductName").val(event.detail.productName);
+        $("#inputProductName").val(event.detail.productName);
 
         $("#modalQuoteProduct").modal("show")
       });
