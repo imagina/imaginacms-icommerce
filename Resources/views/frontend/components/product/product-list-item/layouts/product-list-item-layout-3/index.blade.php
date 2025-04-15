@@ -18,8 +18,8 @@
               :mediaFiles="$product->mediaFiles()"
               imgClasses="product-img image-static"
               :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-              itemId="{{$product->id}}"
-              wire:key="product-image-{{$product->id}}"
+              itemId="{{$product->id}}-{{rand(0,100)}}"
+              wire:key="product-image-{{$product->id}}-{{rand(0,100)}}"
             />
             @if($secondaryImageHover && $issetSecondaryImage)
               <livewire:media::dynamic-image
@@ -28,8 +28,8 @@
                 :mediaFiles="$product->mediaFiles()"
                 imgClasses="product-img image-transition"
                 :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-                itemId="{{$product->id}}"
-                wire:key="product-image-{{$product->id}}"
+                itemId="{{$product->id}}-{{rand(0,1000)}}"
+                wire:key="product-image-secondary-{{$product->id}}-{{rand(0,1000)}}"
               />
             @endif
           </div>
@@ -50,8 +50,8 @@
         :mediaFiles="$product->mediaFiles()"
         imgClasses="product-img image-static"
         :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-        itemId="{{$product->id}}"
-        wire:key="product-image-{{$product->id}}"
+        itemId="{{$product->id}}-{{rand(0,1000)}}"
+        wire:key="product-image-{{$product->id}}-{{rand(0,1000)}}"
       />
       @if($secondaryImageHover && $issetSecondaryImage)
         <livewire:media::dynamic-image
@@ -63,8 +63,8 @@
           :mediaFiles="$product->mediaFiles()"
           imgClasses="product-img image-transition"
           :imgStyles="'padding: '.$imagePadding.'px; border: '.($imageBorder ? '1' : '0').'px solid '.$imageBorderColor.'; border-radius: '.$imageBorderRadius.'px;'"
-          itemId="{{$product->id}}"
-          wire:key="product-image-{{$product->id}}"
+          itemId="{{$product->id}}-{{rand(0,1000)}}"
+          wire:key="product-image-secondary-{{$product->id}}-{{rand(0,1000)}}"
         />
       @endif
     </div>
