@@ -50,3 +50,7 @@
 @if($addToCartWithQuantity && !$product->is_call)
   @include("icommerce::frontend.components.product.addToCartWithQuantity")
 @endif
+
+@if($positionButtonBuyWhatsApp)
+  @include('icommerce::frontend.components.product.buttonBuyWhatsApp')
+@endif

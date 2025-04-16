@@ -17,7 +17,7 @@
 
             <!-- BUTTON ADD  -->
             <div class="elem-buttom add-to-cart-button buttons {{$buttonsLayout}} {{$buttonsPosition}} {{$withTextInAddToCart ? "with-add-cart-text" : "without-add-cart-text"}} text-xs-center text-md-right">
-               
+
                 <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-cart add-to-cart-with-quantity-button"
                                  onclick="icommerce_addToCartWithQuantity(event)"
                                  :withIcon="$withIconInAddToCart"
@@ -29,7 +29,7 @@
                 />
 
                 @if(!$withTextInAddToCart && $wishlistEnable)
-                   
+
                     @php $wishUrlLE = json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id]); @endphp
                     <x-isite::button :style="$buttonsLayout" buttonClasses="wishlist button-small"
                                      :onclick="'window.livewire.emit(\'addToWishList\','.$wishUrlLE.')'"
@@ -46,7 +46,7 @@
             <!-- BUTTON ADD QUOTE -->
             @if(setting("icommerce::showButtonToQuoteInStore"))
                 <div class="add-to-cart-quote-button">
-                 
+
                     <x-isite::button :style="$buttonsLayout" buttonClasses="button-small add-to-cart-quote-with-quantity-button"
                                      onclick="icommerce_addToCartQuoteWithQuantity(event)"
                                      :withIcon="true"
@@ -67,13 +67,13 @@
     <script type="text/javascript" defer>
 
       function icommerce_quantityAction(e) {
-      
+
         e.preventDefault();
         var action = $(e.target).data('action');
         var parent = $(e.target).closest('div');
         var quantityInput = parent.find('input[name=quantity]');
         var currentVal = parseInt(quantityInput.val(), 10);
-        
+
         if (!isNaN(currentVal)) quantityInput.val(1);
           if(action == "increment")
             quantityInput.val(currentVal + 1);
@@ -125,4 +125,8 @@
         </div>
     @endif
 
+@endif
+
+@if(!$positionButtonBuyWhatsApp)
+    @include('icommerce::frontend.components.product.buttonBuyWhatsApp')
 @endif

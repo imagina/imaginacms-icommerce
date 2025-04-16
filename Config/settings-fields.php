@@ -1315,6 +1315,67 @@ return [
       'label' => 'icommerce::common.settings.warehouse.warehouseFunctionality'
     ]
   ],
+  'productShowButtonBuy' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::productShowButtonBuy',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'columns' => 'col-12',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productShowButtonBuy'
+    ]
+  ],
+  'productSelectSettingButtonBuyWhatsApp' => [
+    "onlySuperAdmin" => true,
+    'value' => 'isite::whatsapp1',
+    'name' => 'icommerce::productSelectSettingButtonBuyWhatsApp',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'type' => 'select',
+    'columns' => 'col-12 col-md-6',
+    'props' => [
+      'label' => 'icommerce::common.settings.productSelectSettingButtonBuyWhatsApp',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'whatsapp 1', 'value' => 'isite::whatsapp1'],
+        ['label' => 'whatsapp 2', 'value' => 'isite::whatsapp2'],
+        ['label' => 'whatsapp 3', 'value' => 'isite::whatsapp3'],
+      ]
+    ]
+  ],
+  'productShowButtonBuyWhatsApp' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::productShowButtonBuyWhatsApp',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productShowButtonBuyWhatsApp'
+    ]
+  ],
+  'productShowButtonBuyWhatsAppTextMessage' => [
+    "onlySuperAdmin" => true,
+    'value' => "Estoy interesad@ en",
+    'name' => 'icommerce::productShowButtonBuyWhatsAppTextMessage',
+    'type' => 'input',
+    'groupName' => 'page_product',
+    'isTranslatable' => true,
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'props' => [
+      'label' => 'icommerce::common.settings.productShowButtonBuyWhatsAppTextMessage'
+    ]
+  ],
   'productGalleryLayout' => [
     "onlySuperAdmin" => true,
     'value' => 'gallery-layout-4',
@@ -1397,6 +1458,110 @@ return [
           "indexAll" => true
         ]
       ]
+    ]
+  ],
+  'productWithTextButtonBuyWhatsApp' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::productWithTextButtonBuyWhatsApp',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+        'trueValue' => "1",
+        'falseValue' => "0",
+        'label' => 'icommerce::common.settings.productWithTextButtonBuyWhatsApp'
+    ]
+  ],
+  'productColorButtonBuyWhatsApp' => [
+    "onlySuperAdmin" => true,
+    'value' => "#25D366",
+    'name' => 'icommerce::productColorButtonBuyWhatsApp',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'inputColor',
+    'props' => [
+        'label' => 'icommerce::common.settings.productColorButtonBuyWhatsApp'
+    ]
+  ],
+  'productFontSizeButtonBuyWhatsApp' => [
+    "onlySuperAdmin" => true,
+    'value' => 13,
+    'name' => 'icommerce::productFontSizeButtonBuyWhatsApp',
+    'type' => 'input',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+        'type' => "number",
+        'label' => 'icommerce::common.settings.productFontSizeButtonBuyWhatsApp'
+    ]
+  ],
+  'productPositionButtonBuyWhatsApp' => [
+    'value' => "1",
+    'name' => 'icommerce::productPositionButtonBuyWhatsApp',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'icommerce::common.settings.productPositionButtonBuyWhatsApp',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ["label" => "Fuera de los Botones", "value" => "1"],
+            ["label" => "Junto a los Botones", "value" => "0"],
+        ]
+    ]
+  ],
+  'productWithStyleButtonBuyWhatsApp' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::productWithStyleButtonBuyWhatsApp',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+        'trueValue' => "1",
+        'falseValue' => "0",
+        'label' => 'icommerce::common.settings.productWithStyleButtonBuyWhatsApp'
+    ]
+  ],
+  'productAlignButtonBuyWhatsApp' => [
+    'value' => 'text-center',
+    'name' => 'icommerce::productAlignButtonBuyWhatsApp',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'select',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'Alineación de Botón WhatsApp',
+        'useInput' => false,
+        'useChips' => false,
+        'multiple' => false,
+        'hideDropdownIcon' => true,
+        'newValueMode' => 'add-unique',
+        'options' => [
+            ['label' => 'Izquierda', 'value' => 'text-left'],
+            ['label' => 'Derecha', 'value' => 'text-right'],
+            ['label' => 'Centrado', 'value' => 'text-center'],
+        ]
+    ]
+  ],
+  'productClassButtonBuyWhatsApp' => [
+    'value' => '',
+    'name' => 'icommerce::productClassButtonBuyWhatsApp',
+    "onlySuperAdmin" => true,
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'type' => 'input',
+    'columns' => 'col-6',
+    'props' => [
+        'label' => 'Clases Adicionales de Botón WhatsApp',
     ]
   ],
 ];

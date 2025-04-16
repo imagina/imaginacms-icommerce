@@ -264,6 +264,72 @@ return [
               "max" => "20",
             ]
           ],
+          "withTextButtonBuyWhatsApp" => [
+            "name" => "withTextButtonBuyWhatsApp",
+            "value" => "1",
+            "type" => "select",
+            "props" => [
+              "label" => "Activar Texto (Botón WhatsApp)",
+              "options" => $vAttributes["validation"]
+            ]
+          ],
+          "withStyleButtonBuyWhatsApp" => [
+            "name" => "withStyleButtonBuyWhatsApp",
+            "value" => "1",
+            "type" => "select",
+            "props" => [
+              "label" => "Activar Estilos (Botón WhatsApp)",
+              "options" => $vAttributes["validation"]
+            ]
+          ],
+          "colorButtonBuyWhatsApp" => [
+            "name" => "colorButtonBuyWhatsApp",
+            "value" => "#25d366",
+            "type" => "inputColor",
+            "props" => [
+              "label" => "Color (Botón WhatsApp)",
+            ]
+          ],
+          "fontSizeButtonBuyWhatsApp" => [
+            "name" => "fontSizeButtonBuyWhatsApp",
+            "value" => "13",
+            "type" => "input",
+            "props" => [
+              "label" => "Tamaño Texto (Botón WhatsApp)",
+              "type" => "number",
+              "min" => "1",
+            ]
+          ],
+          "alignButtonBuyWhatsApp" => [
+            "name" => "alignButtonBuyWhatsApp",
+            "value" => "text-center",
+            "type" => "select",
+            "props" => [
+              "label" => "Alineación (Botón WhatsApp)",
+              "options" => $vAttributes["align"]
+            ]
+          ],
+          "positionButtonBuyWhatsApp" => [
+            "name" => "positionButtonBuyWhatsApp",
+            "value" => "1",
+            "type" => "select",
+            "props" => [
+              "label" => "Alineación (Botón WhatsApp)",
+              "options" => [
+                ["label" => "Fuera de los Botones", "value" => "1"],
+                ["label" => "Junto a los Botones", "value" => "0"],
+              ]
+            ]
+          ],
+          "classButtonBuyWhatsApp" => [
+            "name" => "classButtonBuyWhatsApp",
+            "value" => "my-3",
+            "columns" => "col-12",
+            "type" => "input",
+            "props" => [
+              "label" => "Clases (Botón WhatsApp)",
+            ]
+          ],
         ]
       ],
       "content" => [
