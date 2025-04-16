@@ -21,7 +21,7 @@ class ValidateQuantitiesWarehouse
 
   public function handle($event)
   {
-    $productOptionValueWarehouse = $event->entity;
+    $productOptionValueWarehouse = $event->entity["model"];
 
     //se busca en la table product option value con el id de la opcion que ese esta actualizando
     $productOptionValue = \DB::table('icommerce__product_option_value')
