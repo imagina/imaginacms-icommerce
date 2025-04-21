@@ -213,6 +213,10 @@ class Order extends CrudModel
     if ($panel == 'blade' || $this->guest_purchase)
       return \URL::route(locale() . '.icommerce.store.order.show', ["orderId" => $this->id, "orderKey" => $this->key]);
     else {
+      $tenancyMode = config("tenancy.mode", null);
+      if (!empty($tenancyMode) && ($tenancyMode == "singleDatabase") && !empty($this->organization_id)) {
+        return $this->organization->url.'/ipanel/#/store/orders/' . $this->id;
+      }
       return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
   }
