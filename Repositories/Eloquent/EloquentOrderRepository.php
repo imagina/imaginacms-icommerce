@@ -19,7 +19,7 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
    * Relation names to replace
    * @var array
    */
-  protected $replaceSyncModelRelations = [];
+  protected $replaceSyncModelRelations = ['orderItems','orderHistory'];
 
   /**
    * Attribute to customize relations by default
