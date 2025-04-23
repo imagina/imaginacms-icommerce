@@ -122,6 +122,9 @@ class CartService
 
     \Log::info($this->log."createCartFromOrder");
 
+    $userId = \Auth::id() ?? null;
+    \Log::info($this->log."createCartFromOrder|UserId: ".$userId);
+
     //Validation Order
     $order = $this->orderRepository->getItem($orderId);
     if(is_null($order)) return null;
@@ -148,7 +151,8 @@ class CartService
         "ip" => request()->ip(),
         "session_id" => session('_token'),
         "status" => 1,
-        "user_id" => \Auth::id() ?? null
+        "user_id" => $userId,
+        "forceCreate" => true
     ];
     $cart = $this->cart->create($dataNewCart);
     \Log::info($this->log."createCartFromOrder|New CartId: ".$cart->id);
