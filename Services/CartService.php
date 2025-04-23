@@ -123,6 +123,9 @@ class CartService
 
     \Log::info($this->log."createCartFromOrder");
 
+    $userId = \Auth::id() ?? null;
+    \Log::info($this->log."createCartFromOrder|UserId: ".$userId);
+
     //Validation Order
     $order = $this->orderRepository->getItem($orderId);
     if(is_null($order)) return null;
@@ -130,13 +133,13 @@ class CartService
     //Validation Cart Old
     $cartOrder = $this->cart->getItem($order->cart_id);
     if(is_null($cartOrder)) return null;
-    \Log::info($this->log."createCartFromOrder|CartOrder: ".$cartOrder->id);
+    //\Log::info($this->log."createCartFromOrder|CartOrder: ".$cartOrder->id);
 
     //If there were to be a cart in session
     $cartSession = request()->session()->get('cart');
     if(!is_null($cartSession)){
       $cartSession = json_decode($cartSession);
-      \Log::info($this->log."createCartFromOrder|Exist in session cartId: ".$cartSession->id);
+      //\Log::info($this->log."createCartFromOrder|Exist in session cartId: ".$cartSession->id);
 
       $cartSessionData = $this->cart->getItem($cartSession->id);
       $updateCart = $this->cart->update($cartSessionData, ['status' => 2]);
@@ -149,7 +152,8 @@ class CartService
         "ip" => request()->ip(),
         "session_id" => session('_token'),
         "status" => 1,
-        "user_id" => \Auth::id() ?? null
+        "user_id" => $userId,
+        "forceCreate" => true
     ];
     $cart = $this->cart->create($dataNewCart);
     \Log::info($this->log."createCartFromOrder|New CartId: ".$cart->id);
