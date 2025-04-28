@@ -4,7 +4,7 @@ namespace Modules\Icommerce\Repositories\Eloquent;
 
 use Modules\Icommerce\Repositories\CartRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
-  
+
 class EloquentCartRepository extends EloquentCrudRepository implements CartRepository
   {
   /**
@@ -12,13 +12,13 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
    * @var array
    */
   protected $replaceFilters = [];
-      
+
   /**
    * Relation names to replace
    * @var array
    */
   protected $replaceSyncModelRelations = [];
-      
+
   /**
    * Filter query
    *
@@ -32,11 +32,11 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
     if (isset($filter->store)) {
       $query->where('store_id', $filter->store);
       }
-      
+
       if (isset($filter->user)) {
         $query->where('user_id', $filter->userId);
       }
-    
+
     /**
      * Note: Add filter name to replaceFilters attribute before replace it
      *
@@ -46,18 +46,18 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
      */
     if (isset($this->model->tenantWithCentralData) && $this->model->tenantWithCentralData && isset(tenant()->id)) {
       $model = $this->model;
-      
+
       $query->withoutTenancy();
       $query->where(function ($query) use ($model) {
         $query->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey())
           ->orWhereNull($model->qualifyColumn(BelongsToTenant::$tenantIdColumn));
       });
     }
-    
+
     //Response
     return $query;
     }
-  
+
   /**
    * Method to sync Model Relations
    *
@@ -68,7 +68,7 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
   {
     //Get model relations data from attribute of model
     $modelRelationsData = ($model->modelRelations ?? []);
-    
+
     /**
      * Note: Add relation name to replaceSyncModelRelations attribute before replace it
      *
@@ -78,28 +78,28 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
      * }
      *
      */
-    
+
     //Response
     return $model;
       }
-  
+
   public function create($data)
   {
-    //Search by user
-    if (isset($data['user_id'])) {
-      $userCart = $this->model->where('user_id', $data['user_id'])
-        // ->where('store_id', $data['store_id'] ?? null)
-        ->where('status', 1)->first();
+    if(!isset($data['forceCreate'])){
+      //Search by user
+      if (isset($data['user_id'])) {
+        $userCart = $this->model->where('user_id', $data['user_id'])->where('status', 1)->first();
+      }
+
+      //Create cart
+      if (isset($userCart) && $userCart) return $userCart;
+
+      $data["status"] = 1;
     }
-    
-    //Create cart
-    if (isset($userCart) && $userCart) return $userCart;
-	
-	$data["status"] = 1;
      return $this->model->create($data);
   }
-  
-  
+
+
   public function updateBy($criteria, $data, $params = false)
   {
     //Get only data permit to update
@@ -107,17 +107,17 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
     if (isset($data['status'])) $cartData['status'] = $data['status'];
     if (isset($data['user_id'])) $cartData['user_id'] = $data['user_id'];
     if (isset($data['products'])) $cartData['products'] = $data['products'];
-    
+
     //Get cart by criteria
     $field = isset($params->filter) && isset($params->filter->field) ? $params->filter->field : 'id';
     $cart = $this->model->where($field, $criteria)->first();
-    
+
     //Search cart by user
     $userCart = !$data['user_id'] ? false :
       $this->model->where('user_id', $data['user_id'])
         // ->where('store_id', $data['store_id'] ?? null)
         ->where('status', 1)->first();
-    
+
     //Validate cart
     if ($cart) {
       //Move cart to user cart
@@ -132,7 +132,7 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
         //No permit change user id of cart
         if (isset($cartData["user_id"]) && $model->user_id) unset($cartData["user_id"]);
       }
-      
+
       //Update data
       $model->update((array)$cartData);
       //sync products
@@ -140,7 +140,7 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
         $model->products()->sync(Arr::get($cartData, 'products', []));
       }
     }
-    
+
     //Response
     return $model;
   }
