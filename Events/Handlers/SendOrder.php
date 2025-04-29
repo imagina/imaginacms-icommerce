@@ -42,7 +42,7 @@ class SendOrder
       // si hay roles asignados a funcionar como tenant entonces el customer de la orden debe ser notificado sólo en las
       // ordenes hijas
       \Log::info('Icommerce: Events|Handlers|SendOrder|RolesToTenant: ' . json_encode($rolesToTenant));
-      if ((!empty($rolesToTenant) && !is_null($order->parent_id)) || is_null($children)){
+      if ((!empty($rolesToTenant) && !is_null($order->parent_id)) || is_null($children)) {
         list($emailTo, $users) = $this->getUsersAndEmails($order);
       }
 
@@ -52,25 +52,37 @@ class SendOrder
         $userId = \Auth::id() ?? null;
         $source = "icommerce-order";
 
-        //send notification by email, broadcast and push -- by default only send by email
+        $notificationContent = [
+          "title" => trans("icommerce::orders.title.confirmation_single_order_title"),
+          "message" => $subject,
+          "icon_class" => "fas fa-shopping-cart",
+          "content" => "icommerce::emails.order",
+          "view" => "icommerce::emails.Order",
+          "setting" => [
+            "saveInDatabase" => 1 // now, the notifications with type broadcast need to be save in database to really send the notification
+          ],
+          "order" => $order,
+          "user_id" => $userId,
+          "source" => $source
+        ];
+
+        //customer notification
+        $notificationContent['link'] = $order->CMSUrl['ipanel'] ?? null;
         $this->notificationService->to([
+          "email" => [$order->email],
+          "broadcast" => [$order->customer_id]
+        ])->push(
+          $notificationContent
+        );
+
+        //send notification by email, broadcast and push -- by default only send by email
+        //without customer notification
+        $notificationContent['link'] = $order->CMSUrl['iadmin'] ?? null;
+        app("Modules\Notification\Services\Inotification")->to([
           "email" => $emailTo,
           "broadcast" => $users
         ])->push(
-          [
-            "title" => trans("icommerce::orders.title.confirmation_single_order_title"),
-            "message" => $subject,
-            "icon_class" => "fas fa-shopping-cart",
-            "link" => $order->url,
-            "content" => "icommerce::emails.order",
-            "view" => "icommerce::emails.Order",
-            "setting" => [
-              "saveInDatabase" => 1 // now, the notifications with type broadcast need to be save in database to really send the notification
-            ],
-            "order" => $order,
-            "user_id" => $userId,
-            "source" => $source
-          ]
+          $notificationContent
         );
 
       }
@@ -111,15 +123,8 @@ class SendOrder
     $usersIds = [];
 
     //Validation collection users | get only Ids
-    if(count($users)>0)
+    if (count($users) > 0)
       $usersIds = $users->pluck('id')->toArray();
-
-    //Add Customer Order Id
-    if(!is_null($order->customer_id))
-      $usersIds[] = $order->customer_id;
-
-    //By last, gets the Email of the user in the order
-    array_push($emailTo, $order->email);
 
     //Final return
     return [$emailTo, $usersIds];
