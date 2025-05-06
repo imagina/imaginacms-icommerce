@@ -73,6 +73,18 @@ class ProductListItem extends Component
   public $currentRoute;
   public $ribbonTextSize;
   public $ribbonLabelSize;
+  public $showButtonBuyWhatsApp;
+  public $numberBuyWhatsApp;
+  public $textHreftButtonBuyWhatsApp;
+  public $labelBuyWhatsApp;
+  public $alignButtonBuyWhatsApp;
+  public $classButtonBuyWhatsApp;
+  public $withTextButtonBuyWhatsApp;
+  public $colorButtonBuyWhatsApp;
+  public $fontSizeButtonBuyWhatsApp;
+  public $positionButtonBuyWhatsApp;
+  public $withStyleButtonBuyWhatsApp;
+
 
   /**
    * Create a new component instance.
@@ -142,7 +154,18 @@ class ProductListItem extends Component
                               $productLayout=null,
                               $currentRoute = null,
                               $ribbonTextSize = null,
-                              $ribbonLabelSize = null
+                              $ribbonLabelSize = null,
+                              $showButtonBuyWhatsApp= null,
+                              $numberBuyWhatsApp= null,
+                              $textHreftButtonBuyWhatsApp = null,
+                              $labelBuyWhatsApp = null,
+                              $alignButtonBuyWhatsApp=null,
+                              $classButtonBuyWhatsApp=null,
+                              $withTextButtonBuyWhatsApp=null,
+                              $colorButtonBuyWhatsApp = null,
+                              $fontSizeButtonBuyWhatsApp = null,
+                              $positionButtonBuyWhatsApp = null,
+                              $withStyleButtonBuyWhatsApp = null
   )
   {
     $this->product = $item;
@@ -215,6 +238,21 @@ class ProductListItem extends Component
     $this->currentRoute = $currentRoute;
     $this->ribbonTextSize = $ribbonTextSize ?? setting('icommerce::productRibbonTextSize', null, null);
     $this->ribbonLabelSize = $ribbonLabelSize ?? setting('icommerce::productRibbonLabelSize', null, null);
+
+    $this->labelButtonAddProduct = $labelButtonAddProduct;
+    $this->numberBuyWhatsApp = json_decode(setting(setting('icommerce::productSelectSettingButtonBuyWhatsApp', 'isite::whatsapp1')));
+    $this->showButtonBuyWhatsApp= !empty(trim($this->numberBuyWhatsApp->number)) && setting('icommerce::productShowButtonBuyWhatsApp',null,false);
+    $this->textBuyWhatsApp = urlencode(setting('icommerce::productShowButtonBuyWhatsAppTextMessage'). ' *' . $this->product->name . '* ' . $this->product->url);
+    $this->textHreftButtonBuyWhatsApp = 'https://wa.me/' .$this->numberBuyWhatsApp->callingCode.$this->numberBuyWhatsApp->number . '?text=' .$this->textBuyWhatsApp;
+
+    $this->alignButtonBuyWhatsApp = $alignButtonBuyWhatsApp ?? setting('icommerce::productAlignButtonBuyWhatsApp', null, 'text-center');
+    $this->classButtonBuyWhatsApp = $classButtonBuyWhatsApp ?? setting('icommerce::productClassButtonBuyWhatsApp', null, 'my-3');
+    $this->withTextButtonBuyWhatsApp = $withTextButtonBuyWhatsApp ?? setting('icommerce::productWithTextButtonBuyWhatsApp', null, true);
+
+    $this->colorButtonBuyWhatsApp = $colorButtonBuyWhatsApp ?? setting('icommerce::productColorButtonBuyWhatsApp', null, '#25D366');
+    $this->fontSizeButtonBuyWhatsApp = $fontSizeButtonBuyWhatsApp ?? setting('icommerce::productFontSizeButtonBuyWhatsApp', null, 13);
+    $this->positionButtonBuyWhatsApp = $positionButtonBuyWhatsApp ?? setting('icommerce::productPositionButtonBuyWhatsApp', null, false);
+    $this->withStyleButtonBuyWhatsApp = $withStyleButtonBuyWhatsApp ?? setting('icommerce::productWithStyleButtonBuyWhatsApp', null, false);
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);

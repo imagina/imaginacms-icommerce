@@ -25,6 +25,8 @@ return [
     'create product' => 'Crear un producto',
     'addToCartItemList' => 'Comprar',
     'wishList' => 'Lista de Deseo',
+    'buyShowWhatsApp' => 'Comprar por WhatsApp',
+    'labelBuyWhatsApp' => 'Comprar'
   ],
   'table' => [
     'title' => 'Titulo',
