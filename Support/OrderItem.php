@@ -10,11 +10,20 @@ class OrderItem
   /**
    * @param $items (Products from Cart)
    */
-  public function fixData($items){
+  public function fixData($items)
+  {
 
     $products = [];
 
-    foreach($items as $item){
+    foreach ($items as $item) {
+      // Load only cartProductOptions where option_id and value are NOT null
+      $item->load([
+        'cartProductOptions' => function ($query) {
+          $query->whereNotNull('option_id')->whereNotNull('value');
+        },
+        'cartProductOptions.dynamicProductOptionValue.optionValue',
+        'cartProductOptions.option'
+      ]);
 
       array_push($products, [
         "product_id" => (int)$item->product_id,
@@ -30,18 +39,19 @@ class OrderItem
         "entity_id" => $item->product->entity_id ?? null,
         "tax" => 0,
         "reward" => 0,
-        "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null, //No Dynamic Options
-        "productOptions" => (count($item->dynamicOptions)>0) ? $item->dynamicOptions : null //Dynamic Options
+        "productOptionValues" => (count($item->productOptionValues) > 0) ? $item->productOptionValues : null, //No Dynamic Options
+        "productOptions" => (count($item->dynamicOptions) > 0) ? $item->dynamicOptions : null, //Dynamic Options
+        "cartProductOptions" => $item->cartProductOptions
       ]);
 
 
-            if (isset($item->product->discount->id)) {
-                $productDiscount = ProductDiscount::find($item->product->discount->id);
-                $productDiscount->quantity_sold += (int) $item->quantity;
-                $productDiscount->save();
-            }
-        }
-
-        return $products;
+      if (isset($item->product->discount->id)) {
+        $productDiscount = ProductDiscount::find($item->product->discount->id);
+        $productDiscount->quantity_sold += (int)$item->quantity;
+        $productDiscount->save();
+      }
     }
+
+    return $products;
+  }
 }
