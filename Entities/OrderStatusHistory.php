@@ -31,8 +31,23 @@ class OrderStatusHistory extends CrudModel
     'order_id',
     'status',
     'notify',
-    'comment'
+    'comment',
+    'options',
   ];
+
+  protected $casts = [
+    'options' => 'array'
+  ];
+
+  public function getOptionsAttribute($value)
+  {
+    return json_decode($value);
+  }
+
+  public function setOptionsAttribute($value)
+  {
+    $this->attributes['options'] = json_encode($value);
+  }
 
   public function order()
   {
