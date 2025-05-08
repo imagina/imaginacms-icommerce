@@ -111,7 +111,7 @@ class OrderApiController extends BaseCrudController
       $dataOrderHistory = $supportOrderHistory->getData();
       $data["orderHistory"] = $dataOrderHistory;
 
-      $data = \Arr::only($data, ['status_id', 'options', 'orderHistory', 'suscription_id', 'suscription_token', 'comment','optionsHistory']);
+      $data = \Arr::only($data, ['status_id', 'options', 'orderHistory', 'suscription_id', 'suscription_token', 'comment','optionsHistory','commentHistory']);
 
       //Request to Repository
       $dataEntity = $this->modelRepository->getItem($criteria, $params);
@@ -135,7 +135,7 @@ class OrderApiController extends BaseCrudController
           "order_id" => $order->id,
           "notify" => 1,
           "status" => $data["status_id"],
-          "comment" => $data["comment"] ?? null,
+          "comment" => $data["commentHistory"] ?? $data["comment"] ?? null,
           "options" => $data["optionsHistory"] ?? null
         ]);
 
