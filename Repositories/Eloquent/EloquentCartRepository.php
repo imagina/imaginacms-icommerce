@@ -84,7 +84,8 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
   }
 
   public function create($data)
-    {
+  {
+    if(!isset($data['forceCreate'])){
         //Search by user
         if (isset($data['user_id'])) {
             $userCart = $this->model->where('user_id', $data['user_id'])
@@ -96,7 +97,8 @@ class EloquentCartRepository extends EloquentCrudRepository implements CartRepos
         if (isset($userCart) && $userCart) return $userCart;
 
         $data["status"] = 1;
-        return $this->model->create($data);
+      }
+      return $this->model->create($data);
   }
 
   public function updateBy($criteria, $data, $params = false)

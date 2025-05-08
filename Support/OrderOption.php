@@ -24,7 +24,7 @@ class OrderOption
 
     // Get Option Value
     $optionValue = $productOptionValue->option->description ?? $option->description ?? '';
-    $optionValueDescription = $productOptionValue->optionValue->description ?? $option->pivot->value ?? ''; //Pivot is CartProductOption
+    $optionValueDescription = $productOptionValue->optionValue->description ?? $option->valueDescription ?? $option->pivot->value ?? ''; //Pivot is CartProductOption
     $parentOptionValue = $productOptionValue->parentOptionValue->description ?? $productOption->parentOptionValue->description ?? '';
 
     // Values from Product Option Value
@@ -42,7 +42,7 @@ class OrderOption
     $data['option_description'] = $optionValue;
     $data['option_value_description'] = $optionValueDescription;
 
-    $data['value'] = $productOptionValue->productOption->value ?? $option->value ?? '';
+    $data['value'] = $productOptionValue->productOption->value ?? $option->pivot->value ?? '';
     $data['required'] = $productOptionValue->productOption->required ??  $productOption->required ?? '';
 
     return $data;

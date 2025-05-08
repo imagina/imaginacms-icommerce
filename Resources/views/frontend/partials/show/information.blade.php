@@ -72,7 +72,7 @@
       <hr>
       <div class="row">
         <div class="col my-2 my-md-0">
-          <div class="d-flex px-2 ">
+          <div class="row px-2 pt-1 ">
             <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
                class=" btn-comprar btn btn-secondary text-white mx-2">
               {{trans('icommerce::products.form.contactUs')}}</a>
