@@ -33,6 +33,7 @@ class OrderItem
         "productOptionValues" => (count($item->productOptionValues)>0) ? $item->productOptionValues : null, //No Dynamic Options
         "productOptions" => (count($item->dynamicOptions)>0) ? $item->dynamicOptions : null, //Dynamic Options
         "details" => $item->details ?? null,
+        "category_id" => (int)$item->product->category_id ?? null,
       ]);
 
 

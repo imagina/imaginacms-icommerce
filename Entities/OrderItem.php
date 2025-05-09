@@ -43,7 +43,8 @@ class OrderItem extends CrudModel
     'entity_id',
     'organization_id',
     'discount',
-    'details'
+    'details',
+    'category_id'
   ];
 
 
@@ -75,6 +76,11 @@ class OrderItem extends CrudModel
   public function product()
   {
     return $this->belongsTo(Product::class, 'product_id');
+  }
+
+  public function category()
+  {
+    return $this->belongsTo(Category::class, 'category_id');
   }
 
   public function getOptionsAttribute($value)
