@@ -19,7 +19,8 @@
 <div id="cardOrderSummary" class="card card-block order p-3">
   <div class="row">
     <div class="col">
-      <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#CheckList" role="button" aria-expanded="false"
+      <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#CheckList" role="button"
+           aria-expanded="false"
            aria-controls="CheckList">
         <div class="number-check">
           <i class="fa fa-check px-1"></i>
@@ -47,10 +48,10 @@
                 @foreach($cart->products as $cartProduct)
                   <div class="item_carting px-3 w-100 row m-0">
                     <hr class="mt-0 mb-3 w-100">
-                  @php($mediaFiles = $cartProduct->product->mediaFiles())
-                  @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
-                  @if($withImage)
-                    <!-- imagen -->
+                    @php($mediaFiles = $cartProduct->product->mediaFiles())
+                    @php($withImage = !strpos($mediaFiles->mainimage->relativeMediumThumb,"default.jpg"))
+                    @if($withImage)
+                      <!-- imagen -->
                       <div class="col-3 px-0 mb-3">
                         <div class="img-product-cart">
                           <x-media::single-image
@@ -62,8 +63,8 @@
                             :mediaFiles="$cartProduct->product->mediaFiles()"/>
                         </div>
                       </div>
-                  @endif
-                  <!-- descripción -->
+                    @endif
+                    <!-- descripción -->
                     <div class="{{$withImage ? 'col-9' : 'col-12'}}">
                       <!-- titulo -->
                       <h6 class="mb-2 w-100 __title">
@@ -73,9 +74,22 @@
                         </a>
                       </h6>
                       <!-- valor y cantidad -->
-                      <p class="text-quantity mb-0 text-muted pb-2">
-                        {{trans('icommerce::cart.table.quantity')}}
-                        : {{ $cartProduct->quantity }} <br>
+                      <div class="input-group quantity-selector quantity-selector-checkout py-2">
+                        <button type="button" class="button-minus" onclick="decreaseQuantity(this)" aria-label="minus">
+                          <i class="fa fa-minus" aria-hidden="true"></i>
+                        </button>
+
+                        <input type="number" step="1" min="1" max="{{$cartProduct->product->quantity}}"
+                               class="quantity-field form-control" value="{{$cartProduct->quantity}}"
+                               oninput="if(this.value == '') this.value = 1"
+                               onchange="debouncedLivewireEmit(this, {{ $cartProduct->id }}, {{ $cartProduct->product->quantity }})">
+
+                        <button type="button" class="button-plus" onclick="increaseQuantity(this)" aria-label="plus">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <p class="text-quantity mb-0 text-muted py-2">
+                        {{-- {{trans('icommerce::cart.table.quantity')}} : {{ $cartProduct->quantity }} <br> --}}
                         {{trans('icommerce::cart.table.price_per_unit')}}
                         : {{isset($currency) ? $currency->symbol_left : '$'}}
                         {{formatMoney($cartProduct->product->discount->price ?? $cartProduct->product->price)}} {{isset($currency) ? $currency->symbol_right : ''}}
@@ -87,9 +101,15 @@
                                aria-hidden="true"></i> {{trans("icommerce::products.table.shipping")}}
                           </small>
                         </p>
-                    @endif
-                    <!-- boton para eliminar-->
-                      <div class="button-remove">
+                      @endif
+                      <!-- boton para eliminar y detalles del producto-->
+                      <div class="button-remove d-flex align-items-center justify-content-end">
+                        @if(isset($cartProduct->details) && !empty($cartProduct->details))
+                          <div class="product-details mx-2" data-toggle="tooltip" data-placement="top"
+                               title="{{ $cartProduct->details }}">
+                            <i class="fa-solid fa-circle-info text-primary"></i>
+                          </div>
+                        @endif
                         <a class="close cart-remove text-danger"
                            onclick="window.livewire.emit('deleteFromCart',{{$cartProduct->id}})"
                            title="quitar producto">
@@ -109,7 +129,7 @@
                   <div class="my-2">{{ trans('icommerce::order_summary.car_sub') }}</div>
                 </div>
                 <div class="col-8 text-right">
-                  <div  class="my-2">
+                  <div class="my-2">
                     {{isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney( $cart->total )}} {{isset($currency) ? $currency->symbol_right : ''}}
                   </div>
                 </div>
@@ -131,7 +151,7 @@
                 </div>
               @endif
               @if(!empty($totalTaxes))
-              <!--  TAXES  -->
+                <!--  TAXES  -->
                 <div class="row">
                   <div class="col-12">
                     <div class="my-2">{{ trans('icommerce::order_summary.taxes') }}</div>
@@ -147,7 +167,7 @@
                 </div>
               @endif
               @if($requireShippingMethod)
-              <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
+                <!--  SHIPPING METHOD | TITLE AND AMOUNT -->
                 <div class="row">
                   <div class="col-4">
                     <div class="my-2">{{ trans('icommerce::order_summary.shipping') }}</div>
@@ -165,7 +185,7 @@
                           {{ isset($currency) ? $currency->symbol_left : '$'}} {{ formatMoney($shippingMethod->calculations->price) }} {{isset($currency) ? $currency->symbol_right : ''}}
                         @endif
                       </div>
-                      @endif
+                    @endif
                   </div>
                 </div>
               @endif
@@ -232,35 +252,47 @@
           <div class="col">
             <div class="from-group">
               <label for="comment">
-               {{trans('icommerce::checkout.comment')}}
+                {{trans('icommerce::checkout.comment')}}
               </label>
               <textarea class="form-control"
                         placeholder="{{trans('icommerce::checkout.commentPlaceholder')}}"
-                     id="comment"
-                     wire:model.defer="comment"></textarea>
+                        id="comment"
+                        wire:model.defer="comment"></textarea>
 
             </div>
           </div>
         </div>
         @if((Setting::has('icommerce::orderSummaryDescription')))
           <div class="order-summary-description py-2">
-            <x-isite::edit-link link="/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"/>
+            <x-isite::edit-link
+              link="/iadmin/#/site/settings?settings=orderSummaryDescription&module=icommerce"
+            />
             {!! setting('icommerce::orderSummaryDescription') !!}
           </div>
         @endif
-        <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
-                onclick="orderSumamryPlaceOrder()">
-          <div>
-            {{ trans('icommerce::order_summary.submit') }}
-          </div>
-        </button>
+        <div class="mt-3">
+          <button type="button" class="btn btn-link p-0 w-100 text-right"
+                  href="{{url('/')}}">
+            <div>
+              {{ trans('icommerce::checkout.continue_buying') }}
+            </div>
+          </button>
+          <button type="button" class="btn btn-warning btn-lg w-100 mt-3 placeOrder"
+                  onclick="orderSumamryPlaceOrder(this)">
+            <div>
+              {{ trans('icommerce::order_summary.submit') }}
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script type="text/javascript" defer>
-  function orderSumamryPlaceOrder() {
+  function orderSumamryPlaceOrder(button) {
+    button.disabled = true;
+
     gTagFireEventPurchase()
     // Trigger the Livewire action
     window.livewire.emit("{{config("asgard.icommerce.config.livewirePlaceOrderClick")}}")
@@ -288,4 +320,48 @@
       gtag("event", "purchase", gTagData);
     }
   }
+
+  let debounceTimeout;
+
+  function debouncedLivewireEmit(input, productId, maxQuantity) {
+    clearTimeout(debounceTimeout);
+
+    debounceTimeout = setTimeout(() => {
+      let value = parseInt(input.value) || 1;
+
+      if (value < 1) {
+        value = 1;
+      } else if (value > maxQuantity) {
+        value = maxQuantity;
+      }
+
+      input.value = value;
+
+      // Emitir evento a Livewire
+      Livewire.emit('updateQuantityCartProduct', productId, value);
+    }, 500); // Debounce de 500ms
+  }
+
+  window.decreaseQuantity = function(button) {
+    let input = button.closest('.input-group').querySelector('.quantity-field');
+    let min = parseInt(input.min);
+    let value = parseInt(input.value) || 1;
+
+    if (value > min) {
+      input.value = value - 1;
+      input.dispatchEvent(new Event('change')); // Disparar onchange con debounce
+    }
+  };
+
+  window.increaseQuantity = function(button) {
+    let input = button.closest('.input-group').querySelector('.quantity-field');
+    let max = parseInt(input.max);
+    let value = parseInt(input.value) || 1;
+
+    if (value < max) {
+      input.value = value + 1;
+      input.dispatchEvent(new Event('change'));
+    }
+  };
+
 </script>

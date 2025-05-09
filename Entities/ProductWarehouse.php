@@ -17,14 +17,20 @@ class ProductWarehouse extends CrudModel
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
-    'created' => [],
+    'created' => [
+      ['path' => 'Modules\Icommerce\Events\ProductWarehouseWasCreated']
+    ],
     'creating' => [],
-    'updated' => [],
+    'updated' => [
+      ['path' => 'Modules\Icommerce\Events\ProductWarehouseWasUpdated']
+    ],
     'updating' => [],
     'deleting' => [],
-    'deleted' => []
+    'deleted' => [
+      ['path' => 'Modules\Icommerce\Events\ProductWarehouseWasDeleted']
+    ]
   ];
-  
+
   protected $fillable = [
     'product_id',
     'warehouse_id',
@@ -40,5 +46,5 @@ class ProductWarehouse extends CrudModel
   {
     return $this->belongsTo(Warehouse::class);
   }
-  
+
 }

@@ -71,6 +71,7 @@ return [
     'description is required' => 'La descripción es requerida',
     'description min 2' => 'La descripción debe contener mínimo dos caracteres',
     'no products' => 'No existen productos disponibles',
+    'deleteValidation' => 'No se puede eliminar la categoría porque tiene productos relacionados.'
   ],
   'validation' => [
     'maximumAmount' => "El Monto de la orden excede el máximo permitido (:maximumAmount) para este método de pago",
@@ -175,6 +176,8 @@ return [
     'productRibbonTextSize' => 'Tamaño del valor descuento',
     'productRibbonLabelSize' => 'Tamaño del texto DTO',
     'productWithDescription' => 'Mostrar Descripción',
+    'enableProductDetails' => 'Activar Detalles de producto',
+    'maximumNumberOfCharactersInputDetails' => 'Número máximo de caracteres del campo Detalles',
     'productAlignButtonBuyWhatsApp' => 'Alineación de Botón WhatsApp',
     'productClassButtonBuyWhatsApp' => 'Clases Adicionales de Botón WhatsApp',
     'productWithTextButtonBuyWhatsApp' => 'Activar texto de Botón WhatsApp',
@@ -290,6 +293,7 @@ return [
       'labelSearcherOrder' => 'Ordenamiento de búsqueda',
       'labelSearchFields' => 'Campos de búsqueda para productos',
       'options' => [
+        'name_position' => 'Posicion Palabras',
         'name' => 'Nombre Del Producto',
         'summary' => 'Resumen Del Producto',
         'description' => 'Descripción Del Producto',
