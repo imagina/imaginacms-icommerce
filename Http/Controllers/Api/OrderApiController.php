@@ -27,71 +27,71 @@ class OrderApiController extends BaseCrudController
     $this->model = $model;
     $this->modelRepository = $modelRepository;
   }
-  
+
   public function show($criteria, Request $request)
   {
     try {
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
       $user = \Auth::guard('api')->user() ?? \Auth::user();
-    
+
       if (!isset($params->filter->key) && !isset($user)) {
         throw new \Exception('Unauthorized action.', 401);
       }
- 
+
       //Response
       $response = parent::show($criteria, $request);
-      
+
     } catch (\Exception $e) {
       \Log::error($e->getMessage());
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage()];
     }
-    
+
     return $response;
   }
-  
+
     /**
      * creating a new resource.
      * @return Response
      */
     public function create(Request $request)
   {
-  
+
     \Log::info('Icommerce: OrderApiController|Create');
-  
+
     $this->orderService = app('Modules\Icommerce\Services\OrderService');
-  
+
     \DB::beginTransaction();
-  
+
     try {
       //Get Parameters from URL.
       $params = $this->getParamsRequest($request);
-    
+
       $data = $request->input('attributes');
-    
+
       $orderServiceResponse = $this->orderService->create($data);
-    
+
       //Response
       $response = ["data" => $orderServiceResponse
       ];
-    
+
       \DB::commit(); //Commit to Data Base
-    
+
     } catch (\Exception $e) {
       \Log::error($e->getMessage());
       \DB::rollback();//Rollback to Data Base
       $status = $this->getStatusError($e->getCode());
       $response = ["errors" => $e->getMessage(), 'line' => $e->getLine(), 'trace' => $e->getTrace()];
     }
-  
+
     \Log::info('Icommerce: OrderApiController|Create|END');
-  
+
     return response()->json($response, $status ?? 200);
   }
-  
+
   /**
-   * 
+   *
    */
   public function update($criteria, Request $request)
   {
@@ -111,7 +111,7 @@ class OrderApiController extends BaseCrudController
       $dataOrderHistory = $supportOrderHistory->getData();
       $data["orderHistory"] = $dataOrderHistory;
 
-      $data = \Arr::only($data, ['status_id', 'options', 'orderHistory', 'suscription_id', 'suscription_token', 'comment']);
+      $data = \Arr::only($data, ['status_id', 'options', 'orderHistory', 'suscription_id', 'suscription_token', 'comment','optionsHistory']);
 
       //Request to Repository
       $dataEntity = $this->modelRepository->getItem($criteria, $params);
@@ -128,14 +128,15 @@ class OrderApiController extends BaseCrudController
       event(new OrderWasUpdated($order));
 
       if (isset($data["orderHistory"])) {
-        
+
         \Log::info('Icommerce: OrderApiController|Update|CreateOrderHistory');
 
         $orderStatusHistory = OrderStatusHistory::create([
           "order_id" => $order->id,
           "notify" => 1,
           "status" => $data["status_id"],
-          "comment" => $data["comment"] ?? null
+          "comment" => $data["comment"] ?? null,
+          "options" => $data["optionsHistory"] ?? null
         ]);
 
         event(new OrderStatusHistoryWasCreated($orderStatusHistory));
