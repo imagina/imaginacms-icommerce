@@ -10,12 +10,13 @@ use Modules\Iprofile\Transformers\UserTransformer;
 class OrderTransformer extends CrudResource
 {
 
-  protected $excludeRelations = ['orderHistory','orderItems','customer'];
+  protected $excludeRelations = ['orderHistory', 'orderItems', 'customer'];
+
   /**
-  * Method to merge values with response
-  *
-  * @return array
-  */
+   * Method to merge values with response
+   *
+   * @return array
+   */
   public function modelAttributes($request)
   {
     $item = [
@@ -27,7 +28,7 @@ class OrderTransformer extends CrudResource
       'histories' => OrderStatusHistoryTransformer::collection($this->orderHistory),
       'items' => OrderItemTransformer::collection($this->orderItems),
       'customer' => new UserTransformer($this->whenLoaded('customer')),
-      'buyAgainUrl' => route(locale().'.icommerce.store.checkout',['orderId' => $this->id]),
+      'buyAgainUrl' => route(locale() . '.icommerce.store.checkout', ['orderId' => $this->id]),
     ];
 
     //Add information blocks
@@ -38,9 +39,9 @@ class OrderTransformer extends CrudResource
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderStatus"),
             'value' => $this->status->title],
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderDate"),
-            'value' =>  $this->created_at],
+            'value' => $this->created_at],
           ['label' => trans("icommerce::orders.informationBlocksOrder.titleOrderIP"),
-            'value' =>  $this->ip],
+            'value' => $this->ip],
           ['label' => 'URL', 'value' => "<a href='$this->url'>$this->url</a>"],
         ]
       ]
@@ -62,41 +63,15 @@ class OrderTransformer extends CrudResource
     ];
 
     if (isset($this->customer->id)) {
-
-      $customerFields = $this->customer->fields;
-      $customerRegisterExtraFields = json_decode(setting("iprofile::registerExtraFields", null, "[]"));
+      $customerFields = $this->customer->extraFields;
       if (!empty($customerFields)) {
-        foreach ($customerRegisterExtraFields as $extraField) {
-          if ($extraField->active ?? false) {
-            if ($extraField->type == "documentType") {
-              $customerField = $customerFields->filter(function ($field) use ($extraField) {
-                return strstr($field->name, $extraField->field) ||
-                  strstr($field->name, "user_type_id");
-              })->first();
-            } else $customerField = $customerFields->where("name", $extraField->field)->first();
-
-            if (!empty($customerField)) {
-              if ($extraField->type == "documentType") {
-                $documentNumber = $customerFields->filter(function ($field) {
-                  return strstr($field->name, "documentNumber") ||
-                    strstr($field->name, "identification");
-                })->first();
-
-                array_push($customerBlockInfo["values"], [
-                  "label" => trans("iprofile::addresses.form.identification"),
-                  "value" => $customerField->value . " " . $documentNumber->value
-                ]);
-              } else {
-                array_push($customerBlockInfo["values"], [
-                  "label" => trans("iprofile::addresses.form.$extraField->field"),
-                  "value" => $customerField->value
-                ]);
-              }
-
-            }
-          }
+        foreach ($customerFields as $field) {
+          $customerBlockInfo["values"][] = [
+            "label" => $field["label"] ?? '',
+            "value" => $field["value"] ?? ''
+          ];
         }
-        array_push($item["informationBlocks"], $customerBlockInfo);
+        $item["informationBlocks"][] = $customerBlockInfo;
       }
 
       $customerAddressExtraFields = json_decode(setting("iprofile::userAddressesExtraFields", null, "[]"));
@@ -172,7 +147,7 @@ class OrderTransformer extends CrudResource
           ],
           [
             'label' => trans("iprofile::frontend.form.billing_address"),
-            'value' => "{$this->payment_first_name}, {$this->payment_last_name}, {$this->payment_address_1}, ".($this->payment_city).", {$this->payment_zip_code}, " .
+            'value' => "{$this->payment_first_name}, {$this->payment_last_name}, {$this->payment_address_1}, " . ($this->payment_city) . ", {$this->payment_zip_code}, " .
               ($this->paymentDepartment->name ?? '') . ", " . ($this->paymentCountry->name ?? '')
           ],
           [
@@ -212,13 +187,9 @@ class OrderTransformer extends CrudResource
       if ($this->type == "quote") {
         $formRepository = app("Modules\Iforms\Repositories\FormRepository");
 
-        $params = [
-          "filter" => [
-            "field" => "system_name",
-          ],
+        $params = ["filter" => ["field" => "system_name",],
           "include" => [],
-          "fields" => [],
-        ];
+          "fields" => [],];
         $formQuote = $formRepository->getItem("icommerce_cart_quote_form", json_decode(json_encode($params)));
         if (isset($this->options->quoteForm) && !empty($this->options->quoteForm) && isset($formQuote->id)) {
           $formFields = $formQuote->fields;
@@ -227,10 +198,8 @@ class OrderTransformer extends CrudResource
           foreach ($this->options->quoteForm as $key => $quoteField) {
 
             $field = $formFields->where("name", $key)->first();
-            array_push($customerBlockInfo["values"], [
-              "label" => $field->label,
-              "value" => $quoteField
-            ]);
+            array_push($customerBlockInfo["values"], ["label" => $field->label,
+              "value" => $quoteField]);
           }
         }
       }
@@ -286,17 +255,17 @@ class OrderTransformer extends CrudResource
     }
 
 
-      $commentBlock = [
-        'title' => trans("icommerce::checkout.comment"),
-        'values' => [
-          [
+    $commentBlock = [
+      'title' => trans("icommerce::checkout.comment"),
+      'values' => [
+        [
           // 'label' => trans("icommerce::checkout.comment"),
-            'value' => $this->comment ?? ''
-          ],
+          'value' => $this->comment ?? ''
+        ],
 
-        ]
-      ];
-      array_push($item['informationBlocks'], $commentBlock);
+      ]
+    ];
+    array_push($item['informationBlocks'], $commentBlock);
 
 
     return $item;
