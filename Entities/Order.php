@@ -73,6 +73,8 @@ class Order extends CrudModel
     'shipping_zip_code',
     'shipping_country_code',
     'shipping_zone',
+    'shipping_address_lat',
+    'shipping_address_lng',
     'shipping_address_format',
     'shipping_custom_field',
     'shipping_method',
