@@ -157,6 +157,7 @@ return [
     'productSelectSettingButtonBuyWhatsApp' => 'Select the WhatsApp Settings to Use',
     'productShowButtonBuy' => 'Activate Buy Buttons',
     'productShowButtonBuyWhatsApp' => 'Activate WhatsApp Buy Button',
+    'showCommentsProduct' => 'Show product Comments',
     'productShowButtonBuyWhatsAppTextMessage' => 'Message for the Buy with Whatsapp Button',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',

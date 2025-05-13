@@ -170,6 +170,7 @@ return [
     'productSelectSettingButtonBuyWhatsApp' => 'Seleccione el Setting de WhatsApp a Usar',
     'productShowButtonBuy'=> 'Activar Botones de comprar',
     'productShowButtonBuyWhatsApp' => 'Activar Boton de comprar Whatsapp',
+    'showCommentsProduct' => 'Mostrar Comentarios del Producto',
     'productShowButtonBuyWhatsAppTextMessage' => 'Mensaje para el Boton de comprar con Whatsapp',
     'productShowGalleryLayout' => 'Plantilla de Galeria',
     'productResponsive' => 'Responsive Galeria',
