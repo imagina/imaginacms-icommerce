@@ -77,8 +77,7 @@
 
 
   <div class="product-details py-2 collapse show" id="collapseExample" style="font-size: 10px;">
-    <textarea name="productDetails" rows="4" cols="25" wire:model.defer="details" placeholder="Detalles Del Producto"
-              maxlength="100" class="form-control" style="height: 40px; font-size: 10px;"></textarea>
+    <textarea name="productDetails" rows="4" cols="25" wire:model.defer="details" placeholder="Detalles Del Producto" maxlength="100" class="form-control" style="height: 40px; font-size: 10px;"></textarea>
     <div class="d-flex justify-content-end">
         <span class="text-muted small mt-1">
           Maximo de caracteres permitidos: 100
