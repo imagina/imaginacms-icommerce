@@ -43,10 +43,13 @@
 											<a class="nav-link active" data-toggle="tab" href="#descripcion"
 												 role="tab">{{ trans('icommerce::products.title.productDetails') }}</a>
 										</li>
-										<li class="nav-item">
-											<a class="nav-link" data-toggle="tab" href="#comentarios"
-												 role="tab">{{ trans('icommerce::products.title.comments') }}</a>
-										</li>
+
+                    @if(setting('icommerce::showCommentsProduct'))
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#comentarios"
+                           role="tab">{{ trans('icommerce::products.title.comments') }}</a>
+                      </li>
+                    @endif
 
 										@if(setting('icommerce::showReviewsProduct') && is_module_enabled('Rateable') && is_module_enabled('Icomments'))
 											<li class="nav-item">
@@ -70,13 +73,15 @@
 											</div>
 										</div>
 
-										<div class="tab-pane" id="comentarios" role="tabpanel">
-											<div class="p-3 p-md-5">
-												<div class="fb-comments w-100" data-href="{{$product->url}}" data-numposts="5"
-														 data-width="100%"></div>
-												<div id="fb-root"></div>
-											</div>
-										</div>
+                    @if(setting('icommerce::showCommentsProduct'))
+                      <div class="tab-pane" id="comentarios" role="tabpanel">
+                        <div class="p-3 p-md-5">
+                          <div class="fb-comments w-100" data-href="{{$product->url}}" data-numposts="5"
+                               data-width="100%"></div>
+                          <div id="fb-root"></div>
+                        </div>
+								  		</div>
+                    @endif
 
 										@if(setting('icommerce::showReviewsProduct') && is_module_enabled('Rateable') && is_module_enabled('Icomments'))
 											<div class="tab-pane" id="reviews" role="tabpanel">

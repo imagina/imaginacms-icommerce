@@ -1365,6 +1365,19 @@ return [
       'label' => 'icommerce::common.settings.productShowButtonBuyWhatsApp'
     ]
   ],
+  'showCommentsProduct' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::showCommentsProduct',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.showCommentsProduct'
+    ]
+  ],
   'productShowButtonBuyWhatsAppTextMessage' => [
     "onlySuperAdmin" => true,
     'value' => "Estoy interesad@ en",
@@ -1480,8 +1493,9 @@ return [
     "onlySuperAdmin" => true,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
-    'props' => [
-      'label' => 'icommerce::common.settings.maximumNumberOfCharactersInputDetails'
+      'props' => [
+        'label' => 'icommerce::common.settings.maximumNumberOfCharactersInputDetails'
+      ],
     ],
   'productWithTextButtonBuyWhatsApp' => [
     "onlySuperAdmin" => true,
