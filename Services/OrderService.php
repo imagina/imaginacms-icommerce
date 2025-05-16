@@ -111,7 +111,7 @@ class OrderService
         \Log::info("[ERROR/Exception]:: There are an error with the cart | OrderService::110");
         throw new \Exception('There are an error with the cart', 400);
       }
-      
+
       //If the Order belongs to an organization the total of the cart will be based in the cartProducts of the organization
       if(isset($data["organization_id"]) && !empty($data["organization_id"]))
         $total = $cart->products()->where("organization_id",$data["organization_id"] ?? $data["organizationId"] ?? null)->get()->sum('total');
@@ -144,6 +144,8 @@ class OrderService
       $orderData["shipping_country_code"] = $shippingAddress->country ?? $data["shipping_country_code"] ?? $data["shippingCountryCode"] ?? null;
       $orderData["shipping_zone"] = $shippingAddress->state ?? $data["shipping_zone"] ?? $data["shippingZone"] ?? null;
       $orderData["shipping_telephone"] = $shippingAddress->telephone ?? $data["shipping_telephone"] ?? $data["shippingTelephone"] ?? null;
+      $orderData["shipping_address_lat"] = $shippingAddress->lat ?? $data["shipping_address_lat"] ?? $data["shippingAddressLat"] ?? null;
+      $orderData["shipping_address_lng"] = $shippingAddress->lng ?? $data["shipping_address_lng"] ?? $data["shippingAddressLng"] ?? null;
       $orderData["options"]["shippingAddress"] = $shippingAddress->options ?? $data["shipping_address_options"] ?? $data["shippingAddressOptions"] ?? null;
 
 
@@ -232,7 +234,7 @@ class OrderService
 
         $params = ["filter" => ["status" => 1, "withCalculations" => true, "cartId" => $cart->id ?? null]];
 
-        //Extra params 
+        //Extra params
         // Parent to know is Parent Order in Payment Method
         if(isset($data["parentId"]) && !is_null($data["parentId"]))
           $params["extra"]['parentId'] = $data["parentId"];
@@ -291,7 +293,7 @@ class OrderService
       $orderData["ip"] = request()->ip();//Set Ip from request
       $orderData['key'] = substr(md5(date("Y-m-d H:i:s") . request()->ip()), 0, 20);
       if (setting('icommerce::warehouseFunctionality', null, false)) {
-        
+
         $warehouse = request()->session()->get('warehouse');
         $warehouse= json_decode($warehouse);
         if (isset($warehouse->id)) {
@@ -367,11 +369,11 @@ class OrderService
       if($order->children->isNotEmpty()){
         $dataResponse["url"] = url("/ipanel/#/store/orders/");
       }
-	
+
       //if there are an redirect URL custom in the setting this will have a full priority
 			$checkoutRedirectUrl = setting("icommerce::checkoutRedirectUrl", null);
 			$dataResponse["url"] = $checkoutRedirectUrl ?? $dataResponse["url"];
-	
+
 			//update cart status
       $updateCart = $this->cart->update($cart, ['status' => 2]);
 

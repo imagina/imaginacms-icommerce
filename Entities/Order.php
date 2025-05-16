@@ -19,9 +19,9 @@ class Order extends CrudModel
   public $transformer = 'Modules\Icommerce\Transformers\OrderTransformer';
   public $repository = 'Modules\Icommerce\Repositories\OrderRepository';
   public $requestValidation = [
-      'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
-      'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
-    ];
+    'create' => 'Modules\Icommerce\Http\Requests\CreateOrderRequest',
+    'update' => 'Modules\Icommerce\Http\Requests\UpdateOrderRequest',
+  ];
   //Instance external/internal events to dispatch with extraData
   public $dispatchesEventsWithBindings = [
     //eg. ['path' => 'path/module/event', 'extraData' => [/*...optional*/]]
@@ -74,6 +74,8 @@ class Order extends CrudModel
     'shipping_zip_code',
     'shipping_country_code',
     'shipping_zone',
+    'shipping_address_lat',
+    'shipping_address_lng',
     'shipping_address_format',
     'shipping_custom_field',
     'shipping_method',
@@ -214,8 +216,27 @@ class Order extends CrudModel
     if ($panel == 'blade' || $this->guest_purchase)
       return \URL::route(locale() . '.icommerce.store.order.show', ["orderId" => $this->id, "orderKey" => $this->key]);
     else {
+      $tenancyMode = config("tenancy.mode", null);
+      if (!empty($tenancyMode) && ($tenancyMode == "singleDatabase") && !empty($this->organization_id)) {
+        return $this->organization->url . '/ipanel/#/store/orders/' . $this->id;
+      }
       return \URL::to('/ipanel/#/store/orders/' . $this->id);
     }
+  }
+
+  public function getCMSUrlAttribute()
+  {
+    $tenancyMode = config("tenancy.mode", null);
+    if (!empty($tenancyMode) && ($tenancyMode == "singleDatabase") && !empty($this->organization_id)) {
+      return [
+        'ipanel' => $this->organization->url . '/ipanel/#/store/orders/' . $this->id,
+        'iadmin' => $this->organization->url . '/iadmin/#/order/' . $this->id,
+      ];
+    }
+    return [
+      'ipanel' => \URL::to('/ipanel/#/store/orders/' . $this->id),
+      'iadmin' => \URL::to('/iadmin/#/order/' . $this->id)
+    ];
   }
 
 
