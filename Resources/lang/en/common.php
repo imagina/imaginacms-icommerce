@@ -64,6 +64,7 @@ return [
     'no products' => 'There are no products available',
     'field required' => 'This field is required',
     'min 2 characters' => 'Minimum of 2 characters',
+    'deleteValidation' => 'The category cannot be deleted because it has related products.'
   ],
   'validation' => [
     'maximumAmount' => "The order total exceed the maximum amount available (:maximumAmount) for this payment method",
@@ -156,12 +157,15 @@ return [
     'productSelectSettingButtonBuyWhatsApp' => 'Select the WhatsApp Settings to Use',
     'productShowButtonBuy' => 'Activate Buy Buttons',
     'productShowButtonBuyWhatsApp' => 'Activate WhatsApp Buy Button',
+    'showCommentsProduct' => 'Show product Comments',
     'productShowButtonBuyWhatsAppTextMessage' => 'Message for the Buy with Whatsapp Button',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
     'productRibbonTextSize' => 'Discount value size',
     'productRibbonLabelSize' => 'Discount text size',
     'productWithDescription' => 'Show Description',
+    'enableProductDetails' => 'Activate Product Details',
+    'maximumNumberOfCharactersInputDetails' => 'Maximum number of characters in the Details field',
     'productAlignButtonBuyWhatsApp' => 'WhatsApp Button Alignment',
     'productClassButtonBuyWhatsApp' => 'Additional WhatsApp Button Classes',
     'productWithTextButtonBuyWhatsApp' => 'Activate WhatsApp Button Text',
@@ -262,6 +266,20 @@ return [
     'no_results' => 'No results',
     'see_all' => 'See all results ...',
     'search_result' => 'Search result for',
+    'settings' => [
+      'groupName' => 'Search Engine Store',
+      'labelSearcherOrder' => 'Search sorting',
+      'labelSearchFields' => 'Search fields for products',
+      'options' => [
+        'name_position' => 'Position Words',
+        'name' => 'Product Name',
+        'summary' => 'Product Summary',
+        'description' => 'Product Description',
+        'uniqueWord' => 'Individual Words',
+        'createDate' => 'Creation Date',
+        'fullWord' => 'Complete Word',
+      ],
+    ],
   ],
   'related' => [
     'page' => 'RELATED PAGE',
@@ -284,13 +302,13 @@ return [
     ],
   ],
 
-    'social' => [
-        'share' => 'Share',
-    ],
+  'social' => [
+    'share' => 'Share',
+  ],
 
-    'offers' => [
-        'title' => 'Offers',
-    ],
+  'offers' => [
+    'title' => 'Offers',
+  ],
   'featured' => [
     'title' => 'Featured Products'
   ]

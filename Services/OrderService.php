@@ -144,6 +144,8 @@ class OrderService
       $orderData["shipping_country_code"] = $shippingAddress->country ?? $data["shipping_country_code"] ?? $data["shippingCountryCode"] ?? null;
       $orderData["shipping_zone"] = $shippingAddress->state ?? $data["shipping_zone"] ?? $data["shippingZone"] ?? null;
       $orderData["shipping_telephone"] = $shippingAddress->telephone ?? $data["shipping_telephone"] ?? $data["shippingTelephone"] ?? null;
+      $orderData["shipping_address_lat"] = $shippingAddress->lat ?? $data["shipping_address_lat"] ?? $data["shippingAddressLat"] ?? null;
+      $orderData["shipping_address_lng"] = $shippingAddress->lng ?? $data["shipping_address_lng"] ?? $data["shippingAddressLng"] ?? null;
       $orderData["options"]["shippingAddress"] = $shippingAddress->options ?? $data["shipping_address_options"] ?? $data["shippingAddressOptions"] ?? null;
 
 
@@ -291,13 +293,13 @@ class OrderService
       $orderData["ip"] = request()->ip();//Set Ip from request
       $orderData['key'] = substr(md5(date("Y-m-d H:i:s") . request()->ip()), 0, 20);
       if (setting('icommerce::warehouseFunctionality', null, false)) {
-        
+
         $warehouse = request()->session()->get('warehouse');
         $warehouse= json_decode($warehouse);
         if (isset($warehouse->id)) {
           $warehouse = app('Modules\Icommerce\Repositories\WarehouseRepository')->getItem($warehouse->id);
         }
-        
+
         $orderData["warehouse_id"] = $data["warehouse_id"] ?? $data["warehouseId"] ?? $warehouse->id ?? null;
         $orderData["warehouse_title"] = $data["warehouse_title"] ?? $data["warehouseTitle"] ?? $warehouse->title ?? null;
         $orderData["warehouse_address"] = $data["warehouse_address"] ?? $data["warehouseAddress"] ?? $warehouse->address ?? null;
@@ -367,7 +369,7 @@ class OrderService
       if($order->children->isNotEmpty()){
         $dataResponse["url"] = url("/ipanel/#/store/orders/");
       }
-	
+
       //if there are an redirect URL custom in the setting this will have a full priority
 			$checkoutRedirectUrl = setting("icommerce::checkoutRedirectUrl", null);
 			$dataResponse["url"] = $checkoutRedirectUrl ?? $dataResponse["url"];

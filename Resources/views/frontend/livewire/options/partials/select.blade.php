@@ -3,7 +3,7 @@
     <option value="NULL">selecciona una opción</option>
     @foreach($productOptionValues as $selectOption)
       <option {{!$selectOption->available ? "disabled" : ""}} value="{{$selectOption->id}}">
-        {{ $selectOption->optionValue->description }} ({{formatMoney($selectOption->price)}})
+        {{ $selectOption->optionValue->description }} {{$selectOption->price != 0 ? (formatMoney($selectOption->price)) : ''}}
         {{ !$selectOption->available ? '(Agotado)' : ''}}
       </option>
     @endforeach

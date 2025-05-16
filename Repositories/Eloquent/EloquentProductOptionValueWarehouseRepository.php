@@ -82,21 +82,18 @@ class EloquentProductOptionValueWarehouseRepository extends EloquentCrudReposito
   public function create($data)
   {
     $model = parent::create($data);
-    event(new ProductOptionValueWarehouseWasCreated($model));
     return $model;
   }
 
   public function updateBy($criteria, $data, $params = false)
   {
     $model = parent::updateBy($criteria, $data, $params = false);
-    event(new ProductOptionValueWarehouseWasUpdated($model));
     return $model;
   }
 
   public function deleteBy($criteria, $params = false)
   {
     $model = parent::deleteBy($criteria, $params = false);
-    event(new ProductOptionValueWarehouseWasDeleted($model));
     return $model;
   }
 

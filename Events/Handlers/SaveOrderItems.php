@@ -49,7 +49,8 @@ class SaveOrderItems
       unset($item["productOptionValues"]);
 
       //Case No Dynamics
-      $cartProductOptions = $item["productOptions"];
+      $cartProductOptions = $item["cartProductOptions"];
+      unset($item["cartProductOptions"]);
       unset($item["productOptions"]);
 
 
@@ -147,8 +148,15 @@ class SaveOrderItems
           //\Log::info($this->log."CartProductOptions|FixData|");
           foreach ($cartProductOptions as $option) {
             // Fix Data OrderOption
-            $dataOrderOption = $supportOrderOption->fixData($order->id, $orderItem, null, $option);
-
+            $dataOrderOption = $supportOrderOption->fixData(
+              $order->id, $orderItem, null,
+              //Simulate cartProduct.dynamicOptions to get the optionValueDescription
+              json_decode(json_encode([
+              'id' => $option->option_id,
+              'description' => $option->option->description,
+              'valueDescription' => $option->dynamicProductOptionValue->optionValue->description,
+              'pivot' => ['value' => $option->value]
+            ])));
             // Create Order Option
             $order->orderOption()->create($dataOrderOption);
 
