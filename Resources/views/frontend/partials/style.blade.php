@@ -385,18 +385,30 @@
 <!-- index styles -->
 <style>
     #content_index_commerce .sticky-top-content {
-        position: fixed;
+        position: fixed !important;
         top: 0px;
         left: 0px;
         width: 100%;
         z-index: 1000;
         border-bottom: 1px solid #eee;
+      transition: transform 0.3s ease;
     }
-    #content_index_commerce .sticky-top-content .total-products {
-        display: none;
+    #content_index_commerce .visible-top-content {
+      transform: translateY(0);
+    }
+    #content_index_commerce .sticky-top-content:not(.visible-top-content) {
+      transform: translateY(-100%);
+    }
+    #content_index_commerce .frame-options {
+      background-color: #eeeeee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 15px;
     }
     #content_index_commerce .options-product-list-mobile .total-products {
         text-align: left;
+        width: -webkit-fill-available;
     }
     #content_index_commerce .options-product-list-mobile .change-layout {
         margin-top: 0px !important;
@@ -404,20 +416,23 @@
     #content_index_commerce .options-product-list-mobile .filter-order-by .custom-control label {
         font-size: 1rem;
     }
-    #content_index_commerce .options-product-list-mobile .products-menu {
-        width: 100%;
-    }
     #content_index_commerce .options-product-list-mobile .products-menu__item {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         position: relative;
-        width: 33.33%;
-        height: 64px;
+        width: max-content;
+        height: 25px;
         font-size: 14px;
-        background-color: #fff;
+        background-color: transparent;
         border: 0;
         padding: 0 10px;
+        &:last-child {
+            padding-right: 0;
+        }
+        & i {
+          font-size: 11px;
+        }
     }
     #content_index_commerce .options-product-list-mobile .products-menu__item:not(:last-child):after {
         position: absolute;
@@ -474,7 +489,7 @@
     }
     @media (max-width: 768px) {
         #content_index_commerce .product-list .total-products {
-            text-align: center;
+          font-size: 12px;
         }
         #content_index_commerce .product-list .filter-order-by {
             float: left;
@@ -486,7 +501,12 @@
             align-items: initial !important;
         }
     }
-
+    @media (max-width: 400px) {
+      #content_index_commerce .options-product-list-mobile .products-menu__item {
+        padding: 0 15px;
+        & span { display: none; }
+      }
+    }
 </style>
 
 <!-- show styles -->
