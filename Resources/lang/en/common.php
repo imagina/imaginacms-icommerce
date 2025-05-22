@@ -196,6 +196,7 @@ return [
       'showReviewsProduct' => 'Show product reviews',
       'showRatingProduct' => 'Show product rating',
       'showRatingInReviewsProduct' => 'Show rating in product reviews',
+      'viewButtonsWhitOptionsProduct'=>'Show Buttons with Product Options'
     ],
     'product-price-list-enable' => 'Enable',
     'product-add-to-cart-with-quantity' => 'Add to Cart with quantity (Product Item)',

@@ -412,6 +412,19 @@ return [
       'label' => 'icommerce::common.settings.product.showButtonToQuoteInStore'
     ]
   ],
+  'viewButtonsWhitOptionsProduct' => [
+    "onlySuperAdmin" => true,
+    'value' => "0",
+    'name' => 'icommerce::viewButtonsWhitOptionsProduct',
+    'type' => 'checkbox',
+    'groupName' => 'product',
+    'groupTitle' => 'icommerce::common.settings.product.group',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.product.viewButtonsWhitOptionsProduct'
+    ]
+  ],
   'showButtonThatGeneratesPdfOfTheCart' => [
     "onlySuperAdmin" => true,
     'value' => "0",
