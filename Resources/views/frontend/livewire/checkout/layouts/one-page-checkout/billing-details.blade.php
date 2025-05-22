@@ -2,12 +2,12 @@
   <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#PaymentAddress" role="button" aria-expanded="false"
        aria-controls="PaymentAddress">
     <div class="number-check">
-      {{ config('asgard.icommerce.config.infoCardCheckout.billingDetails.numberPosition')}}
+      {{ $stepNumberCard }}
     </div>
     <h3 class="d-flex align-items-center my-1 h5">
       {{ trans('icommerce::billing_details.title') }}
     </h3>
-  
+
     @if($errors->has('billingAddress'))
       <br/>
       <span class="alert alert-danger" role="alert">{{ $errors->first('billingAddress') }}</span>
@@ -17,7 +17,7 @@
   {{--
     <a href="#" id="expandBillingDetails">{{ trans('icommerce::billing_details.form.expand_form') }}</a>
     --}}
-  
+
   <div class="showBilling collapse show" id="PaymentAddress" role="tablist" aria-multiselectable="true">
     <hr class="my-2"/>
     @include("icommerce::frontend.livewire.checkout.partials.billing-details")

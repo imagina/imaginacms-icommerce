@@ -2,7 +2,7 @@
   <div class="row m-0 pointer card-number-text" data-toggle="collapse" href="#customerData" role="button" aria-expanded="false"
        aria-controls="customerData">
     <div class="number-check">
-      {{ config('asgard.icommerce.config.infoCardCheckout.customerData.numberPosition')}}
+      {{ $stepNumberCard }}
     </div>
     <h3 class="d-flex align-items-center my-1 h5">
       {{ trans('icommerce::customer.title') }}

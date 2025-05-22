@@ -919,25 +919,6 @@ return [
     ]
   ],
 
-  //Order position Info card
-
-  'infoCardCheckout' => [
-    'customerData' => [
-      'numberPosition' => '1',
-    ],
-    'billingDetails' => [
-      'numberPosition' => '2',
-    ],
-    'shippingDetails' => [
-      'numberPosition' => '3',
-    ],
-    'shippingMethods' => [
-      'numberPosition' => '4',
-    ],
-    'paymentMethods' => [
-      'numberPosition' => '5',
-    ],
-  ],
 
   /*Translate keys of each entity. Based on the permission string*/
   'documentation' => [

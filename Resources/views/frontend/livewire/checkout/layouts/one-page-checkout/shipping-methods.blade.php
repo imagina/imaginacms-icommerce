@@ -2,7 +2,7 @@
   <div id="cardShippingMethods" class="card card-block p-3 shippingMethods mb-3">
     <div class="row m-0 card-number-text">
       <div class="number-check">
-        {{ config('asgard.icommerce.config.infoCardCheckout.shippingMethods.numberPosition')}}
+        {{ $stepNumberCard }}
       </div>
       <h3 class="d-flex align-items-center my-1 h5">
         {{trans('icommerce::shippingmethods.title.shippingmethods') }}
