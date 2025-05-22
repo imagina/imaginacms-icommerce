@@ -5,6 +5,14 @@
   </div>
 </div>
 
+@php
+  $stepNumberCard = 1;
+  $validateCards = [
+      'shipping-methods' => $requireShippingMethod,
+      'shipping-details' => $requireShippingMethod,
+  ];
+@endphp
+
 <div class="row">
   @php($columns = config('asgard.icommerce.config.onePageCheckout.columns'))
   @foreach($columns as $colum)
@@ -12,8 +20,11 @@
       @foreach($colum['cards'] as $card)
         @if($card == 'order-summary')
           @include('icommerce::frontend.livewire.checkout.partials.order-summary')
-        @else
-          @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.' . $card)
+        @elseif($validateCards[$card] ?? true)
+          @include('icommerce::frontend.livewire.checkout.layouts.one-page-checkout.' . $card, [
+              'StepNumberCard' => $stepNumberCard,
+          ])
+          @php($stepNumberCard++)
         @endif
       @endforeach
     </div>

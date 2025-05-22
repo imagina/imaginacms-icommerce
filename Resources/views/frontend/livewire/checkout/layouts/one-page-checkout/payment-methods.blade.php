@@ -1,7 +1,7 @@
 <div id="cardPaymentMethods" class="card card-block p-3 mb-3">
     <div class="row m-0 pointer card-number-text">
         <div class="number-check">
-            {{ config('asgard.icommerce.config.infoCardCheckout.paymentMethods.numberPosition')}}
+          {{ $stepNumberCard }}
         </div>
         <h3 class="d-flex align-items-center my-1 h5">
             {{ trans('icommerce::paymentmethods.title.paymentmethods') }}
