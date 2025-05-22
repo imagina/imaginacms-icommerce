@@ -84,6 +84,7 @@ class ProductListItem extends Component
   public $fontSizeButtonBuyWhatsApp;
   public $positionButtonBuyWhatsApp;
   public $withStyleButtonBuyWhatsApp;
+  public $viewButtonsWhitOptionsProduct;
 
 
   /**
@@ -165,7 +166,8 @@ class ProductListItem extends Component
                               $colorButtonBuyWhatsApp = null,
                               $fontSizeButtonBuyWhatsApp = null,
                               $positionButtonBuyWhatsApp = null,
-                              $withStyleButtonBuyWhatsApp = null
+                              $withStyleButtonBuyWhatsApp = null,
+                              $viewButtonsWhitOptionsProduct = null
   )
   {
     $this->product = $item;
@@ -253,6 +255,7 @@ class ProductListItem extends Component
     $this->fontSizeButtonBuyWhatsApp = $fontSizeButtonBuyWhatsApp ?? setting('icommerce::productFontSizeButtonBuyWhatsApp', null, 13);
     $this->positionButtonBuyWhatsApp = $positionButtonBuyWhatsApp ?? setting('icommerce::productPositionButtonBuyWhatsApp', null, false);
     $this->withStyleButtonBuyWhatsApp = $withStyleButtonBuyWhatsApp ?? setting('icommerce::productWithStyleButtonBuyWhatsApp', null, false);
+    $this->viewButtonsWhitOptionsProduct = $viewButtonsWhitOptionsProduct ?? setting('icommerce::viewButtonsWhitOptionsProduct', null, '0');
 
     if (!empty($parentAttributes))
       $this->getParentAttributes($parentAttributes);

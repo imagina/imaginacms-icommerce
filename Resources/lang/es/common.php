@@ -213,6 +213,7 @@ return [
       'showReviewsProduct' => 'Mostrar revisiones del producto',
       'showRatingProduct' => 'Mostrar rating del producto',
       'showRatingInReviewsProduct' => 'Mostrar rating en las revisiones del producto',
+      'viewButtonsWhitOptionsProduct'=>'Mostrar Botones con Opciones de producto'
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',
