@@ -8,30 +8,43 @@ use Modules\Icommerce\Entities\OrderStatus;
 
 class OrderStatusTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run()
-    {
-        Model::unguard();
+  /**
+   * Run the database seeds.
+   */
+  public function run()
+  {
+    Model::unguard();
 
-        $statuses = config('asgard.icommerce.config.orderStatuses');
+    $seedUniquesUse = \DB::table('isite__seeds')->where('name', 'OrderStatusTableSeeder')->first();
+    if (empty($seedUniquesUse)) {
 
-        foreach ($statuses as $status) {
-            $statusTrans = $status['title'];
+      $statuses = config('asgard.icommerce.config.orderStatuses');
 
-            foreach (['en', 'es'] as $locale) {
-                $data = [
-                    'id' => $status['id'],
-                    $locale => [
-                        'title' => trans($status['title'], [], $locale),
-                    ],
-                ];
-                $orderStatus = OrderStatus::find($status['id']);
-                if (! isset($orderStatus->id)) {
-                    $orderStatus = OrderStatus::create($data);
-                }
-            }//End Foreach
-        }//End Foreach
+      foreach ($statuses as $status) {
+        $translatedTitles = [
+          'en' => trans($status['title'], [], 'en'),
+          'es' => trans($status['title'], [], 'es'),
+        ];
+
+        $data = [
+          'id' => $status['id'],
+          'en' => [
+            'title' => $translatedTitles['en'],
+          ],
+          'es' => [
+            'title' => $translatedTitles['es'],
+          ],
+        ];
+
+        $orderStatus = OrderStatus::find($status['id']);
+
+        if (!isset($orderStatus->id)) {
+          OrderStatus::create($data);
+        } else {
+          $orderStatus->update($data);
+        }
+      }
+      \DB::table('isite__seeds')->insert(['name' => 'OrderStatusTableSeeder']);
     }
+  }
 }
