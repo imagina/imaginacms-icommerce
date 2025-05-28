@@ -100,7 +100,7 @@ class EloquentProductOptionValueRepository extends EloquentCrudRepository implem
     if (!empty($model)) {
       event(new ProductOptionValueWasUpdated($model));
       if (!empty($model->parent_option_value_id)) {
-        $parent = $model->parentProductOptionValue;
+        $parent = ProductOptionValue::find($model->parent_option_value_id);
         //Verificacion y posible actualizacion de status y stock de padre
         $parent->updateStockByChildren();
       }
