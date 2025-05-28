@@ -214,7 +214,7 @@ class Product extends CrudModel implements TaggableInterface
   {
 
     return $this->belongsToMany(Option::class, 'icommerce__product_option')
-      ->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required','options')
+      ->withPivot('id', 'parent_id', 'parent_option_value_id', 'value', 'required', 'options')
       ->withTimestamps();
   }
 
@@ -511,7 +511,7 @@ class Product extends CrudModel implements TaggableInterface
 
     $priceList = is_module_enabled('Icommercepricelist');
     $requestSetting = request()->get('setting');
-    $setting = $requestSetting != null ?json_decode(request()->get('setting')) : (object)[];
+    $setting = $requestSetting != null ? json_decode(request()->get('setting')) : (object)[];
 
     if (isset($auth->id) && $priceList && (!isset($setting->fromAdmin) || !$setting->fromAdmin)) {
       $priceList = $this->authPriceLists->where('related_id', '!=', 0)->first() ?? $this->authPriceLists->first();
@@ -583,10 +583,11 @@ class Product extends CrudModel implements TaggableInterface
     return $taxes;
   }
 
-  public function hasRequiredOptions(){
+  public function hasRequiredOptions()
+  {
     $hasRequiredOptions = false;
-    if(isset($this->entity->productOptions)){
-      foreach ($this->entity->productOptions as $productOption){
+    if (isset($this->entity->productOptions)) {
+      foreach ($this->entity->productOptions as $productOption) {
         isset($productOption->pivot->required) && $productOption->pivot->required ? $hasRequiredOptions = true : false;
       }
     }
@@ -610,7 +611,14 @@ class Product extends CrudModel implements TaggableInterface
       $baseUrls[] = $this->organization->url;
     }
 
-    $categoryUrls = $this->categories()->get()->pluck('url')->toArray();
+    $currentCategoryUrls = $this->categories->pluck('url')->toArray();
+
+    //a parameter was added to the model that saves the categories before doing so
+    // sync this to prevent the slugs that are removed from the products from not being cleaned up
+    $oldUrls = $this->backCategories->pluck('url')->toArray() ?? [];
+
+    $categoryUrls = array_unique(array_merge($currentCategoryUrls, $oldUrls));
+
     if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status) {
       $baseUrls[] = $this->url;
     }
