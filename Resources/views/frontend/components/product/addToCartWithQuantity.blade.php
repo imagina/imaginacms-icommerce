@@ -1,5 +1,4 @@
 @if($product->price>0 && $product->stock_status && $product->quantity)
-  {{dd('epaaaaaaaaaaa')}}
   @include('icommerce::frontend.partials.show.extra-details')
   <div class="col no-padding">
     <div class="row m-0 add-to-cart-with-quantity {{$buttonsLayout}} align-items-center justify-content-between"
