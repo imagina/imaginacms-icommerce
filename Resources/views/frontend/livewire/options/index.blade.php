@@ -1,6 +1,5 @@
 <div>
   <div id="recursiveListOptionsComponent">
-
     @foreach ($options as $index => $productOption)
       @if (!empty($productOption) and is_null($productOption->parent_id))
         <div>
@@ -13,145 +12,155 @@
         </div>
       @endif
     @endforeach
-
   </div>
-  @if (!$product->is_call || ($product->is_call && $product->show_price_is_call))
-
-    <div class="price ">
-      <div class="mb-0">
+  @if(!$onlyOptions)
+    @if (!$product->is_call || ($product->is_call && $product->show_price_is_call))
+      <div class="price ">
+        <div class="mb-0">
         <span class="text-primary font-weight-bold">
           {{ isset($currency->id) ? $currency->symbol_left : '$' }}
           {{ formatMoney($dynamicPrice = ($product->discount->price ?? $product->price) + $this->priceOptions) }}
           {{ isset($currency->id) ? $currency->symbol_right : '' }}
         </span>
-        @if (isset($product->discount->price))
-          <br><span class="price-desc h6 pl-3">{{ trans('icommerce::products.alerts.beforeDiscount') }}
+          @if (isset($product->discount->price))
+            <br><span class="price-desc h6 pl-3">{{ trans('icommerce::products.alerts.beforeDiscount') }}
             <del>{{ isset($currency) ? $currency->symbol_left : '$' }}{{ formatMoney($product->price) }}</del></span>
-        @endif
-      </div>
-    </div>
-  @endif
-
-  <!-- calculation according to the information of weight, volume, quantity, lenght-->
-  @include('icommerce::frontend.components.product.calculate-pum', ['dynamicPrice' => $dynamicPrice])
-
-  @if (!$product->is_call)
-    <div class="add-cart">
-      <hr>
-      <div class="row">
-        <div class="col-12 quantity-product">
-          {{ $product->quantity }} {{ trans('icommerce::products.form.available') }}
+          @endif
         </div>
+      </div>
+    @endif
 
-        <div class="col-12">
-          <!-- BUTTON QUANTITY -->
-          @if (setting('icommerce::productShowButtonBuy', null, true))
+    <!-- calculation according to the information of weight, volume, quantity, lenght-->
+    @include('icommerce::frontend.components.product.calculate-pum', ['dynamicPrice' => $dynamicPrice])
 
-            <div class="d-inline-flex align-items-center p-1">
-              <div class="input-group ">
-                <div class="input-group-prepend">
-                  <button
-                    class="btn btn-outline-light font-weight-bold"
-                    field="quantity"
-                    type="button"
-                    onclick="icommerce_showSetQuantity(event,'-')"
+    @if (!$product->is_call)
+      <div class="add-cart">
+        <hr>
+        <div class="row">
+          <div class="col-12 quantity-product">
+            <span class="quantity">{{ $product->quantity }}</span>
+            <span class="type-quantity">
+            @if($product->quantity_class_id == 1)
+                {{ trans('icommerce::products.typeQuantity.unit') }}
+              @elseif($product->quantity_class_id == 2)
+                {{ trans('icommerce::products.typeQuantity.sixPack') }}
+              @elseif($product->quantity_class_id == 3)
+                {{ trans('icommerce::products.typeQuantity.dozen') }}
+              @else
+                {{ trans('icommerce::products.form.available') }}
+              @endif
+          </span>
+          </div>
+
+          <div class="col-12">
+            <!-- BUTTON QUANTITY -->
+            @if (setting('icommerce::productShowButtonBuy', null, true))
+
+              <div class="d-inline-flex align-items-center p-1">
+                <div class="input-group ">
+                  <div class="input-group-prepend">
+                    <button
+                      class="btn btn-outline-light font-weight-bold"
+                      field="quantity"
+                      type="button"
+                      onclick="icommerce_showSetQuantity(event,'-')"
+                    >
+                      <i
+                        class="fa fa-angle-left"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control text-center quantity"
+                    name="quantityProduct"
+                    wire:model.defer="quantity"
                   >
-                    <i
-                      class="fa fa-angle-left"
-                      aria-hidden="true"
-                    ></i>
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  class="form-control text-center quantity"
-                  name="quantityProduct"
-                  wire:model.defer="quantity"
-                >
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-light font-weight-bold"
-                    field="quantity"
-                    type="button"
-                    onclick="icommerce_showSetQuantity(event,'+')"
-                  >
-                    <i
-                      class="fa fa-angle-right"
-                      aria-hidden="true"
-                    ></i>
-                  </button>
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-light font-weight-bold"
+                      field="quantity"
+                      type="button"
+                      onclick="icommerce_showSetQuantity(event,'+')"
+                    >
+                      <i
+                        class="fa fa-angle-right"
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="d-inline-flex align-items-center p-1">
-              <!-- BUTTON ADD -->
-              @if (setting('icommerce::warehouseFunctionality', null, false))
-                <div wire:ignore>
-                  @php
-                    if (setting('icommerce::canAddIsCallProductsIntoCart') && $product->is_call) {
-                        $label = trans('icommerce::cart.button.addToCartForQuote');
-                    } else {
-                        $label = trans('icommerce::cart.button.add_to_cart');
-                    }
-                  @endphp
-                  <livewire:icommerce::addToCartButton
-                    lazy
-                    :wire:key="(uniqid('addToCartButton-'.$product->id))"
-                    onclick="icommerce_showAddToCartWithOptions()"
-                    buttonClasses="btn-comprar btn btn-primary text-white"
-                    :withIcon=true
-                    :iconClass="'fa ' . @setting('icommerce::productAddToCartIcon', null, 'fa-shopping-cart')"
-                    :withLabel=true
-                    :label=$label
-                    :product=$product
-                  />
-                </div>
-              @else
-                <div>
-                  <a
-                    onclick="icommerce_showAddToCartWithOptions()"
-                    href="#"
-                    class="btn-comprar btn btn-primary text-white"
-                    aria-label="buy"
-                  >
-                    <i class="fa @setting('icommerce::productAddToCartIcon', null, 'fa-shopping-cart')"></i>
-                    @if (setting('icommerce::canAddIsCallProductsIntoCart') && $product->is_call)
-                      {{ trans('icommerce::cart.button.addToCartForQuote') }}
-                    @else
-                      {{ trans('icommerce::cart.button.add_to_cart') }}
-                    @endif
-                  </a>
-                </div>
-              @endif
-            </div>
+              <div class="d-inline-flex align-items-center p-1">
+                <!-- BUTTON ADD -->
+                @if (setting('icommerce::warehouseFunctionality', null, false))
+                  <div wire:ignore>
+                    @php
+                      if (setting('icommerce::canAddIsCallProductsIntoCart') && $product->is_call) {
+                          $label = trans('icommerce::cart.button.addToCartForQuote');
+                      } else {
+                          $label = trans('icommerce::cart.button.add_to_cart');
+                      }
+                    @endphp
+                    <livewire:icommerce::addToCartButton
+                      lazy
+                      :wire:key="(uniqid('addToCartButton-'.$product->id))"
+                      onclick="icommerce_showAddToCartWithOptions()"
+                      buttonClasses="btn-comprar btn btn-primary text-white"
+                      :withIcon=true
+                      :iconClass="'fa ' . @setting('icommerce::productAddToCartIcon', null, 'fa-shopping-cart')"
+                      :withLabel=true
+                      :label=$label
+                      :product=$product
+                    />
+                  </div>
+                @else
+                  <div>
+                    <a
+                      onclick="icommerce_showAddToCartWithOptions()"
+                      href="#"
+                      class="btn-comprar btn btn-primary text-white"
+                      aria-label="buy"
+                    >
+                      <i class="fa @setting('icommerce::productAddToCartIcon', null, 'fa-shopping-cart')"></i>
+                      @if (setting('icommerce::canAddIsCallProductsIntoCart') && $product->is_call)
+                        {{ trans('icommerce::cart.button.addToCartForQuote') }}
+                      @else
+                        {{ trans('icommerce::cart.button.add_to_cart') }}
+                      @endif
+                    </a>
+                  </div>
+                @endif
+              </div>
 
-          @endif
+            @endif
 
-          @if ((bool) setting('wishlistable::wishlistActive', null, false))
-            <div class="d-inline-flex align-items-center p-1">
-              <!-- BUTTON WISHLIST -->
-              <a
-                aria-label="wishlist"
-                onClick="window.livewire.emit('addToWishList',{{ json_encode(['entityName' => 'Modules\\Icommerce\\Entities\\Product', 'entityId' => $product->id, 'fromBtnAddWishlist' => true]) }})"
-                class="btn btn-wishlist mx-2"
-              >
-                <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
-                <i class="fa fa-heart-o ml-1"></i>
-              </a>
-            </div>
-          @endif
+            @if ((bool) setting('wishlistable::wishlistActive', null, false))
+              <div class="d-inline-flex align-items-center p-1">
+                <!-- BUTTON WISHLIST -->
+                <a
+                  aria-label="wishlist"
+                  onClick="window.livewire.emit('addToWishList',{{ json_encode(['entityName' => 'Modules\\Icommerce\\Entities\\Product', 'entityId' => $product->id, 'fromBtnAddWishlist' => true]) }})"
+                  class="btn btn-wishlist mx-2"
+                >
+                  <span>{{ trans('wishlistable::wishlistables.button.addToList') }}</span>
+                  <i class="fa fa-heart-o ml-1"></i>
+                </a>
+              </div>
+            @endif
 
-          @include('icommerce::frontend.partials.show.buttonWhatsApp')
+            @include('icommerce::frontend.partials.show.buttonWhatsApp')
+
+          </div>
 
         </div>
-
+        <hr>
       </div>
-      <hr>
-    </div>
+    @endif
+    <!-- PRICE -->
   @endif
-  <!-- PRICE -->
-
 </div>
 @section('scripts-owl')
   @parent
