@@ -34,8 +34,11 @@
         </div>
       @endif
       <div class="options-section">
-        <livewire:icommerce::options :product="$product" onlyType="color_image"
-                                     wire:key="options-product-{{$product->id}}"
+        <livewire:icommerce::options
+          :product="$product"
+          onlyType="color_image"
+          wire:key="options-product-{{ $product->id }}"
+          :onlyOptions="true"
         />
       </div>
       <div class="bottom buttons {{$buttonsLayout}}">
