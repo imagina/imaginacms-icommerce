@@ -37,21 +37,6 @@
       <div class="add-cart">
         <hr>
         <div class="row">
-          <div class="col-12 quantity-product">
-            <span class="quantity">{{ $product->quantity }}</span>
-            <span class="type-quantity">
-            @if($product->quantity_class_id == 1)
-                {{ trans('icommerce::products.typeQuantity.unit') }}
-              @elseif($product->quantity_class_id == 2)
-                {{ trans('icommerce::products.typeQuantity.sixPack') }}
-              @elseif($product->quantity_class_id == 3)
-                {{ trans('icommerce::products.typeQuantity.dozen') }}
-              @else
-                {{ trans('icommerce::products.form.available') }}
-              @endif
-          </span>
-          </div>
-
           <div class="col-12">
             <!-- BUTTON QUANTITY -->
             @if (setting('icommerce::productShowButtonBuy', null, true))
