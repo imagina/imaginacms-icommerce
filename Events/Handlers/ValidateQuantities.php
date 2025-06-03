@@ -19,8 +19,7 @@ class ValidateQuantities
 
   public function handle($event)
   {
-
-    $productOptionValue = $event->entity["model"];
+    $productOptionValue = $event->entity["model"] ?? $event->entity;
     $product = $this->productRepository->getItem($productOptionValue->product_id);
     if ($product->subtract) {
       if ($productOptionValue->subtract) {
