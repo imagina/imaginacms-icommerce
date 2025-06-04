@@ -37,6 +37,21 @@
       <div class="add-cart">
         <hr>
         <div class="row">
+          <div class="col-12 quantity-product">
+            @php
+              $quantityRepository =  app('Modules\\Icommerce\\Repositories\\QuantityClassRepository');
+              $repository = $quantityRepository->getItem($product->quantity_class_id);
+            @endphp
+            <span class="quantity">{{ $product->quantity }}</span>
+            <span class="type-quantity">
+            @if($product->quantity_class_id)
+                {{$repository->title}}
+              @else
+                {{ trans('icommerce::products.form.available') }}
+              @endif
+          </span>
+          </div>
+
           <div class="col-12">
             <!-- BUTTON QUANTITY -->
             @if (setting('icommerce::productShowButtonBuy', null, true))
@@ -154,12 +169,10 @@
       background-color: var(--primary);
     }
   </style>
-  <script
-    type="text/javascript"
-    defer
-  >
+  <script type="text/javascript" defer>
     function icommerce_showAddToCartWithOptions(e) {
-      window.livewire.emit('addToCartOptions', {
+      console.warn('entra');
+      window.livewire.emit('addToCartOptions-{{$product->id}}', {
         quantity: $('input[name=quantityProduct]').val(),
         details: $('textarea[name=productDetails]').val()
       })
