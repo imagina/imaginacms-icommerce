@@ -169,12 +169,10 @@
       background-color: var(--primary);
     }
   </style>
-  <script
-    type="text/javascript"
-    defer
-  >
+  <script type="text/javascript" defer>
     function icommerce_showAddToCartWithOptions(e) {
-      window.livewire.emit('addToCartOptions', {
+      console.warn('entra');
+      window.livewire.emit('addToCartOptions-{{$product->id}}', {
         quantity: $('input[name=quantityProduct]').val(),
         details: $('textarea[name=productDetails]').val()
       })
