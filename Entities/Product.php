@@ -615,7 +615,10 @@ class Product extends CrudModel implements TaggableInterface
 
     //a parameter was added to the model that saves the categories before doing so
     // sync this to prevent the slugs that are removed from the products from not being cleaned up
-    $oldUrls = $this->backCategories->pluck('url')->toArray() ?? [];
+    $oldUrls = [];
+    if (!is_null($this->backCategories)) {
+      $oldUrls = $this->backCategories->pluck('url')->toArray();
+    }
 
     $categoryUrls = array_unique(array_merge($currentCategoryUrls, $oldUrls));
 
