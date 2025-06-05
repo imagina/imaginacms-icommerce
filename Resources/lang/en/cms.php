@@ -70,6 +70,7 @@ return [
     "default_currency" => "Default Currency",
     "warehouses" => "Warehouses",
     "adminOrderStatuses" => "Order Status",
+    "adminProductWarehouse" => "Product Warehouse",
   ],
   "newProduct" => "New Product",
   "updateProduct" => "Update Product",
