@@ -64,7 +64,8 @@ return [
     'no products' => 'There are no products available',
     'field required' => 'This field is required',
     'min 2 characters' => 'Minimum of 2 characters',
-    'deleteValidation' => 'The category cannot be deleted because it has related products.'
+    'deleteValidation' => 'The category cannot be deleted because it has related products.',
+    'invalidFormatSlug' => 'The slug can only contain lowercase letters, numbers, and hyphens (no spaces or special characters)',
   ],
   'validation' => [
     'maximumAmount' => "The order total exceed the maximum amount available (:maximumAmount) for this payment method",

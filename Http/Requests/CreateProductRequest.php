@@ -45,6 +45,7 @@ class CreateProductRequest extends BaseFormRequest
       // slug
       'slug.required' => trans('icommerce::common.messages.field required'),
       'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      'slug.regex' => trans('icommerce::common.messages.invalidFormatSlug'),
 
     ];
   }

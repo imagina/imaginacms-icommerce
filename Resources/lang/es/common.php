@@ -71,7 +71,8 @@ return [
     'description is required' => 'La descripción es requerida',
     'description min 2' => 'La descripción debe contener mínimo dos caracteres',
     'no products' => 'No existen productos disponibles',
-    'deleteValidation' => 'No se puede eliminar la categoría porque tiene productos relacionados.'
+    'deleteValidation' => 'No se puede eliminar la categoría porque tiene productos relacionados.',
+    'invalidFormatSlug' => 'El slug solo puede contener letras minúsculas, números y guiones (sin espacios ni caracteres especiales)',
   ],
   'validation' => [
     'maximumAmount' => "El Monto de la orden excede el máximo permitido (:maximumAmount) para este método de pago",
