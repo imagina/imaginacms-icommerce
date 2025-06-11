@@ -7,32 +7,32 @@ use Modules\Ihelpers\Rules\UniqueSlugRule;
 
 class UpdateProductRequest extends BaseFormRequest
 {
-    public function rules()
-    {
-        return [
-            //'category_id' => 'required',
-        ];
-    }
+  public function rules()
+  {
+    return [
+      //'category_id' => 'required',
+    ];
+  }
 
   public function translationRules()
   {
     return [
       'name' => 'min:2',
-      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id") ,"min:2", "alpha_dash:ascii"]
+      'slug' => [new UniqueSlugRule("icommerce__product_translations", $this->id, "product_id"), "min:2", "regex:/^[a-z0-9-]+$/"]
     ];
   }
 
-    public function authorize()
-    {
-        return true;
-    }
+  public function authorize()
+  {
+    return true;
+  }
 
-    public function messages()
-    {
-        return [
+  public function messages()
+  {
+    return [
 
-        ];
-    }
+    ];
+  }
 
   public function translationMessages()
   {
@@ -43,11 +43,13 @@ class UpdateProductRequest extends BaseFormRequest
 
       // slug
       'slug.required' => trans('icommerce::common.messages.field required'),
-      'slug.min:2' => trans('icommerce::common.messages.min 2 characters')
+      'slug.min:2' => trans('icommerce::common.messages.min 2 characters'),
+      'slug.regex' => trans('icommerce::common.messages.invalidFormatSlug'),
     ];
   }
 
-    public function getValidator(){
-        return $this->getValidatorInstance();
-    }
+  public function getValidator()
+  {
+    return $this->getValidatorInstance();
+  }
 }
