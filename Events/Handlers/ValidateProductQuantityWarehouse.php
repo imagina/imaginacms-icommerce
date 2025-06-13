@@ -18,7 +18,7 @@ class ValidateProductQuantityWarehouse
   public function handle($event)
   {
     //si se crea un producto en una bodega se debe actualizar el producto global
-    $productWarehouse = $event->entity["model"];
+    $productWarehouse = $event->entity["model"] ?? $event->entity;
 
     //se busca el producto que se actualiza o se crea en todas las bodegas tomando su cantidades en un array
     $productWarehouseQuantities = \DB::table('icommerce__product_warehouse')
