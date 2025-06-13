@@ -10,7 +10,7 @@ class DeleteCategoryRequest extends BaseFormRequest
   public function rules()
   {
     return [
-      'id' => [new DeleteFunctionRule('icommerce__product_category', $this->id, 'category_id', trans('icommerce::common.messages.deleteValidation'))]
+      'id' => [new DeleteFunctionRule('icommerce__product_category', $this->id, 'category_id', trans('icommerce::common.messages.deleteValidation'), 'Modules\Icommerce\Repositories\ProductRepository', 'product_id')]
     ];
   }
 
