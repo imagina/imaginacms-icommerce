@@ -50,6 +50,34 @@ return [
           'slug' => 'SLUG'
         ]
       ],
+      'icommerce_syncProductwarehouses' => [
+        'base_template_id' => '15vM0Xx5QbfkLpxOD57vNcVr7BSuQeK337Svi35Da5GQ',
+        'apiRoute' => [
+          'product' => '/icommerce/v3/product-warehouse',
+          'product-option' => '/icommerce/v3/product-option-value-warehouse'
+        ],
+        "supportedActions" =>  ["import"],
+        'sheetName' => 'Icommerce Product Warehouse',
+        'customColumns' => true,
+        'dependencies' => [
+          'icommerce_syncProducts' => [
+            'apiRoute' => '/icommerce/v3/products',
+            'requestParams' => [
+              'include' => 'optionValues',
+            ],
+            'sheetName' => 'Icommerce Products + Options',
+            'customColumns' => true
+          ],
+          'icommerce_syncWarehouses' => [
+            'apiRoute' => '/icommerce/v3/warehouses',
+            'sheetName' => 'Icommerce Warehouses',
+            'columns' => [
+              'id' => 'ID',
+              'title' => 'NOMBRE'
+            ]
+          ]
+        ]
+      ],
     ]
   ],
 

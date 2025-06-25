@@ -68,6 +68,7 @@ return [
     "default_currency" => "Moneda predeterminada",
     "warehouses" => "Bodegas",
     "adminOrderStatuses" => "Estados de la Orden",
+    "adminProductWarehouse" => "Productos por Bodega"
   ],
   "newProduct" => "Nuevo Producto",
   "updateProduct" => "Actualizar Producto",
