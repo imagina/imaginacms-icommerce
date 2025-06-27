@@ -9,7 +9,7 @@
                 class="form-control"
                 wire:model="mapPickup.province">
             <option value="">{{ trans('iprofile::addresses.form.select_province') }}</option>
-           
+
             @if(!is_null($provinces) && count($provinces)>0)
                 @foreach($provinces as $province)
                     <option value="{{$province->id}}">{{ $province->name }}</option>
@@ -27,7 +27,7 @@
         <select id="inputCity"
                 class="form-control"
                 wire:model="mapPickup.city"
-                @if(is_null($mapPickup['province'])) disabled @endif>
+                @if(isset($mapPickup['province']) && is_null($mapPickup['province'])) disabled @endif>
             <option value="">{{ trans('iprofile::addresses.form.select_city') }}</option>
             @if(!is_null($cities) && count($cities)>0)
                 @foreach($cities as $city)
