@@ -11,6 +11,16 @@
 
 @section('scripts-owl')
   @parent
+
+  <script>
+      window.addEventListener('refresh-page', event => {
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 1000)
+
+      })
+  </script>
+
   <style>
     #cartLayout1 .cart {
       width: 15px;
