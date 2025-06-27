@@ -617,8 +617,8 @@ return [
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
-        'type' => "number",
-        'label' => 'icommerce::common.settings.productRibbonTextSize'
+      'type' => "number",
+      'label' => 'icommerce::common.settings.productRibbonTextSize'
     ]
   ],
   'productRibbonLabelSize' => [
@@ -628,8 +628,8 @@ return [
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
-        'type' => "number",
-        'label' => 'icommerce::common.settings.productRibbonLabelSize'
+      'type' => "number",
+      'label' => 'icommerce::common.settings.productRibbonLabelSize'
     ]
   ],
   'productImageBorder' => [
@@ -664,7 +664,7 @@ return [
     'type' => 'input',
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
-    'value'=>'opacity 0.5s ease-in-out',
+    'value' => 'opacity 0.5s ease-in-out',
     'props' => [
       'label' => 'icommerce::common.settings.transitionImage',
     ]
@@ -1506,10 +1506,10 @@ return [
     "onlySuperAdmin" => true,
     'type' => 'input',
     'columns' => 'col-12 col-md-6',
-      'props' => [
-        'label' => 'icommerce::common.settings.maximumNumberOfCharactersInputDetails'
-      ],
+    'props' => [
+      'label' => 'icommerce::common.settings.maximumNumberOfCharactersInputDetails'
     ],
+  ],
   'productWithTextButtonBuyWhatsApp' => [
     "onlySuperAdmin" => true,
     'value' => "1",
@@ -1518,9 +1518,9 @@ return [
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
-        'trueValue' => "1",
-        'falseValue' => "0",
-        'label' => 'icommerce::common.settings.productWithTextButtonBuyWhatsApp'
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productWithTextButtonBuyWhatsApp'
     ]
   ],
   'productColorButtonBuyWhatsApp' => [
@@ -1531,7 +1531,7 @@ return [
     'groupTitle' => 'icommerce::common.settings.product.group',
     'type' => 'inputColor',
     'props' => [
-        'label' => 'icommerce::common.settings.productColorButtonBuyWhatsApp'
+      'label' => 'icommerce::common.settings.productColorButtonBuyWhatsApp'
     ]
   ],
   'productFontSizeButtonBuyWhatsApp' => [
@@ -1542,8 +1542,8 @@ return [
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
-        'type' => "number",
-        'label' => 'icommerce::common.settings.productFontSizeButtonBuyWhatsApp'
+      'type' => "number",
+      'label' => 'icommerce::common.settings.productFontSizeButtonBuyWhatsApp'
     ]
   ],
   'productPositionButtonBuyWhatsApp' => [
@@ -1555,16 +1555,16 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-        'label' => 'icommerce::common.settings.productPositionButtonBuyWhatsApp',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-            ["label" => "Fuera de los Botones", "value" => "1"],
-            ["label" => "Junto a los Botones", "value" => "0"],
-        ]
+      'label' => 'icommerce::common.settings.productPositionButtonBuyWhatsApp',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ["label" => "Fuera de los Botones", "value" => "1"],
+        ["label" => "Junto a los Botones", "value" => "0"],
+      ]
     ]
   ],
   'productWithStyleButtonBuyWhatsApp' => [
@@ -1575,9 +1575,9 @@ return [
     'groupName' => 'product',
     'groupTitle' => 'icommerce::common.settings.product.group',
     'props' => [
-        'trueValue' => "1",
-        'falseValue' => "0",
-        'label' => 'icommerce::common.settings.productWithStyleButtonBuyWhatsApp'
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.productWithStyleButtonBuyWhatsApp'
     ]
   ],
   'productAlignButtonBuyWhatsApp' => [
@@ -1589,17 +1589,17 @@ return [
     'type' => 'select',
     'columns' => 'col-6',
     'props' => [
-        'label' => 'Alineación de Botón WhatsApp',
-        'useInput' => false,
-        'useChips' => false,
-        'multiple' => false,
-        'hideDropdownIcon' => true,
-        'newValueMode' => 'add-unique',
-        'options' => [
-            ['label' => 'Izquierda', 'value' => 'text-left'],
-            ['label' => 'Derecha', 'value' => 'text-right'],
-            ['label' => 'Centrado', 'value' => 'text-center'],
-        ]
+      'label' => 'Alineación de Botón WhatsApp',
+      'useInput' => false,
+      'useChips' => false,
+      'multiple' => false,
+      'hideDropdownIcon' => true,
+      'newValueMode' => 'add-unique',
+      'options' => [
+        ['label' => 'Izquierda', 'value' => 'text-left'],
+        ['label' => 'Derecha', 'value' => 'text-right'],
+        ['label' => 'Centrado', 'value' => 'text-center'],
+      ]
     ]
   ],
   'productClassButtonBuyWhatsApp' => [
@@ -1611,7 +1611,28 @@ return [
     'type' => 'input',
     'columns' => 'col-6',
     'props' => [
-        'label' => 'Clases Adicionales de Botón WhatsApp',
+      'label' => 'Clases Adicionales de Botón WhatsApp',
     ]
+  ],
+  'globalWarehouse' => [
+    "onlySuperAdmin" => true,
+    'name' => 'icommerce::globalWarehouse',
+    'value' => [],
+    'type' => 'select',
+    'groupName' => 'warehouse',
+    'groupTitle' => 'icommerce::common.settings.warehouse.groupName',
+    'columns' => 'col-12 col-md-6',
+    'loadOptions' => [
+      'apiRoute' => 'apiRoutes.qcommerce.warehouses',
+      'select' => ['label' => 'title', 'id' => 'id'],
+    ],
+    'props' => [
+      'label' => 'icommerce::common.settings.warehouse.globalWarehouse.title',
+      'multiple' => false,
+      'clearable' => true,
+    ],
+    'help' => [
+      "description" => "icommerce::common.settings.warehouse.globalWarehouse.help"
+    ],
   ],
 ];

@@ -18,10 +18,8 @@ return [
     'shipping' => 'Envío',
     'paymentsanddiscount' => 'Métodos de pago y descuentos'
   ],
-  'table' => [
-  ],
-  'form' => [
-  ],
+  'table' => [],
+  'form' => [],
   'formFields' => [
     'mode' => 'Modo',
     'minimum Amount' => 'Monto Minimo',
@@ -169,7 +167,7 @@ return [
     'checkoutRedirectUrl' => 'Ruta para redirigir luego del Checkout',
     'productImageObjectFit' => 'Ajuste de la imagen',
     'productSelectSettingButtonBuyWhatsApp' => 'Seleccione el Setting de WhatsApp a Usar',
-    'productShowButtonBuy'=> 'Activar Botones de comprar',
+    'productShowButtonBuy' => 'Activar Botones de comprar',
     'productShowButtonBuyWhatsApp' => 'Activar Boton de comprar Whatsapp',
     'showCommentsProduct' => 'Mostrar Comentarios del Producto',
     'productShowButtonBuyWhatsAppTextMessage' => 'Mensaje para el Boton de comprar con Whatsapp',
@@ -190,6 +188,10 @@ return [
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',
+      'globalWarehouse' => [
+        'title' => 'Bodega Global',
+        'help' => 'Si se agrega una bodega global, cuando una Direccion no este dentro del rango de una Bodega, se asignara esta bodega y no la mas cercana.',
+      ]
     ],
     'tenant' => [
       'group' => 'Inquilinos',
@@ -214,7 +216,7 @@ return [
       'showReviewsProduct' => 'Mostrar revisiones del producto',
       'showRatingProduct' => 'Mostrar rating del producto',
       'showRatingInReviewsProduct' => 'Mostrar rating en las revisiones del producto',
-      'viewButtonsWhitOptionsProduct'=>'Mostrar Botones con Opciones de producto'
+      'viewButtonsWhitOptionsProduct' => 'Mostrar Botones con Opciones de producto'
     ],
     'product-price-list-enable' => 'Activar',
     'product-add-to-cart-with-quantity' => 'Agregar al carrito con cantidad (Product Item)',
