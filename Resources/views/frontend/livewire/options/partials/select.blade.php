@@ -6,7 +6,7 @@
         {{ !$selectOption->available ? 'disabled' : '' }}
         value="{{ $selectOption->id }}"
       >
-        {{ $selectOption->optionValue->description }}
+        {{ $selectOption->optionValue->description ?? "" }}
         {!! $selectOption->quantity == 0 ? '' : '- ('.$selectOption->quantity.') ' !!}
         {{ $selectOption->price != 0 ? ' - ' . formatMoney($selectOption->price) : '' }}
         {{ !$selectOption->available ? '(Agotado)' : '' }}
