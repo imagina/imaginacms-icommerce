@@ -415,34 +415,37 @@ class Product extends CrudModel implements TaggableInterface
     $useOldRoutes = config('asgard.icommerce.config.useOldRoutes') ?? false;
 
     $currentLocale = $locale ?? locale();
-    if (!is_null($locale)) {
-      $this->slug = $this->getTranslation($locale)->slug;
-      $this->category = $this->category->getTranslation($locale);
-    }
 
-    if (empty($this->slug)) return "";
+    $productSlug = $this->getTranslation($currentLocale)->slug ?? $this->slug;
+    $categoryTranslation = $this->category->getTranslation($currentLocale);
+    $categorySlug = $categoryTranslation->slug ?? $this->category->slug;
+
+    if (empty($productSlug)) return "";
 
     if (!request()->wantsJson() || Str::startsWith(request()->path(), 'api')) {
-      $host = request()->getHost();
-
-      if ($useOldRoutes)
-        if ($this->category->status && !empty($this->category->slug)) {
-          $url = \LaravelLocalization::localizeUrl('/' . $this->category->slug . '/' . $this->slug, $currentLocale);
+      if ($useOldRoutes) {
+        if ($categoryTranslation->status && !empty($categorySlug)) {
+          $url = \LaravelLocalization::localizeUrl('/' . $categorySlug . '/' . $productSlug, $currentLocale);
         } else {
           $url = "";
         }
-      else {
-        $tenancyMode = config("tenancy.mode", null);
-
+      } else {
+        $tenancyMode = config("tenancy.mode");
 
         if (!empty($tenancyMode) && $tenancyMode == "singleDatabase" && !empty($this->organization_id)) {
-          return tenant_route(Str::remove('https://', $this->organization->url), $currentLocale . '.icommerce.store.show', [$this->slug]);
-
+          return tenant_route(
+            Str::remove('https://', $this->organization->url),
+            $currentLocale . '.icommerce.store.show',
+            [$productSlug]
+          );
         }
 
-        $url = Str::replace(["{productSlug}"], [$this->slug], trans('icommerce::routes.store.show.product', [], $currentLocale));
+        $url = Str::replace(
+          ["{productSlug}"],
+          [$productSlug],
+          trans('icommerce::routes.store.show.product', [], $currentLocale)
+        );
         $url = \LaravelLocalization::localizeUrl('/' . $url, $currentLocale);
-
       }
     }
 
@@ -611,23 +614,40 @@ class Product extends CrudModel implements TaggableInterface
       $baseUrls[] = $this->organization->url;
     }
 
-    $currentCategoryUrls = $this->categories->pluck('url')->toArray();
+    foreach ($this->categories as $category) {
+      $currentCategoryUrls = array_merge($currentCategoryUrls, $category->getAllLocalizedUrls());
+    }
 
     //a parameter was added to the model that saves the categories before doing so
     // sync this to prevent the slugs that are removed from the products from not being cleaned up
     $oldUrls = [];
     if (!is_null($this->backCategories)) {
-      $oldUrls = $this->backCategories->pluck('url')->toArray();
+      foreach ($this->backCategories as $category) {
+        $oldUrls = array_merge($oldUrls, $category->getAllLocalizedUrls());
+      }
     }
 
     $categoryUrls = array_unique(array_merge($currentCategoryUrls, $oldUrls));
 
     if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status) {
-      $baseUrls[] = $this->url;
+      $baseUrls = array_merge($baseUrls, $this->getAllLocalizedUrls());
     }
     $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];
 
     return $urls;
   }
 
+  public function getAllLocalizedUrls(): array
+  {
+    $urls = [];
+
+    foreach (array_keys(\LaravelLocalization::getSupportedLocales()) as $localeCode) {
+      $url = $this->getUrlAttribute($localeCode);
+      if ($url) {
+        $urls[] = $url;
+      }
+    }
+
+    return $urls;
+  }
 }
