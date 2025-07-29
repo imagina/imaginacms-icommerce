@@ -75,6 +75,12 @@ class EloquentCategoryRepository extends EloquentCrudRepository implements Categ
       });
     }
 
+    //Filter by  IDs
+    if (isset($filter->ids)) {
+      is_array($filter->ids) ? true : $filter->ids = [$filter->ids];
+      $query->whereIn('icommerce__categories.id', $filter->ids);
+    }
+
     if (isset($filter->onlyWithOrganization)) {
       $query->whereNotNull("organization_id");
     }
