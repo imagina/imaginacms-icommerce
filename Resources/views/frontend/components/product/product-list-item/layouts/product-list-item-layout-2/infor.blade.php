@@ -33,14 +33,16 @@
           </a>
         </div>
       @endif
-      <div class="options-section">
-        <livewire:icommerce::options
-          :product="$product"
-          onlyType="color_image"
-          wire:key="options-product-{{ $product->id }}"
-          :onlyOptions="true"
-        />
-      </div>
+      @if (setting("icommerce::enableOptionSectionProductListItem", null, false))
+        <div class="options-section">
+          <livewire:icommerce::options
+            :product="$product"
+            onlyType="color_image"
+            wire:key="options-product-{{ $product->id }}"
+            :onlyOptions="true"
+          />
+        </div>
+      @endif
       <div class="bottom buttons {{$buttonsLayout}}">
         @if((!$product->is_call || setting("icommerce::canAddIsCallProductsIntoCart")) && $product->stock_status && $product->quantity)
           @switch(setting("icommerce::addToCartButtonAction"))

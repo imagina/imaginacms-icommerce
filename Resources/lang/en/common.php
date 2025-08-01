@@ -174,6 +174,7 @@ return [
     'productFontSizeButtonBuyWhatsApp' => 'WhatsApp Button Text Size',
     'productPositionButtonBuyWhatsApp' => 'WhatsApp Button Position',
     'productWithStyleButtonBuyWhatsApp' => 'WhatsApp Button Styles',
+    'enableOptionSectionProductListItem' => 'Activate options section for the product list',
     'tenant' => [
       'group' => 'Tenants',
       'tenantWithCentralData' => 'Entities with central data',
