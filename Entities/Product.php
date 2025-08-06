@@ -614,6 +614,7 @@ class Product extends CrudModel implements TaggableInterface
       $baseUrls[] = $this->organization->url;
     }
 
+    $currentCategoryUrls = [];
     foreach ($this->categories as $category) {
       $currentCategoryUrls = array_merge($currentCategoryUrls, $category->getAllLocalizedUrls());
     }
