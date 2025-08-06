@@ -615,7 +615,7 @@ class Product extends CrudModel implements TaggableInterface
     }
 
     $currentCategoryUrls = [];
-    foreach ($this->categories as $category) {
+    foreach ($this->categories()->get() as $category) {
       $currentCategoryUrls = array_merge($currentCategoryUrls, $category->getAllLocalizedUrls());
     }
 
@@ -630,7 +630,7 @@ class Product extends CrudModel implements TaggableInterface
 
     $categoryUrls = array_unique(array_merge($currentCategoryUrls, $oldUrls));
 
-    if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status) {
+    if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status && empty($this->isBeingDeleted ?? false)) {
       $baseUrls = array_merge($baseUrls, $this->getAllLocalizedUrls());
     }
     $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];
