@@ -322,7 +322,7 @@ class OrderService
         "order" => $order,
         "orderId" => $order->id,
         "orderID" => $order->id, //TODO: fix icommerce extra methods because there are waiting the orderId like orderID
-        "url" => \URL::to('/ipanel/#/store/orders/' . $order->id),
+        "url" => $order->url,
         "key" => $order->key
       ];
 
