@@ -225,10 +225,11 @@ class ProductListItem extends Component
     $this->contentCategoryFontWeight = $contentCategoryFontWeight ?? setting('icommerce::productContentCategoryFontWeight', null, "normal");
     $this->secondaryImageHover =  setting('icommerce::productSecondaryImageHover') !== null && setting('icommerce::productSecondaryImageHover') === '1';
     if ($this->secondaryImageHover){
-      $this->issetSecondaryImage = isset($this->product->mediaFiles()->secondaryimage) && $this->product->mediaFiles()->secondaryimage->id !== null;
+      $mediaFiles = $this->product->mediaFiles();
+      $this->issetSecondaryImage = isset($mediaFiles->secondaryimage) && $mediaFiles->secondaryimage->id !== null;
       $this->transitionImage = setting('icommerce::transitionImage') !== null && !empty(setting('icommerce::transitionImage'))
-                              ? setting('icommerce::transitionImage')
-                              : 'opacity 0.5s ease-in-out';
+        ? setting('icommerce::transitionImage')
+        : 'opacity 0.5s ease-in-out';
     }
     $this->imageObjectFit = $imageObjectFit ?? setting('icommerce::productImageObjectFit', null, "contain");
     $this->withDescription = $withDescription ?? setting('icommerce::productWithDescription', null, '0');
