@@ -612,9 +612,15 @@ class Product extends CrudModel implements TaggableInterface
 
   public function getCacheClearableData()
   {
-    $baseUrls = [config("app.url")];
+    $locale = locale();
+    $sufixStore = "/".trans('icommerce::routes.store.index.index',[],$locale);
+    $baseUrls = [
+      config("app.url"),
+      config("app.url").$sufixStore,
+    ];
     if (isset($this->organization_id) && !empty($this->organization_id)) {
       $baseUrls[] = $this->organization->url;
+      $baseUrls[] = $this->organization->url.$sufixStore;
     }
     $categoryUrls = $this->categories->pluck('url')->toArray();
 
