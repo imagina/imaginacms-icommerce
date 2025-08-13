@@ -633,6 +633,13 @@ class Product extends CrudModel implements TaggableInterface
     if (!$this->wasRecentlyCreated && !$this->is_internal && $this->status && empty($this->isBeingDeleted ?? false)) {
       $baseUrls = array_merge($baseUrls, $this->getAllLocalizedUrls());
     }
+
+    foreach (array_keys(\LaravelLocalization::getSupportedLocales()) as $locale) {
+      if (\Route::has($locale . '.icommerce.store.index')) {
+        $baseUrls[] = route($locale . '.icommerce.store.index');
+      }
+    }
+
     $urls = ['urls' => array_merge($baseUrls, $categoryUrls)];
 
     return $urls;

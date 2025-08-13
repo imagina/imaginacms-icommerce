@@ -272,9 +272,16 @@ class Category extends CrudModel
       $baseUrls = array_merge($baseUrls, $category->getAllLocalizedUrls());
     }
 
-    if (!$this->wasRecentlyCreated && $this->status) {
+    if (!$this->wasRecentlyCreated && $this->status  && empty($this->isBeingDeleted ?? false)) {
       $baseUrls = array_merge($baseUrls, $this->getAllLocalizedUrls());
     }
+
+    foreach (array_keys(\LaravelLocalization::getSupportedLocales()) as $locale) {
+      if (\Route::has($locale . '.icommerce.store.index')) {
+        $baseUrls[] = route($locale . '.icommerce.store.index');
+      }
+    }
+
     $urls = ['urls' => $baseUrls];
     return $urls;
   }
