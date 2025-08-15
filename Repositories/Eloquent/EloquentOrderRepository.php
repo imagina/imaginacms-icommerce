@@ -42,7 +42,7 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
    */
   public function filterQuery($query, $filter, $params)
   {
-
+    $authUser = \Auth::user() ?? null;
     /**
      * Note: Add filter name to replaceFilters attribute before replace it
      *
@@ -97,7 +97,6 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
 
     if (!$showOthersPermission && !isset($filter->field)) {
       //Extra validation when call from API
-      $authUser = \Auth::user() ?? null;
       if(!is_null($authUser))
         $query->where('customer_id', $authUser->id)->where('parent_id', null);
     }
@@ -118,6 +117,11 @@ class EloquentOrderRepository extends EloquentCrudRepository implements OrderRep
             $query->where("customer_id", $authUser->id ?? null);
           });
       });
+    }
+
+    if(($params->setting->appMode ?? null) == 'ipanel' && !is_null($authUser)){
+      $query->withoutTenancy();
+      $query->where('customer_id', $authUser->id)->where('parent_id', null);
     }
 
     //Response
