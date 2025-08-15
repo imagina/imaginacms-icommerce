@@ -27,7 +27,11 @@ class OrderTransformer extends CrudResource
       'histories' => OrderStatusHistoryTransformer::collection($this->orderHistory),
       'items' => OrderItemTransformer::collection($this->orderItems),
       'customer' => new UserTransformer($this->whenLoaded('customer')),
-      'buyAgainUrl' => route(locale().'.icommerce.store.checkout',['orderId' => $this->id]),
+      'buyAgainUrl' => $this->organization_id ? tenant_route(
+        \Str::remove('https://', $this->organization->url),
+        locale().'.icommerce.store.checkout',
+        ['orderId' => $this->id]
+      ): route(locale().'.icommerce.store.checkout',['orderId' => $this->id])
     ];
 
     //Add information blocks

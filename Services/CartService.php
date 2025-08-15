@@ -141,7 +141,7 @@ class CartService
       //\Log::info($this->log."createCartFromOrder|Exist in session cartId: ".$cartSession->id);
 
       $cartSessionData = $this->cart->getItem($cartSession->id);
-      $updateCart = $this->cart->update($cartSessionData, ['status' => 2]);
+      if($cartSessionData) $this->cart->update($cartSessionData, ['status' => 2]);
       request()->session()->forget('cart');
 
     }

@@ -225,13 +225,13 @@ class Order extends CrudModel
 
   public function getCMSUrlAttribute()
   {
-    $tenancyMode = config("tenancy.mode", null);
+/*    $tenancyMode = config("tenancy.mode", null);
     if (!empty($tenancyMode) && ($tenancyMode == "singleDatabase") && !empty($this->organization_id)) {
       return [
         'ipanel' => $this->organization->url . '/ipanel/#/store/orders/' . $this->id,
         'iadmin' => $this->organization->url . '/iadmin/#/order/' . $this->id,
       ];
-    }
+    }*/
     return [
       'ipanel' => \URL::to('/ipanel/#/store/orders/' . $this->id),
       'iadmin' => \URL::to('/iadmin/#/order/' . $this->id)
