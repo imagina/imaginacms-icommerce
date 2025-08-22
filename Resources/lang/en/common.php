@@ -1,7 +1,7 @@
 <?php
 
 return [
-  'icommerce' => 'Ecommerce',
+  'Icommerce' => 'Ecommerce',
   'home' => [
     'title' => 'Home',
     'details' => 'DETAILS',
@@ -159,6 +159,8 @@ return [
     'productShowButtonBuy' => 'Activate Buy Buttons',
     'productShowButtonBuyWhatsApp' => 'Activate WhatsApp Buy Button',
     'showCommentsProduct' => 'Show product Comments',
+    'showExtraPriceInOptions' => 'Show extra price in options',
+    'showQuantityInOptions' => 'Show quantity in options',
     'productShowButtonBuyWhatsAppTextMessage' => 'Message for the Buy with Whatsapp Button',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
@@ -209,7 +211,7 @@ return [
   'settingHints' => [
     'emails' => "Type the email and press enter key"
   ],
-  'uri' => 'icommerce',
+  'uri' => 'Icommerce',
   'emailSubject' => [
     'failed' => 'Failed transaction',
     'complete' => 'Complete transaction',
