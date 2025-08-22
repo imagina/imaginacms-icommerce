@@ -170,6 +170,8 @@ return [
     'productShowButtonBuy' => 'Activar Botones de comprar',
     'productShowButtonBuyWhatsApp' => 'Activar Boton de comprar Whatsapp',
     'showCommentsProduct' => 'Mostrar Comentarios del Producto',
+    'showExtraPriceInOptions' => 'Mostrar precio extra en opciones',
+    'showQuantityInOptions' => 'Mostrar cantidad en opciones',
     'productShowButtonBuyWhatsAppTextMessage' => 'Mensaje para el Boton de comprar con Whatsapp',
     'productShowGalleryLayout' => 'Plantilla de Galeria',
     'productResponsive' => 'Responsive Galeria',

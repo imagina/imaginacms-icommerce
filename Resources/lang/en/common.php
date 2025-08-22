@@ -159,6 +159,8 @@ return [
     'productShowButtonBuy' => 'Activate Buy Buttons',
     'productShowButtonBuyWhatsApp' => 'Activate WhatsApp Buy Button',
     'showCommentsProduct' => 'Show product Comments',
+    'showExtraPriceInOptions' => 'Show extra price in options',
+    'showQuantityInOptions' => 'Show quantity in options',
     'productShowButtonBuyWhatsAppTextMessage' => 'Message for the Buy with Whatsapp Button',
     'productShowGalleryLayout' => 'Gallery Template',
     'productResponsive' => 'Responsive Gallery',
