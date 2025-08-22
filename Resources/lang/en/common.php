@@ -1,7 +1,7 @@
 <?php
 
 return [
-  'Icommerce' => 'Ecommerce',
+  'icommerce' => 'Ecommerce',
   'home' => [
     'title' => 'Home',
     'details' => 'DETAILS',
@@ -211,7 +211,7 @@ return [
   'settingHints' => [
     'emails' => "Type the email and press enter key"
   ],
-  'uri' => 'Icommerce',
+  'uri' => 'icommerce',
   'emailSubject' => [
     'failed' => 'Failed transaction',
     'complete' => 'Complete transaction',
