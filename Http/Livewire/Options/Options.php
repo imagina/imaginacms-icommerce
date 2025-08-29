@@ -122,8 +122,18 @@ class Options extends Component
   {
     $optionsPrice = 0;
     foreach ($this->optionValues as $optionValue) {
-      if (in_array($optionValue->id, $this->optionsSelected)) {
-        $optionsPrice += $optionValue->price_prefix == "+" ? $optionValue->price : $optionValue->price * -1;
+      $allOptions = [];
+      foreach ($this->optionsSelected as $opt) {
+        if (is_array($opt) && isset($opt['value'])) {
+          $allOptions[] = $opt['value'];
+        } else {
+          $allOptions[] = $opt;
+        }
+      }
+      if (in_array($optionValue->id, $allOptions)) {
+        $optionsPrice += $optionValue->price_prefix == "+"
+          ? $optionValue->price
+          : $optionValue->price * -1;
       }
     }
 
