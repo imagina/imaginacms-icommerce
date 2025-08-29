@@ -71,8 +71,9 @@ class OrderTransformer extends CrudResource
             "value" => $field["value"] ?? ''
           ];
         }
-        $item["informationBlocks"][] = $customerBlockInfo;
       }
+
+      $item["informationBlocks"][] = $customerBlockInfo;
 
       $customerAddressExtraFields = json_decode(setting("iprofile::userAddressesExtraFields", null, "[]"));
 
