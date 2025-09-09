@@ -71,7 +71,8 @@ return [
         'orderNotRequireShipping' => 'This order does not require shipping',
         'rights' => 'All Rights Reserved by ',
         'notificationOrder' => 'Order Notification',
-        'statusChanged' => 'Your order <b>#:orderId</b> has been updated to the status: <strong>:statusName</strong>',
+        'statusChanged' => 'Your order <b>#:orderId</b> has been updated.',
+        'status' => 'Status: <b>:statusName</b>',
         'order updated by' => 'Order updated by: :paymentMethod',
     ],
     'validation' => [
