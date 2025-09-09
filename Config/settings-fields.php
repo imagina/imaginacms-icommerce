@@ -1431,6 +1431,32 @@ return [
       'label' => 'icommerce::common.settings.showQuantityInOptions'
     ]
   ],
+  'showExtraPriceInOptions' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::showExtraPriceInOptions',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.showExtraPriceInOptions'
+    ]
+  ],
+  'showQuantityInOptions' => [
+    "onlySuperAdmin" => true,
+    'value' => "1",
+    'name' => 'icommerce::showQuantityInOptions',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    'props' => [
+      'trueValue' => "1",
+      'falseValue' => "0",
+      'label' => 'icommerce::common.settings.showQuantityInOptions'
+    ]
+  ],
   'productShowButtonBuyWhatsAppTextMessage' => [
     "onlySuperAdmin" => true,
     'value' => "Estoy interesad@ en",

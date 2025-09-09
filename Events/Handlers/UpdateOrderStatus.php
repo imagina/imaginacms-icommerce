@@ -56,7 +56,10 @@ class UpdateOrderStatus
           ])->push(
             [
               'title' => trans('icommerce::orders.messages.notificationOrder') . ' #' . $order->id,
-              'message' => trans('icommerce::orders.messages.statusChanged', ['orderId' => $order->id, 'statusName' => $order->status->title]),
+              'message' => [
+               'statusChanged'=> trans('icommerce::orders.messages.statusChanged', ['orderId' => $order->id]),
+               'status'=> trans('icommerce::orders.messages.status', ['statusName' => $order->status->title])
+              ],
               'icon_class' => 'fas fa-shopping-cart',
               'link' => $order->url,
               'comment' => $data['comment'],
