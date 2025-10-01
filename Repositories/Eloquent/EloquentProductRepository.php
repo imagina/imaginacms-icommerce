@@ -535,8 +535,8 @@ class EloquentProductRepository extends EloquentCrudRepository implements Produc
     //removing ordering
     $query->reorder();
 
-    if (isset($params->filter->search))
-      $query->groupBy('scoreSearch1', 'product_id', 'name', 'scoreSearch2');
+//    if (isset($params->filter->search))
+//      $query->groupBy('scoreSearch1', 'product_id', 'name', 'scoreSearch2');
 
     return $query->first();
   }
