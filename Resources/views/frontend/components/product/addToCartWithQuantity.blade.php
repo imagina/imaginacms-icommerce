@@ -77,11 +77,13 @@
           var quantityInput = parent.find('input[name=quantity]');
           var currentVal = parseInt(quantityInput.val(), 10);
 
-          if (!isNaN(currentVal)) quantityInput.val(1);
+          if (!isNaN(currentVal) || currentVal<=0) quantityInput.val(1);
           if (action == "increment")
             quantityInput.val(currentVal + 1);
           else {
-            quantityInput.val(currentVal - 1);
+            if(currentVal > 1){
+              quantityInput.val(currentVal - 1);
+            }
           }
         }
 
