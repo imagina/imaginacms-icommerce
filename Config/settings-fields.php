@@ -1701,4 +1701,16 @@ return [
       "description" => "icommerce::common.settings.warehouse.globalWarehouse.help"
     ],
   ],
+  'enableQuoteWithOptions' => [
+    'value' => false,
+    'name' => 'icommerce::enableQuoteWithOptions',
+    'type' => 'checkbox',
+    'groupName' => 'page_product',
+    'groupTitle' => 'icommerce::common.layouts.page_product',
+    "onlySuperAdmin" => true,
+    'props' => [
+      'label' => 'icommerce::common.settings.labelEnableQuoteWithOptions'
+    ]
+  ],
+
 ];

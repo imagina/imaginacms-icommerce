@@ -371,94 +371,100 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     $cartProductQuantity = 0;
 
-    if (empty($product)) {
-      $product = $cartProduct->product;
-    }
+    if (isset($cartProduct->product)) {
 
-    if (empty($productOptionsValues)) {
-      $productOptionsValues = $product->optionValues;
-    }
-
-    if (empty($productOptionValuesFrontend)) {
-      //Search Product Option Values
-      $productOptionValuesFrontend = $cartProduct->productOptionValues;
-
-    }
-    //buscamos los productos que ya estén añadidos al carrito actual
-    if (isset($cartProduct->id)) {
-      $cartProducts = $cartProduct->cart->products;
-    } else {
-      $cart = Cart::find($data["cart_id"]);
-      $cartProducts = $cart->products;
-    }
-
-    //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
-    foreach ($cartProducts as $cartSingleProduct) {
-      if ($cartSingleProduct->product_id == $product->id) {
-        $cartProductQuantity += $cartSingleProduct->quantity;
-      }
-    }
-
-    $quantity = ($data["quantity"] ?? 0) + $cartProductQuantity;
-
-    if ($product->subtract) { // si el producto se substrae de inventario
-
-      $warehouse = request()->session()->get('warehouse');
-      $warehouse = json_decode($warehouse);
-      $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
-
-      $productQuantity = $product->quantity;
-      //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
-      //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
-      if ($warehouseEnabled && isset($warehouse->id)) {
-
-        if (!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
-        $productQuantity = \DB::table('icommerce__product_warehouse')
-          ->where('warehouse_id', $warehouse->id)
-          ->where('product_id', $product->id)
-          ->first();
-
-        $productQuantity = $productQuantity->quantity ?? 0;
+      if (empty($product)) {
+        $product = $cartProduct->product;
       }
 
-      // si la cantidad del producto no alcanza para lo solicitado
-      if ($productQuantity < $quantity) {
-        $validQuantity = false;
+      if (empty($productOptionsValues)) {
+        $productOptionsValues = $product->optionValues ?? null;
+      }
+
+      if (empty($productOptionValuesFrontend)) {
+        //Search Product Option Values
+        $productOptionValuesFrontend = $cartProduct->productOptionValues;
+
+      }
+      //buscamos los productos que ya estén añadidos al carrito actual
+      if (isset($cartProduct->id)) {
+        $cartProducts = $cartProduct->cart->products;
       } else {
-        if (!empty($productOptionValuesFrontend) && $productOptionValuesFrontend->isNotEmpty() && !empty($productOptionsValues) && $productOptionsValues->isNotEmpty()) { // si están añadiendo el producto con opciones
-          foreach ($productOptionValuesFrontend as $productOptionValueFrontend) { // recorriendo las opciones añadidas
+        $cart = Cart::find($data["cart_id"]);
+        $cartProducts = $cart->products;
+      }
 
-            foreach ($productOptionsValues as $productOptionsValue) { // recorriendo las options values del producto
+      //buscamos en el carrito los productos con el mismo ID para poder validad el quantity principal del producto
+      foreach ($cartProducts as $cartSingleProduct) {
+        if ($cartSingleProduct->product_id == $product->id) {
+          $cartProductQuantity += $cartSingleProduct->quantity;
+        }
+      }
 
-              //si el value del producto se debe substraer de inventario y coincide con el que se está añadiendo al carrito
-              if ($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValueFrontend->option_value_id) {
+      $quantity = ($data["quantity"] ?? 0) + $cartProductQuantity;
 
-                $productOptionsValueQuantity = $productOptionsValue->quantity;
-                if ($warehouseEnabled) {
+      if ($product->subtract) { // si el producto se substrae de inventario
 
-                  if (!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
-                  $productOptionsValueQuantity = \DB::table('icommerce__product_option_value_warehouse')
-                    ->where('warehouse_id', $warehouse->id)
-                    ->where('product_option_value_id', $productOptionsValue->id)
-                    ->where('product_id', $productOptionsValue->product_id)
-                    ->first();
+        $warehouse = request()->session()->get('warehouse');
+        $warehouse = json_decode($warehouse);
+        $warehouseEnabled = setting('icommerce::warehouseFunctionality', null, false);
 
-                  $productOptionsValueQuantity = $productOptionsValueQuantity->quantity ?? 0;
-                }
-                //dd($quantity,$productOptionsValue->subtract,$productOptionValueFrontend["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValueFrontend["optionValueId"]);
-                //si la cantidad de unidades para el valor de opcion no alcanza para lo solicitado
-                if ($productOptionsValueQuantity < $quantity) {
-                  //dd($productOptionsValueQuantity,$quantity, $productOptionsValue);
-                  $validQuantity = false;
+        $productQuantity = $product->quantity;
+        //nueva validación para warehouses, si está activa la funcionalidad, debemos buscar el quantity en el warehouse que esté en session
+        //ya que front se encarga de colocar en sesión siempre un warehouse para poder funcionar
+        if ($warehouseEnabled && isset($warehouse->id)) {
+
+          if (!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+          $productQuantity = \DB::table('icommerce__product_warehouse')
+            ->where('warehouse_id', $warehouse->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+          $productQuantity = $productQuantity->quantity ?? 0;
+        }
+
+        // si la cantidad del producto no alcanza para lo solicitado
+        if ($productQuantity < $quantity) {
+          $validQuantity = false;
+        } else {
+          if (!empty($productOptionValuesFrontend) && $productOptionValuesFrontend->isNotEmpty() && !empty($productOptionsValues) && $productOptionsValues->isNotEmpty()) { // si están añadiendo el producto con opciones
+            foreach ($productOptionValuesFrontend as $productOptionValueFrontend) { // recorriendo las opciones añadidas
+
+              foreach ($productOptionsValues as $productOptionsValue) { // recorriendo las options values del producto
+
+                //si el value del producto se debe substraer de inventario y coincide con el que se está añadiendo al carrito
+                if ($productOptionsValue->subtract && $productOptionsValue->option_value_id == $productOptionValueFrontend->option_value_id) {
+
+                  $productOptionsValueQuantity = $productOptionsValue->quantity;
+                  if ($warehouseEnabled) {
+
+                    if (!isset($warehouse->id)) throw new \Exception("Missing warehouse in session", 400);
+                    $productOptionsValueQuantity = \DB::table('icommerce__product_option_value_warehouse')
+                      ->where('warehouse_id', $warehouse->id)
+                      ->where('product_option_value_id', $productOptionsValue->id)
+                      ->where('product_id', $productOptionsValue->product_id)
+                      ->first();
+
+                    $productOptionsValueQuantity = $productOptionsValueQuantity->quantity ?? 0;
+                  }
+                  //dd($quantity,$productOptionsValue->subtract,$productOptionValueFrontend["optionValueId"],$productOptionsValue, $productOptionsValue->option_value_id == $productOptionValueFrontend["optionValueId"]);
+                  //si la cantidad de unidades para el valor de opcion no alcanza para lo solicitado
+                  if ($productOptionsValueQuantity < $quantity) {
+                    //dd($productOptionsValueQuantity,$quantity, $productOptionsValue);
+                    $validQuantity = false;
+                  }
                 }
               }
             }
           }
         }
       }
+    } else {
+      $validQuantity = false;
     }
     //dd($quantity,$validQuantity,$productOptionsValues,$data,$cartProduct);
     return $validQuantity;
+
   }
 
   /**

@@ -188,6 +188,7 @@ return [
     'productPositionButtonBuyWhatsApp' => 'Posición de Botón WhatsApp',
     'productWithStyleButtonBuyWhatsApp' => 'Estilos de Botón WhatsApp',
     'enableOptionSectionProductListItem' => 'Activar seccion de opciones para la lista de productos',
+    'labelEnableQuoteWithOptions' => 'Activar Opciones para Cotizaciones',
     'warehouse' => [
       'groupName' => 'Bodegas',
       'warehouseFunctionality' => 'Activar funcionalidad para Bodegas',

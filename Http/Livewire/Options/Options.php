@@ -46,7 +46,11 @@ class Options extends Component
 
   protected function getListeners()
   {
-    return ["addToCartOptions-" . $this->product->id => "addToCartOptions", 'updateOption' => 'updateOption'];
+    return [
+      "addToCartOptions-" . $this->product->id => "addToCartOptions",
+      'updateOption' => 'updateOption',
+      'requestQuoteFromCart' => 'requestQuoteFromCart'
+    ];
   }
 
   //|--------------------------------------------------------------------------
@@ -59,8 +63,6 @@ class Options extends Component
    */
   public function updateOption($oldValue, $newValue, $dynamic, $optionId)
   {
-
-    //\Log::info($this->log."updateOption");
 
     //Case Dynamics
     if (is_string($oldValue)) $oldValue = strip_tags($oldValue);
@@ -152,6 +154,22 @@ class Options extends Component
     $this->options = $this->product->optionsPivot->sortByDesc("sort_order");
     $this->optionValues = $this->product->optionValues;
 
+  }
+
+  public function requestQuoteFromCart($productId)
+  {
+    if (!setting('icommerce::enableQuoteWithOptions')) {
+      return;
+    }
+
+    if ($this->product->id != $productId) {
+      return;
+    }
+
+    $this->emit('makeQuoteWithOptions', [
+      'product_id' => $productId,
+      'options' => $this->optionsSelected ?? [],
+    ]);
   }
 
 

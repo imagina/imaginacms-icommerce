@@ -57,7 +57,7 @@ class Quote
         $this->createField($form->id, $block->id, 1, 'productName', true, trans('icommerce::quote.form.fields.productName.label'), ['inputId' => 'inputProductName', 'readonly' => true]);
 
         // Create Field
-        $this->createField($form->id, $block->id, 2, 'additionalInformation', true, trans('icommerce::quote.form.fields.additionalInformation.label'));
+        $this->createField($form->id, $block->id, 2, 'additionalInformation', true, trans('icommerce::quote.form.fields.additionalInformation.label'), ['inputId' => 'additionalInformation']);
 
         // Create Setting
         $settingRepository->create([

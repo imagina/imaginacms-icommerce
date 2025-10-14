@@ -30,8 +30,10 @@
       </div>
     @endif
 
-    <!-- calculation according to the information of weight, volume, quantity, lenght-->
-    @include('icommerce::frontend.components.product.calculate-pum', ['dynamicPrice' => $dynamicPrice])
+    @if(isset($dynamicPrice))
+      <!-- calculation according to the information of weight, volume, quantity, lenght-->
+      @include('icommerce::frontend.components.product.calculate-pum', ['dynamicPrice' => $dynamicPrice])
+    @endif
 
     @if (!$product->is_call)
       <div class="add-cart">

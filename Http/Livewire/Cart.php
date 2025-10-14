@@ -43,6 +43,7 @@ class Cart extends Component
     'deleteCart',
     'refreshCart',
     'makeQuote',
+    'makeQuoteWithOptions',
     'requestQuote',
     'submitQuote',
     'warehouseShowInforIsReady' => 'refreshCart',
@@ -332,11 +333,35 @@ class Cart extends Component
 
   public function makeQuote($productId)
   {
+    $product = $this->productRepository()->getItem($productId);
 
-    $productToQuote = $this->productRepository()->getItem($productId);
+    $this->dispatchBrowserEvent('productToQuoteModal', [
+      'productName' => $product->name,
+    ]);
+  }
 
-    $this->dispatchBrowserEvent('productToQuoteModal', ["productName" => $productToQuote->name]);
+  public function makeQuoteWithOptions($data)
+  {
+    $productToQuote = $this->productRepository()->getItem($data['product_id']);
 
+    $optionsText = '';
+
+    if (!empty($data['options'])) {
+      $productOptionRepository = app('Modules\Icommerce\Repositories\ProductOptionValueRepository');
+      foreach ($data['options'] as $optionId) {
+        $option = $productOptionRepository->getItem($optionId);
+        if ($option) {
+          $optionName = $option->option->description ?? 'Opción';
+          $valueDescription = $option->optionValue->description ?? '';
+          $optionsText .= ucfirst($optionName) . ': ' . $valueDescription . "\n";
+        }
+      }
+    }
+
+    $this->dispatchBrowserEvent('productToQuoteModal', [
+      "productName" => $productToQuote->name,
+      "optionsText" => $optionsText,
+    ]);
   }
 
   //|--------------------------------------------------------------------------

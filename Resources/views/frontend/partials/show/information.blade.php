@@ -68,14 +68,26 @@
   @endif
   @if($product->is_call)
     <!-- BUTTON CONSULT -->
+    @if(setting('icommerce::enableQuoteWithOptions', null, false))
+      <livewire:icommerce::options
+        :product="$product"
+      />
+    @endif
     <div class="add-cart">
       <hr>
       <div class="row">
         <div class="col my-2 my-md-0">
           <div class="row px-2 pt-1 ">
-            <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
-               class=" btn-comprar btn btn-secondary text-white mx-2">
-              {{trans('icommerce::products.form.contactUs')}}</a>
+            @if(setting('icommerce::enableQuoteWithOptions', null, false))
+              <a onClick="window.livewire.emit('requestQuoteFromCart', {{$product->id}})"
+                 class="btn-comprar btn btn-secondary text-white mx-2">
+                {{ trans('icommerce::products.form.contactUs') }}
+              </a>
+            @else
+              <a onClick="window.livewire.emit('makeQuote',{{$product->id}})"
+                 class=" btn-comprar btn btn-secondary text-white mx-2">
+                {{trans('icommerce::products.form.contactUs')}}</a>
+            @endif
             <!-- BUTTON WISHLIST -->
             <a
               onClick="window.livewire.emit('addToWishList',{{json_encode(["entityName" => "Modules\\Icommerce\\Entities\\Product", "entityId" => $product->id])}}

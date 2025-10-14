@@ -25,9 +25,22 @@
     document.addEventListener("DOMContentLoaded", function () {
 
       window.addEventListener('productToQuoteModal', event => {
-        // Bricklayer needed
 
         $("#inputProductName").val(event.detail.productName);
+        console.warn(event.detail.optionsText);
+
+        setTimeout(() => {
+          if (event.detail.optionsText) {
+            const textarea = document.querySelector('#additionalInformation');
+            if (textarea) {
+              textarea.value = event.detail.optionsText;
+              textarea.readOnly = true;
+              textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            } else {
+              console.warn('No se encontró el campo #additionalInformation');
+            }
+          }
+        }, 300);
 
         $("#modalQuoteProduct").modal("show")
       });
