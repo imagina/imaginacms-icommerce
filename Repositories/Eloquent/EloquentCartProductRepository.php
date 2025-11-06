@@ -139,14 +139,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     // if the request has product without options
     $cartProduct = $this->findByAttributesOrOptions($data);
 
-    //validate setting canAddIsCallProductsIntoCart
-    if (!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])) {
-      // validate valid quantity
-      if (!$this->productHasValidQuantity($cartProduct, $product, $product->optionValues, $data, $productOptionValues)) {
-        throw new \Exception("Product Quantity Unavailable", 400);
-      }
-    }
-
     //if not found product into cart with the same options
     if (!$cartProduct) {
       $data["organization_id"] = $product->organization_id ?? null;
@@ -167,9 +159,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
         //Con esto se soluciono
         $cartProduct->dynamicOptions()->attach($optionsDynamic);
-
       }
-
     } else {
 
       //Case - Cart Product Exist
@@ -211,9 +201,7 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
             }
             $cartProductUpdate->update($data);
           }
-
         }
-
       } else {
 
         \Log::info($this->log . "create|NOT Options Dynamics");
@@ -245,10 +233,17 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
           }
           $cartProduct->update($data);
         }
-
       }
-
     }
+
+    //validate setting canAddIsCallProductsIntoCart | Bug despues de una actualizacion | TODO Cristian revisar luego
+    if (!isset($data["is_call"]) || (isset($data["is_call"]) && !$data["is_call"])) {
+      // validate valid quantity
+      if (!$this->productHasValidQuantity($cartProduct, $product, $product->optionValues, $data, $productOptionValues)) {
+        throw new \Exception("Product Quantity Unavailable", 400);
+      }
+    }
+
     return $cartProduct;
   }
 
@@ -271,7 +266,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       // if is the same option values ids
       if (array_diff($productOptionValuesIds, $productOptionValuesFront) === array_diff($productOptionValuesFront, $productOptionValuesIds)) {
         $cartProduct->update($data);
-
       } else { // if not the same options create cart product
         $cartProduct = $this->model->create($data);
       }
@@ -328,7 +322,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
         if (array_diff($productOptionValuesIds, $productOptionValuesIdsFront) === array_diff($productOptionValuesIdsFront, $productOptionValuesIds)) {
 
           $cartProduct = $cartProductQuery;
-
         }
       }
     }
@@ -357,7 +350,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
             $productOption->id == $od['option_id'] ? $optionOk = true : false;
           }
         }
-
       }
       !$optionOk ? $allRequiredOptionsOk = false : false;
     }
@@ -384,7 +376,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
       if (empty($productOptionValuesFrontend)) {
         //Search Product Option Values
         $productOptionValuesFrontend = $cartProduct->productOptionValues;
-
       }
       //buscamos los productos que ya estén añadidos al carrito actual
       if (isset($cartProduct->id)) {
@@ -464,7 +455,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     }
     //dd($quantity,$validQuantity,$productOptionsValues,$data,$cartProduct);
     return $validQuantity;
-
   }
 
   /**
@@ -488,7 +478,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     \Log::info($this->log . 'separateOptions|OptionsDynamics: ' . json_encode($optionsDynamic));
 
     return ['optionsDynamic' => $optionsDynamic, 'pov' => $pov];
-
   }
 
   /**
@@ -516,7 +505,6 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
     ];
 
     return $this->getItemsBy(json_decode(json_encode($params)));
-
   }
 
   /**
@@ -549,5 +537,4 @@ class EloquentCartProductRepository extends EloquentCrudRepository implements Ca
 
     return $allOptionsDynamicsInCart;
   }
-
 }
