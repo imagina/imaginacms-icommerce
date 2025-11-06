@@ -14,7 +14,7 @@
 @endsection
 
 @section('profileTitle')
-  <div class="float-right">
+  <div class="float-right btn-download-order">
     <x-isite::print-button containerId="showOrder{{$order->id}}" icon="fa fa-file-pdf-o"
                            text="{{ trans('icommerce::common.download') }}"/>
   </div>
@@ -150,7 +150,7 @@
         </div>
       </div>
       <hr class="my-4 hr-lg">
-      <div class="col-12 text-right mt-3 mt-md-0">
+      <div class="col-12 text-right mt-3 mt-md-0 profile-buttons-order">
         <a href="{{ \URL::route(\LaravelLocalization::getCurrentLocale() .  '.icommerce.store.order.index') }}"
            class="btn btn-outline-primary btn-rounded btn-lg my-2">
           Ver Ordenes
