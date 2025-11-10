@@ -1,5 +1,5 @@
 @php
-  $order = $data["order"]
+  $order = $data["order"];
 @endphp
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
@@ -32,7 +32,7 @@
                   @include('icommerce::emails.button', ["route" => $order->url, "content" => trans("icommerce::orders.table.details") . ': #'. $order->id])
                 </td>
                 <td>
-                  @include('icommerce::emails.button', ["route" => $order->route(locale().'.icommerce.store.checkout',['orderId' => $order->id]), "content" => trans('icommerce::common.button.buy again') ])
+                  @include('icommerce::emails.button', ["route" => route(locale().'.icommerce.store.checkout',['orderId' => $order->id]), "content" => trans('icommerce::common.button.buy again') ])
                 </td>
               </tr>
             </table>
@@ -45,7 +45,7 @@
     @if(isset($order->organization_id) && !empty($order->organization_id))
       @php
         $organizationRepository = app("Modules\Isite\Repositories\OrganizationRepository");
-        $organization = $organizationRepository->getItem($order->organization_id)
+        $organization = $organizationRepository->getItem($order->organization_id);
       @endphp
       <p>
         {{trans("icommerce::orders.sub-orders.details_1").' '.$order->parent_id.', '.trans("icommerce::orders.sub-orders.details_2").' '.$organization->title.'.'}}
@@ -86,7 +86,7 @@
         </thead>
         <tbody>
         @php
-          $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD')
+          $currency = isset($order->currency) ? $order->currency : localesymbol($code??'USD');
         @endphp
         @foreach($order->orderItems as $product)
           <tr>
@@ -142,7 +142,7 @@
             if(!empty($order->tax_amount)){
                 $rest = $rest + $order->tax_amount;
             }
-            $subtotal = $order->total + $order->coupon_total - $rest
+            $subtotal = $order->total + $order->coupon_total - $rest;
           @endphp
 
           <td colspan="2" style="text-align: right;font-weight:400;color:#212529;">
@@ -151,7 +151,7 @@
         </tr>
         @if($order->coupon_total > 0)
           <tr>
-            @php($coupon = $order->coupons->first())
+            @php$coupon = $order->coupons->first()@endphp
             <td colspan="3" style="text-align: right;font-weight:600;color:#212529;">
               {{trans('icommerce::orders.table.coupon')}}
               ({{$coupon->code}}
@@ -189,7 +189,7 @@
             Total
           </td>
           <td colspan="2" style="text-align: right;font-weight:400;color:#212529;">
-            {{$order->currency->symbol_left ?? ''}}{{number_format($rder->total,2)}}{{$order->currency->symbol_right ?? ''}}
+            {{$order->currency->symbol_left ?? ''}}{{number_format($order->total,2)}}{{$order->currency->symbol_right ?? ''}}
           </td>
         </tr>
       </table>
@@ -241,7 +241,7 @@
   </tr>
   <tr>
     <td>
-      @include('icommerce::emails.button', [$route = $order->route(locale().'.icommerce.store.checkout',['orderId' => $order->id]), $content => trans('icommerce::common.button.buy again') ])
+      @include('icommerce::emails.button', ["route" => route(locale().'.icommerce.store.checkout', ['orderId' => $order->id]), "content" => trans('icommerce::common.button.buy again')])
     </td>
   </tr>
   </tbody>
