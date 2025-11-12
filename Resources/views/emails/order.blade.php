@@ -141,6 +141,9 @@
         <br>
       </td>
     </tr>
+
+    @include('icommerce::emails.order-comment')
+
     {{--
     <tr>
       <td>
@@ -218,64 +221,64 @@
     </tr>
     --}}
 
-
+    {{--
     <tr>
       <td>
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
           <tr>
             @php
-              $orderTransformed = collect(new
-                \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with([
-                  'customer',
-                  'addedBy',
-                  'orderItems',
-                  'orderHistory',
-                  'transactions',
-                  'paymentCountry',
-                  'shippingCountry',
-                  'shippingDepartment',
-                  'paymentDepartment'
-                ])->where("id", $order->id)->first()))->toArray();
-              $informationBlocks = $orderTransformed["informationBlocks"];
-              $groupedBlocks = $informationBlocks->chunk(2);
+            $orderTransformed = collect(new
+            \Modules\Icommerce\Transformers\OrderTransformer(\Modules\Icommerce\Entities\Order::with([
+            'customer',
+            'addedBy',
+            'orderItems',
+            'orderHistory',
+            'transactions',
+            'paymentCountry',
+            'shippingCountry',
+            'shippingDepartment',
+            'paymentDepartment'
+            ])->where("id", $order->id)->first()))->toArray();
+            $informationBlocks = $orderTransformed["informationBlocks"];
+            $groupedBlocks = $informationBlocks->chunk(2);
             @endphp
             @foreach($groupedBlocks as $groupBlock)
-              <td style="width:50%; vertical-align: top; padding-right: 10px;">
-                @foreach($groupBlock as $block)
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
-                    <thead style="background:transparent;">
-                      <h4 style="margin-bottom: 5px; color:#212529;font-size:14px;">{{ $block["title"] }}</h4>
-                    </thead>
-                    <tbody>
-                      @foreach($block["values"] as $item)
-                        <tr>
-                          <th
-                            style="background-color:#a5a5a53b;padding:15px 10px 15px;margin:0;font-weight:600;color:#212529;font-size:14px;line-height:1;text-transform:capitalize;text-align:left;width:100%;border-radius:4px 4px 4px 4px;"
-                            align="left" width="100%">
-                            {{ $item["label"] ?? "" }}:
-                          </th>
-                        </tr>
-                        <tr>
-                          <td
-                            style="padding:20px 10px 20px;font-size:14px;font-weight:400;color:#212529;text-align:left;width:100%;"
-                            align="left" width="100%">
-                            {!! $item["value"] ?? "" !!}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="padding:10px;border-top:1px solid #ddd;"></td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                @endforeach
-              </td>
+            <td style="width:50%; vertical-align: top; padding-right: 10px;">
+              @foreach($groupBlock as $block)
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+                <thead style="background:transparent;">
+                  <h4 style="margin-bottom: 5px; color:#212529;font-size:14px;">{{ $block["title"] }}</h4>
+                </thead>
+                <tbody>
+                  @foreach($block["values"] as $item)
+                  <tr>
+                    <th
+                      style="background-color:#a5a5a53b;padding:15px 10px 15px;margin:0;font-weight:600;color:#212529;font-size:14px;line-height:1;text-transform:capitalize;text-align:left;width:100%;border-radius:4px 4px 4px 4px;"
+                      align="left" width="100%">
+                      {{ $item["label"] ?? "" }}:
+                    </th>
+                  </tr>
+                  <tr>
+                    <td
+                      style="padding:20px 10px 20px;font-size:14px;font-weight:400;color:#212529;text-align:left;width:100%;"
+                      align="left" width="100%">
+                      {!! $item["value"] ?? "" !!}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px;border-top:1px solid #ddd;"></td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              @endforeach
+            </td>
             @endforeach
           </tr>
         </table>
       </td>
     </tr>
-
+    --}}
 
     {{--
     <tr>
