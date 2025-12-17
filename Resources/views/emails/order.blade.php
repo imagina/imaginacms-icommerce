@@ -77,12 +77,12 @@
                 align="left" width="100%">
                 Sku
               </th>
-              {{--
               <th
-                style="background-color:#a5a5a53b;padding:15px 10px 15px;margin:0;font-weight:600;color:#212529;font-size:14px;line-height:1;text-transform:capitalize;text-align:left;width:100%;border-radius:4px 4px 4px 4px;"
+                style="background-color:#a5a5a53b;padding:15px 10px 15px;margin:0;font-weight:600;color:#212529;font-size:14px;line-height:1;text-transform:capitalize;text-align:center;width:100%;border-radius:4px 4px 4px 4px;"
                 align="left" width="100%">
                 {{trans('icommerce::orders.table.quantity')}}
               </th>
+              {{--
               <th
                 style="background-color:#a5a5a53b;padding:15px 10px 15px;margin:0;font-weight:600;color:#212529;font-size:14px;line-height:1;text-transform:capitalize;text-align:left;width:100%;border-radius:4px 4px 4px 4px;"
                 align="left" width="100%">
@@ -119,10 +119,10 @@
                 <td style="color:#212529;font-size: 13px; text-align: left;">
                   {{$product->product->sku}}<br>
                 </td>
-                {{--
-                <td style="color:#212529;font-size: 13px; text-align: left;">
+                <td style="color:#212529;font-size: 13px; text-align: center;">
                   {{$product->quantity}}
                 </td>
+                {{--
                 <td style="color:#212529;font-size: 13px; text-align: left;">
                   {{$currency->symbol_left}}{{formatMoney($product->price)}}{{$currency->symbol_right}}
                 </td>
