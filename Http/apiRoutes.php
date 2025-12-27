@@ -383,5 +383,20 @@ Route::prefix('/icommerce/v3')->group(function (Router $router) use($locale) {
       //  ]
       // ]
     ]);
+    $router->apiCrud([
+      'module' => 'icommerce',
+      'prefix' => 'orderstatuscategories',
+      'controller' => 'OrderStatusCategoryApiController',
+      'permission' => 'icommerce.orderstatuscategories',
+      //'middleware' => ['create' => [], 'index' => [], 'show' => [], 'update' => [], 'delete' => [], 'restore' => []],
+      // 'customRoutes' => [ // Include custom routes if needed
+      //  [
+      //    'method' => 'post', // get,post,put....
+      //    'path' => '/some-path', // Route Path
+      //    'uses' => 'ControllerMethodName', //Name of the controller method to use
+      //    'middleware' => [] // if not set up middleware, auth:api will be the default
+      //  ]
+      // ]
+    ]);
 // append
 });
