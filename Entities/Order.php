@@ -42,6 +42,7 @@ class Order extends CrudModel
     'status_id',
     'customer_id',
     'added_by_id',
+    'expired_by_id',
     'first_name',
     'last_name',
     'email',
@@ -273,4 +274,11 @@ class Order extends CrudModel
   {
     return $this->belongsTo(Warehouse::class);
   }
+
+  public function expiredBy()
+  {
+    $driver = config('asgard.user.config.driver');
+    return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'expired_by_id');
+  }
+
 }

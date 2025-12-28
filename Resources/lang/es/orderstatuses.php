@@ -37,5 +37,10 @@ return [
         'processed'         => 'Procesado',
         'expired'           => 'Expirado',
     ],
+    'types' => [
+      'inprogress' => 'En progreso',
+      'success'    => 'Exitoso',
+      'failed'     => 'Fallido'
+    ]
 
 ];
